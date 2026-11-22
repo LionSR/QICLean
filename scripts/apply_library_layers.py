@@ -10,6 +10,10 @@ The module map ``scripts/library_layers_module_map.txt`` has one entry per line
   ``NEW`` (named as after the moves) and ``OLD`` is deleted;
 * ``KEEP M``: the module ``M`` stays where it is.
 
+An entry may move a module from the name an earlier entry gave it (the order inside a
+layer was fixed after the first moves had been applied); such chains are composed, so
+that every earlier name leads to the final module.
+
 Test files of ``QICLeanTest`` move by the same syntax (``QICLeanTest.X
 QICLeanTest.Channel.X``). The layers and the reasons for each move are in
 ``docs/library_layers.md``.
@@ -132,6 +136,18 @@ def read_map(path: Path = MAP_PATH) -> ModuleMap:
     duplicate = {t for t in targets if targets.count(t) > 1}
     if duplicate:
         raise ValueError(f"two modules are moved to {sorted(duplicate)}")
+    # A later entry may move a module from the name an earlier entry gave it (the order
+    # inside a layer, decided after the first moves were applied). Compose the chains,
+    # so that every old name, first or intermediate, leads to the final module.
+    def final(name: str) -> str:
+        path = [name]
+        while path[-1] in result.moves:
+            path.append(result.moves[path[-1]])
+            if path[-1] in path[:-1]:
+                raise ValueError(f"the map moves modules in a cycle: {' -> '.join(path)}")
+        return path[-1]
+    result.moves = {old: final(new) for old, new in result.moves.items()}
+    result.merges = {old: final(new) for old, new in result.merges.items()}
     chained = set(result.renames.values()) & set(result.renames)
     if chained:
         raise ValueError(f"new names that are also old names: {sorted(chained)}")
@@ -198,11 +214,17 @@ def is_generated(path: Path) -> bool:
 def move_modules(root: Path, moves: dict[str, str], check: bool) -> tuple[list[str], list[str]]:
     """``git mv`` every old module file that is still present; return moves and skips."""
     moved, skipped = [], []
+    def present(module: str) -> bool:
+        path = module_path(root, module)
+        return path.exists() and not is_generated(path)
+    # After composition several names (the first and an intermediate one) lead to one target;
+    # at most one of them is a file.
+    sourced = {new for old, new in moves.items() if present(old)}
     for old, new in sorted(moves.items()):
         source, target = module_path(root, old), module_path(root, new)
         # After the moves the generator may put an aggregator at an old path.
-        if not source.exists() or is_generated(source):
-            if not target.exists():
+        if not present(old):
+            if not target.exists() and new not in sourced:
                 skipped.append(f"{old}: neither the module nor its target {new} exists")
             continue
         if target.exists():

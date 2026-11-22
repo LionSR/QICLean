@@ -493,6 +493,107 @@ class PassThroughPolicyTests(unittest.TestCase):
         sources = layers.tracked_sources(root)
         self.assertEqual(set(forwarding.pass_throughs(sources)), forwarding.PASS_THROUGH)
 
+class SublayerOrderTests(unittest.TestCase):
+    TABLE = {
+        "QICLean.Analysis": {"(top)": [], "Real": ["(top)"], "Norm": ["Real"], "Order": ["Real"],
+                             "TraceNorm": ["Norm", "Order"]},
+        "QICLean.Circuit": {"(top)": ["Core"], "Core": ["Geometry"], "Geometry": []},
+    }
+
+    def tables(self):
+        return layers.close_sublayers(self.TABLE)
+
+    def test_order_is_closed_transitively(self) -> None:
+        closed = self.tables()["QICLean.Analysis"]
+        self.assertEqual(closed["TraceNorm"], frozenset({"Norm", "Order", "Real", "(top)"}))
+        self.assertEqual(closed["(top)"], frozenset())
+
+    def test_cyclic_or_dangling_order_is_rejected(self) -> None:
+        with self.assertRaisesRegex(ValueError, "cycle"):
+            layers.close_sublayers({"QICLean.Analysis": {"Norm": ["Order"], "Order": ["Norm"]}})
+        with self.assertRaisesRegex(ValueError, "unlisted"):
+            layers.close_sublayers({"QICLean.Analysis": {"Norm": ["Real"]}})
+
+    def test_subdirectory_of_a_module(self) -> None:
+        prefixes = ["QICLean.Circuit", "QICLean.Circuit.Gate", "QICLean.Analysis"]
+        self.assertEqual(layers.sublayer_of("QICLean.Analysis.Norm.OpNorm", prefixes),
+                         ("QICLean.Analysis", "Norm"))
+        self.assertEqual(layers.sublayer_of("QICLean.Analysis.Norm.Schatten.P", prefixes),
+                         ("QICLean.Analysis", "Norm"))
+        self.assertEqual(layers.sublayer_of("QICLean.Analysis.Defs", prefixes),
+                         ("QICLean.Analysis", "(top)"))
+        self.assertEqual(layers.sublayer_of("QICLean.Circuit.Gate.Basic", prefixes),
+                         ("QICLean.Circuit.Gate", "(top)"))
+        self.assertIsNone(layers.sublayer_of("QICLean.Entropy.Defs", prefixes))
+
+    def test_downward_and_transitive_imports_pass(self) -> None:
+        sources = {
+            "QICLean.Analysis.TraceNorm.A": "import QICLean.Analysis.Real.B\ndef a := 0\n",
+            "QICLean.Analysis.Norm.C": "import QICLean.Analysis.Defs\ndef c := 0\n",
+            "QICLean.Analysis.Real.B": "def b := 0\n",
+            "QICLean.Analysis.Defs": "def d := 0\n",
+        }
+        self.assertEqual(layers.sublayer_violations(sources, self.tables()), set())
+
+    def test_upward_sideways_and_unlisted_imports_are_violations(self) -> None:
+        sources = {
+            "QICLean.Analysis.Real.B": "import QICLean.Analysis.Norm.C\ndef b := 0\n",
+            "QICLean.Analysis.Norm.C": "import QICLean.Analysis.Order.D\ndef c := 0\n",
+            "QICLean.Analysis.Order.D": "import QICLean.Analysis.Parameter.E\ndef d := 0\n",
+            "QICLean.Analysis.Defs": "import QICLean.Analysis.Real.B\ndef t := 0\n",
+            "QICLean.Analysis.Parameter.E": "def e := 0\n",
+        }
+        self.assertEqual(layers.sublayer_violations(sources, self.tables()), {
+            "QICLean.Analysis.Real.B -> QICLean.Analysis.Norm.C",
+            "QICLean.Analysis.Norm.C -> QICLean.Analysis.Order.D",
+            "QICLean.Analysis.Order.D -> QICLean.Analysis.Parameter.E",
+            "QICLean.Analysis.Defs -> QICLean.Analysis.Real.B",
+        })
+
+    def test_imports_across_layers_and_within_a_subdirectory_are_not_checked(self) -> None:
+        sources = {
+            "QICLean.Circuit.Geometry.A": "import QICLean.Circuit.Gate.B\ndef a := 0\n",
+            "QICLean.Circuit.Gate.B": "import QICLean.Analysis.Norm.C\ndef b := 0\n",
+            "QICLean.Analysis.Norm.C": "import QICLean.Analysis.Norm.D\ndef c := 0\n",
+            "QICLean.Analysis.Norm.D": "def d := 0\n",
+        }
+        self.assertEqual(layers.sublayer_violations(sources, self.tables()), set())
+
+    def test_aggregators_do_not_hide_imports(self) -> None:
+        sources = {
+            "QICLean.Analysis.Norm": "import QICLean.Analysis.Norm.C\n",
+            "QICLean.Analysis.Norm.C": "def c := 0\n",
+            "QICLean.Analysis.Real.B": "import QICLean.Analysis.Norm\ndef b := 0\n",
+        }
+        self.assertEqual(layers.sublayer_violations(sources, self.tables()),
+                         {"QICLean.Analysis.Real.B -> QICLean.Analysis.Norm.C"})
+
+    def test_sublayer_debt_may_only_shrink_against_the_base(self) -> None:
+        entry = "QICLean.Analysis.Real.B -> QICLean.Analysis.Norm.C"
+        sources = {"QICLean.Analysis.Real.B": "import QICLean.Analysis.Norm.C\ndef b := 0\n",
+                   "QICLean.Analysis.Norm.C": "def c := 0\n"}
+        tables = self.tables()
+        self.assertEqual(layers.check_sublayers(sources, tables, frozenset({entry}), frozenset()),
+                         [f"Entry added to SUBLAYER_DEBT; this set may only shrink: {entry}"])
+        self.assertEqual(
+            layers.check_sublayers(sources, tables, frozenset({entry}), frozenset({entry})), [])
+        self.assertEqual(len(layers.check_sublayers(sources, tables, frozenset(), None)), 1)
+        self.assertEqual(len(layers.check_sublayers({}, tables, frozenset({entry}), None)), 1)
+
+    def test_repository_table_is_an_order_of_existing_layers(self) -> None:
+        tables = layers.load_sublayers()
+        owned = {prefix for _, prefixes in layers.LAYERS for prefix in prefixes}
+        for prefix in tables:
+            with self.subTest(prefix=prefix):
+                self.assertIn(prefix, owned)
+
+    def test_recorded_sublayer_debt_matches_the_tree(self) -> None:
+        root = Path(__file__).resolve().parent.parent
+        self.assertEqual(
+            layers.sublayer_violations(layers.tracked_sources(root), layers.load_sublayers()),
+            layers.SUBLAYER_DEBT)
+
+
 class RepositoryRatchetTests(unittest.TestCase):
     def test_tree_baselines_and_new_layers_start_clean(self):
         sources = layers.tracked_sources(Path(__file__).resolve().parent.parent)

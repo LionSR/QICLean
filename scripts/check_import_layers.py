@@ -6,6 +6,11 @@ docs/import_structure.md for ownership, allowed imports, source revision, scope
 and commands. Comments are removed before parsing imports;
 import-only aggregators are expanded recursively. New and stale recorded entries
 fail; --base-ref compares with the merge base, --base-revision with an exact commit.
+
+The order of the subdirectories inside each layer is read from
+scripts/library_sublayers.json (docs/library_layers.md, "Order inside each
+layer"); an import between two subdirectories of one layer that the table does
+not allow is recorded in SUBLAYER_DEBT, which may only shrink.
 """
 
 # Adapted from LionSR/TNLean scripts/check_import_layers.py at
@@ -17,6 +22,7 @@ from __future__ import annotations
 import argparse
 import ast
 import functools
+import json
 import re
 import subprocess
 from collections.abc import Callable, Iterable, Mapping
@@ -110,6 +116,17 @@ ALLOWED: dict[str, frozenset[str]] = {
     "simulation": MATRIX | CHANNEL | {"sites", "gate", "circuit", "dynamics", "hamiltonian"},
 }
 DEBT: frozenset[str] = frozenset({})
+# The order of the subdirectories inside each layer: a module-name prefix (a layer, or a
+# part of one such as QICLean.Circuit without its own layers) maps each subdirectory, and
+# TOP_LEVEL for the modules directly below the prefix, to the subdirectories it may import
+# directly; the relation is closed transitively and must be acyclic. A module belongs to
+# the longest prefix that contains it.
+SUBLAYERS_PATH = Path(__file__).resolve().parent / "library_sublayers.json"
+TOP_LEVEL = "(top)"
+# Existing imports against that order, as "importing module -> imported module". Never
+# add an entry: move the module to the subdirectory of its objects, or move the shared
+# declaration down.
+SUBLAYER_DEBT: frozenset[str] = frozenset({})
 DEEP_ROOTS: frozenset[str] = frozenset({"ManyBody", "Circuit"})
 MUTUAL_DIRECTORIES: frozenset[str] = frozenset({})
 EXAMPLES_IMPORTS: frozenset[str] = frozenset({})
@@ -241,6 +258,76 @@ def mutual_directories(sources: Mapping[str, str]) -> dict[str, tuple[str, str]]
         for (first, second), forward in witness.items()
         if first < second and (second, first) in witness
     }
+
+
+def load_sublayers(path: Path = SUBLAYERS_PATH) -> dict[str, dict[str, frozenset[str]]]:
+    """Read the table of subdirectory orders and close each relation transitively.
+
+    The result maps a prefix to each listed subdirectory and the subdirectories it may
+    import. A cycle, or an allowed import of a subdirectory the table does not list,
+    is an error.
+    """
+    data = json.loads(path.read_text(encoding="utf-8"))
+    return close_sublayers({prefix: table for prefix, table in data["layers"].items()})
+
+
+def close_sublayers(
+    tables: Mapping[str, Mapping[str, Iterable[str]]]
+) -> dict[str, dict[str, frozenset[str]]]:
+    """Close each table of directly allowed imports transitively; reject cycles."""
+    closed: dict[str, dict[str, frozenset[str]]] = {}
+    for prefix, table in tables.items():
+        direct = {sub: frozenset(allowed) for sub, allowed in table.items()}
+        for sub, allowed in direct.items():
+            unknown = allowed - direct.keys()
+            if unknown:
+                raise ValueError(f"{prefix}: {sub} may import unlisted {sorted(unknown)}")
+        reach: dict[str, frozenset[str]] = {}
+
+        def below(sub: str, path: tuple[str, ...]) -> frozenset[str]:
+            if sub in path:
+                cycle = " -> ".join(path[path.index(sub):] + (sub,))
+                raise ValueError(f"{prefix}: the order of subdirectories has a cycle {cycle}")
+            if sub not in reach:
+                result: set[str] = set()
+                for lower in direct[sub]:
+                    result |= {lower} | below(lower, path + (sub,))
+                reach[sub] = frozenset(result)
+            return reach[sub]
+
+        closed[prefix] = {sub: below(sub, ()) for sub in direct}
+    return closed
+
+
+def sublayer_of(module: str, prefixes: Iterable[str]) -> tuple[str, str] | None:
+    """Return the prefix owning ``module`` and its subdirectory, or ``None``."""
+    owner = max((p for p in prefixes if module.startswith(p + ".")), key=len, default=None)
+    if owner is None:
+        return None
+    rest = module[len(owner) + 1:].split(".")
+    return owner, (rest[0] if len(rest) > 1 else TOP_LEVEL)
+
+
+def sublayer_violations(
+    sources: Mapping[str, str], tables: Mapping[str, Mapping[str, frozenset[str]]]
+) -> set[str]:
+    """Return every ``"A -> B"`` between two subdirectories of one layer that the order forbids.
+
+    An import from or into a subdirectory that the table does not list is forbidden.
+    """
+    found: set[str] = set()
+    for module, targets in resolved_imports(sources).items():
+        source = sublayer_of(module, tables)
+        if source is None:
+            continue
+        prefix, sub = source
+        for target_module in targets:
+            target = sublayer_of(target_module, tables)
+            if target is None or target[0] != prefix or target[1] == sub:
+                continue
+            if target[1] not in tables[prefix].get(sub, frozenset()):
+                found.add(f"{module} -> {target_module}")
+    return found
 
 
 def in_examples(module: str) -> bool:
@@ -445,7 +532,24 @@ def check_examples_imports(
     )
 
 
-RECORDS: tuple[str, ...] = ("DEBT", "MUTUAL_DIRECTORIES", "EXAMPLES_IMPORTS")
+def check_sublayers(
+    sources: Mapping[str, str],
+    tables: Mapping[str, Mapping[str, frozenset[str]]],
+    recorded: frozenset[str] = SUBLAYER_DEBT,
+    base: frozenset[str] | None = None,
+) -> list[str]:
+    """Return the error messages of the check on the order inside each layer."""
+    return ratchet_errors(
+        frozenset(sublayer_violations(sources, tables)),
+        recorded,
+        base,
+        new="Import between subdirectories of one layer against their order",
+        stale="Repaired import still listed in SUBLAYER_DEBT; remove it",
+        added="Entry added to SUBLAYER_DEBT; this set may only shrink",
+    )
+
+
+RECORDS: tuple[str, ...] = ("DEBT", "MUTUAL_DIRECTORIES", "EXAMPLES_IMPORTS", "SUBLAYER_DEBT")
 
 
 def main() -> int:
@@ -473,12 +577,20 @@ def main() -> int:
         action="store_true",
         help="print the current imports of worked examples by library modules and exit",
     )
+    parser.add_argument(
+        "--print-sublayer-debt",
+        action="store_true",
+        help="print the current imports against the order inside each layer and exit",
+    )
     args = parser.parse_args()
     root = args.root.resolve()
 
     sources = tracked_sources(root)
+    tables = load_sublayers(root / "scripts" / SUBLAYERS_PATH.name)
     printed: Iterable[str] | None = None
-    if args.print_debt:
+    if args.print_sublayer_debt:
+        printed = sublayer_violations(sources, tables)
+    elif args.print_debt:
         printed = violations(sources)
     elif args.print_mutual_directories:
         printed = mutual_directories(sources)
@@ -502,21 +614,24 @@ def main() -> int:
     errors = check_layers(sources, DEBT, base["DEBT"])
     errors += check_mutual_directories(sources, MUTUAL_DIRECTORIES, base["MUTUAL_DIRECTORIES"])
     errors += check_examples_imports(sources, EXAMPLES_IMPORTS, base["EXAMPLES_IMPORTS"])
+    errors += check_sublayers(sources, tables, SUBLAYER_DEBT, base["SUBLAYER_DEBT"])
     for message in errors:
         print(f"::error title=Import layer policy::{message}")
     if errors:
         print(
             "A lower layer must not import a higher one, two directories must not "
-            "import each other, a module outside Examples must not import a worked "
-            "example, and the recorded sets may only shrink. Move the shared "
+            "import each other, a subdirectory must not import a sibling above it in "
+            "the order of its layer, a module outside Examples must not import a "
+            "worked example, and the recorded sets may only shrink. Move the shared "
             "declaration to a module both sides may import; see "
-            "docs/import_structure.md."
+            "docs/import_structure.md and docs/library_layers.md."
         )
         return 1
     print(
         f"Import layers respected ({len(DEBT)} recorded violations, "
         f"{len(MUTUAL_DIRECTORIES)} recorded pairs of directories that import each "
-        f"other and {len(EXAMPLES_IMPORTS)} recorded imports of worked examples remain)."
+        f"other, {len(EXAMPLES_IMPORTS)} recorded imports of worked examples and "
+        f"{len(SUBLAYER_DEBT)} recorded imports against the order inside a layer remain)."
     )
     return 0
 
