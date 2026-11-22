@@ -268,8 +268,8 @@ moved first because their modules caused the largest displacements:
 hold declarations of two layers. Both lists, with the import that places each
 module and the declarations that should move, are in
 `docs/library_layers_inventory.md`; they are the candidates for the splits that
-would let each module sit at its content. The inventory also lists the 37 moved
-modules that already failed the strict Lean check at the base revision.
+would let each module sit at its content. The inventory also lists the moved
+modules that failed the strict Lean check at the base revision; they are repaired.
 
 ### Modules about sites and regions (#1174)
 
