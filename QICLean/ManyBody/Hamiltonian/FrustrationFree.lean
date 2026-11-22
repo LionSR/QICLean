@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Spectral.Eigenvalue.CompressionEnergyBounds
-import QICLean.ManyBody.Dynamics.InteractionOperations
+import QICLean.ManyBody.Dynamics.Interaction
 import QICLean.ManyBody.Hamiltonian.DisjointRegionalGround
 import QICLean.ManyBody.Hamiltonian.KernelGap
 
@@ -44,10 +44,8 @@ complement.
   zero energy of a vector are equivalent;
   `ManyBody.Interaction.hamiltonian_mulVec_eq_zero_iff_mem_zeroSpace` is the case of terms
   positive in the matrix order.
-* `ManyBody.Interaction.mem_ker_toEuclideanLin_hamiltonian_iff`,
-  `ManyBody.Interaction.mem_ker_toEuclideanLin_hamiltonian_restrict_iff` — for positive
-  semidefinite terms, the kernel of the Hamiltonian, and of the Hamiltonian of a restriction, is
-  the common kernel of the operators of the terms.
+* `ManyBody.Interaction.mem_ker_toEuclideanLin_hamiltonian_iff` — for positive semidefinite
+  terms, the kernel of the Hamiltonian is the common kernel of the operators of the terms.
 * `ManyBody.Interaction.isGapped_hamiltonian_zero_iff_inner`,
   `ManyBody.Interaction.isGapped_hamiltonian_zero_iff_norm` — the gap of a positive interaction
   above its zero space, in quadratic and in norm form.
@@ -320,17 +318,6 @@ theorem mem_ker_toEuclideanLin_hamiltonian_iff {Φ : Interaction X T}
     v ∈ LinearMap.ker (toEuclideanLin Φ.hamiltonian) ↔ ∀ i, toEuclideanLin (Φ.term i) v = 0 := by
   simp only [LinearMap.mem_ker, toLpLin_apply, WithLp.toLp_eq_zero,
     hamiltonian_mulVec_eq_zero_iff hΦ]
-
-/-- For positive semidefinite terms, the Hamiltonian of the restriction of an interaction to the
-indices with a property annihilates a vector exactly when every term with the property does. -/
-theorem mem_ker_toEuclideanLin_hamiltonian_restrict_iff {Φ : Interaction X T}
-    (hΦ : ∀ i, (Φ.term i).PosSemidef) (p : ι → Prop) [DecidablePred p]
-    {v : EuclideanSpace ℂ (Config X)} :
-    v ∈ LinearMap.ker (toEuclideanLin (Φ.restrict p).hamiltonian) ↔
-      ∀ i, p i → toEuclideanLin (Φ.term i) v = 0 := by
-  rw [mem_ker_toEuclideanLin_hamiltonian_iff fun i ↦ forall_restrict_term PosSemidef.zero (hΦ i)]
-  refine forall_congr' fun i ↦ ?_
-  by_cases hi : p i <;> simp [hi]
 
 end Interaction
 

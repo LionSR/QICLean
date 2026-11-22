@@ -21,6 +21,7 @@ import QICLean.ManyBody.Sites.OneMagnon
 import QICLean.ManyBody.Sites.OperatorSchmidtPartition
 import QICLean.ManyBody.Sites.OperatorSchmidtRank
 import QICLean.ManyBody.Sites.PairSwap
+import QICLean.ManyBody.Sites.PairSwapPermutation
 import QICLean.ManyBody.Sites.Partition
 import QICLean.ManyBody.Sites.PlaceAlong
 import QICLean.ManyBody.Sites.PlaceAlongMonomial
@@ -28,6 +29,7 @@ import QICLean.ManyBody.Sites.PlacedConfiguration
 import QICLean.ManyBody.Sites.Placement
 import QICLean.ManyBody.Sites.ProductFamily
 import QICLean.ManyBody.Sites.ProductForm
+import QICLean.ManyBody.Sites.ProductOperatorTrace
 import QICLean.ManyBody.Sites.ProductVector
 import QICLean.ManyBody.Sites.RegionExpectation
 import QICLean.ManyBody.Sites.RegionMatrix

@@ -19,9 +19,15 @@ Moved from TNLean, `TNLean/Lattice/ReplicaSwap.lean` at commit `e41c3b63`
 (`mutualInformation_relabelSites_replicaSwap_eq_zero`), restated with the exchange of the two
 copies on the sites `V ⊕ V`.
 
+The doubled vector `Ω ⊗ Ω` on the sites `V ⊕ V` is the vector `Matrix.doubledVector Ω` of
+two copies, read through the splitting of a configuration of `V ⊕ V` into its two copies
+(`ManyBody.doubledVector_comp_sumArrowEquivProdArrow`, TNLean's
+`TNLean.Lattice.doubledVector_comp_sumArrow` at commit `707a50e56c`).
+
 ## Main results
 
 * `ManyBody.regionMutualInformation_replicaSwap_eq_zero`.
+* `ManyBody.doubledVector_comp_sumArrowEquivProdArrow`.
 
 ## References
 
@@ -34,6 +40,16 @@ open Matrix ManyBody
 namespace ManyBody
 
 variable {V : Type*} [Fintype V] [DecidableEq V] {α : Type*} [Fintype α] [DecidableEq α]
+
+omit [Fintype V] [DecidableEq V] [Fintype α] [DecidableEq α] in
+/-- **The doubled vector on two replicas.** The product vector `Ω ⊗ Ω` on the sites `V ⊕ V` is
+the doubled vector `Matrix.doubledVector Ω` of two copies, read through the splitting of a
+configuration of `V ⊕ V` into its two copies. Polynomial PEPS approximation,
+`02-information.tex`, lines 356–360. -/
+theorem doubledVector_comp_sumArrowEquivProdArrow (Ω : EuclideanSpace ℂ (Config fun _ : V ↦ α)) :
+    doubledVector (WithLp.ofLp Ω) ∘ Equiv.sumArrowEquivProdArrow V V α =
+      WithLp.ofLp (sumSitesProduct (X := fun _ : V ⊕ V ↦ α) Ω Ω) :=
+  rfl
 
 omit [Fintype V] in
 private theorem mem_disjSum_iff_replicaSwap {R₀ C₀ R : Finset V} (hR₀ : R₀ ⊆ R)

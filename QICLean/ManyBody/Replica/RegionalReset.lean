@@ -34,6 +34,9 @@ regions and the buffer.
 Moved from TNLean, `TNLean/Lattice/RegionalReset.lean` at commit `e41c3b63`
 (`regional_physicalBuffer_filter`), restated on the sites `V ⊕ V` with the operator of the
 exchange of replicas and the placement of the buffer operator.
+`ManyBody.reindex_physicalBuffer_eq_place` is moved from TNLean,
+`TNLean/Lattice/PhysicalBufferCoordinates.lean`, with the pairing of the two copies of a site
+written out with `Equiv.arrowProdEquivProdArrow` and `finProdFinEquiv`.
 
 ## Main definitions
 
@@ -42,6 +45,10 @@ exchange of replicas and the placement of the buffer operator.
 ## Main results
 
 * `GaussianFilter.regional_physicalBuffer_filter` — the two-sided Gaussian filter.
+* `GaussianFilter.exists_regional_physicalBuffer_filter` — the same with the constants `A` and
+  `T₀` chosen once for every system, depending only on `Δ` and `r`.
+* `ManyBody.reindex_physicalBuffer_eq_place` — an operator on the two copies of the buffer, in
+  the coordinates of two regions and the buffer, is its placement on the paired sites.
 
 ## References
 
@@ -53,6 +60,8 @@ exchange of replicas and the placement of the buffer operator.
 
 open Matrix ManyBody
 open scoped Kronecker ComplexOrder Matrix.Norms.L2Operator
+
+universe u v
 
 namespace GaussianFilter
 
@@ -66,8 +75,11 @@ reset; it meets `30 + r ≤ T₀² / (2 A)` with equality. Polynomial PEPS appro
 `02-information.tex`, lines 443–450. -/
 noncomputable def resetCutoff (Δ r : ℝ) : ℝ := 2 * (30 + r) / Δ
 
-private theorem resetCutoff_nonneg {Δ r : ℝ} (hΔ : 0 < Δ) (hr : 0 ≤ r) :
-    0 ≤ resetCutoff Δ r := by
+theorem resetVariance_pos {Δ r : ℝ} (hΔ : 0 < Δ) (hr : 0 ≤ r) : 0 < resetVariance Δ r := by
+  unfold resetVariance
+  positivity
+
+theorem resetCutoff_pos {Δ r : ℝ} (hΔ : 0 < Δ) (hr : 0 ≤ r) : 0 < resetCutoff Δ r := by
   unfold resetCutoff
   positivity
 
@@ -315,7 +327,7 @@ theorem regional_physicalBuffer_filter {Δ r : ℝ} (hΔ : 0 < Δ) (hr : 0 ≤ r
       quantumRelativeEntropy_product_marginals (ManyBody.jointMatrix_posSemidef _ Ω R C hRC)]
     rw [ManyBody.regionMutualInformation_eq_matrix _ Ω R C hRC] at hI
     exact hI
-  have hfilter := physicalBuffer_filter_of_le hΔ hr (resetCutoff_nonneg hΔ hr)
+  have hfilter := physicalBuffer_filter_of_le hΔ hr (resetCutoff_pos hΔ hr).le
     (le_resetVariance_mul_sq_div_two hΔ.ne') (le_resetCutoff_sq_div hΔ.ne' hr) _ _ _
     (reindex s s H) Ωs E₀ b hunit heigs hgaps hb hbound
   obtain ⟨W, z, hWherm, hW, hz, -, hfil⟩ := hfilter
@@ -372,4 +384,105 @@ theorem regional_physicalBuffer_filter {Δ r : ℝ} (hΔ : 0 < Δ) (hr : 0 ≤ r
     rw [hsc, ← Pi.sub_comp, norm_toLp_comp_symm, WithLp.toLp_sub, WithLp.toLp_smul]
     exact hrev
 
+/-- **The two-sided Gaussian filter of the information reset, with constants chosen once.** For
+a gap `Δ > 0` and an exponent `r ≥ 0` there are constants `A, T₀ > 0` such that the statement of
+`GaussianFilter.regional_physicalBuffer_filter` holds on every finite set of sites with every
+finite alphabet, with the Gaussian integral of variance `A B` truncated at `T₀ B`. No gap of a
+restricted Hamiltonian and no bound on any purifying dimension is assumed. Polynomial PEPS
+approximation, `02-information.tex`, lines 355–452, equations `eq:info-split-overlap`,
+`eq:info-reset-overlap` and `eq:info-gaussian-two-sided`. -/
+theorem exists_regional_physicalBuffer_filter {Δ r : ℝ} (hΔ : 0 < Δ) (hr : 0 ≤ r) :
+    ∃ A T₀ : ℝ, 0 < A ∧ 0 < T₀ ∧
+      ∀ {V : Type u} [Fintype V] [DecidableEq V] {α : Type v} [Fintype α] [DecidableEq α]
+        {H : Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ}, H.IsHermitian →
+        ∀ {E₀ : ℝ} {Ω : EuclideanSpace ℂ (Config fun _ : V ↦ α)}, ‖Ω‖ = 1 →
+        IsGapped H E₀ Δ → groundSpace H E₀ = Submodule.span ℂ {Ω} →
+        ∀ {R C : Finset V}, Disjoint R C → ∀ {b : ℝ},
+        ManyBody.regionMutualInformation Ω R C ≤ b →
+        let K := reindex (Equiv.sumArrowEquivProdArrow V V α).symm
+          (Equiv.sumArrowEquivProdArrow V V α).symm (doubledHamiltonian H)
+        let F := replicaSwapOp α R
+        let Ψ := ManyBody.sumSitesProduct (X := fun _ : V ⊕ V ↦ α) Ω Ω
+        ∃ (W : Matrix (RegionConfig (fun _ : V ⊕ V ↦ α) (((R ∪ C)ᶜ).disjSum (R ∪ C)ᶜ))
+            (RegionConfig (fun _ : V ⊕ V ↦ α) (((R ∪ C)ᶜ).disjSum (R ∪ C)ᶜ)) ℂ) (z : ℝ),
+          W.IsHermitian ∧ ‖W‖ ≤ 1 ∧ Real.exp (-2 * b) ≤ z ∧
+          ∀ L : ℝ, 1 ≤ L →
+            let B := 1 + b + Real.log L
+            let M := gaussianIntertwinerTruncated (Real.toNNReal (A * B)) (T₀ * B)
+              (F * K * Fᴴ) K (place (((R ∪ C)ᶜ).disjSum (R ∪ C)ᶜ) W)
+            ‖M‖ ≤ 1 ∧
+              ‖toEuclideanLin M Ψ - (z : ℂ) • toEuclideanLin F Ψ‖ ≤
+                3 * Real.exp (-10 * b) * L ^ (-r) ∧
+              ‖toEuclideanLin Mᴴ (toEuclideanLin F Ψ) - (z : ℂ) • Ψ‖ ≤
+                3 * Real.exp (-10 * b) * L ^ (-r) :=
+  ⟨resetVariance Δ r, resetCutoff Δ r, resetVariance_pos hΔ hr, resetCutoff_pos hΔ hr,
+    fun hH _ _ hΩ hgs hspan _ _ hRC _ hI ↦
+      regional_physicalBuffer_filter hΔ hr hH hΩ hgs hspan hRC hI⟩
+
 end GaussianFilter
+
+namespace ManyBody
+
+open scoped Kronecker
+
+/-- **Buffer operators in paired coordinates.** Split a configuration of the sites `ι` with
+local dimension `q` along two disjoint regions `R`, `C` and the buffer `Q = (R ∪ C)ᶜ`, with the
+finite enumerations of the configurations of `R` and `C`, and pair the two copies of every site
+into `Fin (q * q)` along `finProdFinEquiv`. Then the identity on the two copies of `R` and `C`
+tensored with an operator `W` on the two copies of the buffer is the placement on `Q` of `W` in
+paired coordinates. Zero local dimension and empty regions are allowed.
+
+Polynomial PEPS approximation, `02-information.tex`, lines 498–564,
+`eq:info-operator-localization` and `eq:info-local-two-sided`. -/
+theorem reindex_physicalBuffer_eq_place
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (q : ℕ) (R C : Finset ι) (hRC : Disjoint R C) :
+    let Q := (R ∪ C)ᶜ
+    let P := Fin (Fintype.card (R → Fin q)) × Fin (Fintype.card (C → Fin q))
+    let s := splitTwoRegionsEquiv (fun _ : ι ↦ Fin q) R C hRC
+    let g := (s.prodCongr s).trans (Equiv.doubledRegroup P ({v // v ∉ R ∪ C} → Fin q))
+    let p := (Equiv.arrowProdEquivProdArrow ι (fun _ ↦ Fin q) (fun _ ↦ Fin q)).symm.trans
+      (Equiv.arrowCongr (Equiv.refl ι) finProdFinEquiv)
+    let pQ := ((Equiv.arrowProdEquivProdArrow {v // v ∉ R ∪ C} (fun _ ↦ Fin q)
+        (fun _ ↦ Fin q)).symm.trans
+        (Equiv.arrowCongr (Equiv.refl {v // v ∉ R ∪ C}) finProdFinEquiv)).trans
+      (complementEquiv (fun _ : ι ↦ Fin (q * q)) (R ∪ C))
+    let e := g.symm.trans p
+    ∀ W : Matrix (({v // v ∉ R ∪ C} → Fin q) × ({v // v ∉ R ∪ C} → Fin q))
+        (({v // v ∉ R ∪ C} → Fin q) × ({v // v ∉ R ∪ C} → Fin q)) ℂ,
+      Matrix.reindex e e ((1 : Matrix (P × P) (P × P) ℂ) ⊗ₖ W) =
+        place Q (Matrix.reindex pQ pQ W) := by
+  classical
+  intro Q P s g p pQ e W
+  ext x y
+  simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.kroneckerMap_apply,
+    Matrix.one_apply, place_apply]
+  have hcondition : (e.symm x).1 = (e.symm y).1 ↔ ∀ i ∉ Q, x i = y i := by
+    simp only [P, e, g, s, Equiv.symm_trans_apply, Equiv.symm_symm, Equiv.trans_apply,
+      Equiv.doubledRegroup, Equiv.bipartiteRegroup, Equiv.prodCongr_apply, Prod.map,
+      splitTwoRegionsEquiv, ManyBody.regionUnionEquiv,
+      Equiv.coe_fn_mk, Equiv.piEquivPiSubtypeProd_apply, Equiv.refl_apply, Prod.mk.injEq,
+      Equiv.apply_eq_iff_eq]
+    constructor
+    · intro h i hi
+      have hiRC : i ∈ R ∪ C :=
+        not_not.mp (fun hn ↦ hi (Finset.mem_compl.mpr hn))
+      exact finProdFinEquiv.symm.injective <|
+        (Finset.mem_union.mp hiRC).elim
+          (fun hiR ↦ Prod.ext (congrFun h.1.1 ⟨i, hiR⟩) (congrFun h.2.1 ⟨i, hiR⟩))
+          (fun hiC ↦ Prod.ext (congrFun h.1.2 ⟨i, hiC⟩) (congrFun h.2.2 ⟨i, hiC⟩))
+    · intro h
+      have hxy (i : ι) (hi : i ∈ R ∪ C) : x i = y i :=
+        h i (fun hiQ ↦ Finset.mem_compl.mp hiQ hi)
+      exact ⟨⟨funext fun v ↦ congrArg (fun z : Fin (q * q) ↦ (finProdFinEquiv.symm z).1)
+          (hxy v (Finset.mem_union_left C v.property)),
+        funext fun v ↦ congrArg (fun z : Fin (q * q) ↦ (finProdFinEquiv.symm z).1)
+          (hxy v (Finset.mem_union_right R v.property))⟩,
+        ⟨funext fun v ↦ congrArg (fun z : Fin (q * q) ↦ (finProdFinEquiv.symm z).2)
+          (hxy v (Finset.mem_union_left C v.property)),
+        funext fun v ↦ congrArg (fun z : Fin (q * q) ↦ (finProdFinEquiv.symm z).2)
+          (hxy v (Finset.mem_union_right R v.property))⟩⟩
+  simp only [hcondition, ite_mul, one_mul, zero_mul]
+  rfl
+
+end ManyBody

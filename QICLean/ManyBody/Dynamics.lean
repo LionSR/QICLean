@@ -24,4 +24,5 @@ import QICLean.ManyBody.Dynamics.ProductFormula
 import QICLean.ManyBody.Dynamics.ProjectedRelativeEvolution
 import QICLean.ManyBody.Dynamics.RingPropagation
 import QICLean.ManyBody.Dynamics.SupportedGaussianIntegral
+import QICLean.ManyBody.Dynamics.SwappedDoubledInteraction
 import QICLean.ManyBody.Dynamics.TruncatedEvolution

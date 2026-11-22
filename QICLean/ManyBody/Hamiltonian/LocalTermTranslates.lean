@@ -17,10 +17,15 @@ the translates of `h` around the ring of `N` sites as its terms, and
 that do not cross its right end. This file collects their dependence on `h` (additivity,
 homogeneity, order, positivity and continuity), the comparison of the two families, and the
 geometric facts used by the finite-range Knabe argument: separated windows on the ring commute,
-and consecutive terms on the ring add up to a translate of an open-chain Hamiltonian.
+and consecutive terms on the ring add up to a translate of an open-chain Hamiltonian. It opens
+with the kernel of the Hamiltonian of a restriction of a positive interaction to some of its
+terms.
 
 ## Main results
 
+* `ManyBody.Interaction.mem_ker_toEuclideanLin_hamiltonian_restrict_iff` — for positive
+  semidefinite terms, the kernel of the Hamiltonian of a restriction is the common kernel of the
+  operators of the retained terms.
 * `ManyBody.Interaction.translationInvariant_term_add`, `translationInvariant_term_mono`,
   `hamiltonian_translationInvariant_mono`, `posSemidef_hamiltonian_translationInvariant`,
   `continuous_hamiltonian_translationInvariant` — the ring terms as functions of `h`.
@@ -59,6 +64,24 @@ private theorem commute_toEuclideanLin_iff {n : Type*} [Fintype n] [DecidableEq 
     {A B : Matrix n n ℂ} : Commute (toEuclideanLin A) (toEuclideanLin B) ↔ Commute A B :=
   commute_map_iff (f := toLpLinAlgEquiv (R := ℂ) (n := n) 2) (toLpLinAlgEquiv 2).injective
     (x := A) (y := B)
+
+section Restrict
+
+variable {V : Type*} [Fintype V] [DecidableEq V] {X : V → Type*} [∀ v, Fintype (X v)]
+  [∀ v, DecidableEq (X v)] {ι : Type*} [Fintype ι] {T : ι → Finset V}
+
+/-- For positive semidefinite terms, the Hamiltonian of the restriction of an interaction to the
+indices with a property annihilates a vector exactly when every term with the property does. -/
+theorem mem_ker_toEuclideanLin_hamiltonian_restrict_iff {Φ : Interaction X T}
+    (hΦ : ∀ i, (Φ.term i).PosSemidef) (p : ι → Prop) [DecidablePred p]
+    {v : EuclideanSpace ℂ (Config X)} :
+    v ∈ LinearMap.ker (toEuclideanLin (Φ.restrict p).hamiltonian) ↔
+      ∀ i, p i → toEuclideanLin (Φ.term i) v = 0 := by
+  rw [mem_ker_toEuclideanLin_hamiltonian_iff fun i ↦ forall_restrict_term PosSemidef.zero (hΦ i)]
+  refine forall_congr' fun i ↦ ?_
+  by_cases hi : p i <;> simp [hi]
+
+end Restrict
 
 /-! ### Translates on the ring -/
 
