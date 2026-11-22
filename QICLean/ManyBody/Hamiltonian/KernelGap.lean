@@ -7,6 +7,8 @@ import QICLean.Spectral.Gap.CompactKernelGap
 import QICLean.Spectral.Perturbation.KernelGapPerturbation
 import QICLean.Spectral.Gap.KernelSpectralGap
 import QICLean.Spectral.Gap.PositiveGapTransfer
+import QICLean.Spectral.Gap.PositiveComparisonGap
+import QICLean.Analysis.Norm.MatrixToEuclidean
 import QICLean.Analysis.Support.InverseSandwich
 import QICLean.ManyBody.Hamiltonian.GroundSpace
 import QICLean.Analysis.Topology.CompactUniformBounds
@@ -46,6 +48,8 @@ and `TNLean/Algebra/CompactGapBounds.lean`.
 * `ManyBody.groundSpace_zero_eq_of_le`, `ManyBody.forall_hasEigenvalue_of_le`,
   `ManyBody.IsGapped.of_le` — a larger positive matrix whose kernel contains that of `A` has the
   same kernel and keeps the spectral bound and the gap of `A`.
+* `ManyBody.forall_hasEigenvalue_of_smul_le_of_le_smul` — a two-sided comparison
+  `κ A ≤ B ≤ C A` turns a bound `γ` above `0` on the spectrum of `A` into `κ γ` for `B`.
 * `ManyBody.eventually_isGapped_zero` — every smaller gap persists under continuous
   perturbation with continuous kernel projections.
 * `IsCompact.exists_uniform_isGapped` — locally uniform gaps beyond a threshold are uniform on a
@@ -226,6 +230,28 @@ theorem IsGapped.of_le {A C : Matrix n n ℂ} {Δ : ℝ} (hA : A.PosSemidef) (hA
     (hker : groundSpace A 0 ≤ groundSpace C 0) (h : IsGapped A 0 Δ) : IsGapped C 0 Δ := by
   rw [isGapped_zero_iff] at h ⊢
   exact ⟨groundSpace_zero_eq_of_le hA hAC hker ▸ h.1, forall_hasEigenvalue_of_le hA hAC hker h.2⟩
+
+/-- **Gap transfer along a comparison.** If positive semidefinite matrices satisfy
+`κ A ≤ B ≤ C A` with `κ, C > 0` and every eigenvalue of `A` other than `0` is at least
+`γ > 0`, then every eigenvalue of `B` other than `0` is at least `κ γ`. CPGSV21,
+arXiv:2011.12127, Section IV.C, lines 1995–2007 and 2183–2187. -/
+theorem forall_hasEigenvalue_of_smul_le_of_le_smul {A B : Matrix n n ℂ} (hA : A.PosSemidef)
+    (hB : B.PosSemidef) {κ C γ : ℝ} (hκ : 0 < κ) (hC : 0 < C) (hγ : 0 < γ)
+    (hLower : (κ : ℂ) • A ≤ B) (hUpper : B ≤ (C : ℂ) • A)
+    (hGap : ∀ μ : ℂ, Module.End.HasEigenvalue (toEuclideanLin A) μ → μ = 0 ∨ (γ : ℂ) ≤ μ) :
+    ∀ μ : ℂ, Module.End.HasEigenvalue (toEuclideanLin B) μ →
+      μ = 0 ∨ ((κ * γ : ℝ) : ℂ) ≤ μ := by
+  have h1 := toEuclideanLin_le_toEuclideanLin_iff.mpr hLower
+  have h2 := toEuclideanLin_le_toEuclideanLin_iff.mpr hUpper
+  rw [map_smul] at h1 h2
+  refine (forall_hasEigenvalue_iff_norm hB).mpr ?_
+  simpa only [div_one] using
+    LinearMap.IsPositive.norm_gap_of_smul_le_of_le_smul
+      (isPositive_toEuclideanLin_iff.mpr hA)
+      (isPositive_toEuclideanLin_iff.mpr hB) (b := 1) hκ zero_lt_one hC hγ
+      (by simpa only [Complex.ofReal_one, one_smul] using h1)
+      (by simpa only [Complex.ofReal_one, one_smul] using h2)
+      ((forall_hasEigenvalue_iff_norm hA).mp hGap)
 
 /-! ### Continuity and compactness -/
 

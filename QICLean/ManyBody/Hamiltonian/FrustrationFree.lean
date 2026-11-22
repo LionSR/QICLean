@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Spectral.Eigenvalue.CompressionEnergyBounds
-import QICLean.ManyBody.Dynamics.Interaction
+import QICLean.ManyBody.Dynamics.InteractionOperations
 import QICLean.ManyBody.Hamiltonian.DisjointRegionalGround
 import QICLean.ManyBody.Hamiltonian.KernelGap
 
@@ -40,6 +40,14 @@ complement.
   with a nonzero zero space are frustration free.
 * `ManyBody.Interaction.zeroSpace_eq_groundSpace` — for positive semidefinite terms the zero
   space is the kernel of the Hamiltonian.
+* `ManyBody.Interaction.zeroVector_tfae` — for positive semidefinite terms, the readings of
+  zero energy of a vector are equivalent;
+  `ManyBody.Interaction.hamiltonian_mulVec_eq_zero_iff_mem_zeroSpace` is the case of terms
+  positive in the matrix order.
+* `ManyBody.Interaction.mem_ker_toEuclideanLin_hamiltonian_iff`,
+  `ManyBody.Interaction.mem_ker_toEuclideanLin_hamiltonian_restrict_iff` — for positive
+  semidefinite terms, the kernel of the Hamiltonian, and of the Hamiltonian of a restriction, is
+  the common kernel of the operators of the terms.
 * `ManyBody.Interaction.isGapped_hamiltonian_zero_iff_inner`,
   `ManyBody.Interaction.isGapped_hamiltonian_zero_iff_norm` — the gap of a positive interaction
   above its zero space, in quadratic and in norm form.
@@ -275,6 +283,54 @@ theorem isGapped_hamiltonian_zero_iff_norm {Φ : Interaction X T}
       ∀ v ∈ Φ.zeroSpaceᗮ, Δ * ‖v‖ ≤ ‖toEuclideanLin Φ.hamiltonian v‖ := by
   rw [isGapped_zero_iff_norm (posSemidef_hamiltonian h), zeroSpace_eq_groundSpace h,
     groundSpace_zero]
+
+/-- **Zero vectors of a positive interaction.** For positive semidefinite terms, six readings of
+"`Ω` has energy `0`" are equivalent: `Ω` lies in the zero space, every term annihilates `Ω`, the
+Hamiltonian annihilates `Ω` as a matrix, as a linear map or as a continuous linear map on the
+Euclidean space, and `Ω` lies in the ground space of the Hamiltonian at energy `0`.
+Pérez-García, Verstraete, Wolf and Cirac, quant-ph/0608197, `MPSarchive.tex`, lines 311–326;
+Sanz, Pérez-García, Wolf and Cirac, arXiv:0909.5347, `main.tex`, lines 796–808. -/
+theorem zeroVector_tfae {Φ : Interaction X T} (hΦ : ∀ i, (Φ.term i).PosSemidef)
+    (Ω : EuclideanSpace ℂ (Config X)) :
+    List.TFAE
+      [ Ω ∈ Φ.zeroSpace,
+        ∀ i, Φ.term i *ᵥ WithLp.ofLp Ω = 0,
+        Φ.hamiltonian *ᵥ WithLp.ofLp Ω = 0,
+        toEuclideanLin Φ.hamiltonian Ω = 0,
+        toEuclideanCLM (𝕜 := ℂ) (n := Config X) Φ.hamiltonian Ω = 0,
+        Ω ∈ groundSpace Φ.hamiltonian 0 ] := by
+  tfae_have 1 ↔ 2 := mem_zeroSpace_iff
+  tfae_have 1 ↔ 3 := mem_zeroSpace_iff_hamiltonian_mulVec_eq_zero hΦ
+  tfae_have 3 ↔ 4 := by rw [toLpLin_apply, WithLp.toLp_eq_zero]
+  tfae_have 4 ↔ 5 := Iff.rfl
+  tfae_have 4 ↔ 6 := by rw [groundSpace_zero, LinearMap.mem_ker]
+  tfae_finish
+
+/-- **Zero energy for positive terms in the matrix order.** For terms `0 ≤ hᵢ`, the Hamiltonian
+annihilates `Ω` exactly when `Ω` lies in the zero space. -/
+theorem hamiltonian_mulVec_eq_zero_iff_mem_zeroSpace {Φ : Interaction X T}
+    (h0 : ∀ i, 0 ≤ Φ.term i) {Ω : EuclideanSpace ℂ (Config X)} :
+    Φ.hamiltonian *ᵥ WithLp.ofLp Ω = 0 ↔ Ω ∈ Φ.zeroSpace :=
+  (mem_zeroSpace_iff_hamiltonian_mulVec_eq_zero fun i ↦ nonneg_iff_posSemidef.mp (h0 i)).symm
+
+/-- For positive semidefinite terms, the Hamiltonian of an interaction annihilates a vector
+exactly when the operator of every term does. -/
+theorem mem_ker_toEuclideanLin_hamiltonian_iff {Φ : Interaction X T}
+    (hΦ : ∀ i, (Φ.term i).PosSemidef) {v : EuclideanSpace ℂ (Config X)} :
+    v ∈ LinearMap.ker (toEuclideanLin Φ.hamiltonian) ↔ ∀ i, toEuclideanLin (Φ.term i) v = 0 := by
+  simp only [LinearMap.mem_ker, toLpLin_apply, WithLp.toLp_eq_zero,
+    hamiltonian_mulVec_eq_zero_iff hΦ]
+
+/-- For positive semidefinite terms, the Hamiltonian of the restriction of an interaction to the
+indices with a property annihilates a vector exactly when every term with the property does. -/
+theorem mem_ker_toEuclideanLin_hamiltonian_restrict_iff {Φ : Interaction X T}
+    (hΦ : ∀ i, (Φ.term i).PosSemidef) (p : ι → Prop) [DecidablePred p]
+    {v : EuclideanSpace ℂ (Config X)} :
+    v ∈ LinearMap.ker (toEuclideanLin (Φ.restrict p).hamiltonian) ↔
+      ∀ i, p i → toEuclideanLin (Φ.term i) v = 0 := by
+  rw [mem_ker_toEuclideanLin_hamiltonian_iff fun i ↦ forall_restrict_term PosSemidef.zero (hΦ i)]
+  refine forall_congr' fun i ↦ ?_
+  by_cases hi : p i <;> simp [hi]
 
 end Interaction
 
