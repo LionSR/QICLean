@@ -7,6 +7,7 @@ import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.InnerProductSpace.SingularValues
 import Mathlib.Basic.Complex.Basic
 import Mathlib.LinearAlgebra.Basis.VectorSpace
+import Mathlib.LinearAlgebra.Matrix.Kronecker
 import Mathlib.LinearAlgebra.Matrix.Rank
 
 /-!
@@ -218,5 +219,15 @@ theorem hasSchmidtRankLE_iff_schmidtSingularValues_eq_zero [Fintype m]
     {k : ℕ} {ψ : m × n → ℂ} :
     HasSchmidtRankLE k ψ ↔ schmidtSingularValues ψ k = 0 :=
   (schmidtSingularValues_eq_zero_iff ψ).symm
+
+open scoped Kronecker in
+/-- An operator on the left factor acts on the coefficient matrix of a bipartite vector by
+left multiplication. -/
+theorem schmidtCoeffMatrix_kronecker_one_mulVec {A B C : Type*} [Fintype A] [Fintype B]
+    [DecidableEq B] (K : Matrix C A ℂ) (ψ : A × B → ℂ) :
+    schmidtCoeffMatrix ((K ⊗ₖ (1 : Matrix B B ℂ)) *ᵥ ψ) = K * schmidtCoeffMatrix ψ := by
+  ext c b
+  simp [schmidtCoeffMatrix_apply, mulVec, dotProduct, Fintype.sum_prod_type, one_apply,
+    Matrix.mul_apply]
 
 end Matrix

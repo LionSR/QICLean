@@ -1,0 +1,365 @@
+{
+  "comment": "Order of the subdirectories inside each layer (docs/library_layers.md, 'Order inside each layer'): each subdirectory lists the subdirectories it may import directly; the relation is closed transitively. '(top)' stands for the modules directly below the layer.",
+  "layers": {
+    "QICLean.Algebra": {
+      "Combinatorics": [],
+      "Polynomial": [
+        "Combinatorics"
+      ],
+      "Module": [
+        "Polynomial"
+      ],
+      "PerronFrobenius": [
+        "Module"
+      ],
+      "Matrix": [
+        "PerronFrobenius"
+      ],
+      "Unitary": [
+        "Matrix"
+      ],
+      "(top)": [
+        "Unitary"
+      ],
+      "Hermitian": [
+        "(top)"
+      ],
+      "Word": [
+        "Hermitian"
+      ],
+      "OperatorSchmidt": [
+        "Word"
+      ],
+      "Nilpotent": [
+        "OperatorSchmidt"
+      ],
+      "MatrixAlgebra": [
+        "Nilpotent"
+      ],
+      "StarSubalgebra": [
+        "MatrixAlgebra"
+      ],
+      "Kronecker": [
+        "StarSubalgebra"
+      ],
+      "SpinCover": [
+        "Kronecker"
+      ],
+      "Cohomology": [
+        "SpinCover"
+      ]
+    },
+    "QICLean.Analysis": {
+      "Complex": [],
+      "Calculus": [
+        "Complex"
+      ],
+      "Metric": [
+        "Calculus"
+      ],
+      "Subspace": [
+        "Metric"
+      ],
+      "Projection": [
+        "Subspace"
+      ],
+      "Topology": [
+        "Projection"
+      ],
+      "Order": [
+        "Topology"
+      ],
+      "FixedPoint": [
+        "Order"
+      ],
+      "Real": [
+        "FixedPoint"
+      ],
+      "FunctionalCalculus": [
+        "Real"
+      ],
+      "Support": [
+        "FunctionalCalculus"
+      ],
+      "Logarithm": [
+        "Support"
+      ],
+      "Isometry": [
+        "Logarithm"
+      ],
+      "Norm": [
+        "Isometry"
+      ],
+      "TraceNorm": [
+        "Norm"
+      ],
+      "Resolvent": [
+        "TraceNorm"
+      ],
+      "TensorProduct": [
+        "Resolvent"
+      ],
+      "Convexity": [
+        "TensorProduct"
+      ],
+      "OperatorMean": [
+        "Convexity"
+      ],
+      "TraceInequality": [
+        "OperatorMean"
+      ],
+      "Majorization": [
+        "TraceInequality"
+      ],
+      "Optimization": [
+        "Majorization"
+      ],
+      "FilterFunction": [
+        "Optimization"
+      ],
+      "Exponential": [
+        "FilterFunction"
+      ],
+      "ClusterExpansion": [
+        "Exponential"
+      ],
+      "CyclicInequality": [
+        "ClusterExpansion"
+      ],
+      "Parameter": [
+        "CyclicInequality"
+      ],
+      "Cohomology": [
+        "Parameter"
+      ],
+      "(top)": [
+        "Cohomology"
+      ]
+    },
+    "QICLean.Spectral": {
+      "Eigenvalue": [],
+      "Projection": [
+        "Eigenvalue"
+      ],
+      "Radius": [
+        "Projection"
+      ],
+      "Jordan": [
+        "Radius"
+      ],
+      "Perturbation": [
+        "Jordan"
+      ],
+      "Gap": [
+        "Perturbation"
+      ],
+      "Filter": [
+        "Gap"
+      ],
+      "LowEnergy": [
+        "Filter"
+      ],
+      "(top)": [
+        "LowEnergy"
+      ]
+    },
+    "QICLean.Channel": {
+      "Choi": [],
+      "KrausMap": [
+        "Choi"
+      ],
+      "Twirl": [
+        "KrausMap"
+      ],
+      "(top)": [
+        "Twirl"
+      ],
+      "Dilation": [
+        "(top)"
+      ],
+      "PartialTrace": [
+        "Dilation"
+      ],
+      "Convexity": [
+        "PartialTrace"
+      ],
+      "Schmidt": [
+        "Convexity"
+      ],
+      "Schwarz": [
+        "Schmidt"
+      ],
+      "Positive": [
+        "Schwarz"
+      ],
+      "Entanglement": [
+        "Positive"
+      ],
+      "OperatorMean": [
+        "Entanglement"
+      ],
+      "Determinant": [
+        "OperatorMean"
+      ],
+      "FixedPoint": [
+        "Determinant"
+      ],
+      "ConditionalExpectation": [
+        "FixedPoint"
+      ],
+      "Irreducible": [
+        "ConditionalExpectation"
+      ],
+      "Wigner": [
+        "Irreducible"
+      ],
+      "Peripheral": [
+        "Wigner"
+      ],
+      "Semigroup": [
+        "Peripheral"
+      ],
+      "PerronFrobenius": [
+        "Semigroup"
+      ],
+      "KoashiImoto": [
+        "PerronFrobenius"
+      ],
+      "Recovery": [
+        "KoashiImoto"
+      ],
+      "POVM": [
+        "Recovery"
+      ],
+      "Measurement": [
+        "POVM"
+      ],
+      "OperatorSystem": [
+        "Measurement"
+      ],
+      "PSDConeAutomorphism": [
+        "OperatorSystem"
+      ],
+      "LorentzNormalForm": [
+        "PSDConeAutomorphism"
+      ],
+      "ChoiTypeMap": [
+        "LorentzNormalForm"
+      ],
+      "Gluing": [
+        "ChoiTypeMap"
+      ]
+    },
+    "QICLean.Kraus": {
+      "Tactic": [],
+      "(top)": [
+        "Tactic"
+      ],
+      "MixedMap": [
+        "(top)"
+      ],
+      "PrimitiveFixedPoint": [
+        "MixedMap"
+      ],
+      "Wielandt": [
+        "PrimitiveFixedPoint"
+      ]
+    },
+    "QICLean.Entropy": {
+      "Classical": [],
+      "VonNeumann": [
+        "Classical"
+      ],
+      "Relative": [
+        "VonNeumann"
+      ],
+      "Renyi": [
+        "Relative"
+      ],
+      "MutualInformation": [
+        "Renyi"
+      ],
+      "Recovery": [
+        "MutualInformation"
+      ],
+      "Markov": [
+        "Recovery"
+      ],
+      "StrongSubadditivity": [
+        "Markov"
+      ],
+      "Conditional": [
+        "StrongSubadditivity"
+      ],
+      "Surprisal": [
+        "Conditional"
+      ],
+      "Typical": [
+        "Surprisal"
+      ],
+      "(top)": [
+        "Typical"
+      ]
+    },
+    "QICLean.Probability": {
+      "Measurable": [],
+      "Measure": [
+        "Measurable"
+      ],
+      "Concentration": [
+        "Measure"
+      ],
+      "(top)": [
+        "Concentration"
+      ],
+      "Gaussian": [
+        "(top)"
+      ],
+      "Haar": [
+        "Gaussian"
+      ],
+      "PoissonWord": [
+        "Haar"
+      ],
+      "Sampling": [
+        "PoissonWord"
+      ]
+    },
+    "QICLean.Representation": {
+      "Partition": [],
+      "SymmetricGroup": [
+        "Partition"
+      ],
+      "Permutation": [
+        "SymmetricGroup"
+      ],
+      "TensorPower": [
+        "Permutation"
+      ],
+      "YoungSubgroup": [
+        "TensorPower"
+      ],
+      "Character": [
+        "YoungSubgroup"
+      ],
+      "Replica": [
+        "Character"
+      ],
+      "SchurWeyl": [
+        "Replica"
+      ],
+      "Twirl": [
+        "SchurWeyl"
+      ],
+      "Coherent": [
+        "Twirl"
+      ],
+      "Bell": [
+        "Coherent"
+      ],
+      "(top)": [
+        "Bell"
+      ]
+    }
+  }
+}

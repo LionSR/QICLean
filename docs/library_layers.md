@@ -304,6 +304,33 @@ Each disappeared because the modules carrying the upward edges moved:
 
 `MUTUAL_DIRECTORIES` is now empty.
 
+## Order inside each layer
+
+Inside a layer the subdirectories are ordered: a subdirectory imports only the ones before it.
+The table is `scripts/library_sublayers.json`; `scripts/check_import_layers.py` reads it, and an
+import against the order is an entry of `SUBLAYER_DEBT`, which may only shrink. "(top)" stands
+for the modules directly below the layer.
+
+The order was fixed by listing the subdirectories of each layer from the objects that need no
+other (numbers, sets, subspaces) to the statements that use all of them, and then moving single
+subdirectories while that lowered the number of imports against the order. An import that
+remains against the order marks a module filed under the wrong object, or a lemma to move down;
+it is repaired by moving the module or the lemma, never by changing the order to fit.
+
+| Layer | Order | Imports against the order |
+|---|---|---|
+| `Algebra` | Combinatorics < Polynomial < Module < PerronFrobenius < Matrix < Unitary < (top) < Hermitian < Word < OperatorSchmidt < Nilpotent < MatrixAlgebra < StarSubalgebra < Kronecker < SpinCover < Cohomology | 2 |
+| `Analysis` | Complex < Calculus < Metric < Subspace < Projection < Topology < Order < FixedPoint < Real < FunctionalCalculus < Support < Logarithm < Isometry < Norm < TraceNorm < Resolvent < TensorProduct < Convexity < OperatorMean < TraceInequality < Majorization < Optimization < FilterFunction < Exponential < ClusterExpansion < CyclicInequality < Parameter < Cohomology < (top) | 30 |
+| `Spectral` | Eigenvalue < Projection < Radius < Jordan < Perturbation < Gap < Filter < LowEnergy < (top) | 6 |
+| `Channel` | Choi < KrausMap < Twirl < (top) < Dilation < PartialTrace < Convexity < Schmidt < Schwarz < Positive < Entanglement < OperatorMean < Determinant < FixedPoint < ConditionalExpectation < Irreducible < Wigner < Peripheral < Semigroup < PerronFrobenius < KoashiImoto < Recovery < POVM < Measurement < OperatorSystem < PSDConeAutomorphism < LorentzNormalForm < ChoiTypeMap < Gluing | 40 |
+| `Kraus` | Tactic < (top) < MixedMap < PrimitiveFixedPoint < Wielandt | 0 |
+| `Entropy` | Classical < VonNeumann < Relative < Renyi < MutualInformation < Recovery < Markov < StrongSubadditivity < Conditional < Surprisal < Typical < (top) | 13 |
+| `Probability` | Measurable < Measure < Concentration < (top) < Gaussian < Haar < PoissonWord < Sampling | 1 |
+| `Representation` | Partition < SymmetricGroup < Permutation < TensorPower < YoungSubgroup < Character < Replica < SchurWeyl < Twirl < Coherent < Bell < (top) | 17 |
+
+109 imports are recorded. `ManyBody` and `Circuit` keep the orders of
+`docs/many_body_circuit_architecture.md`, which the same script checks.
+
 ## Enforcement
 
 `scripts/check_import_layers.py` assigns every module of these directories to

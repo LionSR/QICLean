@@ -552,8 +552,8 @@ class SublayerOrderTests(unittest.TestCase):
 
     def test_imports_across_layers_and_within_a_subdirectory_are_not_checked(self) -> None:
         sources = {
-            "QICLean.Circuit.Geometry.A": "import QICLean.Circuit.Gate.B\ndef a := 0\n",
-            "QICLean.Circuit.Gate.B": "import QICLean.Analysis.Norm.C\ndef b := 0\n",
+            "QICLean.Circuit.Core.A": "import QICLean.Circuit.Geometry.B\ndef a := 0\n",
+            "QICLean.Circuit.Geometry.B": "import QICLean.Analysis.Norm.C\ndef b := 0\n",
             "QICLean.Analysis.Norm.C": "import QICLean.Analysis.Norm.D\ndef c := 0\n",
             "QICLean.Analysis.Norm.D": "def d := 0\n",
         }

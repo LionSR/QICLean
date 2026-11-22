@@ -5,7 +5,6 @@ Authors: QICLean contributors
 -/
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Analysis.Matrix.Order
-import QICLean.Channel.Schmidt.Rank
 
 /-!
 # Complex matrices acting on Euclidean space
@@ -15,8 +14,7 @@ space: the inner product `⟪x, A y⟫` is the dot product `star x ⬝ᵥ A y` o
 a matrix of operator norm at most one does not increase the norm of a vector, the identity
 matrix acts as the identity, a product acts as the composition, and the maps of two matrices
 are in Loewner order exactly when the matrices are. Mathlib states the first
-only over the reals (`Matrix.inner_toEuclideanCLM`). An operator on the left factor of a
-bipartite vector acts on its coefficient matrix by left multiplication.
+only over the reals (`Matrix.inner_toEuclideanCLM`).
 
 ## Main results
 
@@ -25,7 +23,6 @@ bipartite vector acts on its coefficient matrix by left multiplication.
 * `Matrix.toEuclideanLin_one_apply`, `Matrix.toEuclideanLin_mul_apply`.
 * `Matrix.toEuclideanLin_le_toEuclideanLin_iff`, `Matrix.toEuclideanCLM_le_toEuclideanCLM_iff`:
   the maps on Euclidean space are in Loewner order exactly when the matrices are.
-* `Matrix.schmidtCoeffMatrix_kronecker_one_mulVec`: `(K ⊗ 1) ψ` has coefficient matrix `K Ψ`.
 
 Moved from TNLean, `TNLean/Algebra/ToEuclideanCLM.lean` and
 `TNLean/Algebra/ToEuclideanLinApply.lean` at commit `49b78ed821` (Apache-2.0).
@@ -46,16 +43,6 @@ theorem inner_toEuclideanCLM_eq_dotProduct (A : Matrix n n ℂ) (x y : Euclidean
 theorem norm_toEuclideanCLM_le_of_norm_le_one {A : Matrix n n ℂ} (hA1 : ‖A‖ ≤ 1)
     (x : EuclideanSpace ℂ n) : ‖toEuclideanCLM (n := n) (𝕜 := ℂ) A x‖ ≤ ‖x‖ := by
   simpa only [one_mul] using (toEuclideanCLM (n := n) (𝕜 := ℂ) A).le_of_opNorm_le hA1 x
-
-open scoped Kronecker in
-/-- An operator on the left factor acts on the coefficient matrix of a bipartite vector by
-left multiplication. -/
-theorem schmidtCoeffMatrix_kronecker_one_mulVec {A B C : Type*} [Fintype A] [Fintype B]
-    [DecidableEq B] (K : Matrix C A ℂ) (ψ : A × B → ℂ) :
-    schmidtCoeffMatrix ((K ⊗ₖ (1 : Matrix B B ℂ)) *ᵥ ψ) = K * schmidtCoeffMatrix ψ := by
-  ext c b
-  simp [schmidtCoeffMatrix_apply, mulVec, dotProduct, Fintype.sum_prod_type, one_apply,
-    Matrix.mul_apply]
 
 /-- The identity matrix acts as the identity. -/
 theorem toEuclideanLin_one_apply {m : Type*} [Fintype m] [DecidableEq m]
