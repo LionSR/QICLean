@@ -45,13 +45,13 @@ namespace QuantumCircuit
 
 variable {n : ℕ} {α : Type} [Fintype α] [DecidableEq α]
 
-/-- **Unitaries on an open chain.** For `n ≥ 1`, every unitary on the open chain of `n` sites
-with basis `α` at every site is an exact product of at most `2n · unitaryGateCount` unitaries on
+/-- **Unitaries on an open chain.** Every unitary on the open chain of `n` sites with basis `α`
+at every site is an exact product of at most `2n · unitaryGateCount` unitaries on
 neighbouring pairs of sites, one-site unitaries being free.
 
 Source: arXiv:2307.01696, caption of Fig. 1: the unitaries with constant support "can be further
 expressed with a low-depth circuit of local gates". -/
-theorem isGateProduct_pathGraph_unitaryGateCount [NeZero n]
+theorem isGateProduct_pathGraph_unitaryGateCount
     {U : Matrix (Config fun _ : Fin n ↦ α) (Config fun _ : Fin n ↦ α) ℂ}
     (hU : U ∈ unitaryGroup _ ℂ) :
     IsGateProduct (Geometry.graph (SimpleGraph.pathGraph n))
@@ -60,12 +60,12 @@ theorem isGateProduct_pathGraph_unitaryGateCount [NeZero n]
     (fun i j hij Z hZu hZ ↦ isGateProduct_of_mem_supportedOperators_pair i j hij Z hZu hZ) hU
 
 /-- **A polynomial gate count.** With at least two basis vectors per site, every unitary on the
-open chain of `n ≥ 1` sites is an exact product of at most `12 m⁵` neighbouring gates, where
+open chain of `n` sites is an exact product of at most `12 m⁵` neighbouring gates, where
 `m = |α|ⁿ` is the Hilbert-space dimension.
 
 Derived synthesis estimate for Section 5 of TNLean
 `docs/audits/2026-10-02_mpu_rank_two_circuits.tex`. -/
-theorem isGateProduct_pathGraph_le_card_pow [NeZero n] (hα : 2 ≤ Fintype.card α)
+theorem isGateProduct_pathGraph_le_card_pow (hα : 2 ≤ Fintype.card α)
     {U : Matrix (Config fun _ : Fin n ↦ α) (Config fun _ : Fin n ↦ α) ℂ}
     (hU : U ∈ unitaryGroup _ ℂ) :
     IsGateProduct (Geometry.graph (SimpleGraph.pathGraph n))
@@ -80,12 +80,12 @@ theorem isGateProduct_pathGraph_le_card_pow [NeZero n] (hα : 2 ≤ Fintype.card
     _ = 12 * m ^ 5 := by ring
 
 /-- **Isometries on prescribed columns.** With at least two basis vectors per site, an isometry
-`V` from a finite set `κ` into the open chain of `n ≥ 1` sites, prescribed on the input columns
+`V` from a finite set `κ` into the open chain of `n` sites, prescribed on the input columns
 `e k`, extends to a unitary that is a product of at most `12 m⁵` neighbouring gates.
 
 Derived leaf construction for Section 5 of TNLean
 `docs/audits/2026-10-02_mpu_rank_two_circuits.tex`. -/
-theorem exists_isGateProduct_pathGraph_apply_embedding_eq [NeZero n] {κ : Type} [DecidableEq κ]
+theorem exists_isGateProduct_pathGraph_apply_embedding_eq {κ : Type} [DecidableEq κ]
     (hα : 2 ≤ Fintype.card α)
     {V : Matrix (Config fun _ : Fin n ↦ α) κ ℂ} (hV : V.IsIsometry)
     (e : κ ↪ Config fun _ : Fin n ↦ α) :

@@ -31,6 +31,7 @@ The proofs are written independently; no Lean source was adapted.
 
 open Matrix
 open scoped Matrix Kronecker ComplexOrder MatrixOrder
+open ManyBody (regionUnionEquiv)
 
 namespace Entropy
 
@@ -150,7 +151,7 @@ theorem restrict_frameEquiv_PX
       (unionEquivXP h).symm (q.1.1, q.2.1) := by
   funext ⟨v, hv⟩
   simp only [unionEquivXP, Equiv.symm_trans_apply, Equiv.prodComm_symm, Equiv.prodComm_apply,
-    Prod.swap_prod_mk, regionUnionEquiv, ManyBody.regionUnionEquiv,
+    Prod.swap_prod_mk, regionUnionEquiv,
     Equiv.coe_fn_symm_mk]
   by_cases hP : v ∈ P
   · rw [dite_eq_left hP, frameEquiv_symm_P h q hP]
@@ -167,7 +168,7 @@ theorem restrict_frameEquiv_XY
     (fun v : {v // v ∈ x ∪ Y} => (frameEquiv h).symm q v) =
       (unionEquivXY h).symm (q.1.1, q.1.2) := by
   funext ⟨v, hv⟩
-  simp only [unionEquivXY, regionUnionEquiv, ManyBody.regionUnionEquiv, Equiv.coe_fn_symm_mk]
+  simp only [unionEquivXY, regionUnionEquiv, Equiv.coe_fn_symm_mk]
   by_cases hx : v ∈ x
   · rw [dite_eq_left hx, frameEquiv_symm_x h q hx]
   · have hY : v ∈ Y := (Finset.mem_union.mp hv).resolve_left hx

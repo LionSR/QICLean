@@ -168,9 +168,12 @@ variable {K} in
 theorem isHermitian_placeAlong (hK : K.IsHermitian) : (placeAlong w K).IsHermitian :=
   hK.apply_of_map_conjTranspose (placeAlong_conjTranspose w)
 
+/-- The placement of the identity is the identity, for every decidable equality of the
+configurations of `W` and of the system. -/
 @[simp]
-theorem placeAlong_one [DecidableEq (Config fun u ↦ X (w u))] :
+theorem placeAlong_one [DecidableEq (Config fun u ↦ X (w u))] [DecidableEq (Config X)] :
     placeAlong w (1 : Matrix (Config fun u ↦ X (w u)) (Config fun u ↦ X (w u)) ℂ) = 1 := by
+  obtain rfl : ‹DecidableEq (Config X)› = Fintype.decidablePiFintype := Subsingleton.elim _ _
   classical
   rw [placeAlong, reindex_apply, submatrix_one_equiv, place_one]
 
@@ -197,12 +200,15 @@ theorem placeAlong_mem_unitaryGroup [Fintype (Config fun u ↦ X (w u))]
     ← placeAlong_mul, ← star_eq_conjTranspose, mem_unitaryGroup_iff.mp hK, placeAlong_one]
 
 /-- The placement along an injection as a unital `*`-homomorphism from the matrix algebra of the
-sites `W` to the matrix algebra of the system. -/
-noncomputable def placeAlongHom [DecidableEq W] :
+sites `W` to the matrix algebra of the system. The unit of each algebra depends on a decidable
+equality of its configurations; both decidable equalities are instance arguments, so that the
+homomorphism exists for every choice of them. -/
+noncomputable def placeAlongHom [DecidableEq W] [DecidableEq (Config fun u ↦ X (w u))]
+    [DecidableEq (Config X)] :
     Matrix (Config fun u ↦ X (w u)) (Config fun u ↦ X (w u)) ℂ →⋆ₐ[ℂ]
       Matrix (Config X) (Config X) ℂ where
   toFun := placeAlong w
-  map_one' := by classical exact placeAlong_one w
+  map_one' := placeAlong_one w
   map_mul' K K' := by classical exact placeAlong_mul w K K'
   map_zero' := placeAlong_zero w
   map_add' K K' := placeAlong_add w K K'
@@ -214,7 +220,9 @@ noncomputable def placeAlongHom [DecidableEq W] :
     rw [star_eq_conjTranspose, star_eq_conjTranspose, placeAlong_conjTranspose]
 
 @[simp]
-theorem placeAlongHom_apply [DecidableEq W] : placeAlongHom w K = placeAlong w K :=
+theorem placeAlongHom_apply [DecidableEq W] [DecidableEq (Config fun u ↦ X (w u))]
+    [DecidableEq (Config X)] :
+    placeAlongHom w K = placeAlong w K :=
   rfl
 
 /-- The trace of a matrix placed along an injection is its trace times the number of
@@ -266,7 +274,7 @@ theorem placeAlong_diagonal (f : (Config fun u ↦ X (w u)) → ℂ) :
     · rfl
 
 /-- Placement along an injection commutes with the exponential. -/
-theorem placeAlong_exp [DecidableEq W] :
+theorem placeAlong_exp [DecidableEq W] [DecidableEq (Config fun u ↦ X (w u))] :
     placeAlong w (NormedSpace.exp K) = NormedSpace.exp (placeAlong w K) := by
   let _ : NormedAlgebra ℚ (Matrix (Config fun u ↦ X (w u)) (Config fun u ↦ X (w u)) ℂ) :=
     NormedAlgebra.restrictScalars ℚ ℂ _

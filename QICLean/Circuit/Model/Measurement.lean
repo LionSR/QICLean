@@ -78,6 +78,8 @@ without measurements, as in the preparations of arXiv:2307.01696.
   `QuantumCircuit.IsOneRoundConversion.isMeasurementConversion`,
   `QuantumCircuit.IsUnitaryCircuit.isOneRoundConversion` — one round is a measurement circuit
   with one round of measurements, and a unitary circuit is one round without measurements.
+* `QuantumCircuit.UnitaryCircuit.isImplementationOn` — a unitary circuit implements its
+  operator.
 * `QuantumCircuit.Circuit.rounds_comp`, `QuantumCircuit.Circuit.rounds_measureCorrect_le`,
   `QuantumCircuit.UnitaryCircuit.rounds_toCircuit` — counting rounds.
 * `QuantumCircuit.IsOneRoundConversion.mulVec` — a unitary circuit after one round.
@@ -177,10 +179,13 @@ theorem isImplementationOn_done (E : Set (Config X → ℂ)) :
     (done X : Circuit Γ G X X).IsImplementationOn ev E 1 :=
   fun v _ _ ↦ ⟨1, by rw [kraus_done, one_smul]⟩
 
-/-- A circuit every Kraus operator of which is `U` implements `U` on every set. -/
-theorem isImplementationOn_of_kraus_eq {c : Circuit Γ G X Z} {U : Matrix (Config Z) (Config X) ℂ}
-    (h : ∀ p, c.kraus ev p = U) (E : Set (Config X → ℂ)) : c.IsImplementationOn ev E U :=
-  fun _ _ p ↦ ⟨1, by rw [h p, one_smul]⟩
+/-- A circuit every Kraus operator of which is a scalar multiple of `U` implements `U` on every
+set. -/
+theorem isImplementationOn_of_kraus_eq_smul {c : Circuit Γ G X Z}
+    {U : Matrix (Config Z) (Config X) ℂ} (h : ∀ p, ∃ μ : ℂ, c.kraus ev p = μ • U)
+    (E : Set (Config X → ℂ)) : c.IsImplementationOn ev E U := fun _ _ p ↦
+  let ⟨μ, hμ⟩ := h p
+  ⟨μ, by rw [hμ, smul_mulVec]⟩
 
 variable [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)]
 
@@ -380,20 +385,22 @@ theorem depth_measureCorrect (D : Finset S)
   rw [depth_ofLayer, Layer.depth_ofOnsite]
   rfl
 
-/-- **A round implements a matrix.** Let every Kraus operator of the circuit `u` be `U`. If for
-every outcome `m` the operator `(⊗ₛ V m s) P_m U` agrees on `E` with one scalar multiple of `W`,
-`P_m` the projection onto `m` placed on `D`, then `u` followed by the measurement of `D` with
-the corrections `V` implements `W` on `E`. -/
+/-- **A round implements a matrix.** Let every Kraus operator of the circuit `u` be a scalar
+multiple of `U`. If for every outcome `m` the operator `(⊗ₛ V m s) P_m U` agrees on `E` with one
+scalar multiple of `W`, `P_m` the projection onto `m` placed on `D`, then `u` followed by the
+measurement of `D` with the corrections `V` implements `W` on `E`. -/
 theorem isImplementationOn_comp_measureCorrect (ev : Interpretation G) {u : Circuit Γ G X X}
-    {U : Matrix (Config X) (Config X) ℂ} (hU : ∀ p, u.kraus ev p = U) {D : Finset S}
+    {U : Matrix (Config X) (Config X) ℂ} (hU : ∀ p, ∃ μ : ℂ, u.kraus ev p = μ • U)
+    {D : Finset S}
     {V : RegionConfig X D → (s : S) → Matrix (X s) (X s) ℂ} {E : Set (Config X → ℂ)}
     {W : Matrix (Config X) (Config X) ℂ}
     (h : ∀ m, ∃ z : ℂ, ∀ v ∈ E, (prodOp (V m) * place D (single m m 1) * U) *ᵥ v = z • (W *ᵥ v)) :
     (u.comp (measureCorrect D V)).IsImplementationOn ev E W := by
   intro v hv q
-  rw [kraus_comp, kraus_measureCorrect, hU]
+  obtain ⟨μ, hμ⟩ := hU (u.compIndexEquiv _ q).1
+  rw [kraus_comp, kraus_measureCorrect, hμ, Matrix.mul_smul, smul_mulVec]
   obtain ⟨z, hz⟩ := h (Layer.measure.outcome (u.compIndexEquiv _ q).2.1)
-  exact ⟨z, hz v hv⟩
+  exact ⟨μ * z, by rw [hz v hv, smul_smul]⟩
 
 omit [Fintype S] in
 /-- A measurement with unitary corrections is a measurement circuit. -/
@@ -471,6 +478,13 @@ theorem rounds_measureCorrect_le (D : Finset S)
 end MeasureCorrectRounds
 
 end Circuit
+
+/-- A unitary circuit implements its operator on every set: each Kraus operator is the conjugate
+of the phase times the operator. -/
+theorem UnitaryCircuit.isImplementationOn {X : S → Type} [∀ s, Fintype (X s)]
+    [∀ s, DecidableEq (X s)] (c : UnitaryCircuit Γ X) (E : Set (Config X → ℂ)) :
+    c.toCircuit.IsImplementationOn KrausGate.ev E c.op :=
+  Circuit.isImplementationOn_of_kraus_eq_smul (fun p ↦ ⟨_, c.kraus_eq_smul_op p⟩) E
 
 /-- A unitary circuit has no rounds of measurements. -/
 theorem UnitaryCircuit.rounds_toCircuit {X : S → Type} [∀ s, Fintype (X s)]
@@ -602,7 +616,7 @@ theorem IsUnitaryCircuit.isMeasurementConversion {T : ℕ} {U : Matrix (Config X
     IsMeasurementConversion Γ T φ (U *ᵥ φ) := by
   obtain ⟨c, hd, rfl⟩ := hU
   exact ⟨hφ, c.toCircuit, c.forall_isUnitary.mono fun _ hK ↦ Or.inl hK, hd,
-    fun p ↦ ⟨1, by rw [c.kraus_eq_op, one_smul]⟩⟩
+    c.isImplementationOn {φ} φ (Set.mem_singleton φ)⟩
 
 omit [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)] [∀ s, Finite (Z s)] in
 /-- A nonzero vector prepared in depth `T` by a unitary circuit from a product vector is
@@ -707,9 +721,13 @@ theorem IsOneRoundConversion.exists_circuit {T₁ T₂ : ℕ} {φ ψ : Config X 
     refine (Circuit.rounds_comp _ _).trans ?_
     rw [u'.rounds_toCircuit, add_zero]
     exact Circuit.rounds_measureCorrect_le D V
-  · rw [Circuit.kraus_comp, Circuit.kraus_comp, Circuit.kraus_measureCorrect, u.kraus_eq_op,
-      u'.kraus_eq_op]
-    simpa only [Matrix.mul_assoc] using hψ _
+  · rw [Circuit.kraus_comp, Circuit.kraus_comp, Circuit.kraus_measureCorrect, u.kraus_eq_smul_op,
+      u'.kraus_eq_smul_op]
+    have key : ∀ (s : ℂ) (M : Matrix (Config X) (Config X) ℂ),
+        (∃ z : ℂ, M *ᵥ φ = z • ψ) → ∃ z : ℂ, (s • M) *ᵥ φ = z • ψ :=
+      fun s M ⟨z, hz⟩ ↦ ⟨s * z, by rw [smul_mulVec, hz, smul_smul]⟩
+    simp only [Matrix.mul_smul, Matrix.smul_mul, smul_smul]
+    exact key _ _ (by simpa only [Matrix.mul_assoc] using hψ _)
 
 /-- **One round is a measurement circuit.** A conversion with one round of measurements is a
 deterministic conversion in the total depth. -/

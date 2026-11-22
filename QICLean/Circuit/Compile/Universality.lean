@@ -11,7 +11,7 @@ import QICLean.Circuit.Model.Unitary
 /-!
 # Universality of two-site gates, with gate counts
 
-Let `Γ` be a geometry on a finite nonempty set of sites `S` with any finite basis at each site,
+Let `Γ` be a geometry on a finite set of sites `S` with any finite basis at each site,
 and suppose that every unitary supported on two distinct sites is a product of gates of `Γ` of
 total cost at most `k`. Then every unitary on the system is a product of gates of `Γ` of total
 cost at most `unitaryGateCount S X * k` (`QuantumCircuit.isGateProduct_unitaryGateCount`), where
@@ -136,7 +136,7 @@ theorem of_mem_supportedOperators_singleton {t : S} {Z : Matrix (Config X) (Conf
 
 /-- **Unitaries on at most two sites.** If every unitary supported on two distinct sites is a
 product of gates of cost at most `k`, so is every unitary supported on at most two sites. -/
-theorem of_mem_supportedOperators_card_le_two [Nonempty S] {k : ℕ}
+theorem of_mem_supportedOperators_card_le_two {k : ℕ}
     (hpair : ∀ s t, s ≠ t → ∀ Z ∈ unitaryGroup (Config X) ℂ, Z ∈ supportedOperators X {s, t} →
       IsGateProduct Γ k Z)
     {T : Finset S} (hT : T.card ≤ 2) {Z : Matrix (Config X) (Config X) ℂ}
@@ -145,8 +145,20 @@ theorem of_mem_supportedOperators_card_le_two [Nonempty S] {k : ℕ}
   obtain h | h | h : T.card = 0 ∨ T.card = 1 ∨ T.card = 2 := by omega
   · rw [Finset.card_eq_zero] at h
     subst h
-    exact of_mem_supportedOperators_singleton (t := Classical.arbitrary S) hZu
-      (supportedOperators_mono (Finset.empty_subset _) hZ) k
+    rcases isEmpty_or_nonempty S with hS | hS
+    · -- With no sites, `Z` is a phase times the identity on the one configuration.
+      have : Unique (Config X) := Pi.uniqueOfIsEmpty _
+      set μ := Z default default
+      have hZμ : Z = μ • (1 : Matrix (Config X) (Config X) ℂ) := by
+        ext a b
+        rw [Subsingleton.elim a default, Subsingleton.elim b default]
+        simp [μ]
+      have hμ : ‖μ‖ = 1 := by
+        simpa [μ] using CStarRing.norm_of_mem_unitary (Matrix.det_of_mem_unitary hZu)
+      rw [hZμ]
+      exact smul_one hμ k
+    · exact of_mem_supportedOperators_singleton (t := Classical.arbitrary S) hZu
+        (supportedOperators_mono (Finset.empty_subset _) hZ) k
   · obtain ⟨a, rfl⟩ := Finset.card_eq_one.mp h
     exact of_mem_supportedOperators_singleton hZu hZ k
   · obtain ⟨a, b, hab, rfl⟩ := Finset.card_eq_two.mp h
@@ -300,15 +312,15 @@ def unitaryGateCount : ℕ :=
   3 * (∏ s, Fintype.card (X s)) * (∏ s, Fintype.card (X s)) *
     ((2 * Fintype.card S - 1) * (2 ^ Fintype.card S - 2))
 
-/-- **Two-site universality with a gate count.** On a nonempty set of sites, if every unitary
-supported on two distinct sites is a product of gates of `Γ` of cost at most `k`, then every
-unitary is a product of gates of `Γ` of cost at most `unitaryGateCount S X * k`. The circuit
-agrees with the unitary as a matrix, including its global phase, and uses no auxiliary sites.
+/-- **Two-site universality with a gate count.** If every unitary supported on two distinct sites
+is a product of gates of `Γ` of cost at most `k`, then every unitary is a product of gates of `Γ`
+of cost at most `unitaryGateCount S X * k`. The circuit agrees with the unitary as a matrix,
+including its global phase, and uses no auxiliary sites.
 
 arXiv:2307.01696, caption of Fig. 1: the unitaries with constant support "can be further
 expressed with a low-depth circuit of local gates"; the count is the derived synthesis estimate
 of Section 5 of TNLean `docs/audits/2026-10-02_mpu_rank_two_circuits.tex`. -/
-theorem isGateProduct_unitaryGateCount [Nonempty S]
+theorem isGateProduct_unitaryGateCount
     (hpair : ∀ s t, s ≠ t → ∀ Z ∈ unitaryGroup (Config X) ℂ, Z ∈ supportedOperators X {s, t} →
       IsGateProduct Γ k Z)
     {U : Matrix (Config X) (Config X) ℂ} (hU : U ∈ unitaryGroup (Config X) ℂ) :
@@ -359,13 +371,13 @@ theorem isGateProduct_unitaryGateCount [Nonempty S]
   have : l.length * K₂ ≤ 3 * m * m * K₂ := Nat.mul_le_mul_right _ hl
   omega
 
-/-- **Two-site universality.** On a nonempty set of sites, if every unitary supported on two
-distinct sites is a product of gates of `Γ` of cost at most `k`, there is `K` such that every
-unitary is a product of gates of `Γ` of cost at most `K`.
+/-- **Two-site universality.** If every unitary supported on two distinct sites is a product of
+gates of `Γ` of cost at most `k`, there is `K` such that every unitary is a product of gates of
+`Γ` of cost at most `K`.
 
 arXiv:2307.01696, caption of Fig. 1: the unitaries with constant support "can be further
 expressed with a low-depth circuit of local gates". -/
-theorem exists_isGateProduct [Nonempty S]
+theorem exists_isGateProduct
     (hpair : ∀ s t, s ≠ t → ∀ Z ∈ unitaryGroup (Config X) ℂ, Z ∈ supportedOperators X {s, t} →
       IsGateProduct Γ k Z) :
     ∃ K, ∀ U ∈ unitaryGroup (Config X) ℂ, IsGateProduct Γ K U :=
@@ -401,11 +413,10 @@ theorem isGateProduct_sitesAndPairs_of_mem_supportedOperators_pair {c₁ c₂ : 
   exact IsGateProduct.of_mem_supportedOperators (Γ := Geometry.sitesAndPairs S c₁ c₂)
     (b := Sum.inr ⟨(s, t), hst⟩) hZu (hcell ▸ hZ)
 
-/-- **Universality of one- and two-site gates.** On a nonempty set of sites, every unitary is a
-product of gates on sites and ordered pairs of total cost at most `unitaryGateCount S X * c₂`,
-where `c₂` is the cost of a gate on a pair; one-site gates are not needed beyond the free
-one-site unitaries. -/
-theorem isGateProduct_sitesAndPairs [Nonempty S] (c₁ c₂ : ℕ)
+/-- **Universality of one- and two-site gates.** Every unitary is a product of gates on sites and
+ordered pairs of total cost at most `unitaryGateCount S X * c₂`, where `c₂` is the cost of a gate
+on a pair; one-site gates are not needed beyond the free one-site unitaries. -/
+theorem isGateProduct_sitesAndPairs (c₁ c₂ : ℕ)
     {U : Matrix (Config X) (Config X) ℂ} (hU : U ∈ unitaryGroup (Config X) ℂ) :
     IsGateProduct (Geometry.sitesAndPairs S c₁ c₂) (unitaryGateCount S X * c₂) U :=
   isGateProduct_unitaryGateCount

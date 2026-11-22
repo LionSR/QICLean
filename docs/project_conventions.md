@@ -24,6 +24,37 @@ from inferring the family (`?X ↑v =?= Fin (n ↑v)` is not a pattern), and the
 `ManyBody.Config (fun v ↦ Fin (n v))` leaves `σ v : (fun v ↦ Fin (n v)) v` unreduced, so
 `rw [h] at hv` with `h : n v = 0` fails.
 
+### Decidability and finiteness instances in the Sites and Circuit layers
+
+The definitions of `ManyBody/Sites` and `Circuit` (matrices, operators, subspaces and
+predicates on finite configurations) do not compute, and their values do not depend on a choice
+of decidability or finiteness instance. They follow three rules.
+
+1. A definition takes instance arguments only on the site type `V` and on the basis types
+   `X v` (`[Fintype V]`, `[DecidableEq V]`, `[∀ v, Fintype (X v)]`,
+   `[∀ v, DecidableEq (X v)]`). An instance it needs on configurations, regions, complements or
+   environments is derived inside it, from these instances or by `classical`, and is not an
+   argument.
+2. When the type of a definition contains an instance on configurations, the instance cannot be
+   derived inside and is an argument at the type that carries it. This is the case of the
+   homomorphisms of matrix algebras, whose unit depends on a decidable equality of the
+   configurations: besides `[DecidableEq W]` on its sites, `ManyBody.placeAlongHom` takes
+   `[DecidableEq (Config fun u ↦ X (w u))]` and `[DecidableEq (Config X)]`, so that it exists
+   for every choice of them, including the classical one.
+3. A lemma takes the instances on configurations that its statement mentions as arguments, at
+   the type that carries them, and holds for every choice. Its proof first identifies them with
+   the canonical ones, as in `ManyBody.place_one`:
+   `obtain rfl : ‹DecidableEq (RegionConfig X D)› = Fintype.decidablePiFintype :=
+   Subsingleton.elim _ _`; for `Fintype` the canonical instance is `Pi.instFintype`.
+
+A predicate that quantifies existentially over basis types with their instances, such as
+`QuantumCircuit.IsUnitaryDilation` over the environments `E s` and `F s`, satisfies rule 1: the
+instances are part of the witness, chosen by whoever proves the predicate and received by
+whoever uses it, so no mismatch can arise. The proof of `QuantumCircuit.Layer.isUnitaryDilation`
+supplies named classical instances for its environments rather than calling `classical`,
+because instance search on those environments, products and functions of the dilating bases,
+runs into the heartbeat limit.
+
 ## Proof integrity (PROOF_INTEGRITY)
 
 ### Sanctioned-axiom history

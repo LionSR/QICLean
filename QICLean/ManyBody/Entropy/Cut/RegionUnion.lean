@@ -7,17 +7,18 @@ import QICLean.ManyBody.Entropy.Filter.Optimizer
 import QICLean.ManyBody.Sites.RegionUnion
 
 /-!
-# Local lifts on a disjoint union of regions
+# Trial filters on a disjoint union of regions
 
 For disjoint regions `X` and `T`, the configurations of `X ∪ T` are pairs of configurations of
-`X` and of `T`, and the lift of a product operator `A ⊗ B` on `X ∪ T` is the product of the
-lifts of `A` and of `B`.
+`X` and of `T` (`ManyBody.regionUnionEquiv`), and the placement of `A ⊗ B` on `X ∪ T` is the
+product of the placements of `A` and of `B` (`ManyBody.place_union_kronecker`). A rank-one
+projection onto a column of a unitary, tensored with a filter feasible at floor zero, is
+feasible at floor zero on the union.
 
 ## Main results
 
-* `Entropy.regionUnionEquiv`: configurations of `X ∪ T` are pairs of configurations of `X`
-  and of `T`.
-* `Entropy.localLift_union_kronecker`: `lift_{X ∪ T} (A ⊗ B) = lift_X A · lift_T B`.
+* `Entropy.isFeasibleFilter_union_kronecker`: `|u_i⟩⟨u_i| ⊗ M` is feasible at floor zero on
+  `X ∪ T` when `M` is feasible at floor zero on `T`.
 
 ## References
 
@@ -30,35 +31,12 @@ Independently written from the manuscript; no upstream Lean proof text is reused
 
 open Matrix
 open scoped Kronecker
+open ManyBody (regionUnionEquiv)
 
 namespace Entropy
 
-variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
+variable {V : Type*} [DecidableEq V] {n : V → ℕ}
 
-/-- Configurations of a disjoint union of regions are pairs of configurations:
-`ManyBody.regionUnionEquiv` for the basis types `Fin (n v)`. -/
-abbrev regionUnionEquiv {X T : Finset V} (hXT : Disjoint X T) :
-    (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (X ∪ T)) ≃
-        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) X) ×
-        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) T) :=
-  ManyBody.regionUnionEquiv (β := fun v ↦ Fin (n v)) hXT
-
-export ManyBody (regionUnionEquiv_apply_fst)
-
-export ManyBody (regionUnionEquiv_apply_snd)
-
-/-- **Lifts of product operators on a disjoint union.** For disjoint regions `X` and `T`,
-`lift_{X ∪ T} (A ⊗ B) = lift_X A · lift_T B`. -/
-theorem localLift_union_kronecker {X T : Finset V} (hXT : Disjoint X T)
-    (A : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) X)
-        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) X) ℂ)
-    (B : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) T)
-        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) T) ℂ) :
-    ManyBody.place (X ∪ T) (reindex (regionUnionEquiv hXT).symm (regionUnionEquiv hXT).symm
-      (A ⊗ₖ B)) = ManyBody.place X A * ManyBody.place T B :=
-  ManyBody.place_union_kronecker (β := fun v ↦ Fin (n v)) hXT A B
-
-omit [Fintype V] in
 /-- **Trial filters are feasible at floor zero.** If `U` is unitary and `M` is feasible at
 floor zero with weight `a > 0`, then `|u_i⟩⟨u_i| ⊗ M`, with `u_i` the `i`-th column of `U`, is
 feasible at floor zero on `X ∪ T`. -/
@@ -73,7 +51,7 @@ theorem isFeasibleFilter_union_kronecker {X T : Finset V} (hXT : Disjoint X T) {
     IsFeasibleFilter 0 a (reindex (regionUnionEquiv hXT).symm (regionUnionEquiv hXT).symm
       ((U * diagonal (fun k ↦ if k = i then (1 : ℂ) else 0) * Uᴴ) ⊗ₖ M)) := by
   obtain ⟨W, z, hW, hz, hzs, rfl⟩ := hM
-  set e := regionUnionEquiv (n := n) hXT
+  set e := regionUnionEquiv (β := fun v ↦ Fin (n v)) hXT
   set y : (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (X ∪ T)) → ℝ := fun σ ↦ if (e σ).1 = i then z
       (e σ).2 else 0
   have hha : a / 2 ≠ 0 := by positivity

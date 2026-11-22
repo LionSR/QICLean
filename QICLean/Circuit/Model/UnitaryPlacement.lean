@@ -77,25 +77,27 @@ variable {S S' : Type} [Fintype S] [DecidableEq S] [Fintype S'] [DecidableEq S']
   {Γ : Geometry S} {Γ' : Geometry S'} {X : S → Type} [∀ s, Fintype (X s)]
   [∀ s, DecidableEq (X s)] {X' : S' → Type} [∀ s, Fintype (X' s)] [∀ s, DecidableEq (X' s)]
 
-/-- The operator of a circuit `c'` whose layers correspond to those of `c`, each Kraus operator of
-a layer of `c'` the image under a multiplicative unital map `Φ` of a Kraus operator of the
-corresponding layer of `c`, is the image under `Φ` of the operator of `c`. -/
+/-- The operator of a circuit `c'` with the phase of `c`, whose layers correspond to those of
+`c`, each Kraus operator of a layer of `c'` the image under a multiplicative unital map `Φ`
+commuting with scalars of a Kraus operator of the corresponding layer of `c`, is the image under
+`Φ` of the operator of `c`. -/
 theorem op_eq_of_forall₂ (Φ : Matrix (Config X) (Config X) ℂ → Matrix (Config X') (Config X') ℂ)
-    (hone : Φ 1 = 1) (hmul : ∀ A B, Φ (A * B) = Φ A * Φ B) {c : UnitaryCircuit Γ X}
-    {c' : UnitaryCircuit Γ' X'}
+    (hone : Φ 1 = 1) (hmul : ∀ A B, Φ (A * B) = Φ A * Φ B)
+    (hsmul : ∀ (μ : ℂ) A, Φ (μ • A) = μ • Φ A) {c : UnitaryCircuit Γ X}
+    {c' : UnitaryCircuit Γ' X'} (hμ : c'.phase = c.phase)
     (h : List.Forall₂ (fun L L' ↦ ∀ i i', L'.kraus KrausGate.ev i' = Φ (L.kraus KrausGate.ev i))
       c.layers c'.layers) : c'.op = Φ c.op := by
   generalize hl : c.layers = Ls at h
   generalize hl' : c'.layers = Ls' at h
   induction h generalizing c c' with
-  | nil => rw [op_eq_one hl, op_eq_one hl', hone]
+  | nil => rw [op_eq_smul_one hl, op_eq_smul_one hl', hsmul, hone, hμ]
   | @cons L L' Ls Ls' hL _ ih =>
     obtain ⟨i⟩ := (Layer.nonempty_unique_index_of_forall_isUnitary
       (c.isUnitary L (hl ▸ List.mem_cons_self))).map fun u ↦ u.default
     obtain ⟨i'⟩ := (Layer.nonempty_unique_index_of_forall_isUnitary
       (c'.isUnitary L' (hl' ▸ List.mem_cons_self))).map fun u ↦ u.default
     rw [op_eq_tail_op_mul hl i, op_eq_tail_op_mul hl' i', hmul, hL i i',
-      ih (c := c.tail) (c' := c'.tail) (congrArg List.tail hl) (congrArg List.tail hl')]
+      ih (c := c.tail) (c' := c'.tail) hμ (congrArg List.tail hl) (congrArg List.tail hl')]
 
 end UnitaryCircuit
 
@@ -236,18 +238,19 @@ variable {S : Type} [Fintype S] [DecidableEq S] {Γ : Geometry S} {X : S → Typ
   [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] {D : Finset S}
 
 /-- **Placement on a region.** A unitary circuit on the cells inside `D`, as a geometry on the
-sites of `D`, as a unitary circuit on `Γ` with the identity outside `D`. -/
+sites of `D`, as a unitary circuit on `Γ` with the identity outside `D` and the same phase. -/
 def place (D : Finset S) (c : UnitaryCircuit (Γ.restrict D) (fun s ↦ X s.1)) :
     UnitaryCircuit Γ X :=
   ⟨c.layers.map (Layer.place D), fun L hL ↦ by
     obtain ⟨L', hL', rfl⟩ := List.mem_map.mp hL
-    exact Layer.forall_isUnitary_place (c.isUnitary L' hL')⟩
+    exact Layer.forall_isUnitary_place (c.isUnitary L' hL'), c.phase, c.norm_phase⟩
 
 variable (c : UnitaryCircuit (Γ.restrict D) (fun s ↦ X s.1))
 
 /-- The operator of a circuit placed on `D` is the placement of its operator. -/
 theorem op_place : (c.place D).op = ManyBody.place D c.op :=
-  op_eq_of_forall₂ (ManyBody.place D) place_one (fun A B ↦ place_mul A B) <|
+  op_eq_of_forall₂ (ManyBody.place D) place_one (fun A B ↦ place_mul A B)
+    (fun μ A ↦ place_smul A μ) rfl <|
     List.forall₂_map_right_iff.mpr <| List.forall₂_same.mpr fun L hL i i' ↦
       Layer.kraus_place (c.isUnitary L hL) i' i
 
@@ -399,11 +402,11 @@ variable {T S : Type} [Fintype T] [DecidableEq T] [Fintype S] [DecidableEq S] {�
 
 /-- **Relabelling along a bijection of sites.** A unitary circuit on the system `t ↦ Y (e t)`
 of a geometry on `T`, as a unitary circuit on the system `Y` of a geometry on `S`, the cells
-moved along the morphism of geometries `h`. -/
+moved along the morphism of geometries `h`, with the same phase. -/
 noncomputable def relabel (c : UnitaryCircuit Δ (fun t ↦ Y (e t))) : UnitaryCircuit Γ Y :=
   ⟨c.layers.map (Layer.relabel h), fun L hL ↦ by
     obtain ⟨L', hL', rfl⟩ := List.mem_map.mp hL
-    exact Layer.forall_isUnitary_relabel h (c.isUnitary L' hL')⟩
+    exact Layer.forall_isUnitary_relabel h (c.isUnitary L' hL'), c.phase, c.norm_phase⟩
 
 variable (c : UnitaryCircuit Δ (fun t ↦ Y (e t)))
 
@@ -414,7 +417,8 @@ theorem op_relabel :
   op_eq_of_forall₂ (fun A ↦ reindex (siteConfigurationEquiv e fun _ ↦ Equiv.refl _)
       (siteConfigurationEquiv e fun _ ↦ Equiv.refl _) A)
     (by rw [reindex_apply, submatrix_one_equiv])
-    (fun A B ↦ by simp only [reindex_apply, submatrix_mul_equiv]) <|
+    (fun A B ↦ by simp only [reindex_apply, submatrix_mul_equiv])
+    (fun μ A ↦ by ext; rfl) rfl <|
     List.forall₂_map_right_iff.mpr <| List.forall₂_same.mpr fun L hL i i' ↦
       Layer.kraus_relabel h (c.isUnitary L hL) i' i
 

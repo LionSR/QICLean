@@ -1,5 +1,5 @@
 import QICLean.ManyBody.Sites
-import QICLean.ManyBody.Entropy.RegionCovariance
+import QICLean.ManyBody.Sites.Relabel
 import QICLean.ManyBody.Entropy.RegionEntropy
 
 /-! Signature regressions for arbitrary bases, empty bases, and legacy rewrite behavior. -/
@@ -64,21 +64,22 @@ example (D : Finset V) (c : ℂ) (ψ : EuclideanSpace ℂ (∀ v, Fin (n v))) :
     Complex.ofReal_pow, ← Complex.mul_conj', Complex.star_def]
   ring
 
--- The conditional-movement frame computes the old union equivalence's inverse.
+-- The conditional-movement frame computes the inverse of the union equivalence.
 omit [Fintype V] in
 example {A B : Finset V} (hAB : Disjoint A B)
     (a : (ManyBody.RegionConfig (fun v ↦ Fin (n v)) A))
         (b : (ManyBody.RegionConfig (fun v ↦ Fin (n v)) B)) {v : V} (hv : v ∈ A) :
-    (Entropy.regionUnionEquiv hAB).symm (a, b) ⟨v, Finset.mem_union_left B hv⟩ = a ⟨v, hv⟩ := by
-  simp only [Entropy.regionUnionEquiv, ManyBody.regionUnionEquiv, Equiv.coe_fn_symm_mk]
+    (ManyBody.regionUnionEquiv hAB).symm (a, b) ⟨v, Finset.mem_union_left B hv⟩ =
+      a ⟨v, hv⟩ := by
+  simp only [ManyBody.regionUnionEquiv, Equiv.coe_fn_symm_mk]
   rw [dite_eq_left hv]
 
 end Compatibility
 
--- TNLean PhysicalIntervalTransport unfolds this legacy name in simp only.
+-- TNLean PhysicalIntervalTransport unfolds the configuration bijection in simp only.
 example {V V' : Type*} [Fintype V] [DecidableEq V] [Fintype V'] [DecidableEq V']
     (q : ℕ) (e : V ≃ V') (σ : V' → Fin q) :
-    (Entropy.siteConfigurationEquiv (n := fun _ ↦ q) (n' := fun _ ↦ q)
+    (ManyBody.siteConfigurationEquiv (X := fun _ : V ↦ Fin q) (X' := fun _ : V' ↦ Fin q)
       e (fun _ ↦ Equiv.refl (Fin q))).symm σ = fun v ↦ σ (e v) := by
-  simp only [Entropy.siteConfigurationEquiv, Equiv.coe_piCongr_symm,
+  simp only [ManyBody.siteConfigurationEquiv, Equiv.coe_piCongr_symm,
     Equiv.refl_symm, Equiv.refl_apply]

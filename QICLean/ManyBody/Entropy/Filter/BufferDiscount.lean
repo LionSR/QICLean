@@ -47,6 +47,7 @@ Independently written from the manuscript; no upstream Lean proof text is reused
 
 open Complex Matrix Filter Topology
 open scoped InnerProductSpace ComplexOrder Kronecker Matrix.Norms.L2Operator
+open ManyBody (regionUnionEquiv)
 
 namespace Entropy
 

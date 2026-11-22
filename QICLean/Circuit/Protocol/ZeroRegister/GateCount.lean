@@ -223,20 +223,19 @@ theorem isGateProduct_pathGraph_selectedZeroRegisterReflection (hd : 2 ≤ d) (s
       (selectedZeroRegisterReflection (d := d) s hpool ha) :=
   (isGateProduct_selectedZeroRegisterReflection hd s hpool ha).of_sitesAndPairs le_rfl
 
-/-- **Selected flags with a shared clean pool.** For `n ≥ 1` logical sites and a pool of
-`A ≥ a` sites, the selected-flags reflection has a clean implementation, with the whole pool as
+/-- **Selected flags with a shared clean pool.** For `n` logical sites and a pool of `A ≥ a`
+sites, the selected-flags reflection has a clean implementation, with the whole pool as
 workspace, by a product of at most `2 (n + A) · 12 (d³)⁴ a` neighbouring gates; for an empty
 selection it is the global phase `-1`, which costs nothing. -/
 theorem exists_isGateProduct_isCleanImplementation_selectedZeroRegister (hd : 2 ≤ d)
-    (hn : 0 < n) (s : Fin a ↪ Fin n) (hpool : a ≤ A) :
+    (s : Fin a ↪ Fin n) (hpool : a ≤ A) :
     ∃ U, IsGateProduct (Geometry.graph (SimpleGraph.pathGraph (n + A)))
         (2 * (n + A) * zeroRegisterReflectionGateCount d a) U ∧
       IsCleanImplementation
         (basisInclusion (workspaceEmbedding (n := n) (0 : Fin A → Fin d))) U
         (selectedZeroRegisterLogical s) := by
   rcases Nat.eq_zero_or_pos a with rfl | ha
-  · have : Nonempty (Fin (n + A)) := ⟨⟨0, by omega⟩⟩
-    refine ⟨(-1 : ℂ) • 1, IsGateProduct.smul_one (by simp) _, ?_⟩
+  · refine ⟨(-1 : ℂ) • 1, IsGateProduct.smul_one (by simp) _, ?_⟩
     rw [IsCleanImplementation, selectedZeroRegisterLogical_empty]
     simp
   · exact ⟨_, isGateProduct_pathGraph_selectedZeroRegisterReflection hd s hpool ha,
@@ -245,7 +244,7 @@ theorem exists_isGateProduct_isCleanImplementation_selectedZeroRegister (hd : 2 
 /-- **The reflection about the zero-flag range.** The same circuit implements the reflection
 `1 - 2 E E†` about the range of the zero-flag inclusion `E`. -/
 theorem exists_isGateProduct_isCleanImplementation_zeroFlagReflection (hd : 2 ≤ d)
-    (hn : 0 < n) (s : Fin a ↪ Fin n) (hpool : a ≤ A) :
+    (s : Fin a ↪ Fin n) (hpool : a ≤ A) :
     ∃ U, IsGateProduct (Geometry.graph (SimpleGraph.pathGraph (n + A)))
         (2 * (n + A) * zeroRegisterReflectionGateCount d a) U ∧
       IsCleanImplementation
@@ -253,7 +252,7 @@ theorem exists_isGateProduct_isCleanImplementation_zeroFlagReflection (hd : 2 �
         (subspaceReflection (basisInclusion (zeroFlagEmbedding (d := d) s) *
           (basisInclusion (zeroFlagEmbedding (d := d) s))ᴴ)) := by
   rw [← selectedZeroRegisterLogical_eq_subspaceReflection]
-  exact exists_isGateProduct_isCleanImplementation_selectedZeroRegister hd hn s hpool
+  exact exists_isGateProduct_isCleanImplementation_selectedZeroRegister hd s hpool
 
 end Selected
 
