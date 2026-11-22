@@ -18,6 +18,7 @@ import QICLean.ManyBody.Hamiltonian.GaussianFilterMetric
 import QICLean.ManyBody.Hamiltonian.GaussianFilterTruncation
 import QICLean.ManyBody.Hamiltonian.GroundPerturbation
 import QICLean.ManyBody.Hamiltonian.GroundSpace
+import QICLean.ManyBody.Hamiltonian.HardCore
 import QICLean.ManyBody.Hamiltonian.HardTruncation
 import QICLean.ManyBody.Hamiltonian.HermitianPart
 import QICLean.ManyBody.Hamiltonian.KernelGap
@@ -36,6 +37,7 @@ import QICLean.ManyBody.Hamiltonian.PositiveTerm
 import QICLean.ManyBody.Hamiltonian.ProductBasisPenalty
 import QICLean.ManyBody.Hamiltonian.ProductGround
 import QICLean.ManyBody.Hamiltonian.RingGaussianFilter
+import QICLean.ManyBody.Hamiltonian.SupportedGroundCutoff
 import QICLean.ManyBody.Hamiltonian.Translation
 import QICLean.ManyBody.Hamiltonian.TranslationCommutator
 import QICLean.ManyBody.Hamiltonian.VariationalBound

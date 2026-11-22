@@ -9,6 +9,7 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.ManyBody.Entropy.Filter
 
 import QICLean.ManyBody.Entropy.Filter.BufferDiscount
+import QICLean.ManyBody.Entropy.Filter.BufferedRectangleEntropy
 import QICLean.ManyBody.Entropy.Filter.Chain
 import QICLean.ManyBody.Entropy.Filter.ChainEnergy
 import QICLean.ManyBody.Entropy.Filter.Clipping

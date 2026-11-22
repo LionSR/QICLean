@@ -28,6 +28,7 @@ import QICLean.ManyBody.Sites.PlacedConfiguration
 import QICLean.ManyBody.Sites.Placement
 import QICLean.ManyBody.Sites.ProductFamily
 import QICLean.ManyBody.Sites.ProductForm
+import QICLean.ManyBody.Sites.ProductOperatorTrace
 import QICLean.ManyBody.Sites.ProductVector
 import QICLean.ManyBody.Sites.RegionExpectation
 import QICLean.ManyBody.Sites.RegionMatrix

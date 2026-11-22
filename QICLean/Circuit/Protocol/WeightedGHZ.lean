@@ -25,6 +25,8 @@ The expectation `⟨ψ|A|ψ⟩` is written `star ψ ⬝ᵥ (A *ᵥ ψ)`.
 ## Main results
 
 * `QuantumCircuit.norm_ghzState_sq` — `‖χ‖² = ∑ⱼ |αⱼ|²`.
+* `QuantumCircuit.norm_ghzState_two` — the weighted binary GHZ vector on a nonempty chain is a
+  unit vector when `|a|² + |b|² = 1`.
 * `QuantumCircuit.dotProduct_ghzState_diagonal_mulVec`,
   `QuantumCircuit.dotProduct_ghzState_mulVec_of_mem_supportedOperators` — the classical
   expectations of diagonal operators and of operators leaving a site unobserved.
@@ -40,7 +42,8 @@ expectations, which are written `star ψ ⬝ᵥ (A *ᵥ ψ)`; the shallow circui
 separation of the observables stated as disjoint `T`-fold neighbourhoods; the binary
 decomposition, the norm and the scaling of the binary vector are the cases `β = Fin 2` of
 `QuantumCircuit.ghzState_eq_sum`, `QuantumCircuit.norm_ghzState_sq` and
-`QuantumCircuit.ghzState_smul`.
+`QuantumCircuit.ghzState_smul`. The normalization `QuantumCircuit.norm_ghzState_two` on a chain
+is moved from TNLean, `TNLean/Circuit/WeightedGHZ.lean`, unchanged.
 
 ## References
 
@@ -106,6 +109,21 @@ theorem norm_ghzState_sq [Nonempty ι] (α : β → ℂ) :
     dotProduct_comm, h]
   simp only [mul_one, Complex.star_def, Complex.conj_mul']
   norm_cast
+
+/-- A binary GHZ vector on a nonempty chain is normalized when its two orthogonal branch weights
+sum to one. -/
+theorem norm_ghzState_two {N : ℕ} [NeZero N] {a b : ℂ} (hab : star a * a + star b * b = 1) :
+    ‖(WithLp.toLp 2 (ghzState (ι := Fin N) ![a, b]) :
+      EuclideanSpace ℂ (Fin N → Fin 2))‖ = 1 := by
+  have : Nonempty (Fin N) := ⟨0⟩
+  have hs : ‖(WithLp.toLp 2 (ghzState (ι := Fin N) ![a, b]) :
+      EuclideanSpace ℂ (Fin N → Fin 2))‖ ^ 2 = 1 := by
+    rw [norm_ghzState_sq, Fin.sum_univ_two]
+    apply Complex.ofReal_injective
+    simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Complex.ofReal_add,
+      Complex.ofReal_pow, Complex.ofReal_one]
+    simpa only [Complex.star_def, Complex.conj_mul'] using hab
+  exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 hs
 
 end Expectation
 
