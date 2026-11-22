@@ -716,7 +716,7 @@ theorem isImplementationOn_rounds {u : UnitaryCircuit (Geometry.ring N) (Qudits 
       {v | ∀ g ∈ gs, IsZeroOn g.interior v} (gs.map op).prod := by
   have h₂ : u.toCircuit.IsImplementationOn KrausGate.ev
       {v : Config (Qudits (Fin N) d) → ℂ | IsZeroOn (zoneAll gs 0) v} (localProd gs) :=
-    Circuit.isImplementationOn_of_kraus_eq (fun p ↦ (u.kraus_eq_op p).trans hu) _
+    hu ▸ u.isImplementationOn _
   have h₂₃ := h₂.comp (isImplementationOn_backRounds hgs s le_rfl)
     fun v hv ↦ isZeroOn_localProd_mulVec hgs hv
   have h := (isImplementationOn_thereRounds hgs s le_rfl).comp h₂₃

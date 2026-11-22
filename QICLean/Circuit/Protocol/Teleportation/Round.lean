@@ -617,7 +617,8 @@ theorem isImplementationOn_round (u : UnitaryCircuit Γ (Qudits S d))
     (round u hs hv).IsImplementationOn KrausGate.ev {v | IsZeroOn (pairSites hs) (u.op *ᵥ v)}
       (sitePermOp (sitePerm hs) * u.op) := by
   refine Circuit.isImplementationOn_comp_measureCorrect KrausGate.ev
-    (UnitaryCircuit.kraus_eq_op _) fun m ↦ ⟨((d : ℂ) ^ hs.length)⁻¹, fun v hv' ↦ ?_⟩
+    (fun p ↦ ⟨_, UnitaryCircuit.kraus_eq_smul_op _ p⟩) fun m ↦
+      ⟨((d : ℂ) ^ hs.length)⁻¹, fun v hv' ↦ ?_⟩
   set z := extendOutcome hs m
   have hm : m = fun i : {i // i ∈ measuredSites hs} ↦ z i :=
     funext fun i ↦ by simp [z, extendOutcome, i.2]
