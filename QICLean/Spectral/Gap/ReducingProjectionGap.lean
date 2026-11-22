@@ -4,7 +4,6 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Spectral.Gap.PositiveComparisonGap
-import QICLean.Spectral.Gap.EigenvalueGap
 import Mathlib.Analysis.InnerProductSpace.Projection.Basic
 
 /-!

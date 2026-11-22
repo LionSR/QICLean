@@ -121,7 +121,7 @@ theorem forall_hasEigenvalue_of_two_ground_projection_bounds (H : E →ₗ[ℂ] 
   have hH : H.IsPositive := LinearMap.nonneg_iff_isPositive.mp
     ((LinearMap.nonneg_iff_isPositive.mpr
       (hSumPos.smul_of_nonneg (Complex.zero_le_real.mpr hκ))).trans hLower)
-  refine hH.forall_hasEigenvalue_iff_norm.mpr fun v hv ↦ ?_
+  refine hH.forall_hasEigenvalue_iff_re_inner.mpr fun v hv ↦ ?_
   have hEnergy := hSumPos.re_inner_ge_of_norm_gap (sub_nonneg.mpr hc.le) hSumGap v
     (by simpa only [sum_excitation_ker, ← hInter] using hv)
   have hComparison : κ * (⟪(Uᗮ.starProjection.toLinearMap +
@@ -131,13 +131,8 @@ theorem forall_hasEigenvalue_of_two_ground_projection_bounds (H : E →ₗ[ℂ] 
       Complex.sub_re, Complex.mul_re,
       Complex.ofReal_re, Complex.ofReal_im, zero_mul, sub_zero, sub_nonneg] using
       hLower.re_inner_nonneg_left v
-  have hQuadratic : (κ * (1 - c)) * ‖v‖ ^ 2 ≤ ‖H v‖ * ‖v‖ :=
-    by simpa only [mul_assoc] using ((mul_le_mul_of_nonneg_left hEnergy hκ).trans
-      hComparison).trans (re_inner_le_norm (𝕜 := ℂ) (H v) v)
-  by_cases hv0 : v = 0
-  · simp [hv0]
-  · exact (mul_le_mul_iff_left₀ (norm_pos_iff.mpr hv0)).mp
-      (by simpa only [pow_two, mul_assoc, mul_comm, mul_left_comm] using hQuadratic)
+  rw [← hH.isSymmetric v v]
+  simpa only [mul_assoc] using (mul_le_mul_of_nonneg_left hEnergy hκ).trans hComparison
 
 end FrustrationFree
 

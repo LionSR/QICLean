@@ -106,21 +106,8 @@ theorem hasEigenvalue_iff_of_conj
     (U : E ≃ₗᵢ[ℂ] F) (P : E →ₗ[ℂ] E) (Q : F →ₗ[ℂ] F)
     (hPQ : U.toLinearEquiv.conj P = Q) (μ : ℂ) :
     Module.End.HasEigenvalue P μ ↔ Module.End.HasEigenvalue Q μ := by
-  constructor
-  · intro h
-    obtain ⟨x, hx⟩ := h.exists_hasEigenvector
-    refine Module.End.hasEigenvalue_of_hasEigenvector (x := U x) ⟨?_, ?_⟩
-    · rw [Module.End.mem_eigenspace_iff, ← U.map_apply_eq_of_conj P Q hPQ x,
-        hx.apply_eq_smul, U.map_smul]
-    · exact fun h0 ↦ hx.2 (U.map_eq_zero_iff.mp h0)
-  · intro h
-    obtain ⟨y, hy⟩ := h.exists_hasEigenvector
-    obtain ⟨x, rfl⟩ := U.surjective y
-    refine Module.End.hasEigenvalue_of_hasEigenvector (x := x) ⟨?_, ?_⟩
-    · rw [Module.End.mem_eigenspace_iff]
-      apply U.injective
-      rw [U.map_apply_eq_of_conj P Q hPQ x, hy.apply_eq_smul, U.map_smul]
-    · rintro rfl
-      exact hy.2 (map_zero U)
+  rw [Module.End.hasEigenvalue_iff, Module.End.hasEigenvalue_iff,
+    Module.End.eigenspace_eq_map_of_intertwine U.toLinearEquiv P Q
+      (fun x ↦ (U.map_apply_eq_of_conj P Q hPQ x).symm), Ne, Ne, Submodule.map_eq_bot_iff]
 
 end LinearIsometryEquiv
