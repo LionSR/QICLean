@@ -13,7 +13,7 @@ run_cmd do
   let allowed := #[``propext, ``Classical.choice, ``Quot.sound]
   for decl in #[``TensorPower.siteOp_kronecker_one,
       ``TensorPower.replicaMean_kronecker_one,
-      ``TensorPower.siteOp_eq_finKronecker] do
+      ``TensorPower.siteOp_eq_piKronecker] do
     unless (← Lean.getEnv).contains decl do
       throwError "Missing declaration {decl}"
     let axioms ← Lean.collectAxioms decl

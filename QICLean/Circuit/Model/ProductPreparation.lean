@@ -31,8 +31,8 @@ depth stays `T` instead of `T + 2`, and the depth-two circuit of one-site unitar
 
 * `Matrix.exists_mem_unitaryGroup_eq_smul_mulVec_single` — a nonzero vector is a multiple of a
   unitary applied to a basis vector.
-* `QuantumCircuit.exists_prod_eq_smul_prodOp_mulVec` — a nonzero product vector is a multiple of
-  a product of one-site unitaries applied to a product basis vector.
+* `QuantumCircuit.exists_prod_eq_smul_piKronecker_mulVec` — a nonzero product vector is a
+  multiple of a product of one-site unitaries applied to a product basis vector.
 * `QuantumCircuit.IsPreparedInDepth.exists_eq_smul_mulVec_prod_single` — a nonzero vector
   prepared in depth `T` is a multiple of a unitary circuit of depth at most `T` applied to a
   product basis vector.
@@ -81,28 +81,19 @@ namespace QuantumCircuit
 variable {S : Type} [Fintype S] [DecidableEq S] {Γ : Geometry S} {X : S → Type}
   [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
 
-omit [∀ s, DecidableEq (X s)] in
-/-- A product operator applied to a product vector is the product vector of the one-site
-images. -/
-private theorem prodOp_mulVec_prod (u : (s : S) → Matrix (X s) (X s) ℂ) (w : (s : S) → X s → ℂ) :
-    (prodOp u *ᵥ fun σ : Config X ↦ ∏ s, w s (σ s)) = fun σ ↦ ∏ s, (u s *ᵥ w s) (σ s) := by
-  funext σ
-  simp only [mulVec, dotProduct, prodOp_apply, ← Finset.prod_mul_distrib]
-  exact (Fintype.prod_sum fun s t ↦ u s (σ s) t * w s t).symm
-
 /-- **Product vectors from a product basis vector.** A nonzero product vector `σ ↦ ∏ₛ vₛ(σₛ)` is
 a multiple of a product of one-site unitaries applied to the product basis vector
 `σ ↦ ∏ₛ [σₛ = x₀ₛ]`. -/
-theorem exists_prod_eq_smul_prodOp_mulVec (x₀ : Config X) {v : (s : S) → X s → ℂ}
+theorem exists_prod_eq_smul_piKronecker_mulVec (x₀ : Config X) {v : (s : S) → X s → ℂ}
     (hv : (fun σ : Config X ↦ ∏ s, v s (σ s)) ≠ 0) :
     ∃ u : (s : S) → Matrix (X s) (X s) ℂ, (∀ s, u s ∈ unitaryGroup (X s) ℂ) ∧ ∃ c : ℂ,
       (fun σ : Config X ↦ ∏ s, v s (σ s)) =
-        c • (prodOp u *ᵥ fun σ ↦ ∏ s, (Pi.single (x₀ s) 1 : X s → ℂ) (σ s)) := by
+        c • (piKronecker u *ᵥ fun σ ↦ ∏ s, (Pi.single (x₀ s) 1 : X s → ℂ) (σ s)) := by
   have hvs (s : S) : v s ≠ 0 := fun h ↦ hv (funext fun σ ↦
     Finset.prod_eq_zero (Finset.mem_univ s) (by simp [h]))
   choose u hu c _ hc using fun s ↦ exists_mem_unitaryGroup_eq_smul_mulVec_single (x₀ s) (hvs s)
   refine ⟨u, hu, ∏ s, c s, ?_⟩
-  rw [prodOp_mulVec_prod]
+  rw [piKronecker_mulVec_prod]
   funext σ
   simp only [Pi.smul_apply, smul_eq_mul, ← Finset.prod_mul_distrib]
   exact Finset.prod_congr rfl fun s _ ↦ by rw [hc s, Pi.smul_apply, smul_eq_mul]
@@ -119,9 +110,9 @@ theorem IsPreparedInDepth.exists_eq_smul_mulVec_prod_single (x₀ : Config X) {T
     ∃ U, IsUnitaryCircuit Γ T U ∧ ∃ c : ℂ,
       ψ = c • (U *ᵥ fun σ ↦ ∏ s, (Pi.single (x₀ s) 1 : X s → ℂ) (σ s)) := by
   obtain ⟨U, hU, v, rfl⟩ := h
-  obtain ⟨u, hu, c, hc⟩ := exists_prod_eq_smul_prodOp_mulVec x₀
+  obtain ⟨u, hu, c, hc⟩ := exists_prod_eq_smul_piKronecker_mulVec x₀
     fun h0 ↦ hψ (by rw [h0, mulVec_zero])
-  exact ⟨U * prodOp u, hU.mul (IsUnitaryCircuit.prodOp hu 0), c,
+  exact ⟨U * piKronecker u, hU.mul (IsUnitaryCircuit.piKronecker hu 0), c,
     by rw [hc, mulVec_smul, mulVec_mulVec]⟩
 
 end QuantumCircuit

@@ -38,15 +38,15 @@ namespace Matrix
 /-- The partial trace of the actual regrouped tensor product is the tensor
 product of the actual one-copy partial traces. The factors need not agree.
 Source: `07-comparators.tex`, lines 550–560. -/
-theorem partialTraceRight_finKronecker_reindex
-    {A Q T : Type*} [Fintype A] [Fintype Q] [Fintype T]
+theorem partialTraceRight_piKronecker_reindex
+    {A Q T : Type*} [Fintype T]
     (e : A ≃ Q × T) (m : ℕ) (M : Fin m → Matrix A A ℂ) :
-    partialTraceRight ((finKronecker M).submatrix
+    partialTraceRight ((piKronecker M).submatrix
       (TensorPower.copiesProductEquiv e m).symm
       (TensorPower.copiesProductEquiv e m).symm) =
-        finKronecker (fun j => partialTraceRight ((M j).submatrix e.symm e.symm)) := by
+        piKronecker (fun j => partialTraceRight ((M j).submatrix e.symm e.symm)) := by
   ext x y
-  simp only [partialTraceRight_apply, submatrix_apply, finKronecker_apply]
+  simp only [partialTraceRight_apply, submatrix_apply, piKronecker_apply]
   exact (Fintype.prod_sum
     (fun (j : Fin m) (t : T) => M j (e.symm (x j, t)) (e.symm (y j, t)))).symm
 

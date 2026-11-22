@@ -214,11 +214,11 @@ Chapter~\ref{ch:circuits} for these circuits.
     \lean{QuantumCircuit.IsUnitaryCircuit.one, QuantumCircuit.IsUnitaryCircuit.mono,
         QuantumCircuit.IsUnitaryCircuit.mul, QuantumCircuit.IsUnitaryCircuit.conjTranspose,
         QuantumCircuit.IsUnitaryCircuit.mem_unitaryGroup, QuantumCircuit.IsUnitaryCircuit.pow,
-        QuantumCircuit.IsUnitaryCircuit.prodOp, QuantumCircuit.IsUnitaryCircuit.place,
+        QuantumCircuit.IsUnitaryCircuit.piKronecker, QuantumCircuit.IsUnitaryCircuit.place,
         QuantumCircuit.IsGateProduct.one, QuantumCircuit.IsGateProduct.mono,
         QuantumCircuit.IsGateProduct.mul, QuantumCircuit.IsGateProduct.conjTranspose,
         QuantumCircuit.IsGateProduct.mem_unitaryGroup, QuantumCircuit.IsGateProduct.pow,
-        QuantumCircuit.IsGateProduct.list_prod, QuantumCircuit.IsGateProduct.prodOp,
+        QuantumCircuit.IsGateProduct.list_prod, QuantumCircuit.IsGateProduct.piKronecker,
         QuantumCircuit.IsGateProduct.place,
         QuantumCircuit.IsGateProduct.of_mem_supportedOperators,
         QuantumCircuit.IsGateProduct.isUnitaryCircuit}
@@ -325,7 +325,7 @@ Chapter~\ref{ch:circuits} for these circuits.
 \begin{lemma}[A unitary layer gate by gate]
     \label{lem:unitary_layer_factorization}
     \lean{QuantumCircuit.Layer.onsiteOp,
-        QuantumCircuit.Layer.kraus_eq_prod_place_mul_prodOp,
+        QuantumCircuit.Layer.kraus_eq_prod_place_mul_piKronecker,
         QuantumCircuit.Layer.onsiteOp_mem_unitaryGroup,
         QuantumCircuit.Layer.ev_gate_mem_unitaryGroup}
     \leanok
@@ -557,7 +557,7 @@ of two sites is the operator of the transposition of the sites.
         QuantumCircuit.IsUnitaryCircuitOn.conjTranspose,
         QuantumCircuit.IsUnitaryCircuitOn.place,
         QuantumCircuit.IsUnitaryCircuitOn.of_mem_supportedOperators,
-        QuantumCircuit.IsUnitaryCircuitOn.prodOp}
+        QuantumCircuit.IsUnitaryCircuitOn.piKronecker}
     \leanok
     \uses{def:unitary_inside, thm:unitary_classes_closure, def:sites_supported}
     The operator of a circuit inside $R$ is supported on $R$. Circuits inside $R$ are closed
@@ -777,7 +777,7 @@ of two sites is the operator of the transposition of the sites.
 \begin{theorem}[Preparation from a product basis vector]
     \label{thm:unitary_preparation_basis}
     \lean{Matrix.exists_mem_unitaryGroup_eq_smul_mulVec_single,
-        QuantumCircuit.exists_prod_eq_smul_prodOp_mulVec,
+        QuantumCircuit.exists_prod_eq_smul_piKronecker_mulVec,
         QuantumCircuit.IsPreparedInDepth.exists_eq_smul_mulVec_prod_single}
     \leanok
     \uses{def:unitary_prepared, thm:unitary_classes_closure}

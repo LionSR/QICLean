@@ -43,75 +43,43 @@ open scoped BigOperators Matrix Kronecker ComplexOrder Matrix.Norms.L2Operator
 noncomputable section
 namespace Matrix
 
-private theorem finKronecker_diagonal {k : ℕ} {n : Type*} [Fintype n] [DecidableEq n]
-    (d : Fin k → n → ℂ) :
-    finKronecker (fun j ↦ diagonal (d j)) =
-      diagonal (fun x : Fin k → n ↦ ∏ j, d j (x j)) := by
-  ext x y
-  by_cases h : x = y
-  · subst y
-    simp only [finKronecker_apply, diagonal_apply_eq]
-  · obtain ⟨j, hj⟩ := Function.ne_iff.mp h
-    rw [diagonal_apply_ne _ h, finKronecker_apply]
-    exact Finset.prod_eq_zero (Finset.mem_univ j) (diagonal_apply_ne _ hj)
-
-private theorem finKronecker_one {k : ℕ} {n : Type*} [Fintype n] [DecidableEq n] :
-    finKronecker (fun _ : Fin k ↦ (1 : Matrix n n ℂ)) = 1 := by
-  simpa only [diagonal_one, Finset.prod_const_one] using
-    (finKronecker_diagonal (fun _ : Fin k ↦ (fun _ : n ↦ (1 : ℂ))))
-
-private theorem star_finKronecker {k : ℕ} {n : Type*} [Fintype n]
-    (A : Fin k → Matrix n n ℂ) :
-    star (finKronecker A) = finKronecker (fun j ↦ star (A j)) := by
-  ext x y
-  simp only [star_eq_conjTranspose, conjTranspose_apply, finKronecker_apply, star_prod]
-
-private theorem finKronecker_mem_unitary {k : ℕ} {n : Type*} [Fintype n] [DecidableEq n]
-    (U : Fin k → unitary (Matrix n n ℂ)) :
-    finKronecker (fun j ↦ (U j : Matrix n n ℂ)) ∈
-      Matrix.unitaryGroup (Fin k → n) ℂ := by
-  rw [mem_unitaryGroup_iff]
-  rw [star_finKronecker, ← finKronecker_mul]
-  simpa only [← Unitary.coe_star, Unitary.coe_mul_star_self] using
-    (finKronecker_one (k := k) (n := n))
-
 variable {n : Type*} [Fintype n] [DecidableEq n] {ρ : Matrix n n ℂ}
 
 /-- The actual tensor-power surprisal has the product eigenvalue distribution.
 OpenAI area-law manuscript, `07-comparators.tex`, lines 255–263,
 `comparator:high-label`. The function is arbitrary because all spectra are finite. -/
-theorem PosSemidef.re_trace_finKronecker_mul_cfc_surprisal (hρ : ρ.PosSemidef)
+theorem PosSemidef.re_trace_piKronecker_mul_cfc_surprisal (hρ : ρ.PosSemidef)
     (k : ℕ) (f : ℝ → ℝ) :
     let p := hρ.isHermitian.eigenvalues
-    let ρk := finKronecker (fun _ : Fin k ↦ ρ)
+    let ρk := piKronecker (fun _ : Fin k ↦ ρ)
     (ρk * cfc f (-CFC.log ρk)).trace.re =
       ∑ x : Fin k → n, (∏ j, p (x j)) * f (-Real.log (∏ j, p (x j))) := by
   let U := hρ.isHermitian.eigenvectorUnitary
   let Uk : unitary (Matrix (Fin k → n) (Fin k → n) ℂ) :=
-    ⟨finKronecker (fun _ : Fin k ↦ (U : Matrix n n ℂ)),
-      finKronecker_mem_unitary (fun _ : Fin k ↦ U)⟩
+    ⟨piKronecker (fun _ : Fin k ↦ (U : Matrix n n ℂ)),
+      piKronecker_mem_unitaryGroup fun _ : Fin k ↦ U.2⟩
   let q : (Fin k → n) → ℝ := fun x ↦ ∏ j, hρ.isHermitian.eigenvalues (x j)
-  have hconj : finKronecker (fun _ : Fin k ↦ ρ) =
+  have hconj : piKronecker (fun _ : Fin k ↦ ρ) =
       (Uk : Matrix (Fin k → n) (Fin k → n) ℂ) * diagonal (fun x ↦ (q x : ℂ)) *
         star (Uk : Matrix (Fin k → n) (Fin k → n) ℂ) := by
-    trans finKronecker (fun _ : Fin k ↦ (U : Matrix n n ℂ) *
+    trans piKronecker (fun _ : Fin k ↦ (U : Matrix n n ℂ) *
       diagonal (fun i ↦ (hρ.isHermitian.eigenvalues i : ℂ)) * star (U : Matrix n n ℂ))
-    · exact congrArg finKronecker (funext fun _ : Fin k ↦ hρ.isHermitian.spectral_form)
-    · rw [finKronecker_mul, finKronecker_mul, finKronecker_diagonal]
-      simp only [Uk, q, Complex.ofReal_prod, star_finKronecker]
-  have hk : (finKronecker (fun _ : Fin k ↦ ρ)).IsHermitian :=
-    (finKronecker_posSemidef (fun _ : Fin k ↦ ρ) (fun _ ↦ hρ)).isHermitian
-  have hcomp : cfc f (-CFC.log (finKronecker (fun _ : Fin k ↦ ρ))) =
-      cfc (fun t ↦ f (-Real.log t)) (finKronecker (fun _ : Fin k ↦ ρ)) := by
+    · exact congrArg piKronecker (funext fun _ : Fin k ↦ hρ.isHermitian.spectral_form)
+    · rw [← piKronecker_mul, ← piKronecker_mul, piKronecker_diagonal]
+      simp only [Uk, q, Complex.ofReal_prod, star_eq_conjTranspose, conjTranspose_piKronecker]
+  have hk : (piKronecker (fun _ : Fin k ↦ ρ)).IsHermitian :=
+    (piKronecker_posSemidef (fun _ : Fin k ↦ ρ) (fun _ ↦ hρ)).isHermitian
+  have hcomp : cfc f (-CFC.log (piKronecker (fun _ : Fin k ↦ ρ))) =
+      cfc (fun t ↦ f (-Real.log t)) (piKronecker (fun _ : Fin k ↦ ρ)) := by
     rw [CFC.log, ← cfc_neg]
-    exact (cfc_comp' f (fun t : ℝ ↦ -Real.log t) (finKronecker (fun _ : Fin k ↦ ρ))
-      (((finKronecker (fun _ : Fin k ↦ ρ)).finite_real_spectrum.image _).continuousOn f)
-      ((finKronecker (fun _ : Fin k ↦ ρ)).finite_real_spectrum.continuousOn _)
+    exact (cfc_comp' f (fun t : ℝ ↦ -Real.log t) (piKronecker (fun _ : Fin k ↦ ρ))
+      (((piKronecker (fun _ : Fin k ↦ ρ)).finite_real_spectrum.image _).continuousOn f)
+      ((piKronecker (fun _ : Fin k ↦ ρ)).finite_real_spectrum.continuousOn _)
       hk.isSelfAdjoint).symm
   have hD : (diagonal (fun x ↦ (q x : ℂ))).IsHermitian := by
     simp [isHermitian_diagonal_iff, IsSelfAdjoint]
-  change ((finKronecker (fun _ : Fin k ↦ ρ)) *
-    cfc f (-CFC.log (finKronecker (fun _ : Fin k ↦ ρ)))).trace.re =
+  change ((piKronecker (fun _ : Fin k ↦ ρ)) *
+    cfc f (-CFC.log (piKronecker (fun _ : Fin k ↦ ρ)))).trace.re =
       ∑ x, q x * f (-Real.log (q x))
   rw [hcomp, hk.cfc_eq, hk.self_mul_cfc, ← hk.cfc_eq, hconj]
   rw [cfc_conj_unitary hD _ Uk,
@@ -215,16 +183,16 @@ variable {n : Type*} [Fintype n] [DecidableEq n] {ρ : Matrix n n ℂ}
 OpenAI area-law manuscript, `07-comparators.tex`, lines 255–263,
 `comparator:high-label`. The logarithm is interpreted on the support; zero eigenvalues
 contribute no mass. -/
-theorem PosSemidef.re_trace_surprisalTail_finKronecker_le (hρ : ρ.PosSemidef)
+theorem PosSemidef.re_trace_surprisalTail_piKronecker_le (hρ : ρ.PosSemidef)
     (htr : ρ.trace = 1) (k : ℕ) {w : ℝ} (hw : 0 < w) :
     let S := vonNeumannEntropy ρ hρ.isHermitian
     let p := hρ.isHermitian.eigenvalues
-    let ρk := finKronecker (fun _ : Fin k ↦ ρ)
+    let ρk := piKronecker (fun _ : Fin k ↦ ρ)
     (ρk * cfc (fun t : ℝ ↦ if w < |t - (k : ℝ) * S| then 1 else 0)
       (-CFC.log ρk)).trace.re ≤
         (k : ℝ) * (∑ i, p i * (-Real.log (p i) - S) ^ 2) / w ^ 2 := by
   dsimp only
-  rw [hρ.re_trace_finKronecker_mul_cfc_surprisal]
+  rw [hρ.re_trace_piKronecker_mul_cfc_surprisal]
   simp only [mul_ite, mul_one, mul_zero]
   exact Entropy.surprisalTail_pi_le_variance hρ.eigenvalues_nonneg
     (posSemidef_trace_one_eigenvalues_sum_one hρ htr) k hw
@@ -232,16 +200,16 @@ theorem PosSemidef.re_trace_surprisalTail_finKronecker_le (hρ : ρ.PosSemidef)
 /-- At a window of width `k ^ (3 / 4)`, the tail mass is at most the one-copy
 surprisal variance divided by `sqrt k`. OpenAI area-law manuscript,
 `07-comparators.tex`, lines 255–263, `comparator:high-label`. -/
-theorem PosSemidef.re_trace_surprisalTail_finKronecker_three_quarters_le
+theorem PosSemidef.re_trace_surprisalTail_piKronecker_three_quarters_le
     (hρ : ρ.PosSemidef) (htr : ρ.trace = 1) {k : ℕ} (hk : 0 < k) :
     let S := vonNeumannEntropy ρ hρ.isHermitian
     let p := hρ.isHermitian.eigenvalues
-    let ρk := finKronecker (fun _ : Fin k ↦ ρ)
+    let ρk := piKronecker (fun _ : Fin k ↦ ρ)
     (ρk * cfc (fun t : ℝ ↦ if (k : ℝ) ^ (3 / 4 : ℝ) < |t - (k : ℝ) * S|
       then 1 else 0) (-CFC.log ρk)).trace.re ≤
         (∑ i, p i * (-Real.log (p i) - S) ^ 2) / Real.sqrt k := by
   have hkR : 0 < (k : ℝ) := Nat.cast_pos.mpr hk
-  have h := hρ.re_trace_surprisalTail_finKronecker_le htr k
+  have h := hρ.re_trace_surprisalTail_piKronecker_le htr k
     (Real.rpow_pos_of_pos hkR (3 / 4 : ℝ))
   dsimp only at h ⊢
   apply h.trans_eq

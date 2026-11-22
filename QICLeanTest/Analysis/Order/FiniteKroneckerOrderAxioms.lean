@@ -11,7 +11,7 @@ import Lean.Util.CollectAxioms
 
 run_cmd do
   let allowed := #[``propext, ``Classical.choice, ``Quot.sound]
-  for decl in #[``Matrix.kronecker_mono_of_posSemidef, ``Matrix.finKronecker_mono] do
+  for decl in #[``Matrix.kronecker_mono_of_posSemidef, ``Matrix.piKronecker_mono] do
     unless (← Lean.getEnv).contains decl do
       throwError "Missing declaration {decl}"
     let axioms ← Lean.collectAxioms decl

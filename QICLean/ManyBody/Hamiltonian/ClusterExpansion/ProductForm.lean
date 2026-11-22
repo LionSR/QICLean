@@ -39,7 +39,7 @@ Moved from TNLean (`e113e005`): `TNLean/Lattice/ClusterExpansion/TruncatedProduc
 `ClusterExpansion/AllTemperatures.lean`. Changes: the terms are those of `Φ : Interaction X T`
 on any finite basis types; the coefficient `clusterCoeff` takes the reference configuration `z` for
 the labels off the cluster instead of reusing the label at the anchor site, which needed a
-common dimension; `piKronecker` is `ManyBody.prodOp`.
+common dimension; `piKronecker` is `Matrix.piKronecker`.
 -/
 
 universe u
@@ -424,13 +424,13 @@ theorem isLocalCoefficient_clusterCoeff
 
 /-- The entries of a sum `∑_α F(α) ⊗_j |a_j⟩⟨b_j|` over indices carrying a matrix-unit label:
 the labels are forced to be the row and column configurations. -/
-theorem sum_smul_prodOp_single_apply {I : Type*} [Fintype I]
+theorem sum_smul_piKronecker_single_apply {I : Type*} [Fintype I]
     (F : ((j : V) → I × (X j × X j)) → ℂ) (u v : Config X) :
-    (∑ α, F α • prodOp fun j ↦ single (α j).2.1 (α j).2.2 (1 : ℂ)) u v =
+    (∑ α, F α • piKronecker fun j ↦ single (α j).2.1 (α j).2.2 (1 : ℂ)) u v =
       ∑ c : V → I, F fun j ↦ (c j, (u j, v j)) := by
   classical
   rw [Matrix.sum_apply]
-  simp only [Matrix.smul_apply, prodOp_apply, smul_eq_mul]
+  simp only [Matrix.smul_apply, piKronecker_apply, smul_eq_mul]
   rw [← (Equiv.arrowProdEquivProdArrow _ _ _).symm.sum_comp, Fintype.sum_prod_type]
   refine Fintype.sum_congr _ _ fun c ↦ ?_
   rw [Finset.sum_eq_single (fun j ↦ (u j, v j))]
@@ -627,7 +627,7 @@ noncomputable def clusterProductForm (T : κ → Finset V) (near : V → V → P
     eq_sum := ?_ }
   ext u v
   rw [sum_clusterOp_apply Φ β u v, ← sum_prod_clusterCoeff z Φ β u v,
-    sum_smul_prodOp_single_apply]
+    sum_smul_piKronecker_single_apply]
   exact (Fintype.sum_equiv (Equiv.arrowCongr (Equiv.refl _) (Equiv.optionCongr e.symm)) _ _
     fun c ↦ rfl).symm
 

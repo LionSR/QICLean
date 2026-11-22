@@ -432,7 +432,7 @@ private def measuredEquiv : (measureLayer t m).Index ≃ Config (Qudits (Fin t) 
 private theorem measure_entry (ev : Interpretation (Gate t m)) (i : (measureLayer t m).Index)
     (y x : Config (system t m)) : (measureLayer t m).kraus ev i y x =
       if y = x ∧ control t m y = measured t m i then 1 else 0 := by
-  rw [Layer.kraus_ofOnsite, prodOp_apply]
+  rw [Layer.kraus_ofOnsite, piKronecker_apply]
   have hinl : ∀ j, (measureFamily t m (.inl j)).op (measured t m i j) (y (.inl j)) (x (.inl j)) =
       if measured t m i j = control t m y j ∧ measured t m i j = control t m x j then 1 else 0 :=
     fun j ↦ Matrix.single_apply ..

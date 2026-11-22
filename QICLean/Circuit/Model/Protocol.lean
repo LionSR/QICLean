@@ -363,14 +363,14 @@ input with unit-trace factors gives an output on which the expectations of opera
 disjoint `T`-fold neighbourhoods factorize. -/
 theorem IsConversion.trace_mul_mul_eq (hpos : ∀ b, 0 < Γ.cost b) {T : ℕ}
     {σ₀ : (s : S) → Matrix (X s) (X s) ℂ} (hσ₀ : ∀ s, (σ₀ s).trace = 1)
-    {σ : Matrix (Config Z) (Config Z) ℂ} (h : IsConversion Γ T (prodOp σ₀) σ) {R R' : Finset S}
+    {σ : Matrix (Config Z) (Config Z) ℂ} (h : IsConversion Γ T (piKronecker σ₀) σ) {R R' : Finset S}
     (hRR' : Disjoint (Γ.neighbourhood^[T] R) (Γ.neighbourhood^[T] R'))
     {A B : Matrix (Config Z) (Config Z) ℂ} (hA : A ∈ supportedOperators Z R)
     (hB : B ∈ supportedOperators Z R') :
     (σ * (A * B)).trace = (σ * A).trace * (σ * B).trace := by
   obtain ⟨_, hΦ, rfl⟩ := h
   obtain ⟨c, hTP, rfl, hc, hR⟩ := hΦ.exists_circuit hpos
-  exact c.trace_map_prodOp_mul_mul _ hc hTP σ₀ hσ₀ (hRR'.mono (hR R) (hR R')) hA hB
+  exact c.trace_map_piKronecker_mul_mul _ hc hTP σ₀ hσ₀ (hRR'.mono (hR R) (hR R')) hA hB
 
 /-! ### Blocks of sites -/
 

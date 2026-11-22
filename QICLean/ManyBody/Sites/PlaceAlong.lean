@@ -50,10 +50,10 @@ rotation of the ring, this is the translation of one window to the next.
   `ManyBody.posSemidef_placeAlong_iff`, `ManyBody.placeAlong_le_placeAlong_iff`,
   `ManyBody.placeAlong_injective`.
 * `ManyBody.placeAlong_subtype`, `ManyBody.placeAlong_equiv`, `ManyBody.placeAlong_refl`,
-  `ManyBody.placeAlong_placeAlong`, `ManyBody.placeAlong_prodOp`.
+  `ManyBody.placeAlong_placeAlong`, `ManyBody.placeAlong_piKronecker`.
 * `ManyBody.sitePermOp_mul_placeAlong_mul_conjTranspose`.
 * `ManyBody.place_siteEquiv_eq_placeAt` — a matrix on the region `{v}`, read through the basis of
-  `v`, is the matrix at `v`; `ManyBody.placeAt_eq_prodOp`, `ManyBody.placeAt_mulVec_apply`.
+  `v`, is the matrix at `v`; `ManyBody.placeAt_eq_piKronecker`, `ManyBody.placeAt_mulVec_apply`.
 
 These replace TNLean's placements `QuantumCircuit.embedOp` (`Circuit/SiteEmbedding`) and
 `MPOTensor.embedLocalOperator` (`MPS/MPDO/CommutingForm`) at TNLean commit `414a18fb88`: the
@@ -475,12 +475,12 @@ theorem placeAlong_placeAlong [DecidableEq W] {W' : Type*} [Fintype W'] (w' : W'
 
 /-- A product operator placed along an injection is the product operator that is the
 on-site matrix `m u` at the site `w u` and the identity outside the image. -/
-theorem placeAlong_prodOp (m : (u : W) → Matrix (X (w u)) (X (w u)) ℂ)
+theorem placeAlong_piKronecker (m : (u : W) → Matrix (X (w u)) (X (w u)) ℂ)
     (m' : (v : V) → Matrix (X v) (X v) ℂ) (hm : ∀ u, m' (w u) = m u)
     (hm' : ∀ v, (∀ u, w u ≠ v) → m' v = 1) :
-    placeAlong w (prodOp m) = prodOp m' := by
+    placeAlong w (piKronecker m) = piKronecker m' := by
   ext σ τ
-  rw [placeAlong_apply, prodOp_apply, prodOp_apply,
+  rw [placeAlong_apply, piKronecker_apply, piKronecker_apply,
     ← Finset.prod_mul_prod_compl (Finset.univ.map w), Finset.prod_map]
   have hout (v : V) (hv : v ∈ (Finset.univ.map w)ᶜ) : ∀ u, w u ≠ v := fun u hu ↦
     Finset.mem_compl.mp hv (hu ▸ Finset.mem_map_of_mem w (Finset.mem_univ u))
@@ -570,10 +570,10 @@ theorem place_siteEquiv_eq_placeAt :
 
 /-- A matrix at one site is the product operator with that matrix at the site and the identity
 at the other sites. -/
-theorem placeAt_eq_prodOp :
-    placeAt v p = prodOp (Function.update (fun s ↦ (1 : Matrix (X s) (X s) ℂ)) v p) := by
+theorem placeAt_eq_piKronecker :
+    placeAt v p = piKronecker (Function.update (fun s ↦ (1 : Matrix (X s) (X s) ℂ)) v p) := by
   ext x y
-  rw [placeAt_apply, prodOp_apply, ← Finset.mul_prod_erase _ _ (Finset.mem_univ v),
+  rw [placeAt_apply, piKronecker_apply, ← Finset.mul_prod_erase _ _ (Finset.mem_univ v),
     Function.update_self]
   have h : ∀ s ∈ Finset.univ.erase v,
       Function.update (fun s ↦ (1 : Matrix (X s) (X s) ℂ)) v p s (x s) (y s) =

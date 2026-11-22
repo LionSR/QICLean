@@ -187,11 +187,11 @@ private noncomputable def siteFactor (M : Finset V) (v : V) (l : Label (X v)) :
 at the other sites. -/
 private noncomputable def shiftOp (M : Finset V) (g : (v : V) → Label (X v)) :
     Matrix (Config X) (Config X) ℂ :=
-  prodOp fun v ↦ siteFactor M v (g v)
+  piKronecker fun v ↦ siteFactor M v (g v)
 
 private theorem shiftOp_mem_unitary (M : Finset V) (g : (v : V) → Label (X v)) :
     shiftOp M g ∈ unitary (Matrix (Config X) (Config X) ℂ) := by
-  refine prodOp_mem_unitary fun v ↦ ?_
+  refine piKronecker_mem_unitaryGroup fun v ↦ ?_
   unfold siteFactor
   split_ifs
   · exact signedShift_mem_unitary _
@@ -199,12 +199,12 @@ private theorem shiftOp_mem_unitary (M : Finset V) (g : (v : V) → Label (X v))
 
 private theorem shiftOp_singleton_mem_supportedOperators (y : V) (g : (v : V) → Label (X v)) :
     shiftOp {y} g ∈ supportedOperators X {y} :=
-  prodOp_mem_supportedOperators fun _ hv ↦ ite_eq_right hv
+  piKronecker_mem_supportedOperators fun _ hv ↦ ite_eq_right hv
 
 private theorem shiftOp_insert {M : Finset V} {y : V} (hy : y ∉ M)
     (g : (v : V) → Label (X v)) :
     shiftOp (insert y M) g = shiftOp {y} g * shiftOp M g := by
-  rw [shiftOp, shiftOp, shiftOp, prodOp_mul]
+  rw [shiftOp, shiftOp, shiftOp, piKronecker_mul]
   congr 1
   funext v
   unfold siteFactor
@@ -289,7 +289,7 @@ private theorem sum_shiftOp_mul_star (M : Finset V) (σ ρ τ ρ' : Config X) :
     _ = ∑ g : (v : V) → Label (X v), ∏ v,
           siteFactor M v (g v) (σ v) (ρ v) * star (siteFactor M v (g v) (τ v) (ρ' v)) := by
       refine Finset.sum_congr rfl fun g _ ↦ ?_
-      simp only [shiftOp, prodOp, Matrix.of_apply, star_prod, Finset.prod_mul_distrib]
+      simp only [shiftOp, piKronecker, Matrix.of_apply, star_prod, Finset.prod_mul_distrib]
     _ = ∏ v, ∑ l : Label (X v),
           siteFactor M v l (σ v) (ρ v) * star (siteFactor M v l (τ v) (ρ' v)) :=
       (Fintype.prod_sum fun (v : V) (l : Label (X v)) ↦

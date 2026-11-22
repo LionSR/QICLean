@@ -35,15 +35,6 @@ noncomputable section
 
 namespace Matrix
 
-private theorem finKronecker_mulVec_prod {k : ℕ} {I : Type*} [Fintype I]
-    (M : Fin k → Matrix I I ℂ) (v : Fin k → I → ℂ) :
-    finKronecker M *ᵥ (fun x ↦ ∏ j, v j (x j)) =
-      fun x ↦ ∏ j, (M j *ᵥ v j) (x j) := by
-  funext x
-  simp only [mulVec, dotProduct, finKronecker_apply]
-  rw [Fintype.prod_sum]
-  simp only [Finset.prod_mul_distrib]
-
 private theorem star_dotProduct_prod {k : ℕ} {I : Type*} [Fintype I]
     (v : Fin k → I → ℂ) :
     star (fun x : Fin k → I ↦ ∏ j, v j (x j)) ⬝ᵥ (fun x ↦ ∏ j, v j (x j)) =
@@ -51,23 +42,23 @@ private theorem star_dotProduct_prod {k : ℕ} {I : Type*} [Fintype I]
   simp only [dotProduct, Pi.star_apply, star_prod, ← Finset.prod_mul_distrib]
   exact (Fintype.prod_sum fun (j : Fin k) (a : I) ↦ star (v j a) * v j a).symm
 
-private theorem finKronecker_vecMulVec {k : ℕ} {I : Type*} [Fintype I]
+private theorem piKronecker_vecMulVec {k : ℕ} {I : Type*}
     (v : Fin k → I → ℂ) :
-    finKronecker (fun j ↦ vecMulVec (v j) (star (v j))) =
+    piKronecker (fun j ↦ vecMulVec (v j) (star (v j))) =
       vecMulVec (fun x : Fin k → I ↦ ∏ j, v j (x j))
         (star (fun x : Fin k → I ↦ ∏ j, v j (x j))) := by
   ext x y
-  simp only [finKronecker_apply, vecMulVec_apply, Pi.star_apply, star_prod,
+  simp only [piKronecker_apply, vecMulVec_apply, Pi.star_apply, star_prod,
     Finset.prod_mul_distrib]
 
-private theorem finKronecker_kronecker_one_group {k : ℕ} {L R : Type*}
-    [Fintype L] [Fintype R] [DecidableEq R] (P : Matrix L L ℂ) :
+private theorem piKronecker_kronecker_one_group {k : ℕ} {L R : Type*}
+    [DecidableEq R] (P : Matrix L L ℂ) :
     let e := Equiv.arrowProdEquivProdArrow (Fin k) (fun _ ↦ L) (fun _ ↦ R)
-    (finKronecker fun _ : Fin k ↦ P ⊗ₖ (1 : Matrix R R ℂ)).submatrix e.symm e.symm =
-      finKronecker (fun _ : Fin k ↦ P) ⊗ₖ
+    (piKronecker fun _ : Fin k ↦ P ⊗ₖ (1 : Matrix R R ℂ)).submatrix e.symm e.symm =
+      piKronecker (fun _ : Fin k ↦ P) ⊗ₖ
         (1 : Matrix (Fin k → R) (Fin k → R) ℂ) := by
   ext x y
-  simp only [submatrix_apply, finKronecker_apply, kroneckerMap_apply,
+  simp only [submatrix_apply, piKronecker_apply, kroneckerMap_apply,
     Equiv.arrowProdEquivProdArrow_symm_apply, Finset.prod_mul_distrib]
   congr 1
   by_cases h : x.2 = y.2
@@ -97,9 +88,9 @@ private theorem prod_selectedBellVector_star_dotProduct_self (k : ℕ) (hz : 0 <
 
 /-- The actual Bell identity on `k` copies has coefficient `(sqrt z / |E|)^k`.
 OpenAI area-law manuscript, `comparator:bell-pin`, lines 283–290. -/
-theorem finKronecker_selectedBellProjection_bellPinPrevector (k : ℕ) (hz : 0 < zE) :
+theorem piKronecker_selectedBellProjection_bellPinPrevector (k : ℕ) (hz : 0 < zE) :
     WithLp.toLp 2
-      ((finKronecker fun _ : Fin k ↦ selectedBellProjection ψ E ⊗ₖ
+      ((piKronecker fun _ : Fin k ↦ selectedBellProjection ψ E ⊗ₖ
         (1 : Matrix (E × B) (E × B) ℂ)) *ᵥ
           (fun x ↦ ∏ j, bellPinPrevector ψ E (x j))) =
       (((Real.sqrt zE : ℂ) / (E.card : ℂ)) ^ k) •
@@ -113,7 +104,7 @@ theorem finKronecker_selectedBellProjection_bellPinPrevector (k : ℕ) (hz : 0 <
       congrArg (fun v : EuclideanSpace ℂ ((A × E) × (E × B)) ↦ v x)
         (selectedBellProjection_bellPinPrevector ψ E hz)
   ext x
-  simp only [finKronecker_mulVec_prod, hpin, PiLp.smul_apply,
+  simp only [piKronecker_mulVec_prod, hpin, PiLp.smul_apply,
     smul_eq_mul, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ,
     Fintype.card_fin]
 
@@ -121,12 +112,12 @@ theorem finKronecker_selectedBellProjection_bellPinPrevector (k : ℕ) (hz : 0 <
 `k`-copy Bell projection. The coordinates are the canonical grouping of the physical--auxiliary,
 selected, and complementary copies. No commutation hypothesis is required.
 OpenAI area-law manuscript, `comparator:bell-pin`, lines 283–298. -/
-theorem finKronecker_selectedBellProjection_bellPinPrevector_label (k : ℕ) (hz : 0 < zE)
+theorem piKronecker_selectedBellProjection_bellPinPrevector_label (k : ℕ) (hz : 0 < zE)
     (Λ : Matrix (Fin k → E) (Fin k → E) ℂ) :
     let e := (Equiv.arrowProdEquivProdArrow (Fin k) (fun _ ↦ A × E) (fun _ ↦ E × B)).trans
       ((Equiv.refl (Fin k → A × E)).prodCongr
         (Equiv.arrowProdEquivProdArrow (Fin k) (fun _ ↦ E) (fun _ ↦ B)))
-    let Pk := finKronecker (fun _ : Fin k ↦ selectedBellProjection ψ E) ⊗ₖ
+    let Pk := piKronecker (fun _ : Fin k ↦ selectedBellProjection ψ E) ⊗ₖ
       (1 : Matrix ((Fin k → E) × (Fin k → B)) ((Fin k → E) × (Fin k → B)) ℂ)
     let ΛR := (1 : Matrix (Fin k → A × E) (Fin k → A × E) ℂ) ⊗ₖ
       (Λ ⊗ₖ (1 : Matrix (Fin k → B) (Fin k → B) ℂ))
@@ -134,7 +125,7 @@ theorem finKronecker_selectedBellProjection_bellPinPrevector_label (k : ℕ) (hz
       (((Real.sqrt zE : ℂ) / (E.card : ℂ)) ^ k) •
         WithLp.toLp 2 (ΛR *ᵥ (fun x ↦ ∏ j, bellPinPostvector ψ E (e.symm x j))) := by
   intro e Pk ΛR
-  let M := finKronecker fun _ : Fin k ↦ selectedBellProjection ψ E ⊗ₖ
+  let M := piKronecker fun _ : Fin k ↦ selectedBellProjection ψ E ⊗ₖ
     (1 : Matrix (E × B) (E × B) ℂ)
   have hgroup : M.submatrix e.symm e.symm = Pk := by
     change (M.submatrix
@@ -142,7 +133,7 @@ theorem finKronecker_selectedBellProjection_bellPinPrevector_label (k : ℕ) (hz
       (Equiv.arrowProdEquivProdArrow (Fin k) (fun _ ↦ A × E) (fun _ ↦ E × B)).symm).submatrix
         (Prod.map id (Equiv.arrowProdEquivProdArrow (Fin k) (fun _ ↦ E) (fun _ ↦ B)).symm)
         (Prod.map id (Equiv.arrowProdEquivProdArrow (Fin k) (fun _ ↦ E) (fun _ ↦ B)).symm) = Pk
-    rw [finKronecker_kronecker_one_group]
+    rw [piKronecker_kronecker_one_group]
     rw [← kroneckerMap_submatrix_right, submatrix_one_equiv]
   have hpin : Pk *ᵥ (fun x ↦ ∏ j, bellPinPrevector ψ E (e.symm x j)) =
       (((Real.sqrt zE : ℂ) / (E.card : ℂ)) ^ k) •
@@ -152,7 +143,7 @@ theorem finKronecker_selectedBellProjection_bellPinPrevector_label (k : ℕ) (hz
     funext x
     simpa only [PiLp.smul_apply, Pi.smul_apply, smul_eq_mul] using
       congrArg (fun v : EuclideanSpace ℂ (Fin k → (A × E) × (E × B)) ↦ v (e.symm x))
-        (finKronecker_selectedBellProjection_bellPinPrevector ψ E k hz)
+        (piKronecker_selectedBellProjection_bellPinPrevector ψ E k hz)
   have hcomm : Pk * ΛR = ΛR * Pk := by
     simp only [Pk, ΛR, ← mul_kronecker_mul, mul_one, one_mul]
   rw [mulVec_mulVec, hcomm, ← mulVec_mulVec, hpin, mulVec_smul]
@@ -174,9 +165,9 @@ theorem norm_prod_selectedBellVector (k : ℕ) (hz : 0 < zE) :
 omit [DecidableEq B] in
 /-- The finite tensor power of the actual selected Bell projection is an orthogonal projection.
 OpenAI area-law manuscript, `comparator:bell-pin`, lines 283–298. -/
-theorem isStarProjection_finKronecker_selectedBellProjection (k : ℕ) (hz : 0 < zE) :
-    IsStarProjection (finKronecker fun _ : Fin k ↦ selectedBellProjection ψ E) := by
-  simp only [selectedBellProjection, finKronecker_vecMulVec, isStarProjection_iff']
+theorem isStarProjection_piKronecker_selectedBellProjection (k : ℕ) (hz : 0 < zE) :
+    IsStarProjection (piKronecker fun _ : Fin k ↦ selectedBellProjection ψ E) := by
+  simp only [selectedBellProjection, piKronecker_vecMulVec, isStarProjection_iff']
   constructor
   · simp [vecMulVec_mul_vecMulVec, prod_selectedBellVector_star_dotProduct_self ψ E k hz]
   · simp [Matrix.star_eq_conjTranspose, conjTranspose_vecMulVec]

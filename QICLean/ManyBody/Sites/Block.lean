@@ -16,7 +16,7 @@ the same (`blockConfigEquiv`, the partition of the sites into the blocks, `compl
 and so are the configurations of a region `D'` of blocks and of its preimage
 (`blockRegionConfigEquiv`). Placement commutes with blocking
 (`reindex_blockConfigEquiv_place`), and a product operator of the sites is the product over the
-blocks of the product operators of the blocks (`reindex_blockConfigEquiv_symm_prodOp`).
+blocks of the product operators of the blocks (`reindex_blockConfigEquiv_symm_piKronecker`).
 
 ## Main definitions
 
@@ -28,7 +28,7 @@ blocks of the product operators of the blocks (`reindex_blockConfigEquiv_symm_pr
 
 * `ManyBody.reindex_blockConfigEquiv_place` — an operator placed on a region of blocks is the
   operator placed on its preimage.
-* `ManyBody.reindex_blockConfigEquiv_symm_prodOp` — a product operator on the sites is, on the
+* `ManyBody.reindex_blockConfigEquiv_symm_piKronecker` — a product operator on the sites is, on the
   blocks, the product over the blocks of the product operators of the blocks.
 -/
 
@@ -103,14 +103,14 @@ theorem reindex_blockConfigEquiv_place {X : V → Type} [∀ v, DecidableEq (X v
 omit [DecidableEq V] in
 /-- Blocking a product operator gives the product over the blocks of the product operators of
 the blocks: `⊗_v m_v` read on the blocked system is `⊗_b ⊗_{f v = b} m_v`. -/
-theorem reindex_blockConfigEquiv_symm_prodOp {X Y : V → Type}
+theorem reindex_blockConfigEquiv_symm_piKronecker {X Y : V → Type}
     (m : (v : V) → Matrix (X v) (Y v) ℂ) :
-    reindex (blockConfigEquiv f X).symm (blockConfigEquiv f Y).symm (prodOp m) =
-      prodOp fun b ↦ prodOp fun v : {v // v ∈ blockPreimage f {b}} ↦ m v := by
+    reindex (blockConfigEquiv f X).symm (blockConfigEquiv f Y).symm (piKronecker m) =
+      piKronecker fun b ↦ piKronecker fun v : {v // v ∈ blockPreimage f {b}} ↦ m v := by
   ext z w
-  rw [reindex_apply, submatrix_apply, prodOp_apply, prodOp_apply, Equiv.symm_symm,
+  rw [reindex_apply, submatrix_apply, piKronecker_apply, piKronecker_apply, Equiv.symm_symm,
     Equiv.symm_symm]
-  simp only [prodOp_apply]
+  simp only [piKronecker_apply]
   rw [← Fintype.prod_sigma (fun p : (Σ b : V', {v // v ∈ blockPreimage f {b}}) ↦
     m p.2 (z p.1 p.2) (w p.1 p.2))]
   refine Fintype.prod_equiv

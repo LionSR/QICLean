@@ -58,30 +58,30 @@ This is the tensor-order step used to pass from one-copy selected-marginal
 domination to independent copies in the September 24, 2026 area-law
 manuscript, `07-comparators.tex`, proof of `comparator:sharp-upper`.
 -/
-theorem Matrix.finKronecker_mono
-    {N : ℕ} {I : Fin N → Type*} [∀ i, Fintype (I i)]
+theorem Matrix.piKronecker_mono
+    {N : ℕ} {I : Fin N → Type*} [∀ i, Finite (I i)]
     (A B : (i : Fin N) → Matrix (I i) (I i) ℂ)
     (hA : ∀ i, (A i).PosSemidef) (hAB : ∀ i, A i ≤ B i) :
-    Matrix.finKronecker A ≤ Matrix.finKronecker B := by
+    Matrix.piKronecker A ≤ Matrix.piKronecker B := by
   revert I
   induction N
   case succ N ih =>
     intro I _ A B hA hAB
     have htail := ih (Fin.tail A) (Fin.tail B)
       (fun i ↦ hA i.succ) (fun i ↦ hAB i.succ)
-    have htailPSD := Matrix.finKronecker_posSemidef
+    have htailPSD := Matrix.piKronecker_posSemidef
       (Fin.tail A) (fun i ↦ hA i.succ)
     have hB₀ : (B 0).PosSemidef :=
       Matrix.nonneg_iff_posSemidef.mp ((hA 0).nonneg.trans (hAB 0))
     rw [Matrix.le_iff,
       ← Matrix.posSemidef_submatrix_equiv
-        (M := Matrix.finKronecker B - Matrix.finKronecker A) (Fin.consEquiv I),
-      Matrix.submatrix_sub, Pi.sub_apply, Pi.sub_apply, Matrix.finKronecker_submatrix_cons,
-      Matrix.finKronecker_submatrix_cons, ← Matrix.le_iff]
+        (M := Matrix.piKronecker B - Matrix.piKronecker A) (Fin.consEquiv I),
+      Matrix.submatrix_sub, Pi.sub_apply, Pi.sub_apply, Matrix.piKronecker_submatrix_cons,
+      Matrix.piKronecker_submatrix_cons, ← Matrix.le_iff]
     exact Matrix.kronecker_mono_of_posSemidef (hAB 0) htail hB₀ htailPSD
   case zero =>
     intro I _ A B _ _
-    exact le_of_eq (congrArg Matrix.finKronecker (Subsingleton.elim A B))
+    exact le_of_eq (congrArg Matrix.piKronecker (Subsingleton.elim A B))
 
 /-- A product of positive contractions, pulled back along an injective configuration map,
 is a positive contraction. Empty factors and empty index types are allowed. -/
@@ -103,13 +103,13 @@ theorem Matrix.prod_le_one_of_injective
     funext b
     obtain ⟨i, rfl⟩ := e.symm.surjective b
     exact congrFun h i
-  have h := Matrix.finKronecker_mono (fun i ↦ A (e.symm i)) (fun _ ↦ 1)
+  have h := Matrix.piKronecker_mono (fun i ↦ A (e.symm i)) (fun _ ↦ 1)
     (fun i ↦ hA (e.symm i)) (fun i ↦ hAle (e.symm i))
   have hs := (Matrix.le_iff.mp h).submatrix g
   apply Matrix.le_iff.mpr
   convert hs using 1
   ext x y
-  simp only [Matrix.submatrix_apply, Matrix.sub_apply, Matrix.finKronecker_apply, Matrix.of_apply]
+  simp only [Matrix.submatrix_apply, Matrix.sub_apply, Matrix.piKronecker_apply, Matrix.of_apply]
   have hp : (∏ i, A (e.symm i) (g x i) (g y i)) = ∏ b, A b (f x b) (f y b) :=
     e.symm.prod_comp (fun b ↦ A b (f x b) (f y b))
   rw [hp]

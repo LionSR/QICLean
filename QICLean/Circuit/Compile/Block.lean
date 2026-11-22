@@ -142,7 +142,7 @@ private theorem kraus_split (L : Layer Γ KrausGate X X)
       Fintype.prod_eq_one _ fun t ↦ by
         change (1 : Matrix (X t) (X t) ℂ) (w₀ t) (x t) = 1
         rw [hfree t, one_apply_eq]
-    rw [prodOp_apply, kraus_apply, kraus_apply, hprod, h₂, mul_one, mul_comm]
+    rw [piKronecker_apply, kraus_apply, kraus_apply, hprod, h₂, mul_one, mul_comm]
     congr 1
     exact Fintype.prod_congr _ _ fun b ↦ by
       change (L.gate b).op _ (fun v ↦ w₀ v) _ = _

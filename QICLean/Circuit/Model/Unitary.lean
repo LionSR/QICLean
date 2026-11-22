@@ -405,7 +405,7 @@ def onsite (u : (s : S) → Matrix (X s) (X s) ℂ) (hu : ∀ s, u s ∈ unitary
 
 /-- The operator of one-site unitaries is their tensor product. -/
 theorem op_onsite (u : (s : S) → Matrix (X s) (X s) ℂ) (hu : ∀ s, u s ∈ unitaryGroup (X s) ℂ) :
-    (onsite (Γ := Γ) u hu).op = prodOp u :=
+    (onsite (Γ := Γ) u hu).op = piKronecker u :=
   (op_ofLayer _ _ (fun b ↦ absurd b.2 (Finset.notMem_empty _), fun _ ↦ ())).trans
     (Layer.kraus_ofOnsite _ _ _)
 
@@ -518,8 +518,8 @@ theorem pow (h : IsUnitaryCircuit Γ T U) (k : ℕ) : IsUnitaryCircuit Γ (k * T
   | succ k ih => simpa only [pow_succ, Nat.succ_mul] using ih.mul h
 
 /-- One-site unitaries at every site form a circuit of depth `0`. -/
-theorem prodOp {u : (s : S) → Matrix (X s) (X s) ℂ} (hu : ∀ s, u s ∈ unitaryGroup (X s) ℂ)
-    (T : ℕ) : IsUnitaryCircuit Γ T (ManyBody.prodOp u) :=
+theorem piKronecker {u : (s : S) → Matrix (X s) (X s) ℂ} (hu : ∀ s, u s ∈ unitaryGroup (X s) ℂ)
+    (T : ℕ) : IsUnitaryCircuit Γ T (Matrix.piKronecker u) :=
   ⟨UnitaryCircuit.onsite u hu, (UnitaryCircuit.depth_onsite u hu).trans_le (Nat.zero_le T),
     UnitaryCircuit.op_onsite u hu⟩
 
@@ -589,8 +589,8 @@ theorem list_prod (l : List (Matrix (Config X) (Config X) ℂ))
     exact (hl U List.mem_cons_self).mul (ih fun V h ↦ hl V (List.mem_cons_of_mem U h))
 
 /-- One-site unitaries at every site cost nothing. -/
-theorem prodOp {u : (s : S) → Matrix (X s) (X s) ℂ} (hu : ∀ s, u s ∈ unitaryGroup (X s) ℂ)
-    (K : ℕ) : IsGateProduct Γ K (ManyBody.prodOp u) :=
+theorem piKronecker {u : (s : S) → Matrix (X s) (X s) ℂ} (hu : ∀ s, u s ∈ unitaryGroup (X s) ℂ)
+    (K : ℕ) : IsGateProduct Γ K (Matrix.piKronecker u) :=
   ⟨UnitaryCircuit.onsite u hu, (UnitaryCircuit.gateCount_onsite u hu).trans_le (Nat.zero_le K),
     UnitaryCircuit.op_onsite u hu⟩
 
@@ -627,18 +627,19 @@ theorem list_prod_map {ι : Type*} (l : List ι) (F : ι → Matrix (Config X) (
 omit [∀ s, Fintype (X s)] in
 /-- The placement of a matrix on one site is the product operator with that matrix at the site
 and the identity elsewhere. -/
-private theorem place_singleton_eq_prodOp (a : S)
+private theorem place_singleton_eq_piKronecker (a : S)
     (V : Matrix (RegionConfig X {a}) (RegionConfig X {a}) ℂ) :
-    ManyBody.place {a} V = ManyBody.prodOp (Function.update (fun s ↦ (1 : Matrix (X s) (X s) ℂ)) a
+    ManyBody.place {a} V =
+      Matrix.piKronecker (Function.update (fun s ↦ (1 : Matrix (X s) (X s) ℂ)) a
       (V.submatrix (siteEquiv X a).symm (siteEquiv X a).symm)) := by
-  rw [← placeAt_eq_prodOp, ← place_siteEquiv_eq_placeAt, submatrix_submatrix,
+  rw [← placeAt_eq_piKronecker, ← place_siteEquiv_eq_placeAt, submatrix_submatrix,
     Equiv.symm_comp_self, submatrix_id_id]
 
 /-- A unitary on one site is an onsite family and costs nothing. -/
 theorem place_singleton (a : S) {V : Matrix (RegionConfig X {a}) (RegionConfig X {a}) ℂ}
     (hV : V ∈ unitaryGroup _ ℂ) (K : ℕ) : IsGateProduct Γ K (ManyBody.place {a} V) := by
-  rw [place_singleton_eq_prodOp]
-  refine prodOp (fun s ↦ ?_) K
+  rw [place_singleton_eq_piKronecker]
+  refine piKronecker (fun s ↦ ?_) K
   by_cases hs : s = a
   · subst hs
     rw [Function.update_self]
@@ -700,12 +701,12 @@ end IsPreparedInDepth
 omit [∀ s, DecidableEq (X s)] in
 /-- The expectation of a product operator in a product vector is the product of the expectations
 at the sites. -/
-private theorem dotProduct_prodOp_mulVec (v : (s : S) → X s → ℂ)
+private theorem dotProduct_piKronecker_mulVec (v : (s : S) → X s → ℂ)
     (m : (s : S) → Matrix (X s) (X s) ℂ) :
     star (fun σ : Config X ↦ ∏ s, v s (σ s)) ⬝ᵥ
-        (ManyBody.prodOp m *ᵥ fun σ : Config X ↦ ∏ s, v s (σ s)) =
+        (Matrix.piKronecker m *ᵥ fun σ : Config X ↦ ∏ s, v s (σ s)) =
       ∏ s, star (v s) ⬝ᵥ (m s *ᵥ v s) := by
-  simp only [dotProduct, mulVec, prodOp_apply, Pi.star_apply, star_prod, Finset.mul_sum,
+  simp only [dotProduct, mulVec, piKronecker_apply, Pi.star_apply, star_prod, Finset.mul_sum,
     ← Finset.prod_mul_distrib]
   rw [Finset.prod_univ_sum]
   refine Fintype.sum_congr _ _ fun σ ↦ ?_
@@ -726,8 +727,8 @@ theorem dotProduct_prod_mul_mul (v : (s : S) → X s → ℂ) {D D' : Finset S}
         (B *ᵥ fun σ : Config X ↦ ∏ s, v s (σ s))) := by
   set φ : Config X → ℂ := fun σ ↦ ∏ s, v s (σ s)
   have hφ : star φ ⬝ᵥ φ =
-      star φ ⬝ᵥ (ManyBody.prodOp (fun s ↦ (1 : Matrix (X s) (X s) ℂ)) *ᵥ φ) := by
-    rw [prodOp_one, Matrix.one_mulVec]
+      star φ ⬝ᵥ (Matrix.piKronecker (fun s ↦ (1 : Matrix (X s) (X s) ℂ)) *ᵥ φ) := by
+    rw [piKronecker_one, Matrix.one_mulVec]
   let f : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config X) (Config X) ℂ →ₗ[ℂ] ℂ :=
     LinearMap.mk₂ ℂ (fun A B ↦ star φ ⬝ᵥ ((A * B) *ᵥ φ) * (star φ ⬝ᵥ φ))
       (by simp [Matrix.add_mulVec, add_mul])
@@ -742,8 +743,8 @@ theorem dotProduct_prod_mul_mul (v : (s : S) → X s → ℂ) {D D' : Finset S}
       (by simp [Matrix.smul_mulVec, dotProduct_smul, mul_left_comm])
   refine eq_of_mem_supportedOperators₂ f g (fun m m' hm hm' ↦ ?_) hA hB
   simp only [f, g, LinearMap.mk₂_apply]
-  rw [hφ, prodOp_mul, dotProduct_prodOp_mulVec, dotProduct_prodOp_mulVec,
-    dotProduct_prodOp_mulVec, dotProduct_prodOp_mulVec, ← Finset.prod_mul_distrib,
+  rw [hφ, piKronecker_mul, dotProduct_piKronecker_mulVec, dotProduct_piKronecker_mulVec,
+    dotProduct_piKronecker_mulVec, dotProduct_piKronecker_mulVec, ← Finset.prod_mul_distrib,
     ← Finset.prod_mul_distrib]
   refine Finset.prod_congr rfl fun s _ ↦ ?_
   by_cases hs : s ∈ D

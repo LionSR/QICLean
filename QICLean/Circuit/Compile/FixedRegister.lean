@@ -76,7 +76,7 @@ theorem exists_seq_encoded {B q : ℕ} (hB : B ≤ q) :
       simp only [LinearMap.comp_apply] at h ⊢
       rw [map_seq_cons, show seq ([] : List (Layer Γ KrausGate (Qudits S q) (Qudits S q))) =
         done _ from rfl, map_done, LinearMap.id_comp, ← map_ofLayer, h,
-        map_ofLayer_ofOnsite_single, prodOp_one, conjTranspose_one, Matrix.one_mul,
+        map_ofLayer_ofOnsite_single, piKronecker_one, conjTranspose_one, Matrix.one_mul,
         Matrix.mul_one, map_done, LinearMap.id_apply]
   | X, Z, _, _, _, _, step (Y := Y) L next, hc, hu, hdim, e, f => by
     have : ∀ s, Nonempty (X s) := fun s ↦ (Nat.card_pos_iff.mp (hdim.1 s (Finset.mem_univ s)).1).1

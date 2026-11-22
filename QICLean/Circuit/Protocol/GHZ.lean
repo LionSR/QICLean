@@ -255,21 +255,6 @@ private theorem kraus_ofCells_permMatrix_mulVec {S : Type} [Fintype S] [Decidabl
   simp only [mulVec, dotProduct, hentry, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq,
     Finset.mem_univ, ite_true, Function.comp_apply]
 
-/-- A product of permutation matrices acts on vectors by relabelling the configurations. -/
-private theorem prodOp_permMatrix_mulVec {S : Type} [Fintype S] [DecidableEq S] {X : S → Type}
-    [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] (e : (s : S) → Equiv.Perm (X s))
-    (w : Config X → ℂ) :
-    prodOp (fun s ↦ (e s).permMatrix ℂ) *ᵥ w = fun x ↦ w fun s ↦ e s (x s) := by
-  funext x
-  rw [mulVec, dotProduct, Finset.sum_eq_single (fun s ↦ e s (x s))]
-  · rw [prodOp_apply, Fintype.prod_eq_one _ fun s ↦ by rw [permMatrix_apply', ite_eq_left rfl],
-      one_mul]
-  · intro y _ hy
-    obtain ⟨s, hs⟩ := Function.ne_iff.mp hy
-    rw [prodOp_apply, Finset.prod_eq_zero (Finset.mem_univ s)
-      (by rw [permMatrix_apply', ite_eq_right (Ne.symm hs)]), zero_mul]
-  · simp
-
 section Ring
 
 variable [NeZero M]
@@ -642,11 +627,11 @@ Source: arXiv:2103.13367, Example 1 ("Given the output `{k_j}`, we finally apply
 `⊗ₙ (σ^x_n)^{∑_{m=2}^n k_m}` to the spins"), for qudits. -/
 theorem ghzProtocol_output (α : β → ℂ)
     (m : RegionConfig (fun _ : Fin (M * 2) ↦ β) ghzMeasured) :
-    (prodOp (ghzCorrection m) * place ghzMeasured (single m m 1) * ghzCircuit.op) *ᵥ
+    (piKronecker (ghzCorrection m) * place ghzMeasured (single m m 1) * ghzCircuit.op) *ᵥ
       (fun σ ↦ ∏ s, ghzInitial α s (σ s)) = withZeroAncillas (ghzState α) := by
   rw [← mulVec_mulVec, ← mulVec_mulVec, ghzCircuit_op_mulVec, single_eq_diagonal]
-  change prodOp (fun s ↦ (Equiv.addRight (shiftOf m s)).permMatrix ℂ) *ᵥ _ = _
-  rw [prodOp_permMatrix_mulVec]
+  change piKronecker (fun s ↦ (Equiv.addRight (shiftOf m s)).permMatrix ℂ) *ᵥ _ = _
+  rw [piKronecker_permMatrix_mulVec]
   funext x
   simp only [Equiv.coe_addRight]
   rw [place_diagonal_mulVec]

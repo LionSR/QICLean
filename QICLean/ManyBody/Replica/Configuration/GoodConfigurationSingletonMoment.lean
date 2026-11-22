@@ -232,7 +232,7 @@ theorem trace_replicaGoodConfigurationMarginal_exp_singleton_labelEntropy
       NormedSpace.exp ((a : ℂ) •
         labelEntropy (subsystemPerm Bᶜ.card ι {j.castAdd 2}))).trace =
       (‖WithLp.toLp 2 w‖ ^ 2 : ℂ) *
-        (finKronecker (fun _ : Fin Bᶜ.card ↦ ρ) *
+        (piKronecker (fun _ : Fin Bᶜ.card ↦ ρ) *
           NormedSpace.exp ((a : ℂ) •
             labelEntropy (copyPerm (ι (j.castAdd 2)) Bᶜ.card))).trace := by
   intro w e ρ

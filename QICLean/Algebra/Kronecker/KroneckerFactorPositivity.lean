@@ -10,6 +10,7 @@ import Mathlib.Analysis.RCLike.Basic
 import Mathlib.LinearAlgebra.Matrix.Kronecker
 import Mathlib.LinearAlgebra.Matrix.PosDef
 import Mathlib.LinearAlgebra.Matrix.Trace
+import QICLean.Algebra.Kronecker.PiKronecker
 
 /-!
 # Positive rescaling of the factors of a positive Kronecker product
@@ -35,7 +36,7 @@ a complex matrix is determined by its quadratic form.
   factors.
 - `Matrix.star_dotProduct_kronecker_mulVec_prod`: on a product vector the
   quadratic form of a Kronecker product factors.
-- `Matrix.finKronecker_posSemidef`: a finite Kronecker product of positive
+- `Matrix.piKronecker_posSemidef`: a finite Kronecker product of positive
   semidefinite matrices is positive semidefinite.
 - `Matrix.exists_smul_posSemidef_of_kronecker_posSemidef`: the positive
   rescaling of the two factors of a nonzero positive semidefinite Kronecker
@@ -45,7 +46,7 @@ a complex matrix is determined by its quadratic form.
   previous result represent the same product.
 - `Matrix.exists_pos_real_smul_eq_of_smul_posSemidef`: the phase of a
   positive rescaling of a nonzero matrix is unique.
-- `Matrix.exists_pi_smul_posSemidef_of_finKronecker_posSemidef`: every factor
+- `Matrix.exists_pi_smul_posSemidef_of_piKronecker_posSemidef`: every factor
   of one finite nonzero positive Kronecker product can be rescaled positively,
   with product-one rescaling coefficients.
 -/
@@ -295,95 +296,41 @@ theorem exists_pos_real_smul_eq_of_smul_posSemidef
     exact hc₁ (hscalar M hM c₁ hMzero)
   · exact htpos
 
-/-! ### An `N`-ary Kronecker product -/
-
-/-- The iterated Kronecker product of a family of square matrices indexed by
-`Fin N`, each with its own (possibly varying) index type. Its `(x, y)` entry
-is the product of the `n`-th factor's `(x n, y n)` entry over every position
-`n`. -/
-def finKronecker {N : ℕ} {α : Fin N → Type*} [∀ n, Fintype (α n)]
-    (A : (n : Fin N) → Matrix (α n) (α n) ℂ) :
-    Matrix ((n : Fin N) → α n) ((n : Fin N) → α n) ℂ :=
-  Matrix.of fun x y => ∏ n, A n (x n) (y n)
-
-@[simp] lemma finKronecker_apply {N : ℕ} {α : Fin N → Type*} [∀ n, Fintype (α n)]
-    (A : (n : Fin N) → Matrix (α n) (α n) ℂ) (x y : (n : Fin N) → α n) :
-    finKronecker A x y = ∏ n, A n (x n) (y n) :=
-  rfl
+/-! ### Kronecker products over the sites `Fin N` -/
 
 /-- Separating the first tensor factor is a change of coordinates. -/
-theorem finKronecker_submatrix_cons {N : ℕ} {J : Fin (N + 1) → Type*}
-    [∀ i, Fintype (J i)] (A : (i : Fin (N + 1)) → Matrix (J i) (J i) ℂ) :
-    (finKronecker A).submatrix (Fin.consEquiv J) (Fin.consEquiv J) =
-      A 0 ⊗ₖ finKronecker (Fin.tail A) := by
+theorem piKronecker_submatrix_cons {N : ℕ} {J : Fin (N + 1) → Type*}
+    (A : (i : Fin (N + 1)) → Matrix (J i) (J i) ℂ) :
+    (piKronecker A).submatrix (Fin.consEquiv J) (Fin.consEquiv J) =
+      A 0 ⊗ₖ piKronecker (Fin.tail A) := by
   ext ⟨a, x⟩ ⟨b, y⟩
-  rw [submatrix_apply, finKronecker_apply, kroneckerMap_apply, Fin.prod_univ_succ]
-  simp [Fin.cons_zero, Fin.cons_succ, finKronecker_apply, Fin.tail]
+  rw [submatrix_apply, piKronecker_apply, kroneckerMap_apply, Fin.prod_univ_succ]
+  simp [Fin.cons_zero, Fin.cons_succ, piKronecker_apply, Fin.tail]
 
 /-- A finite Kronecker product of positive semidefinite matrices is positive
 semidefinite. -/
-theorem finKronecker_posSemidef :
-    ∀ {N : ℕ} {I : Fin N → Type*} [∀ i, Fintype (I i)]
+theorem piKronecker_posSemidef :
+    ∀ {N : ℕ} {I : Fin N → Type*} [∀ i, Finite (I i)]
       (M : (i : Fin N) → Matrix (I i) (I i) ℂ),
-      (∀ i, (M i).PosSemidef) → (finKronecker M).PosSemidef := by
+      (∀ i, (M i).PosSemidef) → (piKronecker M).PosSemidef := by
   intro N
   induction N with
   | zero =>
       intro I _ M hM
-      have hOne : finKronecker M = 1 := by
+      have hOne : piKronecker M = 1 := by
         ext x y
         have hxy : x = y := Subsingleton.elim x y
         subst y
-        simp [finKronecker_apply]
+        simp [piKronecker_apply]
       rw [hOne]
       exact PosSemidef.one
   | succ N ih =>
       intro I _ M hM
       have htail := ih (Fin.tail M) (fun i ↦ hM i.succ)
       have hprod := (hM 0).kronecker htail
-      rw [← posSemidef_submatrix_equiv (M := finKronecker M) (Fin.consEquiv I)]
-      rw [finKronecker_submatrix_cons]
+      rw [← posSemidef_submatrix_equiv (M := piKronecker M) (Fin.consEquiv I)]
+      rw [piKronecker_submatrix_cons]
       exact hprod
-
-/-- A finite Kronecker product of nonzero matrices is nonzero: the entry at a
-choice of nonzero-witnessing row/column pair for each factor is itself
-nonzero. -/
-theorem finKronecker_ne_zero {N : ℕ} {α : Fin N → Type*} [∀ n, Fintype (α n)]
-    {A : (n : Fin N) → Matrix (α n) (α n) ℂ} (hA : ∀ n, A n ≠ 0) :
-    finKronecker A ≠ 0 := by
-  classical
-  have hentry : ∀ n, ∃ p q : α n, A n p q ≠ 0 := by
-    intro n
-    by_contra h
-    push Not at h
-    exact hA n (by ext p q; exact h p q)
-  choose p q hpq using hentry
-  intro h0
-  have h1 := congrFun (congrFun h0 p) q
-  rw [finKronecker_apply] at h1
-  simp only [Matrix.zero_apply] at h1
-  obtain ⟨n, -, hn⟩ := Finset.prod_eq_zero_iff.mp h1
-  exact hpq n hn
-
-/-- Rescaling one factor of a finite Kronecker product by a scalar rescales
-the whole product by that scalar. -/
-theorem finKronecker_update_smul {N : ℕ} {α : Fin N → Type*} [∀ n, Fintype (α n)]
-    (A : (n : Fin N) → Matrix (α n) (α n) ℂ) (i : Fin N) (c : ℂ) :
-    finKronecker (Function.update A i (c • A i)) = c • finKronecker A := by
-  classical
-  ext x y
-  simp only [finKronecker_apply, Matrix.smul_apply, smul_eq_mul]
-  have hpt : ∀ n, (Function.update A i (c • A i)) n (x n) (y n) =
-      Function.update (fun n => A n (x n) (y n)) i (c * A i (x i) (y i)) n := by
-    intro n
-    rcases eq_or_ne n i with rfl | hn
-    · simp
-    · simp [Function.update_of_ne hn]
-  rw [Finset.prod_congr rfl (fun n _ => hpt n),
-    Finset.prod_update_of_mem (Finset.mem_univ i),
-    Finset.prod_eq_mul_prod_sdiff_singleton_of_mem (Finset.mem_univ i)
-      (fun n => A n (x n) (y n))]
-  ring
 
 /-- **Positive rescaling of a finite Kronecker product.** If a Kronecker
 product of finitely many nonzero factors, indexed by `Fin N`, is positive
@@ -392,10 +339,10 @@ product is `1`, such that rescaling every factor by its scalar makes it
 positive semidefinite. This is the `N`-ary generalization of
 `exists_smul_posSemidef_of_kronecker_posSemidef`, obtained by peeling off one
 factor at a time. -/
-theorem exists_pi_smul_posSemidef_of_finKronecker_posSemidef :
-    ∀ {N : ℕ}, 1 ≤ N → ∀ {α : Fin N → Type*} [∀ n, Fintype (α n)]
+theorem exists_pi_smul_posSemidef_of_piKronecker_posSemidef :
+    ∀ {N : ℕ}, 1 ≤ N → ∀ {α : Fin N → Type*} [∀ n, Finite (α n)]
       (A : (n : Fin N) → Matrix (α n) (α n) ℂ),
-      (finKronecker A).PosSemidef → (∀ n, A n ≠ 0) →
+      (piKronecker A).PosSemidef → (∀ n, A n ≠ 0) →
       ∃ c : Fin N → ℂ, (∀ n, c n ≠ 0) ∧ (∏ n, c n = 1) ∧
         ∀ n, (c n • A n).PosSemidef := by
   intro N hN
@@ -405,39 +352,39 @@ theorem exists_pi_smul_posSemidef_of_finKronecker_posSemidef :
     refine ⟨fun _ => 1, fun _ => one_ne_zero, by simp, fun n => ?_⟩
     obtain rfl : n = 0 := Subsingleton.elim n 0
     simp only [one_smul]
-    have he : (finKronecker A).submatrix (Equiv.piUnique α).symm (Equiv.piUnique α).symm
+    have he : (piKronecker A).submatrix (Equiv.piUnique α).symm (Equiv.piUnique α).symm
         = A 0 := by
       ext p q
-      change finKronecker A ((Equiv.piUnique α).symm p) ((Equiv.piUnique α).symm q) = A 0 p q
+      change piKronecker A ((Equiv.piUnique α).symm p) ((Equiv.piUnique α).symm q) = A 0 p q
       have hp : (Equiv.piUnique α).symm p 0 = p := uniqueElim_default p
       have hq : (Equiv.piUnique α).symm q 0 = q := uniqueElim_default q
-      rw [finKronecker_apply, Fin.prod_univ_one, hp, hq]
+      rw [piKronecker_apply, Fin.prod_univ_one, hp, hq]
     rw [← he]
     exact hA.submatrix _
   | succ N hN ih =>
     intro α _ A hA hAne
     classical
     have : NeZero N := ⟨by omega⟩
-    have hsplit : (finKronecker A).submatrix (Fin.consEquiv α) (Fin.consEquiv α) =
-        (A 0) ⊗ₖ (finKronecker (Fin.tail A)) := by
+    have hsplit : (piKronecker A).submatrix (Fin.consEquiv α) (Fin.consEquiv α) =
+        (A 0) ⊗ₖ (piKronecker (Fin.tail A)) := by
       ext p q
       obtain ⟨a, f⟩ := p
       obtain ⟨b, g⟩ := q
-      change finKronecker A (Fin.cons a f) (Fin.cons b g) = _
-      rw [finKronecker_apply, Matrix.kroneckerMap_apply, Fin.prod_univ_succ]
-      simp [Fin.cons_zero, Fin.cons_succ, finKronecker_apply, Fin.tail]
-    have hAB : ((A 0) ⊗ₖ (finKronecker (Fin.tail A))).PosSemidef := by
+      change piKronecker A (Fin.cons a f) (Fin.cons b g) = _
+      rw [piKronecker_apply, Matrix.kroneckerMap_apply, Fin.prod_univ_succ]
+      simp [Fin.cons_zero, Fin.cons_succ, piKronecker_apply, Fin.tail]
+    have hAB : ((A 0) ⊗ₖ (piKronecker (Fin.tail A))).PosSemidef := by
       rw [← hsplit]
       exact hA.submatrix _
     have htailNe : ∀ j : Fin N, Fin.tail A j ≠ 0 := fun j => hAne j.succ
-    have hBne : finKronecker (Fin.tail A) ≠ 0 := finKronecker_ne_zero htailNe
+    have hBne : piKronecker (Fin.tail A) ≠ 0 := piKronecker_ne_zero htailNe
     obtain ⟨c₀, hc₀, hpos0, hposB, -⟩ :=
       exists_smul_posSemidef_of_kronecker_posSemidef hAB (hAne 0) hBne
     -- Absorb `c₀⁻¹` into the first factor of `Fin.tail A` and recurse.
     set A' : (j : Fin N) → Matrix (α j.succ) (α j.succ) ℂ :=
       Function.update (Fin.tail A) 0 (c₀⁻¹ • Fin.tail A 0) with hA'_def
-    have hA'pos : (finKronecker A').PosSemidef := by
-      rw [hA'_def, finKronecker_update_smul]
+    have hA'pos : (piKronecker A').PosSemidef := by
+      rw [hA'_def, piKronecker_update_smul]
       exact hposB
     have hA'ne : ∀ j, A' j ≠ 0 := by
       intro j

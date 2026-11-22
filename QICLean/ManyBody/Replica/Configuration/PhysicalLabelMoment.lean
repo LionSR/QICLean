@@ -58,7 +58,7 @@ theorem trace_exp_labelEntropy_replicaExcitationComponent_eq
         (x.2.2, fun i => (x.1.1 ((Finset.equivFin Bᶜ) (Finset.complSubtypeEquiv B i)),
           x.2.1 ((Finset.equivFin Bᶜ) (Finset.complSubtypeEquiv B i)))), x.1.2)
     let F := PermutationRepresentation.labelEntropy (TensorPower.copyPerm Q m)
-    let ρ := finKronecker (fun _ : Fin m => partialTraceRight (vecMulVec Ω (star Ω)))
+    let ρ := piKronecker (fun _ : Fin m => partialTraceRight (vecMulVec Ω (star Ω)))
     (vecMulVec f (star f) * NormedSpace.exp ((a : ℂ) •
       ((F ⊗ₖ (1 : Matrix K K ℂ)) ⊗ₖ
         (1 : Matrix ((Fin m → T) × (↥B → Q × T))

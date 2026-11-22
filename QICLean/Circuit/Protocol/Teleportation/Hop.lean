@@ -50,7 +50,7 @@ correction.
 
 * `QuantumCircuit.place_single_self_mulVec_apply` — a placed matrix unit `|m⟩⟨m|` is the
   projection onto the configurations restricting to `m`.
-* `QuantumCircuit.prodOp_update_one_mulVec_apply` — a one-site operator on a vector.
+* `QuantumCircuit.piKronecker_update_one_mulVec_apply` — a one-site operator on a vector.
 * `QuantumCircuit.IsZeroOn.mulVec_of_mem_supportedOperators`,
   `QuantumCircuit.IsZeroOn.sitePermOp_mulVec_image`,
   `QuantumCircuit.IsZeroOn.sitePermOp_mulVec_of_mapsTo`.
@@ -119,11 +119,11 @@ theorem commute_place_single (D D' : Finset S) (z : Config X) :
 
 /-- **A one-site operator on a vector.** The operator `u` at the site `t` and the identity
 elsewhere maps `v` to `y ↦ ∑ⱼ u_{y_t, j} v(y[t ↦ j])`. -/
-theorem prodOp_update_one_mulVec_apply (t : S) (u : Matrix (X t) (X t) ℂ) (v : Config X → ℂ)
+theorem piKronecker_update_one_mulVec_apply (t : S) (u : Matrix (X t) (X t) ℂ) (v : Config X → ℂ)
     (y : Config X) :
-    (prodOp (Function.update (fun s ↦ (1 : Matrix (X s) (X s) ℂ)) t u) *ᵥ v) y =
+    (piKronecker (Function.update (fun s ↦ (1 : Matrix (X s) (X s) ℂ)) t u) *ᵥ v) y =
       ∑ j, u (y t) j * v (Function.update y t j) := by
-  rw [← placeAt_eq_prodOp t u, placeAt_mulVec_apply]
+  rw [← placeAt_eq_piKronecker t u, placeAt_mulVec_apply]
 
 end Projection
 
@@ -197,11 +197,12 @@ theorem IsZeroOn.mulVec_of_mem_supportedOperators {D T : Finset S}
     (place_mem_supportedOperators _) hA hDT).eq, ← mulVec_mulVec, h]
 
 /-- A one-site operator at a site outside `D` keeps `|0⟩` at the sites of `D`. -/
-theorem IsZeroOn.prodOp_update_one_mulVec {D : Finset S} {v : Config (Qudits S d) → ℂ}
+theorem IsZeroOn.piKronecker_update_one_mulVec {D : Finset S} {v : Config (Qudits S d) → ℂ}
     (h : IsZeroOn D v) {t : S} (ht : t ∉ D) (u : Matrix (Fin d) (Fin d) ℂ) :
-    IsZeroOn D (prodOp (Function.update (fun _ ↦ (1 : Matrix (Fin d) (Fin d) ℂ)) t u) *ᵥ v) := by
+    IsZeroOn D
+      (piKronecker (Function.update (fun _ ↦ (1 : Matrix (Fin d) (Fin d) ℂ)) t u) *ᵥ v) := by
   intro y hy i hi
-  rw [prodOp_update_one_mulVec_apply] at hy
+  rw [piKronecker_update_one_mulVec_apply] at hy
   obtain ⟨j, -, hj⟩ := Finset.exists_ne_zero_of_sum_ne_zero hy
   have := h _ (right_ne_zero_of_mul hj) i hi
   rwa [Function.update_of_ne (by rintro rfl; exact ht hi)] at this
@@ -396,7 +397,7 @@ nearest-neighbour entangled pair). -/
 theorem pre_mulVec (z : Config (Qudits S d)) {v : Config (Qudits S d) → ℂ}
     (hv : IsZeroOn {h.e, h.f} v) :
     h.pre z *ᵥ v = (d : ℂ)⁻¹ •
-      (prodOp (h.frame z) *ᵥ (sitePermOp (Equiv.swap h.c h.f) *ᵥ v)) := by
+      (piKronecker (h.frame z) *ᵥ (sitePermOp (Equiv.swap h.c h.f) *ᵥ v)) := by
   have hce := h.c_ne_e
   have hcf := h.c_ne_f
   have hef := h.e_ne_f
@@ -451,15 +452,15 @@ theorem pre_mulVec (z : Config (Qudits S d)) {v : Config (Qudits S d) → ℂ}
       exact ha (by rw [h', add_sub_cancel_left])
     · simp
   -- The frame is a product of three one-site operators.
-  have hframe : prodOp (h.frame z) =
-      prodOp (Function.update (fun _ ↦ (1 : Matrix (Fin d) (Fin d) ℂ)) h.c
+  have hframe : piKronecker (h.frame z) =
+      piKronecker (Function.update (fun _ ↦ (1 : Matrix (Fin d) (Fin d) ℂ)) h.c
           (Equiv.Perm.permMatrix ℂ (Equiv.subRight (z h.c)))) *
-        (prodOp (Function.update (fun _ ↦ (1 : Matrix (Fin d) (Fin d) ℂ)) h.e
+        (piKronecker (Function.update (fun _ ↦ (1 : Matrix (Fin d) (Fin d) ℂ)) h.e
             (Equiv.Perm.permMatrix ℂ (Equiv.subRight (z h.e)))) *
-          prodOp (Function.update (fun _ ↦ (1 : Matrix (Fin d) (Fin d) ℂ)) h.f
+          piKronecker (Function.update (fun _ ↦ (1 : Matrix (Fin d) (Fin d) ℂ)) h.f
             (Equiv.Perm.permMatrix ℂ (Equiv.subRight (z h.e)) * diagonal fun q : Fin d ↦
               Complex.exp (2 * Real.pi * Complex.I / d) ^ ((z h.c : ℕ) * q)))) := by
-    rw [prodOp_mul, prodOp_mul]
+    rw [piKronecker_mul, piKronecker_mul]
     congr 1
     funext i
     simp only [frame, Function.update_apply, Pi.one_apply]
@@ -471,7 +472,7 @@ theorem pre_mulVec (z : Config (Qudits S d)) {v : Config (Qudits S d) → ℂ}
     rw [pre, ← mulVec_mulVec, ← mulVec_mulVec, place_single_self_mulVec_apply]
     simp
   rw [hL, hG2, Pi.smul_apply, smul_eq_mul, hframe, ← mulVec_mulVec, ← mulVec_mulVec]
-  simp only [prodOp_update_one_mulVec_apply, sitePermOp_mulVec, Equiv.Perm.permMatrix,
+  simp only [piKronecker_update_one_mulVec_apply, sitePermOp_mulVec, Equiv.Perm.permMatrix,
     PEquiv.toMatrix_apply, Equiv.toPEquiv_apply, Option.mem_def, Option.some.injEq, mul_apply,
     diagonal_apply, mul_ite, mul_zero, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq,
     Finset.sum_ite_eq', Finset.mem_univ, Equiv.subRight_apply, Function.update_apply,

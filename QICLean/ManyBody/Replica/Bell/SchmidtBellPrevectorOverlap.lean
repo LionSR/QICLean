@@ -81,7 +81,7 @@ Source: `07-comparators.tex`, lines 283–290 and 346–354. -/
 theorem inner_schmidtBellSitePrevector (hz : 0 < z)
     (ell : IrrepLabel (Equiv.Perm (Fin k))) (φ : EuclideanSpace ℂ M)
     (hφ : toEuclideanLin
-      ((finKronecker fun _ : Fin k ↦ selectedBellProjection Ω E) ⊗ₖ
+      ((piKronecker fun _ : Fin k ↦ selectedBellProjection Ω E) ⊗ₖ
         (1 : Matrix (TensorPower.Config k ι) (TensorPower.Config k ι) ℂ)) φ = φ) :
     let post : EuclideanSpace ℂ M := WithLp.toLp 2
       (fun x ↦ (∏ j, selectedBellVector Ω E (x.1 j)) *
@@ -93,15 +93,15 @@ theorem inner_schmidtBellSitePrevector (hz : 0 < z)
           ((1 : Matrix (Fin k → A × E) (Fin k → A × E) ℂ) ⊗ₖ
             labelProj (subsystemPerm k ι {none}) ell) post⟫_ℂ := by
   intro post
-  let P := (finKronecker fun _ : Fin k ↦ selectedBellProjection Ω E) ⊗ₖ
+  let P := (piKronecker fun _ : Fin k ↦ selectedBellProjection Ω E) ⊗ₖ
     (1 : Matrix (TensorPower.Config k ι) (TensorPower.Config k ι) ℂ)
   let Q := (1 : Matrix (Fin k → A × E) (Fin k → A × E) ℂ) ⊗ₖ
     labelProj (subsystemPerm k ι {none}) ell
   let c : ℂ := ((Real.sqrt z : ℂ) / (E.card : ℂ)) ^ k
-  have hBell : (finKronecker fun _ : Fin k ↦ selectedBellProjection Ω E).IsHermitian :=
-    (isStarProjection_finKronecker_selectedBellProjection Ω E k hz).isSelfAdjoint.isHermitian
+  have hBell : (piKronecker fun _ : Fin k ↦ selectedBellProjection Ω E).IsHermitian :=
+    (isStarProjection_piKronecker_selectedBellProjection Ω E k hz).isSelfAdjoint.isHermitian
   have hP : P.IsHermitian := by
-    change (finKronecker (fun _ : Fin k ↦ selectedBellProjection Ω E) ⊗ₖ
+    change (piKronecker (fun _ : Fin k ↦ selectedBellProjection Ω E) ⊗ₖ
       (1 : Matrix (TensorPower.Config k ι) (TensorPower.Config k ι) ℂ))ᴴ = _
     rw [conjTranspose_kronecker, hBell.eq, conjTranspose_one]
   have hpin := selectedBellProjection_replicaPrevector_site β X E k Ω hz ell

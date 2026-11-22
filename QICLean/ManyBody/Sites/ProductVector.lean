@@ -18,7 +18,7 @@ diagonal entries of a product of operators supported on disjoint regions factori
 Moved from TNLean, `TNLean/Circuit/ProductVector.lean`, `TNLean/Circuit/SupportedOperators.lean`
 and `TNLean/Circuit/SupportedMatrixElements.lean` at commit `49b78ed821` (Apache-2.0).
 Changes: any finite set of sites with any basis `X v` at the site `v`, in place of one local
-dimension `d`; the product operators are `ManyBody.prodOp` (TNLean's `Matrix.rectKronecker`),
+dimension `d`; the product operators are `Matrix.piKronecker` (TNLean's `Matrix.rectKronecker`),
 and the expectations are written `star ψ ⬝ᵥ (A *ᵥ ψ)` (TNLean's `QuantumCircuit.expect`).
 
 ## Main definitions
@@ -29,8 +29,8 @@ and the expectations are written `star ψ ⬝ᵥ (A *ᵥ ψ)` (TNLean's `Quantum
 
 * `QuantumCircuit.smul_productVector`, `QuantumCircuit.productVector_pi_smul` : scalars and
   product vectors.
-* `QuantumCircuit.prodOp_mulVec_productVector` : `(⊗_v m_v) (⊗_v |φ_v⟩) = ⊗_v m_v|φ_v⟩`.
-* `QuantumCircuit.star_productVector_dotProduct_prodOp_mulVec` : the expectation of a product
+* `QuantumCircuit.piKronecker_mulVec_productVector` : `(⊗_v m_v) (⊗_v |φ_v⟩) = ⊗_v m_v|φ_v⟩`.
+* `QuantumCircuit.star_productVector_dotProduct_piKronecker_mulVec` : the expectation of a product
   operator in a product vector is `∏_v ⟨φ_v|m_v|φ_v⟩`.
 * `QuantumCircuit.productVector_single` : computational-basis vectors are product vectors.
 * `QuantumCircuit.mul_apply_eq_mul_of_mem_supportedOperators` : diagonal entries of products of
@@ -76,9 +76,9 @@ theorem productVector_pi_smul (c : V → ℂ) (φ : (v : V) → X v → ℂ) :
 
 /-- A product operator maps a product vector to the product of the images:
 `(⊗_v m_v) (⊗_v |φ_v⟩) = ⊗_v m_v|φ_v⟩`. The on-site matrices may be rectangular. -/
-theorem prodOp_mulVec_productVector [DecidableEq V] {Y : V → Type*} [∀ v, Fintype (Y v)]
+theorem piKronecker_mulVec_productVector [DecidableEq V] {Y : V → Type*} [∀ v, Fintype (Y v)]
     (m : (v : V) → Matrix (X v) (Y v) ℂ) (φ : (v : V) → Y v → ℂ) :
-    prodOp m *ᵥ productVector φ = productVector fun v ↦ m v *ᵥ φ v := by
+    piKronecker m *ᵥ productVector φ = productVector fun v ↦ m v *ᵥ φ v := by
   funext σ
   simp only [mulVec, dotProduct, productVector]
   rw [Finset.prod_univ_sum]
@@ -86,11 +86,11 @@ theorem prodOp_mulVec_productVector [DecidableEq V] {Y : V → Type*} [∀ v, Fi
 
 /-- The expectation of a product operator `⊗_v m_v` in a product vector `⊗_v |φ_v⟩` is
 `∏_v ⟨φ_v|m_v|φ_v⟩`. -/
-theorem star_productVector_dotProduct_prodOp_mulVec [DecidableEq V] [∀ v, Fintype (X v)]
+theorem star_productVector_dotProduct_piKronecker_mulVec [DecidableEq V] [∀ v, Fintype (X v)]
     (φ : (v : V) → X v → ℂ) (m : (v : V) → Matrix (X v) (X v) ℂ) :
-    star (productVector φ) ⬝ᵥ (prodOp m *ᵥ productVector φ) =
+    star (productVector φ) ⬝ᵥ (piKronecker m *ᵥ productVector φ) =
       ∏ v, star (φ v) ⬝ᵥ (m v *ᵥ φ v) := by
-  rw [prodOp_mulVec_productVector]
+  rw [piKronecker_mulVec_productVector]
   simp only [dotProduct, productVector, Pi.star_apply, star_prod, ← Finset.prod_mul_distrib]
   exact (Finset.prod_univ_sum (t := fun _ ↦ Finset.univ)
     (f := fun v (a : X v) ↦ star (φ v a) * (m v *ᵥ φ v) a)).symm

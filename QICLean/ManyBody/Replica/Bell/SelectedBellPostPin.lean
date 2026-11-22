@@ -130,7 +130,7 @@ theorem bellPin_schmidtBellPrevector_eq_selectedBellPost
       toEuclideanLin Q (selectedBellPost β Ω X E k) := by
   intro z ΩX J Pe P v Q
   let τ := ManyBody.schmidtBellWitnessEquiv β X E k
-  let R := (finKronecker fun _ : Fin k ↦ selectedBellProjection ΩX E) ⊗ₖ
+  let R := (piKronecker fun _ : Fin k ↦ selectedBellProjection ΩX E) ⊗ₖ
     (1 : Matrix (Config k ιe) (Config k ιe) ℂ)
   let Qw := (1 : Matrix L L ℂ) ⊗ₖ labelProj (subsystemPerm k ιe {none}) ell
   let post : EuclideanSpace ℂ (L × Config k ιe) := WithLp.toLp 2

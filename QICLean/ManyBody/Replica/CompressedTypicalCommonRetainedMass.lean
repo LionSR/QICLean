@@ -113,7 +113,7 @@ theorem exists_norm_sq_one_sub_labelCutoff_compressedTypicalSite_prod_le_exp
         (regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E :=
     regionEntropy_compressedTypicalSiteState_le β Ω X B hXB E hΩ hz
   obtain ⟨c, hc, htail⟩ :=
-    hρ.exists_re_trace_one_sub_labelCutoff_finKronecker_le_exp htr hs
+    hρ.exists_re_trace_one_sub_labelCutoff_piKronecker_le_exp htr hs
   refine ⟨c, hc, ?_⟩
   intro k hk
   rw [norm_sq_one_sub_labelCutoff_subsystemPerm_prod]
