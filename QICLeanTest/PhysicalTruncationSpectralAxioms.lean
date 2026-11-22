@@ -3,12 +3,12 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Algebra.MatrixToEuclidean
-import QICLean.Analysis.EnergyTruncation
-import QICLean.Analysis.GroundEnergyBounds
-import QICLean.Analysis.LowEnergyCluster
-import QICLean.Analysis.SeparatedQuadraticForms
-import QICLean.Analysis.SpectralExponentialWeights
+import QICLean.Analysis.Norm.MatrixToEuclidean
+import QICLean.Spectral.Filter.EnergyTruncation
+import QICLean.Spectral.Eigenvalue.GroundEnergyBounds
+import QICLean.Spectral.LowEnergy.Cluster
+import QICLean.Spectral.Gap.SeparatedQuadraticForms
+import QICLean.Spectral.Filter.ExponentialWeights
 import Lean.Elab.Command
 import Lean.Util.CollectAxioms
 

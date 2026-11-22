@@ -40,7 +40,7 @@ claim a spatial circuit theorem or the source QCcc phase classification.
 
 ## Regression contract
 
-`QICLeanTest/EnvironmentDilation.lean` checks a prescribed nonzero environment basis,
+`QICLeanTest/Channel/Dilation/EnvironmentDilation.lean` checks a prescribed nonzero environment basis,
 a qutrit channel with a nine-dimensional environment, arbitrary external references,
 the zero-wire boundary, correlated intermediate operators, and the composed unitary.
 Guarded axiom assertions require only `propext`, `Classical.choice`, and `Quot.sound`.

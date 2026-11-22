@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Circuit.Core.Layer
 import QICLean.ManyBody.Sites.Partition
-import QICLean.Algebra.FiniteKroneckerOrder
+import QICLean.Analysis.Order.FiniteKroneckerOrder
 
 /-!
 # The Heisenberg picture of a layer

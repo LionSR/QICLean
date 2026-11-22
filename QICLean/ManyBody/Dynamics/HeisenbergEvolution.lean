@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
-import QICLean.Analysis.HermitianUnitaryPath
+import QICLean.Analysis.Exponential.HermitianUnitaryPath
 
 /-!
 # The Heisenberg picture

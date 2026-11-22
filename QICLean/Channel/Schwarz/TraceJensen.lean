@@ -3,10 +3,10 @@ Copyright (c) 2026 Sirui Lu and QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Sirui Lu
 -/
-import QICLean.Analysis.TraceConvexFunctions
-import QICLean.Analysis.OrthogonalResolution
-import QICLean.Analysis.HermitianEigenbasisFunctionalCalculus
-import QICLean.Analysis.CfcConjugation
+import QICLean.Analysis.Convexity.TraceConvexFunctions
+import QICLean.Analysis.FunctionalCalculus.OrthogonalResolution
+import QICLean.Analysis.FunctionalCalculus.TraceCFC
+import QICLean.Analysis.FunctionalCalculus.CfcConjugation
 import QICLean.Channel.Basic
 
 /-!

@@ -20,7 +20,7 @@ Moved from TNLean, `TNLean/Circuit/DisjointRelativeEvolution.lean` at commit
 `71c1185e9352a3b5237b37a6840640751da6ca2d`. Changes: an arbitrary system of sites in place of
 `ι → Fin q`; `ManyBody.regionExpectation` in place of `siteExpectation q`, so `[NeZero q]` is
 gone; the ordered-product rule `MatrixEvolution.hasDerivAt_ordered_prod_of_commute` moved to
-`QICLean/Analysis/UnitaryEvolution`.
+`QICLean/Analysis/Exponential/UnitaryEvolution`.
 
 ## Main definitions
 

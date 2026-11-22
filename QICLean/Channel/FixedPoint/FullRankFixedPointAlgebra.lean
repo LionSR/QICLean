@@ -7,7 +7,7 @@ import QICLean.Channel.FixedPoint.AbstractAlgebra
 import QICLean.Channel.FixedPoint.MaximalSupportBasic
 import QICLean.Channel.FixedPoint.MeanErgodicAdjoint
 import QICLean.Channel.Schwarz.TwoPositive
-import QICLean.Algebra.StarSubalgebraBlockForm
+import QICLean.Algebra.StarSubalgebra.BlockForm
 
 /-!
 # The fixed-point algebra from a full-rank fixed point

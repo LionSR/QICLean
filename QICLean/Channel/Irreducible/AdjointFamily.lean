@@ -5,7 +5,7 @@ Authors: TNLean contributors
 -/
 import QICLean.Channel.FixedPoint.StationarySupportRestriction
 import QICLean.Channel.Irreducible.Basic
-import QICLean.Channel.KrausMap
+import QICLean.Channel.KrausMap.KrausMap
 
 /-!
 # Irreducibility and the trace adjoint

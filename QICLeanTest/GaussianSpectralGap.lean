@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.GaussianFilter.SpectralGap
+import QICLean.Spectral.Filter.Gaussian.SpectralGap
 
 /-!
 # Consumers of the Gaussian spectral gap estimate
@@ -11,7 +11,7 @@ import QICLean.Analysis.GaussianFilter.SpectralGap
 These checks include arbitrary input norm, zero Gaussian width, an exactly
 synthesized Gaussian vector, and a two-dimensional Hamiltonian at negative
 energy with a non-real, unnormalized input. The shifted projector fixture adapts
-`QICLeanTest/PositiveGapUniqueness.lean`; no Gaussian integral is assumed here.
+`QICLeanTest/Spectral/Gap/PositiveGapUniqueness.lean`; no Gaussian integral is assumed here.
 -/
 
 open Complex Matrix

@@ -4,8 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Channel.Basic
-import QICLean.Algebra.FrobeniusHilbert
-import QICLean.Algebra.MatrixTracePairing
+import QICLean.Analysis.Norm.FrobeniusHilbert
+import QICLean.Algebra.Matrix.MatrixTracePairing
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Analysis.Matrix.Order
 import Mathlib.LinearAlgebra.Matrix.Vec

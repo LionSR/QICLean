@@ -3,9 +3,9 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Algebra.EigenspaceMap
-import QICLean.Analysis.Dirichlet
-import QICLean.Analysis.OperatorNormConvergence
+import QICLean.Spectral.Eigenvalue.EigenspaceMap
+import QICLean.Analysis.Real.Dirichlet
+import QICLean.Analysis.Norm.OperatorNormConvergence
 import QICLean.Channel.FixedPoint.MeanErgodicProjection
 import QICLean.Channel.Peripheral.SpectralProjection
 import QICLean.Channel.Semigroup.CPClosure

@@ -3,9 +3,9 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Algebra.MatrixOperatorSpace
+import QICLean.Analysis.Norm.MatrixOperatorSpace
 import QICLean.Channel.Determinant.Bound
-import QICLean.Channel.KrausMap
+import QICLean.Channel.KrausMap.KrausMap
 import QICLean.Channel.PerronFrobenius.Existence
 import QICLean.Channel.Schwarz.SchwarzSubnormal
 import Mathlib.Analysis.Normed.Algebra.Spectrum

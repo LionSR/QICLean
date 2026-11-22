@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Algebra.OverlapGraph
+import QICLean.Algebra.Combinatorics.OverlapGraph
 import QICLean.Analysis.ClusterExpansion.ClusterPart
 
 /-!
@@ -18,7 +18,8 @@ describes the clusters of a union of mutually separated sets of terms.
 
 Moved from TNLean (`e113e005`): `TNLean/Lattice/ClusterExpansion/Truncation.lean` and
 `SeparatedClusterSupports.lean`, in the namespace `ClusterExpansion`. The overlap graph is
-`SimpleGraph.overlapGraph` of `QICLean/Algebra/OverlapGraph.lean`; TNLean's copy is not ported.
+`SimpleGraph.overlapGraph` of `QICLean/Algebra/Combinatorics/OverlapGraph.lean`; TNLean's copy
+is not ported.
 -/
 
 /-!

@@ -1,4 +1,4 @@
-import QICLean.Analysis.SpectralTailTraceNorm
+import QICLean.Spectral.Eigenvalue.TailTraceNorm
 
 /-! # Axiom guards for Ky-Fan tail stabilization -/
 

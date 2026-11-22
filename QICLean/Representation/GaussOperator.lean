@@ -4,9 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import Mathlib.Basic.Complex.Basic
-import QICLean.Algebra.MonomialMatrix
-import QICLean.Algebra.UnitaryFactorizationComparison
-import QICLean.Representation.FiniteGroupUnitaryAverage
+import QICLean.Algebra.Matrix.MonomialMatrix
+import QICLean.Algebra.Unitary.UnitaryFactorizationComparison
+import QICLean.Representation.Twirl.FiniteGroupUnitaryAverage
 
 /-!
 # Local Gauss operators of a finite group

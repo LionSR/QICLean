@@ -27,7 +27,7 @@ included without extra hypotheses.
 ## Public declaration audit
 
 All 16 public declarations are covered by guarded `#print axioms` checks in
-`QICLeanTest/PoissonWordCountsAxioms.lean`:
+`QICLeanTest/Probability/PoissonWord/PoissonWordCountsAxioms.lean`:
 
 - `WordMultiplicity.countsFinsupp`
 - `WordMultiplicity.sum_counts`
@@ -68,11 +68,11 @@ cache lock. No uncommitted leaf copies were used. Every check enabled:
 -DwarningAsError=true
 ```
 
-- `QICLean/Algebra/WordMultiplicity.lean`: pass at `4461092`; its unchanged
+- `QICLean/Algebra/Word/WordMultiplicity.lean`: pass at `4461092`; its unchanged
   source was checked again and emitted at `033adfa`.
-- `QICLean/Probability/PoissonWordCounts.lean`: pass and emitted at `d7b78ac`.
-- `QICLeanTest/PoissonWordCounts.lean`: pass at `f5cadb4`.
-- `QICLeanTest/PoissonWordCountsAxioms.lean`: pass at `f5cadb4`.
+- `QICLean/Probability/PoissonWord/PoissonWordCounts.lean`: pass and emitted at `d7b78ac`.
+- `QICLeanTest/Probability/PoissonWord/PoissonWordCounts.lean`: pass at `f5cadb4`.
+- `QICLeanTest/Probability/PoissonWord/PoissonWordCountsAxioms.lean`: pass at `f5cadb4`.
 
 The eight consumer examples check actual positional counts for the word
 `[0, 1, 0]`, multiplicities `(2, 1)` and `(2, 2)`, a mismatched fixed length,

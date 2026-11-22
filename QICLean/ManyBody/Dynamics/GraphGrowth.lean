@@ -7,8 +7,8 @@ import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecificLimits.Basic
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.Finite
 import Mathlib.Combinatorics.SimpleGraph.Walk.Counting
-import QICLean.Analysis.LowEnergyBasis.Recursive
-import QICLean.Analysis.PowerExponential
+import QICLean.Spectral.LowEnergy.Basis.Recursive
+import QICLean.Analysis.Real.PowerExponential
 import QICLean.ManyBody.Sites.GraphBall
 
 /-!

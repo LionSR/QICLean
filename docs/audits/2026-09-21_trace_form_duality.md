@@ -15,7 +15,7 @@ arguments need.
 
 ## Added
 
-`QICLean/Algebra/TraceFormDuality.lean` collects the duality criterion and its
+`QICLean/Algebra/Matrix/TraceFormDuality.lean` collects the duality criterion and its
 trace-pairing instances.
 
 | Declaration | Content |

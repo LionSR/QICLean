@@ -3,9 +3,9 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.UnitarySchurTriangularization
+import QICLean.Spectral.Jordan.UnitarySchurTriangularization
 import QICLean.Channel.Determinant.Basic
-import QICLean.Channel.KrausRank
+import QICLean.Channel.KrausMap.KrausRank
 import QICLean.Channel.TransferMatrix
 import Mathlib.Analysis.SpecificLimits.Basic
 import Mathlib.LinearAlgebra.Matrix.Block

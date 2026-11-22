@@ -11,7 +11,7 @@ at X(0)=I gives delta(M)=[Z,M], where Z=X'(0). Adjoint preservation implies
 
 The three matrix-unit declarations move byte-for-byte from the downstream
 TNLean.MPS.Symmetry.LocalVirtualGauge module into
-QICLean.Algebra.MatrixUnitConjugator, with their names and signatures retained:
+QICLean.Algebra.MatrixAlgebra.MatrixUnitConjugator, with their names and signatures retained:
 - Matrix.matrixUnitConjugator
 - Matrix.matrixUnitConjugator_eq_smul
 - Matrix.matrixUnitConjugator_intertwines

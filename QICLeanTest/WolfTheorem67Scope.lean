@@ -3,9 +3,9 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Channel.ChoiJamiolkowski
-import QICLean.Channel.WolfTheorem67
-import QICLean.Channel.WolfTheorem68
+import QICLean.Channel.Choi.Jamiolkowski
+import QICLean.Channel.Peripheral.PrimitivePositiveMap
+import QICLean.Kraus.Wielandt.PrimitiveCriterion
 
 /-! Independent scope and boundary regressions for primitive positive maps. -/
 

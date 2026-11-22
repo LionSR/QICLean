@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Circuit.Gate.ExactSubspaceAmplification
-import QICLean.Algebra.ComplexSqrt
+import QICLean.Analysis.Real.ComplexSqrt
 import Mathlib.LinearAlgebra.Matrix.DotProduct
 import Mathlib.LinearAlgebra.Matrix.Hermitian
 import Mathlib.Tactic.Linarith

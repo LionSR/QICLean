@@ -79,7 +79,7 @@ The first formal theorems established only the implication in
 declarations:
     \leanid{Matrix.reductionCriterion_left} and
     \leanid{Matrix.reductionCriterion_right} in
-    \doclink{QICLean/Channel/ReductionCriterion}.}
+    \doclink{QICLean/Channel/Positive/ReductionCriterion}.}
 For a bipartite matrix $\rho$ and $n\geq1$, they prove
 \begin{align}
     (T_n\otimes\operatorname{id})(\rho)\geq0
@@ -103,7 +103,7 @@ formalized.\footnote{Formal declaration:
 The formal predicate
 \leanid{Matrix.HasSchmidtNumberLE} records that $\rho$ is a finite sum of
 pure-state projectors whose vectors have Schmidt rank at most $n$.\footnote{The
-declaration is in \doclink{QICLean/Channel/SchmidtNumber}.}
+declaration is in \doclink{QICLean/Channel/Entanglement/SchmidtNumber}.}
 This is the convex decomposition used in Ref.~\cite{Wolf2012Quantum}, up to
 normalization. At $n=1$, the predicate is equivalent to
 separability.\footnote{Formal declaration:
@@ -146,7 +146,7 @@ The required positivity threshold is
 \end{align}
 This is formalized by
 \leanid{Matrix.isNPositiveMap_tEta_iff} in
-\doclink{QICLean/Channel/NPositivityChainStrict}; the reduction map is
+\doclink{QICLean/Channel/Positive/NPositivityChainStrict}; the reduction map is
 $T_\eta$ at $\eta=n$ by \leanid{Matrix.reductionMap_eq_tEta}.
 
 \section{The rectangular forward theorem}
@@ -182,13 +182,13 @@ Summing over a Schmidt-number decomposition gives
 These results are formalized by
 \leanid{Matrix.tensorMapId_posSemidef_of_hasSchmidtRankLE} and
 \leanid{Matrix.HasSchmidtNumberLE.tensorMapId_posSemidef} in
-\doclink{QICLean/Channel/SchmidtNumber}.
+\doclink{QICLean/Channel/Entanglement/SchmidtNumber}.
 
 The older padding constructions
 \leanid{Matrix.tensorMapId_posSemidef_of_hasSchmidtRankLE_general} and
 \leanid{Matrix.HasSchmidtNumberLE.tensorMapId_posSemidef_general} remain as
 compatibility declarations in
-\doclink{QICLean/Channel/SchmidtNumberFactors}. The latter now delegates to the
+\doclink{QICLean/Channel/Entanglement/SchmidtNumberFactors}. The latter now delegates to the
 direct rectangular theorem. Neither declaration is needed for the
 source-facing positive-map characterization.
 

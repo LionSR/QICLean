@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.MatrixSqrt
+import QICLean.Analysis.FunctionalCalculus.MatrixSqrt
 import QICLean.Channel.Schwarz.PositiveMapProperties
 import QICLean.Channel.TransferMatrix
 import QICLean.Channel.Wigner.SpectrumPreserver

@@ -5,9 +5,9 @@ Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Sites.RegionUnion
 import QICLean.ManyBody.Sites.RegionMatrix
-import QICLean.Algebra.PureStateExpectation
-import QICLean.Analysis.Entropy
-import QICLean.Analysis.TraceDistance
+import QICLean.Algebra.Matrix.MatrixTracePairing
+import QICLean.Entropy.VonNeumann.Entropy
+import QICLean.Analysis.TraceNorm.TraceDistance
 
 /-!
 # Regional pure states and expectations

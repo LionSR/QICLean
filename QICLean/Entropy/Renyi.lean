@@ -9,5 +9,12 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Entropy.Renyi
 
 import QICLean.Entropy.Renyi.Defs
+import QICLean.Entropy.Renyi.FlatDensityEntropy
+import QICLean.Entropy.Renyi.MarginalSupportWhitenedChoi
+import QICLean.Entropy.Renyi.MassBound
+import QICLean.Entropy.Renyi.RankLowerBound
+import QICLean.Entropy.Renyi.SandwichedRenyi
+import QICLean.Entropy.Renyi.SandwichedRenyiTwo
 import QICLean.Entropy.Renyi.Smooth
+import QICLean.Entropy.Renyi.Tail
 import QICLean.Entropy.Renyi.VonNeumannBound

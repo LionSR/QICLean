@@ -1,6 +1,6 @@
 # Singular restoring operator norm bounds
 
-The new `QICLean.Entropy.RestoringNorm` module proves the first estimate in
+The new `QICLean.Channel.Dilation.RestoringNorm` module proves the first estimate in
 `09-amplification.tex:374–397`, pinned at
 `adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
 

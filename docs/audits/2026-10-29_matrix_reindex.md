@@ -48,7 +48,7 @@ and CFC consumers, and none of the retired unused wrappers is reintroduced.
 - Targeted build of the five production modules passed. Only twelve QICLean
   modules were compiled; all Mathlib tasks used their cached artifacts.
 - Serial direct elaboration of those five modules and
-  `QICLeanTest/MatrixReindexAxioms.lean` passed with strict implicit variables,
+  `QICLeanTest/Algebra/Matrix/MatrixReindexAxioms.lean` passed with strict implicit variables,
   the standard Mathlib linter set, and warnings treated as errors.
 - All nine declaration guards passed, including both migrated consumer theorems.
   Only `propext`, `Classical.choice`, and `Quot.sound` occur; the operator-block

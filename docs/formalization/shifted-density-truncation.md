@@ -1,6 +1,6 @@
 # Spectral truncation of shifted powers
 
-`QICLean/Analysis/ShiftedDensityTruncation.lean` proves the generic
+`QICLean/Spectral/Projection/ShiftedDensityTruncation.lean` proves the generic
 inside-space spectral estimates used in
 [OpenAI's September 24, 2026 PEPS manuscript, lines 484–502](https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/03-patches.tex#L484-L502),
 at the immutable source revision
@@ -88,7 +88,7 @@ hypotheses at each step. See also the [concept glossary](../glossary.md) and
 
 ## Regression contract
 
-`QICLeanTest/ShiftedDensityTruncation.lean` has 18 examples covering empty
+`QICLeanTest/Spectral/Projection/ShiftedDensityTruncation.lean` has 18 examples covering empty
 spaces, the zero matrix, exponent zero, singular trace-one input, a threshold
 above the spectrum, the reverse inverse-power identity, and exact threshold
 equality. Two negative examples prove that the stated tail estimate fails

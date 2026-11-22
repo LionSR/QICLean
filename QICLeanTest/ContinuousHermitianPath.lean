@@ -3,8 +3,8 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.HermitianUnitaryPath
-import QICLean.Analysis.KroneckerExponential
+import QICLean.Analysis.Exponential.HermitianUnitaryPath
+import QICLean.Analysis.Exponential.KroneckerExponential
 import Mathlib.Tactic.FinCases
 import Mathlib.Tactic.NormNum
 

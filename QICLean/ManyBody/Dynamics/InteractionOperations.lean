@@ -8,8 +8,8 @@ import QICLean.ManyBody.Sites.PairSwap
 import QICLean.ManyBody.Sites.PlaceAlong
 import QICLean.ManyBody.Sites.SitewiseProduct
 import QICLean.ManyBody.Sites.Twirl
-import QICLean.Analysis.DoubledSystemGap
-import QICLean.Analysis.KroneckerOperatorNorm
+import QICLean.Spectral.Gap.DoubledSystemGap
+import QICLean.Analysis.Norm.KroneckerOperatorNorm
 
 /-!
 # Operations on interactions

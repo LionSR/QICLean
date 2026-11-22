@@ -4,10 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Kraus.PrimitiveFixedPoint.Basic
-import QICLean.Channel.KrausMap
+import QICLean.Channel.KrausMap.KrausMap
 import QICLean.Channel.Irreducible.FixedPoint
 import QICLean.Channel.Irreducible.FromSpectral
-import QICLean.Kraus.InvariantProjection
+import QICLean.Channel.Irreducible.InvariantProjection
 
 /-!
 # Irreducibility and primitive fixed points of finite Kraus families

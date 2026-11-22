@@ -4,8 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import Mathlib.Data.Finset.Pairwise
-import QICLean.Algebra.MatrixKroneckerExt
-import QICLean.Channel.KrausFamilyDilation
+import QICLean.Algebra.Kronecker.KroneckerEmbed
+import QICLean.Channel.KrausMap.KrausFamilyDilation
 import QICLean.Circuit.Compile.Encoding
 import QICLean.Circuit.Core.LayerEntry
 import QICLean.Circuit.Core.TensorRight

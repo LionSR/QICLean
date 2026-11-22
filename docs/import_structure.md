@@ -39,8 +39,12 @@ in Circuit. The integration layer introduces no
 alternative interaction, support or evolution definitions. No debt exception is
 added for this layer; regression tests enforce both allowed and forbidden edges.
 
-Matrix foundations means `Algebra`, `Analysis`, `Topology`; single-system
-channels means `Channel`, `Kraus`. Lower prerequisites remain available at
+Matrix foundations means `Algebra`, `Analysis`, `Spectral`; single-system
+channels means `Channel`, `Kraus`. `Sites`, `Dynamics` and `Hamiltonian` may
+also import `Entropy` (entropy of one or two systems). The single-system layers
+below, and the many-body layers `ManyBody/Entropy`, `ManyBody/Subspace` and
+`ManyBody/Replica` that hold the regional modules moved out of them, are
+described in `docs/library_layers.md`. Lower prerequisites remain available at
 higher layers. Specific prefixes own modules before the enclosing `Circuit`
 prefix does. Nothing below `Circuit/Model` (Core, Geometry, Gate, Party,
 Algorithm) imports it; only `Circuit/Compile` and `Circuit/Protocol` do. Other
@@ -57,18 +61,17 @@ literals cannot manufacture commands or hide imports; `module` headers are
 recognized when expanding import-only aggregators. Lexical errors fail the check
 with a module diagnostic instead of silently dropping that module.
 
-Existing directories remain unconstrained as importers by this new layer table:
-in particular, old entropy consumers can import Sites while their definitions
-move down. Reordering all existing single-system dependencies would impose the
-follow-on F3 refactor, which is outside this change.
+Every module of a layer is now checked as an importer, including the
+single-system layers of `docs/library_layers.md`.
 
 ## Recorded debt
 
-`scripts/check_import_layers.py` records eight unordered mutual directory pairs:
-Algebra/Channel, Analysis/Channel, Analysis/Entropy, Analysis/Probability,
-Analysis/Representation, Channel/Entropy, Channel/Kraus, and
-Entropy/Representation. A pair has an edge in each direction; longer cycles
-are not covered by this ratchet. Directory identity is the first path component,
+`scripts/check_import_layers.py` recorded eight unordered mutual directory
+pairs: Algebra/Channel, Analysis/Channel, Analysis/Entropy,
+Analysis/Probability, Analysis/Representation, Channel/Entropy, Channel/Kraus,
+and Entropy/Representation. The reorganization of `docs/library_layers.md`
+removed all of them, and the record is empty. A pair has an edge in each
+direction; longer cycles are caught by the layer table. Directory identity is the first path component,
 except under `ManyBody` and `Circuit`, where it is the first two. The checker
 prints witness imports for each new pair. The imported TNLean example-import
 ratchet also starts empty: theory must not depend on worked-example directories.

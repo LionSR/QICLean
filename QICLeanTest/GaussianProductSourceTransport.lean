@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Probability.ComplexGaussian.ProductSourceTransport
+import QICLean.Probability.Gaussian.ProductSourceTransport
 
 /-! Edge-case regressions for GaussianProductSourceTransport in the compression proof. -/
 

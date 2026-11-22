@@ -4,8 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Kraus.Stochastic
-import QICLean.Channel.KrausIterateChoi
-import QICLean.Channel.ChoiJamiolkowski
+import QICLean.Kraus.Wielandt.KrausIterateChoi
+import QICLean.Channel.Choi.Jamiolkowski
 import QICLean.Kraus.Wielandt.Primitivity.VectorSpreadPositivity
 
 /-!

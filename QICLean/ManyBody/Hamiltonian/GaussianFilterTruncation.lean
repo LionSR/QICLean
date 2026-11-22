@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import Mathlib.Analysis.Convex.Integral
-import QICLean.Analysis.PowerExponential
+import QICLean.Analysis.Real.PowerExponential
 import QICLean.ManyBody.Dynamics.GraphGrowth
 import QICLean.ManyBody.Dynamics.TruncatedEvolution
 import QICLean.ManyBody.Hamiltonian.GaussianFilterLocality

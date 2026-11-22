@@ -1,5 +1,5 @@
 /- Kernel foundation audit for every public actual-Gaussian contraction declaration. -/
-import QICLean.Probability.ComplexGaussian.GaussianContraction
+import QICLean.Probability.Gaussian.GaussianContraction
 
 /-! Kernel foundation audit for all nine public Gaussian contraction declarations. -/
 

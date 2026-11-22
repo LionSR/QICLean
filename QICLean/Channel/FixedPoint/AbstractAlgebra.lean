@@ -4,8 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Channel.Schwarz.AbstractMultiplicativeDomain
-import QICLean.Algebra.MatrixAux
-import QICLean.Algebra.MatrixTracePairing
+import QICLean.Algebra.Matrix.MatrixAux
+import QICLean.Algebra.Matrix.MatrixTracePairing
 
 /-!
 # Fixed points of abstract unital Schwarz maps

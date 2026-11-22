@@ -1,10 +1,16 @@
 #!/usr/bin/env python3
-"""Enforce the QICLean many-body/circuit layers and shrinking import debt.
+"""Enforce the QICLean library layers and shrinking import debt.
 
-Ported from TNLean; see docs/import_structure.md for ownership, allowed imports,
-source revision, scope and commands. Comments are removed before parsing imports;
+Ported from TNLean; see docs/library_layers.md for the single-system layers and
+docs/import_structure.md for ownership, allowed imports, source revision, scope
+and commands. Comments are removed before parsing imports;
 import-only aggregators are expanded recursively. New and stale recorded entries
 fail; --base-ref compares with the merge base, --base-revision with an exact commit.
+
+The order of the subdirectories inside each layer is read from
+scripts/library_sublayers.json (docs/library_layers.md, "Order inside each
+layer"); an import between two subdirectories of one layer that the table does
+not allow is recorded in SUBLAYER_DEBT, which may only shrink.
 """
 
 # Adapted from LionSR/TNLean scripts/check_import_layers.py at
@@ -16,6 +22,7 @@ from __future__ import annotations
 import argparse
 import ast
 import functools
+import json
 import re
 import subprocess
 from collections.abc import Callable, Iterable, Mapping
@@ -37,10 +44,15 @@ IMPORT_COMMAND_RE = re.compile(
 
 
 # First matching prefix owns a module; specific circuit layers precede Circuit.
+# docs/library_layers.md describes the layers below ManyBody and Circuit;
+# docs/import_structure.md describes ManyBody and Circuit.
 LAYERS: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("sites", ("QICLean.ManyBody.Sites",)),
     ("dynamics", ("QICLean.ManyBody.Dynamics",)),
     ("hamiltonian", ("QICLean.ManyBody.Hamiltonian",)),
+    ("manybody_entropy", ("QICLean.ManyBody.Entropy",)),
+    ("subspace", ("QICLean.ManyBody.Subspace",)),
+    ("replica", ("QICLean.ManyBody.Replica",)),
     ("gate", ("QICLean.Circuit.Gate",)),
     ("party", ("QICLean.Circuit.Party",)),
     ("algorithm", ("QICLean.Circuit.Algorithm",)),
@@ -49,44 +61,184 @@ LAYERS: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("protocol", ("QICLean.Circuit.Protocol",)),
     ("simulation", ("QICLean.Circuit.Simulation",)),
     ("circuit", ("QICLean.Circuit",)),
-    ("matrix", ("QICLean.Algebra", "QICLean.Analysis", "QICLean.Topology")),
-    ("channel", ("QICLean.Channel", "QICLean.Kraus")),
+    ("algebra", ("QICLean.Algebra",)),
+    ("analysis", ("QICLean.Analysis",)),
+    ("spectral", ("QICLean.Spectral",)),
+    ("channel", ("QICLean.Channel",)),
+    ("kraus", ("QICLean.Kraus",)),
+    ("entropy", ("QICLean.Entropy",)),
+    ("probability", ("QICLean.Probability",)),
+    ("representation", ("QICLean.Representation",)),
 )
 
-# Existing single-system directories are classified as targets, but their
-# internal cycles are governed by MUTUAL_DIRECTORIES, not a new layer ordering.
+# The layers designed for the many-body and circuit libraries, where no
+# forwarding declaration is admitted (see check_pass_through_declarations.py).
+# The many-body layers of regional entropy, subspaces and replicas hold modules
+# moved from the single-system directories and keep their recorded forwarders.
 NEW_LAYERS = frozenset({
     "sites", "dynamics", "hamiltonian", "gate", "circuit", "party", "algorithm", "model",
     "compile", "protocol", "simulation"
 })
+# Matrices of one system, maps between matrix algebras, and the systems of one or two
+# parties that the many-body layers build on.
+MATRIX = frozenset({"algebra", "analysis", "spectral"})
+CHANNEL = frozenset({"channel", "kraus"})
+SINGLE_SYSTEM = MATRIX | CHANNEL | {"entropy"}
 ALLOWED: dict[str, frozenset[str]] = {
-    "sites": frozenset({"matrix", "channel"}),
-    "dynamics": frozenset({"matrix", "channel", "sites"}),
-    "hamiltonian": frozenset({"matrix", "channel", "sites", "dynamics"}),
-    "gate": frozenset({"matrix"}),
-    "circuit": frozenset({"matrix", "channel", "sites", "gate"}),
-    "party": frozenset({"matrix", "channel", "sites", "gate", "circuit"}),
-    "algorithm": frozenset({"matrix", "channel", "sites", "gate", "circuit"}),
-    "model": frozenset({"matrix", "channel", "sites", "gate", "circuit"}),
-    "compile": frozenset({"matrix", "channel", "sites", "gate", "circuit", "model"}),
-    "protocol": frozenset({"matrix", "channel", "sites", "gate", "circuit", "model", "compile"}),
+    # The single-system layers form a chain.
+    "algebra": frozenset(),
+    "analysis": frozenset({"algebra"}),
+    "spectral": frozenset({"algebra", "analysis"}),
+    "channel": MATRIX,
+    "kraus": MATRIX | {"channel"},
+    "entropy": MATRIX | CHANNEL,
+    "probability": SINGLE_SYSTEM,
+    "representation": SINGLE_SYSTEM | {"probability"},
+    "sites": SINGLE_SYSTEM,
+    "dynamics": SINGLE_SYSTEM | {"sites"},
+    "hamiltonian": SINGLE_SYSTEM | {"sites", "dynamics"},
+    "manybody_entropy": SINGLE_SYSTEM | {"sites", "dynamics", "hamiltonian"},
+    # Subspaces and replicas of a many-body system are siblings.
+    "subspace": SINGLE_SYSTEM | {
+        "probability", "sites", "dynamics", "hamiltonian", "manybody_entropy"
+    },
+    "replica": SINGLE_SYSTEM | {
+        "probability", "representation", "sites", "dynamics", "hamiltonian", "manybody_entropy"
+    },
+    "gate": MATRIX,
+    "circuit": MATRIX | CHANNEL | {"sites", "gate"},
+    "party": MATRIX | CHANNEL | {"sites", "gate", "circuit"},
+    "algorithm": MATRIX | CHANNEL | {"sites", "gate", "circuit"},
+    "model": MATRIX | CHANNEL | {"sites", "gate", "circuit"},
+    "compile": MATRIX | CHANNEL | {"sites", "gate", "circuit", "model"},
+    "protocol": MATRIX | CHANNEL | {"sites", "gate", "circuit", "model", "compile"},
     # QICLean #1062: simulation consumes both circuits and many-body evolution.
-    "simulation": frozenset({
-        "matrix", "channel", "sites", "gate", "circuit", "dynamics", "hamiltonian"
-    }),
+    "simulation": MATRIX | CHANNEL | {"sites", "gate", "circuit", "dynamics", "hamiltonian"},
 }
 DEBT: frozenset[str] = frozenset({})
-DEEP_ROOTS: frozenset[str] = frozenset({"ManyBody", "Circuit"})
-MUTUAL_DIRECTORIES: frozenset[str] = frozenset({
-    "Algebra <-> Channel",
-    "Analysis <-> Channel",
-    "Analysis <-> Entropy",
-    "Analysis <-> Probability",
-    "Analysis <-> Representation",
-    "Channel <-> Entropy",
-    "Channel <-> Kraus",
-    "Entropy <-> Representation",
+# The order of the subdirectories inside each layer: a module-name prefix (a layer, or a
+# part of one such as QICLean.Circuit without its own layers) maps each subdirectory, and
+# TOP_LEVEL for the modules directly below the prefix, to the subdirectories it may import
+# directly; the relation is closed transitively and must be acyclic. A module belongs to
+# the longest prefix that contains it.
+SUBLAYERS_PATH = Path(__file__).resolve().parent / "library_sublayers.json"
+TOP_LEVEL = "(top)"
+# Existing imports against that order, as "importing module -> imported module". Never
+# add an entry: move the module to the subdirectory of its objects, or move the shared
+# declaration down.
+SUBLAYER_DEBT: frozenset[str] = frozenset({
+        "QICLean.Algebra.OperatorSchmidt.LocalPolynomialSchmidtRank -> QICLean.Algebra.Kronecker.KroneckerEmbed",
+        "QICLean.Algebra.Word.OneMarkerFullCounts -> QICLean.Algebra.OperatorSchmidt.OneMarkerWeightedSchmidtRank",
+        "QICLean.Analysis.Calculus.ProjectedEvolution -> QICLean.Analysis.Exponential.MatrixFilter",
+        "QICLean.Analysis.Calculus.ProjectedEvolution -> QICLean.Analysis.Exponential.UnitaryEvolution",
+        "QICLean.Analysis.Complex.Interpolation -> QICLean.Analysis.FunctionalCalculus.SpectralPowers",
+        "QICLean.Analysis.FunctionalCalculus.CfcComplex -> QICLean.Analysis.Logarithm.LogCompression",
+        "QICLean.Analysis.FunctionalCalculus.CfcComplex -> QICLean.Analysis.Support.Power",
+        "QICLean.Analysis.FunctionalCalculus.CfcConjugation -> QICLean.Analysis.Support.ProjectionOrder",
+        "QICLean.Analysis.FunctionalCalculus.MatrixPowers -> QICLean.Analysis.Logarithm.CfcLogAdditive",
+        "QICLean.Analysis.FunctionalCalculus.RealPowerIntertwine -> QICLean.Analysis.Logarithm.LogCompression",
+        "QICLean.Analysis.FunctionalCalculus.ShiftedDensityPowers -> QICLean.Analysis.TraceInequality.MatrixTraceInequalities",
+        "QICLean.Analysis.FunctionalCalculus.SpectralKronecker -> QICLean.Analysis.Resolvent.Defect",
+        "QICLean.Analysis.FunctionalCalculus.SpectralPhase -> QICLean.Analysis.TraceInequality.EntropyHolder",
+        "QICLean.Analysis.FunctionalCalculus.ViableSubspaceSpectralProjector -> QICLean.Analysis.TensorProduct.FamilyImage",
+        "QICLean.Analysis.Isometry.IsometricDomainExtension -> QICLean.Analysis.TraceNorm.RectangularTraceNormAlgebra",
+        "QICLean.Analysis.Logarithm.CfcLogListProduct -> QICLean.Analysis.OperatorMean.FiniteTree",
+        "QICLean.Analysis.Norm.HermitianDilation -> QICLean.Analysis.TraceInequality.MatrixBernsteinInputs",
+        "QICLean.Analysis.Norm.MatrixL2Contraction -> QICLean.Analysis.TraceNorm.RectangularTraceNorm",
+        "QICLean.Analysis.Norm.SchattenVariational -> QICLean.Analysis.TraceInequality.TraceHolderSchatten",
+        "QICLean.Analysis.Norm.SchattenVariational -> QICLean.Analysis.TraceNorm.TraceNormAbs",
+        "QICLean.Analysis.Norm.TraceNormContractivity -> QICLean.Analysis.TraceNorm.TraceNormAbs",
+        "QICLean.Analysis.Norm.WeightedRectangular -> QICLean.Analysis.TraceNorm.RectangularTraceNorm",
+        "QICLean.Analysis.Order.MaximalWeightConvexDecomposition -> QICLean.Analysis.FunctionalCalculus.MatrixSqrt",
+        "QICLean.Analysis.Projection.InjectiveRangeProjector -> QICLean.Analysis.Norm.NeumannInverse",
+        "QICLean.Analysis.Projection.InvariantTensorWordPower -> QICLean.Analysis.Norm.InvariantOperatorBounds",
+        "QICLean.Analysis.Projection.InvariantTensorWordPower -> QICLean.Analysis.TensorProduct.OperatorPower",
+        "QICLean.Analysis.Projection.ReducedProjection -> QICLean.Analysis.FunctionalCalculus.MatrixSqrt",
+        "QICLean.Analysis.Projection.ReducedProjection -> QICLean.Analysis.TraceNorm.TraceNormAbs",
+        "QICLean.Analysis.Real.RenyiSlack -> QICLean.Analysis.FunctionalCalculus.SpectralPhase",
+        "QICLean.Analysis.Subspace.ViableSubspaceCoordinates -> QICLean.Analysis.FunctionalCalculus.ViableSubspaceSpectralProjector",
+        "QICLean.Analysis.Subspace.ViableSubspaceSharpTensorReduction -> QICLean.Analysis.FunctionalCalculus.ViableSubspaceSpectralProjector",
+        "QICLean.Analysis.TraceInequality.MatrixBernsteinInputs -> QICLean.Analysis.Exponential.TraceExponentialPerturbation",
+        "QICLean.Channel.Choi.Doeblin -> QICLean.Channel.SupportCompletion",
+        "QICLean.Channel.Choi.Rectangular -> QICLean.Channel.Basic",
+        "QICLean.Channel.Choi.Rectangular -> QICLean.Channel.Entanglement.MaximallyEntangled",
+        "QICLean.Channel.Choi.SupportedMarginalChannel -> QICLean.Channel.KrausMap.KrausCPTP",
+        "QICLean.Channel.Choi.WhitenedChoi -> QICLean.Channel.WeightedHilbertSchmidt",
+        "QICLean.Channel.Choi.WindowMinorization -> QICLean.Channel.FixedPoint.Cesaro",
+        "QICLean.Channel.Choi.WindowMinorization -> QICLean.Channel.OrderedRectangular",
+        "QICLean.Channel.ConditionNumberInterpolation -> QICLean.Channel.Positive.TraceNormContractionCoefficient",
+        "QICLean.Channel.ConvexFunctionalMonotonicity -> QICLean.Channel.Dilation.EnvironmentDilation",
+        "QICLean.Channel.Convexity.LiebConcavity -> QICLean.Channel.Schwarz.IntegralJensen",
+        "QICLean.Channel.Determinant.PositiveExtremality -> QICLean.Channel.PSDConeAutomorphism.RankPreservation",
+        "QICLean.Channel.Determinant.PositiveExtremality -> QICLean.Channel.Peripheral.AntilinearConjugation",
+        "QICLean.Channel.Determinant.PositiveExtremality -> QICLean.Channel.Peripheral.CesaroRecurrence",
+        "QICLean.Channel.FixedPoint.AbstractWeightedFixedPoints -> QICLean.Channel.ConditionalExpectation.DirectSumConditionalExpectation",
+        "QICLean.Channel.FixedPoint.ConditionalExpectation -> QICLean.Channel.Semigroup.CPClosure",
+        "QICLean.Channel.FixedPoint.FullSupportBlockRetraction -> QICLean.Channel.ConditionalExpectation.PositiveConditionalExpectationDirectSum",
+        "QICLean.Channel.FixedPoint.LimitingGramMetric -> QICLean.Channel.Peripheral.Primitive",
+        "QICLean.Channel.FixedPoint.MeanErgodicProjection -> QICLean.Channel.Semigroup.CPClosure",
+        "QICLean.Channel.FixedPoint.StationarySupport -> QICLean.Channel.Irreducible.Basic",
+        "QICLean.Channel.FixedPoint.StationarySupport -> QICLean.Channel.Irreducible.Ergodicity",
+        "QICLean.Channel.Irreducible.Growth.Exponential -> QICLean.Channel.Semigroup.ReducibleQDS.GeneratorCompression",
+        "QICLean.Channel.Irreducible.KrausSetup -> QICLean.Channel.PerronFrobenius.Existence",
+        "QICLean.Channel.Irreducible.SpectralRadius -> QICLean.Channel.Peripheral.Conjugation",
+        "QICLean.Channel.Irreducible.SpectralRadius -> QICLean.Channel.Peripheral.SpectralRadius",
+        "QICLean.Channel.KrausMap.KrausFamily -> QICLean.Channel.Schwarz.Basic",
+        "QICLean.Channel.KrausMap.KrausFamilyDilation -> QICLean.Channel.Dilation.Stinespring",
+        "QICLean.Channel.KrausMap.KrausFamilyTraceNorm -> QICLean.Channel.Dilation.Stinespring",
+        "QICLean.Channel.KrausMap.KrausFreedom -> QICLean.Channel.Basic",
+        "QICLean.Channel.KrausMap.KrausFreedom -> QICLean.Channel.Dilation.Stinespring",
+        "QICLean.Channel.KrausMap.KrausGauge -> QICLean.Channel.Schwarz.Basic",
+        "QICLean.Channel.KrausMap.KrausMap -> QICLean.Channel.Schwarz.Basic",
+        "QICLean.Channel.KrausMap.KrausRank -> QICLean.Channel.Schwarz.Basic",
+        "QICLean.Channel.KrausMap.KrausRepresentation -> QICLean.Channel.Basic",
+        "QICLean.Channel.OrderedCP -> QICLean.Channel.Dilation.Stinespring",
+        "QICLean.Channel.Peripheral.CesaroRecurrence -> QICLean.Channel.Semigroup.CPClosure",
+        "QICLean.Channel.Peripheral.SpectralRadius -> QICLean.Channel.PerronFrobenius.Existence",
+        "QICLean.Channel.Positive.BreuerHallIndecomposable -> QICLean.Channel.Entanglement.MaximallyEntangled",
+        "QICLean.Channel.Positive.DecomposablePPT -> QICLean.Channel.Entanglement.PartialTranspose",
+        "QICLean.Channel.Schwarz.EntropicJensen -> QICLean.Channel.OperatorMean.BlockDiagonal",
+        "QICLean.Channel.WeightedHilbertSchmidt -> QICLean.Channel.Peripheral.UnitalKraus",
+        "QICLean.Entropy.Classical.ProbabilityEntropyRankTails -> QICLean.Entropy.Relative.KleinInequality",
+        "QICLean.Entropy.Markov.InvariantConditionalFamily -> QICLean.Entropy.StrongSubadditivity.SSAEqualityPetzRecovery",
+        "QICLean.Entropy.MutualInformation.MutualInformation -> QICLean.Entropy.StrongSubadditivity.Basic",
+        "QICLean.Entropy.Recovery.PetzEqualityPrerequisites -> QICLean.Entropy.StrongSubadditivity.SSAEqualityDPI",
+        "QICLean.Entropy.Relative.MarginalPhaseSupport -> QICLean.Entropy.Conditional.MarginalPhaseComparison",
+        "QICLean.Entropy.Relative.SupportCompressedEntropy -> QICLean.Entropy.Renyi.SandwichedRenyiTwo",
+        "QICLean.Entropy.Relative.WeylRelativeEntropyIntegral -> QICLean.Entropy.Recovery.PetzEqualityPrerequisites",
+        "QICLean.Entropy.Relative.WeylSupportRelativeEntropyEquality -> QICLean.Entropy.Recovery.PetzEqualityPrerequisites",
+        "QICLean.Entropy.VonNeumann.Bipartite -> QICLean.Entropy.StrongSubadditivity.Basic",
+        "QICLean.Entropy.VonNeumann.ControlledContinuity -> QICLean.Entropy.Conditional.ConditionalEntropy",
+        "QICLean.Entropy.VonNeumann.ControlledContinuity -> QICLean.Entropy.MutualInformation.Basic",
+        "QICLean.Entropy.VonNeumann.FilterEnergy -> QICLean.Entropy.Surprisal.MarginalTails",
+        "QICLean.Entropy.VonNeumann.PureEntropy -> QICLean.Entropy.Conditional.EntropyBounds",
+        "QICLean.Probability.Measurable.CanonicalSampleProjectionMeasurable -> QICLean.Probability.Sampling.ViableSubspaceRandomSampling",
+        "QICLean.Representation.Character.WeylCharacter -> QICLean.Representation.SchurWeyl.ExteriorPieri",
+        "QICLean.Representation.Character.WeylDimension -> QICLean.Representation.SchurWeyl.SchurLabelEstimates",
+        "QICLean.Representation.Partition.HookDimension -> QICLean.Representation.SchurWeyl.BranchingPieri",
+        "QICLean.Representation.Permutation.CommutantDimension -> QICLean.Representation.TensorPower.Action",
+        "QICLean.Representation.Permutation.LabelProjectors -> QICLean.Representation.Character.IrrepLabels",
+        "QICLean.Representation.Permutation.MergeDimensions -> QICLean.Representation.Replica.SchurLabelCommutation",
+        "QICLean.Representation.Permutation.MergeDimensions -> QICLean.Representation.YoungSubgroup.GroupedCopies",
+        "QICLean.Representation.Permutation.MergeExponential -> QICLean.Representation.Replica.SchurLabelCommutation",
+        "QICLean.Representation.Permutation.TrivialLabel -> QICLean.Representation.TensorPower.Action",
+        "QICLean.Representation.SymmetricGroup.JucysRecursion -> QICLean.Representation.Character.RegularTrace",
+        "QICLean.Representation.TensorPower.CompatiblePhysicalLabel -> QICLean.Representation.Replica.SchurLabelCommutation",
+        "QICLean.Representation.TensorPower.InjectionAverage -> QICLean.Representation.Coherent.HusimiIdentity",
+        "QICLean.Representation.TensorPower.InjectionProduct -> QICLean.Representation.Coherent.UniformHusimi",
+        "QICLean.Representation.TensorPower.ReplicaMeanIdentityExtension -> QICLean.Representation.SchurWeyl.Commutant",
+        "QICLean.Representation.TensorPower.Rpow -> QICLean.Representation.Twirl.UnitaryTwirl",
+        "QICLean.Representation.TensorPower.SplitCopies -> QICLean.Representation.Character.Branching",
+        "QICLean.Representation.TensorPower.SplitCopies -> QICLean.Representation.Twirl.UnitaryTwirl",
+        "QICLean.Spectral.Eigenvalue.CompressionEnergyBounds -> QICLean.Spectral.LowEnergy.RitzCompression",
+        "QICLean.Spectral.Eigenvalue.HermitianSpectrumPreserver -> QICLean.Spectral.Perturbation.HermitianSpectrumPerturbation",
+        "QICLean.Spectral.Eigenvalue.TensorEnergyMinimum -> QICLean.Spectral.LowEnergy.RitzCompression",
+        "QICLean.Spectral.Eigenvalue.VariationalBound -> QICLean.Spectral.Filter.Gaussian.CommutatorSeries",
+        "QICLean.Spectral.Gap.GroundProjection -> QICLean.Spectral.Filter.Gaussian.SpectralGap",
+        "QICLean.Spectral.Perturbation.ClusterNormPerturbation -> QICLean.Spectral.LowEnergy.Order",
 })
+DEEP_ROOTS: frozenset[str] = frozenset({"ManyBody", "Circuit"})
+MUTUAL_DIRECTORIES: frozenset[str] = frozenset({})
 EXAMPLES_IMPORTS: frozenset[str] = frozenset({})
 
 
@@ -163,13 +315,14 @@ def resolved_imports(sources: Mapping[str, str]) -> dict[str, set[str]]:
 def violations(sources: Mapping[str, str]) -> set[str]:
     """Return every ``"A -> B"`` whose import points outside the allowed layers.
 
-    ``B`` is a module with declarations: an imported aggregator is replaced by
-    the modules it re-exports, through nested aggregators.
+    ``A`` is any module that a layer owns. ``B`` is a module with declarations:
+    an imported aggregator is replaced by the modules it re-exports, through
+    nested aggregators.
     """
     found: set[str] = set()
     for module, targets in resolved_imports(sources).items():
         layer = layer_of(module)
-        if layer not in NEW_LAYERS:
+        if layer is None:
             continue
         for target_module in targets:
             target = layer_of(target_module)
@@ -215,6 +368,76 @@ def mutual_directories(sources: Mapping[str, str]) -> dict[str, tuple[str, str]]
         for (first, second), forward in witness.items()
         if first < second and (second, first) in witness
     }
+
+
+def load_sublayers(path: Path = SUBLAYERS_PATH) -> dict[str, dict[str, frozenset[str]]]:
+    """Read the table of subdirectory orders and close each relation transitively.
+
+    The result maps a prefix to each listed subdirectory and the subdirectories it may
+    import. A cycle, or an allowed import of a subdirectory the table does not list,
+    is an error.
+    """
+    data = json.loads(path.read_text(encoding="utf-8"))
+    return close_sublayers({prefix: table for prefix, table in data["layers"].items()})
+
+
+def close_sublayers(
+    tables: Mapping[str, Mapping[str, Iterable[str]]]
+) -> dict[str, dict[str, frozenset[str]]]:
+    """Close each table of directly allowed imports transitively; reject cycles."""
+    closed: dict[str, dict[str, frozenset[str]]] = {}
+    for prefix, table in tables.items():
+        direct = {sub: frozenset(allowed) for sub, allowed in table.items()}
+        for sub, allowed in direct.items():
+            unknown = allowed - direct.keys()
+            if unknown:
+                raise ValueError(f"{prefix}: {sub} may import unlisted {sorted(unknown)}")
+        reach: dict[str, frozenset[str]] = {}
+
+        def below(sub: str, path: tuple[str, ...]) -> frozenset[str]:
+            if sub in path:
+                cycle = " -> ".join(path[path.index(sub):] + (sub,))
+                raise ValueError(f"{prefix}: the order of subdirectories has a cycle {cycle}")
+            if sub not in reach:
+                result: set[str] = set()
+                for lower in direct[sub]:
+                    result |= {lower} | below(lower, path + (sub,))
+                reach[sub] = frozenset(result)
+            return reach[sub]
+
+        closed[prefix] = {sub: below(sub, ()) for sub in direct}
+    return closed
+
+
+def sublayer_of(module: str, prefixes: Iterable[str]) -> tuple[str, str] | None:
+    """Return the prefix owning ``module`` and its subdirectory, or ``None``."""
+    owner = max((p for p in prefixes if module.startswith(p + ".")), key=len, default=None)
+    if owner is None:
+        return None
+    rest = module[len(owner) + 1:].split(".")
+    return owner, (rest[0] if len(rest) > 1 else TOP_LEVEL)
+
+
+def sublayer_violations(
+    sources: Mapping[str, str], tables: Mapping[str, Mapping[str, frozenset[str]]]
+) -> set[str]:
+    """Return every ``"A -> B"`` between two subdirectories of one layer that the order forbids.
+
+    An import from or into a subdirectory that the table does not list is forbidden.
+    """
+    found: set[str] = set()
+    for module, targets in resolved_imports(sources).items():
+        source = sublayer_of(module, tables)
+        if source is None:
+            continue
+        prefix, sub = source
+        for target_module in targets:
+            target = sublayer_of(target_module, tables)
+            if target is None or target[0] != prefix or target[1] == sub:
+                continue
+            if target[1] not in tables[prefix].get(sub, frozenset()):
+                found.add(f"{module} -> {target_module}")
+    return found
 
 
 def in_examples(module: str) -> bool:
@@ -419,7 +642,24 @@ def check_examples_imports(
     )
 
 
-RECORDS: tuple[str, ...] = ("DEBT", "MUTUAL_DIRECTORIES", "EXAMPLES_IMPORTS")
+def check_sublayers(
+    sources: Mapping[str, str],
+    tables: Mapping[str, Mapping[str, frozenset[str]]],
+    recorded: frozenset[str] = SUBLAYER_DEBT,
+    base: frozenset[str] | None = None,
+) -> list[str]:
+    """Return the error messages of the check on the order inside each layer."""
+    return ratchet_errors(
+        frozenset(sublayer_violations(sources, tables)),
+        recorded,
+        base,
+        new="Import between subdirectories of one layer against their order",
+        stale="Repaired import still listed in SUBLAYER_DEBT; remove it",
+        added="Entry added to SUBLAYER_DEBT; this set may only shrink",
+    )
+
+
+RECORDS: tuple[str, ...] = ("DEBT", "MUTUAL_DIRECTORIES", "EXAMPLES_IMPORTS", "SUBLAYER_DEBT")
 
 
 def main() -> int:
@@ -447,12 +687,20 @@ def main() -> int:
         action="store_true",
         help="print the current imports of worked examples by library modules and exit",
     )
+    parser.add_argument(
+        "--print-sublayer-debt",
+        action="store_true",
+        help="print the current imports against the order inside each layer and exit",
+    )
     args = parser.parse_args()
     root = args.root.resolve()
 
     sources = tracked_sources(root)
+    tables = load_sublayers(root / "scripts" / SUBLAYERS_PATH.name)
     printed: Iterable[str] | None = None
-    if args.print_debt:
+    if args.print_sublayer_debt:
+        printed = sublayer_violations(sources, tables)
+    elif args.print_debt:
         printed = violations(sources)
     elif args.print_mutual_directories:
         printed = mutual_directories(sources)
@@ -476,21 +724,24 @@ def main() -> int:
     errors = check_layers(sources, DEBT, base["DEBT"])
     errors += check_mutual_directories(sources, MUTUAL_DIRECTORIES, base["MUTUAL_DIRECTORIES"])
     errors += check_examples_imports(sources, EXAMPLES_IMPORTS, base["EXAMPLES_IMPORTS"])
+    errors += check_sublayers(sources, tables, SUBLAYER_DEBT, base["SUBLAYER_DEBT"])
     for message in errors:
         print(f"::error title=Import layer policy::{message}")
     if errors:
         print(
             "A lower layer must not import a higher one, two directories must not "
-            "import each other, a module outside Examples must not import a worked "
-            "example, and the recorded sets may only shrink. Move the shared "
+            "import each other, a subdirectory must not import a sibling above it in "
+            "the order of its layer, a module outside Examples must not import a "
+            "worked example, and the recorded sets may only shrink. Move the shared "
             "declaration to a module both sides may import; see "
-            "docs/import_structure.md."
+            "docs/import_structure.md and docs/library_layers.md."
         )
         return 1
     print(
         f"Import layers respected ({len(DEBT)} recorded violations, "
         f"{len(MUTUAL_DIRECTORIES)} recorded pairs of directories that import each "
-        f"other and {len(EXAMPLES_IMPORTS)} recorded imports of worked examples remain)."
+        f"other, {len(EXAMPLES_IMPORTS)} recorded imports of worked examples and "
+        f"{len(SUBLAYER_DEBT)} recorded imports against the order inside a layer remain)."
     )
     return 0
 

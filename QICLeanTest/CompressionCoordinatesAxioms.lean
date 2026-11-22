@@ -3,11 +3,11 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.OrthonormalMatrixNorm
-import QICLean.Channel.PartialTraceBlocks
-import QICLean.Channel.PartialTraceBasisInvariance
-import QICLean.Probability.MatrixTraceNormIntegrability
-import QICLean.Probability.ComplexGaussian.SourceTransportExpansion
+import QICLean.Analysis.Norm.KroneckerOperatorNorm
+import QICLean.Channel.PartialTrace.Blocks
+import QICLean.Channel.PartialTrace.BasisInvariance
+import QICLean.Probability.Concentration.MatrixTraceNormIntegrability
+import QICLean.Probability.Gaussian.ProductSourceTransport
 import Lean.Elab.Command
 import Lean.Util.CollectAxioms
 

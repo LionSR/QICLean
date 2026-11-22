@@ -22,7 +22,7 @@ The source is fixed at commit
 \href{https://github.com/openai/math}{openai/math}.
 
 \section{Proved operator consequences}
-The results in \path{QICLean/Analysis/PatchRegulator.lean} prove the following
+The results in \path{QICLean/Analysis/TraceInequality/PatchRegulator.lean} prove the following
 finite-dimensional implications. For commuting positive matrices $x,\rho$,
 $b>0$, and $\rho\le x+bI$, the actual regulator
 $T=b\rho(x+bI)^{-1}$ satisfies $0\le T\le bI$ and $T\le\rho$.
@@ -50,7 +50,7 @@ unconditional active-minimizer trace bound and Proposition 4.1 were
 unformalized.
 
 \section{Resolution}
-The continuation is proved in \path{QICLean/Entropy/PatchStationarity.lean}.
+The continuation is proved in \path{QICLean/ManyBody/Entropy/Filter/PatchStationarity.lean}.
 For an ordered list of factors with nested regions, positive exponents and
 density matrices $x_j$ minimizing $\|L_m\cdots L_1\Omega\|$ over the
 densities, every regional state $\rho_j$ of the normalized output satisfies

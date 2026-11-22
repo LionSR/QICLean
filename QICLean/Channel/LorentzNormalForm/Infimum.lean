@@ -3,9 +3,9 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Analysis.MatrixTraceInequalities
-import QICLean.Analysis.MatrixSqrt
-import QICLean.Algebra.HermitianHelpers
+import QICLean.Analysis.TraceInequality.MatrixTraceInequalities
+import QICLean.Analysis.FunctionalCalculus.MatrixSqrt
+import QICLean.Spectral.Eigenvalue.HermitianExtremalEigenvalues
 import Mathlib.Analysis.Complex.Polynomial.Basic
 import Mathlib.Analysis.Matrix.PosDef
 import Mathlib.Analysis.Matrix.Order

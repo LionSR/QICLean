@@ -3,9 +3,9 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Algebra.MatrixCongruence
-import QICLean.Algebra.MatrixOperatorSpace
-import QICLean.Analysis.SpectralRadius
+import QICLean.Algebra.Matrix.MatrixCongruence
+import QICLean.Analysis.Norm.MatrixOperatorSpace
+import QICLean.Spectral.Radius.SpectralRadius
 import QICLean.Channel.Irreducible.CollatzWielandt
 import QICLean.Channel.Irreducible.Similarity
 import QICLean.Channel.Peripheral.Conjugation

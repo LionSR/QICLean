@@ -8,18 +8,15 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Analysis.OperatorMean
 
-import QICLean.Analysis.OperatorMean.BlockDiagonal
 import QICLean.Analysis.OperatorMean.FiniteTree
-import QICLean.Analysis.OperatorMean.GeometricMeanDerivativeIntertwine
 import QICLean.Analysis.OperatorMean.GeometricMeanIntertwine
-import QICLean.Analysis.OperatorMean.LeafStateIntertwine
-import QICLean.Analysis.OperatorMean.LeafStates
-import QICLean.Analysis.OperatorMean.MatrixPowers
-import QICLean.Analysis.OperatorMean.MeanDerivative
-import QICLean.Analysis.OperatorMean.MeanTreeDerivativeIntertwine
+import QICLean.Analysis.OperatorMean.MeanTreeExponentialLowerNorm
 import QICLean.Analysis.OperatorMean.MeanTreeIntertwine
-import QICLean.Analysis.OperatorMean.PowerDerivative
-import QICLean.Analysis.OperatorMean.PowerDerivativeIntertwine
-import QICLean.Analysis.OperatorMean.RealPowerIntertwine
-import QICLean.Analysis.OperatorMean.TreeDerivative
+import QICLean.Analysis.OperatorMean.MeanTreeLogFloorExp
+import QICLean.Analysis.OperatorMean.MeanTreeMultibandLowerNorm
+import QICLean.Analysis.OperatorMean.MeanTreeProjectionLogBound
+import QICLean.Analysis.OperatorMean.MeanTreeProjectionMultibandUpper
+import QICLean.Analysis.OperatorMean.MeanTreeProjectionSectors
+import QICLean.Analysis.OperatorMean.MeanTreeProjectionUpper
+import QICLean.Analysis.OperatorMean.MeanTreeUniformExpectation
 import QICLean.Analysis.OperatorMean.WeightedGeometricMean

@@ -13,7 +13,7 @@ A region `B` cuts the sites into `B` and its complement. Given a family of suppo
 Only the supports enter: for an interaction with supports `T`, its crossing terms at `B` are
 `crossingTerms T B`.
 
-Moved from `QICLean/Entropy/SupportedMarginalTails.lean`, where it was
+Moved from `QICLean/ManyBody/Entropy/SupportedMarginalTails.lean`, where it was
 `Entropy.crossingTerms`.
 
 The crossing terms are unchanged by exchanging the region and its complement, and no support

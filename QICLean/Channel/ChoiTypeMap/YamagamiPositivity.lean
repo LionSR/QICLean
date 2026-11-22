@@ -3,9 +3,9 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.YamagamiBoundary
-import QICLean.Analysis.YamagamiCyclicMatrix
-import QICLean.Analysis.YamagamiRegularBoundary
+import QICLean.Analysis.CyclicInequality.SingularBoundary
+import QICLean.Analysis.CyclicInequality.ForwardMatrix
+import QICLean.Analysis.CyclicInequality.RegularBoundary
 import QICLean.Channel.ChoiTypeMap.Positivity
 import Mathlib.Topology.Sequences
 
@@ -152,6 +152,21 @@ private theorem functional_card_le_one_of_has_zero
       simpa [hcast] using hrecurrence
     _ ≤ 1 := hind (deleteLastCoordinate N y) hdeleted
 
+/-- The probability vectors on a finite type form a closed set. -/
+private theorem isClosed_setOf_nonneg_sum_eq_one {ι : Type*} [Fintype ι] :
+    IsClosed {w : ι → ℝ | (∀ i, 0 ≤ w i) ∧ ∑ i, w i = 1} := by
+  simp only [Set.ofPred_and, Set.ofPred_forall]
+  exact (isClosed_iInter fun i ↦ isClosed_le continuous_const (continuous_apply i)).inter
+    (isClosed_eq (by fun_prop) continuous_const)
+
+/-- The probability vectors on a finite type form a compact set. -/
+private theorem isCompact_setOf_nonneg_sum_eq_one {ι : Type*} [Fintype ι] :
+    IsCompact {w : ι → ℝ | (∀ i, 0 ≤ w i) ∧ ∑ i, w i = 1} := by
+  refine (isCompact_Icc (a := (0 : ι → ℝ)) (b := 1)).of_isClosed_subset
+    isClosed_setOf_nonneg_sum_eq_one ?_
+  rintro w ⟨h0, h1⟩
+  exact ⟨h0, fun i ↦ (Finset.single_le_sum (fun j _ ↦ h0 j) (Finset.mem_univ i)).trans_eq h1⟩
+
 private theorem functional_card_le_one_of_positive
     (N m : ℕ) [NeZero N] (hN : 3 ≤ N) (hm₁ : 1 ≤ m)
     (hm₂ : m ≤ N - 2) (x : ZMod N → ℝ) (hx : ∀ i, 0 < x i)
@@ -163,7 +178,7 @@ private theorem functional_card_le_one_of_positive
   have hxsum : 0 < ∑ i, x i :=
     Finset.sum_pos (fun i _ ↦ hx i) Finset.univ_nonempty
   let x₀ : ZMod N → ℝ := normalize N x
-  have hx₀Simplex : x₀ ∈ stdSimplex ℝ (ZMod N) :=
+  have hx₀Simplex : (∀ i, 0 ≤ x₀ i) ∧ ∑ i, x₀ i = 1 :=
     normalize_mem_stdSimplex N x (fun i ↦ (hx i).le) hxsum
   have hx₀Positive : x₀ ∈ positiveInvertibles := by
     rw [mem_positiveInvertibles]
@@ -172,16 +187,16 @@ private theorem functional_card_le_one_of_positive
       functional N m (N : ℝ) x₀ = functional N m (N : ℝ) x :=
     functional_normalize N m (N : ℝ) x hxsum.ne'
   let A : Set (ZMod N → ℝ) :=
-    {y | y ∈ stdSimplex ℝ (ZMod N) ∧ y ∈ positiveInvertibles ∧
+    {y | ((∀ i, 0 ≤ y i) ∧ ∑ i, y i = 1) ∧ y ∈ positiveInvertibles ∧
       functional N m (N : ℝ) x ≤ functional N m (N : ℝ) y}
   let K : Set (ZMod N → ℝ) := closure A
   have hx₀A : x₀ ∈ A := by
     exact ⟨hx₀Simplex, hx₀Positive, hx₀Value.ge⟩
   have hKNonempty : K.Nonempty := ⟨x₀, subset_closure hx₀A⟩
-  have hKSimplex : K ⊆ stdSimplex ℝ (ZMod N) := by
-    exact closure_minimal (fun y hy ↦ hy.1) (isClosed_stdSimplex ℝ (ZMod N))
+  have hKSimplex : K ⊆ {y : ZMod N → ℝ | (∀ i, 0 ≤ y i) ∧ ∑ i, y i = 1} := by
+    exact closure_minimal (fun y hy ↦ hy.1) isClosed_setOf_nonneg_sum_eq_one
   have hKCompact : IsCompact K :=
-    (isCompact_stdSimplex ℝ (ZMod N)).of_isClosed_subset
+    isCompact_setOf_nonneg_sum_eq_one.of_isClosed_subset
       isClosed_closure hKSimplex
   have hmN : m < N := by omega
   have hmNR : (m : ℝ) < (N : ℝ) := by exact_mod_cast hmN
@@ -260,7 +275,8 @@ private theorem functional_card_le_one_of_positive
     · have hy : ∀ i, 0 < y i := mem_positiveInvertibles.mp hyPositive
       have hysum : 0 < ∑ i, y i :=
         Finset.sum_pos (fun i _ ↦ hy i) Finset.univ_nonempty
-      have hyNormalizeSimplex : normalize N y ∈ stdSimplex ℝ (ZMod N) :=
+      have hyNormalizeSimplex :
+          (∀ i, 0 ≤ normalize N y i) ∧ ∑ i, normalize N y i = 1 :=
         normalize_mem_stdSimplex N y (fun i ↦ (hy i).le) hysum
       have hyNormalizePositive : normalize N y ∈ positiveInvertibles := by
         rw [mem_positiveInvertibles]

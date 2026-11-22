@@ -23,7 +23,7 @@ the source's extension formula. No normalization of either gauge or cocycle,
 and no normality or finiteness of the stabilizer, is assumed.
 
 **Scope restriction (coefficients):** The coefficients are `ℂˣ`; the source's coefficients
-`U(1)` are treated in `QICLean.Algebra.Cohomology.StabilizerBlockIndependenceCircle`. See
+`U(1)` are treated in `QICLean.Analysis.Cohomology.StabilizerBlockIndependenceCircle`. See
 https://sirui-lu.com/TNLean/paper-gaps/fbc25_mpu_action_stabilizer_source_audit.pdf.
 
 Moved from TNLean, `TNLean/Algebra/StabilizerBlockIndependence.lean` at commit `49b78ed821`

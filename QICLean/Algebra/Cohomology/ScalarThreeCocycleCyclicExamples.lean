@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import Mathlib.RingTheory.RootsOfUnity.Complex
-import QICLean.Algebra.BinaryCharacterSum
+import QICLean.Algebra.Combinatorics.BinaryCharacterSum
 import QICLean.Algebra.Cohomology.ScalarThreeCocycle
 
 /-!

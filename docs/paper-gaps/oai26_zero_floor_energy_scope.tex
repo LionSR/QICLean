@@ -50,7 +50,7 @@ One floor-zero norm maximizer has nonzero output and normalized energy
 excess at most $B_{\mathrm{coarse}}$.\footnote{The unchanged declarations are
 \leanid{Entropy.exists_max_feasible_chain_zero_floor_energy} and
 \leanid{Entropy.exists_max_feasible_chain_zero_floor_normalized_energy}
-in \doclink{QICLean/Entropy/FilterZeroFloorEnergy}.}
+in \doclink{QICLean/ManyBody/Entropy/Filter/ZeroFloorEnergy}.}
 These statements retain their original hypotheses and conclusions.
 
 \section{The sharp arbitrary-site estimate}
@@ -72,8 +72,8 @@ ground-state hypothesis.\footnote{The positive-floor declarations are
 \leanid{Entropy.abs_re_inner_sub_le_of_max_sharp}; they use
 \leanid{Entropy.forall_clipped_of_max} and
 \leanid{Entropy.re_inner_sub_le_of_chain_sharp}. See
-\doclink{QICLean/Entropy/FilterChain} and
-\doclink{QICLean/Entropy/FilterChainEnergy}.}
+\doclink{QICLean/ManyBody/Entropy/Filter/Chain} and
+\doclink{QICLean/ManyBody/Entropy/Filter/ChainEnergy}.}
 
 Pass the closed homogeneous condition to a limiting maximizing family:
 \begin{align}
@@ -119,7 +119,7 @@ floors and weights.\footnote{See
 \leanid{Entropy.isFeasibleFilter_zero_iff},
 \leanid{Entropy.isFeasibleFilter_zero_iff_eigenvalues}, and
 \leanid{Entropy.isFeasibleFilter_reindex_iff} in
-\doclink{QICLean/Entropy/FilterFeasibility}.
+\doclink{QICLean/ManyBody/Entropy/Filter/FilterFeasibility}.
 The spectral reconstruction adapts
 \href{https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/lean/OAI/MathematicalPhysics/PEPSFilters/Coordinates.lean\#L114-L132}{the companion coordinate argument}.
 The reciprocal real exponent here is strictly positive, so its real
@@ -138,11 +138,11 @@ and comparison against every feasible competitor. These identities allow
 singular filters, empty regions and chains, and zero outputs; no second
 maximizer is selected.\footnote{See
 \leanid{Matrix.foldl_toEuclideanCLM_eq_reverse_prod} in
-\doclink{QICLean/Algebra/OrderedMatrixAction}, and
+\doclink{QICLean/Algebra/Matrix/OrderedMatrixAction}, and
 \leanid{Entropy.localLift_relabel},
 \leanid{Entropy.relabelVector_normalized_liftProd_chainList}, and
 \leanid{Entropy.forall_norm_liftProd_chainList_le_relabel_iff} in
-\doclink{QICLean/Entropy/FilterOutputCovariance}.}
+\doclink{QICLean/ManyBody/Entropy/Filter/OutputCovariance}.}
 
 \section{Status of the source comparison}
 

@@ -3,8 +3,8 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Algebra.MatrixReindexEuclidean
-import QICLean.Analysis.PositiveGapUniqueness
+import QICLean.Spectral.Eigenvalue.MatrixReindexEuclidean
+import QICLean.Spectral.Gap.PositiveGapUniqueness
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Analysis.InnerProductSpace.Positive
 import Mathlib.Analysis.Matrix.Order

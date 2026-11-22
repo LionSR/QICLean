@@ -3,9 +3,9 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Algebra.FrobeniusHilbert
-import QICLean.Algebra.RectangularChoi
-import QICLean.Channel.Primitive
+import QICLean.Analysis.Norm.FrobeniusHilbert
+import QICLean.Channel.Choi.RectangularChoi
+import QICLean.Channel.Peripheral.Primitive
 
 /-!
 # The limiting Gram metric

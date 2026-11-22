@@ -34,7 +34,7 @@ Wielandt inequality (arXiv:0909.5347, Theorem 1; Wolf Section 6.9).
 The proof combines right-multiplication stabilization, strict finrank growth
 below the `D²` ceiling, and the direct eventual-full-word-span hypothesis.
 The three cases of the source theorem are assembled in
-`QICLean.Channel.QuantumWielandt`.
+`QICLean.Kraus.Wielandt.QuantumWielandt`.
 
 ## References
 

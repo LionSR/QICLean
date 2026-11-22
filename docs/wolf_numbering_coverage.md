@@ -83,7 +83,7 @@ so that the cited formal statements are available from the main project import.
     `Channel.hasKrausRankLE_choiRank_of_cptp`
     — minimal Kraus constructions from the Choi spectral decomposition ✓
   - **Rectangular (different-dimension) form** in
-    `QICLean/Channel/ChoiRectangular.lean` (namespace `ChoiRectangular`):
+    `QICLean/Channel/Choi/Rectangular.lean` (namespace `ChoiRectangular`):
     `choiMatrix` — `τ = (T ⊗ id_d)(|Ω⟩⟨Ω|)` on `ℂ^{d'} ⊗ ℂ^d` ✓
     `mapOfChoiMatrix_choiMatrix` / `choiMatrix_mapOfChoiMatrix` — mutual
     inverses ✓ `trace_pairing` — `tr[A T(B)] = d·tr[τ (A ⊗ Bᵀ)]` ✓
@@ -126,7 +126,7 @@ so that the cited formal statements are available from the main project import.
     `Channel.hasKrausCard_mono` / `Channel.choiRank_le_of_hasKrausCard` /
     `Channel.hasKrausCard_choiRank_of_cp`
     — Kraus cardinality and the minimal Kraus number `r = rank(τ)` ✓
-  - **Rectangular-specific form** in `QICLean/Channel/KrausRectangular.lean`
+  - **Rectangular-specific form** in `QICLean/Channel/KrausMap/KrausRectangular.lean`
     (namespace `ChoiRectangular`, no square counterpart):
     `kraus_tp_iff_sum_conjTranspose_mul` / `kraus_unital_iff_sum_mul_conjTranspose`
     — normalization item 1 as iffs ✓
@@ -139,7 +139,7 @@ so that the cited formal statements are available from the main project import.
   - `stinespring_dual_representation` — `T*(A) = V†(A ⊗ 𝟙)V` ✓
   - `stinespringV_isometry_iff_kraus_normalized` — `V†V = 𝟙` ↔ TP ✓
   - `stinespring_schrodinger_representation` — `T(ρ) = tr_r(VρV†)` ✓
-  - **Full statement** in `QICLean/Channel/StinespringRectangular.lean`
+  - **Full statement** in `QICLean/Channel/Dilation/StinespringRectangular.lean`
     (namespace `ChoiRectangular`):
     `exists_stinespringV_of_isKrausCP` /
     `exists_stinespringV_pairing_of_isKrausCP`
@@ -332,7 +332,7 @@ so that the cited formal statements are available from the main project import.
     both directions stated as an iff, under the cardinality hypothesis
     `card ι₂ ≤ card ι₁` ✓
   - `WolfProps.pureEnsembleDensity_eq_iff_exists_unitary_mixing` — Wolf's
-    own statement, in `QICLean.Channel.EnsembleEquivalence`: after padding
+    own statement, in `QICLean.Channel.Positive.EnsembleEquivalence`: after padding
     both ensembles with zero vectors onto `ι₁ ⊕ ι₂`, equal densities are
     equivalent to unitary mixing, with no cardinality hypothesis ✓
   - `WolfProps.pureEnsembleDensity_eq_iff_exists_unitary_mixing_fin` —
@@ -848,7 +848,7 @@ so that the cited formal statements are available from the main project import.
 - `Matrix.IsHermitian.two_le_finrank_eigenspace_of_antiunitary` — the printed
   antiunitary statement: `[H,T] = 0` and `T² = -1` for Hermitian `H` and
   antiunitary `T` imply every eigenvalue is at least two-fold degenerate ✓
-  (in `QICLean/Algebra/KramersDegeneracy.lean`)
+  (in `QICLean/Spectral/Eigenvalue/KramersDegeneracy.lean`)
 - `Matrix.IsHermitian.two_le_finrank_eigenspace_of_antisymmetric_unitary` —
   Wolf's matrix reduction `T = ΓV` of the same theorem: `H` Hermitian,
   `Vᴴ * V = 1`, `H * Vᴴ = Vᴴ * Hᵀ`, `Vᵀ = -V` ✓ — proved as the unitary
@@ -1101,7 +1101,7 @@ No new proofs are introduced here; this is a documentation-only index module.
 
 This module covers the sections of Wolf Chapter 6 whose formalization lives in
 the quantum-channel layer. The quantum Wielandt inequality (Theorem 6.9) is
-formalized directly in `QICLean.Channel.QuantumWielandt`. Results that belong to
+formalized directly in `QICLean.Kraus.Wielandt.QuantumWielandt`. Results that belong to
 the tensor-network layer, including the unique-fixed-point theorem for tensors
 with eventually full Kraus rank (Theorem 6.15) and the assembled quantum
 Perron–Frobenius theorem, are indexed separately in
@@ -1234,7 +1234,7 @@ relation to Wolf's printed `A ⊗ conj(A)` ordering explicitly.
 
 * `Dirichlet.exists_int_near_mul_simultaneous` — the $m$-variable simultaneous
   approximation $1\le n\le q^m$ with $|x_k n-p_k|\le 1/q$ for all $k$, in
-  `QICLean.Analysis.Dirichlet`.
+  `QICLean.Analysis.Real.Dirichlet`.
 
 #### Wolf Proposition 6.2 (Trivial Jordan blocks for peripheral spectrum) — FORMALIZED
 
@@ -1570,7 +1570,7 @@ Source: `Notes/WolfNoteTexSource/ch06_spectral_properties.tex`, lines 803–817.
 #### Wolf Theorem 6.7 (Primitive maps, 4 equivalent conditions) — FORMALIZED
 
 `WolfTheorem67.wolf_theorem_6_7_tfae` in
-`QICLean.Channel.WolfTheorem67` proves all four source conditions for an
+`QICLean.Channel.Peripheral.PrimitivePositiveMap` proves all four source conditions for an
 arbitrary positive trace-preserving map on `M_D(ℂ)`, `D ≥ 1`:
 
 * one power is strictly positive on every density matrix;
@@ -1595,7 +1595,7 @@ seven public standard-axiom guards pass; full repository CI is not claimed.
 
 #### Wolf Theorem 6.8 (CP primitive maps, Kraus span characterizations)
 
-**FORMALIZED** in `QICLean.Channel.WolfTheorem68`:
+**FORMALIZED** in `QICLean.Kraus.Wielandt.PrimitiveCriterion`:
 
 * `Kraus.wolf_theorem_6_8_tfae` packages all four source clauses: Wolf
   primitivity (represented by irreducibility together with the project's
@@ -1617,7 +1617,7 @@ introduced.
 
 #### Wolf Lemmas 6.2–6.3 and Theorem 6.9 (Quantum Wielandt inequality) — FORMALIZED
 
-`QICLean.Channel.QuantumWielandt` uses Wolf's exact spaces `K_n`, Kraus rank
+`QICLean.Kraus.Wielandt.QuantumWielandt` uses Wolf's exact spaces `K_n`, Kraus rank
 `k = dim K_1`, and minimal threshold `q`:
 
 * `Kraus.krausRank` and `Kraus.wielandtIndex` define `k` and the least
@@ -1747,7 +1747,7 @@ In `QICLean.Channel.FixedPoint.Algebra`:
 
 #### Wolf Theorem 6.10 (Brouwer's fixed point theorem) — FORMALIZED
 
-* `brouwer_fixedPoint_compactConvex` — `QICLean.Topology.CompactConvexFixedPoint`;
+* `brouwer_fixedPoint_compactConvex` — `QICLean.Analysis.FixedPoint.CompactConvexFixedPoint`;
   the original statement for every nonempty compact convex
   `S ⊆ Fin n → ℝ` and continuous self-map of `S`.
 * `fixedPoint_of_compact_convex` — coordinate-free form for finite-dimensional
@@ -1758,9 +1758,9 @@ In `QICLean.Channel.FixedPoint.Algebra`:
   (density-matrix specialization; kernel-checked).
 * `Brouwer (vendored Gametheory library)` — exact import citation: Brouwer for the
   standard simplex (LionSR/Brouwer library).
-* `exists_fixedPoint_closedCube` — `QICLean.Topology.BrouwerProduct`;
+* `exists_fixedPoint_closedCube` — `QICLean.Analysis.FixedPoint.BrouwerProduct`;
   extends Brouwer to closed cubes.
-* `fixedPoint_of_compact_retract` — `QICLean.Topology.CompactRetractFixedPoint`;
+* `fixedPoint_of_compact_retract` — `QICLean.Analysis.FixedPoint.CompactRetractFixedPoint`;
   extends Brouwer to compact retracts of finite-dimensional real normed spaces.
 * The former general compact-convex paper gap is resolved by metric projection;
   see `docs/paper-gaps/wolf_brouwer_general_compact_convex.tex`.
@@ -1850,7 +1850,7 @@ specializations.
 
 The general finite-dimensional convergence argument is provided by
 `LinearMap.HasBoundedOrbits.tendsto_birkhoffAverage_meanErgodicProjection` in
-`QICLean.Analysis.MeanErgodic`. It constructs the Cesàro projection onto the
+`QICLean.Analysis.Projection.MeanErgodic`. It constructs the Cesàro projection onto the
 fixed-point space for an endomorphism with bounded orbits. The matrix
 specialization is provided by
 `IsPositiveMap.hasBoundedOrbits_of_tracePreserving`,
@@ -1922,7 +1922,7 @@ In `QICLean.Channel.FixedPoint.SupportCompressedDensityBlocks`:
   fixed points correspond exactly to the ambient fixed points carried by the
   support isometry.
 
-In `QICLean.Algebra.MatrixGramUnitary`:
+In `QICLean.Algebra.Unitary.MatrixGramUnitary`:
 
 * `Matrix.exists_unitary_zero_extension_eq` — an isometric inclusion extends
   to an ambient unitary that identifies every compressed matrix with one
@@ -2427,10 +2427,10 @@ entries below therefore state both levels explicitly.
 The doubly stochastic half is packaged by
 `TNLean.wolf_birkhoff_doublyStochastic_convexHull` and
 `TNLean.wolf_birkhoff_extremePoints_doublyStochastic` in
-`QICLean.Analysis.Birkhoff`.
+`QICLean.Analysis.Majorization.Birkhoff`.
 
 The doubly substochastic half is proved in
-`QICLean.Analysis.DoublySubstochastic`:
+`QICLean.Analysis.Majorization.DoublySubstochastic`:
 
 * `TNLean.wolf_birkhoff_doublySubstochastic_convexHull` identifies the
   nonnegative matrices with row and column sums at most one as the convex
@@ -2449,7 +2449,7 @@ this result's scope. The historical scope note
 `docs/paper-gaps/wolf_ch8_birkhoff_doubly_substochastic_gap.tex` is resolved.
 ### Theorem 8.4 (Majorization) — FORMALIZED
 
-In `QICLean.Analysis.VectorMajorization`, `TNLean.VectorMajorized` is
+In `QICLean.Analysis.Majorization.VectorMajorization`, `TNLean.VectorMajorized` is
 Equation (8.16): decreasing-sorted prefix inequalities and equal total sums.
 The sorting is a coordinate permutation and preserves repeated entries.
 `TNLean.vectorMajorized_iff_exists_doublyStochastic` proves equivalence with
@@ -2462,13 +2462,13 @@ The reverse stochastic implication is proved by separation of the convex
 hull of permutations and Birkhoff's theorem. No stochastic witness is
 assumed. Clause 3 (orthostochastic matrices) is
 `TNLean.vectorMajorized_iff_exists_orthostochastic` in
-`QICLean.Analysis.VectorMajorizationOrthostochastic`, proved through Horn's
+`QICLean.Analysis.Majorization.VectorMajorizationOrthostochastic`, proved through Horn's
 theorem with one plane rotation per induction step; see
 `docs/paper-gaps/wolf_ch8_vector_majorization_orthostochastic_gap.tex`.
 
 ### Theorem “Submajorization” — FORMALIZED WITH LOCAL FIX
 
-In `QICLean.Analysis.VectorSubmajorization`, `TNLean.VectorSubmajorized` is
+In `QICLean.Analysis.Majorization.VectorSubmajorization`, `TNLean.VectorSubmajorized` is
 weak submajorization by decreasing prefixes. `TNLean.vectorSubmajorized_tfae`
 proves clauses 1, 3 and 4 equivalent for all real vectors, and
 `TNLean.vectorSubmajorized_iff_exists_doublySubstochastic` proves clause 2 for
@@ -2477,7 +2477,7 @@ nonnegative vectors. The printed clause 2 fails for negative entries; see
 
 ### Theorem 8.7 (Majorization between density matrices) — FORMALIZED
 
-In `QICLean.Analysis.DensityMatrixMajorization`,
+In `QICLean.Analysis.Majorization.DensityMatrixMajorization`,
 `Matrix.IsHermitian.Majorizes` compares the actual decreasing eigenvalue
 vectors, retaining multiplicities. `majorizes_iff_trace_convex` identifies
 this relation with comparison of the real traces of the actual functional
@@ -2517,7 +2517,7 @@ The historical named-environment tally above is unchanged.
 
 ### Theorem “Relation among relative entropies” (Equations 8.36–8.39) — PARTIAL-SCOPE
 
-In `QICLean.Analysis.RelativeEntropyRelations`,
+In `QICLean.Entropy.Relative.Relations`,
 `Matrix.re_trace_cfc_mul_cfc_eq_double_sum` is the double eigenbasis
 expansion of Equations (8.36)–(8.37) for arbitrary real functions of two
 Hermitian matrices. `Matrix.tsallisRelativeEntropy` is Wolf's
@@ -2540,7 +2540,7 @@ named-environment tally above is unchanged.
 
 ### Theorem “Quantum Neyman–Pearson” (Equations 8.40–8.42) — CORRECTED FORM FORMALIZED
 
-In `QICLean.Analysis.QuantumNeymanPearson`, `Matrix.hypothesisTestError` is
+In `QICLean.Analysis.Optimization.QuantumNeymanPearson`, `Matrix.hypothesisTestError` is
 Equation (8.40). `Matrix.hypothesisTestError_ge` proves Equation (8.41) for
 Hermitian unit-trace `ρ, σ`, every real prior and every effect
 `0 ≤ P ≤ 1`, with `‖A‖₁ = Re tr |A|`;
@@ -2560,7 +2560,7 @@ historical named-environment tally above is unchanged.
 ### Lemma with Equations 8.54–8.55 — PARTIAL (Equation 8.54 FORMALIZED)
 
 `Matrix.re_trace_add_sub_two_mul_re_trace_rpow_mul_rpow_le` in
-`QICLean.Analysis.TraceNormPowerBound` proves Equation (8.54),
+`QICLean.Analysis.TraceNorm.PowerBound` proves Equation (8.54),
 `‖A - B‖₁ ≥ tr[A + B] - 2 tr[AˢB¹⁻ˢ]`, for all positive-semidefinite `A, B`
 and `s ∈ [0, 1]`, including singular matrices and both endpoints;
 `Matrix.re_trace_add_sub_two_mul_re_trace_rpow_mul_rpow_le_traceNorm` is the
@@ -2579,7 +2579,7 @@ under #46.
 ### Corollary “Entropy increasing maps” (Equation 8.22) — FORMALIZED
 
 `IsPositiveMap.unital_iff_trace_strictConcave_increasing` in
-`QICLean.Channel.EntropyIncreasingMaps` proves the full same-dimensional
+`QICLean.Channel.Positive.EntropyIncreasingMaps` proves the full same-dimensional
 source statement for globally strictly concave `h : ℝ → ℝ`, positive
 trace-preserving complex linear maps, and every density matrix. The theorem
 assumes neither complete positivity nor invertibility. It includes empty
@@ -2595,7 +2595,7 @@ issue #47 and the rectangular convention in Theorem 8.8 remain unchanged.
 
 ### Theorem 8.9 “Measurements and convex functions” (Equation 8.23) — FORMALIZED
 
-`Matrix.sum_convex_measurement_le` in `QICLean.Channel.MeasurementConvexity`
+`Matrix.sum_convex_measurement_le` in `QICLean.Channel.Measurement.MeasurementConvexity`
 proves Equation (8.23) for every positive semidefinite `ρ`, every POVM with
 `m ≥ d` and `tr Pᵢ = d/m`, and every convex `f` with `f(0) ≤ 0`, or `m = d`.
 The proof works in an eigenbasis of `ρ` with a doubly substochastic Jensen
@@ -2603,7 +2603,7 @@ argument instead of the source's embedding into `M_m(ℂ)` and Theorem 8.8.
 
 ### Theorem 8.2 “Unitarily invariant norms”, item 5 (Ky Fan dominance) — CLAUSE FORMALIZED
 
-In `QICLean.Analysis.KyFanDominance`, `Matrix.IsUnitarilyInvariantNorm` is a
+In `QICLean.Analysis.Majorization.KyFanDominance`, `Matrix.IsUnitarilyInvariantNorm` is a
 norm on `M_d(ℂ)` (triangle inequality, absolute homogeneity, definiteness)
 with `N (U A V) = N A` for all unitaries; sub-multiplicativity is not assumed.
 `Matrix.kyFanNorm A k` is the sum of the `k` largest singular values
@@ -2619,7 +2619,7 @@ item 1 with `p⁻¹ + q⁻¹ = 1` in trace form is Equation (8.6), below.
 
 ### Theorem 8.3 “Variational ways to p-norms” (Equations 8.10–8.13) — FORMALIZED WITH LOCAL FIX
 
-In `QICLean.Analysis.SchattenVariational`, `Matrix.schattenNorm A p` is
+In `QICLean.Analysis.Norm.SchattenVariational`, `Matrix.schattenNorm A p` is
 `(tr |A|^p)^{1/p}`, `|A| = √(A†A)`.
 
 * Equation (8.6): `Matrix.norm_trace_conjTranspose_mul_le_schattenNorm` for
@@ -2632,7 +2632,7 @@ In `QICLean.Analysis.SchattenVariational`, `Matrix.schattenNorm A p` is
   give attainment for nonempty index types, by Wolf's maximizer
   `U P^{p-1} / tr[P^p]^{1/q}`.
 * Equation (8.11): already `Matrix.traceNorm_eq_sSup_norm_trace_conjTranspose_mul_unitary`
-  in `QICLean.Analysis.TraceNormVariational`.
+  in `QICLean.Analysis.TraceNorm.Variational`.
 * Equation (8.12): `Matrix.l2_opNorm_eq_sSup_norm_inner`.
 * Equation (8.13): `Matrix.isGreatest_re_trace_mul_sub_schattenNorm_rpow` and
   `Matrix.schattenNorm_rpow_eq_mul_sSup`. **Local fix:** the printed factor
@@ -2644,7 +2644,7 @@ The historical named-environment tally above is unchanged.
 ### Corollary “Channel spectrum vs. Jamiolkowski spectrum” (Equation 8.87) — FORMALIZED
 
 `Matrix.subperipheralModulus_le_one_sub_sq_mul_min_eigenvalue` in
-`QICLean.Channel.JamiolkowskiSpectrum` proves `μ ≤ 1 - d² λ_min(τ)` for every
+`QICLean.Channel.Choi.JamiolkowskiSpectrum` proves `μ ≤ 1 - d² λ_min(τ)` for every
 completely positive trace-preserving `T : M_d(ℂ) → M_d(ℂ)`, with `τ` the
 normalized Choi (Jamiołkowski) matrix and `μ` the shared
 `Module.End.subperipheralModulus`. No further hypothesis is imposed; `d = 0`
@@ -2696,27 +2696,27 @@ The full channel theorem is not yet formalized. The following compiled,
 source-shaped prerequisites are available:
 
 * `Module.End.subperipheralModulus` in
-  `QICLean.Analysis.SubperipheralSpectrum` is Wolf's largest subperipheral
+  `QICLean.Spectral.Radius.SubperipheralSpectrum` is Wolf's largest subperipheral
   modulus `μ`, totalized to zero for an empty subperipheral spectrum; the same
   module proves attainment and strict inequality `μ < 1` in the nonempty case.
 * `Matrix.l2_opNorm_pow_similarity_bounds` in
-  `QICLean.Analysis.JordanSimilarity` proves Equation (8.108) for one chosen
+  `QICLean.Spectral.Jordan.Similarity` proves Equation (8.108) for one chosen
   similarity, retaining its actual condition factor rather than replacing it
   by the infimum `κ_T` without an attainment or limiting argument.
 * `Matrix.l2_opNorm_jordanBlock_pow_polynomial_bounds` in
-  `QICLean.Analysis.JordanBlockAsymptotics` derives the two-sided
+  `QICLean.Spectral.Jordan.BlockAsymptotics` derives the two-sided
   `μ^n n^(d_μ-1)` scaling for one supplied positive-modulus block in the
   source range `d_μ - 1 ≤ n`.
 
 * `Matrix.l2_opNNNorm_blockDiagonal'` in
-  `QICLean.Analysis.BlockDiagonalNorm` proves the exact finite maximum of
+  `QICLean.Analysis.Norm.BlockDiagonalNorm` proves the exact finite maximum of
   dependent block norms, with zero for an empty family and attainment for a
   nonempty family.
-* `QICLean.Analysis.JordanBlockComparison` proves phase invariance,
+* `QICLean.Spectral.Jordan.BlockComparison` proves phase invariance,
   equal-modulus dimension monotonicity, and eventual strict dominance of
   every smaller modulus, including a zero smaller eigenvalue.
 * `Matrix.eventually_l2_opNorm_jordanBlockDirectSum_pow_eq` in
-  `QICLean.Analysis.JordanBlockDirectSum` proves the eventual equality for
+  `QICLean.Spectral.Jordan.BlockDirectSum` proves the eventual equality for
   the selected maximal-modulus, maximal-dimension genuine block. The same
   module constructs such a selection from finite nonempty block data,
   transfers the explicit positive-modulus two-sided bounds, extends the
@@ -2728,7 +2728,7 @@ The remaining obligations for the norm of
 of the channel's largest-block data and nilpotence range, the explicit
 positive-exponent assembly, and invariance of the subperipheral Jordan-power
 norm across all admissible forms. The source-shaped infimum and its uniform
-limiting comparison are now proved in `QICLean.Analysis.JordanConditionNumber`;
+limiting comparison are now proved in `QICLean.Spectral.Jordan.ConditionNumber`;
 no minimizing basis is assumed.
 `Matrix.exists_pos_pow_similarity_jordanBlockDirectSum_bounds` additionally
 assembles the lower constant and the all-positive-exponent upper bound for
@@ -2813,7 +2813,7 @@ qualification, the containing Theorem 8.24 has a corrected-source disposition.
 `Matrix.traceNormAsymptoticDistance_pow_le_hilbertSchmidtOperatorNorm`, and
 `Matrix.traceNormAsymptoticDistance_pow_le_transferMatrix_l2_opNorm` prove the
 upper bound in Equation (8.112) and its transfer-matrix estimates for positive
-powers. In `QICLean.Analysis.AsymptoticStateConverse`,
+powers. In `QICLean.Channel.Peripheral.AsymptoticStateConverse`,
 `Matrix.exists_four_posSemidef_frobenius_norm_le` and
 `Matrix.hilbertSchmidtOperatorNorm_le_four_mul_of_posSemidef` prove the
 four-positive-parts estimate of Equation (8.117), and
@@ -2830,7 +2830,7 @@ Scalar-to-operator interchange is proved in `Matrix.IsHermitian.cfc_integral_of_
 
 ### Cone norm bounds (Equations 8.63, 8.67–8.69) — PARTIAL ISSUE #45
 
-`QICLean.Analysis.ConeNormBound` proves Eq. (8.63) for nonzero elements of a
+`QICLean.Analysis.Order.ConeNormBound` proves Eq. (8.63) for nonzero elements of a
 closed real convex cone with a norm monotone on the cone. `ProperCone.lowerRatio`
 uses the order supremum of Eq. (8.61), restricted to nonnegative scales;
 `lowerRatio_mem` proves finiteness and attainment under these hypotheses.
@@ -2853,7 +2853,7 @@ is claimed. The already-landed Eqs. (8.87), (8.93)–(8.95) are unchanged.
 
 ### Spectral bound on projective diameter (Equation 8.91) — UNRESTRICTED EXTENSION OBSTRUCTION
 
-`QICLean.Analysis.ProjectiveDiameterCounterexample` gives the positive map
+`QICLean.Analysis.Order.ProjectiveDiameterCounterexample` gives the positive map
 `T(x,y)=(x,2y)` on the closed positive quadrant. It fixes `(1,0)` but has
 an independent eigenvector `(0,1)` of eigenvalue `2`, exceeding every
 coefficient at most `1`. Its output logarithmic distances on strictly

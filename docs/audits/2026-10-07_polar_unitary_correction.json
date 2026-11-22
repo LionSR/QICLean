@@ -13,7 +13,7 @@
   "private_helpers": [
     {
       "name": "Matrix.norm_toEuclideanCLM_unitary",
-      "path": "QICLean/Analysis/PolarUnitaryCorrection.lean",
+      "path": "QICLean/Analysis/Isometry/PolarUnitaryCorrection.lean",
       "line": 93
     }
   ],
@@ -23,7 +23,7 @@
   "production_lines": 255,
   "production": [
     {
-      "path": "QICLean/Analysis/PolarUnitaryCorrection.lean",
+      "path": "QICLean/Analysis/Isometry/PolarUnitaryCorrection.lean",
       "sha256": "dc2cd6e192fddb5bcb1ba4d9461806232597d420123f560ac72f9ab97fa5687d",
       "lines": 158,
       "declarations": [
@@ -91,7 +91,7 @@
       ]
     },
     {
-      "path": "QICLean/Analysis/PolarUnitaryCorrectionKronecker.lean",
+      "path": "QICLean/Analysis/Isometry/PolarUnitaryCorrection.lean",
       "sha256": "3fc9ce7fd4d4427170df0f2513d38c1e719b7fb6869c0ce8d127ffb700460b26",
       "lines": 97,
       "declarations": [
@@ -111,25 +111,25 @@
   ],
   "consumers": [
     {
-      "path": "QICLeanTest/PolarUnitaryCorrection.lean",
+      "path": "QICLeanTest/Analysis/Isometry/PolarUnitaryCorrection.lean",
       "sha256": "080752af03095760726a9527bed3f9f459e73c1b89c754d7df1caa8ef6936f7a",
       "examples": 4,
       "guards": 0
     },
     {
-      "path": "QICLeanTest/PolarUnitaryCorrectionAxioms.lean",
+      "path": "QICLeanTest/Analysis/Isometry/PolarUnitaryCorrectionAxioms.lean",
       "sha256": "dd189e3ce85a9a1942b42805b3df08fb53fdf5d9987fd5732ca0a883ab927d99",
       "examples": 0,
       "guards": 5
     },
     {
-      "path": "QICLeanTest/PolarUnitaryCorrectionKroneckerAxioms.lean",
+      "path": "QICLeanTest/Analysis/Isometry/PolarUnitaryCorrectionKroneckerAxioms.lean",
       "sha256": "b42538a2ba835de6fc7005f34f3b7a10ecf8e6d2900eaae5463d3d7b4720b9cc",
       "examples": 0,
       "guards": 1
     },
     {
-      "path": "QICLeanTest/PolarUnitaryCorrectionKronecker.lean",
+      "path": "QICLeanTest/Analysis/Isometry/PolarUnitaryCorrectionKronecker.lean",
       "sha256": "e914858bd61c332d7e151a221aa7523fd7007d9ea3af5912f4e41288ce1a2b9c",
       "examples": 2,
       "guards": 0

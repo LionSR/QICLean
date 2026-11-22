@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Entropy.Renyi.Defs
-import QICLean.Analysis.RectangularTraceNormAlgebra
+import QICLean.Analysis.TraceNorm.RectangularTraceNormAlgebra
 
 /-!
 # Infimal smoothing of Rényi entropy

@@ -51,7 +51,7 @@ appendix treats transcription errors separately.
 \paragraph{Formalization trigger.}
 The formal converse requires the trace to be nonnegative. Its declaration is
 \leanid{Matrix.IsHermitian.posSemidef_of_trace_re_nonneg_of_card_sub_one_mul_trace_sq_re_le}
-in \doclink{QICLean/Analysis/MatrixTraceInequalities}. The discrepancy is
+in \doclink{QICLean/Analysis/TraceInequality/MatrixTraceInequalities}. The discrepancy is
 tracked in
 \path{docs/paper-gaps/wolf_ch3_lorentz_cone_trace_sign.tex}.
 
@@ -115,7 +115,7 @@ The conditional form is formalized by
 \leanid{Matrix.IsHermitian.two_le_finrank_eigenspace_of_intertwiner_mulVec_star_ne_zero},
 and the invertible-intertwiner form is formalized by
 \leanid{Matrix.IsHermitian.two_le_finrank_eigenspace_of_antisymmetric_isUnit}
-in \doclink{QICLean/Algebra/KramersDegeneracy}. The same file recovers the
+in \doclink{QICLean/Spectral/Eigenvalue/KramersDegeneracy}. The same file recovers the
 first Kramers theorem as the unitary special case. The source error is
 documented in
 \path{docs/paper-gaps/wolf_ch3_kramers_theorem_ii.tex}.
@@ -816,7 +816,7 @@ follows from the preceding source argument once $A\leq B$ is retained.
 The logarithmic Jensen declarations
 \leanid{posMap_log_concave_jensen} and
 \leanid{IsPositiveMap.log_concave_jensen}, in
-\doclink{QICLean/Analysis/LiebConcavity} and
+\doclink{QICLean/Channel/Convexity/LiebConcavity} and
 \doclink{QICLean/Channel/Schwarz/OperatorConvexity}, assume that the positive
 map is unital. The discrepancy is documented in
 \path{docs/paper-gaps/wolf_ch5_operator_jensen_lieb.tex}.
@@ -933,7 +933,7 @@ when the left factor is $L^\dagger$. The local TeX transcription already says
 positive $R$; this differs from the PDF.
 
 The corrected result and the more general concave-denominator quadratic
-perspective are proved in \doclink{QICLean/Analysis/QuadraticPerspective}.
+perspective are proved in \doclink{QICLean/Analysis/Convexity/QuadraticPerspective}.
 The source discrepancy, inverse-domain convention, and distinction from the
 still-open general-function perspective theorem are recorded in
 \path{docs/paper-gaps/wolf_ch5_quadratic_perspective_domain.tex}.

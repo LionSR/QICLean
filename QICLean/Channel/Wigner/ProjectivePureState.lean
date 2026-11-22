@@ -4,8 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import Mathlib.LinearAlgebra.Projectivization.Basic
-import QICLean.Algebra.FinSum
-import QICLean.Algebra.OrthogonalProjection
+import QICLean.Algebra.Combinatorics.FinSum
+import QICLean.Algebra.Hermitian.OrthogonalProjection
 import QICLean.Channel.WolfProps
 
 /-!

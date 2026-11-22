@@ -5,8 +5,8 @@ Authors: QICLean contributors
 -/
 import QICLean.Channel.Irreducible.Similarity
 import QICLean.Channel.Irreducible.SpectralRadius
-import QICLean.Channel.KrausGauge
-import QICLean.Kraus.InvariantProjection
+import QICLean.Channel.KrausMap.KrausGauge
+import QICLean.Channel.Irreducible.InvariantProjection
 
 /-!
 # Irreducibility under Kraus gauge transformations

@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Representation.Character.Delta
-import QICLean.Algebra.ComplexSqrt
+import QICLean.Analysis.Real.ComplexSqrt
 import Mathlib.LinearAlgebra.Eigenspace.Basic
 
 /-!

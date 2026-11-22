@@ -4,10 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Channel.Basic
-import QICLean.Channel.KrausRank
-import QICLean.Channel.Stinespring
-import QICLean.Algebra.MatrixGramUnitary
-import QICLean.Analysis.MatrixSqrt
+import QICLean.Channel.KrausMap.KrausRank
+import QICLean.Channel.Dilation.Stinespring
+import QICLean.Algebra.Unitary.MatrixGramUnitary
+import QICLean.Analysis.FunctionalCalculus.MatrixSqrt
 import Mathlib.Algebra.BigOperators.Fin
 import Mathlib.LinearAlgebra.Matrix.Kronecker
 

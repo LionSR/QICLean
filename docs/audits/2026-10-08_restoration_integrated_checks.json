@@ -8,11 +8,11 @@
       "command": [
         "lake",
         "build",
-        "QICLean.Entropy.RestoringMarginal",
-        "QICLean.Entropy.RestoringOperators",
-        "QICLean.Analysis.SupportInverseSandwich",
-        "QICLean.Entropy.RestoringNorm",
-        "QICLean.Entropy.RestoringVectors"
+        "QICLean.Channel.Dilation.RestoringMarginal",
+        "QICLean.Analysis.Isometry.RestoringOperators",
+        "QICLean.Analysis.Support.InverseSandwich",
+        "QICLean.Channel.Dilation.RestoringNorm",
+        "QICLean.Analysis.Isometry.RestoringVectors"
       ],
       "exit_code": 0,
       "seconds": 1.4346907270082738,
@@ -21,7 +21,7 @@
     },
     {
       "head": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
-      "file": "QICLean/Analysis/SupportInverseSandwich.lean",
+      "file": "QICLean/Analysis/Support/InverseSandwich.lean",
       "sha256": "8d1ee6ecfafafe144c595738e24403e5fded8e45cb853e0b722b06f202ddd2dc",
       "command": [
         "lake",
@@ -33,7 +33,7 @@
         "-DmaxSynthPendingDepth=3",
         "-Dlinter.mathlibStandardSet=true",
         "-DwarningAsError=true",
-        "QICLean/Analysis/SupportInverseSandwich.lean"
+        "QICLean/Analysis/Support/InverseSandwich.lean"
       ],
       "exit_code": 0,
       "seconds": 2.8590545519982697,
@@ -42,7 +42,7 @@
     },
     {
       "head": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
-      "file": "QICLean/Entropy/RestoringMarginal.lean",
+      "file": "QICLean/Channel/Dilation/RestoringMarginal.lean",
       "sha256": "02e3697b6b74ec3cd89dcb8a3d33614e07c080284aec9bd0829e4cd0592801d7",
       "command": [
         "lake",
@@ -54,7 +54,7 @@
         "-DmaxSynthPendingDepth=3",
         "-Dlinter.mathlibStandardSet=true",
         "-DwarningAsError=true",
-        "QICLean/Entropy/RestoringMarginal.lean"
+        "QICLean/Channel/Dilation/RestoringMarginal.lean"
       ],
       "exit_code": 0,
       "seconds": 2.9422757660067873,
@@ -63,7 +63,7 @@
     },
     {
       "head": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
-      "file": "QICLean/Entropy/RestoringOperators.lean",
+      "file": "QICLean/Analysis/Isometry/RestoringOperators.lean",
       "sha256": "a7934cdfb92f0c58c61a9bbfd1feeccb2336b111719c07873fa5670d4f6528fb",
       "command": [
         "lake",
@@ -75,7 +75,7 @@
         "-DmaxSynthPendingDepth=3",
         "-Dlinter.mathlibStandardSet=true",
         "-DwarningAsError=true",
-        "QICLean/Entropy/RestoringOperators.lean"
+        "QICLean/Analysis/Isometry/RestoringOperators.lean"
       ],
       "exit_code": 0,
       "seconds": 3.2082380589999957,
@@ -84,7 +84,7 @@
     },
     {
       "head": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
-      "file": "QICLeanTest/SupportInverseSandwich.lean",
+      "file": "QICLeanTest/Analysis/Support/InverseSandwich.lean",
       "sha256": "3e316f3f2e6bd96db1206f6d2017deed0c94348e815f5781e2c02b5ab11a314e",
       "command": [
         "lake",
@@ -96,7 +96,7 @@
         "-DmaxSynthPendingDepth=3",
         "-Dlinter.mathlibStandardSet=true",
         "-DwarningAsError=true",
-        "QICLeanTest/SupportInverseSandwich.lean"
+        "QICLeanTest/Analysis/Support/InverseSandwich.lean"
       ],
       "exit_code": 0,
       "seconds": 3.5523216820001835,
@@ -105,7 +105,7 @@
     },
     {
       "head": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
-      "file": "QICLeanTest/SupportInverseSandwichAxioms.lean",
+      "file": "QICLeanTest/Analysis/Support/InverseSandwichAxioms.lean",
       "sha256": "18852bc2d68560a3184a07377cdf2802ec36b51a0f290a8ba9756163c435e4b5",
       "command": [
         "lake",
@@ -117,7 +117,7 @@
         "-DmaxSynthPendingDepth=3",
         "-Dlinter.mathlibStandardSet=true",
         "-DwarningAsError=true",
-        "QICLeanTest/SupportInverseSandwichAxioms.lean"
+        "QICLeanTest/Analysis/Support/InverseSandwichAxioms.lean"
       ],
       "exit_code": 0,
       "seconds": 2.665146758998162,
@@ -126,7 +126,7 @@
     },
     {
       "head": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
-      "file": "QICLeanTest/RestoringMarginal.lean",
+      "file": "QICLeanTest/Channel/Dilation/RestoringMarginal.lean",
       "sha256": "cd37d977631f7d27ab8291042a3dc977ef383b3de3b7dd559b35542c793e8f2b",
       "command": [
         "lake",
@@ -138,7 +138,7 @@
         "-DmaxSynthPendingDepth=3",
         "-Dlinter.mathlibStandardSet=true",
         "-DwarningAsError=true",
-        "QICLeanTest/RestoringMarginal.lean"
+        "QICLeanTest/Channel/Dilation/RestoringMarginal.lean"
       ],
       "exit_code": 0,
       "seconds": 3.533897687011631,
@@ -147,7 +147,7 @@
     },
     {
       "head": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
-      "file": "QICLeanTest/RestoringMarginalAxioms.lean",
+      "file": "QICLeanTest/Channel/Dilation/RestoringMarginalAxioms.lean",
       "sha256": "0748ec0d2b0091c73cf92bd064611ceecaa45889f17cd478ae1d7311de87c7d6",
       "command": [
         "lake",
@@ -159,7 +159,7 @@
         "-DmaxSynthPendingDepth=3",
         "-Dlinter.mathlibStandardSet=true",
         "-DwarningAsError=true",
-        "QICLeanTest/RestoringMarginalAxioms.lean"
+        "QICLeanTest/Channel/Dilation/RestoringMarginalAxioms.lean"
       ],
       "exit_code": 0,
       "seconds": 2.558576379000442,
@@ -168,7 +168,7 @@
     },
     {
       "head": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
-      "file": "QICLeanTest/RestoringOperators.lean",
+      "file": "QICLeanTest/Analysis/Isometry/RestoringOperators.lean",
       "sha256": "39b157ddda438a206fbf39372220e158e01c7628cc43042636d1e5076462b764",
       "command": [
         "lake",
@@ -180,7 +180,7 @@
         "-DmaxSynthPendingDepth=3",
         "-Dlinter.mathlibStandardSet=true",
         "-DwarningAsError=true",
-        "QICLeanTest/RestoringOperators.lean"
+        "QICLeanTest/Analysis/Isometry/RestoringOperators.lean"
       ],
       "exit_code": 0,
       "seconds": 2.7234428059891798,
@@ -189,7 +189,7 @@
     },
     {
       "head": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
-      "file": "QICLeanTest/RestoringOperatorsAxioms.lean",
+      "file": "QICLeanTest/Analysis/Isometry/RestoringOperatorsAxioms.lean",
       "sha256": "b5b13832445c7492b27fe17974524811bc2b68beaf231d87c12169ec3487618b",
       "command": [
         "lake",
@@ -201,7 +201,7 @@
         "-DmaxSynthPendingDepth=3",
         "-Dlinter.mathlibStandardSet=true",
         "-DwarningAsError=true",
-        "QICLeanTest/RestoringOperatorsAxioms.lean"
+        "QICLeanTest/Analysis/Isometry/RestoringOperatorsAxioms.lean"
       ],
       "exit_code": 0,
       "seconds": 2.4410207769979024,
@@ -273,7 +273,7 @@
     },
     {
       "head": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
-      "file": "QICLean/Entropy/RestoringNorm.lean",
+      "file": "QICLean/Channel/Dilation/RestoringNorm.lean",
       "sha256": "6c8965df5fd8880baa13d46e651854224ea49e60d3aeb1dac07f155ec2478946",
       "command": [
         "lake",
@@ -285,7 +285,7 @@
         "-DmaxSynthPendingDepth=3",
         "-Dlinter.mathlibStandardSet=true",
         "-DwarningAsError=true",
-        "QICLean/Entropy/RestoringNorm.lean"
+        "QICLean/Channel/Dilation/RestoringNorm.lean"
       ],
       "exit_code": 0,
       "seconds": 3.2028516219870653,
@@ -294,7 +294,7 @@
     },
     {
       "head": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
-      "file": "QICLean/Entropy/RestoringVectors.lean",
+      "file": "QICLean/Analysis/Isometry/RestoringVectors.lean",
       "sha256": "d0f18a0701141f3c2f74d235c833c922a6ed753157ffb5f43096d49133745c1e",
       "command": [
         "lake",
@@ -306,7 +306,7 @@
         "-DmaxSynthPendingDepth=3",
         "-Dlinter.mathlibStandardSet=true",
         "-DwarningAsError=true",
-        "QICLean/Entropy/RestoringVectors.lean"
+        "QICLean/Analysis/Isometry/RestoringVectors.lean"
       ],
       "exit_code": 0,
       "seconds": 4.246765584000968,
@@ -315,7 +315,7 @@
     },
     {
       "head": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
-      "file": "QICLeanTest/RestoringNorm.lean",
+      "file": "QICLeanTest/Channel/Dilation/RestoringNorm.lean",
       "sha256": "20104c3cbe6811aca948e184ca8592f2dc3e20cd523074081959b21d4521a64d",
       "command": [
         "lake",
@@ -327,7 +327,7 @@
         "-DmaxSynthPendingDepth=3",
         "-Dlinter.mathlibStandardSet=true",
         "-DwarningAsError=true",
-        "QICLeanTest/RestoringNorm.lean"
+        "QICLeanTest/Channel/Dilation/RestoringNorm.lean"
       ],
       "exit_code": 0,
       "seconds": 3.254544576993794,
@@ -336,7 +336,7 @@
     },
     {
       "head": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
-      "file": "QICLeanTest/RestoringNormAxioms.lean",
+      "file": "QICLeanTest/Channel/Dilation/RestoringNormAxioms.lean",
       "sha256": "8154346013846ebd3c7d9a146b55721b15db4fe049b440988ba8c80ab528439d",
       "command": [
         "lake",
@@ -348,7 +348,7 @@
         "-DmaxSynthPendingDepth=3",
         "-Dlinter.mathlibStandardSet=true",
         "-DwarningAsError=true",
-        "QICLeanTest/RestoringNormAxioms.lean"
+        "QICLeanTest/Channel/Dilation/RestoringNormAxioms.lean"
       ],
       "exit_code": 0,
       "seconds": 2.592985356997815,
@@ -357,7 +357,7 @@
     },
     {
       "head": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
-      "file": "QICLeanTest/RestoringVectors.lean",
+      "file": "QICLeanTest/Analysis/Isometry/RestoringVectors.lean",
       "sha256": "0ffbb97b4bfb602860d1969bf2ed1c4d123eebbe54c17c2d2a8e3faa6df5e47d",
       "command": [
         "lake",
@@ -369,7 +369,7 @@
         "-DmaxSynthPendingDepth=3",
         "-Dlinter.mathlibStandardSet=true",
         "-DwarningAsError=true",
-        "QICLeanTest/RestoringVectors.lean"
+        "QICLeanTest/Analysis/Isometry/RestoringVectors.lean"
       ],
       "exit_code": 0,
       "seconds": 2.8606754140055273,
@@ -378,7 +378,7 @@
     },
     {
       "head": "1d3a6f8020a1c6759cb2ac63bdb875bd8ea83d03",
-      "file": "QICLeanTest/RestoringVectorsAxioms.lean",
+      "file": "QICLeanTest/Analysis/Isometry/RestoringVectorsAxioms.lean",
       "sha256": "5d341d5ab93a36d05af8c1328652a8b0458309e73f74c1cfb779aeb4a0c9ee30",
       "command": [
         "lake",
@@ -390,7 +390,7 @@
         "-DmaxSynthPendingDepth=3",
         "-Dlinter.mathlibStandardSet=true",
         "-DwarningAsError=true",
-        "QICLeanTest/RestoringVectorsAxioms.lean"
+        "QICLeanTest/Analysis/Isometry/RestoringVectorsAxioms.lean"
       ],
       "exit_code": 0,
       "seconds": 2.5727995370107237,

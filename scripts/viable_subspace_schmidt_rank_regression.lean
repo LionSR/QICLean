@@ -1,4 +1,4 @@
-import QICLean.Analysis.ViableSubspaceSchmidtRank
+import QICLean.Channel.Schmidt.ViableSubspaceSchmidtRank
 import Lean.Util.CollectAxioms
 
 /-! The public viable-subspace approximation theorems use only the standard

@@ -3,9 +3,9 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Channel.KrausRank
+import QICLean.Channel.KrausMap.KrausRank
 import QICLean.Channel.LorentzNormalForm.Basic
-import QICLean.Channel.SingleKraus
+import QICLean.Channel.KrausMap.SingleKraus
 import Mathlib.FieldTheory.IsAlgClosed.Basic
 import Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup.Basic
 

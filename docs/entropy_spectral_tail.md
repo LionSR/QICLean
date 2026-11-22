@@ -1,6 +1,6 @@
 # Canonical entropy spectral tails
 
-`QICLean.Entropy.SpectralTail` connects a density-matrix entropy bound to the
+`QICLean.Entropy.VonNeumann.SpectralTail` connects a density-matrix entropy bound to the
 canonical projector `Matrix.spectralProjectionGE σ t`, reusing the spectral
 projection and counting theorem from `Analysis.ShiftedDensityTruncation`.
 
@@ -34,7 +34,7 @@ mathematical argument, with no upstream Lean proof text reused.
 
 ## Regression checks
 
-`QICLeanTest.SpectralTail` exercises a rank-deficient pure state, the
+`QICLeanTest.Entropy.VonNeumann.SpectralTail` exercises a rank-deficient pure state, the
 maximally mixed two-level state at and strictly above the cutoff, the
 zero-entropy endpoint, a noncommuting target state, the half/full norm
 convention and the impossibility

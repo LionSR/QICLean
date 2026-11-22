@@ -32,21 +32,21 @@ There are no sanctioned axiom declarations in this repository; any new
 `axiom` declaration is a blocker. Historically,
 `hayashi_ssa_equality_characterization_forward` in
 `QICLean/Axioms/Entropy.lean` was sanctioned for issue #632 / gate #236. It is
-now a theorem proved in `QICLean/Analysis/EntropyMarkovForward.lean`; the
+now a theorem proved in `QICLean/Entropy/StrongSubadditivity/EntropyMarkovForward.lean`; the
 compatibility module was relocated to
-`QICLean/Entropy/SSAEqualityCharacterization.lean`, which retains the
+`QICLean/Entropy/StrongSubadditivity/MarkovChain.lean`, which retains the
 established public name. The reverse direction is proved in
-`QICLean/Analysis/EntropyMarkovReverse.lean`, and the biconditional combines
+`QICLean/Entropy/StrongSubadditivity/EntropyMarkovReverse.lean`, and the biconditional combines
 the two proved implications.
 
-`QICLean/Analysis/LiebConcavity.lean` (formerly
+`QICLean/Channel/Convexity/LiebConcavity.lean` (formerly
 `QICLean/Axioms/OperatorConvexity.lean`) declares no axioms: the operator
 Jensen inequalities for the concave real power, convex real power, and
 logarithm (`posMap_rpow_concave_jensen`, `posMap_rpow_convex_jensen`,
 `posMap_log_concave_jensen`) and Lieb's concavity theorem
 (`lieb_concavity_posDef`) are all proved there. The former
 `trace_rpow_concave_axiom` / `trace_rpow_convex_axiom` were discharged
-earlier; see `QICLean/Analysis/OperatorConvexity.lean`. The `QICLean/Axioms/`
+earlier; see `QICLean/Analysis/Convexity/OperatorConvexity.lean`. The `QICLean/Axioms/`
 directory held only proved theorems and was dissolved: its four modules
 were relocated to their subject homes and the `_axiom` suffix was dropped
 from the one declaration name that still carried it.

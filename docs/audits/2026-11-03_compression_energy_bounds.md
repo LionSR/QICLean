@@ -1,6 +1,6 @@
 # Scalar lower bounds and actual compressed eigenvalues
 
-The new module `QICLean/Analysis/CompressionEnergyBounds.lean` contains
+The new module `QICLean/Spectral/Eigenvalue/CompressionEnergyBounds.lean` contains
 three finite-dimensional variational statements used by native regional
 energy estimation.
 

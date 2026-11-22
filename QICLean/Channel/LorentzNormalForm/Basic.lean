@@ -5,9 +5,9 @@ Authors: TNLean contributors
 -/
 import QICLean.Channel.Basic
 import QICLean.Channel.TransferMatrix
-import QICLean.Channel.ChoiJamiolkowski
-import QICLean.Channel.ChoiRectangular
-import QICLean.Analysis.MarginalSupport
+import QICLean.Channel.Choi.Jamiolkowski
+import QICLean.Channel.Choi.Rectangular
+import QICLean.Analysis.Support.MarginalSupport
 
 /-!
 # Lorentz normal form: filtering operations and doubly-stochastic maps

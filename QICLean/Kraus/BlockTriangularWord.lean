@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import Mathlib.LinearAlgebra.Matrix.Block
 import Mathlib.Data.Matrix.Block
-import QICLean.Kraus.MultiBlockWord
+import QICLean.Kraus.Word
 
 /-!
 # Block-triangular word products and coordinate embeddings

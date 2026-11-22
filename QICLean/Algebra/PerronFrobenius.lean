@@ -12,6 +12,5 @@ import QICLean.Algebra.PerronFrobenius.Idempotent
 import QICLean.Algebra.PerronFrobenius.PerronVector
 import QICLean.Algebra.PerronFrobenius.PrimitiveAperiodic
 import QICLean.Algebra.PerronFrobenius.RankOne
-import QICLean.Algebra.PerronFrobenius.SpectralRadius
 import QICLean.Algebra.PerronFrobenius.Substochastic
 import QICLean.Algebra.PerronFrobenius.SupportStabilization

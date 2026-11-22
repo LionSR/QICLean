@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Circuit.Geometry.Ring
 import QICLean.Circuit.Model.Measurement
-import QICLean.Analysis.PureStateTraceNorm
+import QICLean.Channel.Positive.PureStateTraceNorm
 
 /-!
 # Asymptotic preparation of sequences of states with measurements

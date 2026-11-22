@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.CompressionEnergyBounds
+import QICLean.Spectral.Eigenvalue.CompressionEnergyBounds
 import QICLean.ManyBody.Dynamics.Interaction
 import QICLean.ManyBody.Hamiltonian.DisjointRegionalGround
 import QICLean.ManyBody.Hamiltonian.KernelGap

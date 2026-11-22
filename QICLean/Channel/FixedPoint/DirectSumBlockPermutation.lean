@@ -3,9 +3,9 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Algebra.BlockPermutation
-import QICLean.Algebra.SkolemNoetherUnitary
-import QICLean.Algebra.TraceReindex
+import QICLean.Algebra.MatrixAlgebra.BlockPermutation
+import QICLean.Algebra.MatrixAlgebra.SkolemNoetherUnitary
+import QICLean.Algebra.Matrix.MatrixReindex
 import QICLean.Channel.FixedPoint.DirectSumInverseKraus
 
 import Mathlib.RingTheory.SimpleRing.Matrix

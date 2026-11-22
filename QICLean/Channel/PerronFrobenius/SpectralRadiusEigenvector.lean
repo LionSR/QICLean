@@ -3,10 +3,10 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Algebra.MatrixCongruence
+import QICLean.Algebra.Matrix.MatrixCongruence
 import QICLean.Channel.Irreducible.CollatzWielandt
 import QICLean.Channel.Irreducible.Similarity
-import QICLean.Channel.MaximallyMixed
+import QICLean.Algebra.Hermitian.MaximallyMixed
 import QICLean.Channel.Peripheral.SpectralRadius
 import QICLean.Channel.PerronFrobenius.Existence
 import QICLean.Channel.SupportCompletion

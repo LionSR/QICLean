@@ -20,7 +20,7 @@ The positive-part trace estimate follows the existing development of Wolf, Secti
 ## Existing fixed-effect lemma moved to its general owner
 
 `Matrix.re_trace_mul_sub_le_traceDistance` moves verbatim from
-`QICLean/Entropy/SpectralTail.lean` to `QICLean/Analysis/TraceDistance.lean`.
+`QICLean/Entropy/VonNeumann/SpectralTail.lean` to `QICLean/Analysis/TraceNorm/TraceDistance.lean`.
 Its public name, finite index universes, hypotheses and proof are preserved.
 The former owner already imports the new owner, so existing import clients retain
 access. The move avoids both duplicating its Jordan-part proof and importing

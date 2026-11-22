@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Analysis.ClusterExpansion.Path
-import QICLean.Algebra.OperatorSchmidtBounds
+import QICLean.Algebra.OperatorSchmidt.Bounds
 import QICLean.ManyBody.Sites.OperatorSchmidtRank
 import QICLean.ManyBody.Hamiltonian.ClusterExpansion.Factorization
 import QICLean.ManyBody.Sites.Lattice.Chain

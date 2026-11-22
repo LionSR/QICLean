@@ -3,17 +3,17 @@ Copyright (c) 2026 Sirui Lu and QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Sirui Lu
 -/
-import QICLean.Analysis.UnitarySchurTriangularization
-import QICLean.Analysis.UpperTriangularBound
-import QICLean.Algebra.HermitianHelpers
-import QICLean.Analysis.TraceNormContractivity
-import QICLean.Analysis.TraceNormFrobenius
+import QICLean.Spectral.Jordan.UnitarySchurTriangularization
+import QICLean.Spectral.Radius.UpperTriangularBound
+import QICLean.Spectral.Eigenvalue.HermitianExtremalEigenvalues
+import QICLean.Analysis.Norm.TraceNormContractivity
+import QICLean.Analysis.TraceNorm.Frobenius
 import QICLean.Channel.Determinant.Bound
 import QICLean.Channel.FixedPoint.StationaryStates
 import QICLean.Channel.Peripheral.CesaroRecurrence
 import QICLean.Channel.Peripheral.SpectralProjection
 import QICLean.Channel.TransferMatrix
-import QICLean.Algebra.L2OpNormReindex
+import QICLean.Analysis.Norm.L2OpNormReindex
 
 /-!
 # Schur-form asymptotic convergence

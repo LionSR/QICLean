@@ -3,7 +3,7 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Analysis.SpectralRadiusPowerDecay
+import QICLean.Spectral.Radius.PowerDecay
 import QICLean.Channel.Peripheral.Spectrum
 import QICLean.Channel.Peripheral.AdjointSpectrum
 import QICLean.Channel.Peripheral.ClosureFixedPointKraus
@@ -12,7 +12,7 @@ import QICLean.Channel.Irreducible.AdjointFamily
 import QICLean.Channel.Irreducible.PerronFrobenius
 import QICLean.Channel.Schwarz.KadisonSchwarz
 import QICLean.Channel.Schwarz.PositiveMapProperties
-import QICLean.Channel.KrausMap
+import QICLean.Channel.KrausMap.KrausMap
 import QICLean.Channel.Determinant.Bound
 
 /-!

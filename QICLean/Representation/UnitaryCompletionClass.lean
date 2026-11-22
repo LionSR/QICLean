@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import Mathlib.LinearAlgebra.Basis.VectorSpace
-import QICLean.Algebra.MatrixGramUnitary
+import QICLean.Algebra.Unitary.MatrixGramUnitary
 import QICLean.Representation.GaussOperator
 
 /-!

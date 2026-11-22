@@ -4,12 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Sites.Support
-import QICLean.Algebra.HermitianHelpers
-import QICLean.Algebra.MatrixUnitaryBetween
+import QICLean.Spectral.Eigenvalue.HermitianExtremalEigenvalues
+import QICLean.Algebra.Unitary.MatrixUnitaryBetween
 import Mathlib.Analysis.CStarAlgebra.Hom
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Analysis.Normed.Algebra.Exponential
-import QICLean.Analysis.HermitianUnitaryPath
+import QICLean.Analysis.Exponential.HermitianUnitaryPath
 import Mathlib.Analysis.Matrix.Order
 import Mathlib.LinearAlgebra.Matrix.Kronecker
 import Mathlib.LinearAlgebra.Matrix.NonsingularInverse

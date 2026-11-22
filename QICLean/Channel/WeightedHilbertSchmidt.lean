@@ -3,15 +3,15 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Algebra.FrobeniusHilbert
-import QICLean.Algebra.MatrixFamilySupport
-import QICLean.Algebra.MatrixCongruence
-import QICLean.Algebra.RectangularChoi
-import QICLean.Analysis.CoisometricCompression
-import QICLean.Analysis.MatrixSqrt
+import QICLean.Analysis.Norm.FrobeniusHilbert
+import QICLean.Analysis.Support.MatrixFamilySupportProjection
+import QICLean.Algebra.Matrix.MatrixCongruence
+import QICLean.Channel.Choi.RectangularChoi
+import QICLean.Analysis.Isometry.CoisometricCompression
+import QICLean.Analysis.FunctionalCalculus.MatrixSqrt
 import QICLean.Channel.Peripheral.UnitalKraus
-import QICLean.Channel.SingleKraus
-import QICLean.Analysis.SupportCompression
+import QICLean.Channel.KrausMap.SingleKraus
+import QICLean.Analysis.Support.Compression
 
 import Mathlib.Analysis.InnerProductSpace.Adjoint
 import Mathlib.Analysis.InnerProductSpace.Rayleigh

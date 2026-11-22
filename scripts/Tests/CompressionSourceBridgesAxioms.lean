@@ -3,13 +3,13 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.ChronologicalGarbage
-import QICLean.Analysis.ChronologicalGarbageError
-import QICLean.Analysis.IsometricDomainExtension
-import QICLean.Analysis.SourceContraction
-import QICLean.Probability.ComplexGaussian.GaussianContraction
-import QICLean.Probability.ComplexGaussian.GlobalBranchLaw
-import QICLean.Probability.ComplexGaussian.SchmidtSource
+import QICLean.Channel.Dilation.ChronologicalGarbage
+import QICLean.Channel.Dilation.ChronologicalGarbageError
+import QICLean.Analysis.Isometry.IsometricDomainExtension
+import QICLean.Analysis.TraceNorm.SourceContraction
+import QICLean.Probability.Gaussian.GaussianContraction
+import QICLean.Probability.Gaussian.GlobalBranchLaw
+import QICLean.Probability.Gaussian.SchmidtSource
 
 /-! Audit every public declaration in the source-bridges packet. -/
 

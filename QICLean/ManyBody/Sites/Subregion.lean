@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Sites.Placement
-import QICLean.Algebra.L2OpNormReindex
+import QICLean.Analysis.Norm.L2OpNormReindex
 
 /-!
 # Placement into a larger region

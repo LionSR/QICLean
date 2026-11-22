@@ -4,7 +4,7 @@ The source passage is `comparator:bell-pin`, lines 283–298 of Section 7 of
 *A two-dimensional area law from a global spectral gap* (September 24, 2026),
 OpenAI/math commit `adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
 The statements extend the actual one-copy contraction from
-`QICLean/Entropy/TypicalBellPin.lean` without changing its vectors or projection.
+`QICLean/Entropy/Typical/BellPin.lean` without changing its vectors or projection.
 
 Let Ω be a vector on A × B. Select a set E of eigenvectors of its actual
 first marginal, let z be the sum of the selected eigenvalues, and write d = |E|.

@@ -10,13 +10,13 @@
       "command": [
         "lake",
         "build",
-        "QICLean.Entropy.RestoringMarginal",
-        "QICLean.Entropy.RestoringOperators",
-        "QICLean.Analysis.SupportInverseSandwich",
-        "QICLean.Entropy.RestoringNorm",
-        "QICLean.Entropy.RestoringVectors",
-        "QICLean.Analysis.RestoringCoefficientBound",
-        "QICLean.Entropy.RestoringGroundComponent"
+        "QICLean.Channel.Dilation.RestoringMarginal",
+        "QICLean.Analysis.Isometry.RestoringOperators",
+        "QICLean.Analysis.Support.InverseSandwich",
+        "QICLean.Channel.Dilation.RestoringNorm",
+        "QICLean.Analysis.Isometry.RestoringVectors",
+        "QICLean.Analysis.TraceInequality.RestoringCoefficientBound",
+        "QICLean.Channel.Dilation.RestoringGroundComponent"
       ],
       "exit_code": 0,
       "seconds": 1.699583088993677,

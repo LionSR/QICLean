@@ -21,21 +21,21 @@
   ],
   "sources": [
     {
-      "source": "QICLean/Analysis/HermitianUnitaryPath.lean",
+      "source": "QICLean/Analysis/Exponential/HermitianUnitaryPath.lean",
       "source_sha256": "ed959cd7b6c831eb8045b7a5940838f9d64c548ba31a26a3bc891b6b22b6eef2",
       "exit_code": 0,
       "elapsed_seconds": 3.038291739001579,
       "olean_sha256": "1f33a388f0a11b21b7bf49fe64971275211343a9743be4f1a330a764b26ebcc4"
     },
     {
-      "source": "QICLean/Analysis/KroneckerExponential.lean",
+      "source": "QICLean/Analysis/Exponential/KroneckerExponential.lean",
       "source_sha256": "6fc56960b3e73a013d31808fb59c950b0d37b222802baa8c9aaca5a5acf94e61",
       "exit_code": 0,
       "elapsed_seconds": 2.8995273600012297,
       "olean_sha256": "ea0e94537e41190c3f05ad070d6e27f55583283fd6d081a8b4996f44809e2422"
     },
     {
-      "source": "QICLean/Analysis/HermitianIntertwiner.lean",
+      "source": "QICLean/Analysis/Support/HermitianIntertwiner.lean",
       "source_sha256": "7fd3e9948634db43994f967c801a54c656d3e72f535f2f4e5e1557d8a9111f5b",
       "exit_code": 0,
       "elapsed_seconds": 3.1637613819984836,
@@ -48,7 +48,7 @@
       "elapsed_seconds": 2.021401418998721
     },
     {
-      "source": "QICLeanTest/HermitianIntertwiner.lean",
+      "source": "QICLeanTest/Analysis/Support/HermitianIntertwiner.lean",
       "source_sha256": "4f4e1846a78c75c17ee8dae89a46b9451f90da235a55f0dedca4b3ad188439e1",
       "exit_code": 0,
       "elapsed_seconds": 2.8425917959975777

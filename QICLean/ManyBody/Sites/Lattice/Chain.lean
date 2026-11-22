@@ -3,8 +3,8 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Algebra.OverlapGraph
-import QICLean.Algebra.PathGraphConnected
+import QICLean.Algebra.Combinatorics.OverlapGraph
+import QICLean.Algebra.Combinatorics.PathGraphConnected
 import QICLean.ManyBody.Sites.Lattice.PathGraph
 import QICLean.ManyBody.Sites.GraphBoundary
 import Mathlib.Data.Finset.Max

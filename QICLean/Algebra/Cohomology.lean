@@ -8,7 +8,6 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Algebra.Cohomology
 
-import QICLean.Algebra.Cohomology.CircleCohomology
 import QICLean.Algebra.Cohomology.CocycleCohomology
 import QICLean.Algebra.Cohomology.CocycleCommPhase
 import QICLean.Algebra.Cohomology.CocycleRestriction
@@ -21,8 +20,6 @@ import QICLean.Algebra.Cohomology.KleinCocycleTable
 import QICLean.Algebra.Cohomology.LSymbol
 import QICLean.Algebra.Cohomology.LSymbolBlockIndependence
 import QICLean.Algebra.Cohomology.LSymbolDomainWall
-import QICLean.Algebra.Cohomology.PositiveGeneralizedCocycle
-import QICLean.Algebra.Cohomology.ProjectiveCommutantEigenspace
 import QICLean.Algebra.Cohomology.ProjectiveRepresentation
 import QICLean.Algebra.Cohomology.ScalarThreeCocycle
 import QICLean.Algebra.Cohomology.ScalarThreeCocycleCyclicClass
@@ -34,11 +31,8 @@ import QICLean.Algebra.Cohomology.ScalarThreeCocycleGroupCohomology
 import QICLean.Algebra.Cohomology.ScalarThreeCocycleInversion
 import QICLean.Algebra.Cohomology.ScalarThreeCocycleTimeReversal
 import QICLean.Algebra.Cohomology.StabilizerBlockIndependence
-import QICLean.Algebra.Cohomology.StabilizerBlockIndependenceCircle
 import QICLean.Algebra.Cohomology.StabilizerCocycleExtension
 import QICLean.Algebra.Cohomology.StabilizerCocycleLSymbol
 import QICLean.Algebra.Cohomology.StabilizerCocycleReconstruction
 import QICLean.Algebra.Cohomology.StabilizerTransition
 import QICLean.Algebra.Cohomology.SymmetryParity
-import QICLean.Algebra.Cohomology.TwistedRegularProjective
-import QICLean.Algebra.Cohomology.TwistedRegularRepresentation

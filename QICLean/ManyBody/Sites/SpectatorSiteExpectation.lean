@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Sites.SiteOscillation
 import QICLean.ManyBody.Sites.Twirl
-import QICLean.Algebra.L2OpNormReindex
+import QICLean.Analysis.Norm.L2OpNormReindex
 
 /-!
 # Site expectations with an untouched spectator

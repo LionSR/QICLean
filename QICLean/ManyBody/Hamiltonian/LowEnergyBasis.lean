@@ -6,8 +6,8 @@ Authors: QICLean contributors
 import Mathlib.Analysis.InnerProductSpace.JointEigenspace
 import Mathlib.Analysis.Normed.Group.Quotient
 import Mathlib.LinearAlgebra.Complex.Module
-import QICLean.Analysis.LowEnergyBasis.SpectralSplit
-import QICLean.Analysis.LowEnergyBasis.Construction
+import QICLean.Spectral.LowEnergy.Basis.SpectralSplit
+import QICLean.Spectral.LowEnergy.Basis.Construction
 import QICLean.ManyBody.Hamiltonian.LowEnergyCommutatorSum
 
 /-!

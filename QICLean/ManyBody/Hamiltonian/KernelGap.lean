@@ -3,13 +3,13 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.CompactKernelGap
-import QICLean.Analysis.KernelGapPerturbation
-import QICLean.Analysis.KernelSpectralGap
-import QICLean.Analysis.PositiveGapTransfer
-import QICLean.Analysis.SupportInverseSandwich
+import QICLean.Spectral.Gap.CompactKernelGap
+import QICLean.Spectral.Perturbation.KernelGapPerturbation
+import QICLean.Spectral.Gap.KernelSpectralGap
+import QICLean.Spectral.Gap.PositiveGapTransfer
+import QICLean.Analysis.Support.InverseSandwich
 import QICLean.ManyBody.Hamiltonian.GroundSpace
-import QICLean.Topology.CompactUniformBounds
+import QICLean.Analysis.Topology.CompactUniformBounds
 
 /-!
 # The gap above the kernel

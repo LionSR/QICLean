@@ -5,7 +5,7 @@ Authors: TNLean contributors
 -/
 import QICLean.Channel.FixedPoint.CanonicalGauge
 import QICLean.Channel.Schwarz.Basic
-import QICLean.Kraus.MixedMap
+import QICLean.Kraus.MixedMap.Basic
 
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Analysis.Matrix.Normed

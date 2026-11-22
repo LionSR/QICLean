@@ -3,8 +3,8 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Analysis.DeterminantTraceBound
-import QICLean.Channel.ChoiTypeMap
+import QICLean.Analysis.TraceInequality.DeterminantTraceBound
+import QICLean.Channel.ChoiTypeMap.Basic
 
 /-!
 # Positivity of the first Choi-type map

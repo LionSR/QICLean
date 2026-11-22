@@ -3,8 +3,8 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Analysis.MeanErgodic
-import QICLean.Analysis.OperatorNormConvergence
+import QICLean.Analysis.Projection.MeanErgodic
+import QICLean.Analysis.Norm.OperatorNormConvergence
 import QICLean.Channel.Basic
 import QICLean.Channel.Semigroup.CPClosure
 import Mathlib.Analysis.Matrix.Order

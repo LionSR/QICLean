@@ -7,8 +7,8 @@ import Mathlib.Analysis.SpecialFunctions.Exp
 import Mathlib.Combinatorics.SimpleGraph.Hasse
 import Mathlib.Order.Interval.Finset.Fin
 import Mathlib.Order.SuccPred.Archimedean
-import QICLean.Algebra.PathGraphConnected
-import QICLean.Algebra.UnionCoefficientBound
+import QICLean.Algebra.Combinatorics.PathGraphConnected
+import QICLean.Algebra.Combinatorics.UnionCoefficientBound
 import QICLean.Analysis.ClusterExpansion.Factorization
 
 /-!
@@ -26,7 +26,7 @@ Moved from TNLean (`e113e005`): `TNLean/Lattice/ClusterExpansion/PathIntervals.l
 `PathSeparation.lean`, `PathWindowWeights.lean`, `CrossingIntervalCount.lean`,
 `PathCrossingExpansion.lean` and `NormalizedPathTail.lean`, in the namespace
 `ClusterExpansion`. The connected sets of the path graph are described in
-`QICLean/Algebra/PathGraphConnected.lean`.
+`QICLean/Algebra/Combinatorics/PathGraphConnected.lean`.
 -/
 
 /-!

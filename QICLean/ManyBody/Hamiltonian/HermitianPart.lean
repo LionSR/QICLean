@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Dynamics.Interaction
-import QICLean.Algebra.HermitianPartSum
+import QICLean.Algebra.Hermitian.HermitianPartSum
 import Mathlib.Analysis.CStarAlgebra.Matrix
 
 /-!

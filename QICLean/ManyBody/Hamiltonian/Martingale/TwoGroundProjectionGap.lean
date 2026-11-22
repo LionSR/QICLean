@@ -3,8 +3,8 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.TwoProjectionCompression
-import QICLean.Analysis.WeightedPositiveKernel
+import QICLean.Analysis.Projection.TwoProjectionCompression
+import QICLean.Spectral.Gap.WeightedPositiveKernel
 import QICLean.ManyBody.Hamiltonian.Martingale.AbstractCriterion
 
 /-!

@@ -117,7 +117,7 @@ which for $n=2$ is~\eqref{eq:hastings05_two_dim_ground_basis_oi}. The bound
 $v_a$.\footnote{\leanid{LowEnergyBasis.norm_offDiagonalPartFamily_le_norm_commutator_div},
     \leanid{LowEnergyBasis.sum_norm_offDiagonalPartFamily_le} and
     \leanid{LowEnergyBasis.norm_apply_sub_inner_smul_le_add_offDiagonalPartFamily}
-    in \doclink{QICLean/Analysis/LowEnergyBasis/OffDiagonal}.}
+    in \doclink{QICLean/Spectral/LowEnergy/Basis/OffDiagonal}.}
 This is the first level of the iteration of the next section, with $\delta$ a
 given lower bound on the spacing.
 
@@ -171,7 +171,7 @@ already vanish, so no separation is needed.\footnote{\leanid{LowEnergyBasis.abs_
     \leanid{LowEnergyBasis.norm_offDiagonalPartFamily_le_levelBoundB},
     \leanid{LowEnergyBasis.norm_inner_le_of_two_levels} and
     \leanid{LowEnergyBasis.norm_offDiagonalPartFamily_le_of_two_levels} in
-    \doclink{QICLean/Analysis/LowEnergyBasis/Iteration}.}
+    \doclink{QICLean/Spectral/LowEnergy/Basis/Iteration}.}
 The bound $\beta_\ell$ is linear in $K_B$, and with two levels every term decays
 in $d(i,j)$ or $d(i,k)$, so the sum over $i$ behind eq.~\texttt{oibu} stays
 bounded.
@@ -254,7 +254,7 @@ projections and estimates are constructed, without an assumed separating
 basis or a supplied projection.\footnote{Declarations
 \leanid{LowEnergyBasis.exists_selfAdjoint_spectral_split} and
 \leanid{LowEnergyBasis.exists_family_spectral_split}, in
-\doclink{QICLean/Analysis/LowEnergyBasis/SpectralSplit}.}
+\doclink{QICLean/Spectral/LowEnergy/Basis/SpectralSplit}.}
 
 If $0\le f\le1$ and $f(i,j)f(j,k)\le f(i,k)$, the exact identity
 \begin{align}
@@ -273,7 +273,7 @@ The kernel formulation also permits zero kernels between disconnected
 components; no finite-distance convention is imposed. Both cross terms in
 (\ref{eq:hastings05_basis_split_compression}) are retained.\footnote{Declaration
 \leanid{LowEnergyBasis.norm_commutator_compression_le_kernel}, in
-\doclink{QICLean/Analysis/LowEnergyBasis/SpectralSplit}.}
+\doclink{QICLean/Spectral/LowEnergy/Basis/SpectralSplit}.}
 This is the uniform inductive step. The complete recursive basis and its
 summed bound are separate from this one-step assertion.
 
@@ -532,7 +532,7 @@ constants and the number of levels are kept fixed.\footnote{\leanid{ManyBody.nor
     \doclink{QICLean/ManyBody/Hamiltonian/LowEnergyCommutatorSum};
     \leanid{LowEnergyBasis.levelBoundB_eq_mul} and
     \leanid{LowEnergyBasis.sum_norm_offDiagonalPartFamily_le_levelBoundB} in
-    \doclink{QICLean/Analysis/LowEnergyBasis/Iteration}.}
+    \doclink{QICLean/Spectral/LowEnergy/Basis/Iteration}.}
 This gives size independence when the spectral denominators and the number of
 selected levels are uniformly controlled. Their uniformity is not established by
 the conditional iteration theorem. The printed dependence $O(J^2/(c_1l\Delta E\,\delta\lambda_j))$ is not established:
@@ -550,11 +550,11 @@ $(v/\Delta E)^D$.
 prove~\eqref{eq:hastings05_two_dim_ground_basis_oi} and its sum, and
 \leanid{LowEnergyBasis.norm_apply_sub_inner_smul_le_add_offDiagonalPart}
 proves~\eqref{eq:hastings05_two_dim_ground_basis_low}, all in
-\doclink{QICLean/Analysis/LowEnergyBasis/OffDiagonal}.
+\doclink{QICLean/Spectral/LowEnergy/Basis/OffDiagonal}.
 
 The actual recursive construction is
 \leanid{LowEnergyBasis.exists_orthonormalBasis_uniform_kernel} in
-\doclink{QICLean/Analysis/LowEnergyBasis/Recursive}. The source's actual localized
+\doclink{QICLean/Spectral/LowEnergy/Basis/Recursive}. The source's actual localized
 operators are treated by
 \leanid{ManyBody.exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_truncated_le}
 in \doclink{QICLean/ManyBody/Hamiltonian/LowEnergyBasisTruncated}, using the independent

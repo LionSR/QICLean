@@ -5,7 +5,7 @@ Authors: TNLean contributors
 -/
 import QICLean.Channel.FixedPoint.AbstractAlgebra
 import QICLean.Channel.FixedPoint.MeanErgodicAdjoint
-import QICLean.Channel.PositiveConditionalExpectationDirectSum
+import QICLean.Channel.ConditionalExpectation.PositiveConditionalExpectationDirectSum
 
 /-!
 # Block form of the adjoint fixed-point projection on full support

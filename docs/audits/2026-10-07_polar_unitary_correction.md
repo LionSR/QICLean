@@ -46,7 +46,7 @@ theorems remain separate.
 
 The verified combined source/test checkpoint is local
 `c849b612e6e7c37c4c38263316681ff92b7ed5de`. The native command
-`lake build QICLean.Analysis.PolarUnitaryCorrectionKronecker` passed with 3107
+`lake build QICLean.Analysis.Isometry.PolarUnitaryCorrection` passed with 3107
 jobs and rebuilt both new modules. It ran before a CI-location-only amendment;
 the production bytes are identical at the native, strict and combined checkpoints.
 Its per-module timings are 3.7 and 5.5 seconds. Total wall time was not recorded,

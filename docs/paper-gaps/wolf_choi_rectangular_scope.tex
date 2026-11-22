@@ -101,7 +101,7 @@ family with zero operators \cite[Theorem~2.1]{Wolf2012Quantum}.
 
 The different-dimension Choi statements are formalized in the namespace
 \leanid{ChoiRectangular}.\footnote{Formal module:
-    \doclink{QICLean/Channel/ChoiRectangular}.}
+    \doclink{QICLean/Channel/Choi/Rectangular}.}
 The development defines \leanid{choiMatrix} on
 $\C^{d'}\otimes\C^d$ and proves:
 \begin{itemize}
@@ -134,7 +134,7 @@ $\C^{d'}\otimes\C^d$ and proves:
 \end{itemize}
 
 The rectangular Kraus development is in
-\doclink{QICLean/Channel/KrausRectangular}, in the same namespace. It proves
+\doclink{QICLean/Channel/KrausMap/KrausRectangular}, in the same namespace. It proves
 the normalization equivalences
 \leanid{kraus_tp_iff_sum_conjTranspose_mul} and
 \leanid{kraus_unital_iff_sum_mul_conjTranspose}. It also proves minimality of
@@ -145,7 +145,7 @@ through \leanid{exists_kraus_orthogonal_of_isKrausCP}. The padded unitary
 freedom is formalized by the dimension-generic declarations
 \leanid{kraus_isometry_freedom_iff} and
 \leanid{kraus_unitary_freedom_iff} in
-\doclink{QICLean/Channel/KrausUnitaryFreedom}.
+\doclink{QICLean/Channel/KrausMap/KrausUnitaryFreedom}.
 
 The complete-positivity predicate is \leanid{IsKrausCP}: the existence of
 rectangular Kraus operators. This is the complete-positivity notion used
@@ -164,20 +164,20 @@ The declarations \leanid{Channel.HasKrausCard},
 \leanid{Channel.choiMatrix_eq_sum_vecMulVec_of_kraus},
 \leanid{Channel.choiRank_le_of_hasKrausCard}, and
 \leanid{Channel.hasKrausCard_choiRank_of_cp} are in
-\doclink{QICLean/Channel/KrausRank}. The normalization declarations
+\doclink{QICLean/Channel/KrausMap/KrausRank}. The normalization declarations
 \leanid{kraus_sum_conjTranspose_mul_of_tp},
 \leanid{kraus_sum_mul_conjTranspose_of_unital}, and
 \leanid{kraus_same_map_of_isometry_combination} are in
-\doclink{QICLean/Channel/KrausRepresentation}. The dual, Gramian, and
+\doclink{QICLean/Channel/KrausMap/KrausRepresentation}. The dual, Gramian, and
 necessary-direction freedom declarations
 \leanid{kraus_dual_eq_of_map_eq},
 \leanid{kraus_conjTranspose_mul_eq_of_map_eq},
 \leanid{kraus_rectangular_freedom}, and
 \leanid{kraus_rectangular_freedom'} are in
-\doclink{QICLean/Channel/KrausFreedom}. The freedom equivalences
+\doclink{QICLean/Channel/KrausMap/KrausFreedom}. The freedom equivalences
 \leanid{kraus_isometry_freedom_iff} and
 \leanid{kraus_unitary_freedom_iff} are in
-\doclink{QICLean/Channel/KrausUnitaryFreedom}. Their former duplicates in the
+\doclink{QICLean/Channel/KrausMap/KrausUnitaryFreedom}. Their former duplicates in the
 \leanid{ChoiRectangular} namespace have been removed.
 
 The following declarations remain square-only. They are specializations of

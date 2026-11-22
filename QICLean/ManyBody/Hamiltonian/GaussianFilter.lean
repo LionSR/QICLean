@@ -3,11 +3,11 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.GaussianFilter.CommutatorSeries
-import QICLean.Analysis.GaussianFilter.MatrixIntegral
-import QICLean.Analysis.GaussianFilter.PhysicalBuffer
-import QICLean.Analysis.GaussianFilter.SpectralGap
-import QICLean.Analysis.SpectralFilter.MatrixFilter
+import QICLean.Spectral.Filter.Gaussian.CommutatorSeries
+import QICLean.Spectral.Filter.Gaussian.MatrixIntegral
+import QICLean.Entropy.MutualInformation.PhysicalBuffer
+import QICLean.Spectral.Filter.Gaussian.SpectralGap
+import QICLean.Analysis.Exponential.MatrixFilter
 import QICLean.ManyBody.Hamiltonian.GroundSpace
 
 /-!

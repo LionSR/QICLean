@@ -6,7 +6,7 @@ Authors: QICLean contributors
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecificLimits.Basic
 import Mathlib.Topology.MetricSpace.Pseudo.Defs
-import QICLean.Algebra.ConnectedSetCount
+import QICLean.Algebra.Combinatorics.ConnectedSetCount
 import QICLean.Analysis.ClusterExpansion.Truncation
 
 /-!
@@ -23,7 +23,7 @@ most `2R` in a pseudometric space, a cluster of diameter larger than `l_proj` ha
 Moved from TNLean (`e113e005`): `TNLean/Lattice/ClusterExpansion/Percolation.lean` (namespace
 `TNLean.Lattice`) and `PercolationSource.lean`, both in the namespace `ClusterExpansion`. The
 connected-set count is `SimpleGraph.card_connected_induce_le_exponential` of
-`QICLean/Algebra/ConnectedSetCount.lean`.
+`QICLean/Algebra/Combinatorics/ConnectedSetCount.lean`.
 -/
 
 /-!

@@ -8,9 +8,16 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Kraus.Wielandt
 
+import QICLean.Kraus.Wielandt.ChoiTraceFactorization
 import QICLean.Kraus.Wielandt.Inequality
+import QICLean.Kraus.Wielandt.KrausIterateChoi
+import QICLean.Kraus.Wielandt.KrausRectangularComposition
+import QICLean.Kraus.Wielandt.LowDim
+import QICLean.Kraus.Wielandt.PrimitiveCriterion
 import QICLean.Kraus.Wielandt.Primitivity
+import QICLean.Kraus.Wielandt.QuantumWielandt
 import QICLean.Kraus.Wielandt.RankOne
 import QICLean.Kraus.Wielandt.RectangularSpan
 import QICLean.Kraus.Wielandt.SpanGrowth
 import QICLean.Kraus.Wielandt.Stochastic
+import QICLean.Kraus.Wielandt.ZeroErrorDichotomy

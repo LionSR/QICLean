@@ -61,8 +61,8 @@ complete positivity at every matrix level block by block. When $r=1$, they
 agree verbatim with the single-summand predicates
 \leanid{Matrix.IsOperatorSystem} and
 \leanid{Matrix.IsCPOnOperatorSystem}.\footnote{Direct-sum definitions:
-\doclink{QICLean/Channel/OperatorSystemExtensionDirectSum}. Single-summand
-definitions: \doclink{QICLean/Channel/OperatorSystem}.}
+\doclink{QICLean/Channel/OperatorSystem/ExtensionDirectSum}. Single-summand
+definitions: \doclink{QICLean/Channel/OperatorSystem/Basic}.}
 
 For a full matrix codomain $\MN{p}$, the extension theorem produces
 \begin{align}
@@ -76,7 +76,7 @@ For a full matrix codomain $\MN{p}$, the extension theorem produces
 Complete positivity is expressed by the blockwise predicate
 \leanid{Matrix.IsCPMapDirectSum}.\footnote{Formal declaration:
 \leanid{Matrix.exists_cp_extension_of_operatorSystem_directSum} in
-\doclink{QICLean/Channel/OperatorSystemExtensionDirectSum}.}
+\doclink{QICLean/Channel/OperatorSystem/ExtensionDirectSum}.}
 
 The proof transports the single-summand extension theorem along the
 block-diagonal embedding
@@ -97,7 +97,7 @@ Complete positivity at every tensor level descends through the embedding
 because a block-diagonal matrix is positive semidefinite exactly when each
 diagonal block is positive semidefinite.\footnote{Single-summand extension:
 \leanid{Matrix.exists_cp_extension_of_operatorSystem} in
-\doclink{QICLean/Channel/OperatorSystemExtension}. Tensor-level descent:
+\doclink{QICLean/Channel/OperatorSystem/Extension}. Tensor-level descent:
 \leanid{Matrix.bipartiteSlice_directSumEmbedFinLevel}.}
 
 \section{The formalized codomain}
@@ -121,7 +121,7 @@ Complete positivity is stated after the canonical inclusion
 $\mathcal B\hookrightarrow\MN{p}$, because the direct-sum complete-positivity
 predicate uses a full matrix codomain.\footnote{Formal declaration:
 \leanid{Matrix.exists_cp_extension_of_operatorSystem_directSum_starSubalgebra}
-in \doclink{QICLean/Channel/OperatorSystemExtensionStarSubalgebra}.}
+in \doclink{QICLean/Channel/OperatorSystem/ExtensionStarSubalgebra}.}
 
 The construction supplies the final step left implicit in Wolf's proof
 \cite[lines~620--626]{Wolf2012Quantum}. First, the direct-sum theorem gives an

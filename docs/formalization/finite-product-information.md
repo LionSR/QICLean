@@ -2,7 +2,7 @@
 
 For a finite-product pure vector ψ, regional entropy is the von Neumann entropy
 of the actual reduction of |ψ⟩⟨ψ|. The following statements are proved in
-`QICLean/Entropy/RegionStrongSubadditivity.lean`:
+`QICLean/ManyBody/Entropy/RegionStrongSubadditivity.lean`:
 
 - Conditional mutual information I(X:C | Z) is nonnegative when X,C,Z are
   pairwise disjoint.

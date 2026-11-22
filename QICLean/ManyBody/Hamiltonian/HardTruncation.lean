@@ -3,12 +3,12 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.EuclideanEigenvectorBasis
-import QICLean.Analysis.GroundEnergyBounds
-import QICLean.Analysis.OrderedSpectralSpan
-import QICLean.Analysis.RelativeLowEnergyCloseness
-import QICLean.Analysis.WeightedLowRestriction
-import QICLean.Analysis.WeylMonotonicity
+import QICLean.Spectral.Eigenvalue.EuclideanEigenvectorBasis
+import QICLean.Spectral.Eigenvalue.GroundEnergyBounds
+import QICLean.Spectral.LowEnergy.OrderedSpectralSpan
+import QICLean.Spectral.LowEnergy.RelativeLowEnergyCloseness
+import QICLean.Spectral.LowEnergy.WeightedLowRestriction
+import QICLean.Analysis.Order.WeylMonotonicity
 import QICLean.ManyBody.Dynamics.BoundedDegreeImaginaryTime
 import QICLean.ManyBody.Hamiltonian.DisjointRegionalGround
 import QICLean.ManyBody.Sites.Cut

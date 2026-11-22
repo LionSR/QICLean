@@ -4,8 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Sites.Placement
-import QICLean.Analysis.RootChannel
-import QICLean.Channel.KrausCPTP
+import QICLean.Analysis.Norm.RootChannel
+import QICLean.Channel.KrausMap.KrausCPTP
 
 /-!
 # The expectation onto a region

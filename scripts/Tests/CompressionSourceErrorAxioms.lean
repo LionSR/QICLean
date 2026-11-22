@@ -3,10 +3,10 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.RectangularTraceNormAlgebra
-import QICLean.Probability.ComplexGaussian.ProductSource
-import QICLean.Probability.ComplexGaussian.SourceError
-import QICLean.Probability.WeightedSourceError
+import QICLean.Analysis.TraceNorm.RectangularTraceNormAlgebra
+import QICLean.Probability.Gaussian.ProductSource
+import QICLean.Probability.Gaussian.SourceError
+import QICLean.Probability.Concentration.WeightedSourceError
 
 /-! Kernel reports for all named declarations in the actual source-error packet. -/
 

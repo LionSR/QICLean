@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Channel.Basic
-import QICLean.Algebra.MatrixAux
+import QICLean.Algebra.Matrix.MatrixAux
 import QICLean.Channel.Irreducible.Basic
 
 import Mathlib.LinearAlgebra.Matrix.Trace

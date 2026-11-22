@@ -6,8 +6,8 @@ Authors: TNLean contributors
 import QICLean.Channel.PerronFrobenius.Normalization
 import QICLean.Channel.Irreducible.AdjointFamily
 import QICLean.Channel.Irreducible.Growth.OneStep
-import QICLean.Channel.KrausMap
-import QICLean.Algebra.MatrixAux
+import QICLean.Channel.KrausMap.KrausMap
+import QICLean.Algebra.Matrix.MatrixAux
 import QICLean.Channel.FixedPoint.BrouwerDensityMatrices
 
 /-!

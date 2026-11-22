@@ -4,9 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Sites.Placement
+import QICLean.Algebra.Unitary.MatrixUnitaryBetween
 import QICLean.ManyBody.Sites.SitewiseProduct
-import QICLean.Algebra.PermutationMatrixUnitary
-import QICLean.Analysis.DoubledSystemGap
+import QICLean.Spectral.Gap.DoubledSystemGap
 
 /-!
 # Conjugation by on-site unitaries, and the exchange of two copies on a region

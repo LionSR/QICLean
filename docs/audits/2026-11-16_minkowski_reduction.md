@@ -31,7 +31,7 @@ and preceding block definitions is still required.
 
 ## Proved scope
 
-`QICLean/Algebra/MinkowskiReduction.lean` imports only the existing algebraic
+`QICLean/Algebra/Matrix/MinkowskiReduction.lean` imports only the existing algebraic
 canonical-block module. Its nine theorems prove:
 
 1. Transpose selfadjointness for an involutory metric and selfadjointness of
@@ -70,7 +70,7 @@ not solved by this change.
 
 - Pinned Lean `v4.36.0-rc1`; fetched the prebuilt Mathlib dependency closure
   before building. No Mathlib source rebuild was used.
-- `lake build QICLean.Algebra.MinkowskiReduction`: passed, 5011 jobs.
+- `lake build QICLean.Algebra.Matrix.MinkowskiReduction`: passed, 5011 jobs.
   Only the unchanged predecessor module emits module-system import warnings.
 - Direct Lean elaboration of the new module with CI flags, including
   `autoImplicit=false`, `relaxedAutoImplicit=false`,
@@ -85,7 +85,7 @@ not solved by this change.
 - Paper-gap PDF: two successful pdfLaTeX passes, four pages; `dsfont` was
   installed locally for this check. The second pass has no undefined references.
 - Compiled Algebra/root aggregate checks were attempted and stopped on absent
-  unrelated artifacts (`QICLean.Algebra.AKLVFrequencyBounds.olean`, then
+  unrelated artifacts (`QICLean.Algebra.Combinatorics.BinomialFrequencySum.olean`, then
   `QICLean.Algebra.olean`). This is a fresh checkout, not a full-library build;
   global compiled `leanblueprint checkdecls` is consequently not certified.
 - Full blueprint PDF: passed (949 pages); the new main theorem was visually

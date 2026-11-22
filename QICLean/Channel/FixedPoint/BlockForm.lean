@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Channel.FixedPoint.Algebra
-import QICLean.Algebra.StarSubalgebraBlockForm
+import QICLean.Algebra.StarSubalgebra.BlockForm
 
 /-!
 # Unitary block form of the fixed-point algebra of a Kraus map

@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Channel.Peripheral.IrreducibleChannel
 import QICLean.Kraus.CPPrimitive
-import QICLean.Kraus.InvariantProjection
+import QICLean.Channel.Irreducible.InvariantProjection
 import QICLean.Kraus.PrimitiveFixedPoint.Basic
 
 /-!

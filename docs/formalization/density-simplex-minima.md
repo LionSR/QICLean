@@ -1,7 +1,7 @@
 # Regularized density-simplex minima
 
 The finite simplex calculation in the polynomial PEPS patch construction is
-proved in `QICLean/Analysis/DensitySimplex.lean`. The mathematical source is
+proved in `QICLean/Analysis/Optimization/DensitySimplex.lean`. The mathematical source is
 OpenAI's September 24, 2026 manuscript, Section 4, `03-patches.tex`, lines
 170–200, equations `eq:patch-simplex-derivative`, `eq:patch-kkt`, and
 `eq:patch-clipped-eigenvalues`, at immutable source revision

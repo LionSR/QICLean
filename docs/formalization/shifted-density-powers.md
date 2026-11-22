@@ -1,6 +1,6 @@
 # Shifted density matrices and real powers
 
-`QICLean/Analysis/ShiftedDensityPowers.lean` proves seven generic
+`QICLean/Analysis/FunctionalCalculus/ShiftedDensityPowers.lean` proves seven generic
 finite-dimensional facts used in the regularized-filter construction in
 [OpenAI's September 24, 2026 PEPS manuscript, lines 51–114](https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/03-patches.tex#L51-L114).
 The paper uses b = exp(−R) and factors (x + bI)^(−a/2). The results here

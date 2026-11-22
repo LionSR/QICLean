@@ -8,37 +8,11 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Probability
 
-import QICLean.Probability.ComplexGaussian
-import QICLean.Probability.CompressionSampling
+import QICLean.Probability.Concentration
 import QICLean.Probability.FiniteUniformConditioning
-import QICLean.Probability.HaarProjection
-import QICLean.Probability.IndependentCovariance
-import QICLean.Probability.MatrixBernstein
-import QICLean.Probability.MatrixCumulantSubadditivity
-import QICLean.Probability.MatrixSecondMoment
-import QICLean.Probability.MatrixTraceNormIntegrability
-import QICLean.Probability.NativeRankUnitarySampling
+import QICLean.Probability.Gaussian
+import QICLean.Probability.Haar
+import QICLean.Probability.Measurable
+import QICLean.Probability.Measure
 import QICLean.Probability.PoissonWord
-import QICLean.Probability.PoissonWordAppend
-import QICLean.Probability.PoissonWordCounts
-import QICLean.Probability.PoissonWordExpectedOmission
-import QICLean.Probability.PoissonWordIndependentCounts
-import QICLean.Probability.PoissonWordInsertion
-import QICLean.Probability.PoissonWordInsertionWeight
-import QICLean.Probability.PoissonWordJump
-import QICLean.Probability.PoissonWordMarked
-import QICLean.Probability.PoissonWordOccupation
-import QICLean.Probability.PoissonWordOmissionBound
-import QICLean.Probability.PoissonWordPartition
-import QICLean.Probability.PoissonWordRealOccupation
-import QICLean.Probability.PoissonWordRelabel
-import QICLean.Probability.PoissonWordSemigroup
-import QICLean.Probability.PoissonWordShellGrowth
-import QICLean.Probability.PoissonWordSpatialGrowth
-import QICLean.Probability.PoissonWordTelescope
-import QICLean.Probability.PoissonWordThinning
-import QICLean.Probability.PoissonWordUniformOrder
-import QICLean.Probability.PoissonWordWeightedGrowth
-import QICLean.Probability.RankUnitaryProductHaar
-import QICLean.Probability.RankUnitaryUniformSampling
-import QICLean.Probability.WeightedSourceError
+import QICLean.Probability.Sampling

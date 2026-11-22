@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Basic
-import QICLean.Algebra.HermitianHelpers
+import QICLean.Spectral.Eigenvalue.HermitianExtremalEigenvalues
 import QICLean.Channel.FixedPoint.MeanErgodicProjection
 import QICLean.Channel.FixedPoint.StationaryProjection
 import QICLean.Channel.Schwarz.PositiveMapProperties

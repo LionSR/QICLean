@@ -1,6 +1,6 @@
 # Actual initial vectors with common auxiliary labels
 
-The module `QICLean/Representation/ReplicaPrevector.lean` constructs the initial vector of OpenAI, *A two-dimensional area law from a global spectral gap* (September 24, 2026), Section 7, source lines 130–147 and 255–281, `comparator:prevector` and `comparator:high-label`, at commit `adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
+The module `QICLean/Representation/Bell/ReplicaPrevector.lean` constructs the initial vector of OpenAI, *A two-dimensional area law from a global spectral gap* (September 24, 2026), Section 7, source lines 130–147 and 255–281, `comparator:prevector` and `comparator:high-label`, at commit `adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
 
 Its input is a unit physical one-copy eigenvector Ω, its actual Hamiltonian H and real eigenvalue, and a unit bipartite vector ψ whose right system has dimension d. The reduced density is the actual partial trace of |ψ⟩⟨ψ|. The same selected-label sequence gives eventual inverse polynomial projection mass for the literal tensor powers of ψ and logarithmic dimension k S(ρ) + o(k).
 

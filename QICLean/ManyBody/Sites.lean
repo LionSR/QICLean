@@ -9,6 +9,7 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.ManyBody.Sites
 
 import QICLean.ManyBody.Sites.Block
+import QICLean.ManyBody.Sites.CompressedSiteCoordinates
 import QICLean.ManyBody.Sites.Config
 import QICLean.ManyBody.Sites.ConfigurationMap
 import QICLean.ManyBody.Sites.Cut
@@ -17,6 +18,7 @@ import QICLean.ManyBody.Sites.GraphBall
 import QICLean.ManyBody.Sites.GraphBoundary
 import QICLean.ManyBody.Sites.Lattice
 import QICLean.ManyBody.Sites.OneMagnon
+import QICLean.ManyBody.Sites.OperatorSchmidtPartition
 import QICLean.ManyBody.Sites.OperatorSchmidtRank
 import QICLean.ManyBody.Sites.PairSwap
 import QICLean.ManyBody.Sites.Partition

@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Channel.KrausMap
+import QICLean.Channel.KrausMap.KrausMap
 import Mathlib.Data.Matrix.Basis
 import Mathlib.LinearAlgebra.Matrix.Stochastic
 import Mathlib.Logic.Equiv.Fin.Basic

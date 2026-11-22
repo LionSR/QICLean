@@ -5,8 +5,8 @@ Authors: QICLean contributors
 -/
 import QICLean.Circuit.Core.Parallel
 import QICLean.Circuit.Core.LightCone
-import QICLean.Analysis.HermitianProductFormula
-import QICLean.Algebra.OverlapGraph
+import QICLean.Analysis.Exponential.HermitianProductFormula
+import QICLean.Algebra.Combinatorics.OverlapGraph
 
 /-!
 # Product-formula circuits

@@ -1,4 +1,4 @@
-import QICLean.Probability.MatrixSecondMoment
+import QICLean.Probability.Concentration.MatrixSecondMoment
 
 /-!
 # Matrix second-moment regressions

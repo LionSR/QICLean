@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Channel.ChoiTypeMap.HaNegativePairing
 import QICLean.Channel.ChoiTypeMap.YamagamiPositivity
-import QICLean.Channel.DecomposablePPT
+import QICLean.Channel.Positive.DecomposablePPT
 
 /-!
 # Indecomposability of Choi-type positive maps
