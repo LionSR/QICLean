@@ -185,9 +185,9 @@ measurement of an instrument followed by channels chosen by its outcome is a cha
 
 \begin{lemma}[Onsite channels]
     \label{lem:protocols_onsite}
-    \lean{ManyBody.sum_prodOp, ManyBody.map_prodFamily_prodOp,
+    \lean{Matrix.sum_piKronecker, ManyBody.map_prodFamily_piKronecker,
         QuantumCircuit.Circuit.map_ofLayer_ofOnsite,
-        QuantumCircuit.Circuit.map_ofLayer_ofOnsite_prodOp,
+        QuantumCircuit.Circuit.map_ofLayer_ofOnsite_piKronecker,
         QuantumCircuit.Layer.lightCone_ofOnsite, QuantumCircuit.Layer.forall_ofOnsite}
     \leanok
     \uses{def:sites_product_family, def:circuits_of_cells, def:circuits_layer,

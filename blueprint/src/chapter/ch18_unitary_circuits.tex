@@ -70,7 +70,8 @@ Chapter~\ref{ch:circuits} for these circuits.
         QuantumCircuit.UnitaryCircuit.op, QuantumCircuit.UnitaryCircuit.depth,
         QuantumCircuit.UnitaryCircuit.gateCount,
         QuantumCircuit.UnitaryCircuit.instUniqueIndex,
-        QuantumCircuit.UnitaryCircuit.kraus_eq_op,
+        QuantumCircuit.UnitaryCircuit.op_eq_smul_kraus,
+        QuantumCircuit.UnitaryCircuit.kraus_eq_smul_op,
         QuantumCircuit.UnitaryCircuit.forall_isUnitary,
         QuantumCircuit.UnitaryCircuit.forall_isTP,
         QuantumCircuit.UnitaryCircuit.isUnbranched,
@@ -80,10 +81,13 @@ Chapter~\ref{ch:circuits} for these circuits.
         lem:circuits_seq, lem:circuits_unique_branch}
     A unitary circuit on $\Gamma$ on the system $X$ is a finite sequence of layers
     from $X$ to $X$ whose gates and onsite families are each a single unitary
-    \cite{Malz2024Preparation, Piroli2021LOCC}. As a circuit it is the sequence of
-    its layers; it has exactly one branch, and its operator $U$ is the Kraus
-    operator of that branch, $U=W_T\cdots W_1$ for the operators $W_k$ of its
-    layers. Its depth and gate count are those of the circuit.
+    \cite{Malz2024Preparation, Piroli2021LOCC}, together with a global phase
+    $\mu\in\C$, $|\mu|=1$. As a circuit it is the sequence of its layers; it has
+    exactly one branch, and its operator is $U=\mu W_T\cdots W_1$ for the operators
+    $W_k$ of its layers, the phase times the Kraus operator of that branch. Its depth
+    and gate count are those of the circuit; the phase costs nothing. Without the
+    phase, on an empty set of sites there is no one-site unitary and a geometry need
+    not have a cell, so $\mu1$ with $\mu\ne1$ need not be the operator of a circuit.
 \end{definition}
 
 \begin{lemma}[Costs of a unitary circuit]
@@ -127,14 +131,16 @@ Chapter~\ref{ch:circuits} for these circuits.
     \uses{def:unitary_circuit, lem:unitary_circuit_costs, thm:circuits_composition,
         lem:circuits_adjoint}
     The empty unitary circuit has operator $1$ and cost $0$. The circuit $c$
-    followed by $c'$ has operator $U'U$, depth the sum of the depths and gate count
-    the sum of the gate counts. The adjoint layers of $c$ in reverse order form a
-    unitary circuit with operator $U^\dagger$ and the depth and gate count of $c$.
+    followed by $c'$, with the product of the phases, has operator $U'U$, depth the
+    sum of the depths and gate count the sum of the gate counts. The adjoint layers
+    of $c$ in reverse order, with the inverse phase, form a unitary circuit with
+    operator $U^\dagger$ and the depth and gate count of $c$.
 \end{theorem}
 \begin{proof}\leanok
     The sequence of a concatenation of layers is the composition of the two
-    sequences, whose Kraus operators multiply. The adjoint of a sequence of layers of
-    single operators has the adjoint Kraus operator; a layer and its adjoint use the
+    sequences, whose Kraus operators multiply, and scalars commute with matrices. The
+    adjoint of a sequence of layers of single operators has the adjoint Kraus
+    operator, and $\bar\mu=\mu^{-1}$ for $|\mu|=1$; a layer and its adjoint use the
     same cells, so they have the same costs.
 \end{proof}
 
@@ -150,13 +156,18 @@ Chapter~\ref{ch:circuits} for these circuits.
         QuantumCircuit.UnitaryCircuit.depth_gate_le,
         QuantumCircuit.UnitaryCircuit.onsite, QuantumCircuit.UnitaryCircuit.op_onsite,
         QuantumCircuit.UnitaryCircuit.depth_onsite,
-        QuantumCircuit.UnitaryCircuit.gateCount_onsite}
+        QuantumCircuit.UnitaryCircuit.gateCount_onsite,
+        QuantumCircuit.UnitaryCircuit.ofPhase, QuantumCircuit.UnitaryCircuit.op_ofPhase,
+        QuantumCircuit.UnitaryCircuit.depth_ofPhase,
+        QuantumCircuit.UnitaryCircuit.gateCount_ofPhase}
     \leanok
     \uses{def:unitary_circuit, lem:circuits_layer_single, def:sites_place}
     A unitary $V$ on the configurations of a cell $b$ is the unitary circuit of one
     layer with operator $V\otimes1$ placed on $C_b$, gate count $c_b$ and depth at
     most $1$. One-site unitaries $u_v$ at every site form a circuit of one layer with
-    no cells, with operator $\bigotimes_vu_v$ and depth and gate count $0$.
+    no cells, with operator $\bigotimes_vu_v$ and depth and gate count $0$. A phase
+    $\mu$ with $|\mu|=1$ is the circuit with no layers and phase $\mu$, with operator
+    $\mu1$ and depth and gate count $0$.
 \end{lemma}
 \begin{proof}\leanok
     The layer of one gate has the placed matrix as Kraus operator and one cell; the
@@ -203,11 +214,11 @@ Chapter~\ref{ch:circuits} for these circuits.
     \lean{QuantumCircuit.IsUnitaryCircuit.one, QuantumCircuit.IsUnitaryCircuit.mono,
         QuantumCircuit.IsUnitaryCircuit.mul, QuantumCircuit.IsUnitaryCircuit.conjTranspose,
         QuantumCircuit.IsUnitaryCircuit.mem_unitaryGroup, QuantumCircuit.IsUnitaryCircuit.pow,
-        QuantumCircuit.IsUnitaryCircuit.prodOp, QuantumCircuit.IsUnitaryCircuit.place,
+        QuantumCircuit.IsUnitaryCircuit.piKronecker, QuantumCircuit.IsUnitaryCircuit.place,
         QuantumCircuit.IsGateProduct.one, QuantumCircuit.IsGateProduct.mono,
         QuantumCircuit.IsGateProduct.mul, QuantumCircuit.IsGateProduct.conjTranspose,
         QuantumCircuit.IsGateProduct.mem_unitaryGroup, QuantumCircuit.IsGateProduct.pow,
-        QuantumCircuit.IsGateProduct.list_prod, QuantumCircuit.IsGateProduct.prodOp,
+        QuantumCircuit.IsGateProduct.list_prod, QuantumCircuit.IsGateProduct.piKronecker,
         QuantumCircuit.IsGateProduct.place,
         QuantumCircuit.IsGateProduct.of_mem_supportedOperators,
         QuantumCircuit.IsGateProduct.isUnitaryCircuit}
@@ -314,7 +325,7 @@ Chapter~\ref{ch:circuits} for these circuits.
 \begin{lemma}[A unitary layer gate by gate]
     \label{lem:unitary_layer_factorization}
     \lean{QuantumCircuit.Layer.onsiteOp,
-        QuantumCircuit.Layer.kraus_eq_prod_place_mul_prodOp,
+        QuantumCircuit.Layer.kraus_eq_prod_place_mul_piKronecker,
         QuantumCircuit.Layer.onsiteOp_mem_unitaryGroup,
         QuantumCircuit.Layer.ev_gate_mem_unitaryGroup}
     \leanok
@@ -468,7 +479,7 @@ of two sites is the operator of the transposition of the sites.
     \leanok
     \uses{lem:unitary_ctrl_op_algebra, thm:gate_givens, thm:gate_special_two_commutator,
         thm:unitary_classes_closure, def:circuits_local_gate}
-    Let $V$ be a nonempty finite set of $n$ sites and $m=\prod_v|X_v|$, and suppose that every
+    Let $V$ be a finite set of $n$ sites and $m=\prod_v|X_v|$, and suppose that every
     unitary supported on two distinct sites is a product of gates of $\Gamma$ of cost $k$.
     One-site unitaries and global phases cost nothing. A controlled two-level rotation or
     phase with $j$ controls costs at most $(2^{j+1}-2)k$, a two-level rotation or phase
@@ -498,7 +509,7 @@ of two sites is the operator of the transposition of the sites.
         Matrix.exists_mem_unitaryGroup_apply_embedding_eq}
     \leanok
     \uses{thm:unitary_universality, thm:unitary_swap_routing}
-    On the open chain of $n\ge1$ sites with the same basis at every site, every unitary is an
+    On the open chain of $n$ sites with the same basis at every site, every unitary is an
     exact product, global phase included and with no auxiliary sites, of at most
     $2n\cdot3m^2(2n-1)(2^n-2)$ neighbouring gates, and of at most $12m^5$ when the basis has
     at least two elements, $m$ the dimension of the Hilbert space. An isometry prescribed on a
@@ -533,7 +544,7 @@ of two sites is the operator of the transposition of the sites.
         QuantumCircuit.Layer.kraus_mem_supportedOperators, QuantumCircuit.Layer.isIn_single,
         QuantumCircuit.Layer.isIn_ofOnsite, QuantumCircuit.Layer.IsIn.adjoint,
         QuantumCircuit.UnitaryCircuit.tail, QuantumCircuit.UnitaryCircuit.op_eq_tail_op_mul,
-        QuantumCircuit.UnitaryCircuit.op_eq_one, QuantumCircuit.UnitaryCircuit.IsIn.mono,
+        QuantumCircuit.UnitaryCircuit.op_eq_smul_one, QuantumCircuit.UnitaryCircuit.IsIn.mono,
         QuantumCircuit.UnitaryCircuit.IsIn.tail, QuantumCircuit.UnitaryCircuit.isIn_id,
         QuantumCircuit.UnitaryCircuit.IsIn.comp, QuantumCircuit.UnitaryCircuit.IsIn.adjoint,
         QuantumCircuit.UnitaryCircuit.isIn_gate, QuantumCircuit.UnitaryCircuit.isIn_onsite,
@@ -546,7 +557,7 @@ of two sites is the operator of the transposition of the sites.
         QuantumCircuit.IsUnitaryCircuitOn.conjTranspose,
         QuantumCircuit.IsUnitaryCircuitOn.place,
         QuantumCircuit.IsUnitaryCircuitOn.of_mem_supportedOperators,
-        QuantumCircuit.IsUnitaryCircuitOn.prodOp}
+        QuantumCircuit.IsUnitaryCircuitOn.piKronecker}
     \leanok
     \uses{def:unitary_inside, thm:unitary_classes_closure, def:sites_supported}
     The operator of a circuit inside $R$ is supported on $R$. Circuits inside $R$ are closed
@@ -741,11 +752,11 @@ of two sites is the operator of the transposition of the sites.
     about the image of $E$ times $U^\dagger$. If $U$ is a product of gates of cost $K$ and the
     reflection about the image of $E$ one of cost $L$, the reflection about the image of $UE$
     costs $2K+L$; one round of amplification by two reflections of costs $K$ and $L$, with its
-    global phase $-1$, costs $K+L$ on a nonempty set of sites.
+    global phase $-1$, costs $K+L$.
 \end{theorem}
 \begin{proof}\leanok
     $UEE^\dagger U^\dagger$ is the projection onto the image of $UE$, and conjugation by $U$
-    commutes with $1-2P$. The global phase is a one-site phase.
+    commutes with $1-2P$. The global phase is the phase of a circuit, of cost $0$.
 \end{proof}
 
 \begin{theorem}[Conversion of encoders through a common seed]
@@ -766,7 +777,7 @@ of two sites is the operator of the transposition of the sites.
 \begin{theorem}[Preparation from a product basis vector]
     \label{thm:unitary_preparation_basis}
     \lean{Matrix.exists_mem_unitaryGroup_eq_smul_mulVec_single,
-        QuantumCircuit.exists_prod_eq_smul_prodOp_mulVec,
+        QuantumCircuit.exists_prod_eq_smul_piKronecker_mulVec,
         QuantumCircuit.IsPreparedInDepth.exists_eq_smul_mulVec_prod_single}
     \leanok
     \uses{def:unitary_prepared, thm:unitary_classes_closure}

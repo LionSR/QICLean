@@ -292,8 +292,8 @@ namespace TensorPower
 variable {Ω : Type*} [Fintype Ω] [DecidableEq Ω] {ρ : Matrix Ω Ω ℂ}
 
 omit [DecidableEq Ω] in
-private theorem trace_finKronecker_const (htr : ρ.trace = 1) (k : ℕ) :
-    (finKronecker (fun _ : Fin k => ρ)).trace = 1 := by
+private theorem trace_piKronecker_const (htr : ρ.trace = 1) (k : ℕ) :
+    (piKronecker (fun _ : Fin k => ρ)).trace = 1 := by
   classical
   change (∑ x : Fin k → Ω, ∏ j : Fin k, ρ (x j) (x j)) = 1
   rw [← Fintype.prod_sum (fun (_ : Fin k) (i : Ω) => ρ i i)]
@@ -310,14 +310,14 @@ private theorem exists_labelProj_iid_of_tail_error (hρ : ρ.PosSemidef)
           Real.exp (-((k : ℝ) ^ (3 / 4 : ℝ)) / 2) ≤ 1 / 2) :
     ∃ l : IrrepLabel (Equiv.Perm (Fin k)),
       (2 * (((k + 1) ^ (Fintype.card Ω ^ 2) : ℕ) : ℝ))⁻¹ ≤
-        ((finKronecker (fun _ : Fin k => ρ)) * labelProj (copyPerm Ω k) l).trace.re ∧
+        ((piKronecker (fun _ : Fin k => ρ)) * labelProj (copyPerm Ω k) l).trace.re ∧
       |Real.log l.dim - (k : ℝ) * vonNeumannEntropy ρ hρ.isHermitian| ≤
         2 * (k : ℝ) ^ (3 / 4 : ℝ) := by
-  have hρk := finKronecker_posSemidef (fun _ : Fin k => ρ) (fun _ => hρ)
-  apply exists_labelProj_mass_entropy_window hρk (trace_finKronecker_const htr k)
-    (fun σ => (Matrix.commute_finKronecker_const_permOp ρ k σ).symm)
+  have hρk := piKronecker_posSemidef (fun _ : Fin k => ρ) (fun _ => hρ)
+  apply exists_labelProj_mass_entropy_window hρk (trace_piKronecker_const htr k)
+    (fun σ => (Matrix.commute_piKronecker_const_permOp ρ k σ).symm)
     ((k : ℝ) * vonNeumannEntropy ρ hρ.isHermitian) (Real.rpow_nonneg (Nat.cast_nonneg _) _)
-  have htail := hρ.re_trace_surprisalTail_finKronecker_three_quarters_le htr hk
+  have htail := hρ.re_trace_surprisalTail_piKronecker_three_quarters_le htr hk
   dsimp only at htail
   linarith
 
@@ -333,11 +333,11 @@ of `k S(ρ)`. Only the one-copy density assumptions are required, including
 when the density is singular. This is the simultaneous mass and entropy-window
 selection in the OpenAI area-law manuscript, `07-comparators.tex`,
 lines 255–273, `comparator:high-label`. -/
-theorem eventually_exists_labelProj_finKronecker_entropy_window
+theorem eventually_exists_labelProj_piKronecker_entropy_window
     (hρ : ρ.PosSemidef) (htr : ρ.trace = 1) :
     ∀ᶠ k : ℕ in atTop, ∃ l : IrrepLabel (Equiv.Perm (Fin k)),
       (2 * (((k + 1) ^ (Fintype.card Ω ^ 2) : ℕ) : ℝ))⁻¹ ≤
-        ((finKronecker (fun _ : Fin k => ρ)) * labelProj (copyPerm Ω k) l).trace.re ∧
+        ((piKronecker (fun _ : Fin k => ρ)) * labelProj (copyPerm Ω k) l).trace.re ∧
       |Real.log l.dim - (k : ℝ) * vonNeumannEntropy ρ hρ.isHermitian| ≤
         2 * (k : ℝ) ^ (3 / 4 : ℝ) := by
   let V := ∑ i, hρ.isHermitian.eigenvalues i *
@@ -362,7 +362,7 @@ theorem exists_label_sequence_mass_entropy_asymptotic
     ∃ l : (k : ℕ) → IrrepLabel (Equiv.Perm (Fin k)),
       (∀ᶠ k : ℕ in atTop,
         (2 * (((k + 1) ^ (Fintype.card Ω ^ 2) : ℕ) : ℝ))⁻¹ ≤
-          ((finKronecker (fun _ : Fin k => ρ)) * labelProj (copyPerm Ω k) (l k)).trace.re) ∧
+          ((piKronecker (fun _ : Fin k => ρ)) * labelProj (copyPerm Ω k) (l k)).trace.re) ∧
       Asymptotics.IsLittleO atTop
         (fun k : ℕ => Real.log (l k).dim - (k : ℝ) * vonNeumannEntropy ρ hρ.isHermitian)
         (fun k : ℕ => (k : ℝ)) := by
@@ -372,12 +372,12 @@ theorem exists_label_sequence_mass_entropy_asymptotic
     let : IsEmpty (IrrepLabel (Equiv.Perm (Fin k))) := not_nonempty_iff.mp hn
     have hzero : (∑ l, labelProj (copyPerm Ω k) l) = 0 := by simp
     rw [sum_labelProj] at hzero
-    have h := congrArg (fun M => ((finKronecker (fun _ : Fin k => ρ)) * M).trace) hzero
+    have h := congrArg (fun M => ((piKronecker (fun _ : Fin k => ρ)) * M).trace) hzero
     simp only [Matrix.mul_one, Matrix.mul_zero, trace_zero,
-      trace_finKronecker_const htr k, one_ne_zero] at h
+      trace_piKronecker_const htr k, one_ne_zero] at h
   let P (k : ℕ) (l : IrrepLabel (Equiv.Perm (Fin k))) : Prop :=
     (2 * (((k + 1) ^ (Fintype.card Ω ^ 2) : ℕ) : ℝ))⁻¹ ≤
-        ((finKronecker (fun _ : Fin k => ρ)) * labelProj (copyPerm Ω k) l).trace.re ∧
+        ((piKronecker (fun _ : Fin k => ρ)) * labelProj (copyPerm Ω k) l).trace.re ∧
       |Real.log l.dim - (k : ℝ) * vonNeumannEntropy ρ hρ.isHermitian| ≤
         2 * (k : ℝ) ^ (3 / 4 : ℝ)
   have hex : ∀ k, ∃ l, (∃ l', P k l') → P k l := by
@@ -387,7 +387,7 @@ theorem exists_label_sequence_mass_entropy_asymptotic
     · exact ⟨(hnonempty k).some, fun h => False.elim (hk h)⟩
   choose l hl using hex
   have hwindow : ∀ᶠ k : ℕ in atTop, P k (l k) :=
-    (eventually_exists_labelProj_finKronecker_entropy_window hρ htr).mono
+    (eventually_exists_labelProj_piKronecker_entropy_window hρ htr).mono
       fun k hk => hl k hk
   refine ⟨l, hwindow.mono (fun _ hk => hk.1), ?_⟩
   apply Asymptotics.IsLittleO.of_bound

@@ -6,6 +6,7 @@ Authors: QICLean contributors
 import QICLean.Circuit.Core.LightCone
 import QICLean.Circuit.Core.LocalGate
 import QICLean.Circuit.Core.Parallel
+import QICLean.Analysis.Isometry.UnitPhaseScalar
 import QICLean.Circuit.Core.Seq
 import QICLean.ManyBody.Sites.PlaceAlong
 
@@ -15,18 +16,25 @@ import QICLean.ManyBody.Sites.PlaceAlong
 A unitary circuit on a geometry `Γ` on the system `X` is the restriction of `Circuit` in which
 every layer goes from `X` to `X` and every gate and onsite family has a single unitary Kraus
 operator. It is the sequence of its layers, `Circuit.seq`, so it has one branch, and its
-operator is the Kraus operator of that branch: the product of the operators of the layers, the
-first layer on the right. Its depth and gate count are those of the circuit. A one-site unitary
-is an onsite family and costs nothing.
+operator is a global phase, a complex number of modulus one, times the Kraus operator of that
+branch: the product of the operators of the layers, the first layer on the right. Its depth and
+gate count are those of the circuit; the phase costs nothing. A one-site unitary is an onsite
+family and costs nothing.
 
-Two classes of matrices are defined from it. A matrix `U` is a unitary circuit of depth `T`
-when some unitary circuit of depth at most `T` has operator `U`, and a product of gates of cost
-`K` when some unitary circuit of gate count at most `K` has operator `U`. On a ring these are
-the local circuits of depth `T` of arXiv:2307.01696 (main text before Theorem 1); on the edges
-of a graph they are the depth-`ℓ` circuits of arXiv:2103.13367 (Definition "Depth-`ℓ` quantum
-circuits"); on the edges of a path they are the products of two-site gates on neighbouring
-sites of an open chain. Every statement "of depth `T`" means depth at most `T`, so both classes
-are monotone in the bound.
+The global phase is part of the circuit. On an empty set of sites there is no one-site unitary,
+and a geometry need not have a cell, so without the phase the unitary `μ • 1` with `|μ| = 1`,
+`μ ≠ 1`, need not be the operator of a circuit; with it, a global phase is a circuit of depth and
+gate count `0` on every set of sites (`QuantumCircuit.IsGateProduct.smul_one`). Operators of
+circuits are compared exactly, never up to a phase.
+
+Two classes of matrices are defined from unitary circuits. A matrix `U` is a unitary circuit of
+depth `T` when some unitary circuit of depth at most `T` has operator `U`, and a product of gates of
+cost `K` when some unitary circuit of gate count at most `K` has operator `U`. On a ring these are
+the local circuits of depth `T` of arXiv:2307.01696 (main text before Theorem 1); on the edges of a
+graph they are the depth-`ℓ` circuits of arXiv:2103.13367 (Definition "Depth-`ℓ` quantum circuits");
+on the edges of a path they are the products of two-site gates on neighbouring sites of an open
+chain. Every statement "of depth `T`" means depth at most `T`, so both classes are monotone in the
+bound.
 
 The identity, composition, monotonicity and the light cone are the theorems of the circuit
 core: the composition is the concatenation of the sequences of layers, whose costs add
@@ -54,7 +62,8 @@ cost `0`.
   `QuantumCircuit.UnitaryCircuit.gateCount` — its operator and costs.
 * `QuantumCircuit.UnitaryCircuit.id`, `QuantumCircuit.UnitaryCircuit.comp`,
   `QuantumCircuit.UnitaryCircuit.adjoint`, `QuantumCircuit.UnitaryCircuit.gate`,
-  `QuantumCircuit.UnitaryCircuit.onsite` — the circuits used to build others.
+  `QuantumCircuit.UnitaryCircuit.onsite`, `QuantumCircuit.UnitaryCircuit.ofPhase` — the circuits
+  used to build others.
 * `QuantumCircuit.IsUnitaryCircuit` — a unitary circuit of depth at most `T`.
 * `QuantumCircuit.IsGateProduct` — a product of gates of total cost at most `K`.
 * `QuantumCircuit.IsPreparedInDepth` — a vector prepared from a product vector in depth `T`.
@@ -149,9 +158,9 @@ theorem Circuit.seq_append :
 
 variable (Γ X) in
 /-- A unitary circuit on the geometry `Γ` on the system `X`: a sequence of layers of plain gates
-from `X` to `X` whose gates and onsite families are unitary. It is the restriction of `Circuit`
-in which every Kraus family has one unitary member and the system does not change; the circuit
-is `Circuit.seq` of the layers.
+from `X` to `X` whose gates and onsite families are unitary, and a global phase. It is the
+restriction of `Circuit` in which every Kraus family has one unitary member and the system does
+not change; the circuit is `Circuit.seq` of the layers, and the phase multiplies its operator.
 
 Source: arXiv:2307.01696, main text before Theorem 1 ("depth-`T` local quantum circuits"), and
 arXiv:2103.13367, main text, paragraph "Quantum circuits and LOCC" (`V = V_ℓ ⋯ V_2 V_1`, each
@@ -162,6 +171,10 @@ structure UnitaryCircuit where
   layers : List (Layer Γ KrausGate X X)
   /-- Every gate and onsite family is unitary. -/
   isUnitary : ∀ L ∈ layers, L.Forall KrausGate.ev KrausFamily.IsUnitary
+  /-- The global phase, a complex number multiplying the product of the layers. -/
+  phase : ℂ := 1
+  /-- The global phase has modulus one. -/
+  norm_phase : ‖phase‖ = 1 := by simp
 
 namespace UnitaryCircuit
 
@@ -187,14 +200,20 @@ theorem isUnbranched (c : UnitaryCircuit Γ X) : c.toCircuit.IsUnbranched :=
 noncomputable instance instUniqueIndex (c : UnitaryCircuit Γ X) : Unique c.toCircuit.Index :=
   (Circuit.nonempty_unique_index KrausGate.ev (c.forall_isUnitary.mono fun _ h ↦ h.1)).some
 
-/-- The operator of a unitary circuit: the Kraus operator of its one branch. -/
+/-- The operator of a unitary circuit: its phase times the Kraus operator of its one branch. -/
 noncomputable def op (c : UnitaryCircuit Γ X) : Matrix (Config X) (Config X) ℂ :=
-  c.toCircuit.kraus KrausGate.ev default
+  c.phase • c.toCircuit.kraus KrausGate.ev default
 
-/-- Every Kraus operator of a unitary circuit is its operator. -/
-theorem kraus_eq_op (c : UnitaryCircuit Γ X) (p : c.toCircuit.Index) :
-    c.toCircuit.kraus KrausGate.ev p = c.op :=
-  congrArg _ (Subsingleton.elim p default)
+/-- The operator of a unitary circuit is its phase times every Kraus operator of the circuit. -/
+theorem op_eq_smul_kraus (c : UnitaryCircuit Γ X) (p : c.toCircuit.Index) :
+    c.op = c.phase • c.toCircuit.kraus KrausGate.ev p :=
+  congrArg _ (congrArg _ (Subsingleton.elim default p))
+
+/-- Every Kraus operator of a unitary circuit is the conjugate of its phase times its operator. -/
+theorem kraus_eq_smul_op (c : UnitaryCircuit Γ X) (p : c.toCircuit.Index) :
+    c.toCircuit.kraus KrausGate.ev p = star c.phase • c.op := by
+  rw [c.op_eq_smul_kraus p, smul_smul, Complex.star_mul_self_of_norm_eq_one c.norm_phase,
+    one_smul]
 
 /-- Two equal circuits, the second with a single branch, have the same Kraus operators. -/
 private theorem kraus_eq_of_eq {C C' : Circuit Γ KrausGate X X} (h : C = C') (p : C.Index)
@@ -232,8 +251,10 @@ theorem depth_le_gateCount (c : UnitaryCircuit Γ X) : c.depth ≤ c.gateCount :
 
 /-- The Heisenberg picture of a unitary circuit is conjugation by its operator. -/
 theorem dual_eq (c : UnitaryCircuit Γ X) (A : Matrix (Config X) (Config X) ℂ) :
-    c.toCircuit.dual KrausGate.ev A = c.opᴴ * A * c.op :=
-  Circuit.dual_eq_of_subsingleton _ _ default A
+    c.toCircuit.dual KrausGate.ev A = c.opᴴ * A * c.op := by
+  rw [Circuit.dual_eq_of_subsingleton _ _ default A, op, conjTranspose_smul]
+  simp only [smul_mul_assoc, mul_smul_comm, smul_smul,
+    Complex.mul_star_self_of_norm_eq_one c.norm_phase, one_smul]
 
 /-- The operator of a unitary circuit is unitary. -/
 theorem op_mem_unitaryGroup (c : UnitaryCircuit Γ X) : c.op ∈ unitaryGroup (Config X) ℂ := by
@@ -252,9 +273,10 @@ theorem op_mul_conjTranspose_op (c : UnitaryCircuit Γ X) : c.op * c.opᴴ = 1 :
 variable (Γ X) in
 /-- The empty unitary circuit. -/
 def id : UnitaryCircuit Γ X :=
-  ⟨[], by simp⟩
+  ⟨[], by simp, 1, by simp⟩
 
-@[simp] theorem op_id : (id Γ X).op = 1 :=
+@[simp] theorem op_id : (id Γ X).op = 1 := by
+  rw [op, id, one_smul]
   rfl
 
 @[simp] theorem depth_id : (id Γ X).depth = 0 :=
@@ -263,10 +285,10 @@ def id : UnitaryCircuit Γ X :=
 @[simp] theorem gateCount_id : (id Γ X).gateCount = 0 :=
   rfl
 
-/-- The unitary circuit `c` followed by `c'`. -/
+/-- The unitary circuit `c` followed by `c'`, with the product of the phases. -/
 def comp (c c' : UnitaryCircuit Γ X) : UnitaryCircuit Γ X :=
   ⟨c.layers ++ c'.layers, fun L hL ↦ (List.mem_append.mp hL).elim (c.isUnitary L)
-    (c'.isUnitary L)⟩
+    (c'.isUnitary L), c'.phase * c.phase, by rw [norm_mul, c'.norm_phase, c.norm_phase, one_mul]⟩
 
 omit [Fintype S] in
 theorem toCircuit_comp (c c' : UnitaryCircuit Γ X) :
@@ -280,8 +302,10 @@ theorem op_comp (c c' : UnitaryCircuit Γ X) : (c.comp c').op = c'.op * c.op := 
     (c.toCircuit.compIndexEquiv c'.toCircuit).symm (default, default)
   have : Subsingleton (c.toCircuit.comp c'.toCircuit).Index :=
     (c.toCircuit.compIndexEquiv c'.toCircuit).subsingleton
-  rw [op, kraus_eq_of_eq (c.toCircuit_comp c') default q, Circuit.kraus_comp, c.kraus_eq_op,
-    c'.kraus_eq_op]
+  rw [op, kraus_eq_of_eq (c.toCircuit_comp c') default q, Circuit.kraus_comp,
+    c.op_eq_smul_kraus ((c.toCircuit.compIndexEquiv c'.toCircuit) q).1,
+    c'.op_eq_smul_kraus ((c.toCircuit.compIndexEquiv c'.toCircuit) q).2, smul_mul_smul_comm]
+  rfl
 
 theorem depth_comp (c c' : UnitaryCircuit Γ X) : (c.comp c').depth = c.depth + c'.depth := by
   simp only [depth_eq_sum, comp, List.map_append, List.sum_append]
@@ -292,17 +316,19 @@ theorem gateCount_comp (c c' : UnitaryCircuit Γ X) :
 
 /-! ### The adjoint -/
 
-/-- The adjoint of a unitary circuit: the adjoint layers in reverse order. -/
+/-- The adjoint of a unitary circuit: the adjoint layers in reverse order, and the inverse phase.
+-/
 def adjoint (c : UnitaryCircuit Γ X) : UnitaryCircuit Γ X :=
   ⟨c.layers.reverse.map Layer.adjoint, fun L hL ↦ by
     obtain ⟨L', hL', rfl⟩ := List.mem_map.mp hL
-    exact Layer.forall_isUnitary_adjoint (c.isUnitary L' (List.mem_reverse.mp hL'))⟩
+    exact Layer.forall_isUnitary_adjoint (c.isUnitary L' (List.mem_reverse.mp hL')),
+    star c.phase, by rw [norm_star, c.norm_phase]⟩
 
 /-- The Kraus operators of the layers of a unitary circuit, each the operator of its layer. -/
 private theorem exists_forall₂_kraus (c : UnitaryCircuit Γ X) :
     ∃ Us : List (Matrix (Config X) (Config X) ℂ),
       List.Forall₂ (fun L U ↦ ∀ i, L.kraus KrausGate.ev i = U) c.layers Us := by
-  obtain ⟨Ls, hLs⟩ := c
+  obtain ⟨Ls, hLs, -, -⟩ := c
   induction Ls with
   | nil => exact ⟨[], .nil⟩
   | cons L Ls ih =>
@@ -314,8 +340,8 @@ private theorem exists_forall₂_kraus (c : UnitaryCircuit Γ X) :
 /-- The operator of the adjoint circuit is the adjoint of the operator. -/
 theorem op_adjoint (c : UnitaryCircuit Γ X) : c.adjoint.op = c.opᴴ := by
   obtain ⟨Us, hUs⟩ := c.exists_forall₂_kraus
-  refine (Circuit.kraus_seqAdjoint hUs (default : c.adjoint.toCircuit.Index)).trans ?_
-  rw [← c.kraus_eq_op default]
+  rw [op, op, conjTranspose_smul]
+  refine congrArg _ ((Circuit.kraus_seqAdjoint hUs (default : c.adjoint.toCircuit.Index)).trans ?_)
   exact congrArg _ (Circuit.kraus_seq KrausGate.ev hUs _).symm
 
 theorem depth_adjoint (c : UnitaryCircuit Γ X) : c.adjoint.depth = c.depth := by
@@ -331,12 +357,12 @@ theorem gateCount_adjoint (c : UnitaryCircuit Γ X) : c.adjoint.gateCount = c.ga
 /-- The unitary circuit of one layer. -/
 def ofLayer (L : Layer Γ KrausGate X X) (hL : L.Forall KrausGate.ev KrausFamily.IsUnitary) :
     UnitaryCircuit Γ X :=
-  ⟨[L], by simpa using hL⟩
+  ⟨[L], by simpa using hL, 1, by simp⟩
 
 theorem op_ofLayer (L : Layer Γ KrausGate X X) (hL : L.Forall KrausGate.ev KrausFamily.IsUnitary)
     (i : L.Index) : (ofLayer L hL).op = L.kraus KrausGate.ev i := by
-  rw [← (ofLayer L hL).kraus_eq_op ⟨i, ()⟩]
-  exact Matrix.one_mul _
+  rw [(ofLayer L hL).op_eq_smul_kraus ⟨i, ()⟩]
+  exact (one_smul ℂ _).trans (Matrix.one_mul _)
 
 theorem depth_ofLayer (L : Layer Γ KrausGate X X)
     (hL : L.Forall KrausGate.ev KrausFamily.IsUnitary) : (ofLayer L hL).depth = L.depth := by
@@ -379,7 +405,7 @@ def onsite (u : (s : S) → Matrix (X s) (X s) ℂ) (hu : ∀ s, u s ∈ unitary
 
 /-- The operator of one-site unitaries is their tensor product. -/
 theorem op_onsite (u : (s : S) → Matrix (X s) (X s) ℂ) (hu : ∀ s, u s ∈ unitaryGroup (X s) ℂ) :
-    (onsite (Γ := Γ) u hu).op = prodOp u :=
+    (onsite (Γ := Γ) u hu).op = piKronecker u :=
   (op_ofLayer _ _ (fun b ↦ absurd b.2 (Finset.notMem_empty _), fun _ ↦ ())).trans
     (Layer.kraus_ofOnsite _ _ _)
 
@@ -390,6 +416,23 @@ theorem depth_onsite (u : (s : S) → Matrix (X s) (X s) ℂ)
 theorem gateCount_onsite (u : (s : S) → Matrix (X s) (X s) ℂ)
     (hu : ∀ s, u s ∈ unitaryGroup (X s) ℂ) : (onsite (Γ := Γ) u hu).gateCount = 0 :=
   (gateCount_ofLayer _ _).trans ((Layer.gateCount_eq_sum _).trans rfl)
+
+/-- The unitary circuit of the global phase `μ`, `|μ| = 1`: no layers. -/
+def ofPhase (μ : ℂ) (hμ : ‖μ‖ = 1) : UnitaryCircuit Γ X :=
+  ⟨[], by simp, μ, hμ⟩
+
+/-- The operator of a global phase is the phase times the identity. -/
+@[simp] theorem op_ofPhase (μ : ℂ) (hμ : ‖μ‖ = 1) :
+    (ofPhase (Γ := Γ) (X := X) μ hμ).op = μ • 1 :=
+  rfl
+
+@[simp] theorem depth_ofPhase (μ : ℂ) (hμ : ‖μ‖ = 1) :
+    (ofPhase (Γ := Γ) (X := X) μ hμ).depth = 0 :=
+  rfl
+
+@[simp] theorem gateCount_ofPhase (μ : ℂ) (hμ : ‖μ‖ = 1) :
+    (ofPhase (Γ := Γ) (X := X) μ hμ).gateCount = 0 :=
+  rfl
 
 /-! ### The light cone -/
 
@@ -446,7 +489,7 @@ variable {T T' : ℕ} {U V : Matrix (Config X) (Config X) ℂ}
 
 variable (Γ X) in
 theorem one (T : ℕ) : IsUnitaryCircuit Γ T (1 : Matrix (Config X) (Config X) ℂ) :=
-  ⟨UnitaryCircuit.id Γ X, Nat.zero_le T, rfl⟩
+  ⟨UnitaryCircuit.id Γ X, Nat.zero_le T, UnitaryCircuit.op_id⟩
 
 theorem mono (h : IsUnitaryCircuit Γ T U) (hT : T ≤ T') : IsUnitaryCircuit Γ T' U :=
   let ⟨c, hc, hU⟩ := h
@@ -475,8 +518,8 @@ theorem pow (h : IsUnitaryCircuit Γ T U) (k : ℕ) : IsUnitaryCircuit Γ (k * T
   | succ k ih => simpa only [pow_succ, Nat.succ_mul] using ih.mul h
 
 /-- One-site unitaries at every site form a circuit of depth `0`. -/
-theorem prodOp {u : (s : S) → Matrix (X s) (X s) ℂ} (hu : ∀ s, u s ∈ unitaryGroup (X s) ℂ)
-    (T : ℕ) : IsUnitaryCircuit Γ T (ManyBody.prodOp u) :=
+theorem piKronecker {u : (s : S) → Matrix (X s) (X s) ℂ} (hu : ∀ s, u s ∈ unitaryGroup (X s) ℂ)
+    (T : ℕ) : IsUnitaryCircuit Γ T (Matrix.piKronecker u) :=
   ⟨UnitaryCircuit.onsite u hu, (UnitaryCircuit.depth_onsite u hu).trans_le (Nat.zero_le T),
     UnitaryCircuit.op_onsite u hu⟩
 
@@ -508,7 +551,7 @@ variable {K K' : ℕ} {U V : Matrix (Config X) (Config X) ℂ}
 
 variable (Γ X) in
 theorem one (K : ℕ) : IsGateProduct Γ K (1 : Matrix (Config X) (Config X) ℂ) :=
-  ⟨UnitaryCircuit.id Γ X, Nat.zero_le K, rfl⟩
+  ⟨UnitaryCircuit.id Γ X, Nat.zero_le K, UnitaryCircuit.op_id⟩
 
 theorem mono (h : IsGateProduct Γ K U) (hK : K ≤ K') : IsGateProduct Γ K' U :=
   let ⟨c, hc, hU⟩ := h
@@ -546,8 +589,8 @@ theorem list_prod (l : List (Matrix (Config X) (Config X) ℂ))
     exact (hl U List.mem_cons_self).mul (ih fun V h ↦ hl V (List.mem_cons_of_mem U h))
 
 /-- One-site unitaries at every site cost nothing. -/
-theorem prodOp {u : (s : S) → Matrix (X s) (X s) ℂ} (hu : ∀ s, u s ∈ unitaryGroup (X s) ℂ)
-    (K : ℕ) : IsGateProduct Γ K (ManyBody.prodOp u) :=
+theorem piKronecker {u : (s : S) → Matrix (X s) (X s) ℂ} (hu : ∀ s, u s ∈ unitaryGroup (X s) ℂ)
+    (K : ℕ) : IsGateProduct Γ K (Matrix.piKronecker u) :=
   ⟨UnitaryCircuit.onsite u hu, (UnitaryCircuit.gateCount_onsite u hu).trans_le (Nat.zero_le K),
     UnitaryCircuit.op_onsite u hu⟩
 
@@ -584,18 +627,19 @@ theorem list_prod_map {ι : Type*} (l : List ι) (F : ι → Matrix (Config X) (
 omit [∀ s, Fintype (X s)] in
 /-- The placement of a matrix on one site is the product operator with that matrix at the site
 and the identity elsewhere. -/
-private theorem place_singleton_eq_prodOp (a : S)
+private theorem place_singleton_eq_piKronecker (a : S)
     (V : Matrix (RegionConfig X {a}) (RegionConfig X {a}) ℂ) :
-    ManyBody.place {a} V = ManyBody.prodOp (Function.update (fun s ↦ (1 : Matrix (X s) (X s) ℂ)) a
+    ManyBody.place {a} V =
+      Matrix.piKronecker (Function.update (fun s ↦ (1 : Matrix (X s) (X s) ℂ)) a
       (V.submatrix (siteEquiv X a).symm (siteEquiv X a).symm)) := by
-  rw [← placeAt_eq_prodOp, ← place_siteEquiv_eq_placeAt, submatrix_submatrix,
+  rw [← placeAt_eq_piKronecker, ← place_siteEquiv_eq_placeAt, submatrix_submatrix,
     Equiv.symm_comp_self, submatrix_id_id]
 
 /-- A unitary on one site is an onsite family and costs nothing. -/
 theorem place_singleton (a : S) {V : Matrix (RegionConfig X {a}) (RegionConfig X {a}) ℂ}
     (hV : V ∈ unitaryGroup _ ℂ) (K : ℕ) : IsGateProduct Γ K (ManyBody.place {a} V) := by
-  rw [place_singleton_eq_prodOp]
-  refine prodOp (fun s ↦ ?_) K
+  rw [place_singleton_eq_piKronecker]
+  refine piKronecker (fun s ↦ ?_) K
   by_cases hs : s = a
   · subst hs
     rw [Function.update_self]
@@ -603,33 +647,12 @@ theorem place_singleton (a : S) {V : Matrix (RegionConfig X {a}) (RegionConfig X
   · rw [Function.update_of_ne hs]
     exact one_mem _
 
-omit [∀ s, Fintype (X s)] in
-/-- A scalar multiple of the identity is the product operator with the scalar at one site. -/
-private theorem smul_one_eq_prodOp (s₀ : S) (μ : ℂ) :
-    (μ • 1 : Matrix (Config X) (Config X) ℂ) =
-      ManyBody.prodOp fun s ↦ if s = s₀ then μ • (1 : Matrix (X s) (X s) ℂ) else 1 := by
-  ext σ τ
-  have h (s : S) : (if s = s₀ then μ • (1 : Matrix (X s) (X s) ℂ) else 1) (σ s) (τ s) =
-      (if s = s₀ then μ else 1) * (1 : Matrix (X s) (X s) ℂ) (σ s) (τ s) := by
-    split_ifs <;> simp
-  rw [prodOp_apply, Finset.prod_congr rfl fun s _ ↦ h s, Finset.prod_mul_distrib,
-    Finset.prod_ite_eq' Finset.univ s₀]
-  simp only [Finset.mem_univ, ↓reduceIte]
-  rw [← prodOp_apply, prodOp_one, Matrix.smul_apply, smul_eq_mul]
-
-/-- **A global phase costs nothing.** On a nonempty set of sites, `μ • 1` with `|μ| = 1` is a
-one-site phase, hence a product of gates of every cost. -/
-theorem smul_one [Nonempty S] {μ : ℂ} (hμ : ‖μ‖ = 1) (K : ℕ) :
-    IsGateProduct Γ K (μ • 1 : Matrix (Config X) (Config X) ℂ) := by
-  obtain ⟨s₀⟩ := ‹Nonempty S›
-  rw [smul_one_eq_prodOp s₀]
-  refine prodOp (fun s ↦ ?_) K
-  split_ifs
-  · refine mem_unitaryGroup_iff'.mpr ?_
-    rw [star_smul, star_one, smul_mul_smul_comm, Matrix.one_mul, Complex.star_def,
-      Complex.conj_mul', hμ]
-    simp
-  · exact one_mem _
+/-- **A global phase costs nothing.** On every set of sites, the empty one included, `μ • 1`
+with `|μ| = 1` is the operator of the circuit with no layers and phase `μ`, hence a product of
+gates of every cost. -/
+theorem smul_one {μ : ℂ} (hμ : ‖μ‖ = 1) (K : ℕ) :
+    IsGateProduct Γ K (μ • 1 : Matrix (Config X) (Config X) ℂ) :=
+  ⟨UnitaryCircuit.ofPhase μ hμ, Nat.zero_le K, UnitaryCircuit.op_ofPhase μ hμ⟩
 
 /-- **Gate count bounds depth.** A product of gates of total cost at most `K` is a circuit of
 depth at most `K`. -/
@@ -678,12 +701,12 @@ end IsPreparedInDepth
 omit [∀ s, DecidableEq (X s)] in
 /-- The expectation of a product operator in a product vector is the product of the expectations
 at the sites. -/
-private theorem dotProduct_prodOp_mulVec (v : (s : S) → X s → ℂ)
+private theorem dotProduct_piKronecker_mulVec (v : (s : S) → X s → ℂ)
     (m : (s : S) → Matrix (X s) (X s) ℂ) :
     star (fun σ : Config X ↦ ∏ s, v s (σ s)) ⬝ᵥ
-        (ManyBody.prodOp m *ᵥ fun σ : Config X ↦ ∏ s, v s (σ s)) =
+        (Matrix.piKronecker m *ᵥ fun σ : Config X ↦ ∏ s, v s (σ s)) =
       ∏ s, star (v s) ⬝ᵥ (m s *ᵥ v s) := by
-  simp only [dotProduct, mulVec, prodOp_apply, Pi.star_apply, star_prod, Finset.mul_sum,
+  simp only [dotProduct, mulVec, piKronecker_apply, Pi.star_apply, star_prod, Finset.mul_sum,
     ← Finset.prod_mul_distrib]
   rw [Finset.prod_univ_sum]
   refine Fintype.sum_congr _ _ fun σ ↦ ?_
@@ -704,8 +727,8 @@ theorem dotProduct_prod_mul_mul (v : (s : S) → X s → ℂ) {D D' : Finset S}
         (B *ᵥ fun σ : Config X ↦ ∏ s, v s (σ s))) := by
   set φ : Config X → ℂ := fun σ ↦ ∏ s, v s (σ s)
   have hφ : star φ ⬝ᵥ φ =
-      star φ ⬝ᵥ (ManyBody.prodOp (fun s ↦ (1 : Matrix (X s) (X s) ℂ)) *ᵥ φ) := by
-    rw [prodOp_one, Matrix.one_mulVec]
+      star φ ⬝ᵥ (Matrix.piKronecker (fun s ↦ (1 : Matrix (X s) (X s) ℂ)) *ᵥ φ) := by
+    rw [piKronecker_one, Matrix.one_mulVec]
   let f : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config X) (Config X) ℂ →ₗ[ℂ] ℂ :=
     LinearMap.mk₂ ℂ (fun A B ↦ star φ ⬝ᵥ ((A * B) *ᵥ φ) * (star φ ⬝ᵥ φ))
       (by simp [Matrix.add_mulVec, add_mul])
@@ -720,8 +743,8 @@ theorem dotProduct_prod_mul_mul (v : (s : S) → X s → ℂ) {D D' : Finset S}
       (by simp [Matrix.smul_mulVec, dotProduct_smul, mul_left_comm])
   refine eq_of_mem_supportedOperators₂ f g (fun m m' hm hm' ↦ ?_) hA hB
   simp only [f, g, LinearMap.mk₂_apply]
-  rw [hφ, prodOp_mul, dotProduct_prodOp_mulVec, dotProduct_prodOp_mulVec,
-    dotProduct_prodOp_mulVec, dotProduct_prodOp_mulVec, ← Finset.prod_mul_distrib,
+  rw [hφ, piKronecker_mul, dotProduct_piKronecker_mulVec, dotProduct_piKronecker_mulVec,
+    dotProduct_piKronecker_mulVec, dotProduct_piKronecker_mulVec, ← Finset.prod_mul_distrib,
     ← Finset.prod_mul_distrib]
   refine Finset.prod_congr rfl fun s _ ↦ ?_
   by_cases hs : s ∈ D

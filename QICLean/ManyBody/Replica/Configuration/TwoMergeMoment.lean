@@ -71,15 +71,16 @@ private theorem tripleCopy_mulVec (k : ℕ) (σ : Equiv.Perm (Fin k))
   rw [permOp_apply, permOp_apply, permOp_apply, perm_kronecker, perm_kronecker,
     Matrix.permMatrix_mulVec]
   rfl
+omit [Fintype A] in
 /-- A coordinate equivalence transports every actual ground and defect factor.
 OpenAI area-law manuscript, `07-comparators.tex`, lines 441–456 and 524–549. -/
-private theorem excitation_reindex {A' : Type*} [Fintype A'] [DecidableEq A']
+private theorem excitation_reindex {A' : Type*} [DecidableEq A']
     (e : A ≃ A') (Ω : A → ℂ) (k : ℕ) (B : Finset (Fin k)) :
     replicaExcitationProjection (fun x => Ω (e.symm x)) k B =
       (replicaExcitationProjection Ω k B).submatrix
         (fun x i => e.symm (x i)) (fun x i => e.symm (x i)) := by
   ext x y
-  simp only [replicaExcitationProjection, finKronecker_apply, submatrix_apply]
+  simp only [replicaExcitationProjection, piKronecker_apply, submatrix_apply]
   apply Finset.prod_congr rfl
   intro i _
   by_cases hi : i ∈ B <;>

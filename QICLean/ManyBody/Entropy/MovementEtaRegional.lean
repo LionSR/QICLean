@@ -37,6 +37,7 @@ The proofs are written from the paper; no Lean source was adapted.
 
 open Matrix
 open scoped Kronecker ComplexOrder
+open ManyBody (regionUnionEquiv)
 
 namespace Entropy
 
@@ -57,7 +58,7 @@ theorem partialTraceLeft_regionState_union {B C : Finset V} (hBC : Disjoint B C)
         ((1 : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) B)
             (ManyBody.RegionConfig (fun v ↦ Fin (n v)) B) ℂ) ⊗ₖ N) := by
     rw [reindex_apply, Equiv.symm_symm]
-  rw [h, localLift_union_kronecker, ManyBody.place_one, Matrix.one_mul]
+  rw [h, ManyBody.place_union_kronecker, ManyBody.place_one, Matrix.one_mul]
 
 /-- **The movement entropy** `η_θ = S_θ(x|P) + S_θ(x|Y₀)` of moving `x` from the middle part
 `x Y₀` to `P`, with `S_θ(x|R) = S_θ(R ∪ x) - S_θ(R)` (area-law paper, `05-replicas.tex`,

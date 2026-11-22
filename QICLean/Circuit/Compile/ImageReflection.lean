@@ -26,8 +26,8 @@ same error bound holds by `Matrix.norm_encoder_conversion_reference_le`.
 The declarations restate those of `TNLean/Circuit/ImageReflectionCircuit.lean` and
 `TNLean/Circuit/CoherentEncoder.lean` at commit `414a18fb88` (Apache-2.0). The changes: products
 of neighbouring-pair gates and local circuits on the ring become products of gates and unitary
-circuits on any geometry; the global phase of the amplification round is a one-site unitary of
-cost `0` on a nonempty set of sites, instead of `2 n` neighbouring-pair gates.
+circuits on any geometry; the global phase of the amplification round is the phase of the
+circuit, of cost `0`, instead of `2 n` neighbouring-pair gates.
 
 ## Main results
 
@@ -80,13 +80,13 @@ theorem subspaceReflection_image {m : Type*} [Fintype m] (E : Matrix (Config X) 
   rw [Matrix.subspaceReflection_image U E hU.mem_unitaryGroup]
   exact ((hU.mul hR).mul hU.conjTranspose).mono (by omega)
 
-/-- **One amplification round.** On a nonempty set of sites, if the reflections about the image
-of `V` and about `P` are products of `K` and `L` gates, one round of the two-reflection
-amplification, with its global phase `-1`, is a product of `K + L` gates.
+/-- **One amplification round.** If the reflections about the image of `V` and about `P` are
+products of `K` and `L` gates, one round of the two-reflection amplification, with its global
+phase `-1`, is a product of `K + L` gates.
 
 Source: the amplification with exact phase of Section 5 of TNLean
 `docs/audits/2026-10-02_mpu_rank_two_circuits.tex`. -/
-theorem postselectionAmplificationStep [Nonempty S] {m : Type*} [Fintype m]
+theorem postselectionAmplificationStep {m : Type*} [Fintype m]
     (V : Matrix (Config X) m ℂ) (P : Matrix (Config X) (Config X) ℂ)
     (hV : IsGateProduct Γ K (subspaceReflection (V * Vᴴ)))
     (hP : IsGateProduct Γ L (subspaceReflection P)) :

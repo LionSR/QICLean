@@ -144,15 +144,15 @@ matter"; here for product inputs and local channels with ancillas and discarding
 theorem IsApproxConversion.norm_trace_mul_mul_sub_le [Fintype Γ.Cell]
     (hpos : ∀ b, 0 < Γ.cost b) {T : ℕ} {ε : ℝ}
     {σ₀ : (s : S) → Matrix (X s) (X s) ℂ} (hσ₀ : ∀ s, (σ₀ s).trace = 1)
-    {σ : Matrix (Config Z) (Config Z) ℂ} (h : IsApproxConversion Γ T ε (prodOp σ₀) σ)
+    {σ : Matrix (Config Z) (Config Z) ℂ} (h : IsApproxConversion Γ T ε (piKronecker σ₀) σ)
     {R R' : Finset S} (hRR' : Disjoint (Γ.neighbourhood^[T] R) (Γ.neighbourhood^[T] R'))
     {A B : Matrix (Config Z) (Config Z) ℂ} (hA : A ∈ supportedOperators Z R)
     (hB : B ∈ supportedOperators Z R') :
     ‖(σ * (A * B)).trace - (σ * A).trace * (σ * B).trace‖ ≤
-      ε * ‖A‖ * ‖B‖ * (1 + 2 * rectangularTraceNorm (prodOp σ₀) + ε) := by
+      ε * ‖A‖ * ‖B‖ * (1 + 2 * rectangularTraceNorm (piKronecker σ₀) + ε) := by
   obtain ⟨Φ, hΦ, herr⟩ := h
-  set σ' := Φ (prodOp σ₀)
-  set c := rectangularTraceNorm (prodOp σ₀)
+  set σ' := Φ (piKronecker σ₀)
+  set c := rectangularTraceNorm (piKronecker σ₀)
   have hexact : (σ' * (A * B)).trace = (σ' * A).trace * (σ' * B).trace :=
     IsConversion.trace_mul_mul_eq hpos hσ₀ ⟨Φ, hΦ, rfl⟩ hRR' hA hB
   set D := σ - σ'

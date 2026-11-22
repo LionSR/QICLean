@@ -85,7 +85,7 @@ theorem replicaGoodConfigurationMarginal_exp_signed_singleton_le
         (2 * (m : ℝ) * K * a ^ 2 +
           ((Fintype.card (ι (j.castAdd 2)) ^ 2 : ℕ) : ℝ) / 2 * Real.log ((m : ℝ) + 1))) := by
   intro m S w F
-  have hm := PosSemidef.re_trace_finKronecker_exp_signed_labelEntropy_le
+  have hm := PosSemidef.re_trace_piKronecker_exp_signed_labelEntropy_le
     (posSemidef_physicalSingletonDensity ι Ω j)
       (trace_physicalSingletonDensity ι Ω hΩ j) hmoment m ha har ha1
   constructor

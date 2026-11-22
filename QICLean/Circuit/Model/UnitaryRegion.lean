@@ -136,23 +136,29 @@ end Layer
 
 namespace UnitaryCircuit
 
-/-- The unitary circuit of all layers of `c` but the first. -/
+/-- The unitary circuit of all layers of `c` but the first, with the phase of `c`. -/
 def tail (c : UnitaryCircuit Γ X) : UnitaryCircuit Γ X :=
-  ⟨c.layers.tail, fun L hL ↦ c.isUnitary L (List.mem_of_mem_tail hL)⟩
+  ⟨c.layers.tail, fun L hL ↦ c.isUnitary L (List.mem_of_mem_tail hL), c.phase, c.norm_phase⟩
 
 /-- The operator of a unitary circuit whose first layer is `L` is the operator of the remaining
 layers times the operator of `L`. -/
 theorem op_eq_tail_op_mul {c : UnitaryCircuit Γ X} {L : Layer Γ KrausGate X X}
     {Ls : List (Layer Γ KrausGate X X)} (h : c.layers = L :: Ls) (i : L.Index) :
     c.op = c.tail.op * L.kraus KrausGate.ev i := by
-  obtain ⟨Ls', hLs'⟩ := c
+  obtain ⟨Ls', hLs', μ, hμ⟩ := c
   subst h
-  exact (op_comp (ofLayer L (hLs' L List.mem_cons_self)) ⟨Ls, _⟩).trans
-    (congrArg _ (op_ofLayer _ _ i))
+  have hc : (⟨L :: Ls, hLs', μ, hμ⟩ : UnitaryCircuit Γ X) =
+      (ofLayer L (hLs' L List.mem_cons_self)).comp
+        ⟨Ls, fun L' hL' ↦ hLs' L' (List.mem_cons_of_mem L hL'), μ, hμ⟩ := by
+    simp [comp, ofLayer]
+  refine (congrArg op hc).trans ?_
+  rw [op_comp, op_ofLayer _ _ i]
+  rfl
 
-/-- A unitary circuit without layers has operator `1`. -/
-theorem op_eq_one {c : UnitaryCircuit Γ X} (h : c.layers = []) : c.op = 1 := by
-  obtain ⟨Ls, hLs⟩ := c
+/-- A unitary circuit without layers has operator its phase times `1`. -/
+theorem op_eq_smul_one {c : UnitaryCircuit Γ X} (h : c.layers = []) :
+    c.op = c.phase • 1 := by
+  obtain ⟨Ls, hLs, μ, hμ⟩ := c
   subst h
   rfl
 
@@ -202,9 +208,11 @@ theorem isIn_onsite (u : (s : S) → Matrix (X s) (X s) ℂ) (hu : ∀ s, u s �
 
 /-- The operator of a unitary circuit inside `R` is supported on `R`. -/
 theorem op_mem_supportedOperators (h : c.IsIn R) : c.op ∈ supportedOperators X R := by
-  obtain ⟨Ls, hLs⟩ := c
+  obtain ⟨Ls, hLs, μ, hμ⟩ := c
   induction Ls with
-  | nil => exact one_mem _
+  | nil =>
+    rw [op_eq_smul_one (c := ⟨[], hLs, μ, hμ⟩) rfl]
+    exact SMulMemClass.smul_mem _ (one_mem _)
   | cons L Ls ih =>
     obtain ⟨i⟩ := (Layer.nonempty_unique_index_of_forall_isUnitary
       (hLs L List.mem_cons_self)).map fun u ↦ u.default
@@ -253,7 +261,7 @@ theorem mono (h : IsUnitaryCircuitOn Γ R T U) (hT : T ≤ T') : IsUnitaryCircui
 variable (Γ X) in
 theorem one (R : Finset S) (T : ℕ) :
     IsUnitaryCircuitOn Γ R T (1 : Matrix (Config X) (Config X) ℂ) :=
-  ⟨UnitaryCircuit.id Γ X, UnitaryCircuit.isIn_id R, Nat.zero_le T, rfl⟩
+  ⟨UnitaryCircuit.id Γ X, UnitaryCircuit.isIn_id R, Nat.zero_le T, UnitaryCircuit.op_id⟩
 
 /-- **Circuits in series.** Applying `V` and then `U` inside `R` is a circuit inside `R` of depth
 at most the sum. -/
@@ -291,8 +299,8 @@ theorem of_mem_supportedOperators {b : Γ.Cell} {Z : Matrix (Config X) (Config X
     exact place hb (one_mem _)
 
 /-- One-site unitaries equal to `1` outside `R` form a circuit inside `R` of depth `0`. -/
-theorem prodOp {u : (s : S) → Matrix (X s) (X s) ℂ} (hu : ∀ s, u s ∈ unitaryGroup (X s) ℂ)
-    (h1 : ∀ s ∉ R, u s = 1) (T : ℕ) : IsUnitaryCircuitOn Γ R T (ManyBody.prodOp u) :=
+theorem piKronecker {u : (s : S) → Matrix (X s) (X s) ℂ} (hu : ∀ s, u s ∈ unitaryGroup (X s) ℂ)
+    (h1 : ∀ s ∉ R, u s = 1) (T : ℕ) : IsUnitaryCircuitOn Γ R T (Matrix.piKronecker u) :=
   ⟨UnitaryCircuit.onsite u hu, UnitaryCircuit.isIn_onsite u hu h1,
     (UnitaryCircuit.depth_onsite u hu).trans_le (Nat.zero_le T), UnitaryCircuit.op_onsite u hu⟩
 
@@ -575,12 +583,14 @@ theorem sum_gateCount_parLayers (hne : ∀ b, (Γ.cell b).Nonempty) :
       simp only [List.map_cons, List.sum_cons] at *
       omega
 
-private theorem op_eq_op_of_layers_eq {c c' : UnitaryCircuit Γ X} (h : c.layers = c'.layers) :
-    c.op = c'.op := by
-  obtain ⟨Ls, _⟩ := c
-  obtain ⟨Ls', _⟩ := c'
-  subst h
-  rfl
+private theorem op_eq_smul_op_of_layers_eq {c c' : UnitaryCircuit Γ X} {μ : ℂ}
+    (h : c.layers = c'.layers) (hμ : c.phase = μ * c'.phase) : c.op = μ • c'.op := by
+  obtain ⟨Ls, _, μ₁, _⟩ := c
+  obtain ⟨Ls', _, μ₂, _⟩ := c'
+  change Ls = Ls' at h
+  change μ₁ = μ * μ₂ at hμ
+  subst h hμ
+  exact mul_smul _ _ _
 
 /-- On a geometry whose cells are nonempty, the operator of the layers of two unitary circuits
 inside disjoint regions run in parallel is the product of their operators. -/
@@ -588,16 +598,17 @@ theorem op_parLayers (hne : ∀ b, (Γ.cell b).Nonempty) :
     (Ls₁ Ls₂ : List (Layer Γ KrausGate X X)) →
     (h₁ : ∀ L ∈ Ls₁, L.IsIn R₁) → (h₂ : ∀ L ∈ Ls₂, L.IsIn R₂) →
     (c c₁ c₂ : UnitaryCircuit Γ X) → c₁.layers = Ls₁ → c₂.layers = Ls₂ →
-    c.layers = parLayers hR Ls₁ Ls₂ h₁ h₂ → c.op = c₁.op * c₂.op
-  | [], Ls₂, _, _, c, c₁, c₂, e₁, e₂, e => by
+    c.layers = parLayers hR Ls₁ Ls₂ h₁ h₂ → c.phase = c₁.phase * c₂.phase →
+    c.op = c₁.op * c₂.op
+  | [], Ls₂, _, _, c, c₁, c₂, e₁, e₂, e, hμ => by
     rw [parLayers] at e
-    rw [op_eq_one e₁, Matrix.one_mul]
-    exact op_eq_op_of_layers_eq (e.trans e₂.symm)
-  | L₁ :: Ls₁, [], _, _, c, c₁, c₂, e₁, e₂, e => by
+    rw [op_eq_smul_one e₁, smul_mul_assoc, Matrix.one_mul]
+    exact op_eq_smul_op_of_layers_eq (e.trans e₂.symm) hμ
+  | L₁ :: Ls₁, [], _, _, c, c₁, c₂, e₁, e₂, e, hμ => by
     rw [parLayers] at e
-    rw [op_eq_one e₂, Matrix.mul_one]
-    exact op_eq_op_of_layers_eq (e.trans e₁.symm)
-  | L₁ :: Ls₁, L₂ :: Ls₂, h₁, h₂, c, c₁, c₂, e₁, e₂, e => by
+    rw [op_eq_smul_one e₂, mul_smul_comm, Matrix.mul_one]
+    exact op_eq_smul_op_of_layers_eq (e.trans e₁.symm) (hμ.trans (mul_comm _ _))
+  | L₁ :: Ls₁, L₂ :: Ls₂, h₁, h₂, c, c₁, c₂, e₁, e₂, e, hμ => by
     have h₁' : ∀ L ∈ Ls₁, L.IsIn R₁ := fun L hL ↦ h₁ L (List.mem_cons_of_mem L₁ hL)
     have h₂' : ∀ L ∈ Ls₂, L.IsIn R₂ := fun L hL ↦ h₂ L (List.mem_cons_of_mem L₂ hL)
     have hc₂ : c₂.IsIn R₂ := fun L hL ↦ h₂ L (e₂ ▸ hL)
@@ -609,18 +620,18 @@ theorem op_parLayers (hne : ∀ b, (Γ.cell b).Nonempty) :
     rw [parLayers] at e
     split_ifs at e with hd₁ hd₂
     · rw [op_eq_tail_op_mul e i₁, op_parLayers hne Ls₁ (L₂ :: Ls₂) h₁' h₂ c.tail c₁.tail c₂
-        (congrArg List.tail e₁) e₂ (congrArg List.tail e), op_eq_tail_op_mul e₁ i₁,
+        (congrArg List.tail e₁) e₂ (congrArg List.tail e) hμ, op_eq_tail_op_mul e₁ i₁,
         Matrix.mul_assoc, Matrix.mul_assoc,
         (commute_of_mem_supportedOperators_of_disjoint hL₁ (op_mem_supportedOperators hc₂)
           hR).eq]
     · rw [op_eq_tail_op_mul e i₂, op_parLayers hne (L₁ :: Ls₁) Ls₂ h₁ h₂' c.tail c₁ c₂.tail
-        e₁ (congrArg List.tail e₂) (congrArg List.tail e), op_eq_tail_op_mul e₂ i₂,
+        e₁ (congrArg List.tail e₂) (congrArg List.tail e) hμ, op_eq_tail_op_mul e₂ i₂,
         Matrix.mul_assoc]
     · obtain ⟨ip⟩ := (Layer.nonempty_unique_index_of_forall_isUnitary
         (Layer.forall_isUnitary_par (h₁ L₁ List.mem_cons_self) (h₂ L₂ List.mem_cons_self) hR
           hu₁ hu₂)).map fun u ↦ u.default
       rw [op_eq_tail_op_mul e ip, op_parLayers hne Ls₁ Ls₂ h₁' h₂' c.tail c₁.tail c₂.tail
-        (congrArg List.tail e₁) (congrArg List.tail e₂) (congrArg List.tail e),
+        (congrArg List.tail e₁) (congrArg List.tail e₂) (congrArg List.tail e) hμ,
         Layer.kraus_par hne _ _ hR hu₁ hu₂ ip i₁ i₂, op_eq_tail_op_mul e₁ i₁,
         op_eq_tail_op_mul e₂ i₂, Matrix.mul_assoc, ← Matrix.mul_assoc c₂.tail.op,
         ← (commute_of_mem_supportedOperators_of_disjoint hL₁
@@ -628,11 +639,12 @@ theorem op_parLayers (hne : ∀ b, (Γ.cell b).Nonempty) :
       simp only [Matrix.mul_assoc]
 
 /-- **Two circuits in parallel.** Two unitary circuits inside disjoint regions, run in parallel:
-their layers merged greedily by `parLayers`. -/
+their layers merged greedily by `parLayers`, with the product of the phases. -/
 def par (c₁ c₂ : UnitaryCircuit Γ X) (h₁ : c₁.IsIn R₁) (h₂ : c₂.IsIn R₂)
     (hR : Disjoint R₁ R₂) : UnitaryCircuit Γ X :=
   ⟨parLayers hR c₁.layers c₂.layers h₁ h₂, fun L hL ↦
-    (forall_parLayers hR _ _ h₁ h₂ c₁.isUnitary c₂.isUnitary L hL).1⟩
+    (forall_parLayers hR _ _ h₁ h₂ c₁.isUnitary c₂.isUnitary L hL).1, c₁.phase * c₂.phase,
+    by rw [norm_mul, c₁.norm_phase, c₂.norm_phase, one_mul]⟩
 
 variable {c₁ c₂ : UnitaryCircuit Γ X} (h₁ : c₁.IsIn R₁) (h₂ : c₂.IsIn R₂)
 
@@ -655,7 +667,7 @@ theorem gateCount_par (hne : ∀ b, (Γ.cell b).Nonempty) :
 /-- **Circuits in parallel.** On a geometry whose cells are nonempty, the operator of two unitary
 circuits inside disjoint regions run in parallel is the product of their operators. -/
 theorem op_par (hne : ∀ b, (Γ.cell b).Nonempty) : (c₁.par c₂ h₁ h₂ hR).op = c₁.op * c₂.op :=
-  op_parLayers hR hne _ _ h₁ h₂ _ c₁ c₂ rfl rfl rfl
+  op_parLayers hR hne _ _ h₁ h₂ _ c₁ c₂ rfl rfl rfl rfl
 
 end UnitaryCircuit
 

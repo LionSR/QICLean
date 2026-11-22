@@ -8,6 +8,7 @@ import QICLean.ManyBody.Entropy.Filter.OutputCovariance
 /-! Ordered-action, complex singular, empty, and site/basis permutation regressions. -/
 
 open Complex Matrix Entropy
+open ManyBody (siteConfigurationEquiv regionConfigurationEquiv relabelVector)
 open scoped ComplexOrder
 
 -- Empty lists act as the identity, without a nonempty coordinate type.
@@ -44,14 +45,14 @@ example {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
 -- Empty regions remain valid when every physical alphabet is empty.
 example (K : Matrix (ManyBody.RegionConfig (fun _ ↦ Fin 0) ∅)
     (ManyBody.RegionConfig (fun _ ↦ Fin 0) ∅) ℂ) :
-    reindex (siteConfigurationEquiv (n := fun _ : Fin 2 ↦ 0) (n' := fun _ : Fin 2 ↦ 0)
+    reindex (siteConfigurationEquiv (X := fun _ : Fin 2 ↦ Fin 0) (X' := fun _ : Fin 2 ↦ Fin 0)
         (Equiv.swap (0 : Fin 2) 1) (fun _ ↦ Equiv.refl (Fin 0)))
-      (siteConfigurationEquiv (n := fun _ : Fin 2 ↦ 0) (n' := fun _ : Fin 2 ↦ 0)
+      (siteConfigurationEquiv (X := fun _ : Fin 2 ↦ Fin 0) (X' := fun _ : Fin 2 ↦ Fin 0)
         (Equiv.swap (0 : Fin 2) 1) (fun _ ↦ Equiv.refl (Fin 0))) (ManyBody.place ∅ K) =
       ManyBody.place ∅ (reindex
-        (regionConfigurationEquiv (n := fun _ : Fin 2 ↦ 0) (n' := fun _ : Fin 2 ↦ 0)
+        (regionConfigurationEquiv (X := fun _ : Fin 2 ↦ Fin 0) (X' := fun _ : Fin 2 ↦ Fin 0)
           ∅ ∅ (Equiv.swap (0 : Fin 2) 1) (by simp) (fun _ ↦ Equiv.refl (Fin 0)))
-        (regionConfigurationEquiv (n := fun _ : Fin 2 ↦ 0) (n' := fun _ : Fin 2 ↦ 0)
+        (regionConfigurationEquiv (X := fun _ : Fin 2 ↦ Fin 0) (X' := fun _ : Fin 2 ↦ Fin 0)
           ∅ ∅ (Equiv.swap (0 : Fin 2) 1) (by simp) (fun _ ↦ Equiv.refl (Fin 0))) K) :=
   localLift_relabel ∅ ∅ _ (by simp) _ K
 
@@ -63,13 +64,14 @@ example (K : Matrix (ManyBody.RegionConfig (fun _ ↦ Fin 2) {0})
       intro v
       fin_cases v <;> decide
     let f := fun _ : Fin 3 ↦ Equiv.swap (0 : Fin 2) 1
-    reindex (siteConfigurationEquiv (n := fun _ : Fin 3 ↦ 2) (n' := fun _ : Fin 3 ↦ 2) e f)
-      (siteConfigurationEquiv (n := fun _ : Fin 3 ↦ 2) (n' := fun _ : Fin 3 ↦ 2) e f)
+    reindex
+      (siteConfigurationEquiv (X := fun _ : Fin 3 ↦ Fin 2) (X' := fun _ : Fin 3 ↦ Fin 2) e f)
+      (siteConfigurationEquiv (X := fun _ : Fin 3 ↦ Fin 2) (X' := fun _ : Fin 3 ↦ Fin 2) e f)
       (ManyBody.place {0} K) =
       ManyBody.place {2} (reindex
-        (regionConfigurationEquiv (n := fun _ : Fin 3 ↦ 2) (n' := fun _ : Fin 3 ↦ 2)
+        (regionConfigurationEquiv (X := fun _ : Fin 3 ↦ Fin 2) (X' := fun _ : Fin 3 ↦ Fin 2)
           {0} {2} e hD f)
-        (regionConfigurationEquiv (n := fun _ : Fin 3 ↦ 2) (n' := fun _ : Fin 3 ↦ 2)
+        (regionConfigurationEquiv (X := fun _ : Fin 3 ↦ Fin 2) (X' := fun _ : Fin 3 ↦ Fin 2)
           {0} {2} e hD f) K) := by
   dsimp only
   exact localLift_relabel _ _ _ _ _ K
@@ -132,9 +134,10 @@ example {V V' : Type*} [Fintype V] [DecidableEq V] [Fintype V'] [DecidableEq V']
     (K : (j : Fin m) → Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j))
         (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) ℂ) :
     let ψ := toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) 0
-    relabelVector e f (((‖ψ‖⁻¹ : ℝ) : ℂ) • ψ) = 0 := by
+    relabelVector (X' := fun v ↦ Fin (n' v)) e f (((‖ψ‖⁻¹ : ℝ) : ℂ) • ψ) = 0 := by
   have h := relabelVector_normalized_liftProd_chainList D D' e hD f K (fun _ ↦ True) 0
-  have hzero : relabelVector e f (0 : EuclideanSpace ℂ (∀ v, Fin (n v))) = 0 := rfl
+  have hzero : relabelVector (X' := fun v ↦ Fin (n' v)) e f
+      (0 : EuclideanSpace ℂ (∀ v, Fin (n v))) = 0 := rfl
   dsimp only at h ⊢
   rw [h]
   simp only [hzero, map_zero, smul_zero]
@@ -156,9 +159,12 @@ example {V V' : Type*} [Fintype V] [DecidableEq V] [Fintype V'] [DecidableEq V']
     ∀ L : (j : Fin m) → Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n' v)) (D' j))
         (ManyBody.RegionConfig (fun v ↦ Fin (n' v)) (D' j)) ℂ,
       (∀ j, IsFeasibleFilter (b j) (a j) (L j)) →
-      ‖toEuclideanLin (liftProd (chainList D' L fun _ ↦ True)) (relabelVector e f Ω)‖ ≤
+      ‖toEuclideanLin (liftProd (chainList D' L fun _ ↦ True))
+          (relabelVector (X' := fun v ↦ Fin (n' v)) e f Ω)‖ ≤
         ‖toEuclideanLin (liftProd (chainList D'
-          (fun j ↦ reindex (regionConfigurationEquiv (D j) (D' j) e (hD j) f)
-            (regionConfigurationEquiv (D j) (D' j) e (hD j) f) (K j)) fun _ ↦ True))
-          (relabelVector e f Ω)‖ :=
+          (fun j ↦ reindex
+            (regionConfigurationEquiv (X' := fun v ↦ Fin (n' v)) (D j) (D' j) e (hD j) f)
+            (regionConfigurationEquiv (X' := fun v ↦ Fin (n' v)) (D j) (D' j) e (hD j) f) (K j))
+            fun _ ↦ True))
+          (relabelVector (X' := fun v ↦ Fin (n' v)) e f Ω)‖ :=
   (forall_norm_liftProd_chainList_le_relabel_iff D D' e hD f b a K Ω).mpr hmax

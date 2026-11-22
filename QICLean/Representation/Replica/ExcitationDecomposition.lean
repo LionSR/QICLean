@@ -46,7 +46,7 @@ variable {A : Type*} [Fintype A] [DecidableEq A]
 OpenAI area-law manuscript, `comparator:defect-mass`, lines 441–456. -/
 def replicaExcitationProjection (Ω : A → ℂ) (k : ℕ) (B : Finset (Fin k)) :
     Matrix (Fin k → A) (Fin k → A) ℂ :=
-  finKronecker (fun j : Fin k ↦
+  piKronecker (fun j : Fin k ↦
     if j ∈ B then 1 - vecMulVec Ω (star Ω) else vecMulVec Ω (star Ω))
 
 private theorem cfc_mul_of_mul_eq_smul {D R : Matrix A A ℂ}
@@ -73,14 +73,6 @@ private theorem cfc_mul_of_mul_eq_smul {D R : Matrix A A ℂ}
     congrArg (fun M : Matrix A A ℂ ↦ (hD.eigenvectorUnitary : Matrix A A ℂ) * M) hf
 
 omit [DecidableEq A] in
-private theorem finKronecker_mul_local {k : ℕ} (M L : Fin k → Matrix A A ℂ) :
-    finKronecker M * finKronecker L = finKronecker (fun i ↦ M i * L i) := by
-  ext x y
-  simp only [mul_apply, finKronecker_apply]
-  simpa only [Finset.prod_mul_distrib] using
-    (Fintype.prod_sum (fun (i : Fin k) (a : A) ↦ M i (x i) a * L i a (y i))).symm
-
-omit [DecidableEq A] in
 private theorem ground_isStarProjection (Ω : A → ℂ)
     (hΩ : ‖WithLp.toLp 2 Ω‖ = 1) : IsStarProjection (vecMulVec Ω (star Ω)) := by
   rw [isStarProjection_iff']
@@ -90,56 +82,46 @@ private theorem ground_isStarProjection (Ω : A → ℂ)
   simp only [vecMulVec_mul_vecMulVec, dotProduct_comm (star Ω), hdot, one_smul,
     star_eq_conjTranspose, conjTranspose_vecMulVec, star_star, and_self]
 
-omit [DecidableEq A] in
-private theorem finKronecker_star_local {k : ℕ} (M : Fin k → Matrix A A ℂ) :
-    star (finKronecker M) = finKronecker (fun i ↦ star (M i)) := by
-  ext x y
-  simp only [star_eq_conjTranspose, conjTranspose_apply, finKronecker_apply, star_prod]
-
-private theorem finKronecker_one_local (k : ℕ) :
-    finKronecker (fun _ : Fin k ↦ (1 : Matrix A A ℂ)) = 1 := by
-  ext x y
-  simp only [finKronecker_apply, one_apply, Fintype.prod_boole, ← funext_iff]
-
 /-- The actual exact-excitation sector is an orthogonal projection.
 OpenAI area-law manuscript, `comparator:defect-mass`, lines 441–456. -/
 theorem isStarProjection_replicaExcitationProjection (Ω : A → ℂ)
     (hΩ : ‖WithLp.toLp 2 Ω‖ = 1) (k : ℕ) (B : Finset (Fin k)) :
     IsStarProjection (replicaExcitationProjection Ω k B) := by
   rw [isStarProjection_iff', replicaExcitationProjection,
-    finKronecker_mul_local, finKronecker_star_local]
+    piKronecker_mul, star_eq_conjTranspose, conjTranspose_piKronecker]
   have hP := ground_isStarProjection Ω hΩ
   have hproj (i : Fin k) : IsStarProjection
       (if i ∈ B then 1 - vecMulVec Ω (star Ω) else vecMulVec Ω (star Ω)) :=
     if h : i ∈ B then (ite_eq_left h).symm ▸ hP.one_sub else (ite_eq_right h).symm ▸ hP
-  exact ⟨congrArg finKronecker (funext fun i ↦ (hproj i).isIdempotentElem.eq),
-    congrArg finKronecker (funext fun i ↦ (hproj i).isSelfAdjoint.star_eq)⟩
+  exact ⟨congrArg piKronecker (funext fun i ↦ (hproj i).isIdempotentElem.eq),
+    congrArg piKronecker (funext fun i ↦ (hproj i).isSelfAdjoint.star_eq)⟩
 
+omit [Fintype A] in
 /-- The actual exact-excitation sectors partition the full physical identity.
 OpenAI area-law manuscript, `comparator:defect-mass`, lines 441–456. -/
 theorem sum_replicaExcitationProjection (Ω : A → ℂ) (k : ℕ) :
     ∑ B : Finset (Fin k), replicaExcitationProjection Ω k B = 1 := by
   ext x y
-  simp only [sum_apply, replicaExcitationProjection, finKronecker_apply,
+  simp only [sum_apply, replicaExcitationProjection, piKronecker_apply,
     Matrix.ite_apply, sub_apply]
   simp only [Finset.prod_ite, Finset.filter_mem_eq_inter, Finset.univ_inter,
     Finset.filter_notMem_eq_sdiff, ← Finset.compl_eq_univ_sdiff, ← Fintype.prod_add,
     sub_add_cancel]
   exact congrArg (fun M : Matrix (Fin k → A) (Fin k → A) ℂ ↦ M x y)
-    (finKronecker_one_local (A := A) k)
+    (piKronecker_one (ι := fun _ : Fin k ↦ A))
 
-private theorem single_copy_mul_finKronecker {k : ℕ} (i : Fin k)
+private theorem single_copy_mul_piKronecker {k : ℕ} (i : Fin k)
     (K : Matrix A A ℂ) (M : Fin k → Matrix A A ℂ) (c : ℂ)
     (hc : K * M i = c • M i) :
-    finKronecker (fun j : Fin k ↦ if j = i then K else 1) * finKronecker M =
-      c • finKronecker M := by
-  rw [finKronecker_mul_local]
+    piKronecker (fun j : Fin k ↦ if j = i then K else 1) * piKronecker M =
+      c • piKronecker M := by
+  rw [piKronecker_mul]
   have hfactor (j : Fin k) : (if j = i then K else 1) * M j =
       (if j = i then c else 1) • M j := by
     by_cases hji : j = i
     all_goals simp [hji, hc]
   ext x y
-  simp only [finKronecker_apply, hfactor, smul_apply, smul_eq_mul,
+  simp only [piKronecker_apply, hfactor, smul_apply, smul_eq_mul,
     Finset.prod_mul_distrib, Finset.prod_ite_eq', Finset.mem_univ, ite_true]
 
 /-- The excitation count equals the cardinality on each actual sector.
@@ -156,19 +138,20 @@ theorem replicaDefectCount_mul_replicaExcitationProjection (Ω : A → ℂ)
     by_cases hi : i ∈ B
     all_goals simp [hi, hP.one_sub.isIdempotentElem.eq, hP.one_sub_mul_self]
   simp only [replicaDefectCount, replicaExcitationProjection, Finset.sum_mul]
-  have hterm (i : Fin k) := single_copy_mul_finKronecker i (1 - vecMulVec Ω (star Ω))
+  have hterm (i : Fin k) := single_copy_mul_piKronecker i (1 - vecMulVec Ω (star Ω))
     (fun j ↦ if j ∈ B then 1 - vecMulVec Ω (star Ω) else vecMulVec Ω (star Ω))
     (if i ∈ B then (1 : ℂ) else 0) (hc i)
   simp only [hterm, ← Finset.sum_smul, Finset.sum_boole, Finset.filter_mem_eq_inter,
     Finset.univ_inter]
 
+omit [Fintype A] in
 private theorem replicaDefectCount_isHermitian (Ω : A → ℂ) (k : ℕ) :
     (replicaDefectCount Ω k).IsHermitian := by
   change star (replicaDefectCount Ω k) = replicaDefectCount Ω k
-  have hP : star (vecMulVec Ω (star Ω)) = vecMulVec Ω (star Ω) := by
-    simp only [star_eq_conjTranspose, conjTranspose_vecMulVec, star_star]
-  simp only [replicaDefectCount, star_sum, finKronecker_star_local, apply_ite star,
-    star_sub, star_one, hP]
+  have hP : (vecMulVec Ω (star Ω))ᴴ = vecMulVec Ω (star Ω) := by
+    simp only [conjTranspose_vecMulVec, star_star]
+  simp only [replicaDefectCount, star_sum, star_eq_conjTranspose, conjTranspose_piKronecker,
+    apply_ite conjTranspose, conjTranspose_sub, conjTranspose_one, hP]
 
 /-- The literal spectral cutoff is the sum of the actual sectors below its threshold.
 OpenAI area-law manuscript, `comparator:defect-mass`, lines 421–456. -/
@@ -213,7 +196,7 @@ theorem replicaExcitationProjection_mul_of_ne (Ω : A → ℂ)
     all_goals by_cases hc : i ∈ C
     all_goals simp_all [(ground_isStarProjection Ω hΩ).one_sub_mul_self,
       (ground_isStarProjection Ω hΩ).mul_one_sub_self]
-  rw [replicaExcitationProjection, replicaExcitationProjection, finKronecker_mul_local]
+  rw [replicaExcitationProjection, replicaExcitationProjection, piKronecker_mul]
   ext x y
   exact Finset.prod_eq_zero (Finset.mem_univ i)
     (congrArg (fun M : Matrix A A ℂ ↦ M (x i) (y i)) hlocal)

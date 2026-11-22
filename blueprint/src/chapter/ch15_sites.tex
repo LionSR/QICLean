@@ -190,11 +190,11 @@ $\mathcal H_X=0$ and the statements below hold trivially.
 
 \begin{theorem}[Supported operators are spanned by product operators]
     \label{thm:sites_product_span}
-    \lean{ManyBody.supportedOperators_toSubmodule_eq_span, ManyBody.prodOp,
-        ManyBody.prodOp_apply, ManyBody.prodOp_mul, ManyBody.prodOp_one,
-        ManyBody.conjTranspose_prodOp, ManyBody.prodOp_mem_unitary,
-        ManyBody.prodOp_mem_supportedOperators, ManyBody.place_single, ManyBody.trace_prodOp,
-        ManyBody.prodOp_basisInclusion}
+    \lean{ManyBody.supportedOperators_toSubmodule_eq_span, Matrix.piKronecker,
+        Matrix.piKronecker_apply, Matrix.piKronecker_mul, Matrix.piKronecker_one,
+        Matrix.conjTranspose_piKronecker, Matrix.piKronecker_mem_unitaryGroup,
+        ManyBody.piKronecker_mem_supportedOperators, ManyBody.place_single, Matrix.trace_piKronecker,
+        Matrix.piKronecker_basisInclusion}
     \leanok
     \uses{thm:sites_place_range, lem:sites_place_hom, def:gate_basis_inclusion}
     The algebra $\mathcal A_D$ is the linear span of the product operators
@@ -232,7 +232,7 @@ $\mathcal H_X=0$ and the statements below hold trivially.
 
 \begin{lemma}[Product states factorize over disjoint regions]
     \label{lem:sites_product_state_factorization}
-    \lean{ManyBody.trace_prodOp_mul_mul}
+    \lean{ManyBody.trace_piKronecker_mul_mul}
     \leanok
     \uses{cor:sites_product_induction}
     Let $\sigma_v$ be matrices on $\C^{X_v}$ with $\operatorname{tr}\sigma_v=1$, and let
@@ -254,9 +254,9 @@ $\mathcal H_X=0$ and the statements below hold trivially.
 
 \begin{lemma}[Product operators across a cut and intertwined placements]
     \label{lem:sites_product_intertwine}
-    \lean{ManyBody.reindex_cutEquiv_prodOp, ManyBody.prodOp_mul_place,
-        ManyBody.prodOp_eq_zero_iff, ManyBody.prodOp_ne_zero, ManyBody.prodOp_eq_place,
-        ManyBody.place_mul_prodOp_eq_zero_iff}
+    \lean{ManyBody.reindex_cutEquiv_piKronecker, ManyBody.piKronecker_mul_place,
+        Matrix.piKronecker_eq_zero_iff, Matrix.piKronecker_ne_zero, ManyBody.piKronecker_eq_place,
+        ManyBody.place_mul_piKronecker_eq_zero_iff}
     \leanok
     \uses{def:sites_config, def:sites_place, thm:sites_product_span}
     Let $m_v$ be a matrix from $\C^{Y_v}$ to $\C^{X_v}$ for every site $v$, and
@@ -478,7 +478,7 @@ $\mathcal H_X=0$ and the statements below hold trivially.
 \begin{lemma}[Regions, bijections and composition]
     \label{lem:sites_place_along_composition}
     \lean{ManyBody.placeAlong_subtype, ManyBody.placeAlong_equiv, ManyBody.placeAlong_refl,
-        ManyBody.placeAlong_placeAlong, ManyBody.placeAlong_prodOp}
+        ManyBody.placeAlong_placeAlong, ManyBody.placeAlong_piKronecker}
     \leanok
     \uses{def:sites_place_along, lem:sites-regional-relabel, thm:sites_product_span}
     Placing along the inclusion of a region $D$ is placing on $D$; placing along a bijection
@@ -534,7 +534,7 @@ $\mathcal H_X=0$ and the statements below hold trivially.
 
 \begin{lemma}[A matrix at one site as a product operator]
     \label{lem:sites_place_at_product}
-    \lean{ManyBody.place_siteEquiv_eq_placeAt, ManyBody.placeAt_eq_prodOp,
+    \lean{ManyBody.place_siteEquiv_eq_placeAt, ManyBody.placeAt_eq_piKronecker,
         ManyBody.placeAt_mem_unitaryGroup, ManyBody.placeAt_mulVec_apply}
     \leanok
     \uses{def:sites_place_at, def:sites_place, thm:sites_product_span}
@@ -800,7 +800,7 @@ $\mathcal H_X=0$ and the statements below hold trivially.
 
 \begin{theorem}[Blocking a product operator]
     \label{thm:sites_block_prod}
-    \lean{ManyBody.reindex_blockConfigEquiv_symm_prodOp}
+    \lean{ManyBody.reindex_blockConfigEquiv_symm_piKronecker}
     \leanok
     \uses{def:sites_block, thm:sites_product_span}
     For matrices $m_v$ from $\C^{Y_v}$ to $\C^{X_v}$, the product operator
@@ -1046,7 +1046,7 @@ $\mathcal H_X=0$ and the statements below hold trivially.
 
 \begin{lemma}[Conjugation by on-site unitaries]
     \label{lem:sites_onsite_conjugation}
-    \lean{ManyBody.prodOp_mul_mul_conjTranspose_mem_supportedOperators}
+    \lean{ManyBody.piKronecker_mul_mul_conjTranspose_mem_supportedOperators}
     \leanok
     \uses{cor:sites_product_induction}
     If the on-site matrices $m_v$ are unitary at every site outside a region $S$, then

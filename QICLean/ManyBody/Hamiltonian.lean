@@ -22,6 +22,7 @@ import QICLean.ManyBody.Hamiltonian.HardTruncation
 import QICLean.ManyBody.Hamiltonian.HermitianPart
 import QICLean.ManyBody.Hamiltonian.KernelGap
 import QICLean.ManyBody.Hamiltonian.KroneckerSum
+import QICLean.ManyBody.Hamiltonian.LocalTermTranslates
 import QICLean.ManyBody.Hamiltonian.LowEnergyBasis
 import QICLean.ManyBody.Hamiltonian.LowEnergyBasisTruncated
 import QICLean.ManyBody.Hamiltonian.LowEnergyBasisUniform

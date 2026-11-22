@@ -36,6 +36,7 @@ namespace Matrix
 
 variable {S Ω : Type*} [Fintype S] [Fintype Ω]
 
+omit [Fintype Ω] in
 /-- The reduced density of the literal, regrouped tensor power of a bipartite
 vector is the tensor power of its actual one-copy reduced density.
 OpenAI area-law manuscript, `07-comparators.tex`, lines 255–281,
@@ -44,10 +45,10 @@ theorem partialTraceLeft_vecMulVec_prod (ψ : S × Ω → ℂ) (k : ℕ) :
     partialTraceLeft (vecMulVec
       (fun x : (Fin k → S) × (Fin k → Ω) => ∏ i, ψ (x.1 i, x.2 i))
       (star (fun x : (Fin k → S) × (Fin k → Ω) => ∏ i, ψ (x.1 i, x.2 i)))) =
-    finKronecker (fun _ : Fin k => partialTraceLeft (vecMulVec ψ (star ψ))) := by
+    piKronecker (fun _ : Fin k => partialTraceLeft (vecMulVec ψ (star ψ))) := by
   ext x y
   simp only [partialTraceLeft_apply, vecMulVec_apply, Pi.star_apply, star_prod,
-    finKronecker_apply]
+    piKronecker_apply]
   simpa only [Finset.prod_mul_distrib] using
     (Fintype.prod_sum (fun (i : Fin k) (s : S) =>
       ψ (s, x i) * star (ψ (s, y i)))).symm
@@ -73,7 +74,7 @@ theorem norm_sq_one_kronecker_mulVec_prod [DecidableEq S]
     (hP : IsStarProjection P) :
     ‖WithLp.toLp 2 (((1 : Matrix (Fin k → S) (Fin k → S) ℂ) ⊗ₖ P) *ᵥ
       (fun x : (Fin k → S) × (Fin k → Ω) => ∏ i, ψ (x.1 i, x.2 i)))‖ ^ 2 =
-    (finKronecker (fun _ : Fin k => partialTraceLeft (vecMulVec ψ (star ψ))) *
+    (piKronecker (fun _ : Fin k => partialTraceLeft (vecMulVec ψ (star ψ))) *
       P).trace.re := by
   rw [← partialTraceLeft_vecMulVec_prod ψ k, trace_partialTraceLeft_mul]
   refine norm_sq_mulVec_eq_re_trace _ ?_ _

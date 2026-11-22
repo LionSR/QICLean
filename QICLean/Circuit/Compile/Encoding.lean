@@ -70,7 +70,7 @@ theorem map_encodeCircuit (e : ∀ s, X s ↪ Y s) (ρ : Matrix (Config X) (Conf
     (encodeCircuit Γ e).map KrausGate.ev ρ =
       basisInclusion (Function.Embedding.piCongrRight e) * ρ *
         (basisInclusion (Function.Embedding.piCongrRight e))ᴴ := by
-  rw [encodeCircuit, ← prodOp_basisInclusion]
+  rw [encodeCircuit, ← piKronecker_basisInclusion]
   exact Circuit.map_ofLayer_ofOnsite_single _ _ ρ
 
 /-- The map of an encoding does not depend on the geometry the circuit is written on. -/
@@ -102,22 +102,22 @@ theorem map_decodeCircuit_comp_map_encodeCircuit (e : ∀ s, X s ↪ Y s) (x₀ 
       LinearMap.id := by
   refine LinearMap.ext fun ρ ↦ ?_
   set L : Layer Γ KrausGate Y X := Layer.ofOnsite fun s ↦ KrausFamily.decode (e s) (x₀ s)
-  set P := prodOp fun s ↦ basisInclusion (e s)
-  have hK : ∀ i, L.kraus KrausGate.ev i * P = prodOp fun s ↦
+  set P := piKronecker fun s ↦ basisInclusion (e s)
+  have hK : ∀ i, L.kraus KrausGate.ev i * P = piKronecker fun s ↦
       (KrausFamily.decode (e s) (x₀ s)).op (i.2 ⟨s, by simp [L, Layer.ofOnsite]⟩) *
         basisInclusion (e s) := fun i ↦ by
-    rw [Layer.kraus_ofOnsite, prodOp_mul]
+    rw [Layer.kraus_ofOnsite, piKronecker_mul]
   have hconj : ∀ i, L.kraus KrausGate.ev i * (P * ρ * Pᴴ) * (L.kraus KrausGate.ev i)ᴴ =
       (L.kraus KrausGate.ev i * P) * ρ * (L.kraus KrausGate.ev i * P)ᴴ := fun i ↦ by
     simp only [conjTranspose_mul, Matrix.mul_assoc]
   let i₁ : L.Index := (fun b ↦ absurd b.2 (Finset.notMem_empty _), fun _ ↦ Sum.inl ())
-  rw [LinearMap.comp_apply, map_encodeCircuit, ← prodOp_basisInclusion, decodeCircuit,
+  rw [LinearMap.comp_apply, map_encodeCircuit, ← piKronecker_basisInclusion, decodeCircuit,
     Circuit.ofLayer, Circuit.map_step, LinearMap.id_apply]
   simp only [Circuit.map_done, LinearMap.id_apply]
   rw [Finset.sum_eq_single i₁ (fun i _ hi ↦ ?_) fun h ↦ absurd (Finset.mem_univ _) h, hconj]
   · rw [hK]
-    simp only [i₁, KrausFamily.decode_op_inl_mul, prodOp_one, Matrix.one_mul, conjTranspose_one,
-      Matrix.mul_one]
+    simp only [i₁, KrausFamily.decode_op_inl_mul, piKronecker_one, Matrix.one_mul,
+      conjTranspose_one, Matrix.mul_one]
   · obtain ⟨s, b, hb⟩ : ∃ s : S, ∃ b : {c // c ∉ Set.range (e s)},
         i.2 ⟨s, by simp [L, Layer.ofOnsite]⟩ = (Sum.inr b : Unit ⊕ {c // c ∉ Set.range (e s)}) := by
       by_contra h
@@ -129,7 +129,7 @@ theorem map_decodeCircuit_comp_map_encodeCircuit (e : ∀ s, X s ↪ Y s) (x₀ 
     have h0 : L.kraus KrausGate.ev i * P = 0 := by
       rw [hK]
       ext y x
-      rw [prodOp_apply, Matrix.zero_apply]
+      rw [piKronecker_apply, Matrix.zero_apply]
       refine Finset.prod_eq_zero (Finset.mem_univ s) ?_
       rw [hb, KrausFamily.decode_op_inr_mul, Matrix.zero_apply]
     rw [hconj, h0]

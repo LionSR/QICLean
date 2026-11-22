@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Spectral.Gap.PositiveGapTransfer
+import QICLean.Spectral.Gap.EigenvalueGap
 
 /-!
 # Kernel and gap transport along an isometric inclusion
@@ -23,7 +23,7 @@ Moved from TNLean, `TNLean/Algebra/IsometricGapTransfer.lean` at
 commit `414a18fb88`, with no change to the statements.
 -/
 
-open scoped InnerProductSpace
+open scoped InnerProductSpace ComplexOrder
 
 namespace LinearIsometry
 
@@ -156,5 +156,25 @@ theorem norm_gap_of_intertwines (U : E →ₗᵢ[ℂ] F)
   · simp [hv0]
   · exact le_of_mul_le_mul_right
       (by simpa only [pow_two, mul_assoc] using hbound) (norm_pos_iff.mpr hv0)
+
+/-- **Gap transfer along an isometric inclusion, eigenvalue form.** Let `U` be an isometric
+inclusion intertwining a symmetric operator `H` with `K`. If every eigenvalue of `K` other than
+`0` is at least `δ` and `c ‖y‖² ≤ Re ⟨H y, y⟩` off the image of `U`, then every eigenvalue of `H`
+other than `0` is at least `min δ c`. The operator `K` is symmetric, being the restriction of
+`H`; no positivity is needed. -/
+theorem forall_hasEigenvalue_of_intertwines (U : E →ₗᵢ[ℂ] F)
+    {H : F →ₗ[ℂ] F} {K : E →ₗ[ℂ] E} (hH : H.IsSymmetric)
+    (hintertwine : ∀ x, H (U x) = U (K x)) {δ c : ℝ}
+    (hGap : ∀ μ : ℂ, Module.End.HasEigenvalue K μ → μ = 0 ∨ (δ : ℂ) ≤ μ)
+    (hInactive : ∀ y, U.toLinearMap.adjoint y = 0 →
+      c * ‖y‖ ^ 2 ≤ (⟪H y, y⟫_ℂ).re) :
+    ∀ μ : ℂ, Module.End.HasEigenvalue H μ → μ = 0 ∨ ((min δ c : ℝ) : ℂ) ≤ μ := by
+  have hK : K.IsSymmetric := fun x y ↦ by
+    rw [← U.inner_map_map (K x) y, ← hintertwine, hH, hintertwine, U.inner_map_map]
+  refine hH.forall_hasEigenvalue_of_re_inner fun v hv ↦ ?_
+  rw [← hH v v]
+  refine U.re_inner_ge_of_intertwines hH hintertwine (fun x hx ↦ ?_) hInactive v hv
+  rw [hK x x]
+  exact hK.mul_norm_sq_le_re_inner_of_forall_hasEigenvalue hGap hx
 
 end LinearIsometry

@@ -305,7 +305,7 @@ private theorem reindex_replicaPairEquiv_sitePermOp_replicaSwap (A : Finset V) :
         · rw [ite_eq_left hv, ite_eq_left hv, replicaPairEquiv_symm_inl]
           rfl
         · rw [ite_eq_right hv, ite_eq_right hv, replicaPairEquiv_symm_inr]
-  rw [reindex_apply, submatrix_apply, sitePermOp_apply, pairSwapOp, prodOp_apply]
+  rw [reindex_apply, submatrix_apply, sitePermOp_apply, pairSwapOp, piKronecker_apply]
   simp_rw [hentry]
   rw [Finset.prod_boole]
   by_cases hc : ∀ v ∈ Finset.univ, (if v ∈ A then (σ v).swap else σ v) = τ v

@@ -6,7 +6,7 @@ Authors: QICLean contributors
 import QICLean.Algebra.Kronecker.KroneckerFactorPositivity
 import QICLean.Spectral.Eigenvalue.HermitianExtremalEigenvalues
 import QICLean.Algebra.Matrix.MatrixAux
-import QICLean.Analysis.Order.GlobalGap
+import QICLean.Spectral.Eigenvalue.GlobalGap
 import QICLean.Spectral.Projection.ShiftedDensityTruncation
 import QICLean.Analysis.FunctionalCalculus.CfcKronecker
 
@@ -47,20 +47,21 @@ variable {A : Type*} [Fintype A] [DecidableEq A]
 OpenAI area-law manuscript, `comparator:defect-mass`, lines 421–438. -/
 def replicaHamiltonian (H : Matrix A A ℂ) (k : ℕ) :
     Matrix (Fin k → A) (Fin k → A) ℂ :=
-  ∑ i : Fin k, finKronecker (fun j : Fin k ↦ if j = i then H else 1)
+  ∑ i : Fin k, piKronecker (fun j : Fin k ↦ if j = i then H else 1)
 
 /-- The sum of the actual one-copy ground-complement projections.
 OpenAI area-law manuscript, `comparator:defect-mass`, lines 421–438. -/
 def replicaDefectCount (Ω : A → ℂ) (k : ℕ) :
     Matrix (Fin k → A) (Fin k → A) ℂ :=
-  ∑ i : Fin k, finKronecker (fun j : Fin k ↦
+  ∑ i : Fin k, piKronecker (fun j : Fin k ↦
     if j = i then 1 - vecMulVec Ω (star Ω) else 1)
 
+omit [Fintype A] in
 private theorem singleReplica_entry {k : ℕ} (i : Fin k) (K : Matrix A A ℂ)
     (x y : Fin k → A) :
-    finKronecker (fun j : Fin k ↦ if j = i then K else 1) x y =
+    piKronecker (fun j : Fin k ↦ if j = i then K else 1) x y =
       K (x i) (y i) * ∏ j ∈ Finset.univ.erase i, (1 : Matrix A A ℂ) (x j) (y j) := by
-  rw [finKronecker_apply, ← Finset.mul_prod_erase _ _ (Finset.mem_univ i)]
+  rw [piKronecker_apply, ← Finset.mul_prod_erase _ _ (Finset.mem_univ i)]
   simp only [ite_true]
   congr 1
   apply Finset.prod_congr rfl
@@ -69,7 +70,7 @@ private theorem singleReplica_entry {k : ℕ} (i : Fin k) (K : Matrix A A ℂ)
 
 private def singleReplicaLinearMap {k : ℕ} (i : Fin k) :
     Matrix A A ℂ →ₗ[ℂ] Matrix (Fin k → A) (Fin k → A) ℂ where
-  toFun K := finKronecker (fun j : Fin k ↦ if j = i then K else 1)
+  toFun K := piKronecker (fun j : Fin k ↦ if j = i then K else 1)
   map_add' K L := by
     ext x y
     simp only [add_apply, singleReplica_entry, add_mul]
@@ -77,16 +78,18 @@ private def singleReplicaLinearMap {k : ℕ} (i : Fin k) :
     ext x y
     simp only [singleReplica_entry, smul_apply, smul_eq_mul, RingHom.id_apply, mul_assoc]
 
+omit [Fintype A] in
 private theorem singleReplicaLinearMap_one {k : ℕ} (i : Fin k) :
     singleReplicaLinearMap (A := A) i 1 = 1 := by
   ext x y
   simp only [singleReplicaLinearMap, LinearMap.coe_mk, AddHom.coe_mk,
-    ite_self, finKronecker_apply, one_apply, Fintype.prod_boole, ← funext_iff]
+    ite_self, piKronecker_apply, one_apply, Fintype.prod_boole, ← funext_iff]
 
-private theorem singleReplicaLinearMap_posSemidef {k : ℕ} (i : Fin k)
+omit [Fintype A] in
+private theorem singleReplicaLinearMap_posSemidef [Finite A] {k : ℕ} (i : Fin k)
     {K : Matrix A A ℂ} (hK : K.PosSemidef) :
     (singleReplicaLinearMap i K).PosSemidef := by
-  exact finKronecker_posSemidef _ (fun j ↦
+  exact piKronecker_posSemidef _ (fun j ↦
     if h : j = i then (ite_eq_left h).symm ▸ hK
     else (ite_eq_right h).symm ▸ PosSemidef.one)
 
@@ -96,7 +99,7 @@ theorem replicaHamiltonian_mulVec_prod {H : Matrix A A ℂ} {Ω : A → ℂ} {E�
     (hΩ : H *ᵥ Ω = E₀ • Ω) (k : ℕ) :
     replicaHamiltonian H k *ᵥ (fun x : Fin k → A ↦ ∏ i, Ω (x i)) =
       ((k : ℂ) * E₀) • (fun x : Fin k → A ↦ ∏ i, Ω (x i)) := by
-  have hterm (i : Fin k) : finKronecker (fun j : Fin k ↦ if j = i then H else 1) *ᵥ
+  have hterm (i : Fin k) : piKronecker (fun j : Fin k ↦ if j = i then H else 1) *ᵥ
       (fun x : Fin k → A ↦ ∏ j, Ω (x j)) =
       E₀ • (fun x : Fin k → A ↦ ∏ j, Ω (x j)) := by
     ext x
@@ -135,14 +138,16 @@ theorem replicaMeanHamiltonian_kronecker_mulVec_prod {C : Type*} [Fintype C]
   simp only [← mul_assoc, inv_mul_cancel₀ (show (k : ℂ) ≠ 0 from
     Nat.cast_ne_zero.mpr hk.ne'), one_mul]
 
+omit [Fintype A] in
 /-- The full one-copy gap bounds the actual sum of excitation projections on replicas.
 Neither normalization nor a ground-eigenvector equation is needed for this operator inequality.
 OpenAI area-law manuscript, `comparator:defect-mass`, lines 421–438. -/
-theorem PosSemidef.replica_gap {H : Matrix A A ℂ} {Ω : A → ℂ} {E₀ g : ℝ}
+theorem PosSemidef.replica_gap [Finite A] {H : Matrix A A ℂ} {Ω : A → ℂ} {E₀ g : ℝ}
     (hgap : (H - (E₀ : ℂ) • 1 -
       (g : ℂ) • (1 - vecMulVec Ω (star Ω))).PosSemidef) (k : ℕ) :
     (replicaHamiltonian H k - ((k * E₀ : ℝ) : ℂ) • 1 -
       (g : ℂ) • replicaDefectCount Ω k).PosSemidef := by
+  have := Fintype.ofFinite A
   have hsum := posSemidef_sum (Finset.univ : Finset (Fin k))
     (fun i _ ↦ singleReplicaLinearMap_posSemidef i hgap)
   simp only [map_sub, map_smul, singleReplicaLinearMap_one, Finset.sum_sub_distrib,

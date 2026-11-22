@@ -44,13 +44,13 @@ $\zeta=e^{2\pi i/d}$, and $F_{ab}=d^{-1/2}\zeta^{ab}$ is the Fourier matrix.
     \label{lem:teleport_site_operators}
     \lean{QuantumCircuit.place_single_self_mulVec_apply,
         QuantumCircuit.place_single_union, QuantumCircuit.commute_place_single,
-        QuantumCircuit.prodOp_update_one_mulVec_apply,
+        QuantumCircuit.piKronecker_update_one_mulVec_apply,
         QuantumCircuit.isZeroOn_iff_place_single_mulVec,
         QuantumCircuit.IsZeroOn.mulVec_of_mem_supportedOperators,
-        QuantumCircuit.IsZeroOn.prodOp_update_one_mulVec,
+        QuantumCircuit.IsZeroOn.piKronecker_update_one_mulVec,
         QuantumCircuit.IsZeroOn.sitePermOp_mulVec_image,
         QuantumCircuit.IsZeroOn.sitePermOp_mulVec_of_mapsTo,
-        QuantumCircuit.sitePermOp_mul_prodOp}
+        QuantumCircuit.sitePermOp_mul_piKronecker}
     \leanok
     \uses{def:teleport_zero_on, def:sites_place, def:hastings_site_permutation}
     Let $P_{D,m}$ be the matrix unit $\ket m\bra m$ of a configuration $m$ of

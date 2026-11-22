@@ -14,7 +14,7 @@ A permutation `σ` of the configurations of a system acts on vectors by its perm
 `(P_σ v)(x) = v (σ x)`. A permutation that changes only the sites of a set `S`, by a rule that
 reads only the sites of `S`, has a permutation matrix supported on `S`
 (`QuantumCircuit.IsLocalPerm.permMatrix_mem_supportedOperators`), and a product of on-site
-permutation matrices permutes the label of every site (`Matrix.finKronecker_permMatrix_mulVec`).
+permutation matrices permutes the label of every site (`Matrix.piKronecker_permMatrix_mulVec`).
 
 More generally, a matrix `X` on `m` sites *acts by a configuration map* `f` when `X v = v ∘ f`
 for every vector `v`; a permutation matrix acts this way (`Matrix.permMatrix_mulVec`). Placing
@@ -29,8 +29,9 @@ Moved from TNLean, `TNLean/Circuit/SitePermutation.lean`, `TNLean/Circuit/Gates/
 and `TNLean/Circuit/ConfigurationLayers.lean` at commit `49b78ed821` (Apache-2.0). Changes: any
 finite set of sites with any basis at every site for `QuantumCircuit.IsLocalPerm`, and any
 finite set of sites with any common basis `α` in place of the chain `Fin n` with basis `Fin d`
-for the configuration maps; the dependent family of bases in
-`Matrix.finKronecker_permMatrix_mulVec`.
+for the configuration maps. The action of a product of on-site permutation matrices, with a
+dependent family of bases over any finite set of sites, is `Matrix.piKronecker_permMatrix_mulVec`
+in `QICLean.Algebra.Kronecker.PiKronecker`.
 
 ## Main definitions
 
@@ -42,7 +43,6 @@ for the configuration maps; the dependent family of bases in
 ## Main results
 
 * `QuantumCircuit.IsLocalPerm.permMatrix_mem_supportedOperators`.
-* `Matrix.finKronecker_permMatrix_mulVec`.
 * `QuantumCircuit.noncommProd_placeAlong_mulVec_eq_comp`,
   `QuantumCircuit.placeAlong_mulVec_eq_comp`.
 * `QuantumCircuit.placeAlong_mulVec_productVector` — a matrix applied to a product vector that
@@ -98,24 +98,6 @@ theorem IsLocalPerm.permMatrix_mem_supportedOperators {S : Finset V}
       (fun v hv ↦ (h₂ v hv).symm) h₃⟩ rfl rfl
 
 end LocalPerm
-
-/-- **On-site permutations.** The Kronecker product of the permutation matrices of
-permutations `σ i` of the labels of the sites `i` acts on vectors as `v ↦ v ∘ σ`, where `σ`
-applies `σ i` at every site `i`. -/
-theorem _root_.Matrix.finKronecker_permMatrix_mulVec {N : ℕ} {α : Fin N → Type*}
-    [∀ i, Fintype (α i)] [∀ i, DecidableEq (α i)] (σ : (i : Fin N) → Equiv.Perm (α i))
-    (v : ((i : Fin N) → α i) → ℂ) :
-    finKronecker (fun i ↦ (σ i).permMatrix ℂ) *ᵥ v = fun x ↦ v fun i ↦ σ i (x i) := by
-  classical
-  funext x
-  have h : ∀ y : (i : Fin N) → α i, finKronecker (fun i ↦ (σ i).permMatrix ℂ) x y =
-      if y = (fun i ↦ σ i (x i)) then 1 else 0 := fun y ↦ by
-    simp only [finKronecker_apply, Equiv.Perm.permMatrix, PEquiv.toMatrix_apply,
-      Equiv.toPEquiv_apply, Option.mem_def, Option.some.injEq]
-    rw [Finset.prod_boole]
-    simp only [Finset.mem_univ, true_implies, funext_iff, eq_comm]
-  simp only [mulVec, dotProduct, h, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq',
-    Finset.mem_univ, ite_true]
 
 /-- An operator acting by a configuration map has the entry `1` at `(x, f x)` and `0`
 elsewhere. -/

@@ -370,8 +370,8 @@ theorem exists_label_sequence_replicaPrevector {A S : Type*}
       (((1 : Matrix (Fin k → S) (Fin k → S) ℂ) ⊗ₖ labelProj (copyPerm (Fin d) k) l) *ᵥ
         (fun x : (Fin k → S) × (Fin k → Fin d) => ∏ i, ψ (x.1 i, x.2 i)))‖ ^ 2
   have hex (k : ℕ) : ∃ l : IrrepLabel (Equiv.Perm (Fin k)), 0 < mass k l := by
-    have hρk := finKronecker_posSemidef (fun _ : Fin k => ρ) (fun _ => hρ)
-    have htrk : (finKronecker (fun _ : Fin k => ρ)).trace = 1 := by
+    have hρk := piKronecker_posSemidef (fun _ : Fin k => ρ) (fun _ => hρ)
+    have htrk : (piKronecker (fun _ : Fin k => ρ)).trace = 1 := by
       change Matrix.trace (fun x y : Fin k → Fin d => ∏ i, ρ (x i) (y i)) = 1
       rw [trace_piProduct (fun _ : Fin k => ρ)]
       simp [htr]

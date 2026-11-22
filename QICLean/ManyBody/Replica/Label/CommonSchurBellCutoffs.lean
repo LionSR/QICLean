@@ -109,7 +109,7 @@ theorem exists_commonLabelCutoff_bell_vector (hz : 0 < zE)
       (∏ j, selectedBellVector ψ₀ E (x.1 j)) * ψ x.2)
     ∃ φ : EuclideanSpace ℂ ((Fin k → A × E) × Config k ι), ‖φ‖ = 1 ∧
       (fun x ↦ φ (e x)) ∈ invariantSubspace (copyPerm ((A × E) × ((f : F) → ι f)) k) ∧
-      toEuclideanLin ((finKronecker fun _ : Fin k ↦ selectedBellProjection ψ₀ E) ⊗ₖ
+      toEuclideanLin ((piKronecker fun _ : Fin k ↦ selectedBellProjection ψ₀ E) ⊗ₖ
         (1 : Matrix (Config k ι) (Config k ι) ℂ)) φ = φ ∧
       toEuclideanLin ((1 : Matrix (Fin k → A × E) (Fin k → A × E) ℂ) ⊗ₖ
         labelProj (subsystemPerm k ι R) ell) φ = φ ∧
@@ -126,19 +126,19 @@ theorem exists_commonLabelCutoff_bell_vector (hz : 0 < zE)
   let b : EuclideanSpace ℂ (Fin k → A × E) :=
     WithLp.toLp 2 (fun x ↦ ∏ j, selectedBellVector ψ₀ E (x j))
   have hb : ‖b‖ = 1 := norm_prod_selectedBellVector ψ₀ E k hz
-  have hproj : (finKronecker fun _ : Fin k ↦ selectedBellProjection ψ₀ E) =
+  have hproj : (piKronecker fun _ : Fin k ↦ selectedBellProjection ψ₀ E) =
       vecMulVec b (star b) := by
     ext x y
-    simp only [b, selectedBellProjection, finKronecker_apply, vecMulVec_apply,
+    simp only [b, selectedBellProjection, piKronecker_apply, vecMulVec_apply,
       Pi.star_apply, star_prod, Finset.prod_mul_distrib]
   have hbb : star b ⬝ᵥ b = 1 := by
     rw [dotProduct_comm, ← EuclideanSpace.inner_eq_star_dotProduct,
       inner_self_eq_norm_sq_to_K, hb]
     norm_num
   have hfix : toEuclideanLin
-      (finKronecker fun _ : Fin k ↦ selectedBellProjection ψ₀ E) b = b := by
+      (piKronecker fun _ : Fin k ↦ selectedBellProjection ψ₀ E) b = b := by
     ext x
-    change ((finKronecker fun _ : Fin k ↦ selectedBellProjection ψ₀ E) *ᵥ b) x = b x
+    change ((piKronecker fun _ : Fin k ↦ selectedBellProjection ψ₀ E) *ᵥ b) x = b x
     rw [hproj, vecMulVec_mulVec, hbb]
     simp
   refine ⟨Matrix.productVector b φ₀, ?_, ?_, ?_, ?_, ?_, ?_⟩

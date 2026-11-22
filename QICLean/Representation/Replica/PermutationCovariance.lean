@@ -46,12 +46,13 @@ namespace Matrix
 
 variable {A : Type*} [Fintype A] [DecidableEq A]
 
+omit [Fintype A] in
 private theorem replicaHamiltonian_copyPerm_apply (H : Matrix A A ℂ) (k : ℕ)
     (σ : Equiv.Perm (Fin k)) (x y : Fin k → A) :
     replicaHamiltonian H k (copyPerm A k σ x) (copyPerm A k σ y) =
       replicaHamiltonian H k x y := by
   classical
-  simp only [replicaHamiltonian, Matrix.sum_apply, finKronecker_apply, copyPerm_apply]
+  simp only [replicaHamiltonian, Matrix.sum_apply, piKronecker_apply, copyPerm_apply]
   refine Fintype.sum_equiv σ.symm _ _ fun i => ?_
   refine Fintype.prod_equiv σ.symm _ _ fun j => ?_
   simp only [σ.symm.injective.eq_iff, Equiv.Perm.inv_def]
@@ -82,12 +83,12 @@ theorem commute_replicaHamiltonian_permOp (H : Matrix A A ℂ) (k : ℕ)
 permutation. In particular, an actual independent-copy density has this
 invariance without an additional hypothesis. OpenAI area-law manuscript,
 `07-comparators.tex`, lines 255–263, `comparator:high-label`. -/
-theorem commute_finKronecker_const_permOp (H : Matrix A A ℂ) (k : ℕ)
+theorem commute_piKronecker_const_permOp (H : Matrix A A ℂ) (k : ℕ)
     (σ : Equiv.Perm (Fin k)) :
-    Commute (finKronecker (fun _ : Fin k => H)) (permOp (copyPerm A k) σ) := by
+    Commute (piKronecker (fun _ : Fin k => H)) (permOp (copyPerm A k) σ) := by
   apply commute_copyPerm_of_invariant_entries _ σ
   intro x y
-  simp only [finKronecker_apply, copyPerm_apply]
+  simp only [piKronecker_apply, copyPerm_apply]
   refine Fintype.prod_equiv σ.symm _ _ fun j => ?_
   rfl
 

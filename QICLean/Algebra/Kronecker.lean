@@ -13,7 +13,7 @@ import QICLean.Algebra.Kronecker.FiniteKroneckerProduct
 import QICLean.Algebra.Kronecker.KroneckerEmbed
 import QICLean.Algebra.Kronecker.KroneckerFactorPositivity
 import QICLean.Algebra.Kronecker.MatrixRealignment
-import QICLean.Algebra.Kronecker.MatrixTensorPower
 import QICLean.Algebra.Kronecker.OverlappingLiftAlgebra
+import QICLean.Algebra.Kronecker.PiKronecker
 import QICLean.Algebra.Kronecker.PiTensorProductPhase
 import QICLean.Algebra.Kronecker.TensorMap

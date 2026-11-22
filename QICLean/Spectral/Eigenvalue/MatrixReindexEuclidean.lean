@@ -15,14 +15,14 @@ of `T` for the same eigenvalue (`Module.End.eigenspace_eq_map_of_intertwine`). R
 basis of a square matrix along `e` is such an intertwining: the isometry `ψ ↦ ψ ∘ e.symm` of
 Euclidean spaces intertwines `H` with `reindex e e H`
 (`Matrix.toEuclideanLin_reindex_piLpCongrLeft`). Hence the isometry carries the eigenspaces, the
-kernel, and any norm gap on the orthogonal complement of the kernel of `H` to those of the
-reindexed matrix. No positivity or Hermiticity hypothesis is needed.
+eigenvalues and the kernel of `H` to those of the reindexed matrix. No positivity or Hermiticity
+hypothesis is needed.
 
-The statements of `Matrix.toEuclideanLin_reindex_piLpCongrLeft`,
-`Matrix.ker_toEuclideanLin_reindex_map` and `Matrix.norm_gap_toEuclideanLin_reindex` are those of
-TNLean's `TNLean/Algebra/MatrixReindexGap.lean` (commit
-`71c1185e9352a3b5237b37a6840640751da6ca2d`, Apache-2.0); the kernel and norm-gap proofs are
-replaced by corollaries of the eigenspace transport.
+The statements of `Matrix.toEuclideanLin_reindex_piLpCongrLeft` and
+`Matrix.ker_toEuclideanLin_reindex_map` are those of TNLean's
+`TNLean/Algebra/MatrixReindexGap.lean` (commit `71c1185e9352a3b5237b37a6840640751da6ca2d`,
+Apache-2.0); the kernel proof is replaced by a corollary of the eigenspace transport. A gap above
+the kernel is carried in eigenvalue form by `Matrix.hasEigenvalue_toEuclideanLin_reindex_iff`.
 -/
 
 /-- A linear equivalence `f` with `T ∘ f = f ∘ S` carries each eigenspace of `S` onto the
@@ -82,19 +82,5 @@ theorem ker_toEuclideanLin_reindex_map (e : ι ≃ κ) (H : Matrix ι ι ℂ) :
         (LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ e).toLinearEquiv.toLinearMap =
       LinearMap.ker (toEuclideanLin (reindex e e H)) := by
   simpa only [Module.End.eigenspace_zero] using (eigenspace_toEuclideanLin_reindex e H 0).symm
-
-/-- Reindexing preserves a norm gap on the orthogonal complement of the kernel, with the same
-constant. -/
-theorem norm_gap_toEuclideanLin_reindex (e : ι ≃ κ) (H : Matrix ι ι ℂ) {γ : ℝ}
-    (hGap : ∀ v ∈ (LinearMap.ker (toEuclideanLin H))ᗮ, γ * ‖v‖ ≤ ‖toEuclideanLin H v‖) :
-    ∀ w ∈ (LinearMap.ker (toEuclideanLin (reindex e e H)))ᗮ,
-      γ * ‖w‖ ≤ ‖toEuclideanLin (reindex e e H) w‖ := by
-  set φ := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ e
-  intro w hw
-  rw [← ker_toEuclideanLin_reindex_map e H, ← Submodule.map_orthogonal_equiv,
-    Submodule.mem_map_equiv] at hw
-  have h := hGap (φ.symm w) hw
-  rwa [φ.symm.norm_map, ← φ.norm_map (toEuclideanLin H (φ.symm w)),
-    ← toEuclideanLin_reindex_piLpCongrLeft, φ.apply_symm_apply] at h
 
 end Matrix

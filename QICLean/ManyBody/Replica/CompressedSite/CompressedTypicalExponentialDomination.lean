@@ -56,7 +56,7 @@ theorem re_inner_exp_labelEntropy_compressedTypicalSiteState_prod_le
         (subsystemPerm k (ManyBody.compressedSiteSpace β X (Fin E.card))
           (ManyBody.exteriorRegion X Q)))) Ψ⟫_ℂ).re ≤
       z⁻¹ ^ k *
-        (Matrix.finKronecker (fun _ : Fin k ↦ ManyBody.regionState Ω Q) *
+        (Matrix.piKronecker (fun _ : Fin k ↦ ManyBody.regionState Ω Q) *
           NormedSpace.exp ((u : ℂ) •
             labelEntropy (copyPerm (ManyBody.RegionConfig β Q) k))).trace.re := by
   classical
@@ -64,7 +64,7 @@ theorem re_inner_exp_labelEntropy_compressedTypicalSiteState_prod_le
   rw [re_inner_exp_labelEntropy_compressedTypicalSiteState_prod β Ω X Q hXQ E k u]
   have hsingle := Matrix.le_iff.mpr
     (ManyBody.regionState_typicalPureState_le β Ω X E Q hXQ hz)
-  have htensor := Matrix.finKronecker_mono
+  have htensor := Matrix.piKronecker_mono
     (fun _ : Fin k ↦ ManyBody.regionState (ManyBody.typicalPureState β Ω X E) Q)
     (fun _ : Fin k ↦
       ((ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E)⁻¹ •
@@ -72,10 +72,10 @@ theorem re_inner_exp_labelEntropy_compressedTypicalSiteState_prod_le
     (fun _ ↦ ManyBody.regionState_posSemidef
       Q (ManyBody.typicalPureState β Ω X E)) (fun _ ↦ hsingle)
   have hscalar (c : ℝ) :
-      Matrix.finKronecker (fun _ : Fin k ↦ c • ManyBody.regionState Ω Q) =
-        c ^ k • Matrix.finKronecker (fun _ : Fin k ↦ ManyBody.regionState Ω Q) := by
+      Matrix.piKronecker (fun _ : Fin k ↦ c • ManyBody.regionState Ω Q) =
+        c ^ k • Matrix.piKronecker (fun _ : Fin k ↦ ManyBody.regionState Ω Q) := by
     ext x y
-    simp [Matrix.finKronecker_apply, Matrix.smul_apply,
+    simp [Matrix.piKronecker_apply, Matrix.smul_apply,
       RCLike.real_smul_eq_coe_mul, Finset.prod_mul_distrib]
   rw [hscalar] at htensor
   have hH : ((u : ℂ) •
@@ -86,10 +86,10 @@ theorem re_inner_exp_labelEntropy_compressedTypicalSiteState_prod_le
     (Matrix.nonneg_iff_posSemidef.mp hH.isSelfAdjoint.exp_nonneg) htensor
   simp only [Matrix.mul_smul, Matrix.trace_smul, Complex.smul_re, smul_eq_mul] at htrace
   rw [Matrix.trace_mul_comm
-    (Matrix.finKronecker (fun _ : Fin k ↦
+    (Matrix.piKronecker (fun _ : Fin k ↦
       ManyBody.regionState (ManyBody.typicalPureState β Ω X E) Q)) _,
     Matrix.trace_mul_comm
-      (Matrix.finKronecker (fun _ : Fin k ↦ ManyBody.regionState Ω Q)) _]
+      (Matrix.piKronecker (fun _ : Fin k ↦ ManyBody.regionState Ω Q)) _]
   exact htrace
 
 end TensorPower

@@ -87,9 +87,9 @@ private theorem trace_actualGoodAuxiliary {A C D : Type*} [Fintype A] [Decidable
   dsimp only [replicaGoodAuxiliaryMarginal]
   rw [trace_partialTraceRight, trace_reindex, trace_partialTraceLeft]
 
-private theorem trace_finKronecker_const {Q : Type*} [Fintype Q] (H : Matrix Q Q ℂ) (m : ℕ) :
-    (finKronecker (fun _ : Fin m ↦ H)).trace = H.trace ^ m := by
-  simp only [Matrix.trace, Matrix.diag, finKronecker_apply]
+private theorem trace_piKronecker_const {Q : Type*} [Fintype Q] (H : Matrix Q Q ℂ) (m : ℕ) :
+    (piKronecker (fun _ : Fin m ↦ H)).trace = H.trace ^ m := by
+  simp only [Matrix.trace, Matrix.diag, piKronecker_apply]
   calc
     _ = ∏ _ : Fin m, ∑ i : Q, H i i :=
       (Fintype.prod_sum (fun (_ : Fin m) (i : Q) ↦ H i i)).symm
@@ -153,7 +153,7 @@ theorem replicaGoodRegionalAuxiliaryMarginal_exp_mergeDeficit_le
     dsimp only [ρ]
     rw [replicaGoodRegionalAuxiliaryMarginal_eq Ω hΩ]
     exact TensorPower.commute_pair_product_left _ σ
-      (commute_finKronecker_const_permOp _ _ σ).symm
+      (commute_piKronecker_const_permOp _ _ σ).symm
   have hρC (σ : Equiv.Perm (Fin Bᶜ.card)) :
       Commute (permOp (TensorPower.pairCopyRight Q C Bᶜ.card) σ) ρ := by
     dsimp only [ρ]
@@ -169,7 +169,7 @@ theorem replicaGoodRegionalAuxiliaryMarginal_exp_mergeDeficit_le
       (vecMulVec w (star w)).trace := by
     dsimp only [ρ]
     rw [replicaGoodRegionalAuxiliaryMarginal_eq Ω hΩ, trace_kronecker,
-      trace_finKronecker_const, trace_groundRegional Ω hΩ, one_pow, one_mul,
+      trace_piKronecker_const, trace_groundRegional Ω hΩ, one_pow, one_mul,
       trace_actualGoodAuxiliary]
   rw [hmass, trace_vecMulVec_re_norm_sq] at h
   exact h

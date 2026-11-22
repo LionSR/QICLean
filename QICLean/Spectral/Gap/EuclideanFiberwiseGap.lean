@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Analysis.TensorProduct.EuclideanFiberwiseMap
-import QICLean.Spectral.Gap.PositiveGapTransfer
+import QICLean.Spectral.Gap.EigenvalueGap
 
 /-!
 # Gaps of operators applied on the fibers of a finite product
@@ -32,7 +32,7 @@ operator may have different source and target where this is free.
   passes to the extension.
 -/
 
-open scoped BigOperators InnerProductSpace
+open scoped BigOperators InnerProductSpace ComplexOrder
 
 namespace ContinuousLinearMap
 
@@ -126,18 +126,18 @@ namespace LinearMap.IsPositive
 
 variable {I S : Type*} [Fintype I] [Fintype S]
 
-/-- A norm gap for a positive operator gives the quadratic-form inequality `G² ≥ γ G` for its
-independent extension over a finite spectator space. -/
-theorem quadraticForm_sq_ge_rightFiberwiseMap_of_norm_gap
+/-- A gap above the kernel of a positive operator, every eigenvalue other than `0` being at least
+`γ ≥ 0`, gives the quadratic-form inequality `G² ≥ γ G` for its independent extension over a
+finite spectator space. -/
+theorem quadraticForm_sq_ge_rightFiberwiseMap_of_forall_hasEigenvalue
     (G : EuclideanSpace ℂ I →L[ℂ] EuclideanSpace ℂ I)
     (hG : G.toLinearMap.IsPositive) {γ : ℝ} (hγ : 0 ≤ γ)
-    (hGap : ∀ u ∈ (LinearMap.ker G.toLinearMap)ᗮ,
-      γ * ‖u‖ ≤ ‖G u‖) :
+    (hGap : ∀ μ : ℂ, Module.End.HasEigenvalue G.toLinearMap μ → μ = 0 ∨ (γ : ℂ) ≤ μ) :
     ∀ v : EuclideanSpace ℂ (I × S),
       γ * (⟪ContinuousLinearMap.rightFiberwiseMap (S := S) G v, v⟫_ℂ).re ≤
         (⟪ContinuousLinearMap.rightFiberwiseMap (S := S) G v,
           ContinuousLinearMap.rightFiberwiseMap (S := S) G v⟫_ℂ).re :=
   ContinuousLinearMap.quadraticForm_sq_ge_rightFiberwiseMap G
-    (hG.quadraticForm_sq_ge_of_norm_gap hγ hGap)
+    (hG.quadraticForm_sq_ge_of_forall_hasEigenvalue hγ hGap)
 
 end LinearMap.IsPositive

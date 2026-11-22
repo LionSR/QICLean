@@ -65,7 +65,7 @@ private theorem exists_portRing_of_isDimBounded (hN : 2 ≤ N) {B : ℕ} (hB : B
     · have h₁ := LinearMap.congr_fun hΦm ((encodeCircuit (Geometry.ring N) e).map KrausGate.ev ρ)
       have h₂ := LinearMap.congr_fun hm' ρ
       simp only [LinearMap.comp_apply] at h₁ h₂ ⊢
-      rw [h₁, h₂, Circuit.map_ofLayer_ofOnsite_single, prodOp_one, conjTranspose_one,
+      rw [h₁, h₂, Circuit.map_ofLayer_ofOnsite_single, piKronecker_one, conjTranspose_one,
         Matrix.one_mul, Matrix.mul_one, Circuit.map_done, LinearMap.id_apply]
   | X, Z, _, _, _, _, Circuit.step (Y := Y) L next, hc, hdim, hu, e, f => by
     have : ∀ s, Nonempty (X s) := fun s ↦ (Nat.card_pos_iff.mp (hdim.1 s (Finset.mem_univ s)).1).1

@@ -15,7 +15,8 @@ If the product of their orthogonal projections differs from the full ground
 projection by at most \(c<1\), then their complementary projections have
 sum bounded below by \(1-c\) on the full ground-space complement. An energy
 comparison with coefficient \(\kappa\) therefore gives a gap
-\(\kappa(1-c)\).
+\(\kappa(1-c)\): every eigenvalue of the Hamiltonian other than \(0\) is at
+least \(\kappa(1-c)\).
 
 This is an auxiliary consequence of the three-interval ground-projection
 estimate in Nachtergaele, arXiv:cond-mat/9410110, Section 6, Lemma
@@ -25,7 +26,8 @@ inequality, this comparison retains the limiting coefficient as the
 projection defect tends to zero.
 
 Moved from TNLean, `TNLean/MPS/ParentHamiltonian/Martingale/TwoGroundProjectionGap.lean` at
-commit `414a18fb88`, with no change to the statements.
+commit `414a18fb88`. The gap, stated there as a norm bound on the orthogonal complement of the
+kernel, is stated here with eigenvalues.
 -/
 
 open scoped InnerProductSpace ComplexOrder
@@ -91,20 +93,22 @@ private theorem sum_excitation_gap (U V : Submodule ℂ E) {c : ℝ} (hc : c < 1
 
 /-- If two ground spaces contain \(\ker H\), their projection defect is
 at most \(c<1\), and \(H\) dominates \(\kappa\) times the sum of their
-excitation projections, then \(H\) has norm gap \(\kappa(1-c)\).
+excitation projections, then every eigenvalue of \(H\) other than \(0\) is
+at least \(\kappa(1-c)\). The positivity of \(H\) follows from the
+comparison.
 
 This is the sharp two-interval comparison used with Nachtergaele,
 arXiv:cond-mat/9410110, Section 6, Lemma `commutation` (ii). The strict
 projection-defect bound also forces the two ground spaces to intersect
 exactly in \(\ker H\). -/
-theorem norm_gap_of_two_ground_projection_bounds (H : E →ₗ[ℂ] E) (U V : Submodule ℂ E)
+theorem forall_hasEigenvalue_of_two_ground_projection_bounds (H : E →ₗ[ℂ] E) (U V : Submodule ℂ E)
     {κ c : ℝ} (hκ : 0 ≤ κ) (hc : c < 1)
     (hWU : LinearMap.ker H ≤ U) (hWV : LinearMap.ker H ≤ V)
     (hLower : (κ : ℂ) • (Uᗮ.starProjection.toLinearMap +
       Vᗮ.starProjection.toLinearMap) ≤ H)
     (hDefect : ‖(LinearMap.ker H).starProjection -
       U.starProjection.comp V.starProjection‖ ≤ c) :
-    ∀ v ∈ (LinearMap.ker H)ᗮ, (κ * (1 - c)) * ‖v‖ ≤ ‖H v‖ := by
+    ∀ μ : ℂ, Module.End.HasEigenvalue H μ → μ = 0 ∨ ((κ * (1 - c) : ℝ) : ℂ) ≤ μ := by
   have hInter := intersection_eq_of_strict_defect U V (LinearMap.ker H) hc hWU hWV hDefect
   have hSumPos := (Submodule.isSymmetricProjection_starProjection Uᗮ).isPositive.add
     (Submodule.isSymmetricProjection_starProjection Vᗮ).isPositive
@@ -114,7 +118,10 @@ theorem norm_gap_of_two_ground_projection_bounds (H : E →ₗ[ℂ] E) (U V : Su
       (Uᗮ.starProjection.toLinearMap + Vᗮ.starProjection.toLinearMap))ᗮ,
       (1 - c) * ‖v‖ ≤ ‖(Uᗮ.starProjection.toLinearMap + Vᗮ.starProjection.toLinearMap) v‖ :=
     by simpa only [sum_excitation_ker] using sum_excitation_gap U V hc hAngleDefect
-  intro v hv
+  have hH : H.IsPositive := LinearMap.nonneg_iff_isPositive.mp
+    ((LinearMap.nonneg_iff_isPositive.mpr
+      (hSumPos.smul_of_nonneg (Complex.zero_le_real.mpr hκ))).trans hLower)
+  refine hH.forall_hasEigenvalue_iff_re_inner.mpr fun v hv ↦ ?_
   have hEnergy := hSumPos.re_inner_ge_of_norm_gap (sub_nonneg.mpr hc.le) hSumGap v
     (by simpa only [sum_excitation_ker, ← hInter] using hv)
   have hComparison : κ * (⟪(Uᗮ.starProjection.toLinearMap +
@@ -124,13 +131,8 @@ theorem norm_gap_of_two_ground_projection_bounds (H : E →ₗ[ℂ] E) (U V : Su
       Complex.sub_re, Complex.mul_re,
       Complex.ofReal_re, Complex.ofReal_im, zero_mul, sub_zero, sub_nonneg] using
       hLower.re_inner_nonneg_left v
-  have hQuadratic : (κ * (1 - c)) * ‖v‖ ^ 2 ≤ ‖H v‖ * ‖v‖ :=
-    by simpa only [mul_assoc] using ((mul_le_mul_of_nonneg_left hEnergy hκ).trans
-      hComparison).trans (re_inner_le_norm (𝕜 := ℂ) (H v) v)
-  by_cases hv0 : v = 0
-  · simp [hv0]
-  · exact (mul_le_mul_iff_left₀ (norm_pos_iff.mpr hv0)).mp
-      (by simpa only [pow_two, mul_assoc, mul_comm, mul_left_comm] using hQuadratic)
+  rw [← hH.isSymmetric v v]
+  simpa only [mul_assoc] using (mul_le_mul_of_nonneg_left hEnergy hκ).trans hComparison
 
 end FrustrationFree
 

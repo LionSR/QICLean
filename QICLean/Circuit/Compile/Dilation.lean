@@ -132,7 +132,7 @@ theorem map_traceCircuit_apply (M : Matrix (Config fun s ↦ Z s × F s)
       L.kraus KrausGate.ev i z w =
         if w = (fun s ↦ ((z s, i.2 ⟨s, hmem s⟩) : Z s × F s)) then 1 else 0 := by
     intro i w z
-    rw [Layer.kraus_ofOnsite, prodOp_apply]
+    rw [Layer.kraus_ofOnsite, piKronecker_apply]
     split_ifs with h
     · subst h
       refine Finset.prod_eq_one fun s _ ↦ ?_

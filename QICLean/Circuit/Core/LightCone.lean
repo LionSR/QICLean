@@ -32,7 +32,7 @@ the geometry, where `T` is the depth.
 * `QuantumCircuit.Circuit.dual_mem_supportedOperators_lightCone` — the light cone bound.
 * `QuantumCircuit.Circuit.dual_mul_of_disjoint_lightCone` — the Heisenberg picture is
   multiplicative on operators with disjoint light cones.
-* `QuantumCircuit.Circuit.trace_map_prodOp_mul_mul` — on a product input, expectations of such
+* `QuantumCircuit.Circuit.trace_map_piKronecker_mul_mul` — on a product input, expectations of such
   operators factorize.
 * `QuantumCircuit.Circuit.lightCone_comp` — the light cone of a composition.
 * `QuantumCircuit.Circuit.lightCone_subset_neighbourhood` — the light cone in terms of depth.
@@ -136,18 +136,18 @@ theorem dual_mul_of_disjoint_lightCone (ev : Interpretation G) : {X Z : S → Ty
 /-- **The light-cone factorization.** For an unbranched circuit whose gates and onsite families
 are trace-preserving, applied to a product input `⊗ₛ σₛ` with `tr σₛ = 1`, the expectations of
 operators with disjoint backward light cones factorize. -/
-theorem trace_map_prodOp_mul_mul (ev : Interpretation G) {X Z : S → Type} [∀ s, Fintype (X s)]
+theorem trace_map_piKronecker_mul_mul (ev : Interpretation G) {X Z : S → Type} [∀ s, Fintype (X s)]
     [∀ s, DecidableEq (X s)] [∀ s, Fintype (Z s)] [∀ s, DecidableEq (Z s)]
     (c : Circuit Γ G X Z) (hc : c.IsUnbranched) (hTP : c.Forall ev KrausFamily.IsTP)
     (σ : (s : S) → Matrix (X s) (X s) ℂ) (hσ : ∀ s, (σ s).trace = 1) {R R' : Finset S}
     (hRR' : Disjoint (c.lightCone R) (c.lightCone R'))
     {A B : Matrix (Config Z) (Config Z) ℂ} (hA : A ∈ supportedOperators Z R)
     (hB : B ∈ supportedOperators Z R') :
-    (c.map ev (prodOp σ) * (A * B)).trace =
-      (c.map ev (prodOp σ) * A).trace * (c.map ev (prodOp σ) * B).trace := by
+    (c.map ev (piKronecker σ) * (A * B)).trace =
+      (c.map ev (piKronecker σ) * A).trace * (c.map ev (piKronecker σ) * B).trace := by
   rw [c.trace_map_mul ev, c.trace_map_mul ev, c.trace_map_mul ev,
     c.dual_mul_of_disjoint_lightCone ev hc hTP hRR' hA hB]
-  exact trace_prodOp_mul_mul σ hσ hRR'
+  exact trace_piKronecker_mul_mul σ hσ hRR'
     (c.dual_mem_supportedOperators_lightCone ev hc hTP hA)
     (c.dual_mem_supportedOperators_lightCone ev hc hTP hB)
 

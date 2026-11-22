@@ -58,12 +58,12 @@ theorem trace_replicaGoodConfigurationMarginal_regional_mul
       (Hphysical ⊗ₖ (1 : Matrix ((Fin Bᶜ.card → ι 3) × (Fin Bᶜ.card → ι 4))
         ((Fin Bᶜ.card → ι 3) × (Fin Bᶜ.card → ι 4)) ℂ))).trace =
       (‖WithLp.toLp 2 w‖ ^ 2 : ℂ) *
-        (finKronecker (fun _ : Fin Bᶜ.card =>
+        (piKronecker (fun _ : Fin Bᶜ.card =>
           partialTraceRight ((vecMulVec Ω (star Ω)).submatrix e.symm e.symm)) * H).trace := by
   intro w c Hphysical
   rw [trace_replicaGoodConfigurationMarginal_physical_mul ι Ω hΩ k B u]
   congr 1
-  let ρ := finKronecker (fun _ : Fin Bᶜ.card => vecMulVec Ω (star Ω))
+  let ρ := piKronecker (fun _ : Fin Bᶜ.card => vecMulVec Ω (star Ω))
   calc
     (ρ * Hphysical).trace =
         ((ρ * Hphysical).submatrix c.symm c.symm).trace :=
@@ -74,7 +74,7 @@ theorem trace_replicaGoodConfigurationMarginal_regional_mul
       simp only [Hphysical, submatrix_submatrix, Equiv.self_comp_symm, submatrix_id_id]
     _ = _ := by
       rw [← trace_partialTraceRight_mul,
-        partialTraceRight_finKronecker_reindex]
+        partialTraceRight_piKronecker_reindex]
 
 /-- The signed regional label moment of the same actual good-copy density
 is the iid moment times the squared norm of the excitation component.
@@ -94,7 +94,7 @@ theorem trace_replicaGoodConfigurationMarginal_regional_exp_labelEntropy
       (Ephysical ⊗ₖ (1 : Matrix ((Fin Bᶜ.card → ι 3) × (Fin Bᶜ.card → ι 4))
         ((Fin Bᶜ.card → ι 3) × (Fin Bᶜ.card → ι 4)) ℂ))).trace =
       (‖WithLp.toLp 2 w‖ ^ 2 : ℂ) *
-        (finKronecker (fun _ : Fin Bᶜ.card =>
+        (piKronecker (fun _ : Fin Bᶜ.card =>
           partialTraceRight ((vecMulVec Ω (star Ω)).submatrix e.symm e.symm)) * E).trace := by
   exact trace_replicaGoodConfigurationMarginal_regional_mul ι Ω hΩ k B u e _
 

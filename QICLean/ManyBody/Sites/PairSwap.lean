@@ -13,7 +13,7 @@ import QICLean.Spectral.Gap.DoubledSystemGap
 
 A product operator `⊗_v m_v` whose on-site matrices are unitary outside a region `S` maps every
 operator supported on `S` by conjugation to an operator supported on `S`
-(`ManyBody.prodOp_mul_mul_conjTranspose_mem_supportedOperators`): it acts site by site and
+(`ManyBody.piKronecker_mul_mul_conjTranspose_mem_supportedOperators`): it acts site by site and
 leaves the identity outside `S` unchanged.
 
 On the system with basis `X v × X v` at every site, which carries two copies of the system `X`
@@ -37,7 +37,7 @@ region; the sheets there are the two copies here, paired at every site.
 
 ## Main results
 
-* `ManyBody.prodOp_mul_mul_conjTranspose_mem_supportedOperators` — conjugation by on-site
+* `ManyBody.piKronecker_mul_mul_conjTranspose_mem_supportedOperators` — conjugation by on-site
   unitaries preserves supports.
 * `ManyBody.pairSwapOp_mem_supportedOperators`, `ManyBody.pairSwapOp_mem_unitaryGroup`,
   `ManyBody.conjTranspose_pairSwapOp`, `ManyBody.pairSwapOp_mul_self`,
@@ -58,14 +58,14 @@ variable {V : Type*} [Fintype V] [DecidableEq V] {X : V → Type*} [∀ v, Finty
 /-- **Conjugation by on-site unitaries preserves supports.** If the on-site matrices `m v` are
 unitary at the sites outside `S`, conjugating an operator supported on `S` by the product
 operator `⊗_v m_v` gives an operator supported on `S`. -/
-theorem prodOp_mul_mul_conjTranspose_mem_supportedOperators {S : Finset V}
+theorem piKronecker_mul_mul_conjTranspose_mem_supportedOperators {S : Finset V}
     {m : (v : V) → Matrix (X v) (X v) ℂ} (hm : ∀ v ∉ S, m v * (m v)ᴴ = 1)
     {A : Matrix (Config X) (Config X) ℂ} (hA : A ∈ supportedOperators X S) :
-    prodOp m * A * (prodOp m)ᴴ ∈ supportedOperators X S := by
+    piKronecker m * A * (piKronecker m)ᴴ ∈ supportedOperators X S := by
   induction hA using supportedOperators_induction with
   | prod n hn =>
-    rw [conjTranspose_prodOp, prodOp_mul, prodOp_mul]
-    exact prodOp_mem_supportedOperators fun v hv ↦ by rw [hn v hv, Matrix.mul_one, hm v hv]
+    rw [conjTranspose_piKronecker, piKronecker_mul, piKronecker_mul]
+    exact piKronecker_mem_supportedOperators fun v hv ↦ by rw [hn v hv, Matrix.mul_one, hm v hv]
   | add A B _ _ ihA ihB =>
     rw [Matrix.mul_add, Matrix.add_mul]
     exact add_mem ihA ihB
@@ -90,7 +90,7 @@ at every site `v`, the product operator of the exchange `(a, b) ↦ (b, a)` at t
 and the identity at the other sites. -/
 noncomputable def pairSwapOp (A : Finset V) :
     Matrix (Config fun v ↦ X v × X v) (Config fun v ↦ X v × X v) ℂ :=
-  prodOp fun v ↦ if v ∈ A then Equiv.Perm.permMatrix ℂ (Equiv.prodComm (X v) (X v)) else 1
+  piKronecker fun v ↦ if v ∈ A then Equiv.Perm.permMatrix ℂ (Equiv.prodComm (X v) (X v)) else 1
 
 private theorem swap_mul_conjTranspose (Y : Type*) [Fintype Y] [DecidableEq Y] :
     Equiv.Perm.permMatrix ℂ (Equiv.prodComm Y Y) *
@@ -106,13 +106,13 @@ private theorem conjTranspose_swap (Y : Type*) [DecidableEq Y] :
 /-- The exchange on `A` is supported on `A`. -/
 theorem pairSwapOp_mem_supportedOperators (A : Finset V) :
     pairSwapOp (X := X) A ∈ supportedOperators (fun v ↦ X v × X v) A :=
-  prodOp_mem_supportedOperators fun _ hv ↦ ite_eq_right hv
+  piKronecker_mem_supportedOperators fun _ hv ↦ ite_eq_right hv
 
 omit [∀ v, Fintype (X v)] in
 /-- The exchange is its own adjoint. -/
 theorem conjTranspose_pairSwapOp (A : Finset V) :
     (pairSwapOp (X := X) A)ᴴ = pairSwapOp A := by
-  rw [pairSwapOp, conjTranspose_prodOp]
+  rw [pairSwapOp, conjTranspose_piKronecker]
   congr 1
   funext v
   split_ifs
@@ -122,7 +122,8 @@ theorem conjTranspose_pairSwapOp (A : Finset V) :
 /-- The exchange is an involution. -/
 theorem pairSwapOp_mul_self (A : Finset V) : pairSwapOp (X := X) A * pairSwapOp A = 1 := by
   nth_rw 2 [← conjTranspose_pairSwapOp]
-  rw [pairSwapOp, conjTranspose_prodOp, prodOp_mul, ← prodOp_one (X := fun v ↦ X v × X v)]
+  rw [pairSwapOp, conjTranspose_piKronecker, piKronecker_mul,
+    ← piKronecker_one (ι := fun v ↦ X v × X v)]
   congr 1
   funext v
   split_ifs
@@ -146,7 +147,7 @@ theorem pairSwapOp_mul_mul_conjTranspose_mem_supportedOperators (A : Finset V) {
     {B : Matrix (Config fun v ↦ X v × X v) (Config fun v ↦ X v × X v) ℂ}
     (hB : B ∈ supportedOperators (fun v ↦ X v × X v) S) :
     pairSwapOp A * B * (pairSwapOp A)ᴴ ∈ supportedOperators (fun v ↦ X v × X v) S := by
-  refine prodOp_mul_mul_conjTranspose_mem_supportedOperators (fun v _ ↦ ?_) hB
+  refine piKronecker_mul_mul_conjTranspose_mem_supportedOperators (fun v _ ↦ ?_) hB
   split_ifs
   · exact swap_mul_conjTranspose (X v)
   · rw [conjTranspose_one, Matrix.mul_one]

@@ -87,7 +87,7 @@ there for pure states prepared from `|0⟩^{⊗M}` by unitary circuits of depth 
 inputs and local channels with ancillas and discarding, without measurements. -/
 theorem IsConversion.trace_mul_mul_eq_of_isGraphSeparated
     {σ₀ : (s : Fin N) → Matrix (X s) (X s) ℂ} (hσ₀ : ∀ s, (σ₀ s).trace = 1)
-    {σ : Matrix (Config Z) (Config Z) ℂ} (h : IsConversion (Geometry.ring N) T (prodOp σ₀) σ)
+    {σ : Matrix (Config Z) (Config Z) ℂ} (h : IsConversion (Geometry.ring N) T (piKronecker σ₀) σ)
     {R R' : Finset (Fin N)} (hRR' : IsGraphSeparated (SimpleGraph.cycleGraph N) R R' (2 * T))
     {A B : Matrix (Config Z) (Config Z) ℂ} (hA : A ∈ supportedOperators Z R)
     (hB : B ∈ supportedOperators Z R') :
@@ -107,12 +107,12 @@ channels with ancillas and discarding, without measurements. -/
 theorem IsApproxConversion.norm_trace_mul_mul_sub_le_of_isGraphSeparated {ε : ℝ}
     {σ₀ : (s : Fin N) → Matrix (X s) (X s) ℂ} (hσ₀ : ∀ s, (σ₀ s).trace = 1)
     {σ : Matrix (Config Z) (Config Z) ℂ}
-    (h : IsApproxConversion (Geometry.ring N) T ε (prodOp σ₀) σ)
+    (h : IsApproxConversion (Geometry.ring N) T ε (piKronecker σ₀) σ)
     {R R' : Finset (Fin N)} (hRR' : IsGraphSeparated (SimpleGraph.cycleGraph N) R R' (2 * T))
     {A B : Matrix (Config Z) (Config Z) ℂ} (hA : A ∈ supportedOperators Z R)
     (hB : B ∈ supportedOperators Z R') :
     ‖(σ * (A * B)).trace - (σ * A).trace * (σ * B).trace‖ ≤
-      ε * ‖A‖ * ‖B‖ * (1 + 2 * rectangularTraceNorm (prodOp σ₀) + ε) :=
+      ε * ‖A‖ * ‖B‖ * (1 + 2 * rectangularTraceNorm (piKronecker σ₀) + ε) :=
   h.norm_trace_mul_mul_sub_le Geometry.ring_cost_pos hσ₀
     (by simpa only [Geometry.iterate_neighbourhood_ring] using
       hRR'.disjoint_graphNeighborhood) hA hB

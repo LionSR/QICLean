@@ -58,16 +58,18 @@ adaptive conversion of their density matrices in the sense of Chapter~\ref{ch:pr
     \label{lem:measurement_implementation_comp}
     \lean{QuantumCircuit.Circuit.IsImplementationOn.mono,
         QuantumCircuit.Circuit.isImplementationOn_done,
-        QuantumCircuit.Circuit.isImplementationOn_of_kraus_eq,
+        QuantumCircuit.Circuit.isImplementationOn_of_kraus_eq_smul,
+        QuantumCircuit.UnitaryCircuit.isImplementationOn,
         QuantumCircuit.Circuit.IsImplementationOn.append,
         QuantumCircuit.Circuit.IsImplementationOn.comp}
     \leanok
     \uses{def:measurement_implementation, thm:circuits_composition}
     An implementation on $E$ is one on every subset of $E$. The empty circuit implements
-    $\mathbf{1}$, and a circuit all of whose Kraus operators are $U$ implements $U$ on every set. If
-    $c$ implements $W$ on $E$, $W$ maps $E$ into $E'$, and the continuation attached to every
-    branch of $c$ implements $W'$ on $E'$, then the composite circuit implements $W'W$ on $E$;
-    in particular so does $c$ followed by one circuit implementing $W'$ on $E'$.
+    $\mathbf{1}$, and a circuit all of whose Kraus operators are scalar multiples of $U$ implements
+    $U$ on every set; in particular a unitary circuit implements its operator. If $c$ implements
+    $W$ on $E$, $W$ maps $E$ into $E'$, and the continuation attached to every branch of $c$
+    implements $W'$ on $E'$, then the composite circuit implements $W'W$ on $E$; in particular
+    so does $c$ followed by one circuit implementing $W'$ on $E'$.
 \end{lemma}
 \begin{proof}
     \leanok
@@ -145,14 +147,15 @@ adaptive conversion of their density matrices in the sense of Chapter~\ref{ch:pr
     \lean{QuantumCircuit.Circuit.isImplementationOn_comp_measureCorrect}
     \leanok
     \uses{def:measurement_correct, def:measurement_implementation}
-    Let every Kraus operator of the circuit $u$ be $U$. If for every configuration $m$ of $D$
+    Let every Kraus operator of the circuit $u$ be a scalar multiple of $U$. If for every
+    configuration $m$ of $D$
     there is $z\in\C$ with $(\bigotimes_sV_{m,s})P_mUv=z\,Wv$ for every $v\in E$, then $u$
     followed by the measurement of $D$ with the corrections $V$ implements $W$ on $E$.
 \end{lemma}
 \begin{proof}
     \leanok
-    A branch of the composite has Kraus operator $(\bigotimes_sV_{m,s})P_mU$ for its outcome
-    $m$.
+    A branch of the composite has Kraus operator $\mu(\bigotimes_sV_{m,s})P_mU$ for its outcome
+    $m$ and some $\mu\in\C$.
 \end{proof}
 
 \begin{definition}[Rounds of measurements]
@@ -207,7 +210,7 @@ adaptive conversion of their density matrices in the sense of Chapter~\ref{ch:pr
         QuantumCircuit.IsMeasurementConversion.smul,
         QuantumCircuit.IsMeasurementConversion.trans,
         QuantumCircuit.Circuit.IsImplementationOn.isMeasurementConversion,
-        QuantumCircuit.IsMeasurementConversion.of_prodOp,
+        QuantumCircuit.IsMeasurementConversion.of_piKronecker,
         QuantumCircuit.IsUnitaryCircuit.isMeasurementConversion,
         QuantumCircuit.IsPreparedInDepth.exists_isMeasurementConversion}
     \leanok

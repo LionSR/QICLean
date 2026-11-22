@@ -19,8 +19,8 @@ algebra of operators supported on a region $D$.
 
 \begin{lemma}[Product operators on product vectors]
     \label{lem:siteconfig_product_vector_action}
-    \lean{QuantumCircuit.prodOp_mulVec_productVector,
-        QuantumCircuit.star_productVector_dotProduct_prodOp_mulVec,
+    \lean{QuantumCircuit.piKronecker_mulVec_productVector,
+        QuantumCircuit.star_productVector_dotProduct_piKronecker_mulVec,
         QuantumCircuit.smul_productVector, QuantumCircuit.productVector_pi_smul}
     \leanok
     \uses{def:siteconfig_product_vector, thm:sites_product_span}
@@ -158,7 +158,7 @@ otherwise.
     \label{lem:qc_permutation_layers}
     \lean{QuantumCircuit.IsLocalPerm,
         QuantumCircuit.IsLocalPerm.permMatrix_mem_supportedOperators,
-        Matrix.finKronecker_permMatrix_mulVec}
+        Matrix.piKronecker_permMatrix_mulVec}
     \leanok
     \uses{def:sites_supported}
     Let $\sigma$ be a permutation of the configurations of a system with any

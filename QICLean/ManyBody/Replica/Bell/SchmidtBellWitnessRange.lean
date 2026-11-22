@@ -63,7 +63,7 @@ theorem schmidtBellWitness_pullback_range
       (fun x ↦ φ (e x)) ∈ invariantSubspace
         (copyPerm ((A × E) × ((f : Option {v // v ∉ X}) → ιe f)) k))
     (hBell : toEuclideanLin
-      ((finKronecker fun _ : Fin k ↦ selectedBellProjection Ω E) ⊗ₖ
+      ((piKronecker fun _ : Fin k ↦ selectedBellProjection Ω E) ⊗ₖ
         (1 : Matrix (TensorPower.Config k ιe) (TensorPower.Config k ιe) ℂ)) φ = φ) :
     let τ := schmidtBellWitnessEquiv β X E k
     let Φ : EuclideanSpace ℂ (TensorPower.Config k ι₀) := WithLp.toLp 2 (φ ∘ τ)

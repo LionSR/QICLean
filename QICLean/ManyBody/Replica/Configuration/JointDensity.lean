@@ -64,7 +64,7 @@ private theorem goodRegionalRetained_density {Q T K C R : Type*} [Fintype Q] [De
         (x.2.2.2, fun i => (x.1.1 ((Finset.equivFin Bᶜ) (Finset.complSubtypeEquiv B i)),
           x.2.2.1 ((Finset.equivFin Bᶜ) (Finset.complSubtypeEquiv B i)))), e.symm (x.1.2, x.2.1))
     partialTraceRight (vecMulVec f (star f)) =
-      finKronecker (fun _ : Fin (Bᶜ.card) => partialTraceRight (vecMulVec Ω (star Ω))) ⊗ₖ
+      piKronecker (fun _ : Fin (Bᶜ.card) => partialTraceRight (vecMulVec Ω (star Ω))) ⊗ₖ
         partialTraceRight ((partialTraceLeft (vecMulVec w (star w))).submatrix
           e.symm e.symm) := by
   classical
@@ -126,7 +126,7 @@ theorem replicaGoodRegionalAuxiliaryMarginal_eq
     (k : ℕ) (B : Finset (Fin k))
     (u : (Fin k → Q × T) × ((Fin k → C) × (Fin k → D)) → ℂ) :
     replicaGoodRegionalAuxiliaryMarginal Ω k B u =
-      finKronecker (fun _ : Fin (Bᶜ.card) => partialTraceRight (vecMulVec Ω (star Ω))) ⊗ₖ
+      piKronecker (fun _ : Fin (Bᶜ.card) => partialTraceRight (vecMulVec Ω (star Ω))) ⊗ₖ
         replicaGoodAuxiliaryMarginal Ω k B u := by
   exact goodRegionalRetained_density Ω hΩ B
     (((TensorPower.goodBadCopiesEquiv C B).prodCongr

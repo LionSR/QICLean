@@ -48,14 +48,14 @@ theorem IsHermitian.exp_smul_sub_smul_one_eq_cfc
 the one-copy moment times its scalar centering factor. Singular and zero
 densities, arbitrary centers and zero copies are included. Source:
 `07-comparators.tex`, lines 218--238. -/
-theorem PosSemidef.re_trace_finKronecker_exp_centered_surprisal
+theorem PosSemidef.re_trace_piKronecker_exp_centered_surprisal
     {ρ : Matrix n n ℂ} (hρ : ρ.PosSemidef) (k : ℕ) (u s : ℝ) :
-    let ρk := finKronecker (fun _ : Fin k ↦ ρ)
+    let ρk := piKronecker (fun _ : Fin k ↦ ρ)
     (ρk * NormedSpace.exp ((u : ℂ) • (-CFC.log ρk - (s : ℂ) • 1))).trace.re =
       Real.exp (-u * s) * Entropy.surprisalMoment hρ.isHermitian.eigenvalues u ^ k := by
   intro ρk
   rw [(show (-CFC.log ρk).IsHermitian from IsSelfAdjoint.log.neg).exp_smul_sub_smul_one_eq_cfc,
-    hρ.re_trace_finKronecker_mul_cfc_surprisal k (fun x ↦ Real.exp (u * (x - s)))]
+    hρ.re_trace_piKronecker_mul_cfc_surprisal k (fun x ↦ Real.exp (u * (x - s)))]
   rw [← Entropy.surprisalMoment_pi hρ.isHermitian.eigenvalues k u]
   simp_rw [Entropy.surprisalMoment, Finset.mul_sum, mul_sub, sub_eq_add_neg, Real.exp_add]
   simp only [mul_neg, mul_comm, mul_left_comm]

@@ -35,15 +35,15 @@ variable {n : Type*} [Fintype n] [DecidableEq n] {ρ : Matrix n n ℂ}
 in the number of copies. The trace-one assumption makes the scalar
 moment strictly positive, including for singular densities. Source:
 `07-comparators.tex`, lines 75–85 and 227–238. -/
-theorem PosSemidef.log_re_trace_finKronecker_exp_centered_surprisal
+theorem PosSemidef.log_re_trace_piKronecker_exp_centered_surprisal
     (hρ : ρ.PosSemidef) (htr : ρ.trace = 1) (k : ℕ) (u s : ℝ) :
-    let ρk := finKronecker (fun _ : Fin k ↦ ρ)
+    let ρk := piKronecker (fun _ : Fin k ↦ ρ)
     Real.log (ρk * NormedSpace.exp ((u : ℂ) •
       (-CFC.log ρk - (s : ℂ) • 1))).trace.re =
         -u * s + (k : ℝ) *
           Real.log (Entropy.surprisalMoment hρ.isHermitian.eigenvalues u) := by
   dsimp only
-  rw [hρ.re_trace_finKronecker_exp_centered_surprisal,
+  rw [hρ.re_trace_piKronecker_exp_centered_surprisal,
     Real.log_mul (Real.exp_ne_zero _) (pow_ne_zero _
       (Entropy.surprisalMoment_pos hρ.eigenvalues_nonneg
         (posSemidef_trace_one_eigenvalues_sum_one hρ htr) u).ne'),
@@ -54,14 +54,14 @@ moments of the actual tensor-power density. The negative sign has
 twice the quadratic coefficient and the stated polynomial remainder.
 Source: `07-comparators.tex`, `comparator:mgf-data` and
 `comparator:signed-label-moments`, lines 75–85 and 227–238. -/
-theorem PosSemidef.log_re_trace_finKronecker_signed_label_moments_le
+theorem PosSemidef.log_re_trace_piKronecker_signed_label_moments_le
     (hρ : ρ.PosSemidef) (htr : ρ.trace = 1) {K r : ℝ}
     (hmoment : ∀ v : ℝ, |v| ≤ r →
       Real.log (Entropy.surprisalMoment hρ.isHermitian.eigenvalues v) ≤
         v * vonNeumannEntropy ρ hρ.isHermitian + K * v ^ 2)
     (k : ℕ) {u : ℝ} (hu : 0 ≤ u) (hur : 2 * u ≤ r) (hu1 : 2 * u ≤ 1) :
     let S := vonNeumannEntropy ρ hρ.isHermitian
-    let ρk := finKronecker (fun _ : Fin k ↦ ρ)
+    let ρk := piKronecker (fun _ : Fin k ↦ ρ)
     Real.log (ρk * NormedSpace.exp ((u : ℂ) •
       (labelEntropy (copyPerm n k) - (((k : ℝ) * S : ℝ) : ℂ) • 1))).trace.re ≤
         K * k * u ^ 2 ∧
@@ -70,16 +70,16 @@ theorem PosSemidef.log_re_trace_finKronecker_signed_label_moments_le
         2 * K * k * u ^ 2 + ((Fintype.card n : ℝ) ^ 2 / 2) * Real.log (k + 1) := by
   simpa only [mul_one, Real.sqrt_one, div_one] using
     (TensorPower.log_centered_labelEntropy_moments_le
-      (finKronecker_posSemidef (fun _ : Fin k ↦ ρ) (fun _ ↦ hρ))
+      (piKronecker_posSemidef (fun _ : Fin k ↦ ρ) (fun _ ↦ hρ))
       (by
         change Matrix.trace (fun x y : Fin k → n ↦ ∏ j, ρ (x j) (y j)) = 1
         simpa only [htr, Finset.prod_const_one] using
           trace_piProduct (fun _ : Fin k ↦ ρ))
-      (fun σ ↦ (commute_finKronecker_const_permOp ρ k σ).symm)
+      (fun σ ↦ (commute_piKronecker_const_permOp ρ k σ).symm)
       ((k : ℝ) * vonNeumannEntropy ρ hρ.isHermitian) K r 1 le_rfl
       (by
         intro v hv
-        rw [hρ.log_re_trace_finKronecker_exp_centered_surprisal htr k v
+        rw [hρ.log_re_trace_piKronecker_exp_centered_surprisal htr k v
           ((k : ℝ) * vonNeumannEntropy ρ hρ.isHermitian), mul_one]
         nlinarith only [mul_le_mul_of_nonneg_left
           (hmoment v (by simpa only [Real.sqrt_one, div_one] using hv))
@@ -115,7 +115,7 @@ namespace Matrix
 and the exact negative-sign polynomial remainder. The one-copy logarithmic
 surprisal bound is an explicit hypothesis. Source: `07-comparators.tex`,
 lines 218–238 and 550–560. -/
-theorem PosSemidef.re_trace_finKronecker_exp_signed_labelEntropy_le
+theorem PosSemidef.re_trace_piKronecker_exp_signed_labelEntropy_le
     {n : Type*} [Fintype n] [DecidableEq n] {ρ : Matrix n n ℂ}
     (hρ : ρ.PosSemidef) (htr : ρ.trace = 1) {K r : ℝ}
     (hmoment : ∀ v : ℝ, |v| ≤ r →
@@ -123,7 +123,7 @@ theorem PosSemidef.re_trace_finKronecker_exp_signed_labelEntropy_le
         v * vonNeumannEntropy ρ hρ.isHermitian + K * v ^ 2)
     (k : ℕ) {u : ℝ} (hu : 0 ≤ u) (hur : 2 * u ≤ r) (hu1 : 2 * u ≤ 1) :
     let S := vonNeumannEntropy ρ hρ.isHermitian
-    let ρk := finKronecker (fun _ : Fin k ↦ ρ)
+    let ρk := piKronecker (fun _ : Fin k ↦ ρ)
     (ρk * NormedSpace.exp ((u : ℂ) • labelEntropy (copyPerm n k))).trace.re ≤
       Real.exp (u * ((k : ℝ) * S) + (k : ℝ) * K * u ^ 2) ∧
     (ρk * NormedSpace.exp (((-u : ℝ) : ℂ) • labelEntropy (copyPerm n k))).trace.re ≤
@@ -155,7 +155,7 @@ theorem PosSemidef.re_trace_finKronecker_exp_signed_labelEntropy_le
       (Real.exp_add _ _).symm
   simpa only [Nat.cast_pow, mul_comm K (k : ℝ),
     show (2 : ℝ) * K * k = 2 * k * K by ring] using
-    (let hm := hρ.log_re_trace_finKronecker_signed_label_moments_le
+    (let hm := hρ.log_re_trace_piKronecker_signed_label_moments_le
         htr hmoment k hu hur hu1
      And.intro
        (huncentered u (K * (k : ℝ) * u ^ 2) (Real.le_exp_of_log_le hm.1))

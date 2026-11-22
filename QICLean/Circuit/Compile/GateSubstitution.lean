@@ -80,13 +80,13 @@ theorem Layer.isGateProduct_kraus (f : Γ.Cell → ℕ)
       V ∈ unitaryGroup _ ℂ → IsGateProduct Γ' (f b) (ManyBody.place (Γ.cell b) V))
     {L : Layer Γ KrausGate X X} (hL : L.Forall KrausGate.ev KrausFamily.IsUnitary)
     (i : L.Index) : IsGateProduct Γ' (∑ b ∈ L.cells, f b) (L.kraus KrausGate.ev i) := by
-  rw [L.kraus_eq_prod_place_mul_prodOp KrausGate.ev Finset.univ.toList (Finset.nodup_toList _)
+  rw [L.kraus_eq_prod_place_mul_piKronecker KrausGate.ev Finset.univ.toList (Finset.nodup_toList _)
     (fun c ↦ Finset.mem_toList.mpr (Finset.mem_univ c)) i, ← Finset.sum_coe_sort L.cells f,
     ← Finset.sum_map_toList, ← Nat.add_zero (List.sum _)]
   exact (IsGateProduct.list_prod_map _
     (fun c : L.cells ↦ ManyBody.place (Γ.cell c) (KrausGate.ev (L.gate c) (i.1 c)))
     (fun c : L.cells ↦ f c) fun c _ ↦ h c _ (Layer.ev_gate_mem_unitaryGroup hL i c)).mul
-    (IsGateProduct.prodOp (Layer.onsiteOp_mem_unitaryGroup hL i) 0)
+    (IsGateProduct.piKronecker (Layer.onsiteOp_mem_unitaryGroup hL i) 0)
 
 /-- **Gate substitution, gate by gate.** If every unitary placed on a cell `b` of `Γ` is a
 product of gates on `Γ'` of cost at most `f b`, the operator of a unitary circuit on `Γ` is a
@@ -96,17 +96,17 @@ theorem UnitaryCircuit.isGateProduct_op (f : Γ.Cell → ℕ)
       V ∈ unitaryGroup _ ℂ → IsGateProduct Γ' (f b) (ManyBody.place (Γ.cell b) V))
     (c : UnitaryCircuit Γ X) :
     IsGateProduct Γ' (c.layers.map fun L ↦ ∑ b ∈ L.cells, f b).sum c.op := by
-  obtain ⟨Ls, hLs⟩ := c
+  obtain ⟨Ls, hLs, μ, hμ⟩ := c
   induction Ls with
-  | nil => exact IsGateProduct.one Γ' X 0
+  | nil => exact IsGateProduct.smul_one hμ 0
   | cons L Ls ih =>
     have hL := hLs L List.mem_cons_self
     have hLs' : ∀ L' ∈ Ls, L'.Forall KrausGate.ev KrausFamily.IsUnitary :=
       fun L' hL' ↦ hLs L' (List.mem_cons_of_mem L hL')
     obtain ⟨u⟩ := Layer.nonempty_unique_index_of_forall_isUnitary hL
-    have hc : (⟨L :: Ls, hLs⟩ : UnitaryCircuit Γ X) =
-        (UnitaryCircuit.ofLayer L hL).comp ⟨Ls, hLs'⟩ :=
-      rfl
+    have hc : (⟨L :: Ls, hLs, μ, hμ⟩ : UnitaryCircuit Γ X) =
+        (UnitaryCircuit.ofLayer L hL).comp ⟨Ls, hLs', μ, hμ⟩ := by
+      simp [UnitaryCircuit.comp, UnitaryCircuit.ofLayer]
     simp only [List.map_cons, List.sum_cons]
     rw [hc, UnitaryCircuit.op_comp, UnitaryCircuit.op_ofLayer L hL u.default, Nat.add_comm]
     exact (ih hLs').mul (Layer.isGateProduct_kraus f h hL _)

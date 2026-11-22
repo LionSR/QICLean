@@ -13,8 +13,6 @@ import QICLean.Analysis.Norm.BlockDiagonalNorm
 import QICLean.Analysis.Norm.CStarCompletion
 import QICLean.Analysis.Norm.CStarMatrixKronecker
 import QICLean.Analysis.Norm.ContractionChain
-import QICLean.Analysis.Norm.ContractionWordDecay
-import QICLean.Analysis.Norm.ContractionWordDecaySpectator
 import QICLean.Analysis.Norm.ExpectationOverlap
 import QICLean.Analysis.Norm.FrobeniusHilbert
 import QICLean.Analysis.Norm.HermitianDilation

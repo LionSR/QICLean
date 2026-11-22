@@ -31,6 +31,7 @@ Independently written from the manuscript; no upstream Lean proof text is reused
 
 open Complex Matrix
 open scoped InnerProductSpace ComplexOrder Kronecker
+open ManyBody (regionUnionEquiv)
 
 namespace Entropy
 
@@ -228,7 +229,7 @@ theorem norm_liftProd_trial_ge {m : ℕ} {X : Finset V} (T : ℕ → Finset V)
     simp only [liftProd, chainList, List.map_map, Function.comp_def, idx]
     congr 1
     refine List.map_congr_left fun j _ ↦ ?_
-    exact localLift_union_kronecker (hXT j) _ _
+    exact ManyBody.place_union_kronecker (hXT j) _ _
   have hM : liftProd (chainList T M fun _ ↦ True) =
       (idx.map fun j : Fin m ↦ ManyBody.place (T j) (M j)).prod := by
     simp only [liftProd, chainList, List.map_map, Function.comp_def, idx]

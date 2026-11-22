@@ -20,6 +20,10 @@ both for continuous functional calculus and for operator-norm `CStarMatrix` cons
 
 * `Matrix.leftKroneckerEmbed` — tensor with the identity on the right.
 * `Matrix.rightKroneckerEmbed` — tensor with the identity on the left.
+
+## Main results
+
+* `Matrix.kronecker_one_mul_one_kronecker_comm` — `A ⊗ 1` and `1 ⊗ B` commute.
 -/
 
 open scoped Kronecker
@@ -80,6 +84,13 @@ noncomputable def rightKroneckerEmbed :
 @[simp]
 theorem rightKroneckerEmbed_apply (B : Matrix n n ℂ) :
     rightKroneckerEmbed (m := m) B = (1 : Matrix m m ℂ) ⊗ₖ B := rfl
+
+/-- `A ⊗ 1` and `1 ⊗ B` commute: the images of the two Kronecker embeddings commute. -/
+theorem kronecker_one_mul_one_kronecker_comm {a b : Type*} [Fintype a] [Fintype b]
+    [DecidableEq a] [DecidableEq b] (KA : Matrix a a ℂ) (KB : Matrix b b ℂ) :
+    KA ⊗ₖ (1 : Matrix b b ℂ) * (1 : Matrix a a ℂ) ⊗ₖ KB =
+      (1 : Matrix a a ℂ) ⊗ₖ KB * KA ⊗ₖ (1 : Matrix b b ℂ) := by
+  rw [← mul_kronecker_mul, ← mul_kronecker_mul]; simp
 
 end Matrix
 

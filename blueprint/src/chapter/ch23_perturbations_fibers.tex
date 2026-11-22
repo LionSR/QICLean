@@ -189,12 +189,13 @@ otherwise.
 \begin{lemma}[Quadratic-form bound on fibers]
     \label{lem:right_spectator_quadratic_form_gap}
     \lean{ContinuousLinearMap.quadraticForm_sq_ge_rightFiberwiseMap,
-        LinearMap.IsPositive.quadraticForm_sq_ge_rightFiberwiseMap_of_norm_gap}
+        LinearMap.IsPositive.quadraticForm_sq_ge_rightFiberwiseMap_of_forall_hasEigenvalue}
     \leanok
     \uses{lem:gap_norm_to_quadratic_form, thm:euclidean_fiberwise_operator}
     Let $G$ act on $\C^I$. If $G^2\geq\gamma G$ as a quadratic form, the same
-    inequality holds for $G\otimes\Id_S$. In particular, positivity and a norm
-    gap $\gamma\ge0$ for $G$ imply this inequality for $G\otimes\Id_S$.
+    inequality holds for $G\otimes\Id_S$. In particular, if $G\ge0$ and every
+    eigenvalue of $G$ other than $0$ is at least $\gamma\ge0$, this inequality holds
+    for $G\otimes\Id_S$.
 \end{lemma}
 \begin{proof}
     \leanok

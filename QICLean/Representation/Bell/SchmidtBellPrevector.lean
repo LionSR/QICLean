@@ -95,10 +95,10 @@ private theorem bellPinPrevector_equivFin (a : A) (b : B) (c r : Fin E.card) :
   simp [Matrix.omegaVec]
 
 omit [Fintype B] in
-private theorem finKronecker_pin_submatrix {X Y R S : Type*} [Fintype X] [Fintype Y]
+private theorem piKronecker_pin_submatrix {X Y R S : Type*}
     [DecidableEq R] [DecidableEq S]
     (eX : X ≃ Y) (eR : R ≃ S) (P : Matrix X X ℂ) (k : ℕ) :
-    ((Matrix.finKronecker (fun _ : Fin k => P)) ⊗ₖ
+    ((Matrix.piKronecker (fun _ : Fin k => P)) ⊗ₖ
       (1 : Matrix ((Fin k → R) × (Fin k → B)) ((Fin k → R) × (Fin k → B)) ℂ)).submatrix
         ((Equiv.piCongrRight (fun _ : Fin k => eX)).prodCongr
           ((Equiv.piCongrRight (fun _ : Fin k => eR)).prodCongr
@@ -106,9 +106,9 @@ private theorem finKronecker_pin_submatrix {X Y R S : Type*} [Fintype X] [Fintyp
         ((Equiv.piCongrRight (fun _ : Fin k => eX)).prodCongr
           ((Equiv.piCongrRight (fun _ : Fin k => eR)).prodCongr
             (Equiv.refl (Fin k → B)))).symm =
-      Matrix.finKronecker (fun _ : Fin k => P.submatrix eX.symm eX.symm) ⊗ₖ
+      Matrix.piKronecker (fun _ : Fin k => P.submatrix eX.symm eX.symm) ⊗ₖ
         (1 : Matrix ((Fin k → S) × (Fin k → B)) ((Fin k → S) × (Fin k → B)) ℂ) := by
-  change ((Matrix.finKronecker (fun _ : Fin k => P)) ⊗ₖ
+  change ((Matrix.piKronecker (fun _ : Fin k => P)) ⊗ₖ
     (1 : Matrix ((Fin k → R) × (Fin k → B)) ((Fin k → R) × (Fin k → B)) ℂ)).submatrix
       (Prod.map (Equiv.piCongrRight (fun _ : Fin k => eX)).symm
         ((Equiv.piCongrRight (fun _ : Fin k => eR)).prodCongr
@@ -151,7 +151,7 @@ private theorem selectedBellProjection_equivFin (k : ℕ) (hz : 0 < z)
       Matrix.selectedBellVector Ω E (x.1, (Finset.equivFin E).symm x.2)
     let χ : Fin E.card × B → ℂ := fun x =>
       Matrix.compressedTypicalPureState Ω E ((Finset.equivFin E).symm x.1, x.2)
-    let Pk := Matrix.finKronecker (fun _ : Fin k => Matrix.vecMulVec β (star β)) ⊗ₖ
+    let Pk := Matrix.piKronecker (fun _ : Fin k => Matrix.vecMulVec β (star β)) ⊗ₖ
       (1 : Matrix ((Fin k → Fin E.card) × (Fin k → B))
         ((Fin k → Fin E.card) × (Fin k → B)) ℂ)
     let ΛR := (1 : Matrix (Fin k → A × Fin E.card) (Fin k → A × Fin E.card) ℂ) ⊗ₖ
@@ -170,7 +170,7 @@ private theorem selectedBellProjection_equivFin (k : ℕ) (hz : 0 < z)
   let e := (Equiv.arrowProdEquivProdArrow (Fin k) (fun _ => A × E) (fun _ => E × B)).trans
     ((Equiv.refl (Fin k → A × E)).prodCongr
       (Equiv.arrowProdEquivProdArrow (Fin k) (fun _ => E) (fun _ => B)))
-  let PE := Matrix.finKronecker (fun _ : Fin k => Matrix.selectedBellProjection Ω E) ⊗ₖ
+  let PE := Matrix.piKronecker (fun _ : Fin k => Matrix.selectedBellProjection Ω E) ⊗ₖ
     (1 : Matrix ((Fin k → E) × (Fin k → B)) ((Fin k → E) × (Fin k → B)) ℂ)
   let LE := (1 : Matrix (Fin k → A × E) (Fin k → A × E) ℂ) ⊗ₖ
     (Λ.submatrix τ τ ⊗ₖ (1 : Matrix (Fin k → B) (Fin k → B) ℂ))
@@ -178,10 +178,10 @@ private theorem selectedBellProjection_equivFin (k : ℕ) (hz : 0 < z)
     (fun x => ∏ j, Matrix.bellPinPrevector Ω E (e.symm x j))
     (fun x => ∏ j, Matrix.bellPinPostvector Ω E (e.symm x j))
     (((Real.sqrt z : ℂ) / (E.card : ℂ)) ^ k)
-    (Matrix.finKronecker_selectedBellProjection_bellPinPrevector_label Ω E k hz
+    (Matrix.piKronecker_selectedBellProjection_bellPinPrevector_label Ω E k hz
       (Λ.submatrix τ τ))
   have hP : PE.submatrix s.symm s.symm = Pk := by
-    exact finKronecker_pin_submatrix ((Equiv.refl A).prodCongr ι) ι
+    exact piKronecker_pin_submatrix ((Equiv.refl A).prodCongr ι) ι
       (Matrix.selectedBellProjection Ω E) k
   have hL : LE.submatrix s.symm s.symm = ΛR := by
     simpa only [LE, ΛR, s, Equiv.prodCongr_symm, Matrix.submatrix_submatrix,
@@ -235,7 +235,7 @@ theorem selectedBellProjection_replicaPrevector (k : ℕ) (hz : 0 < z)
       Matrix.selectedBellVector Ω E (x.1, (Finset.equivFin E).symm x.2)
     let χ : Fin E.card × B → ℂ := fun x =>
       Matrix.compressedTypicalPureState Ω E ((Finset.equivFin E).symm x.1, x.2)
-    let Pk := Matrix.finKronecker (fun _ : Fin k => Matrix.vecMulVec β (star β)) ⊗ₖ
+    let Pk := Matrix.piKronecker (fun _ : Fin k => Matrix.vecMulVec β (star β)) ⊗ₖ
       (1 : Matrix ((Fin k → Fin E.card) × (Fin k → B))
         ((Fin k → Fin E.card) × (Fin k → B)) ℂ)
     let ΛR := (1 : Matrix (Fin k → A × Fin E.card) (Fin k → A × Fin E.card) ℂ) ⊗ₖ

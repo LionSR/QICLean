@@ -11,7 +11,7 @@ import Lean.Util.CollectAxioms
 
 run_cmd do
   let allowed := #[``propext, ``Classical.choice, ``Quot.sound]
-  for decl in #[``Matrix.PosSemidef.re_trace_finKronecker_exp_signed_labelEntropy_le] do
+  for decl in #[``Matrix.PosSemidef.re_trace_piKronecker_exp_signed_labelEntropy_le] do
     unless (← Lean.getEnv).contains decl do
       throwError "Missing declaration {decl}"
     let axioms ← Lean.collectAxioms decl

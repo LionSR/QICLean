@@ -178,7 +178,7 @@ theorem partialTraceRight_replicaExcitationComponent_goodRegional_density
         (x.2.2, fun i => (x.1.1 ((Finset.equivFin Bᶜ) (Finset.complSubtypeEquiv B i)),
           x.2.1 ((Finset.equivFin Bᶜ) (Finset.complSubtypeEquiv B i)))), x.1.2)
     partialTraceRight (vecMulVec f (star f)) =
-      finKronecker (fun _ : Fin (Bᶜ.card) => partialTraceRight (vecMulVec Ω (star Ω))) ⊗ₖ
+      piKronecker (fun _ : Fin (Bᶜ.card) => partialTraceRight (vecMulVec Ω (star Ω))) ⊗ₖ
         partialTraceLeft (vecMulVec w (star w)) := by
   classical
   dsimp only
@@ -191,7 +191,7 @@ theorem partialTraceRight_replicaExcitationComponent_goodRegional_density
   ext ⟨q, c⟩ ⟨q', c'⟩
   simp only [partialTraceRight_apply, vecMulVec_apply, Pi.star_apply,
     Fintype.sum_prod_type, replicaExcitationProjection_mulVec_factorization Ω hΩ B u,
-    kroneckerMap_apply, partialTraceLeft_apply, finKronecker_apply, star_mul]
+    kroneckerMap_apply, partialTraceLeft_apply, piKronecker_apply, star_mul]
   simp_rw [hprod]
   let R := replicaGoodCopyRemainder Ω B
     ((replicaExcitationProjection Ω k B ⊗ₖ (1 : Matrix C C ℂ)) *ᵥ u)

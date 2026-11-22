@@ -13,7 +13,7 @@ import Lean.Util.CollectAxioms
 run_cmd do
   let allowed := #[``propext, ``Classical.choice, ``Quot.sound]
   for decl in #[``TensorPower.copiesProductEquiv,
-      ``Matrix.partialTraceRight_finKronecker_reindex,
+      ``Matrix.partialTraceRight_piKronecker_reindex,
       ``TensorPower.fiveFactorPairMiddleEquiv,
       ``Matrix.posSemidef_replicaGoodConfigurationMarginal,
       ``Matrix.partialTraceRight_replicaGoodConfigurationMarginal_pairMiddle,
