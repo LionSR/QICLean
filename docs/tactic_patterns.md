@@ -1239,7 +1239,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Further use:** `Representation/CompressedTypicalExponential.lean`
   transports the exponential of the regional label entropy by
   `Matrix.reindex_exp` and the same scalar-submatrix identities. The
-  tensor-density identity follows entrywise from `Matrix.finKronecker_apply`
+  tensor-density identity follows entrywise from `Matrix.piKronecker_apply`
   and the actual one-copy marginal identity. The final trace transport
   reuses `Matrix.submatrix_mul_equiv` and `Matrix.trace_reindex`.
 
@@ -1485,7 +1485,7 @@ the original family, so all metric weights retain the full-family dimension.
 - **Pattern:** Compare two tensor products by changing one factor at a time.
   Each comparison is the monotonicity of a positive linear map obtained by
   tensoring with a fixed positive semidefinite matrix.
-- **Occurrences:** The two factor comparisons in `Matrix.finKronecker_mono`
+- **Occurrences:** The two factor comparisons in `Matrix.piKronecker_mono`
   and the two formerly explicit comparisons in `Entropy.RestoringNorm`.
 - **Helper:** `Matrix.kronecker_mono_of_posSemidef` in
   `Algebra/FiniteKroneckerOrder.lean` assumes `A ≤ B`, `C ≤ D`, positivity
@@ -1500,7 +1500,7 @@ the original family, so all metric weights retain the full-family dimension.
 
 ### Selected-marginal exponential comparisons — existing lemmas (2026-10-13)
 
-The comparison after spectral selection reuses `Matrix.finKronecker_mono`
+The comparison after spectral selection reuses `Matrix.piKronecker_mono`
 for the actual marginal order and
 `Matrix.PosSemidef.re_trace_mul_le_re_trace_mul` for the positive exponential
 trace pairing. `IsSelfAdjoint.exp_nonneg` supplies positivity for every real
@@ -2422,7 +2422,7 @@ unitary norm arguments.
 
 - **Pattern:** Reindex by `Fin.consEquiv`, expand the finite product, and split its
   first factor using `Fin.prod_univ_succ`.
-- **Reuse:** `Matrix.finKronecker_submatrix_cons` in
+- **Reuse:** `Matrix.piKronecker_submatrix_cons` in
   `Algebra/KroneckerFactorPositivity.lean`. The positivity proof, finite tensor-order
   proof, and real-power factorization now use it.
 - **Decision:** A lemma replaces the three copies. Finite tensor multiplication is

@@ -27,7 +27,7 @@ does not depend on the input (`Circuit.IsImplementationOn.exists_smul_of_isometr
 A *deterministic conversion* of a nonzero vector `φ` into `ψ` in depth `T` is a measurement
 circuit of depth at most `T` whose output on every branch is a scalar multiple of `ψ`; a
 preparation of `ψ` is a conversion from a basis configuration or from a product vector, which
-is a basis configuration after free onsite unitaries (`IsMeasurementConversion.of_prodOp`). The
+is a basis configuration after free onsite unitaries (`IsMeasurementConversion.of_piKronecker`). The
 outputs of zero probability are allowed, as the zero multiple. A deterministic conversion of
 unit vectors is an adaptive conversion of their density matrices
 (`IsMeasurementConversion.isAdaptiveConversion`).
@@ -362,7 +362,7 @@ theorem kraus_measureCorrect (ev : Interpretation G) (D : Finset S)
     (V : RegionConfig X D → (s : S) → Matrix (X s) (X s) ℂ)
     (p : (measureCorrect (Γ := Γ) (G := G) D V).Index) :
     (measureCorrect (Γ := Γ) (G := G) D V).kraus ev p =
-      prodOp (V (Layer.measure.outcome p.1)) *
+      piKronecker (V (Layer.measure.outcome p.1)) *
         place D (single (Layer.measure.outcome p.1) (Layer.measure.outcome p.1) 1) := by
   obtain ⟨i, q⟩ := p
   change (ofLayer _).kraus ev q * (Layer.measure D).kraus ev i = _
@@ -388,7 +388,8 @@ theorem isImplementationOn_comp_measureCorrect (ev : Interpretation G) {u : Circ
     {U : Matrix (Config X) (Config X) ℂ} (hU : ∀ p, u.kraus ev p = U) {D : Finset S}
     {V : RegionConfig X D → (s : S) → Matrix (X s) (X s) ℂ} {E : Set (Config X → ℂ)}
     {W : Matrix (Config X) (Config X) ℂ}
-    (h : ∀ m, ∃ z : ℂ, ∀ v ∈ E, (prodOp (V m) * place D (single m m 1) * U) *ᵥ v = z • (W *ᵥ v)) :
+    (h : ∀ m, ∃ z : ℂ, ∀ v ∈ E,
+      (piKronecker (V m) * place D (single m m 1) * U) *ᵥ v = z • (W *ᵥ v)) :
     (u.comp (measureCorrect D V)).IsImplementationOn ev E W := by
   intro v hv q
   rw [kraus_comp, kraus_measureCorrect, hU]
@@ -577,12 +578,12 @@ omit [∀ s, Finite (Z s)] in
 /-- **Free onsite unitaries.** A conversion from `(⊗ₛ U s) φ`, for unitaries `U s`, is a
 conversion from `φ` in the same depth: the unitaries form an onsite layer, of depth `0`. In
 particular a conversion from a product vector is a conversion from a basis configuration. -/
-theorem IsMeasurementConversion.of_prodOp {T : ℕ} {U : (s : S) → Matrix (X s) (X s) ℂ}
+theorem IsMeasurementConversion.of_piKronecker {T : ℕ} {U : (s : S) → Matrix (X s) (X s) ℂ}
     (hU : ∀ s, U s ∈ unitaryGroup (X s) ℂ) {φ : Config X → ℂ} {ψ : Config Z → ℂ}
-    (h : IsMeasurementConversion Γ T (prodOp U *ᵥ φ) ψ) : IsMeasurementConversion Γ T φ ψ := by
+    (h : IsMeasurementConversion Γ T (piKronecker U *ᵥ φ) ψ) : IsMeasurementConversion Γ T φ ψ := by
   obtain ⟨hφ, c, hc, hd, hψ⟩ := h
   let L : Layer Γ KrausGate X X := Layer.ofOnsite fun s ↦ KrausFamily.single (U s)
-  have hL : ∀ i, L.kraus KrausGate.ev i = prodOp U := fun i ↦ Layer.kraus_ofOnsite _ _ i
+  have hL : ∀ i, L.kraus KrausGate.ev i = piKronecker U := fun i ↦ Layer.kraus_ofOnsite _ _ i
   refine ⟨fun h0 ↦ hφ (by rw [h0, mulVec_zero]), (Circuit.ofLayer L).comp c,
     Circuit.Forall.comp _ ⟨⟨fun b ↦ absurd b.2 (Finset.notMem_empty _),
       fun s ↦ Or.inl (KrausFamily.isUnitary_single (hU s))⟩, fun _ ↦ trivial⟩ hc,
@@ -681,7 +682,7 @@ def IsOneRoundConversion (T₁ T₂ : ℕ) (φ ψ : Config X → ℂ) : Prop :=
   φ ≠ 0 ∧ ∃ (U U' : Matrix (Config X) (Config X) ℂ) (D : Finset S)
     (V : RegionConfig X D → (s : S) → Matrix (X s) (X s) ℂ),
     IsUnitaryCircuit Γ T₁ U ∧ IsUnitaryCircuit Γ T₂ U' ∧ (∀ m s, V m s ∈ unitaryGroup (X s) ℂ) ∧
-    ∀ m, ∃ z : ℂ, (U' * prodOp (V m) * place D (single m m 1) * U) *ᵥ φ = z • ψ
+    ∀ m, ∃ z : ℂ, (U' * piKronecker (V m) * place D (single m m 1) * U) *ᵥ φ = z • ψ
 
 variable {Γ}
 
@@ -756,7 +757,7 @@ theorem IsUnitaryCircuit.isOneRoundConversion {T : ℕ} {U : Matrix (Config X) (
     · simp [hxy]
     · rw [ite_eq_right_iff.mpr fun h ↦ absurd (funext fun v ↦ h v (by simp)) hxy,
         ite_eq_right_iff.mpr fun h ↦ absurd h hxy]
-  rw [hplace, ManyBody.prodOp_one, Matrix.one_mul, Matrix.one_mul, Matrix.one_mul, one_smul]
+  rw [hplace, Matrix.piKronecker_one, Matrix.one_mul, Matrix.one_mul, Matrix.one_mul, one_smul]
 
 end OneRound
 

@@ -51,7 +51,7 @@ theorem re_inner_exp_labelEntropy_compressedTypicalSiteState_prod
       (NormedSpace.exp ((u : ℂ) • labelEntropy
         (subsystemPerm k (ManyBody.compressedSiteSpace β X (Fin E.card))
           (ManyBody.exteriorRegion X Q)))) Ψ⟫_ℂ).re =
-      (Matrix.finKronecker
+      (Matrix.piKronecker
           (fun _ : Fin k ↦ ManyBody.regionState (ManyBody.typicalPureState β Ω X E) Q) *
         NormedSpace.exp ((u : ℂ) •
           labelEntropy (copyPerm (ManyBody.RegionConfig β Q) k))).trace.re := by
@@ -77,15 +77,15 @@ theorem re_inner_exp_labelEntropy_compressedTypicalSiteState_prod
         (∑ l : IrrepLabel (Equiv.Perm (Fin k)),
           (Real.log l.dim : ℂ) • IrrepLabel.centralIdem l)
   have hρ := ManyBody.regionState_compressedTypicalSiteState β X Q Ω hXQ E
-  have hK : Matrix.reindex e e (Matrix.finKronecker
+  have hK : Matrix.reindex e e (Matrix.piKronecker
       (fun _ : Fin k ↦ ManyBody.regionState
         (WithLp.toLp 2 (fun x ↦ χ (Equiv.piOptionEquivProd x)))
         (ManyBody.exteriorRegion X Q))) =
-      Matrix.finKronecker
+      Matrix.piKronecker
         (fun _ : Fin k ↦ ManyBody.regionState
           (ManyBody.typicalPureState β Ω X E) Q) := by
     ext x y
-    simpa only [Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.finKronecker_apply,
+    simpa only [Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.piKronecker_apply,
       e, Equiv.arrowCongr_symm, Equiv.arrowCongr_apply, Equiv.symm_symm,
       Equiv.refl_apply, Function.comp_apply, χ, ΩX] using
       congrArg (fun M ↦ ∏ j : Fin k, M (x j) (y j)) hρ

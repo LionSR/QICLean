@@ -32,7 +32,7 @@ support and none elsewhere (lines 1053–1075).
 Moved from TNLean (`e113e005`): `TNLean/Lattice/ProductForm.lean`,
 `ProductFormIndexRestriction.lean` and the supported factor of `TrotterIndexCount.lean`.
 Changes: the configurations are `Config X` for any finite basis types, and the product operator
-is `ManyBody.prodOp` (TNLean's `piKronecker`). The supported-operator form uses the indices of
+is `Matrix.piKronecker` (TNLean's `piKronecker`). The supported-operator form uses the indices of
 `ofSupported` on the support only, so no common dimension and no relation `near i i` is
 needed; TNLean's `apply_eq_apply_of_mem_supportedOperators` is
 `ManyBody.IsSupportedOn.apply_eq`.
@@ -71,7 +71,7 @@ structure ProductForm (near : V → V → Prop) (ρ : Matrix (Config X) (Config 
   /-- Each `Fᵢ` depends only on the indices at the sites `j` with `near i j`. -/
   coeff_local : ∀ i, IsLocalCoefficient near i (coeff i)
   /-- The expansion of eq. `mpf`. -/
-  eq_sum : ρ = ∑ α : (∀ j, Index j), (∏ i, coeff i α) • prodOp fun j ↦ siteOp j (α j)
+  eq_sum : ρ = ∑ α : (∀ j, Index j), (∏ i, coeff i α) • piKronecker fun j ↦ siteOp j (α j)
 
 attribute [instance] ProductForm.fintype
 
@@ -139,7 +139,7 @@ noncomputable def ProductForm.mul {ρ σ : Matrix (Config X) (Config X) ℂ}
   · refine (congrArg₂ (· * ·) P.eq_sum Q.eq_sum).trans ?_
     rw [Finset.sum_mul_sum, ← Fintype.sum_prod_type']
     refine Fintype.sum_equiv (Equiv.arrowProdEquivProdArrow _ _ _).symm _ _ fun x ↦ ?_
-    simp [prodOp_mul, Finset.prod_mul_distrib, Equiv.arrowProdEquivProdArrow, smul_smul,
+    simp [piKronecker_mul, Finset.prod_mul_distrib, Equiv.arrowProdEquivProdArrow, smul_smul,
       mul_comm]
 
 omit [∀ v, DecidableEq (X v)] in
@@ -227,7 +227,7 @@ noncomputable def ProductForm.ofSupported {D : Finset V} (z : Config X) (i₀ : 
       simp only [hlabels]
     · simp only [ite_eq_right hi]
   · ext u v
-    simp only [Matrix.sum_apply, Matrix.smul_apply, prodOp_apply, smul_eq_mul,
+    simp only [Matrix.sum_apply, Matrix.smul_apply, piKronecker_apply, smul_eq_mul,
       Fintype.prod_ite_eq']
     rw [Finset.sum_eq_single (fun j (_ : j ∈ D) ↦ (u j, v j))]
     · by_cases hoff : ∃ j ∉ D, u j ≠ v j
@@ -339,7 +339,7 @@ noncomputable def ProductForm.restrict {ρ : Matrix (Config X) (Config X) ℂ}
     coeff_local := fun i α β h ↦ P.coeff_local i _ _ fun j hj ↦ congrArg Subtype.val (h j hj)
     eq_sum := ?_ }
   refine P.eq_sum.trans ?_
-  let f (α : ∀ i, P.Index i) := (∏ i, P.coeff i α) • prodOp fun j ↦ P.siteOp j (α j)
+  let f (α : ∀ i, P.Index i) := (∏ i, P.coeff i α) • piKronecker fun j ↦ P.siteOp j (α j)
   change (∑ α, f α) = ∑ α : (∀ i, {a : P.Index i // a ∈ s i}), f (fun i ↦ (α i).1)
   calc
     (∑ α, f α) = ∑ α ∈ Finset.univ.filter (fun α ↦ ∀ i, α i ∈ s i), f α := by

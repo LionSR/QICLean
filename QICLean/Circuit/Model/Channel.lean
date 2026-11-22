@@ -34,7 +34,7 @@ has as map the conjugation by its Kraus operator (`Circuit.map_eq_of_subsingleto
   length.
 * `QuantumCircuit.Layer.lightCone_ofOnsite` — an onsite layer does not spread supports.
 * `QuantumCircuit.Circuit.map_ofLayer_ofOnsite`,
-  `QuantumCircuit.Circuit.map_ofLayer_ofOnsite_prodOp` — the map of an onsite layer is the
+  `QuantumCircuit.Circuit.map_ofLayer_ofOnsite_piKronecker` — the map of an onsite layer is the
   product channel, which sends product operators to product operators.
 * `QuantumCircuit.IsProtocol.ofLayer`, `QuantumCircuit.IsProtocol.seq`,
   `QuantumCircuit.IsProtocol.ofOnsite` — layers, channel circuits and onsite channels are
@@ -156,11 +156,11 @@ operator `⊗ₛ σₛ` to `⊗ₛ (o s)(σₛ)`.
 
 Source: arXiv:2103.13367, main text, paragraph "Quantum circuits and LOCC" (local operations
 `U = ⊗ᵢ uᵢ` acting on each site and its ancillas), with channels in place of unitaries. -/
-theorem map_ofLayer_ofOnsite_prodOp (ev : Interpretation G)
+theorem map_ofLayer_ofOnsite_piKronecker (ev : Interpretation G)
     (o : (s : S) → KrausFamily (X s) (Y s)) (σ : (s : S) → Matrix (X s) (X s) ℂ) :
-    (ofLayer (Layer.ofOnsite (Γ := Γ) (G := G) o)).map ev (prodOp σ) =
-      prodOp fun s ↦ (o s).map (σ s) := by
-  rw [map_ofLayer_ofOnsite, map_prodFamily_prodOp]
+    (ofLayer (Layer.ofOnsite (Γ := Γ) (G := G) o)).map ev (piKronecker σ) =
+      piKronecker fun s ↦ (o s).map (σ s) := by
+  rw [map_ofLayer_ofOnsite, map_prodFamily_piKronecker]
 
 end Circuit
 

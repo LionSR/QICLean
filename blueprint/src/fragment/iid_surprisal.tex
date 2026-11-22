@@ -15,7 +15,7 @@ concentration step in \cite[Section~7]{OpenAI2026AreaLaw}.
 
 \begin{theorem}[The product spectral distribution]
 \label{thm:iid_surprisal_spectral_distribution}
-\lean{Matrix.PosSemidef.re_trace_finKronecker_mul_cfc_surprisal}
+\lean{Matrix.PosSemidef.re_trace_piKronecker_mul_cfc_surprisal}
 \leanok
 For every real function $f$ and $k\ge0$,
 \begin{align}
@@ -62,7 +62,7 @@ contribute nothing to the displayed sum.
 
 \begin{theorem}[The entropy window of the actual density matrix]
 \label{thm:iid_surprisal_density_tail}
-\lean{Matrix.PosSemidef.re_trace_surprisalTail_finKronecker_le,Matrix.PosSemidef.re_trace_surprisalTail_finKronecker_three_quarters_le}
+\lean{Matrix.PosSemidef.re_trace_surprisalTail_piKronecker_le,Matrix.PosSemidef.re_trace_surprisalTail_piKronecker_three_quarters_le}
 \leanok
 \uses{thm:iid_surprisal_spectral_distribution,thm:iid_surprisal_chebyshev}
 For every $k\ge0$ and $w>0$,

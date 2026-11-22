@@ -31,15 +31,15 @@ namespace Matrix
 
 /-- A change of one-copy coordinates transports the literal excitation operator.
 OpenAI area-law manuscript, `07-comparators.tex`, lines 23, 103–110 and 524–549. -/
-private theorem excitation_reindex {A A' : Type*} [Fintype A] [DecidableEq A]
-    [Fintype A'] [DecidableEq A'] (e : A ≃ A') (Ω : A → ℂ)
+private theorem excitation_reindex {A A' : Type*} [DecidableEq A]
+    [DecidableEq A'] (e : A ≃ A') (Ω : A → ℂ)
     (k : ℕ) (B : Finset (Fin k)) :
     replicaExcitationProjection (fun x => Ω (e.symm x)) k B =
       (replicaExcitationProjection Ω k B).submatrix
         (fun x i => e.symm (x i)) (fun x i => e.symm (x i)) := by
   classical
   ext x y
-  simp only [replicaExcitationProjection, finKronecker_apply, submatrix_apply]
+  simp only [replicaExcitationProjection, piKronecker_apply, submatrix_apply]
   apply Finset.prod_congr rfl
   intro i _
   split_ifs

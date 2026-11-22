@@ -31,6 +31,7 @@ namespace Matrix
 
 variable {A B : Type*} [Fintype A] [DecidableEq A] [Fintype B] [DecidableEq B]
 
+omit [Fintype A] [Fintype B] in
 /-- One-copy coordinate changes commute with the literal sum of replica
 Hamiltonians. Source: `07-comparators.tex`, `comparator:defect-mass`, lines 421--438. -/
 theorem replicaHamiltonian_submatrix_equiv (H : Matrix A A ℂ) (e : A ≃ B) (k : ℕ) :
@@ -39,7 +40,7 @@ theorem replicaHamiltonian_submatrix_equiv (H : Matrix A A ℂ) (e : A ≃ B) (k
         (Equiv.arrowCongr (Equiv.refl (Fin k)) e).symm
         (Equiv.arrowCongr (Equiv.refl (Fin k)) e).symm := by
   ext x y
-  simp only [replicaHamiltonian, Matrix.submatrix_apply, Matrix.sum_apply, finKronecker_apply]
+  simp only [replicaHamiltonian, Matrix.submatrix_apply, Matrix.sum_apply, piKronecker_apply]
   apply Finset.sum_congr rfl
   intro i hi
   apply Finset.prod_congr rfl
@@ -52,6 +53,7 @@ theorem replicaHamiltonian_submatrix_equiv (H : Matrix A A ℂ) (e : A ≃ B) (k
       if e.symm (x j) = e.symm (y j) then 1 else 0
     simp only [e.symm.injective.eq_iff]
 
+omit [Fintype A] [Fintype B] in
 /-- The original rank-one ground projector, and hence the full defect
 count, transforms under a physical coordinate equivalence. The vector
 need not be normalized for this identity. Source: `07-comparators.tex`,

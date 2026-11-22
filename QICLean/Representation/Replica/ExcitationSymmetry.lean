@@ -36,13 +36,14 @@ open scoped Matrix Kronecker
 namespace Matrix
 variable {A : Type*} [Fintype A] [DecidableEq A]
 
+omit [Fintype A] in
 private theorem replicaExcitationProjection_image_apply (Ω : A → ℂ) (k : ℕ)
     (B : Finset (Fin k)) (σ : Equiv.Perm (Fin k)) (x y : Fin k → A) :
     replicaExcitationProjection Ω k (B.image σ)
       (copyPerm A k σ x) (copyPerm A k σ y) =
       replicaExcitationProjection Ω k B x y := by
   classical
-  simp only [replicaExcitationProjection, finKronecker_apply, copyPerm_apply]
+  simp only [replicaExcitationProjection, piKronecker_apply, copyPerm_apply]
   refine Fintype.prod_equiv σ.symm _ _ fun j => ?_
   simp only [Equiv.Perm.inv_def]
   simp only [Finset.mem_image, ← Equiv.eq_symm_apply, exists_eq_right]

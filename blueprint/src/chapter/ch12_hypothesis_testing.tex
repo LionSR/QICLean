@@ -227,9 +227,9 @@ by one measurement, and bounds the trace distance below by the overlap.
 
 \begin{theorem}[Powers and traces of finite tensor products]
     \label{thm:testing_tensor_calculus}
-    \lean{Matrix.finKronecker_mul, Matrix.trace_finKronecker,
-        Matrix.finKronecker_apply, Matrix.finKronecker_posSemidef,
-        Matrix.finKronecker_submatrix_cons, Matrix.rpow_finKronecker,
+    \lean{Matrix.piKronecker_mul, Matrix.trace_piKronecker,
+        Matrix.piKronecker_apply, Matrix.piKronecker_posSemidef,
+        Matrix.piKronecker_submatrix_cons, Matrix.rpow_piKronecker,
         Matrix.PosSemidef.smul_rpow, Matrix.PosSemidef.rpow_submatrix_equiv}
     \leanok
     Let $A_i,B_i$ be square matrices on finite spaces, indexed by $0\le i<N$.
@@ -308,7 +308,7 @@ by one measurement, and bounds the trace distance below by the overlap.
 \begin{theorem}[Products of ordinary overlaps]
     \label{thm:testing_overlap_products}
     \lean{Matrix.petzOverlap_nonneg, Matrix.petzOverlap_smul,
-        Matrix.petzOverlap_kronecker, Matrix.petzOverlap_finKronecker}
+        Matrix.petzOverlap_kronecker, Matrix.petzOverlap_piKronecker}
     \leanok
     Write $Q_s(A,B)=\operatorname{Re}\tr[A^sB^{1-s}]$. This is nonnegative.
     For positive semidefinite factors, real $s$, and $a,b\ge0$,
@@ -343,7 +343,7 @@ by one measurement, and bounds the trace distance below by the overlap.
 \begin{theorem}[Finite-copy Chernoff upper bound]
     \label{thm:finite_copy_chernoff}
     \lean{Matrix.optimalHypothesisTestError_le_petzOverlap,
-        Matrix.optimalHypothesisTestError_finKronecker_le,
+        Matrix.optimalHypothesisTestError_piKronecker_le,
         Matrix.optimalHypothesisTestError_iid_le,
         Matrix.optimalHypothesisTestError_iid_le_sInf}
     \leanok

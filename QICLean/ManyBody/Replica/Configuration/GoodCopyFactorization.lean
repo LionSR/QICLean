@@ -49,6 +49,7 @@ def replicaGoodCopyRemainder (Ω : A → ℂ) {k : ℕ} (B : Finset (Fin k))
     (∏ i : {i // i ∉ B}, star (Ω (g i))) *
       u ((ManyBody.cutEquiv (fun _ : Fin k ↦ A) B).symm (bc.1, g), bc.2)
 
+omit [Fintype A] in
 private theorem excitation_row_factor (Ω : A → ℂ) {k : ℕ} (B : Finset (Fin k))
     (b : ManyBody.RegionConfig (fun _ : Fin k ↦ A) B)
     (g : ManyBody.ComplConfig (fun _ : Fin k ↦ A) B) (y : Fin k → A) :
@@ -57,7 +58,7 @@ private theorem excitation_row_factor (Ω : A → ℂ) {k : ℕ} (B : Finset (Fi
     (∏ i : {i // i ∉ B}, Ω (g i)) *
       ((∏ i : B, (1 - vecMulVec Ω (star Ω)) (b i) (y i)) *
         ∏ i : {i // i ∉ B}, star (Ω (y i))) := by
-  simp only [replicaExcitationProjection, finKronecker_apply, Matrix.ite_apply,
+  simp only [replicaExcitationProjection, piKronecker_apply, Matrix.ite_apply,
     Finset.prod_ite, Finset.filter_mem_eq_inter, Finset.univ_inter,
     Finset.filter_notMem_eq_sdiff, ← Finset.compl_eq_univ_sdiff]
   rw [← Finset.prod_coe_sort B,

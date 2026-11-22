@@ -6,6 +6,7 @@ Authors: QICLean contributors
 import QICLean.ManyBody.Sites.Support
 import QICLean.Spectral.Eigenvalue.HermitianExtremalEigenvalues
 import QICLean.Algebra.Unitary.MatrixUnitaryBetween
+import QICLean.Algebra.Kronecker.PiKronecker
 import Mathlib.Analysis.CStarAlgebra.Hom
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Analysis.Normed.Algebra.Exponential
@@ -22,13 +23,14 @@ on the configurations of `D` is the operator `K ⊗ 1` on `⊗_v ℂ^{X v}`, whi
 the sites of `D` and as the identity elsewhere. Placement is a unital `*`-homomorphism of the
 matrix algebra of the region into that of the system, and its range is exactly the
 subalgebra of operators supported on `D`. When every basis type is nonempty it is injective,
-preserves the operator norm, and reflects the order.
+preserves the operator norm, and reflects the order. The product operator `⊗_v m_v` of on-site
+matrices is the Kronecker product `Matrix.piKronecker m`; the facts about it that involve a
+region, such as its support and its form across a cut, are proved here.
 
 ## Main definitions
 
 * `ManyBody.place` — the placement `K ↦ K ⊗ 1` of a regional matrix.
 * `ManyBody.placeHom` — the placement as a `*`-homomorphism.
-* `ManyBody.prodOp` — the product operator `⊗_v m_v` of on-site matrices.
 
 ## Implementation notes
 
@@ -59,8 +61,8 @@ its restriction to the region.
   operators, with the induction principle and the extension of bilinear identities.
 * `ManyBody.exists_eq_one_kronecker_of_mem_supportedOperators` — an operator supported away from
   `D` is `1 ⊗ B₂` along the cut at `D`.
-* `ManyBody.trace_prodOp`, `ManyBody.trace_prodOp_mul_mul` — the trace of a product operator, and
-  the factorization of a product state over disjoint regions.
+* `ManyBody.trace_piKronecker_mul_mul` — the factorization of a product state over disjoint
+  regions.
 * `ManyBody.posSemidef_place`, `ManyBody.posSemidef_place_iff`, `ManyBody.place_le_place_iff`.
 -/
 
@@ -299,78 +301,13 @@ variable [∀ v, Fintype (X v)]
 
 variable {Y Z : V → Type*}
 
-/-- The product operator `⊗_v m_v` of a family of on-site matrices `m_v` from `ℂ^{Y v}` to
-`ℂ^{X v}`, with matrix elements `∏_v m_v(σ_v, τ_v)`. The on-site matrices may be rectangular;
-for a square family it is an operator on `⊗_v ℂ^{X v}`. -/
-def prodOp (m : (v : V) → Matrix (X v) (Y v) ℂ) : Matrix (Config X) (Config Y) ℂ :=
-  Matrix.of fun σ τ ↦ ∏ v, m v (σ v) (τ v)
-
-omit [DecidableEq V] [∀ v, DecidableEq (X v)] [∀ v, Fintype (X v)] in
-@[simp]
-theorem prodOp_apply (m : (v : V) → Matrix (X v) (Y v) ℂ) (σ : Config X) (τ : Config Y) :
-    prodOp m σ τ = ∏ v, m v (σ v) (τ v) :=
-  rfl
-
-omit [∀ v, DecidableEq (X v)] [∀ v, Fintype (X v)] in
-/-- Product operators of composable families multiply sitewise. -/
-theorem prodOp_mul [∀ v, Fintype (Y v)] (m : (v : V) → Matrix (X v) (Y v) ℂ)
-    (m' : (v : V) → Matrix (Y v) (Z v) ℂ) :
-    prodOp m * prodOp m' = prodOp fun v ↦ m v * m' v := by
-  ext σ τ
-  simp only [prodOp, Matrix.mul_apply, Matrix.of_apply, Fintype.prod_sum,
-    Finset.prod_mul_distrib]
-
-omit [DecidableEq V] [∀ v, Fintype (X v)] in
-@[simp]
-theorem prodOp_one : prodOp (fun v ↦ (1 : Matrix (X v) (X v) ℂ)) = 1 := by
-  ext σ τ
-  simp only [prodOp, Matrix.of_apply, Matrix.one_apply]
-  by_cases h : σ = τ
-  · subst h
-    simp
-  · obtain ⟨v, hv⟩ := Function.ne_iff.mp h
-    rw [ite_eq_right h]
-    exact Finset.prod_eq_zero (Finset.mem_univ v) (ite_eq_right hv)
-
-omit [∀ v, DecidableEq (X v)] in
-/-- The trace of a product operator is the product of the traces. -/
-theorem trace_prodOp (m : (v : V) → Matrix (X v) (X v) ℂ) :
-    (prodOp m).trace = ∏ v, (m v).trace := by
-  simp only [trace, diag, prodOp_apply, Fintype.prod_sum]
-
-omit [DecidableEq V] [∀ v, Fintype (X v)] [∀ v, DecidableEq (X v)] in
-/-- The adjoint of a product operator is the product of the adjoints. -/
-theorem conjTranspose_prodOp (m : (v : V) → Matrix (X v) (Y v) ℂ) :
-    (prodOp m)ᴴ = prodOp fun v ↦ (m v)ᴴ := by
-  ext σ τ
-  simp [prodOp, Matrix.conjTranspose_apply]
-
-/-- A product of unitaries is unitary. -/
-theorem prodOp_mem_unitary {m : (v : V) → Matrix (X v) (X v) ℂ}
-    (hm : ∀ v, m v ∈ unitary (Matrix (X v) (X v) ℂ)) :
-    prodOp m ∈ unitary (Matrix (Config X) (Config X) ℂ) := by
-  refine Matrix.mem_unitaryGroup_iff.mpr ?_
-  rw [star_eq_conjTranspose, conjTranspose_prodOp, prodOp_mul]
-  simp only [← star_eq_conjTranspose, fun v ↦ Unitary.mul_star_self_of_mem (hm v)]
-  exact prodOp_one
-
-omit [DecidableEq V] [∀ v, DecidableEq (X v)] [∀ v, Fintype (X v)] in
-/-- The product of the basis inclusions along injections `e v` is the basis inclusion along the
-product injection. -/
-theorem prodOp_basisInclusion [∀ v, DecidableEq (Y v)]
-    (e : ∀ v, X v ↪ Y v) :
-    prodOp (fun v ↦ basisInclusion (e v)) =
-      basisInclusion (Function.Embedding.piCongrRight e) := by
-  ext y x
-  simp [prodOp_apply, basisInclusion, one_apply, funext_iff, Finset.prod_ite_zero]
-
 /-- A product operator `⊗_v m_v` with `m_v = 1` outside `D` is supported on `D`. -/
-theorem prodOp_mem_supportedOperators {m : (v : V) → Matrix (X v) (X v) ℂ}
-    (hm : ∀ v ∉ D, m v = 1) : prodOp m ∈ supportedOperators X D := by
+theorem piKronecker_mem_supportedOperators {m : (v : V) → Matrix (X v) (X v) ℂ}
+    (hm : ∀ v ∉ D, m v = 1) : piKronecker m ∈ supportedOperators X D := by
   refine ⟨fun σ τ ⟨v, hv, hne⟩ ↦ ?_, fun σ τ σ' τ' h1 h2 h3 h4 ↦ ?_⟩
-  · rw [prodOp_apply]
+  · rw [piKronecker_apply]
     exact Finset.prod_eq_zero (Finset.mem_univ v) (by rw [hm v hv, one_apply_ne hne])
-  · simp only [prodOp_apply]
+  · simp only [piKronecker_apply]
     refine Finset.prod_congr rfl fun v _ ↦ ?_
     by_cases hv : v ∈ D
     · rw [h1 v hv, h2 v hv]
@@ -379,12 +316,12 @@ theorem prodOp_mem_supportedOperators {m : (v : V) → Matrix (X v) (X v) ℂ}
 omit [∀ v, DecidableEq (X v)] [∀ v, Fintype (X v)] in
 /-- In the coordinates of the cut along `D`, a product operator is the product over the sites
 of `D` tensored with the product over the other sites. -/
-theorem reindex_cutEquiv_prodOp (m : (v : V) → Matrix (X v) (Y v) ℂ) :
-    reindex (cutEquiv X D) (cutEquiv Y D) (prodOp m) =
-      prodOp (X := fun w : {v // v ∈ D} ↦ X w.1) (Y := fun w ↦ Y w.1) (fun w ↦ m w.1) ⊗ₖ
-        prodOp (X := fun w : {v // v ∉ D} ↦ X w.1) (Y := fun w ↦ Y w.1) (fun w ↦ m w.1) := by
+theorem reindex_cutEquiv_piKronecker (m : (v : V) → Matrix (X v) (Y v) ℂ) :
+    reindex (cutEquiv X D) (cutEquiv Y D) (piKronecker m) =
+      piKronecker (ι := fun w : {v // v ∈ D} ↦ X w.1) (κ := fun w ↦ Y w.1) (fun w ↦ m w.1) ⊗ₖ
+        piKronecker (ι := fun w : {v // v ∉ D} ↦ X w.1) (κ := fun w ↦ Y w.1) (fun w ↦ m w.1) := by
   ext ⟨a, x⟩ ⟨b, y⟩
-  simp only [reindex_apply, submatrix_apply, kroneckerMap_apply, prodOp_apply]
+  simp only [reindex_apply, submatrix_apply, kroneckerMap_apply, piKronecker_apply]
   rw [← Finset.prod_mul_prod_compl D,
     Finset.prod_subtype (F := inferInstance) D (fun _ ↦ Iff.rfl),
     Finset.prod_subtype (F := inferInstance) Dᶜ (fun _ ↦ Finset.mem_compl)]
@@ -396,72 +333,47 @@ theorem reindex_cutEquiv_prodOp (m : (v : V) → Matrix (X v) (Y v) ℂ) :
 
 /-- **Intertwining placements.** If the product of the on-site matrices over the sites of `D`
 intertwines `K'` with `K`, the product over all sites intertwines their placements. -/
-theorem prodOp_mul_place [∀ v, Fintype (Y v)] [∀ v, DecidableEq (Y v)]
+theorem piKronecker_mul_place [∀ v, Fintype (Y v)] [∀ v, DecidableEq (Y v)]
     (m : (v : V) → Matrix (X v) (Y v) ℂ) {K : Matrix (RegionConfig X D) (RegionConfig X D) ℂ}
     {K' : Matrix (RegionConfig Y D) (RegionConfig Y D) ℂ}
-    (h : prodOp (X := fun w : {v // v ∈ D} ↦ X w.1) (Y := fun w ↦ Y w.1) (fun w ↦ m w.1) * K' =
-      K * prodOp (X := fun w : {v // v ∈ D} ↦ X w.1) (Y := fun w ↦ Y w.1) (fun w ↦ m w.1)) :
-    prodOp m * place D K' = place D K * prodOp m := by
+    (h : piKronecker (ι := fun w : {v // v ∈ D} ↦ X w.1) (κ := fun w ↦ Y w.1) (fun w ↦ m w.1) * K' =
+      K * piKronecker (ι := fun w : {v // v ∈ D} ↦ X w.1) (κ := fun w ↦ Y w.1) (fun w ↦ m w.1)) :
+    piKronecker m * place D K' = place D K * piKronecker m := by
   apply (reindex (cutEquiv X D) (cutEquiv Y D)).injective
   rw [reindex_apply, reindex_apply,
-    ← submatrix_mul_equiv (prodOp m) (place D K') _ (cutEquiv Y D).symm _,
-    ← submatrix_mul_equiv (place D K) (prodOp m) _ (cutEquiv X D).symm _,
+    ← submatrix_mul_equiv (piKronecker m) (place D K') _ (cutEquiv Y D).symm _,
+    ← submatrix_mul_equiv (place D K) (piKronecker m) _ (cutEquiv X D).symm _,
     ← reindex_apply, ← reindex_apply, ← reindex_apply,
-    reindex_cutEquiv_prodOp,
+    reindex_cutEquiv_piKronecker,
     show reindex (cutEquiv X D) (cutEquiv X D) (place D K) = _ from cutOperator_place K,
     show reindex (cutEquiv Y D) (cutEquiv Y D) (place D K') = _ from cutOperator_place K',
     ← mul_kronecker_mul, ← mul_kronecker_mul, h, Matrix.mul_one, Matrix.one_mul]
 
-omit [DecidableEq V] [∀ v, DecidableEq (X v)] [∀ v, Fintype (X v)] in
-/-- A product operator vanishes exactly when one of its on-site matrices does. -/
-theorem prodOp_eq_zero_iff (m : (v : V) → Matrix (X v) (Y v) ℂ) :
-    prodOp m = 0 ↔ ∃ v, m v = 0 := by
-  constructor
-  · intro h
-    by_contra! hm
-    have hentry (v : V) : ∃ a b, m v a b ≠ 0 := by
-      by_contra! h'
-      exact hm v (Matrix.ext h')
-    choose a b hab using hentry
-    have := congrFun (congrFun h a) b
-    rw [prodOp_apply, Matrix.zero_apply] at this
-    exact Finset.prod_ne_zero_iff.mpr (fun v _ ↦ hab v) this
-  · rintro ⟨v, hv⟩
-    ext σ τ
-    rw [prodOp_apply, Matrix.zero_apply]
-    exact Finset.prod_eq_zero (Finset.mem_univ v) (by rw [hv, Matrix.zero_apply])
-
-omit [DecidableEq V] [∀ v, DecidableEq (X v)] [∀ v, Fintype (X v)] in
-/-- A product of nonzero on-site matrices is nonzero. -/
-theorem prodOp_ne_zero (m : (v : V) → Matrix (X v) (Y v) ℂ) (hm : ∀ v, m v ≠ 0) :
-    prodOp m ≠ 0 :=
-  fun h ↦ let ⟨v, hv⟩ := (prodOp_eq_zero_iff m).mp h; hm v hv
-
 omit [∀ v, Fintype (X v)] in
 /-- A product operator `⊗_v m_v` with `m_v = 1` outside `D` is the placement of the product over
 the sites of `D`. -/
-theorem prodOp_eq_place (m : (v : V) → Matrix (X v) (X v) ℂ) (hm : ∀ v ∉ D, m v = 1) :
-    prodOp m = place D (prodOp (X := fun w : {v // v ∈ D} ↦ X w.1) fun w ↦ m w.1) := by
+theorem piKronecker_eq_place (m : (v : V) → Matrix (X v) (X v) ℂ) (hm : ∀ v ∉ D, m v = 1) :
+    piKronecker m = place D (piKronecker (ι := fun w : {v // v ∈ D} ↦ X w.1) fun w ↦ m w.1) := by
   apply (reindex (cutEquiv X D) (cutEquiv X D)).injective
-  rw [reindex_cutEquiv_prodOp,
+  rw [reindex_cutEquiv_piKronecker,
     show reindex (cutEquiv X D) (cutEquiv X D) (place D _) = _ from cutOperator_place _,
     show (fun w : {v // v ∉ D} ↦ m w.1) = fun (w : {v // v ∉ D}) ↦ (1 : Matrix (X w.1) (X w.1) ℂ)
-      from funext fun w ↦ hm w.1 w.2, prodOp_one]
+      from funext fun w ↦ hm w.1 w.2, piKronecker_one]
 
 /-- A nonzero product over the sites outside `D` cancels: a placed matrix times a product
 operator vanishes exactly when the regional matrix times the product over `D` does. -/
-theorem place_mul_prodOp_eq_zero_iff (m : (v : V) → Matrix (X v) (Y v) ℂ)
+theorem place_mul_piKronecker_eq_zero_iff (m : (v : V) → Matrix (X v) (Y v) ℂ)
     (K : Matrix (RegionConfig X D) (RegionConfig X D) ℂ)
-    (hm : prodOp (X := fun w : {v // v ∉ D} ↦ X w.1) (Y := fun w ↦ Y w.1)
+    (hm : piKronecker (ι := fun w : {v // v ∉ D} ↦ X w.1) (κ := fun w ↦ Y w.1)
       (fun w ↦ m w.1) ≠ 0) :
-    place D K * prodOp m = 0 ↔
-      K * prodOp (X := fun w : {v // v ∈ D} ↦ X w.1) (Y := fun w ↦ Y w.1) (fun w ↦ m w.1) =
+    place D K * piKronecker m = 0 ↔
+      K * piKronecker (ι := fun w : {v // v ∈ D} ↦ X w.1) (κ := fun w ↦ Y w.1) (fun w ↦ m w.1) =
         0 := by
-  have hcut : reindex (cutEquiv X D) (cutEquiv Y D) (place D K * prodOp m) =
-      (K * prodOp (X := fun w : {v // v ∈ D} ↦ X w.1) (Y := fun w ↦ Y w.1) (fun w ↦ m w.1)) ⊗ₖ
-        prodOp (X := fun w : {v // v ∉ D} ↦ X w.1) (Y := fun w ↦ Y w.1) (fun w ↦ m w.1) := by
-    rw [reindex_apply, ← submatrix_mul_equiv (place D K) (prodOp m) _ (cutEquiv X D).symm _,
-      ← reindex_apply, ← reindex_apply, reindex_cutEquiv_prodOp,
+  have hcut : reindex (cutEquiv X D) (cutEquiv Y D) (place D K * piKronecker m) =
+      (K * piKronecker (ι := fun w : {v // v ∈ D} ↦ X w.1) (κ := fun w ↦ Y w.1) (fun w ↦ m w.1)) ⊗ₖ
+        piKronecker (ι := fun w : {v // v ∉ D} ↦ X w.1) (κ := fun w ↦ Y w.1) (fun w ↦ m w.1) := by
+    rw [reindex_apply, ← submatrix_mul_equiv (place D K) (piKronecker m) _ (cutEquiv X D).symm _,
+      ← reindex_apply, ← reindex_apply, reindex_cutEquiv_piKronecker,
       show reindex (cutEquiv X D) (cutEquiv X D) (place D K) = _ from cutOperator_place K,
       ← mul_kronecker_mul, Matrix.one_mul]
   have h0 : reindex (cutEquiv X D) (cutEquiv Y D) (0 : Matrix (Config X) (Config Y) ℂ) = 0 :=
@@ -469,8 +381,8 @@ theorem place_mul_prodOp_eq_zero_iff (m : (v : V) → Matrix (X v) (Y v) ℂ)
   rw [← (reindex (cutEquiv X D) (cutEquiv Y D)).injective.eq_iff, hcut, h0]
   constructor
   · intro h
-    obtain ⟨τ, ρ, hτρ⟩ : ∃ τ ρ, prodOp (X := fun w : {v // v ∉ D} ↦ X w.1)
-        (Y := fun w ↦ Y w.1) (fun w ↦ m w.1) τ ρ ≠ 0 := by
+    obtain ⟨τ, ρ, hτρ⟩ : ∃ τ ρ, piKronecker (ι := fun w : {v // v ∉ D} ↦ X w.1)
+        (κ := fun w ↦ Y w.1) (fun w ↦ m w.1) τ ρ ≠ 0 := by
       by_contra! hz
       exact hm (Matrix.ext hz)
     ext α β
@@ -485,13 +397,13 @@ omit [∀ v, Fintype (X v)] in
 of the region and the identity at the other sites. -/
 theorem place_single (a b : RegionConfig X D) :
     place D (single a b (1 : ℂ)) =
-      prodOp fun v ↦ if h : v ∈ D then single (a ⟨v, h⟩) (b ⟨v, h⟩) (1 : ℂ) else 1 := by
+      piKronecker fun v ↦ if h : v ∈ D then single (a ⟨v, h⟩) (b ⟨v, h⟩) (1 : ℂ) else 1 := by
   ext σ τ
   have hf : ∀ v, (if h : v ∈ D then single (a ⟨v, h⟩) (b ⟨v, h⟩) (1 : ℂ) else 1) (σ v) (τ v) =
       if (if h : v ∈ D then a ⟨v, h⟩ = σ v ∧ b ⟨v, h⟩ = τ v else σ v = τ v) then 1 else 0 := by
     intro v
     by_cases h : v ∈ D <;> simp [h, single_apply, one_apply]
-  rw [place_apply, prodOp_apply, Finset.prod_congr rfl fun v _ ↦ hf v, Fintype.prod_boole]
+  rw [place_apply, piKronecker_apply, Finset.prod_congr rfl fun v _ ↦ hf v, Fintype.prod_boole]
   by_cases hout : ∀ v ∉ D, σ v = τ v
   · rw [ite_eq_left hout, single_apply]
     refine if_congr ⟨fun ⟨ha, hb⟩ v ↦ ?_, fun h ↦ ⟨funext fun v ↦ ?_, funext fun v ↦ ?_⟩⟩ rfl rfl
@@ -515,7 +427,7 @@ are the linear combinations of the product operators `⊗_v m_v` with `m_v = 1` 
 theorem supportedOperators_toSubmodule_eq_span (D : Finset V) :
     Subalgebra.toSubmodule (supportedOperators X D).toSubalgebra =
       Submodule.span ℂ {A | ∃ m : (v : V) → Matrix (X v) (X v) ℂ, (∀ v ∉ D, m v = 1) ∧
-        A = prodOp m} := by
+        A = piKronecker m} := by
   refine le_antisymm (fun A hA ↦ ?_) (Submodule.span_le.mpr ?_)
   · obtain ⟨K, rfl⟩ := exists_eq_place_of_mem_supportedOperators hA
     rw [matrix_eq_sum_single K, place_sum]
@@ -528,7 +440,7 @@ theorem supportedOperators_toSubmodule_eq_span (D : Finset V) :
       if h : v ∈ D then single (a ⟨v, h⟩) (b ⟨v, h⟩) (1 : ℂ) else 1,
       fun v hv ↦ dite_eq_right hv, place_single a b⟩)
   · rintro _ ⟨m, hm, rfl⟩
-    exact prodOp_mem_supportedOperators hm
+    exact piKronecker_mem_supportedOperators hm
 
 /-- **Induction over product operators.** A property of the operators supported on `D` holds
 for all of them if it holds for the product operators `⊗_v m_v` with `m_v = 1` outside `D` and
@@ -537,13 +449,13 @@ is closed under sums and scalar multiples. -/
 theorem supportedOperators_induction {D : Finset V}
     {p : (A : Matrix (Config X) (Config X) ℂ) → A ∈ supportedOperators X D → Prop}
     (prod : ∀ (m : (v : V) → Matrix (X v) (X v) ℂ) (hm : ∀ v ∉ D, m v = 1),
-      p (prodOp m) (prodOp_mem_supportedOperators hm))
+      p (piKronecker m) (piKronecker_mem_supportedOperators hm))
     (add : ∀ A B hA hB, p A hA → p B hB → p (A + B) (add_mem hA hB))
     (smul : ∀ (c : ℂ) A hA, p A hA → p (c • A) (SMulMemClass.smul_mem c hA))
     {A : Matrix (Config X) (Config X) ℂ} (hA : A ∈ supportedOperators X D) : p A hA := by
   have hiff (B : Matrix (Config X) (Config X) ℂ) : B ∈ supportedOperators X D ↔
       B ∈ Submodule.span ℂ {A | ∃ m : (v : V) → Matrix (X v) (X v) ℂ, (∀ v ∉ D, m v = 1) ∧
-        A = prodOp m} := by
+        A = piKronecker m} := by
     rw [← supportedOperators_toSubmodule_eq_span]
     rfl
   refine Submodule.span_induction (p := fun B _ ↦ ∀ hB : B ∈ supportedOperators X D, p B hB)
@@ -565,7 +477,7 @@ theorem eq_of_mem_supportedOperators₂ {M : Type*} [AddCommMonoid M] [Module �
     {D D' : Finset V}
     (f g : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config X) (Config X) ℂ →ₗ[ℂ] M)
     (h : ∀ m m' : (v : V) → Matrix (X v) (X v) ℂ, (∀ v ∉ D, m v = 1) → (∀ v ∉ D', m' v = 1) →
-      f (prodOp m) (prodOp m') = g (prodOp m) (prodOp m'))
+      f (piKronecker m) (piKronecker m') = g (piKronecker m) (piKronecker m'))
     {A B : Matrix (Config X) (Config X) ℂ} (hA : A ∈ supportedOperators X D)
     (hB : B ∈ supportedOperators X D') : f A B = g A B := by
   induction hA using supportedOperators_induction with
@@ -579,20 +491,21 @@ theorem eq_of_mem_supportedOperators₂ {M : Type*} [AddCommMonoid M] [Module �
 
 /-- A product state with unit-trace factors factorizes over operators supported on disjoint
 regions: `tr(σ A B) = tr(σ A) tr(σ B)`. -/
-theorem trace_prodOp_mul_mul (σ : (v : V) → Matrix (X v) (X v) ℂ) (hσ : ∀ v, (σ v).trace = 1)
+theorem trace_piKronecker_mul_mul (σ : (v : V) → Matrix (X v) (X v) ℂ) (hσ : ∀ v, (σ v).trace = 1)
     {D D' : Finset V} (hDD' : Disjoint D D') {A B : Matrix (Config X) (Config X) ℂ}
     (hA : A ∈ supportedOperators X D) (hB : B ∈ supportedOperators X D') :
-    (prodOp σ * (A * B)).trace = (prodOp σ * A).trace * (prodOp σ * B).trace := by
+    (piKronecker σ * (A * B)).trace = (piKronecker σ * A).trace * (piKronecker σ * B).trace := by
   let f : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config X) (Config X) ℂ →ₗ[ℂ] ℂ :=
-    LinearMap.mk₂ ℂ (fun A B ↦ (prodOp σ * (A * B)).trace)
+    LinearMap.mk₂ ℂ (fun A B ↦ (piKronecker σ * (A * B)).trace)
       (by simp [Matrix.add_mul, Matrix.mul_add]) (by simp)
       (by simp [Matrix.mul_add]) (by simp)
   let g : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config X) (Config X) ℂ →ₗ[ℂ] ℂ :=
-    LinearMap.mk₂ ℂ (fun A B ↦ (prodOp σ * A).trace * (prodOp σ * B).trace)
+    LinearMap.mk₂ ℂ (fun A B ↦ (piKronecker σ * A).trace * (piKronecker σ * B).trace)
       (by simp [Matrix.mul_add, add_mul]) (by simp [mul_assoc])
       (by simp [mul_add]) (by simp [mul_left_comm])
   refine eq_of_mem_supportedOperators₂ f g (fun m m' hm hm' ↦ ?_) hA hB
-  simp only [f, g, LinearMap.mk₂_apply, prodOp_mul, trace_prodOp, ← Finset.prod_mul_distrib]
+  simp only [f, g, LinearMap.mk₂_apply, piKronecker_mul, trace_piKronecker,
+    ← Finset.prod_mul_distrib]
   refine Finset.prod_congr rfl fun v _ ↦ ?_
   by_cases hv : v ∈ D
   · rw [hm' v (Finset.disjoint_left.mp hDD' hv), Matrix.mul_one, Matrix.mul_one, hσ, mul_one]
@@ -607,12 +520,12 @@ theorem exists_eq_one_kronecker_of_mem_supportedOperators {D R : Finset V} (h : 
         (cutEquiv X D) (cutEquiv X D) := by
   induction hB using supportedOperators_induction with
   | prod m hm =>
-    refine ⟨prodOp (X := fun w : {v // v ∉ D} ↦ X w.1) fun w ↦ m w.1, ?_⟩
-    have h1 : prodOp (X := fun w : {v // v ∈ D} ↦ X w.1) (fun w ↦ m w.1) = 1 := by
+    refine ⟨piKronecker (ι := fun w : {v // v ∉ D} ↦ X w.1) fun w ↦ m w.1, ?_⟩
+    have h1 : piKronecker (ι := fun w : {v // v ∈ D} ↦ X w.1) (fun w ↦ m w.1) = 1 := by
       rw [show (fun w : {v // v ∈ D} ↦ m w.1) =
           fun w : {v // v ∈ D} ↦ (1 : Matrix (X w.1) (X w.1) ℂ) from
-        funext fun w ↦ hm w.1 fun hw ↦ Finset.disjoint_left.mp h hw w.2, prodOp_one]
-    rw [← h1, ← reindex_cutEquiv_prodOp, reindex_apply]
+        funext fun w ↦ hm w.1 fun hw ↦ Finset.disjoint_left.mp h hw w.2, piKronecker_one]
+    rw [← h1, ← reindex_cutEquiv_piKronecker, reindex_apply]
     simp
   | add A B _ _ ihA ihB =>
     obtain ⟨A₂, rfl⟩ := ihA

@@ -37,7 +37,7 @@ constant-depth teleportation of arXiv:2307.01696, paragraph "Tree-RG circuit wit
 
 * `QuantumCircuit.Layer.kraus_ofList` — the Kraus operator of a layer given by a list is the
   product of its gates along the list.
-* `QuantumCircuit.sitePermOp_mul_prodOp` — moving one-site operators across a permutation of
+* `QuantumCircuit.sitePermOp_mul_piKronecker` — moving one-site operators across a permutation of
   sites.
 * `QuantumCircuit.TeleportHop.chainPre_mulVec` — the chains of hops before the correction.
 * `QuantumCircuit.TeleportHop.depth_round_le`, `QuantumCircuit.TeleportHop.forall_round`,
@@ -176,13 +176,13 @@ end Layer
 /-! ### Permutations of sites and product operators -/
 
 /-- **Moving one-site operators across a permutation of sites.** -/
-theorem sitePermOp_mul_prodOp [Fintype S] {α : Type} [Fintype α] [DecidableEq α]
+theorem sitePermOp_mul_piKronecker [Fintype S] {α : Type} [Fintype α] [DecidableEq α]
     (π : Equiv.Perm S) (g : S → Matrix α α ℂ) :
-    sitePermOp π * prodOp (X := fun _ ↦ α) g =
-      prodOp (X := fun _ ↦ α) (fun i ↦ g (π.symm i)) * sitePermOp π := by
+    sitePermOp π * piKronecker (ι := fun _ ↦ α) g =
+      piKronecker (ι := fun _ ↦ α) (fun i ↦ g (π.symm i)) * sitePermOp π := by
   refine ext_iff_mulVec.mpr fun v ↦ funext fun y ↦ ?_
   rw [← mulVec_mulVec, ← mulVec_mulVec, sitePermOp_mulVec, sitePermOp_mulVec]
-  simp only [mulVec, dotProduct, prodOp_apply]
+  simp only [mulVec, dotProduct, piKronecker_apply]
   refine Fintype.sum_equiv (Equiv.arrowCongr π (Equiv.refl α)) _ _ fun x ↦ ?_
   have hx : (Equiv.arrowCongr π (Equiv.refl α) x) ∘ π = x := by
     funext s
@@ -464,7 +464,7 @@ simultaneous measurements"). -/
 theorem chainPre_mulVec : ∀ {hs : List (TeleportHop Γ)}, Valid hs → ∀ (z : Config (Qudits S d))
     {v : Config (Qudits S d) → ℂ}, IsZeroOn (pairSites hs) v →
     chainPre hs z *ᵥ v = ((d : ℂ) ^ hs.length)⁻¹ •
-      (prodOp (chainFrame hs z) *ᵥ (sitePermOp (sitePerm hs) *ᵥ v))
+      (piKronecker (chainFrame hs z) *ᵥ (sitePermOp (sitePerm hs) *ᵥ v))
   | [], _, z, v, _ => by
     have hP : place (measuredSites ([] : List (TeleportHop Γ)))
         (single (fun i ↦ z i) (fun i ↦ z i) (1 : ℂ)) = 1 :=
@@ -489,17 +489,17 @@ theorem chainPre_mulVec : ∀ {hs : List (TeleportHop Γ)}, Valid hs → ∀ (z 
     have hge : g h.e = 1 := chainFrame_of_notMem hs z hv.2.1
     have hgf : g h.f = 1 := chainFrame_of_notMem hs z hv.2.2.1
     -- Split off the unitary at `c`.
-    have hsplit : prodOp g = prodOp (Function.update g h.c 1) *
-        prodOp (Function.update (fun _ ↦ (1 : Matrix (Fin d) (Fin d) ℂ)) h.c U) := by
-      rw [prodOp_mul]
+    have hsplit : piKronecker g = piKronecker (Function.update g h.c 1) *
+        piKronecker (Function.update (fun _ ↦ (1 : Matrix (Fin d) (Fin d) ℂ)) h.c U) := by
+      rw [piKronecker_mul]
       congr 1
       funext i
       by_cases hi : i = h.c
       · subst hi; simp [U]
       · simp [Function.update_of_ne hi]
-    have hcomm : Commute (h.pre z) (prodOp (Function.update g h.c 1)) := by
+    have hcomm : Commute (h.pre z) (piKronecker (Function.update g h.c 1)) := by
       refine commute_of_mem_supportedOperators_of_disjoint (pre_mem_supportedOperators h z)
-        (prodOp_mem_supportedOperators fun i hi ↦ ?_) disjoint_compl_right
+        (piKronecker_mem_supportedOperators fun i hi ↦ ?_) disjoint_compl_right
       simp only [Finset.mem_compl, not_not, sites, Finset.mem_insert,
         Finset.mem_singleton] at hi
       rcases hi with rfl | rfl | rfl
@@ -509,13 +509,13 @@ theorem chainPre_mulVec : ∀ {hs : List (TeleportHop Γ)}, Valid hs → ∀ (z 
     have hw : IsZeroOn {h.e, h.f} w :=
       (hz.mono Finset.subset_union_left).sitePermOp_sitePerm_mulVec hef
     have hw' : IsZeroOn {h.e, h.f}
-        (prodOp (Function.update (fun _ ↦ (1 : Matrix (Fin d) (Fin d) ℂ)) h.c U) *ᵥ w) :=
-      hw.prodOp_update_one_mulVec hc U
+        (piKronecker (Function.update (fun _ ↦ (1 : Matrix (Fin d) (Fin d) ℂ)) h.c U) *ᵥ w) :=
+      hw.piKronecker_update_one_mulVec hc U
     have hswap : sitePermOp (Equiv.swap h.c h.f) *
-        prodOp (Function.update (fun _ ↦ (1 : Matrix (Fin d) (Fin d) ℂ)) h.c U) =
-        prodOp (Function.update (fun _ ↦ (1 : Matrix (Fin d) (Fin d) ℂ)) h.f U) *
+        piKronecker (Function.update (fun _ ↦ (1 : Matrix (Fin d) (Fin d) ℂ)) h.c U) =
+        piKronecker (Function.update (fun _ ↦ (1 : Matrix (Fin d) (Fin d) ℂ)) h.f U) *
           sitePermOp (Equiv.swap h.c h.f) := by
-      rw [sitePermOp_mul_prodOp]
+      rw [sitePermOp_mul_piKronecker]
       congr 2
       funext i
       rw [Equiv.symm_swap]
@@ -527,10 +527,10 @@ theorem chainPre_mulVec : ∀ {hs : List (TeleportHop Γ)}, Valid hs → ∀ (z 
             Function.update_of_ne hi]
         · rw [Equiv.swap_apply_of_ne_of_ne hi' hi, Function.update_of_ne hi',
             Function.update_of_ne hi]
-    have hframe : prodOp (Function.update g h.c 1) * (prodOp (h.frame z) *
-        prodOp (Function.update (fun _ ↦ (1 : Matrix (Fin d) (Fin d) ℂ)) h.f U)) =
-          prodOp (chainFrame (h :: hs) z) := by
-      rw [prodOp_mul, prodOp_mul]
+    have hframe : piKronecker (Function.update g h.c 1) * (piKronecker (h.frame z) *
+        piKronecker (Function.update (fun _ ↦ (1 : Matrix (Fin d) (Fin d) ℂ)) h.f U)) =
+          piKronecker (chainFrame (h :: hs) z) := by
+      rw [piKronecker_mul, piKronecker_mul]
       congr 1
       funext i
       simp only [chainFrame, Matrix.mul_assoc]
@@ -538,8 +538,8 @@ theorem chainPre_mulVec : ∀ {hs : List (TeleportHop Γ)}, Valid hs → ∀ (z 
     rw [chainPre_cons hv, ← mulVec_mulVec, chainPre_mulVec hv.1 z hzhs, mulVec_smul, hsplit,
       ← mulVec_mulVec, mulVec_mulVec (M := h.pre z), hcomm.eq, ← mulVec_mulVec,
       h.pre_mulVec z hw', mulVec_smul, mulVec_mulVec (M := sitePermOp (Equiv.swap h.c h.f)),
-      hswap, ← mulVec_mulVec, mulVec_mulVec (M := prodOp (h.frame z)),
-      mulVec_mulVec (M := prodOp _), hframe, smul_smul, sitePerm, ← sitePermOp_mul,
+      hswap, ← mulVec_mulVec, mulVec_mulVec (M := piKronecker (h.frame z)),
+      mulVec_mulVec (M := piKronecker _), hframe, smul_smul, sitePerm, ← sitePermOp_mul,
       ← mulVec_mulVec, List.length_cons, pow_succ, mul_inv]
 
 /-! ### The teleportation round -/
@@ -621,17 +621,18 @@ theorem isImplementationOn_round (u : UnitaryCircuit Γ (Qudits S d))
   set z := extendOutcome hs m
   have hm : m = fun i : {i // i ∈ measuredSites hs} ↦ z i :=
     funext fun i ↦ by simp [z, extendOutcome, i.2]
-  have hstar : prodOp (fun i ↦ star (chainFrame hs z i)) * prodOp (chainFrame hs z) = 1 := by
-    rw [prodOp_mul]
-    simp only [Unitary.star_mul_self_of_mem (chainFrame_mem_unitaryGroup hs z _), prodOp_one]
+  have hstar :
+      piKronecker (fun i ↦ star (chainFrame hs z i)) * piKronecker (chainFrame hs z) = 1 := by
+    rw [piKronecker_mul]
+    simp only [Unitary.star_mul_self_of_mem (chainFrame_mem_unitaryGroup hs z _), piKronecker_one]
   have hP : place (measuredSites hs) (single m m (1 : ℂ)) =
       place (measuredSites hs) (single (fun i ↦ z i) (fun i ↦ z i) 1) := by
     rw [← hm]
   rw [hP, op_roundUnitary]
-  have hK : prodOp (fun i ↦ star (chainFrame hs z i)) *
+  have hK : piKronecker (fun i ↦ star (chainFrame hs z i)) *
       place (measuredSites hs) (single (fun i ↦ z i) (fun i ↦ z i) 1) *
       ((hs.map fun h ↦ h.gate₂ (d := d)).prod * (hs.map fun h ↦ h.gate₁ (d := d)).prod * u.op) =
-      prodOp (fun i ↦ star (chainFrame hs z i)) * chainPre hs z * u.op := by
+      piKronecker (fun i ↦ star (chainFrame hs z i)) * chainPre hs z * u.op := by
     simp only [chainPre, Matrix.mul_assoc]
   rw [hK, ← mulVec_mulVec, ← mulVec_mulVec, chainPre_mulVec hv z hv', mulVec_smul,
     mulVec_mulVec, hstar, one_mulVec, mulVec_mulVec]

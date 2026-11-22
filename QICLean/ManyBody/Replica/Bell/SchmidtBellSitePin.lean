@@ -66,11 +66,11 @@ Source: `07-comparators.tex`, lines 247–254 and 283–290. -/
 theorem selectedBellProjection_schmidtBellSiteEquiv :
     let b : A × Fin E.card → ℂ := fun x ↦
       selectedBellVector Ω E (x.1, (Finset.equivFin E).symm x.2)
-    let P := finKronecker fun _ : Fin k ↦ vecMulVec b (star b)
+    let P := piKronecker fun _ : Fin k ↦ vecMulVec b (star b)
     ((P ⊗ₖ (1 : Matrix ((Fin k → Fin E.card) × (Fin k → B))
         ((Fin k → Fin E.card) × (Fin k → B)) ℂ)).submatrix
         (schmidtBellSiteEquiv β X E k) (schmidtBellSiteEquiv β X E k)) =
-      (finKronecker fun _ : Fin k ↦ selectedBellProjection Ω E) ⊗ₖ
+      (piKronecker fun _ : Fin k ↦ selectedBellProjection Ω E) ⊗ₖ
         (1 : Matrix (TensorPower.Config k ι) (TensorPower.Config k ι) ℂ) := by
   intro b P
   let eL := Equiv.piCongrRight fun _ : Fin k ↦
@@ -78,7 +78,7 @@ theorem selectedBellProjection_schmidtBellSiteEquiv :
   let eR := (exteriorCopyEquiv β X (Fin E.card) k).trans
     (Equiv.prodComm (Fin k → B) (Fin k → Fin E.card))
   have hP : P.submatrix eL eL =
-      finKronecker (fun _ : Fin k ↦ selectedBellProjection Ω E) := by
+      piKronecker (fun _ : Fin k ↦ selectedBellProjection Ω E) := by
     ext x y
     change (∏ j, selectedBellVector Ω E
         ((x j).1, (Finset.equivFin E).symm ((Finset.equivFin E) (x j).2)) *
@@ -170,7 +170,7 @@ theorem selectedBellProjection_replicaPrevector_site (hz : 0 < z)
       ∏ j, compressedTypicalPureState Ω E
         ((Finset.equivFin E).symm (x.2 j none), fun v ↦ x.2 j (some v))
     WithLp.toLp 2
-      (((finKronecker fun _ : Fin k ↦ selectedBellProjection Ω E) ⊗ₖ
+      (((piKronecker fun _ : Fin k ↦ selectedBellProjection Ω E) ⊗ₖ
         (1 : Matrix (TensorPower.Config k ι) (TensorPower.Config k ι) ℂ)) *ᵥ
           (replicaPrevector Ω E.card k ell ∘ (r ∘ e))) =
       (((Real.sqrt z : ℂ) / (E.card : ℂ)) ^ k) • WithLp.toLp 2
@@ -181,7 +181,7 @@ theorem selectedBellProjection_replicaPrevector_site (hz : 0 < z)
     selectedBellVector Ω E (x.1, (Finset.equivFin E).symm x.2)
   let χ : Fin E.card × B → ℂ := fun x ↦
     compressedTypicalPureState Ω E ((Finset.equivFin E).symm x.1, x.2)
-  let P := (finKronecker fun _ : Fin k ↦ vecMulVec b (star b)) ⊗ₖ
+  let P := (piKronecker fun _ : Fin k ↦ vecMulVec b (star b)) ⊗ₖ
     (1 : Matrix ((Fin k → Fin E.card) × (Fin k → B))
       ((Fin k → Fin E.card) × (Fin k → B)) ℂ)
   let Q := (1 : Matrix (Fin k → A × Fin E.card) (Fin k → A × Fin E.card) ℂ) ⊗ₖ
@@ -193,7 +193,7 @@ theorem selectedBellProjection_replicaPrevector_site (hz : 0 < z)
   change WithLp.toLp 2 (P *ᵥ (replicaPrevector Ω E.card k ell ∘ r)) =
     c • WithLp.toLp 2 (Q *ᵥ postFin) at hold
   have hP : P.submatrix e e =
-      (finKronecker fun _ : Fin k ↦ selectedBellProjection Ω E) ⊗ₖ
+      (piKronecker fun _ : Fin k ↦ selectedBellProjection Ω E) ⊗ₖ
         (1 : Matrix (TensorPower.Config k ι) (TensorPower.Config k ι) ℂ) :=
     selectedBellProjection_schmidtBellSiteEquiv β X E k Ω
   have hQ : Q.submatrix e e =
@@ -203,7 +203,7 @@ theorem selectedBellProjection_replicaPrevector_site (hz : 0 < z)
   have hpost : postFin ∘ e = post := schmidtBellSiteEquiv_post β X E k Ω
   ext x
   have hx := congrArg (fun v : EuclideanSpace ℂ N ↦ v (e x)) hold
-  change (((finKronecker fun _ : Fin k ↦ selectedBellProjection Ω E) ⊗ₖ
+  change (((piKronecker fun _ : Fin k ↦ selectedBellProjection Ω E) ⊗ₖ
       (1 : Matrix (TensorPower.Config k ι) (TensorPower.Config k ι) ℂ)) *ᵥ
         (replicaPrevector Ω E.card k ell ∘ (r ∘ e))) x =
     c * (((1 : Matrix (Fin k → A × E) (Fin k → A × E) ℂ) ⊗ₖ

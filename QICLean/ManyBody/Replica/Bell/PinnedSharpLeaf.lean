@@ -179,7 +179,7 @@ private theorem re_inner_exp_labelEntropy_selectedBellPost_le
     let p := WithLp.toLp 2 (J *ᵥ WithLp.ofLp Ψ)
     (⟪p, Matrix.toEuclideanLin (NormedSpace.exp ((u : ℂ) •
       labelEntropy (subsystemPerm k ι₀ ((Q \ X).image fun v ↦ some (some v))))) p⟫_ℂ).re ≤
-      z⁻¹ ^ k * (Matrix.finKronecker (fun _ : Fin k ↦ ManyBody.regionState Ω Q) *
+      z⁻¹ ^ k * (Matrix.piKronecker (fun _ : Fin k ↦ ManyBody.regionState Ω Q) *
         NormedSpace.exp
             ((u : ℂ) • labelEntropy (copyPerm (ManyBody.RegionConfig β Q) k))).trace.re := by
   classical
@@ -251,7 +251,7 @@ private theorem signed_moments_of_marginal_domination
     (k : ℕ) (M : ℝ → ℝ) {z u : ℝ} (hz : 0 < z)
     (hu : 0 ≤ u) (hur : 2 * u ≤ r) (hu1 : 2 * u ≤ 1)
     (htransfer : ∀ v : ℝ, M v ≤ z⁻¹ ^ k *
-      (Matrix.finKronecker (fun _ : Fin k ↦ σ) *
+      (Matrix.piKronecker (fun _ : Fin k ↦ σ) *
         NormedSpace.exp ((v : ℂ) • labelEntropy (copyPerm n k))).trace.re) :
     let S := vonNeumannEntropy σ hσ.isHermitian
     M u ≤ Real.exp (u * ((k : ℝ) * S) + k * K * u ^ 2 - k * Real.log z) ∧
@@ -259,7 +259,7 @@ private theorem signed_moments_of_marginal_domination
       (2 * k * K * u ^ 2 + ((Fintype.card n : ℝ) ^ 2 / 2) *
         Real.log ((k : ℝ) + 1)) - k * Real.log z) := by
   intro S
-  have hiid := Matrix.PosSemidef.re_trace_finKronecker_exp_signed_labelEntropy_le
+  have hiid := Matrix.PosSemidef.re_trace_piKronecker_exp_signed_labelEntropy_le
     hσ htr hmoment k hu hur hu1
   constructor
   · have h := (htransfer u).trans
@@ -388,7 +388,7 @@ theorem exists_log_re_inner_replicaPinnedFactor_post_le
           ((Fintype.card (ManyBody.RegionConfig β Q) : ℝ) ^ 2 / 2) *
             Real.log ((k : ℝ) + 1)) - k * Real.log z) := by
     have htransfer (v : ℝ) : M Q v ≤ z⁻¹ ^ k *
-        (Matrix.finKronecker (fun _ : Fin k ↦ ManyBody.regionState Ω Q) *
+        (Matrix.piKronecker (fun _ : Fin k ↦ ManyBody.regionState Ω Q) *
           NormedSpace.exp ((v : ℂ) •
             labelEntropy (copyPerm (ManyBody.RegionConfig β Q) k))).trace.re := by
       have hpair : M Q v =

@@ -64,11 +64,11 @@ theorem replicaMean_kronecker_one (H : Matrix A A ℂ) (k : ℕ) :
 /-- The same one-copy operator in the iterated-Kronecker definition.
 Source: OpenAI area-law manuscript, `07-comparators.tex`, lines 421–438,
 revision `adc7f124`. -/
-theorem siteOp_eq_finKronecker [Fintype A] (i : Fin k) (H : Matrix A A ℂ) :
-    siteOp i H = Matrix.finKronecker (fun j : Fin k => if j = i then H else 1) := by
+theorem siteOp_eq_piKronecker (i : Fin k) (H : Matrix A A ℂ) :
+    siteOp i H = Matrix.piKronecker (fun j : Fin k => if j = i then H else 1) := by
   ext x y
   simp only [siteOp, partialTensor, Finset.mem_singleton, Finset.prod_singleton,
-    Matrix.finKronecker, Matrix.of_apply]
+    Matrix.piKronecker, Matrix.of_apply]
   rw [← Finset.mul_prod_erase _ _ (Finset.mem_univ i)]
   rw [Finset.prod_congr rfl (fun j hj ↦
     congrArg (fun M : Matrix A A ℂ ↦ M (x j) (y j))

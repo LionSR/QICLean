@@ -68,7 +68,7 @@ theorem bellInsertion_mul_conjTranspose_selectedBell :
     let b : A × E → ℂ := selectedBellVector Ω E
     let J := (addedSiteInsertion ιe (A × E) k b).submatrix e id
     J * Jᴴ =
-      ((finKronecker fun _ : Fin k ↦ selectedBellProjection Ω E) ⊗ₖ
+      ((piKronecker fun _ : Fin k ↦ selectedBellProjection Ω E) ⊗ₖ
         (1 : Matrix (TensorPower.Config k ιe) (TensorPower.Config k ιe) ℂ)).submatrix
           (schmidtBellWitnessEquiv β X E k)
               (schmidtBellWitnessEquiv β X E k) := by
@@ -90,7 +90,7 @@ theorem bellInsertion_mul_conjTranspose_selectedBell :
     _ = _ := by
       by_cases h : (τ x).2 = (τ y).2 <;>
         simp [Matrix.submatrix_apply, Matrix.kroneckerMap_apply,
-          finKronecker_apply, selectedBellProjection, vecMulVec_apply,
+          piKronecker_apply, selectedBellProjection, vecMulVec_apply,
           Pi.star_apply, Matrix.one_apply, b, τ, h, star_prod, Finset.prod_mul_distrib]
 
 end ManyBody

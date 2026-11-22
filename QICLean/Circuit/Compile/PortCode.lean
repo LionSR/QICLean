@@ -128,7 +128,7 @@ theorem exists_portRing_recode {α : Fin N → Type} [∀ i, Fintype (α i)] [�
   simp only [LinearMap.comp_apply] at h₁ h₂ ⊢
   rw [h₁, map_encodeCircuit_congr (Geometry.sites (Fin N)), h₂,
     map_encodeCircuit_congr (Γ := Geometry.ring N) (Geometry.sites (Fin N)),
-    Circuit.map_ofLayer_ofOnsite_single, prodOp_one, conjTranspose_one, Matrix.one_mul,
+    Circuit.map_ofLayer_ofOnsite_single, piKronecker_one, conjTranspose_one, Matrix.one_mul,
     Matrix.mul_one]
 
 omit [NeZero d] in

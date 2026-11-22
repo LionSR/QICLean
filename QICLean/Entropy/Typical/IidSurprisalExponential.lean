@@ -166,11 +166,11 @@ tail of its tensor powers decreases exponentially at entropy plus one.
 The rate depends on the fixed matrix; singular densities are included.
 
 OpenAI area-law manuscript, `07-comparators.tex`, lines 339–343. -/
-theorem PosSemidef.exists_re_trace_surprisal_upper_tail_finKronecker_le_exp
+theorem PosSemidef.exists_re_trace_surprisal_upper_tail_piKronecker_le_exp
     (hρ : ρ.PosSemidef) (htr : ρ.trace = 1) :
     ∃ c : ℝ, 0 < c ∧ ∀ k : ℕ, 1 ≤ k →
       let S := vonNeumannEntropy ρ hρ.isHermitian
-      let ρk := finKronecker (fun _ : Fin k ↦ ρ)
+      let ρk := piKronecker (fun _ : Fin k ↦ ρ)
       (ρk * cfc (fun t : ℝ ↦ if (k : ℝ) * (S + 1) < t then 1 else 0)
         (-CFC.log ρk)).trace.re ≤ Real.exp (-c * (k : ℝ)) := by
   obtain ⟨c, hc, htail⟩ := Entropy.exists_surprisal_upper_tail_pi_le_exp
@@ -178,7 +178,7 @@ theorem PosSemidef.exists_re_trace_surprisal_upper_tail_finKronecker_le_exp
   refine ⟨c, hc, ?_⟩
   intro k hk
   dsimp only
-  rw [hρ.re_trace_finKronecker_mul_cfc_surprisal]
+  rw [hρ.re_trace_piKronecker_mul_cfc_surprisal]
   simp only [mul_ite, mul_one, mul_zero]
   exact htail k hk
 

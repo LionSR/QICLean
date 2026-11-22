@@ -291,8 +291,8 @@ theorem of_mem_supportedOperators {b : Γ.Cell} {Z : Matrix (Config X) (Config X
     exact place hb (one_mem _)
 
 /-- One-site unitaries equal to `1` outside `R` form a circuit inside `R` of depth `0`. -/
-theorem prodOp {u : (s : S) → Matrix (X s) (X s) ℂ} (hu : ∀ s, u s ∈ unitaryGroup (X s) ℂ)
-    (h1 : ∀ s ∉ R, u s = 1) (T : ℕ) : IsUnitaryCircuitOn Γ R T (ManyBody.prodOp u) :=
+theorem piKronecker {u : (s : S) → Matrix (X s) (X s) ℂ} (hu : ∀ s, u s ∈ unitaryGroup (X s) ℂ)
+    (h1 : ∀ s ∉ R, u s = 1) (T : ℕ) : IsUnitaryCircuitOn Γ R T (Matrix.piKronecker u) :=
   ⟨UnitaryCircuit.onsite u hu, UnitaryCircuit.isIn_onsite u hu h1,
     (UnitaryCircuit.depth_onsite u hu).trans_le (Nat.zero_le T), UnitaryCircuit.op_onsite u hu⟩
 

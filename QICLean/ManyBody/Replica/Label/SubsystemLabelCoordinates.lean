@@ -116,7 +116,7 @@ theorem norm_sq_one_sub_labelCutoff_subsystemPerm_prod
     (ψ : EuclideanSpace ℂ ((f : F) → ι f)) (a : ℝ) :
     ‖Matrix.toEuclideanLin (1 - labelCutoff (subsystemPerm k ι B) a)
       (WithLp.toLp 2 (fun x : Config k ι ↦ ∏ j, ψ (x j)))‖ ^ 2 =
-        (Matrix.finKronecker (fun _ : Fin k ↦ ManyBody.regionState ψ B) *
+        (Matrix.piKronecker (fun _ : Fin k ↦ ManyBody.regionState ψ B) *
           (1 - labelCutoff (copyPerm (ManyBody.RegionConfig ι B) k) a)).trace.re := by
   classical
   let C := ManyBody.ComplConfig ι B
@@ -204,7 +204,7 @@ theorem re_inner_exp_labelEntropy_subsystemPerm_prod
     let Ψ := WithLp.toLp 2 (fun x : Config k ι ↦ ∏ j, ψ (x j))
     (⟪Ψ, Matrix.toEuclideanLin
       (NormedSpace.exp ((u : ℂ) • labelEntropy (subsystemPerm k ι Q))) Ψ⟫_ℂ).re =
-      (Matrix.finKronecker (fun _ : Fin k ↦ ManyBody.regionState ψ Q) *
+      (Matrix.piKronecker (fun _ : Fin k ↦ ManyBody.regionState ψ Q) *
         NormedSpace.exp ((u : ℂ) •
           labelEntropy (copyPerm (ManyBody.RegionConfig ι Q) k))).trace.re := by
   classical
@@ -238,7 +238,7 @@ theorem re_inner_exp_labelEntropy_subsystemPerm_prod
     fun x ↦ ∏ j, τ (x.1 j, x.2 j)
   have htrace (P : Matrix (Fin k → ManyBody.RegionConfig ι Q)
       (Fin k → ManyBody.RegionConfig ι Q) ℂ) :
-      (Matrix.finKronecker (fun _ : Fin k ↦ ManyBody.regionState ψ Q) * P).trace =
+      (Matrix.piKronecker (fun _ : Fin k ↦ ManyBody.regionState ψ Q) * P).trace =
         (Matrix.vecMulVec v' (star v') * Matrix.kronecker
           (1 : Matrix (Fin k → ManyBody.ComplConfig ι Q)
             (Fin k → ManyBody.ComplConfig ι Q) ℂ) P).trace := by

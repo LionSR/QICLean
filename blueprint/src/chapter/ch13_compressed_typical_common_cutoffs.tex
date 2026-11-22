@@ -156,7 +156,7 @@ weight does not affect any probability or trace below.
 
 \begin{theorem}[The upper tail of a density matrix]
     \label{thm:iid_surprisal_exponential_density}
-    \lean{Matrix.PosSemidef.exists_re_trace_surprisal_upper_tail_finKronecker_le_exp}
+    \lean{Matrix.PosSemidef.exists_re_trace_surprisal_upper_tail_piKronecker_le_exp}
     \leanok
     \uses{thm:iid_surprisal_exponential_finite_law,thm:iid_surprisal_spectral_distribution}
     Let $\rho\ge0$ be a matrix on a finite-dimensional Hilbert space with
@@ -944,7 +944,7 @@ the fixed-system exponential estimate used in
 
 \begin{theorem}[Independent-copy Schur tails above an entropy bound]
 \label{thm:iid_schur_label_exponential}
-\lean{Matrix.PosSemidef.exists_re_trace_one_sub_labelCutoff_finKronecker_le_exp}
+\lean{Matrix.PosSemidef.exists_re_trace_one_sub_labelCutoff_piKronecker_le_exp}
 \leanok
 \uses{thm:schur_label_tail_surprisal,thm:iid_surprisal_exponential_density,thm:surprisal_functional_calculus}
 Let $\rho\ge0$ be a finite matrix with $\operatorname{Tr}\rho=1$,

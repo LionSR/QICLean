@@ -315,7 +315,7 @@ theorem exists_label_sequence_schmidtBellPrevector_commonCutoffs
           (fun x ↦ φ (e x)) ∈ invariantSubspace
             (copyPerm ((RegionConfig β X × E) × ((f : Option {v // v ∉ X}) → ι f)) k) ∧
           toEuclideanLin
-            ((finKronecker fun _ : Fin k ↦ selectedBellProjection ΩX E) ⊗ₖ
+            ((piKronecker fun _ : Fin k ↦ selectedBellProjection ΩX E) ⊗ₖ
               (1 : Matrix (TensorPower.Config k ι) (TensorPower.Config k ι) ℂ)) φ = φ ∧
           toEuclideanLin
             ((1 : Matrix (Fin k → RegionConfig β X × E)

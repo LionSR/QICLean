@@ -43,7 +43,7 @@ theorem partialTraceRight_replicaExcitationComponent_goodFin_density
       w ((ManyBody.cutEquiv (fun _ : Fin k => A) B).symm
         (x.2, fun i => x.1.1 ((Finset.equivFin Bᶜ) (Finset.complSubtypeEquiv B i))), x.1.2)
     partialTraceRight (vecMulVec f (star f)) =
-      finKronecker (fun _ : Fin Bᶜ.card => vecMulVec Ω (star Ω)) ⊗ₖ
+      piKronecker (fun _ : Fin Bᶜ.card => vecMulVec Ω (star Ω)) ⊗ₖ
         partialTraceLeft (vecMulVec w (star w)) := by
   classical
   intro w f
@@ -73,7 +73,7 @@ theorem partialTraceRight_replicaExcitationComponent_goodFin_density
   rw [hd]
   congr 1
   ext x y
-  simp only [vecMulVec_apply, Pi.star_apply, finKronecker_apply, star_prod,
+  simp only [vecMulVec_apply, Pi.star_apply, piKronecker_apply, star_prod,
     Finset.prod_mul_distrib]
 
 variable (ι : Fin 5 → Type*) [∀ f, Fintype (ι f)] [∀ f, DecidableEq (ι f)]
@@ -94,7 +94,7 @@ theorem replicaGoodConfigurationMarginal_product :
         ((Fin k → ι 3) × (Fin k → ι 4)) ℂ)) *ᵥ u
     (replicaGoodConfigurationMarginal ι Ω k B u).submatrix
         (fiveFactorCopiesEquiv ι Bᶜ.card).symm (fiveFactorCopiesEquiv ι Bᶜ.card).symm =
-      finKronecker (fun _ : Fin Bᶜ.card => vecMulVec Ω (star Ω)) ⊗ₖ
+      piKronecker (fun _ : Fin Bᶜ.card => vecMulVec Ω (star Ω)) ⊗ₖ
         partialTraceRight ((partialTraceLeft (vecMulVec w (star w))).submatrix
           (goodAuxiliarySplit ι B).symm (goodAuxiliarySplit ι B).symm) := by
   intro w
@@ -113,7 +113,7 @@ theorem partialTraceRight_replicaGoodConfigurationMarginal_physical :
     partialTraceRight ((replicaGoodConfigurationMarginal ι Ω k B u).submatrix
       (fiveFactorCopiesEquiv ι Bᶜ.card).symm (fiveFactorCopiesEquiv ι Bᶜ.card).symm) =
         (‖WithLp.toLp 2 w‖ ^ 2 : ℂ) •
-          finKronecker (fun _ : Fin Bᶜ.card => vecMulVec Ω (star Ω)) := by
+          piKronecker (fun _ : Fin Bᶜ.card => vecMulVec Ω (star Ω)) := by
   intro w
   rw [replicaGoodConfigurationMarginal_product ι Ω hΩ k B u,
     partialTraceRight_kronecker, trace_partialTraceRight, trace_submatrix_equiv,
@@ -137,7 +137,7 @@ theorem trace_replicaGoodConfigurationMarginal_physical_mul
       (H ⊗ₖ (1 : Matrix ((Fin Bᶜ.card → ι 3) × (Fin Bᶜ.card → ι 4))
         ((Fin Bᶜ.card → ι 3) × (Fin Bᶜ.card → ι 4)) ℂ))).trace =
       (‖WithLp.toLp 2 w‖ ^ 2 : ℂ) *
-        (finKronecker (fun _ : Fin Bᶜ.card => vecMulVec Ω (star Ω)) * H).trace := by
+        (piKronecker (fun _ : Fin Bᶜ.card => vecMulVec Ω (star Ω)) * H).trace := by
   intro w
   rw [← trace_partialTraceRight_mul,
     partialTraceRight_replicaGoodConfigurationMarginal_physical ι Ω hΩ k B u,

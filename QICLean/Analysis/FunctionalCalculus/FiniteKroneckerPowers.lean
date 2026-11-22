@@ -22,20 +22,6 @@ namespace Matrix
 
 variable {N : ℕ} {I : Fin N → Type*} [∀ i, Fintype (I i)]
 
-/-- Multiplication of finite tensor products is componentwise. -/
-theorem finKronecker_mul (A B : (i : Fin N) → Matrix (I i) (I i) ℂ) :
-    finKronecker (fun i ↦ A i * B i) = finKronecker A * finKronecker B := by
-  ext x y
-  simp only [finKronecker_apply, mul_apply]
-  rw [Fintype.prod_sum]
-  simp only [Finset.prod_mul_distrib]
-
-/-- The trace of a finite tensor product is the product of the traces. -/
-theorem trace_finKronecker (A : (i : Fin N) → Matrix (I i) (I i) ℂ) :
-    (finKronecker A).trace = ∏ i, (A i).trace := by
-  simp only [trace, diag, finKronecker_apply]
-  exact (Fintype.prod_sum (fun i x ↦ A i x x)).symm
-
 /-- Real powers commute with a bijective change of matrix coordinates. -/
 theorem PosSemidef.rpow_submatrix_equiv {m n : Type*}
     [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n]
@@ -46,12 +32,12 @@ theorem PosSemidef.rpow_submatrix_equiv {m n : Type*}
 
 /-- Real powers factor over finite tensor products of positive semidefinite matrices,
 including singular factors, arbitrary real exponents, and the empty product. -/
-theorem rpow_finKronecker [∀ i, DecidableEq (I i)]
+theorem rpow_piKronecker [∀ i, DecidableEq (I i)]
     (A : (i : Fin N) → Matrix (I i) (I i) ℂ) (hA : ∀ i, (A i).PosSemidef) (s : ℝ) :
-    (finKronecker A) ^ s = finKronecker (fun i ↦ (A i) ^ s) := by
+    (piKronecker A) ^ s = piKronecker (fun i ↦ (A i) ^ s) := by
   induction N with
   | zero =>
-    have hzero (B : (i : Fin 0) → Matrix (I i) (I i) ℂ) : finKronecker B = 1 := by
+    have hzero (B : (i : Fin 0) → Matrix (I i) (I i) ℂ) : piKronecker B = 1 := by
       ext x y
       have hxy : x = y := Subsingleton.elim x y
       subst y
@@ -60,9 +46,9 @@ theorem rpow_finKronecker [∀ i, DecidableEq (I i)]
   | succ N ih =>
     apply (submatrix_injective (Fin.consEquiv I).surjective (Fin.consEquiv I).surjective)
     dsimp only
-    rw [← (finKronecker_posSemidef A hA).rpow_submatrix_equiv (Fin.consEquiv I),
-      finKronecker_submatrix_cons, finKronecker_submatrix_cons,
-      (hA 0).rpow_kronecker (finKronecker_posSemidef (Fin.tail A) (fun i ↦ hA i.succ)),
+    rw [← (piKronecker_posSemidef A hA).rpow_submatrix_equiv (Fin.consEquiv I),
+      piKronecker_submatrix_cons, piKronecker_submatrix_cons,
+      (hA 0).rpow_kronecker (piKronecker_posSemidef (Fin.tail A) (fun i ↦ hA i.succ)),
       ih (Fin.tail A) (fun i ↦ hA i.succ)]
     rfl
 

@@ -35,7 +35,7 @@ a product of one placement per cell.
 ## Main results
 
 * `QuantumCircuit.Layer.kraus_ofCells` — the Kraus operators, as products of placements.
-* `QuantumCircuit.Layer.kraus_eq_prod_place_mul_prodOp` — the Kraus operator of any layer as a
+* `QuantumCircuit.Layer.kraus_eq_prod_place_mul_piKronecker` — the Kraus operator of any layer as a
   product of placed gates times a product operator.
 * `QuantumCircuit.Layer.map_ofCells` — the map, as a composite of the maps of placed gates.
 * `QuantumCircuit.Layer.kraus_ofOnsite`, `QuantumCircuit.Layer.depth_ofOnsite` — the Kraus
@@ -167,9 +167,9 @@ theorem kraus_ofOnsite {X Y : S → Type} [∀ s, Fintype (X s)] [∀ s, Decidab
     [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)] (ev : Interpretation G)
     (o : (s : S) → KrausFamily (X s) (Y s)) (i : (ofOnsite (Γ := Γ) (G := G) o).Index) :
     (ofOnsite (Γ := Γ) (G := G) o).kraus ev i =
-      prodOp fun s ↦ (o s).op (i.2 ⟨s, by simp [ofOnsite]⟩) := by
+      piKronecker fun s ↦ (o s).op (i.2 ⟨s, by simp [ofOnsite]⟩) := by
   ext y x
-  rw [kraus, Fintype.prod_eq_one _ fun b ↦ absurd b.2 (Finset.notMem_empty _), one_mul, prodOp]
+  rw [kraus, Fintype.prod_eq_one _ fun b ↦ absurd b.2 (Finset.notMem_empty _), one_mul, piKronecker]
   exact Fintype.prod_equiv (Equiv.subtypeUnivEquiv fun s ↦ by simp [ofOnsite]) _ _
     fun _ ↦ rfl
 
@@ -229,7 +229,7 @@ theorem kraus_measure (ev : Interpretation G) (D : Finset S)
       place D (Matrix.single (measure.outcome i) (measure.outcome i) 1) := by
   refine (kraus_ofOnsite ev _ i).trans ?_
   ext y x
-  rw [prodOp_apply, place_apply, Matrix.single_apply]
+  rw [piKronecker_apply, place_apply, Matrix.single_apply]
   have hD : ∀ s (hs : s ∈ D), ((if s ∈ D then KrausFamily.measure (X s) else
       KrausFamily.single 1).op (i.2 ⟨s, by simp [measure, ofOnsite]⟩)) (y s) (x s) =
       if measure.outcome i ⟨s, hs⟩ = y s ∧ measure.outcome i ⟨s, hs⟩ = x s then 1 else 0 :=
@@ -391,11 +391,11 @@ def onsiteOp (L : Layer Γ G X X) (i : L.Index) (s : S) : Matrix (X s) (X s) ℂ
 /-- **The Kraus operator of a layer.** At the index `i`, it is the product of the placements of
 the matrices of the gates at `i`, in the order of any enumeration `l` of the cells, times the
 product of the onsite operators at `i`. -/
-theorem kraus_eq_prod_place_mul_prodOp (ev : Interpretation G) (L : Layer Γ G X X)
+theorem kraus_eq_prod_place_mul_piKronecker (ev : Interpretation G) (L : Layer Γ G X X)
     (l : List L.cells) (hl : l.Nodup) (hall : ∀ c, c ∈ l) (i : L.Index) :
     L.kraus ev i =
       (l.map fun c : L.cells ↦ ManyBody.place (Γ.cell c) (ev (L.gate c) (i.1 c))).prod *
-        prodOp (L.onsiteOp i) := by
+        piKronecker (L.onsiteOp i) := by
   rw [← kraus_ofCells ev L.cells L.pairwiseDisjoint L.gate l hl hall (i.1, fun _ ↦ ())]
   set D := L.cells.biUnion Γ.cell
   ext y x
@@ -413,7 +413,7 @@ theorem kraus_eq_prod_place_mul_prodOp (ev : Interpretation G) (L : Layer Γ G X
         ∏ s : L.Free, (1 : Matrix (X s) (X s) ℂ) (y s) (w s) :=
     rfl
   rw [Finset.sum_eq_single z]
-  · rw [hK, prodOp_apply, kraus_apply, ← Fintype.prod_subtype_mul_prod_subtype (· ∉ D)]
+  · rw [hK, piKronecker_apply, kraus_apply, ← Fintype.prod_subtype_mul_prod_subtype (· ∉ D)]
     simp only [hcell]
     rw [Fintype.prod_eq_one (fun s : {s // ¬s ∉ D} ↦ L.onsiteOp i s (z s) (x s))
       fun s ↦ by rw [hu s s.2, hD s s.2, one_apply_eq],
@@ -428,7 +428,7 @@ theorem kraus_eq_prod_place_mul_prodOp (ev : Interpretation G) (L : Layer Γ G X
       refine mul_eq_zero_of_left (mul_eq_zero_of_right _ (Finset.prod_eq_zero
         (Finset.mem_univ (⟨s, hsD⟩ : L.Free)) ?_)) _
       exact one_apply_ne fun h : y s = w s ↦ hs (h.symm.trans (hfree s hsD).symm)
-    · rw [prodOp_apply, Finset.prod_eq_zero (Finset.mem_univ s)
+    · rw [piKronecker_apply, Finset.prod_eq_zero (Finset.mem_univ s)
         (by rw [hu s hsD]; exact one_apply_ne fun h ↦ hs (h.trans (hD s hsD).symm)), mul_zero]
   · exact fun h ↦ absurd (Finset.mem_univ z) h
 
@@ -489,7 +489,7 @@ variable {X Y : S → Type} [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] [�
 theorem map_ofLayer_ofOnsite_single (ev : Interpretation G) (V : ∀ s, Matrix (Y s) (X s) ℂ)
     (ρ : Matrix (Config X) (Config X) ℂ) :
     (ofLayer (Layer.ofOnsite (Γ := Γ) (G := G) fun s ↦ KrausFamily.single (V s))).map ev ρ =
-      prodOp V * ρ * (prodOp V)ᴴ := by
+      piKronecker V * ρ * (piKronecker V)ᴴ := by
   set L : Layer Γ G X Y := Layer.ofOnsite fun s ↦ KrausFamily.single (V s)
   have : Subsingleton L.Index := ⟨fun i j ↦ Prod.ext
     (funext fun b : L.cells ↦ absurd b.2 (Finset.notMem_empty _))

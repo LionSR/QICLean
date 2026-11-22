@@ -117,11 +117,11 @@ theorem petzOverlap_kronecker {A B : Matrix m m ℂ} {C D : Matrix n n ℂ}
 
 /-- A finite product of independent pairs has overlap equal to the product of
 its single-factor overlaps. -/
-theorem petzOverlap_finKronecker {N : ℕ} {I : Fin N → Type*}
+theorem petzOverlap_piKronecker {N : ℕ} {I : Fin N → Type*}
     [∀ i, Fintype (I i)] [∀ i, DecidableEq (I i)]
     (A B : (i : Fin N) → Matrix (I i) (I i) ℂ)
     (hA : ∀ i, (A i).PosSemidef) (hB : ∀ i, (B i).PosSemidef) (s : ℝ) :
-    petzOverlap s (finKronecker A) (finKronecker B) = ∏ i, petzOverlap s (A i) (B i) := by
+    petzOverlap s (piKronecker A) (piKronecker B) = ∏ i, petzOverlap s (A i) (B i) := by
   have hreal (i : Fin N) : ((A i ^ s * B i ^ (1 - s)).trace.re : ℂ) =
       (A i ^ s * B i ^ (1 - s)).trace := by
     have hAs : (A i ^ s).PosSemidef := nonneg_iff_posSemidef.mp CFC.rpow_nonneg
@@ -130,8 +130,8 @@ theorem petzOverlap_finKronecker {N : ℕ} {I : Fin N → Type*}
     · simp
     · simpa using (Complex.nonneg_iff.mp (hAs.trace_mul_nonneg hBs)).2
   unfold petzOverlap
-  rw [rpow_finKronecker A hA, rpow_finKronecker B hB,
-    ← finKronecker_mul, trace_finKronecker]
+  rw [rpow_piKronecker A hA, rpow_piKronecker B hB,
+    piKronecker_mul, trace_piKronecker]
   calc
     _ = (∏ i, ((A i ^ s * B i ^ (1 - s)).trace.re : ℂ)).re :=
       congrArg Complex.re (Finset.prod_congr rfl (fun i _ ↦ (hreal i).symm))
@@ -156,18 +156,18 @@ theorem optimalHypothesisTestError_le_petzOverlap {ρ σ : Matrix m m ℂ}
 
 /-- Finite-copy Chernoff bound for independent, not necessarily identical, density
 matrices. This is a direct estimate towards Wolf (8.44), source lines 580–590. -/
-theorem optimalHypothesisTestError_finKronecker_le {N : ℕ} {I : Fin N → Type*}
+theorem optimalHypothesisTestError_piKronecker_le {N : ℕ} {I : Fin N → Type*}
     [∀ i, Fintype (I i)] [∀ i, DecidableEq (I i)]
     (ρ σ : (i : Fin N) → Matrix (I i) (I i) ℂ)
     (hρ : ∀ i, (ρ i).PosSemidef) (hσ : ∀ i, (σ i).PosSemidef)
     (hρ1 : ∀ i, (ρ i).trace = 1) (hσ1 : ∀ i, (σ i).trace = 1)
     {p s : ℝ} (hp : p ∈ Set.Icc (0 : ℝ) 1) (hs : s ∈ Set.Icc (0 : ℝ) 1) :
-    optimalHypothesisTestError p (finKronecker ρ) (finKronecker σ) ≤
+    optimalHypothesisTestError p (piKronecker ρ) (piKronecker σ) ≤
       p ^ s * (1 - p) ^ (1 - s) * ∏ i, petzOverlap s (ρ i) (σ i) := by
   have h := optimalHypothesisTestError_le_petzOverlap
-    (finKronecker_posSemidef ρ hρ) (finKronecker_posSemidef σ hσ)
-    (by simp [trace_finKronecker, hρ1]) (by simp [trace_finKronecker, hσ1]) hp hs
-  rwa [petzOverlap_finKronecker ρ σ hρ hσ] at h
+    (piKronecker_posSemidef ρ hρ) (piKronecker_posSemidef σ hσ)
+    (by simp [trace_piKronecker, hρ1]) (by simp [trace_piKronecker, hσ1]) hp hs
+  rwa [petzOverlap_piKronecker ρ σ hρ hσ] at h
 
 /-- The optimal error on `N` identical copies is bounded by a power of the one-copy
 overlap.
@@ -178,10 +178,10 @@ theorem optimalHypothesisTestError_iid_le {ρ σ : Matrix m m ℂ}
     (hρ : ρ.PosSemidef) (hσ : σ.PosSemidef) (hρ1 : ρ.trace = 1)
     (hσ1 : σ.trace = 1) {p s : ℝ} (hp : p ∈ Set.Icc (0 : ℝ) 1)
     (hs : s ∈ Set.Icc (0 : ℝ) 1) (N : ℕ) :
-    optimalHypothesisTestError p (finKronecker (fun _ : Fin N ↦ ρ))
-      (finKronecker (fun _ : Fin N ↦ σ)) ≤
+    optimalHypothesisTestError p (piKronecker (fun _ : Fin N ↦ ρ))
+      (piKronecker (fun _ : Fin N ↦ σ)) ≤
         p ^ s * (1 - p) ^ (1 - s) * petzOverlap s ρ σ ^ N := by
-  simpa using optimalHypothesisTestError_finKronecker_le
+  simpa using optimalHypothesisTestError_piKronecker_le
     (fun _ : Fin N ↦ ρ) (fun _ : Fin N ↦ σ)
     (fun _ ↦ hρ) (fun _ ↦ hσ) (fun _ ↦ hρ1) (fun _ ↦ hσ1) hp hs
 
@@ -190,8 +190,8 @@ infimum is not attained (as can happen at singular endpoint limits). -/
 theorem optimalHypothesisTestError_iid_le_sInf {ρ σ : Matrix m m ℂ}
     (hρ : ρ.PosSemidef) (hσ : σ.PosSemidef) (hρ1 : ρ.trace = 1)
     (hσ1 : σ.trace = 1) {p : ℝ} (hp : p ∈ Set.Icc (0 : ℝ) 1) (N : ℕ) :
-    optimalHypothesisTestError p (finKronecker (fun _ : Fin N ↦ ρ))
-      (finKronecker (fun _ : Fin N ↦ σ)) ≤
+    optimalHypothesisTestError p (piKronecker (fun _ : Fin N ↦ ρ))
+      (piKronecker (fun _ : Fin N ↦ σ)) ≤
         sInf ((fun s : ℝ ↦ p ^ s * (1 - p) ^ (1 - s) * petzOverlap s ρ σ ^ N) ''
           Set.Icc (0 : ℝ) 1) := by
   apply le_csInf
@@ -206,8 +206,8 @@ theorem optimalHypothesisTestError_iid_le_exp {ρ σ : Matrix m m ℂ}
     (hρ : ρ.PosSemidef) (hσ : σ.PosSemidef) (hρ1 : ρ.trace = 1)
     (hσ1 : σ.trace = 1) {p s : ℝ} (hp : p ∈ Set.Icc (0 : ℝ) 1)
     (hs : s ∈ Set.Icc (0 : ℝ) 1) (hq : 0 < petzOverlap s ρ σ) (N : ℕ) :
-    optimalHypothesisTestError p (finKronecker (fun _ : Fin N ↦ ρ))
-      (finKronecker (fun _ : Fin N ↦ σ)) ≤
+    optimalHypothesisTestError p (piKronecker (fun _ : Fin N ↦ ρ))
+      (piKronecker (fun _ : Fin N ↦ σ)) ≤
         Real.exp (N * Real.log (petzOverlap s ρ σ)) := by
   have hc : p ^ s * (1 - p) ^ (1 - s) ≤ 1 := by
     calc
@@ -230,13 +230,13 @@ theorem tendsto_optimalHypothesisTestError_iid_zero {ρ σ : Matrix m m ℂ}
     (hσ1 : σ.trace = 1) {p s : ℝ} (hp : p ∈ Set.Icc (0 : ℝ) 1)
     (hs : s ∈ Set.Icc (0 : ℝ) 1) (hlt : petzOverlap s ρ σ < 1) :
     Filter.Tendsto (fun N : ℕ ↦ optimalHypothesisTestError p
-      (finKronecker (fun _ : Fin N ↦ ρ)) (finKronecker (fun _ : Fin N ↦ σ)))
+      (piKronecker (fun _ : Fin N ↦ ρ)) (piKronecker (fun _ : Fin N ↦ σ)))
       Filter.atTop (nhds 0) := by
   apply squeeze_zero
     (fun N ↦ optimalHypothesisTestError_nonneg
-      (finKronecker_posSemidef _ (fun _ ↦ hρ))
-      (finKronecker_posSemidef _ (fun _ ↦ hσ))
-      (by simp [trace_finKronecker, hρ1]) (by simp [trace_finKronecker, hσ1]) hp)
+      (piKronecker_posSemidef _ (fun _ ↦ hρ))
+      (piKronecker_posSemidef _ (fun _ ↦ hσ))
+      (by simp [trace_piKronecker, hρ1]) (by simp [trace_piKronecker, hσ1]) hp)
     (optimalHypothesisTestError_iid_le hρ hσ hρ1 hσ1 hp hs)
   simpa using (tendsto_pow_atTop_nhds_zero_of_lt_one (petzOverlap_nonneg s ρ σ) hlt).const_mul
     (p ^ s * (1 - p) ^ (1 - s))
