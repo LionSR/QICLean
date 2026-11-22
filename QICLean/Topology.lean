@@ -12,3 +12,5 @@ import QICLean.Topology.BrouwerProduct
 import QICLean.Topology.CompactConvexFixedPoint
 import QICLean.Topology.CompactRetractFixedPoint
 import QICLean.Topology.CompactUniformBounds
+import QICLean.Topology.ConvexWeightsCompactness
+import QICLean.Topology.UniformSelectionBounds

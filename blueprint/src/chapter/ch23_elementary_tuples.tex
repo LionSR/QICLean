@@ -1,0 +1,161 @@
+\section{Coordinates of finite tuples}
+
+Write $\pi_{m,n}\colon\Fin{m}\times\Fin{n}\to\Fin{mn}$ for the standard
+product coordinate bijection.
+
+\begin{definition}[Three-coordinate identification]
+    \label{def:three_coordinate_identification}
+    \lean{finThreeArrowEquiv}
+    \leanok
+    For every type $\alpha$, evaluation at the three coordinates gives the
+    canonical equivalence
+    \begin{align}
+        (\Fin{3}\to\alpha) & \simeq\alpha\times(\alpha\times\alpha).
+        \label{eq:ph_three_coordinate_equiv}
+    \end{align}
+    Its forward map is
+    \begin{align}
+        x & \longmapsto\bigl(x(0),(x(1),x(2))\bigr).
+        \label{eq:ph_three_coordinate_forward}
+    \end{align}
+\end{definition}
+
+\begin{definition}[Four-coordinate identification]
+    \label{def:four_coordinate_identification}
+    \lean{finFourArrowEquiv}
+    \leanok
+    \uses{def:three_coordinate_identification}
+    For every type $\alpha$, the canonical right-associated regrouping
+    $R_4\colon(\Fin{4}\to\alpha)\simeq\alpha\times(\alpha\times(\alpha\times\alpha))$
+    separates the first coordinate and regroups the remaining three as in
+    Definition~\ref{def:three_coordinate_identification}.
+\end{definition}
+
+\begin{lemma}[Coordinates of the four-site regrouping]
+    \label{lem:fin_four_arrow_equiv_coordinates}
+    \lean{finFourArrowEquiv_apply, finFourArrowEquiv_symm_apply,
+        finThreeArrowEquiv_apply, finThreeArrowEquiv_symm_apply}
+    \leanok
+    \uses{def:four_coordinate_identification}
+    The canonical four-coordinate regrouping and its inverse satisfy
+    \begin{align}
+        R_4(\sigma)
+         & =(\sigma_0,(\sigma_1,(\sigma_2,\sigma_3))),
+        \notag                                         \\
+        R_4^{-1}(i_0,(i_1,(i_2,i_3)))
+         & =(i_0,i_1,i_2,i_3),
+        \notag
+    \end{align}
+    and the three-coordinate identification satisfies the analogous
+    formulas.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Both identities follow from the definition of the canonical
+    right-associated regrouping.
+\end{proof}
+
+\begin{definition}[Initial-coordinate regroupings]
+    \label{def:finite_tuple_regroupings}
+    \lean{finSuccArrowEquiv, finAddTwoArrowEquiv}
+    \leanok
+    Let $R_1$ identify an $(N+1)$-tuple with its first coordinate and the
+    remaining $N$-tuple. Let $R_2$ identify an $(N+2)$-tuple with its first
+    two coordinates and the remaining $N$-tuple.
+\end{definition}
+
+\begin{lemma}[Regrouping the first coordinates]
+    \label{lem:mpdo_global_renormalization_regrouping}
+    \lean{finSuccArrowEquiv_apply, finSuccArrowEquiv_symm_apply,
+        finAddTwoArrowEquiv_apply, finAddTwoArrowEquiv_symm_apply}
+    \leanok
+    \uses{def:finite_tuple_regroupings}
+    For a tuple $\sigma$ of length $N+1$,
+    \begin{align}
+        R_1(\sigma)
+         & =(\sigma_0,(\sigma_1,\ldots,\sigma_N)),
+        \notag                                     \\
+        R_1^{-1}(i,(a_1,\ldots,a_N))
+         & =(i,a_1,\ldots,a_N).
+        \notag
+    \end{align}
+    For a tuple $\sigma$ of length $N+2$,
+    \begin{align}
+        R_2(\sigma)
+         & =\bigl((\sigma_0,\sigma_1),
+        (\sigma_2,\ldots,\sigma_{N+1})\bigr),
+        \notag                         \\
+        R_2^{-1}((i,j),(a_1,\ldots,a_N))
+         & =(i,j,a_1,\ldots,a_N).
+        \notag
+    \end{align}
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    All four identities hold by definition of the regroupings.
+\end{proof}
+
+\begin{definition}[Splitting tuples of product coordinates]
+    \label{def:elementary_tuple_product_split}
+    \lean{finTupleProdEquiv, finTupleProdEquiv_apply}
+    \leanok
+    For every $N$, the product coordinates give the pointwise splitting
+    \begin{align}
+        (\Fin{N}\to\Fin{de})
+                  & \simeq(\Fin{N}\to\Fin{d})\times(\Fin{N}\to\Fin{e}), \notag \\
+        \sigma    & \longmapsto(\sigma_d,\sigma_e),
+                  &
+        \sigma(n) & =\pi_{d,e}(\sigma_d(n),\sigma_e(n)).
+        \label{eq:elementary_tuple_product_split}
+    \end{align}
+\end{definition}
+
+\begin{definition}[Doubled product-coordinate equivalence]
+    \label{def:mpu_doubled_product_coordinate_equiv}
+    \lean{finDoubledProdEquiv, finDoubledProdEquiv_apply,
+        finDoubledProdEquiv_symm_apply}
+    \leanok
+    For natural numbers $d,e$, the canonical doubled product-coordinate
+    equivalence $s_{d,e}\colon\Fin{(de)^2}\to\Fin{d^2e^2}$ and its inverse
+    satisfy
+    \begin{align}
+        s_{d,e}\!\left(\pi_{de,de}
+        \bigl(\pi_{d,e}(i,k),\pi_{d,e}(j,\ell)\bigr)\right)
+         & =\pi_{d^2,e^2}
+        \bigl(\pi_{d,d}(i,j),\pi_{e,e}(k,\ell)\bigr), \notag \\
+        s_{d,e}^{-1}\!\left(\pi_{d^2,e^2}
+        \bigl(\pi_{d,d}(i,j),\pi_{e,e}(k,\ell)\bigr)\right)
+         & =\pi_{de,de}
+        \bigl(\pi_{d,e}(i,k),\pi_{d,e}(j,\ell)\bigr).
+        \label{eq:mpu_tensor_flattening_shuffle}
+    \end{align}
+\end{definition}
+
+\begin{definition}[Pointwise dependent pairs]
+    \label{def:elementary_pi_sigma_equiv}
+    \lean{Equiv.piSigmaEquiv, Equiv.piSigmaEquiv_apply,
+        Equiv.piSigmaEquiv_symm_apply}
+    \leanok
+    For families of types $\alpha_i$ and $\beta_i(a)$ with $a\in\alpha_i$, a
+    function assigning to each $i$ a pair $(a_i,b_i)$ with $b_i\in\beta_i(a_i)$
+    is the same as a function $a$ with $a(i)\in\alpha_i$ together with a
+    function $b$ with $b(i)\in\beta_i(a(i))$.
+\end{definition}
+
+\begin{lemma}[Short tuples as vectors]
+    \label{lem:elementary_short_tuple_vectors}
+    \lean{Matrix.eq_vecCons_fin_two, Matrix.eq_vecCons_fin_three,
+        Matrix.eq_vecCons_fin_four, Matrix.vec3_comp_swap_zero_one,
+        Matrix.vec3_comp_swap_one_two, Matrix.vec3_comp_swap_zero_two}
+    \leanok
+    A function on two, three or four indices equals the vector of its
+    values, and precomposing $(a,b,c)$ with a transposition of two indices
+    exchanges the corresponding entries.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Compare the two sides at each index.
+\end{proof}

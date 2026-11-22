@@ -1,0 +1,244 @@
+\section{Paths, compactness, and local sections for groups of matrices}
+
+This section proves that the invertible, the unitary, and the real orthogonal
+matrices of a fixed determinant are path connected, that the matrices unitary
+between two coordinate spaces form a compact set, and that a path of unitaries
+that is continuous modulo local unitaries $x\otimes y$ lifts to a continuous
+path. The last statement replaces the slice theorem of Montgomery and Yang in
+the proof of \cite[Corollary~IV.7]{Cirac2017MPU}; the construction is
+described in \cite{gap:mpu_standard_form_path_cross_section}.
+
+\begin{lemma}[Paths of invertible matrices]
+    \label{lem:invertible_matrices_joined}
+    \lean{Matrix.joinedIn_isUnit_det_one}
+    \leanok
+    Every invertible complex square matrix $X$ is joined to the identity by a
+    continuous path of invertible matrices.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    For $z\neq0$, the matrix $(1-z)I+zX=-z\bigl(-z^{-1}I-(X-I)\bigr)$ is
+    singular exactly when $-z^{-1}$ is an eigenvalue of $X-I$. Hence the
+    line $z\mapsto(1-z)I+zX$ is singular at only finitely many points, none of
+    them $0$ or $1$. The complement of a countable subset of $\mathbb C$ is
+    path connected, so a path from $0$ to $1$ avoiding these points gives the
+    required path of invertible matrices.
+\end{proof}
+
+\begin{lemma}[Paths of unitary matrices]
+    \label{lem:unitary_matrices_joined}
+    \lean{Matrix.joined_one_unitaryGroup, Matrix.IsUnitaryBetween.joinedIn}
+    \leanok
+    Every unitary complex square matrix is joined to the identity by a
+    continuous path of unitary matrices. Consequently, any two linear maps
+    that are unitary between the same pair of finite-dimensional coordinate
+    spaces are joined by a continuous path of such maps.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Let $u$ be unitary. Its spectrum is a finite subset of the unit circle,
+    so there is $z$ on the unit circle with $-z$ not an eigenvalue of $u$.
+    The spectrum of $z^{-1}u$ then avoids $-1$, hence
+    \begin{align}
+        \|z^{-1}u-1\| & <2,
+    \end{align}
+    and $z^{-1}u$ is joined to the identity by the exponential of a
+    multiple of its self-adjoint logarithm. The scalar $z$ is joined to $1$
+    along the unit circle, and the product of the two paths joins $1$ to
+    $u$. For maps $a,b$ unitary between the same spaces, $ba^\dagger$ is
+    unitary; a path $g(t)$ from $1$ to $ba^\dagger$ gives the path $g(t)a$
+    from $a$ to $b$.
+\end{proof}
+
+\begin{lemma}[Paths of orthogonal matrices]
+    \label{lem:mpu_orthogonal_gate_interpolation}
+    \lean{Matrix.IsUnitaryBetween.joinedIn_real_of_det_eq,
+        Matrix.joined_unitaryGroup_real_of_det_eq,
+        Unitary.joined_one_linearIsometryEquiv_symm}
+    \leanok
+    Two real orthogonal matrices with the same determinant are joined by a
+    continuous path of real orthogonal matrices. Consequently, two complex
+    matrices with real entries that are unitary between the same coordinate
+    spaces, and whose determinants agree when read through one
+    identification of those spaces, are joined by a path of such matrices.
+    This is the interpolation step of the proof of
+    \cite[Theorem~\texttt{conjphs}]{Cirac2017MPU}, of which only path
+    connectedness is used.
+    % Source lines: paper_v2.tex 1438--1442.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    By the Cartan--Dieudonn\'e theorem an orthogonal map is a product of
+    reflections in hyperplanes, an even number of them when its determinant
+    is one. In dimension at least two, any two such reflections are joined by
+    moving the unit normal along the sphere, so the product is joined to an
+    even power of one reflection, which is the identity.
+\end{proof}
+
+\begin{lemma}[Compactness of the unitaries between two coordinate spaces]
+    \label{lem:unitary_between_compact}
+    \lean{Matrix.isCompact_setOf_isUnitaryBetween}
+    \leanok
+    For finite sets $M$ and $N$, the matrices $A\in\C^{M\times N}$ with
+    $A^\dagger A=I_N$ and $AA^\dagger=I_M$ form a compact set.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Every entry of such a matrix has modulus at most one, so the set lies in
+    a product of closed discs, which is compact. Both equations are closed
+    conditions, since multiplication and the adjoint are continuous.
+\end{proof}
+
+\begin{lemma}[Nearest Kronecker product]
+    \label{lem:nearest_kronecker_product}
+    \lean{Matrix.kroneckerProjector, Matrix.nearestKronecker,
+        Matrix.kroneckerGapSet, Matrix.continuous_nearestKronecker,
+        Matrix.isOpen_kroneckerGapSet, Matrix.nearestKronecker_kronecker_mul,
+        Matrix.exists_eq_kronecker_nearestKronecker,
+        Matrix.nearestKronecker_kronecker_of_unitary,
+        Matrix.kronecker_mem_kroneckerGapSet}
+    \leanok
+    \uses{lem:matrix_realignment_kronecker}
+    Let $0<a<b<\ell r$, and let $f$ be the continuous function equal to $0$ on
+    $(-\infty,a]$, to $1$ on $[b,\infty)$, and affine in between. For
+    $M\in\mathrm M_{\ell r}$ put $P(M)=f\bigl(R(M)R(M)^\dagger\bigr)$, where
+    $R$ is the realignment, and let $N(M)$ be the matrix with
+    $R(N(M))=P(M)R(M)$. Let $W$ be the set of $M$ such that the spectrum of
+    $R(M)R(M)^\dagger$ does not meet $[a,b]$ and
+    $\operatorname{tr}P(M)\in(1/2,3/2)$. Then:
+    \begin{enumerate}
+        \item $N$ is continuous and $W$ is open;
+        \item $N((h\otimes k)M)=(h\otimes k)N(M)$ for unitaries $h$ and $k$,
+              and $W$ is invariant under these left multiplications;
+        \item for $M\in W$, $N(M)=A\otimes B$ with $A\neq0$ and $B\neq0$;
+        \item for unitaries $x$ and $y$, $x\otimes y\in W$ and
+              $N(x\otimes y)=x\otimes y$.
+    \end{enumerate}
+    This is the second step of the direct construction that replaces the
+    slice theorem in the proof of \cite[Corollary~IV.7]{Cirac2017MPU}. The gap
+    is the closed interval $[a,b]$, since avoiding an open interval is not an
+    open condition on the spectrum.
+    % Source lines: paper_v2.tex 942--947.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{lem:matrix_realignment_kronecker}
+    The map $P$ is continuous by continuity of the functional calculus, and
+    $W$ is open because the spectrum is upper semicontinuous. Left
+    multiplication by $h\otimes k$ sends $R(M)$ to
+    $(h\otimes\mathbb 1)R(M)(k\otimes\mathbb 1)^{\mathsf T}$, so it conjugates
+    $R(M)R(M)^\dagger$ and $P(M)$ by the unitary $h\otimes\mathbb 1$. On $W$ the
+    function $f$ takes only the values $0$ and $1$ on the spectrum, so $P(M)$ is
+    an orthogonal projector whose rank equals its trace, which is $1$. Hence
+    $P(M)R(M)$ has rank at most one; it is nonzero, for otherwise
+    $f(t)t=0$ on the spectrum, which forces $P(M)=0$. The realignment lemma
+    then writes $N(M)$ as a Kronecker product of nonzero factors. Finally,
+    $R(\mathbb 1)R(\mathbb 1)^\dagger$ is $\ell r$ times a rank-one projector,
+    so $P(\mathbb 1)R(\mathbb 1)=R(\mathbb 1)$ and
+    $N(\mathbb 1)=\mathbb 1$; equivariance gives the statement for
+    $x\otimes y$.
+\end{proof}
+
+\begin{lemma}[A local section for local unitaries]
+    \label{lem:kronecker_local_section}
+    \lean{Matrix.unitaryPart, Matrix.continuousOn_unitaryPart,
+        Matrix.unitaryPart_mem_unitaryGroup, Matrix.unitaryPart_unitary_mul,
+        Matrix.unitaryPart_kronecker, Matrix.localSection,
+        Matrix.localSectionDomain, Matrix.isOpen_localSectionDomain,
+        Matrix.continuousOn_localSection, Matrix.localSection_kronecker_mul,
+        Matrix.exists_localSection_eq_kronecker_mul,
+        Matrix.kronecker_mul_mem_localSectionDomain,
+        Matrix.localSection_kronecker_mul_self}
+    \leanok
+    \uses{lem:nearest_kronecker_product}
+    For an invertible matrix $X$ let $Q(X)=X(X^\dagger X)^{-1/2}$. Then $Q$ is
+    continuous on the invertible matrices and unitary-valued, $Q(gX)=gQ(X)$ for
+    unitary $g$, and $Q(A\otimes B)=Q(A)\otimes Q(B)$ for invertible $A$, $B$.
+    Let $0<a<b<\ell r$, let $N$ and the gap set be as in
+    Lemma~\ref{lem:nearest_kronecker_product}, and fix a unitary $u_0$. Put
+    $g(u)=Q(N(uu_0^\dagger))$ and $\sigma(u)=g(u)^\dagger u$ on the set $W$ of
+    those $u$ for which $uu_0^\dagger$ lies in the gap set and
+    $N(uu_0^\dagger)$ is invertible. Then $W$ is open, invariant under left
+    multiplication by $x\otimes y$ for unitaries $x$, $y$, and contains every
+    $(x\otimes y)u_0$; the map $\sigma$ is continuous on $W$, satisfies
+    $\sigma((x\otimes y)u)=\sigma(u)$, sends each $u\in W$ to $(x\otimes y)u$
+    for some unitaries $x$, $y$, and fixes $u_0$ on its orbit:
+    $\sigma((x\otimes y)u_0)=u_0$. This is the third step of the direct
+    construction that replaces the slice theorem in the proof of
+    \cite[Corollary~IV.7]{Cirac2017MPU}.
+    % Source lines: paper_v2.tex 942--947.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{lem:nearest_kronecker_product}
+    The factor $(X^\dagger X)^{-1/2}$ is a continuous function of the positive
+    definite matrix $X^\dagger X$, and $Q(X)^\dagger Q(X)=1$. Since
+    $(gX)^\dagger(gX)=X^\dagger X$, $Q$ commutes with unitaries on the left. For
+    a Kronecker product,
+    $(A\otimes B)^\dagger(A\otimes B)=A^\dagger A\otimes B^\dagger B$, and the
+    inverse square root of a Kronecker product of positive definite matrices
+    is the Kronecker product of the inverse square roots, by uniqueness of
+    positive square roots. On $W$ the nearest Kronecker product writes
+    $N(uu_0^\dagger)=A\otimes B$ with $A$, $B$ invertible, so
+    $g(u)=Q(A)\otimes Q(B)$ is a product of local unitaries. Equivariance of $N$
+    and of $Q$ gives $g((x\otimes y)u)=(x\otimes y)g(u)$, hence the invariance
+    of $\sigma$. Finally $N(\mathbb 1)=\mathbb 1$ and $Q(\mathbb 1)=\mathbb 1$
+    give $\sigma(u_0)=u_0$.
+\end{proof}
+
+\begin{lemma}[Lifting paths continuous modulo local unitaries]
+    \label{lem:kronecker_path_lifting}
+    \lean{exists_continuousOn_Icc_lift,
+        Matrix.exists_continuous_lift_of_continuous_mod_localUnitary}
+    \leanok
+    \uses{lem:kronecker_local_section}
+    Let $u:[0,1]\to U(\ell r)$ be continuous modulo local unitaries: for every
+    $p$ and $\varepsilon>0$ there is $\delta>0$ such that for $|q-p|<\delta$
+    some unitaries $x$, $y$ give $\|u(q)-(x\otimes y)u(p)\|<\varepsilon$. Then
+    there is a continuous $\hat u:[0,1]\to U(\ell r)$ with
+    $\hat u(p)=(x\otimes y)u(p)$ for unitaries $x$, $y$ depending on $p$.
+    Nothing is assumed about the regularity of $u$. This is the step of the
+    proof of \cite[Corollary~IV.7]{Cirac2017MPU} that the source obtains from
+    the slice theorem of Montgomery and Yang.
+    % Source lines: paper_v2.tex 942--947.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{lem:kronecker_local_section}
+    Fix $p$ and let $\sigma_p$ be the local section of
+    Lemma~\ref{lem:kronecker_local_section} with base point $u(p)$, defined on
+    the open set $W_p$. If $u(q_0)\in W_p$ and $q$ is close to $q_0$, then
+    $(x\otimes y)^\dagger u(q)$ is close to $u(q_0)$ for suitable unitaries
+    $x$, $y$, so it lies in $W_p$; as $W_p$ and $\sigma_p$ are invariant under
+    local unitaries, $u(q)\in W_p$ and
+    $\sigma_p(u(q))=\sigma_p((x\otimes y)^\dagger u(q))$ is close to
+    $\sigma_p(u(q_0))$. Hence $q\mapsto\sigma_p(u(q))$ is a continuous lift on
+    an open neighbourhood of $p$. A Lebesgue number for this cover of $[0,1]$
+    divides $[0,1]$ into finitely many intervals, each carrying a continuous
+    lift. Proceeding from left to right, the lift on the next interval is
+    multiplied by the constant local unitary that matches it to the lift
+    already built at the common endpoint; the glued map is continuous and
+    remains a lift.
+\end{proof}
+
+\begin{lemma}[The functional calculus under unitary conjugation]
+    \label{lem:cfc_unitary_conjugation}
+    \lean{Matrix.IsHermitian.cfc_eq_of_eq_unitary_conj,
+        Matrix.PosSemidef.supportInvSqrt_eq_of_eq_unitary_conj}
+    \leanok
+    Let $x$ be unitary and let $A$ and $B=xAx^\dagger$ be Hermitian. For every
+    real function $f$, $f(B)=xf(A)x^\dagger$. In particular, if $A$ and $B$ are
+    positive semidefinite, the inverse square roots on their supports satisfy
+    $B^{-1/2}=xA^{-1/2}x^\dagger$. This compares the normalization matrices of
+    two compact decompositions of one matrix in
+    \cite[lines~479--502]{Cirac2017MPU}.
+\end{lemma}
+
+\begin{proof}\leanok
+    Conjugation by $x$ is a continuous star-algebra automorphism, and such
+    automorphisms commute with the continuous functional calculus.
+\end{proof}

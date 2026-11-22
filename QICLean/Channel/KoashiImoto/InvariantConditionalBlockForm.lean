@@ -71,9 +71,10 @@ theorem exists_normalizedConditionalSliceBlockForm_preservingBlockAction_jointSu
       activeConditionalEffectIndex_nonempty ρ_AB (by
         rw [← trace_eq_trace_traceC_ABC]
         exact hρ_dm.2)
-    ∃ (F : Kraus.PreservingKrausFamily μ)
+    ∃ (F : KrausFamily (Fin dB) (Fin dB))
         (n : ℕ) (V : Matrix (Fin dB) (Fin n) ℂ),
-      (∀ X, Kraus.map F.Kfam X =
+      Kraus.IsPreserving μ F.op ∧
+      (∀ X, Kraus.map F.op X =
         petzMiddleChannel ρ_ABC hρ_dm.1 X) ∧
       Vᴴ * V = 1 ∧
       V * Vᴴ = (Kraus.commonAverage_posSemidef μ
@@ -97,18 +98,18 @@ theorem exists_normalizedConditionalSliceBlockForm_preservingBlockAction_jointSu
             Matrix.reindex e e
               (Matrix.blockDiagonal' fun j ↦
                 (q x j : ℂ) • (σ j ⊗ₖ τ x j))) ∧
-          (∀ G : Kraus.PreservingKrausFamily μ,
+          (∀ G : KrausFamily (Fin dB) (Fin dB), Kraus.IsPreserving μ G.op →
             Kraus.IsPreserving (Kraus.supportCompressedFamily V μ)
-                (Kraus.supportCompressedKraus V G.Kfam) ∧
-              ∀ X, Kraus.map G.Kfam (V * X * Vᴴ) =
-                V * Kraus.map (Kraus.supportCompressedKraus V G.Kfam) X * Vᴴ) ∧
-          ∀ G : Kraus.PreservingKrausFamily
-              (Kraus.supportCompressedFamily V μ),
-            ∃ C : (i : Fin G.numKraus) → ∀ j,
+                (Kraus.supportCompressedKraus V G.op) ∧
+              ∀ X, Kraus.map G.op (V * X * Vᴴ) =
+                V * Kraus.map (Kraus.supportCompressedKraus V G.op) X * Vᴴ) ∧
+          ∀ G : KrausFamily (Fin n) (Fin n),
+            Kraus.IsPreserving (Kraus.supportCompressedFamily V μ) G.op →
+            ∃ C : G.Index → ∀ j,
                 Matrix (Fin (m j)) (Fin (m j)) ℂ,
               (∀ i,
                 Matrix.reindex e.symm e.symm
-                    (star U * G.Kfam i * U) =
+                    (star U * G.op i * U) =
                   Matrix.blockDiagonal' fun j ↦
                     C i j ⊗ₖ (1 : Matrix (Fin (d j)) (Fin (d j)) ℂ)) ∧
               (∀ j, Kraus.IsTP (fun i ↦ C i j)) ∧
@@ -116,7 +117,7 @@ theorem exists_normalizedConditionalSliceBlockForm_preservingBlockAction_jointSu
               ∀ j (A : Matrix (Fin (m j)) (Fin (m j)) ℂ)
                   (B : Matrix (Fin (d j)) (Fin (d j)) ℂ),
                 Matrix.reindex e.symm e.symm
-                    (star U * Kraus.map G.Kfam
+                    (star U * Kraus.map G.op
                       (U * Matrix.reindex e e
                         (Matrix.directSumBlockEmbedding (m := m) (d := d) j
                           (A ⊗ₖ B)) * star U) * U) =
@@ -124,7 +125,7 @@ theorem exists_normalizedConditionalSliceBlockForm_preservingBlockAction_jointSu
                     (Kraus.map (fun i ↦ C i j) A ⊗ₖ B) := by
   classical
   dsimp only
-  obtain ⟨hμnonempty, hμpos, hμtrace, F, hFmap⟩ :=
+  obtain ⟨hμnonempty, hμpos, hμtrace, F, hF, hFmap⟩ :=
     exists_preservingKrausFamily_normalizedConditionalSlice ρ_ABC hρ_dm hSSA
   let : Nonempty (ActiveConditionalEffectIndex (traceC_ABC ρ_ABC)) := hμnonempty
   obtain ⟨n, V, hV, hVrange, hrec, K, d, m, e, U, σ, q, τ, hU, hd, hm,
@@ -132,7 +133,7 @@ theorem exists_normalizedConditionalSliceBlockForm_preservingBlockAction_jointSu
       haction⟩ :=
     Kraus.exists_commonInvariant_normalizedStateBlockForm_preservingBlockAction_jointSupport
       (normalizedConditionalSlice (traceC_ABC ρ_ABC)) hμpos hμtrace
-  exact ⟨F, n, V, hFmap, hV, hVrange, hrec, K, d, m, e, U, σ, q, τ, hU,
+  exact ⟨F, n, V, hF, hFmap, hV, hVrange, hrec, K, d, m, e, U, σ, q, τ, hU,
     hd, hm, hσpos, hσtrace, hqnonneg, hqsum, hτpos, hτtrace, hfamily,
     hpres, haction⟩
 

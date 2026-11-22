@@ -1,0 +1,279 @@
+\section{Elementary facts on finite groups and matrices}
+\label{sec:characters_elementary}
+
+\begin{lemma}[Integer coordinates below a cyclic modulus]%
+    \label{thm:peps_zmod_small_difference}
+    \lean{ZMod.intCast_eq_intCast_iff_of_natAbs_sub_lt}
+    \leanok
+    Let $n\in\N$ and $a,b\in\Z$ satisfy $|b-a|<n$.
+    Their images in $\Z/n\Z$ are equal if and only if $a=b$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Equality of the images is equivalent to $n\mid b-a$.
+    A nonzero multiple of $n$ has absolute value at least $n$,
+    so the strict bound forces $b-a=0$. The converse is immediate.
+\end{proof}
+
+\begin{lemma}[Commutation from simultaneous permutation invariance]
+    \label{lem:peps_permutation_matrix_commutation}
+    \lean{Matrix.commute_permMatrix_of_entry_invariant}
+    \leanok
+    Let $I$ be a finite set, $R$ a semiring, $A$ an $I\times I$ matrix
+    over $R$, and $\pi$ a permutation of $I$. If
+    $A_{\pi i,\pi j}=A_{i,j}$ for every $i,j$, then
+    $AP_\pi=P_\pi A$, where $P_\pi$ is the permutation matrix.
+    This identity gives the permutation commutation in the
+    coordinate symmetry arguments of \cite{Schuch2010PEPS}, lines
+    2505--2558 of the source.
+\end{lemma}
+
+\begin{proof}\leanok
+    Multiply by the permutation matrix entry by entry and apply the
+    assumed identity at $i,\pi^{-1}j$.
+\end{proof}
+
+\begin{lemma}[Conjugacy classes are unchanged by conjugation]%
+    \label{thm:peps_conjugacy_class_invariance}
+    \lean{ConjClasses.mk_conjugate}
+    \leanok
+    For every group $G$ and $g,x\in G$, the conjugacy class of $xgx^{-1}$
+    is the conjugacy class of $g$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The elements $g$ and $xgx^{-1}$ are conjugate, with conjugating element $x$.
+\end{proof}
+
+\begin{lemma}[Combining commuting weights]%
+    \label{thm:peps_monoid_hom_commuting_weight}
+    \lean{MonoidHom.mul_commuting_pow_mul,
+        MonoidHom.mul_weight_mul_weight_mul}
+    \leanok
+    Let $U$ be a monoid homomorphism and let $W$ commute with every $U(a)$.
+    Then, for $n\geq 0$,
+    \begin{align}
+        U(a)W^nU(b)    & =W^nU(ab), \notag \\
+        (U(a)W)(WU(b)) & =W^2U(ab). \notag
+    \end{align}
+    This is the weight calculation used in \cite[Section~7]{Schuch2010PEPS}.
+\end{lemma}
+
+\begin{proof}\leanok
+    Move $W^n$ past $U(a)$ and use $U(a)U(b)=U(ab)$.
+    The second identity is the case $n=2$ after associating the products.
+\end{proof}
+
+\begin{lemma}[Single-coordinate generation of a finite product]%
+    \label{thm:characters_mulsingle_induction}
+    \lean{Pi.mulSingle_induction_noncomm}
+    \leanok
+    Let $(M_i)_{i\in I}$ be a finite family of monoids, not necessarily
+    commutative. A property of elements of $\prod_{i\in I}M_i$ that holds
+    for the identity and for every element supported on a single coordinate,
+    and that is preserved by products, holds for every element. In
+    particular, a submonoid containing all single-coordinate elements is
+    the whole product.
+\end{lemma}
+
+\begin{proof}\leanok
+    By induction on a finite set $S\subseteq I$, the element equal to $f$ on
+    $S$ and to the identity elsewhere has the property: adding a coordinate
+    $a$ multiplies it on the left by the element supported at $a$ with value
+    $f(a)$. Taking $S=I$ gives $f$.
+\end{proof}
+
+\begin{lemma}[Independent finite choices]%
+    \label{thm:peps_finite_indicator_sum}
+    \lean{Fintype.prod_sum_boole}
+    \leanok
+    Let $I$ be a finite set, let $J_i$ be finite sets indexed by $i\in I$,
+    and let $P_i$ be a condition on $J_i$. In every commutative semiring,
+    \begin{align}
+        \prod_{i\in I}\sum_{j\in J_i}\mathbf1_{P_i(j)}
+        =\sum_{f\in\prod_{i\in I}J_i}
+        \mathbf1_{\{P_i(f_i)\text{ for every }i\in I\}}. \notag
+    \end{align}
+    Thus multiplying the separate numbers of admissible choices counts
+    the admissible simultaneous choices.
+\end{lemma}
+
+\begin{proof}\leanok
+    Distributing the finite product over the finite sums reduces each summand to a product of
+    zero-one indicators, which is the indicator of the conjunction of their conditions.
+\end{proof}
+
+\begin{lemma}[Uniqueness of finite product factors]%
+    \label{thm:peps_product_factor_uniqueness}
+    \lean{Fintype.exists_scalars_of_prod_eq}
+    \leanok
+    Let $I$ be finite, let $\mathbb K$ be a field, and let
+    $f_i,g_i:X_i\to\mathbb K$. Suppose there is $a^0\in\prod_iX_i$
+    with $\prod_i f_i(a_i^0)\ne0$, and
+    $\prod_i f_i(a_i)=\prod_i g_i(a_i)$ for every $a\in\prod_iX_i$.
+    Then there are $c_i\ne0$ with $\prod_i c_i=1$ and
+    $g_i(x)=c_i f_i(x)$ for every $i$ and $x\in X_i$.
+\end{lemma}
+
+\begin{proof}\leanok
+    All $f_i(a_i^0)$ and $g_i(a_i^0)$ are nonzero. Put
+    $c_i=g_i(a_i^0)/f_i(a_i^0)$; equality at $a^0$ gives
+    $\prod_i c_i=1$. Varying only coordinate $i$ and cancelling the
+    other nonzero factors gives $g_i(x)=c_i f_i(x)$.
+\end{proof}
+
+\begin{lemma}[Proportionality of directional matrix factors]%
+    \label{thm:peps_directional_product_factors}
+    \lean{Matrix.GeneralLinearGroup.exists_directional_scalars_of_prod_translate_eq}
+    \leanok
+    Let $I$ be finite and $P$ a finite additive monoid. Let
+    $D_r>0$ and $E_{r,p}\in\GL(D_r,\C)$ for $r\in I$ and $p\in P$.
+    Suppose that for every $t\in P$ and every independent family of pairs
+    $(a_{r,p},b_{r,p})$,
+    \begin{align}
+        \prod_{r,p} E_{r,p}(a_{r,p},b_{r,p})
+         & =\prod_{r,p} E_{r,p+t}(a_{r,p},b_{r,p}).\notag
+    \end{align}
+    Then $E_{r,p}=\alpha_{r,p}E_{r,0}$ for nonzero scalars $\alpha_{r,p}$.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{thm:peps_product_factor_uniqueness}
+    Each invertible matrix on a nonzero space has a nonzero entry.
+    Choosing one such entry for each factor gives a nonzero reference product.
+    Lemma~\ref{thm:peps_product_factor_uniqueness}, applied to the
+    translation by $t$, gives proportionality of its factors. Take $t=p$
+    and inspect the factor at position zero.
+\end{proof}
+
+\begin{lemma}[A projector and its complement]
+    \label{thm:peps_binary_projection_family}
+    \lean{Matrix.binaryProjectionFamily_complete}
+    \leanok
+    Let $D$ be a Hermitian idempotent on a finite-dimensional complex space.
+    Then $D$ and $\Id-D$ are positive orthogonal projectors, their product in
+    either order is zero, and their sum is $\Id$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Hermitian idempotence makes each operator its own product with its
+    adjoint, hence positive. Expanding the products proves the remaining
+    identities.
+\end{proof}
+
+\begin{definition}[Image of a commuting projection]
+    \label{def:peps_scaled_projection_transport}
+    \lean{Matrix.scaledProjectionTransport}
+    \leanok
+    Let $T$ be a linear map between finite-dimensional complex spaces with
+    $T^*T=cP$ and $TP=T$, where $c>0$. For a Hermitian idempotent $D$
+    commuting with $P$, put
+    \begin{align}
+        Q & =c^{-1}TDT^*.\notag
+    \end{align}
+    These are the relations used in the interference argument of
+    \cite[Section~6]{Schuch2010PEPS}, lines 2582--2615 of the source.
+\end{definition}
+
+\begin{lemma}[Complete transported projection family]
+    \label{thm:peps_scaled_projection_transport}
+    \lean{Matrix.scaledProjectionTransport_properties,
+        Matrix.exists_binaryProjectionFamily_transport}
+    \leanok
+    \uses{def:peps_scaled_projection_transport}
+    Under the preceding hypotheses, $Q$ is a positive Hermitian idempotent.
+    The pair $Q,\Id-Q$ is a complete orthogonal measurement on the whole
+    target space of $T$, and
+    \begin{align}
+        QT & =TD,\qquad (\Id-Q)T=T(\Id-D).\notag
+    \end{align}
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{thm:peps_binary_projection_family}
+    Combining $T^*T=cP$, $DP=PD$, and $TP=T$ gives $QT=TD$.
+    Hermiticity follows from that of $D$, and $D^2=D$ then gives $Q^2=Q$;
+    applying the preceding binary projection identity and expanding $(\Id-Q)T$
+    completes the proof.
+\end{proof}
+
+\begin{lemma}[Exchanging two invariant orthogonal unit vectors]%
+    \label{lem:peps_unitary_vector_swap}
+    \lean{Matrix.unitaryVectorSwap,
+        Matrix.unitaryVectorSwap_mem_unitaryGroup,
+        Matrix.unitaryVectorSwap_mulVec_left,
+        Matrix.unitaryVectorSwap_mulVec_right,
+        Matrix.unitaryVectorSwap_commute,
+        Matrix.unitaryVectorSwap_mulVec_of_orthogonal}
+    \leanok
+    Let $x,y$ be orthogonal unit vectors in a finite-dimensional complex
+    Hilbert space. The matrix
+    \begin{align}
+        S=\Id-(x-y)(x-y)^\dagger \notag
+    \end{align}
+    is unitary and satisfies $Sx=y$ and $Sy=x$. It fixes every vector
+    orthogonal to both $x$ and $y$. If a unitary $U$ fixes $x$ and $y$, then
+    $SU=US$. This construction is used in
+    \cite[Theorem~6.17]{Schuch2010PEPS}.
+\end{lemma}
+
+\begin{proof}\leanok
+    Put $v=x-y$ and $P=vv^\dagger$. Orthogonality and normalization give
+    $v^\dagger v=2$, hence $P^2=2P$ and $S^\dagger S=(\Id-P)^2=\Id$.
+    Since $v^\dagger x=1$ and $v^\dagger y=-1$, the claimed actions on
+    $x$ and $y$ follow. Orthogonal vectors are annihilated by $P$.
+    Finally, $Uv=v$ and unitarity give $v^\dagger U=v^\dagger$.
+    Consequently $UP=PU=P$, which proves commutation with $S$.
+\end{proof}
+
+\begin{definition}[Singlet matrix]
+    \label{def:characters_singlet_matrix}
+    \lean{Matrix.singletY}
+    \leanok
+    The singlet matrix is
+    \begin{align}
+        Y & =\begin{pmatrix}0&-1\\1&0\end{pmatrix}, \notag
+    \end{align}
+    the coefficient matrix of the spin-$\tfrac12$ singlet
+    $\ket{01}-\ket{10}$ \cite[Appendix~A]{Cirac2021Matrix}.
+\end{definition}
+
+\begin{lemma}[Properties of the singlet matrix]
+    \label{thm:characters_singlet_matrix}
+    \lean{Matrix.singletY_apply, Matrix.singletY_mul_transpose,
+        Matrix.mul_singletY,
+        Matrix.adjugate_eq_star_of_mem_specialUnitaryGroup}
+    \leanok
+    \uses{def:characters_singlet_matrix}
+    The entries are $Y_{ab}=(-1)^b\delta_{a,1-b}$, and $YY^T=\Id$. Every
+    $2\times2$ matrix $U$ satisfies $UY=Y(\operatorname{adj}U)^T$. The
+    adjugate of a special unitary matrix is its conjugate transpose, so
+    $UY=Y\bar U$ for $U\in SU(2)$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The first three identities are checked entry by entry, using the explicit
+    adjugate of a $2\times2$ matrix. If $U^\dagger U=\Id$ and $\det U=1$,
+    then $\operatorname{adj}U=U^\dagger U\operatorname{adj}U
+        =U^\dagger\det U=U^\dagger$.
+\end{proof}
+
+\begin{lemma}[Block-diagonal coordinates of a split invariant decomposition]
+    \label{thm:characters_direct_sum_block_diagonal}
+    \lean{LinearMap.toMatrix_ofEquivFun,
+        exists_linearEquiv_blockDiagonal_of_isInternal}
+    \leanok
+    Let $V$ be an internal direct sum of subspaces $W_k$, each preserved by
+    every endomorphism $f_i$ of a family, and let $\psi_k$ be coordinates on
+    $W_k$. The coordinates on $V$ assembled from the $\psi_k$ turn every
+    $f_i$ into a block-diagonal matrix whose $k$-th diagonal block is the
+    matrix of the restriction of $f_i$ to $W_k$ in the coordinates $\psi_k$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The matrix of an endomorphism in the basis attached to a coordinate
+    isomorphism is the matrix of the conjugated endomorphism. In the basis
+    collected from bases of the summands, an endomorphism preserving every
+    summand has block-diagonal matrix with the matrices of its restrictions
+    on the diagonal.
+\end{proof}

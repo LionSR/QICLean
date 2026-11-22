@@ -3,6 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
+import QICLean.Algebra.MatrixToEuclidean
 import QICLean.Analysis.EnergyTruncation
 import QICLean.Analysis.GroundEnergyBounds
 import QICLean.Analysis.LowEnergyCluster
@@ -38,7 +39,7 @@ run_cmd do
     ``ContinuousLinearMap.norm_le_of_subtypeL_comp_eq_domRestrict,
     ``ContinuousLinearMap.mul_norm_le_norm_sylvester_of_quadratic_bounds,
     ``ContinuousLinearMap.norm_le_div_of_sylvester_perturbation,
-    ``Matrix.toEuclideanCLM_le_of_le,
+    ``Matrix.toEuclideanCLM_le_toEuclideanCLM_iff,
     ``Real.sub_mul_exp_weight_le,
     ``Real.posPart_sub_mul_exp_weight_le,
     ``Matrix.IsHermitian.norm_excess_domRestrict_le_actual_weighted_map,

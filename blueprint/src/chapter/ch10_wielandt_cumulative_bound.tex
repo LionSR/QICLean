@@ -9,8 +9,9 @@ Section~\ref{sec:app_wielandt_cumulative_support}.
     \label{def:kraus_eval_word}
     \lean{Kraus.evalWord}
     \leanok
-    Let $K=\{K^i\}_{i=0}^{d-1}$ be a finite family of $D\times D$ matrices.
-    For a word $w=(i_1,\ldots,i_n)$, its \emph{word evaluation} is
+    Let $K=\{K^i\}_{i\in I}$ be a family of matrices on a finite-dimensional
+    space $\C^n$, indexed by an arbitrary set~$I$.
+    For a word $w=(i_1,\ldots,i_n)$ of elements of~$I$, its \emph{word evaluation} is
     \begin{align}
         K^w=K^{i_1}\cdots K^{i_n},
         \notag

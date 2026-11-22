@@ -294,8 +294,8 @@ theorem wielandtIndex_le_general [NeZero D]
   let i₀ : Fin (blockPhysDim r w.length) :=
     (decodeBlockEquiv r w.length).symm w.get
   have hBi : B i₀ = evalWord K w := by
-    simp only [B, i₀, blockTensor, wordOfBlock,
-      decodeBlock_decodeBlockEquiv_symm, List.ofFn_get]
+    simp only [B, i₀, blockTensor, reindexPhysical, Equiv.apply_symm_apply, block_apply,
+      List.ofFn_get]
   have heigB : B i₀ *ᵥ φ = μ • φ := by
     rw [hBi]
     exact heig

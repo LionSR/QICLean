@@ -75,30 +75,29 @@ theorem exists_adaptedKrausBlocks_of_isPreserving
           Matrix.reindex e e
             (Matrix.blockDiagonal' fun j ↦
               (1 : Matrix (Fin (m j)) (Fin (m j)) ℂ) ⊗ₖ Y j))
-    (F : PreservingKrausFamily ρ) :
-    ∃ C : (i : Fin F.numKraus) → ∀ j,
+    (F : KrausFamily (Fin D) (Fin D)) (hF : IsPreserving ρ F.op) :
+    ∃ C : F.Index → ∀ j,
         Matrix (Fin (m j)) (Fin (m j)) ℂ,
       ∀ i,
-        Matrix.unitaryReindexLinearEquiv e U hU (F.Kfam i) =
+        Matrix.unitaryReindexLinearEquiv e U hU (F.op i) =
           Matrix.blockDiagonal' fun j ↦
             C i j ⊗ₖ (1 : Matrix (Fin (d j)) (Fin (d j)) ℂ) := by
   classical
   let Φ := Matrix.unitaryReindexLinearEquiv e U hU
   have hA₀_le :
       commonInvariantStarSubalgebra ρ hρbar ≤
-        krausCommutantStarSubalgebra (K := F.Kfam) := by
-    apply le_krausCommutantStarSubalgebra_of_le_adjointFixedPoints
-      (K := F.Kfam) F.isPreserving.1
+        krausCommutantStarSubalgebra (K := F.op) := by
+    apply le_krausCommutantStarSubalgebra_of_le_adjointFixedPoints (K := F.op) hF.1
     intro A hA
-    exact (mem_commonInvariantStarSubalgebra ρ hρbar A).1 hA F
-  have hComm (i : Fin F.numKraus)
+    exact (mem_commonInvariantStarSubalgebra ρ hρbar A).1 hA F hF
+  have hComm (i : F.Index)
       (B : (j : Fin K) → Matrix (Fin (d j)) (Fin (d j)) ℂ) :
-      Φ (F.Kfam i) *
+      Φ (F.op i) *
           Matrix.blockDiagonal' (fun j ↦
             (1 : Matrix (Fin (m j)) (Fin (m j)) ℂ) ⊗ₖ B j) =
         Matrix.blockDiagonal' (fun j ↦
             (1 : Matrix (Fin (m j)) (Fin (m j)) ℂ) ⊗ₖ B j) *
-          Φ (F.Kfam i) := by
+          Φ (F.op i) := by
     let R := Matrix.blockDiagonal' fun j ↦
       (1 : Matrix (Fin (m j)) (Fin (m j)) ℂ) ⊗ₖ B j
     let A := Φ.symm R
@@ -110,22 +109,22 @@ theorem exists_adaptedKrausBlocks_of_isPreserving
       simp only [A, Φ, Matrix.unitaryReindexLinearEquiv_symm_apply,
         Matrix.mul_assoc, hUleft, Matrix.mul_one]
       rw [← Matrix.mul_assoc, hUleft, Matrix.one_mul]
-    have hAK : A * F.Kfam i = F.Kfam i * A := (hA₀_le hA i).1
-    change Φ (F.Kfam i) * R = R * Φ (F.Kfam i)
+    have hAK : A * F.op i = F.op i * A := (hA₀_le hA i).1
+    change Φ (F.op i) * R = R * Φ (F.op i)
     calc
-      Φ (F.Kfam i) * R = Φ (F.Kfam i) * Φ A := by rw [hΦA]
-      _ = Φ (F.Kfam i * A) :=
+      Φ (F.op i) * R = Φ (F.op i) * Φ A := by rw [hΦA]
+      _ = Φ (F.op i * A) :=
         (Matrix.unitaryReindexLinearEquiv_mul e U hU _ _).symm
-      _ = Φ (A * F.Kfam i) := congrArg Φ hAK.symm
-      _ = Φ A * Φ (F.Kfam i) :=
+      _ = Φ (A * F.op i) := congrArg Φ hAK.symm
+      _ = Φ A * Φ (F.op i) :=
         Matrix.unitaryReindexLinearEquiv_mul e U hU _ _
-      _ = R * Φ (F.Kfam i) := by rw [hΦA]
-  have hBlocks (i : Fin F.numKraus) :
+      _ = R * Φ (F.op i) := by rw [hΦA]
+  have hBlocks (i : F.Index) :
       ∃ Ci : ∀ j, Matrix (Fin (m j)) (Fin (m j)) ℂ,
-        Φ (F.Kfam i) =
+        Φ (F.op i) =
           Matrix.blockDiagonal' fun j ↦
             Ci j ⊗ₖ (1 : Matrix (Fin (d j)) (Fin (d j)) ℂ) :=
-    (Matrix.commutes_blockDiagonal'_one_kronecker_iff (Φ (F.Kfam i))).1
+    (Matrix.commutes_blockDiagonal'_one_kronecker_iff (Φ (F.op i))).1
       (hComm i)
   choose C hC using hBlocks
   exact ⟨C, hC⟩
@@ -133,13 +132,13 @@ theorem exists_adaptedKrausBlocks_of_isPreserving
 /-- Trace preservation descends from an adapted global Kraus family to each
 left-factor Kraus family. -/
 theorem isTP_adaptedKrausBlocks
-    {r K : ℕ} {d m : Fin K → ℕ}
+    {ι : Type*} [Fintype ι] {K : ℕ} {d m : Fin K → ℕ}
     {D : ℕ}
     (e : ((j : Fin K) × (Fin (m j) × Fin (d j))) ≃ Fin D)
     (U : Matrix (Fin D) (Fin D) ℂ)
     (hU : U ∈ Matrix.unitaryGroup (Fin D) ℂ)
-    (L : Fin r → Matrix (Fin D) (Fin D) ℂ) (hL : IsTP L)
-    (C : (i : Fin r) → ∀ j, Matrix (Fin (m j)) (Fin (m j)) ℂ)
+    (L : ι → Matrix (Fin D) (Fin D) ℂ) (hL : IsTP L)
+    (C : ι → ∀ j, Matrix (Fin (m j)) (Fin (m j)) ℂ)
     (hC : ∀ i,
       Matrix.unitaryReindexLinearEquiv e U hU (L i) =
         Matrix.blockDiagonal' fun j ↦
@@ -184,12 +183,12 @@ theorem isTP_adaptedKrausBlocks
 in one diagonal summand through the left-factor Kraus family and leaves the
 right factor unchanged. -/
 theorem map_adapted_singleBlock_kronecker
-    {r K D : ℕ} {d m : Fin K → ℕ}
+    {ι : Type*} [Fintype ι] {K D : ℕ} {d m : Fin K → ℕ}
     (e : ((j : Fin K) × (Fin (m j) × Fin (d j))) ≃ Fin D)
     (U : Matrix (Fin D) (Fin D) ℂ)
     (hU : U ∈ Matrix.unitaryGroup (Fin D) ℂ)
-    (L : Fin r → Matrix (Fin D) (Fin D) ℂ)
-    (C : (i : Fin r) → ∀ j, Matrix (Fin (m j)) (Fin (m j)) ℂ)
+    (L : ι → Matrix (Fin D) (Fin D) ℂ)
+    (C : ι → ∀ j, Matrix (Fin (m j)) (Fin (m j)) ℂ)
     (hC : ∀ i,
       Matrix.unitaryReindexLinearEquiv e U hU (L i) =
         Matrix.blockDiagonal' fun j ↦
@@ -232,12 +231,12 @@ theorem map_adapted_singleBlock_kronecker
 
 /-- The simple-tensor block action assembles over all diagonal summands. -/
 theorem map_adapted_blockDiagonal_kronecker
-    {r K D : ℕ} {d m : Fin K → ℕ}
+    {ι : Type*} [Fintype ι] {K D : ℕ} {d m : Fin K → ℕ}
     (e : ((j : Fin K) × (Fin (m j) × Fin (d j))) ≃ Fin D)
     (U : Matrix (Fin D) (Fin D) ℂ)
     (hU : U ∈ Matrix.unitaryGroup (Fin D) ℂ)
-    (L : Fin r → Matrix (Fin D) (Fin D) ℂ)
-    (C : (i : Fin r) → ∀ j, Matrix (Fin (m j)) (Fin (m j)) ℂ)
+    (L : ι → Matrix (Fin D) (Fin D) ℂ)
+    (C : ι → ∀ j, Matrix (Fin (m j)) (Fin (m j)) ℂ)
     (hC : ∀ i,
       Matrix.unitaryReindexLinearEquiv e U hU (L i) =
         Matrix.blockDiagonal' fun j ↦
@@ -359,11 +358,11 @@ theorem map_adaptedKrausBlock_sigma
         (Matrix.blockDiagonal' fun j ↦
           (q x j : ℂ) • (σ j ⊗ₖ τ x j)))
     (hqpos : ∀ j, ∃ x, 0 < q x j)
-    (F : PreservingKrausFamily ρ)
-    (C : (i : Fin F.numKraus) → ∀ j,
+    (F : KrausFamily (Fin D) (Fin D)) (hF : IsPreserving ρ F.op)
+    (C : F.Index → ∀ j,
       Matrix (Fin (m j)) (Fin (m j)) ℂ)
     (hC : ∀ i,
-      Matrix.unitaryReindexLinearEquiv e U hU (F.Kfam i) =
+      Matrix.unitaryReindexLinearEquiv e U hU (F.op i) =
         Matrix.blockDiagonal' fun j ↦
           C i j ⊗ₖ (1 : Matrix (Fin (d j)) (Fin (d j)) ℂ)) :
     ∀ j, map (fun i ↦ C i j) (σ j) = σ j := by
@@ -377,10 +376,10 @@ theorem map_adaptedKrausBlock_sigma
     simp [Matrix.smul_kronecker]
   intro j
   obtain ⟨x, hqx⟩ := hqpos j
-  have hAction := map_adapted_blockDiagonal_kronecker e U hU F.Kfam C hC
+  have hAction := map_adapted_blockDiagonal_kronecker e U hU F.op C hC
     (fun k ↦ (q x k : ℂ) • σ k) (τ x)
   rw [← hΦρ x, Φ.symm_apply_apply] at hAction
-  have hFixCoord := congrArg Φ (F.isPreserving.2 x)
+  have hFixCoord := congrArg Φ (hF.2 x)
   have hBlocks :
       Matrix.blockDiagonal' (fun k ↦
           map (fun i ↦ C i k) ((q x k : ℂ) • σ k) ⊗ₖ τ x k) =
@@ -413,27 +412,26 @@ theorem exists_adaptedKrausBlocks_isTP_and_map
           Matrix.reindex e e
             (Matrix.blockDiagonal' fun j ↦
               (1 : Matrix (Fin (m j)) (Fin (m j)) ℂ) ⊗ₖ Y j))
-    (F : PreservingKrausFamily ρ) :
-    ∃ C : (i : Fin F.numKraus) → ∀ j,
+    (F : KrausFamily (Fin D) (Fin D)) (hF : IsPreserving ρ F.op) :
+    ∃ C : F.Index → ∀ j,
         Matrix (Fin (m j)) (Fin (m j)) ℂ,
       (∀ i,
-        Matrix.unitaryReindexLinearEquiv e U hU (F.Kfam i) =
+        Matrix.unitaryReindexLinearEquiv e U hU (F.op i) =
           Matrix.blockDiagonal' fun j ↦
             C i j ⊗ₖ (1 : Matrix (Fin (d j)) (Fin (d j)) ℂ)) ∧
       (∀ j, IsTP (fun i ↦ C i j)) ∧
       ∀ j (A : Matrix (Fin (m j)) (Fin (m j)) ℂ)
           (B : Matrix (Fin (d j)) (Fin (d j)) ℂ),
         Matrix.unitaryReindexLinearEquiv e U hU
-            (map F.Kfam ((Matrix.unitaryReindexLinearEquiv e U hU).symm
+            (map F.op ((Matrix.unitaryReindexLinearEquiv e U hU).symm
               (Matrix.directSumBlockEmbedding (m := m) (d := d) j (A ⊗ₖ B)))) =
           Matrix.directSumBlockEmbedding (m := m) (d := d) j
             (map (fun i ↦ C i j) A ⊗ₖ B) := by
   obtain ⟨C, hC⟩ :=
-    exists_adaptedKrausBlocks_of_isPreserving hρbar e U hU hAlgebra F
-  refine ⟨C, hC, isTP_adaptedKrausBlocks e U hU F.Kfam
-    F.isPreserving.1 C hC hd, ?_⟩
+    exists_adaptedKrausBlocks_of_isPreserving hρbar e U hU hAlgebra F hF
+  refine ⟨C, hC, isTP_adaptedKrausBlocks e U hU F.op hF.1 C hC hd, ?_⟩
   intro j A B
-  exact map_adapted_singleBlock_kronecker e U hU F.Kfam C hC j A B
+  exact map_adapted_singleBlock_kronecker e U hU F.op C hC j A B
 
 /-- **Normalized invariant-family blocks and the action of every preserving
 operation.**
@@ -472,11 +470,11 @@ theorem exists_commonInvariant_normalizedStateBlockForm_preservingBlockAction
           Matrix.reindex e e
             (Matrix.blockDiagonal' fun j ↦
               (q x j : ℂ) • (σ j ⊗ₖ τ x j))) ∧
-        ∀ F : PreservingKrausFamily ρ,
-          ∃ C : (i : Fin F.numKraus) → ∀ j,
+        ∀ F : KrausFamily (Fin D) (Fin D), IsPreserving ρ F.op →
+          ∃ C : F.Index → ∀ j,
               Matrix (Fin (m j)) (Fin (m j)) ℂ,
             (∀ i,
-              Matrix.reindex e.symm e.symm (star U * F.Kfam i * U) =
+              Matrix.reindex e.symm e.symm (star U * F.op i * U) =
                 Matrix.blockDiagonal' fun j ↦
                   C i j ⊗ₖ (1 : Matrix (Fin (d j)) (Fin (d j)) ℂ)) ∧
             (∀ j, IsTP (fun i ↦ C i j)) ∧
@@ -484,7 +482,7 @@ theorem exists_commonInvariant_normalizedStateBlockForm_preservingBlockAction
             ∀ j (A : Matrix (Fin (m j)) (Fin (m j)) ℂ)
                 (B : Matrix (Fin (d j)) (Fin (d j)) ℂ),
               Matrix.reindex e.symm e.symm
-                  (star U * map F.Kfam
+                  (star U * map F.op
                     (U * Matrix.reindex e e
                       (Matrix.directSumBlockEmbedding (m := m) (d := d) j
                         (A ⊗ₖ B)) * star U) * U) =
@@ -498,12 +496,12 @@ theorem exists_commonInvariant_normalizedStateBlockForm_preservingBlockAction
     exists_pos_normalizedBlockWeight hρbar e U hU hd hm σ q τ hqnonneg hfamily
   refine ⟨K, d, m, e, U, σ, q, τ, hU, hd, hm, hσpos, hσtrace,
     hqnonneg, hqsum, hτpos, hτtrace, hfamily, ?_⟩
-  intro F
+  intro F hF
   obtain ⟨C, hC, hCtp, hAction⟩ :=
-    exists_adaptedKrausBlocks_isTP_and_map hρbar e U hU hd hAlgebra F
+    exists_adaptedKrausBlocks_isTP_and_map hρbar e U hU hd hAlgebra F hF
   refine ⟨C, ?_, hCtp, ?_, ?_⟩
   · simpa only [Matrix.unitaryReindexLinearEquiv_apply] using hC
-  · exact map_adaptedKrausBlock_sigma e U hU σ q τ hτtrace hfamily hqpos F C hC
+  · exact map_adaptedKrausBlock_sigma e U hU σ q τ hτtrace hfamily hqpos F hF C hC
   · intro j A B
     simpa only [Matrix.unitaryReindexLinearEquiv_apply,
       Matrix.unitaryReindexLinearEquiv_symm_apply] using hAction j A B

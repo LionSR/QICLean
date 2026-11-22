@@ -51,6 +51,7 @@ import QICLean.Entropy.FilterPrefix
 import QICLean.Entropy.FilterStationarity
 import QICLean.Entropy.FilterZeroFloor
 import QICLean.Entropy.FilterZeroFloorEnergy
+import QICLean.Entropy.FlatDensityEntropy
 import QICLean.Entropy.GapSurprisal
 import QICLean.Entropy.IidSchurExponentialMoments
 import QICLean.Entropy.IidSchurLabelExponential
@@ -130,6 +131,7 @@ import QICLean.Entropy.SumSitesProduct
 import QICLean.Entropy.SupportedMarginalTails
 import QICLean.Entropy.SupportedOperatorAlgebra
 import QICLean.Entropy.SupportedOperatorSchmidtWords
+import QICLean.Entropy.TailRadiusWeights
 import QICLean.Entropy.ThreeWayCut
 import QICLean.Entropy.TripartiteTrace
 import QICLean.Entropy.TwoFamilies

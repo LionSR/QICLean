@@ -1,0 +1,534 @@
+\section{L-symbols of a transitive action from stabilizer data}
+\label{sec:threecocycle_stabilizer}
+
+For a transitive action of $G$ on $\mathsf X$ with a base point $x_0$ and
+stabilizer $H$, chosen representatives of the cosets turn every two-cocycle
+on $H$ into an $L$-symbol, and every $L$-symbol compatible with a
+three-cocycle that is trivial on $H$ arises in this way up to a gauge. The
+gauge classes of $L$-symbols compatible with a fixed three-cochain form a
+torsor under $H^2(H,\C^\times)$, following Garre-Rubio, Lootens and
+Moln\'ar~\cite{GarreRubio2023MPOSym}. An $L$-symbol induced from $H$ can be
+trivialized by a gauge exactly when the class of its cocycle extends to $G$,
+following~\cite{FrancoRubio2025MPUGauging}; for finite $G$ the criterion
+holds equally with unit-circle coefficients.
+
+\begin{lemma}[Stabilizer transition elements]
+    \label{thm:mpug_stabilizer_transition}
+    \lean{StabilizerRepresentatives.transitionElement_mul,
+        StabilizerRepresentatives,
+        StabilizerRepresentatives.ofPretransitive,
+        StabilizerRepresentatives.transitionElement,
+        StabilizerRepresentatives.coe_transitionElement,
+        StabilizerRepresentatives.transitionElement_stabilizer}
+    \leanok
+    Suppose that $G$ acts transitively on $\mathsf X$, and fix
+    $x_0\in\mathsf X$. There are representatives $k_x\in G$ satisfying
+    $k_xx_0=x$ and $k_{x_0}=e$. With
+    $H=\operatorname{Stab}_G(x_0)$, define
+    \begin{align}
+        t_k(g,x)
+         & =k_{g x}^{-1}gk_x.
+        \label{eq:mpug_stabilizer_transition}
+    \end{align}
+    Then $t_k(g,x)\in H$ and
+    \begin{align}
+        t_k(g_1g_2,x)
+         & =t_k(g_1,g_2x)t_k(g_2,x).
+        \label{eq:mpug_stabilizer_transition_product}
+    \end{align}
+    Consequently, the source factors are
+    \begin{align}
+        h_2
+         & =t_k(g_2,x)=k_{g_2x}^{-1}g_2k_x,
+        \label{eq:mpug_stabilizer_h2}                  \\
+        h_1
+         & =t_k(g_1,g_2x)=k_{g_1g_2x}^{-1}g_1k_{g_2x}.
+        \label{eq:mpug_stabilizer_h1}
+    \end{align}
+    As recorded in \cite{gap:fbc25_stabilizer_transition_index_typo}, the last
+    representative in $h_1$ corrects the printed $k_{g_1x}$. No finiteness or
+    normality assumption is required.
+    % Local correction:
+    % docs/paper-gaps/fbc25_stabilizer_transition_index_typo.tex.
+    % Source anchor: arXiv:2502.20257, lemma:h1h2 and eq:h1h2,
+    % lines 7028--7042.
+\end{lemma}
+\begin{proof}\leanok
+    Transitivity gives one element carrying $x_0$ to each $x$, with the
+    identity chosen at $x=x_0$. Acting with (\ref{eq:mpug_stabilizer_transition})
+    on $x_0$ gives
+    $k_{gx}^{-1}g(k_xx_0)=k_{gx}^{-1}(gx)=x_0$.
+    For (\ref{eq:mpug_stabilizer_transition_product}), substituting
+    (\ref{eq:mpug_stabilizer_transition}) and cancelling
+    $k_{g_2x}k_{g_2x}^{-1}$ yields the product formula. The two formulas for
+    $h_1$ and $h_2$ are the corresponding specializations.
+\end{proof}
+
+\begin{lemma}[L-symbol induced by a stabilizer cocycle]
+    \label{thm:mpug_stabilizer_cocycle_l_symbol}
+    \lean{StabilizerRepresentatives.inducedLSymbol_isCompatible,
+        StabilizerRepresentatives.inducedLSymbol,
+        StabilizerRepresentatives.inducedLSymbol_base,
+        StabilizerRepresentatives.inducedActionGauge,
+        StabilizerRepresentatives.inducedLSymbol_eq_gauge,
+        StabilizerRepresentatives.isMulCoboundary₂_div_iff_exists_actionGauge_inducedLSymbol_eq}
+    \leanok
+    \uses{def:mpug_l_symbols, def:mpug_l_gauge, def:is_cocycle, def:cohomologous_to, thm:mpug_stabilizer_transition}
+    Let $H=\operatorname{Stab}_G(x_0)$ and let
+    $\psi\colon H\times H\to\C^\times$ be a scalar $2$-cocycle. Define the
+    $\omega=1$ scalar specialization of \cite[Eq.~(20)]{GarreRubio2023MPOSym}
+    by
+    \begin{align}
+        L^x_{g,h}
+         & =\psi\bigl(t_k(g,hx),t_k(h,x)\bigr).
+        \label{eq:mpug_induced_stabilizer_l_symbol}
+    \end{align}
+    The $L$-symbol (\ref{eq:mpug_induced_stabilizer_l_symbol}) satisfies
+    (\ref{eq:mpug_l_compatibility}) with $\omega=1$, and its base-point
+    restriction recovers $\psi$:
+    \begin{align}
+        L^{x_0}_{a,b} & =\psi(a,b)
+        \label{eq:mpug_induced_stabilizer_base}
+    \end{align}
+    for all $a,b\in H$.
+
+    More precisely, two stabilizer cocycles are cohomologous exactly when
+    their induced $L$-symbols differ by a gauge one-cochain and the trivial
+    two-cochain:
+    \begin{align}
+        \psi_1\sim\psi_2
+         & \quad\Longleftrightarrow\quad
+        \exists\gamma,\quad
+        L[\psi_1]=(1,\gamma)\mathbin{\triangleright}L[\psi_2].
+        \label{eq:mpug_induced_cohomology_iff}
+    \end{align}
+    If the cohomology relation is given by
+    $\varphi\colon H\to\C^\times$, with
+    \begin{align}
+        \psi_1(a,b)
+         & =\varphi(a)\varphi(b)\varphi(ab)^{-1}\psi_2(a,b),
+        \label{eq:mpug_stabilizer_cocycle_gauge}
+    \end{align}
+    then the forward gauge one-cochain is
+    \begin{align}
+        \gamma_{g,x} & =\varphi\bigl(t_k(g,x)\bigr)^{-1}.
+        \label{eq:mpug_induced_action_gauge}
+    \end{align}
+    Thus the induced action-gauge class depends only on the cohomology class
+    of $\psi$.
+
+    This is the $L$-symbol form of the reduction in
+    \cite[lines~7028--7042]{FrancoRubio2025MPUGauging}.
+    % Source anchor: arXiv:2203.12563, Eq. (20).
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:mpug_l_gauge, thm:mpug_stabilizer_transition}
+    With
+    $a=t_k(g,hkx)$, $b=t_k(h,kx)$, and $c=t_k(k,x)$,
+    the product law (\ref{eq:mpug_stabilizer_transition_product}) gives
+    $t_k(gh,kx)=ab$ and $t_k(hk,x)=bc$. Compatibility is therefore
+    \begin{align}
+        \psi(a,b)\psi(ab,c)
+         & =\psi(a,bc)\psi(b,c),
+    \end{align}
+    which is the cocycle equation. If $p,q\in H$, then
+    $t_k(p,x_0)=p$ and $t_k(q,x_0)=q$ because $k_{x_0}=e$, proving
+    (\ref{eq:mpug_induced_stabilizer_base}). For the forward gauge
+    calculation, setting $a=t_k(g,hx)$ and $b=t_k(h,x)$ gives
+    $t_k(gh,x)=ab$. Substituting (\ref{eq:mpug_induced_action_gauge}) into
+    (\ref{eq:mpug_l_gauge}) gives the multiplier
+    \begin{align}
+        \frac{\gamma_{gh,x}}{\gamma_{g,hx}\gamma_{h,x}}
+         & =\varphi(ab)^{-1}
+        \bigl(\varphi(a)^{-1}\varphi(b)^{-1}\bigr)^{-1}
+        =\varphi(a)\varphi(b)\varphi(ab)^{-1}.
+    \end{align}
+    Formula (\ref{eq:mpug_stabilizer_cocycle_gauge}) now identifies the two
+    induced $L$-symbols. Conversely, if
+    $L[\psi_1]=(1,\gamma)\mathbin{\triangleright}L[\psi_2]$ and
+    $\varphi(a)=\gamma_{a,x_0}^{-1}$ for $a\in H$, evaluating the gauge
+    equality at $x_0$ and $a,b\in H$ gives
+    \begin{align}
+        \psi_1(a,b)
+         & =\frac{\gamma_{ab,x_0}}
+            {\gamma_{a,x_0}\gamma_{b,x_0}}\psi_2(a,b)
+        =\varphi(a)\varphi(b)\varphi(ab)^{-1}\psi_2(a,b).
+    \end{align}
+    Hence $\psi_1\sim\psi_2$, which proves the reverse implication in
+    (\ref{eq:mpug_induced_cohomology_iff}).
+\end{proof}
+
+\begin{lemma}[Reconstruction of stabilizer L-symbols]
+    \label{thm:mpug_stabilizer_reconstruction}
+    \lean{StabilizerRepresentatives.reconstructedLSymbol,
+        StabilizerRepresentatives.reconstructedLSymbol_isCompatible,
+        StabilizerRepresentatives.reconstructedLSymbol_one_isCompatible,
+        StabilizerRepresentatives.reconstructedLSymbol_eq_mul,
+        StabilizerRepresentatives.reconstructedLSymbol_base,
+        StabilizerRepresentatives.gauge_reconstructedLSymbol_isCompatible,
+        ScalarThreeCochain.exists_fusionGauge_eq_one_of_isTrivialGaugeClass_comap,
+        LSymbol.IsCompatible.mul}
+    \leanok
+    \uses{def:mpug_l_symbols, def:mpug_l_gauge, def:mpug_three_cocycle, def:mpug_fusion_gauge, def:mpug_trivial_gauge_class, def:is_cocycle, thm:mpug_stabilizer_transition}
+    Let $G$ act on $\mathsf X$ with basepoint $x_0$, stabilizer
+    $H=\operatorname{Stab}_G(x_0)$, and representatives $k_x$ as in
+    Lemma~\ref{thm:mpug_stabilizer_transition}. Let $\omega$ be a scalar
+    $3$-cocycle on $G$ with $\omega(a,b,c)=1$ for all $a,b,c\in H$, and let
+    $\psi$ be a scalar $2$-cocycle on $H$. With $h_2=t_k(g_2,x)$ and
+    $h_1=t_k(g_1,g_2x)$, define
+    \begin{align}
+        L^x_{g_1,g_2}
+         & =\frac{\omega(g_1g_2k_x,h_2^{-1},h_1^{-1})\,\psi(h_1,h_2)}
+            {\omega(g_1,g_2k_x,h_2^{-1})\,\omega(g_1,g_2,k_x)}.
+        \label{eq:mpug_stabilizer_reconstruction}
+    \end{align}
+    Then the $L$-symbol (\ref{eq:mpug_stabilizer_reconstruction}) of
+    \cite[Eq.~(20)]{GarreRubio2023MPOSym} satisfies
+    (\ref{eq:mpug_l_compatibility}), with
+    $L^{x_0}_{a,b}=\psi(a,b)$ for $a,b\in H$.
+
+    If only $\omega|_H$ is a coboundary, some scalar $2$-cochain $\beta$ on $G$
+    makes $\beta\mathbin{\triangleright}\omega$ equal to one on
+    $H\times H\times H$, and applying the inverse gauge
+    $(\beta^{-1},1)$ to (\ref{eq:mpug_stabilizer_reconstruction}) built from
+    $\beta\mathbin{\triangleright}\omega$ gives an $L$-symbol compatible with
+    $\omega$. The hypothesis that $\omega$ is one on the stabilizer fixes the
+    gauge in which the source's formula holds; as recorded in
+    \cite{gap:glm23_eq20_fusion_gauge}, for a general
+    $\omega$ with $\omega|_H=d\beta$ the printed formula can fail.
+    No normalization of $\omega$ is required.
+    % Local fix: docs/paper-gaps/glm23_eq20_fusion_gauge.tex.
+    % Source anchor: arXiv:2203.12563, REsubmission.tex lines 740--761.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:mpug_stabilizer_transition, thm:mpug_stabilizer_cocycle_l_symbol}
+    The formula factors as its value at $\psi=1$ times the induced
+    $L$-symbol (\ref{eq:mpug_induced_stabilizer_l_symbol}), and pointwise
+    products of compatible $L$-symbols are compatible with the product of
+    the $3$-cochains. By Lemma~\ref{thm:mpug_stabilizer_cocycle_l_symbol}
+    it suffices to treat $\psi=1$. For fixed $x$ and $g,h,k$, with $p=k_x$,
+    $a=t_k(k,x)$, $b=t_k(h,kx)$, and $c=t_k(g,hkx)$, we have $k_{kx}=kpa^{-1}$
+    and, by (\ref{eq:mpug_stabilizer_transition_product}),
+    $t_k(hk,x)=ba$ and $t_k(gh,kx)=cb$. The compatibility equation then
+    follows from the $3$-cocycle equation at the four quadruples
+    \begin{align}
+         & (g,h,k,p),\quad (g,h,kp,a^{-1}),\quad (g,hkp,a^{-1},b^{-1}),\quad
+        (ghkp,a^{-1},b^{-1},c^{-1}),
+    \end{align}
+    together with $\omega(a^{-1},b^{-1},c^{-1})=1$. At $x_0$ and $a,b\in H$
+    every argument of $\omega$ in (\ref{eq:mpug_stabilizer_reconstruction})
+    lies in $H$, which gives $L^{x_0}_{a,b}=\psi(a,b)$. If
+    $\omega|_H=d\beta_0$, extending $\beta_0^{-1}$ by one outside
+    $H\times H$ produces a coboundary that cancels $\omega$ on
+    $H\times H\times H$. Finally, $(\beta^{-1},1)$ changes
+    $\beta\mathbin{\triangleright}\omega$ back to $\omega$.
+\end{proof}
+
+\begin{lemma}[Classification and torsor of stabilizer L-symbols]
+    \label{thm:mpug_stabilizer_torsor}
+    \lean{StabilizerRepresentatives.exists_actionGauge_eq_inducedLSymbol,
+        StabilizerRepresentatives.exists_actionGauge_eq_reconstructedLSymbol,
+        StabilizerRepresentatives.exists_actionGauge_gauge_eq_reconstructedLSymbol,
+        StabilizerRepresentatives.isCompatible_iff_exists_actionGauge_mul_inducedLSymbol,
+        StabilizerRepresentatives.actionGaugeEquiv_mul_inducedLSymbol_iff,
+        StabilizerRepresentatives.solutionSetoid,
+        StabilizerRepresentatives.h2EquivSolutionClasses,
+        StabilizerRepresentatives.h2EquivSolutionClasses_H2π,
+        StabilizerRepresentatives.h2EquivSolutionClasses_apply,
+        StabilizerRepresentatives.solutionAddAction,
+        StabilizerRepresentatives.existsUnique_vadd_eq,
+        LSymbol.ActionGaugeEquiv,
+        LSymbol.actionGaugeEquiv_equivalence,
+        LSymbol.IsCompatible.inv,
+        LSymbol.IsCompatible.mul_inv_one,
+        LSymbol.IsCompatible.gauge_one,
+        LSymbol.IsCompatible.isCocycle_restrict,
+        LSymbol.gauge_one_mul}
+    \leanok
+    \uses{thm:mpug_stabilizer_reconstruction, def:mpug_l_gauge, thm:mpug_h2_group_cohomology_comparison, def:cohomologous_to}
+    Keep the setting of Lemma~\ref{thm:mpug_stabilizer_reconstruction},
+    and call two $L$-symbols action-gauge equivalent when they differ by
+    $(1,\gamma)\mathbin{\triangleright}$ for some gauge one-cochain
+    $\gamma$.
+    \begin{enumerate}
+        \item If $R$ is compatible with the trivial $3$-cochain, then
+              $R=(1,\gamma)\mathbin{\triangleright}L[\psi]$ for the induced
+              $L$-symbol (\ref{eq:mpug_induced_stabilizer_l_symbol}) of the
+              $2$-cocycle $\psi(a,b)=R^{x_0}_{a,b}$, with
+              $\gamma^x_g=R^{x_0}_{k_{gx},t_k(g,x)}/R^{x_0}_{g,k_x}$.
+        \item If $\omega$ is a $3$-cocycle equal to one on
+              $H\times H\times H$, every $L$-symbol compatible with $\omega$
+              is action-gauge equivalent to
+              (\ref{eq:mpug_stabilizer_reconstruction}) for some $2$-cocycle
+              $\psi$ on $H$. For a general scalar $2$-cochain $\beta$ making
+              $\beta\mathbin{\triangleright}\omega$ trivial on $H$, the
+              same holds for $(\beta,1)\mathbin{\triangleright}L$ and the
+              formula built from $\beta\mathbin{\triangleright}\omega$.
+        \item Let $L_0$ be compatible with an arbitrary scalar $3$-cochain
+              $\omega$. An $L$-symbol $L$ is compatible with $\omega$ if and
+              only if $L$ is action-gauge equivalent to $L_0L[\psi]$ for
+              some $2$-cocycle $\psi$ on $H$, and $L_0L[\psi_1]$ and
+              $L_0L[\psi_2]$ are action-gauge equivalent if and only if
+              $\psi_1\sim\psi_2$. Hence sending the class of $\psi$ to the
+              class of $L_0L[\psi]$ is a bijection from $H^2(H,\C^\times)$
+              onto the action-gauge classes of $L$-symbols compatible with
+              $\omega$.
+        \item Sending the class of $\psi$ and the class of $L$ to the
+              class of $L\,L[\psi]$ is a well-defined action of the group
+              cohomology $H^2(H,\C^\times)$, for the trivial action of $H$
+              on $\C^\times$, on these classes, and for any two classes
+              exactly one cohomology class carries the first to the second.
+    \end{enumerate}
+    The last two items are the torsor statement of \cite{GarreRubio2023MPOSym}
+    for fixed $(G,\omega,H)$, with the two-cochain held fixed as in the
+    source. In all four items $G$, and hence $H$, is a small group: its
+    underlying set lies in a fixed set-theoretic universe containing $\Z$,
+    in which the group cohomology $H^2(H,\C^\times)$ is formed. In the last
+    two items the set $\mathsf X$ lies in the same universe.
+    % Source anchor: arXiv:2203.12563, REsubmission.tex lines 749--761.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:mpug_stabilizer_reconstruction, thm:mpug_stabilizer_cocycle_l_symbol}
+    For the first item, compatibility at $x_0$ with arguments
+    $(g,h,k_x)$ expresses $R^x_{g,h}$ through basepoint values. Rewriting
+    $hk_x=k_{hx}t_k(h,x)$ and $gk_{hx}=k_{ghx}t_k(g,hx)$ and using
+    compatibility at $x_0$ with arguments $(g,k_{hx},t_k(h,x))$ and
+    $(k_{ghx},t_k(g,hx),t_k(h,x))$ combines the three equations into
+    $R^x_{g,h}=\gamma^x_{gh}(\gamma^{hx}_g\gamma^x_h)^{-1}
+        \psi(t_k(g,hx),t_k(h,x))$. Compatibility at $x_0$ with arguments in
+    $H$ is the cocycle equation for $\psi$.
+
+    For the third item, if $L$ and $L_0$ are compatible with $\omega$,
+    then $LL_0^{-1}$ is compatible with the trivial $3$-cochain, and the first
+    item applies; conversely $L_0L[\psi]$ is compatible with $\omega$, and an
+    gauge with trivial two-cochain preserves compatibility and
+    commutes with multiplication by $L_0$. Cancelling $L_0$ reduces the
+    freeness statement to (\ref{eq:mpug_induced_cohomology_iff}). The second
+    item is the third with $L_0$ the formula at $\psi=1$, which is
+    compatible by Lemma~\ref{thm:mpug_stabilizer_reconstruction}.
+    For the last item, cocycles modulo cohomology form the second group
+    cohomology of $H$ with coefficients in $\C^\times$, and
+    \begin{align}
+        [\psi_1]+[\psi_2] & =[\psi_1\psi_2],
+        \notag                                     \\
+        L[\psi_1\psi_2]   & =L[\psi_1]\,L[\psi_2].
+        \notag
+    \end{align}
+    Cohomologous cocycles give induced $L$-symbols related by an action
+    gauge, so the rule is well defined, and by the two identities acting by
+    $[\psi_1]+[\psi_2]$ is acting by $[\psi_2]$ and then by $[\psi_1]$. With
+    base point $L$ the action is the bijection of the third item.
+\end{proof}
+
+\begin{lemma}[Explicit gauge from a stabilizer cocycle extension]
+    \label{thm:mpug_stabilizer_extension_gauge}
+    \lean{StabilizerRepresentatives.extensionActionGauge,
+        StabilizerRepresentatives.inducedLSymbol_eq_extensionActionGauge,
+        StabilizerRepresentatives.inducedLSymbol_hasTrivialGauge_of_extension}
+    \leanok
+    \uses{thm:mpug_stabilizer_cocycle_l_symbol, def:mpug_l_gauge, def:mpug_block_independence_gauge_forms}
+    Let $G$ act on $\mathsf X$, with basepoint $x_0$, stabilizer
+    $H=\operatorname{Stab}_G(x_0)$, and representatives $k_x$ satisfying
+    $k_xx_0=x$ and $k_{x_0}=e$.
+    Let $\psi\colon H\times H\to\C^\times$ and let
+    $\Psi\colon G\times G\to\C^\times$ be a two-cocycle whose restriction
+    to $H\times H$ is $\psi$. Define
+    \begin{align}
+        \gamma_g^x
+         & =\frac{\Psi(k_{gx}^{-1},gk_x)\Psi(g,k_x)}
+            {\Psi(e,e)\Psi(k_x,k_x^{-1})}.
+        \label{eq:mpug_extension_gamma}
+    \end{align}
+    With $h_1=t_k(g_1,g_2x)$ and $h_2=t_k(g_2,x)$, the induced symbols satisfy
+    \begin{align}
+        L^x_{g_1,g_2}=\psi(h_1,h_2)
+         & =\Psi(g_1,g_2)\frac{\gamma_{g_1g_2}^x}
+                         {\gamma_{g_1}^{g_2x}\gamma_{g_2}^x}.
+        \label{eq:mpug_extension_identity}
+    \end{align}
+    Consequently the inverse gauges
+    $(\Psi^{-1},\gamma^{-1})$ make $L$ identically one.
+    This is the scalar representative calculation in the forward proof of
+    the block-independence extension proposition of
+    \cite{FrancoRubio2025MPUGauging};
+    here extension means the equality $\Psi|_{H\times H}=\psi$ of chosen
+    cocycle representatives, rather than only equality of their classes.
+\end{lemma}
+\begin{proof}\leanok
+    With $a=k_{g_1g_2x}$, $b=k_{g_2x}$, $c=k_x$, $u=g_1$, and $v=g_2$,
+    the cocycle equation gives $\Psi(z,e)=\Psi(e,z)=\Psi(e,e)$ and
+    $\Psi(b^{-1},b)=\Psi(b,b^{-1})$. Applying it successively to the triples
+    \begin{align}
+         & (a^{-1}ub,b^{-1},vc),\quad (a^{-1}ub,b^{-1},b),\quad
+        (a^{-1},u,vc),\quad (a^{-1},u,b),\quad (u,v,c)
+    \end{align}
+    and solving these equalities for the corresponding factors of
+    $\Psi(a^{-1}ub,b^{-1}vc)$ yields
+    (\ref{eq:mpug_extension_identity}) with
+    (\ref{eq:mpug_extension_gamma}) after cancellation. The restriction
+    hypothesis identifies its left side with $\psi(h_1,h_2)$. Substitution into
+    (\ref{eq:mpug_l_gauge}) cancels the multiplier under the inverse gauges.
+\end{proof}
+
+\begin{lemma}[Exact extension from trivializing scalar gauges]
+    \label{lem:mpug_trivializing_extension}
+    \lean{LSymbol.isMulCocycle₂_of_isTrivial_gauge,
+        LSymbol.basepointExtension,
+        LSymbol.basepointExtension_isMulCocycle₂,
+        StabilizerRepresentatives.basepointExtension_restrict,
+        StabilizerRepresentatives.exists_extension_of_inducedLSymbol_hasTrivialGauge}
+    \leanok
+    \uses{thm:mpug_stabilizer_cocycle_l_symbol, def:mpug_l_gauge}
+    Let $G$ act on $\mathsf X$ with basepoint $x_0$, stabilizer
+    $H=\operatorname{Stab}_G(x_0)$, and representatives $k_x$ satisfying
+    $k_xx_0=x$ and $k_{x_0}=e$. Let $\psi:H\times H\to\C^\times$ be a
+    two-cocycle and $L[\psi]$ its induced scalar $L$-symbol.
+    Suppose scalar cochains $\beta:G\times G\to\C^\times$ and
+    $\gamma:G\times\mathsf X\to\C^\times$ satisfy
+    $(\beta,\gamma)\mathbin{\triangleright}L[\psi]=1$.
+    Then $\beta$ is a two-cocycle and
+    \begin{align}
+        \Psi(g,h)
+         & =\beta(g,h)^{-1}
+        \frac{\gamma_{g,x_0}\gamma_{h,x_0}}{\gamma_{gh,x_0}}
+        \label{eq:mpug_trivializing_extension}
+    \end{align}
+    is a two-cocycle with $\Psi|_{H\times H}=\psi$ exactly.
+    Neither cocycles nor gauges need be normalized.
+    This is the converse scalar calculation in
+    \cite[lines~7057--7064]{FrancoRubio2025MPUGauging}, with gauges that
+    trivialize $L[\psi]$, the inverses of the source's forward gauges.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:mpug_stabilizer_cocycle_l_symbol, def:mpug_l_gauge, thm:mpug_h2_exact_extension}
+    Compatibility of $L[\psi]$ with $\omega=1$ transports under
+    $(\beta,\gamma)$ to compatibility of the constant symbol $1$ with
+    $d\beta$. Thus $d\beta=1$, which is the two-cocycle equation for
+    $\beta$. Setting $\varphi(g)=\gamma_{g,x_0}$, formula
+    (\ref{eq:mpug_trivializing_extension}) is
+    $\Psi=d\varphi\,\beta^{-1}$, hence is a two-cocycle.
+    For $a,b\in H$, the equality $bx_0=x_0$ and the chosen
+    $k_{x_0}=e$ identify $L[\psi]^{x_0}_{a,b}$ with $\psi(a,b)$.
+    Evaluating the trivializing-gauge identity there gives
+    $\Psi(a,b)=\psi(a,b)$.
+\end{proof}
+
+\begin{lemma}[Block independence extends the stabilizer cocycle]
+    \label{lem:mpug_bi_basepoint_extension}
+    \lean{LSymbol.basepointExtension_apply_of_isTrivial_gauge,
+        LSymbol.exists_extension_of_isBlockIndependent}
+    \leanok
+    \uses{lem:mpug_trivializing_extension, thm:mpug_block_independence_four_forms, def:mpug_block_independence_gauge_forms}
+    Let $G$ act on $\mathsf X$ with basepoint $x_0$ and stabilizer
+    $H=\operatorname{Stab}_G(x_0)$, and let $L$ be any $L$-symbol compatible
+    with $\omega=1$. If $L$ is block independent after a joint scalar gauge,
+    then there is a two-cocycle $\Psi:G\times G\to\C^\times$ with
+    $\Psi(a,b)=L^{x_0}_{a,b}$ for all $a,b\in H$. This is the converse
+    direction of \cite[lines~7057--7064]{FrancoRubio2025MPUGauging} for an
+    arbitrary compatible $L$-symbol, not only for one induced by
+    representatives.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:mpug_trivializing_extension, thm:mpug_block_independence_four_forms}
+    By Lemma~\ref{thm:mpug_block_independence_four_forms}, some joint scalar
+    gauge $(\beta,\gamma)$ trivializes $L$. The cochain
+    (\ref{eq:mpug_trivializing_extension}) is a two-cocycle by
+    Lemma~\ref{lem:mpug_trivializing_extension}. For $b\in H$ the trivializing
+    identity at $(x_0,a,b)$ uses only $bx_0=x_0$, and it gives
+    $\Psi(a,b)=L^{x_0}_{a,b}$.
+\end{proof}
+
+\begin{lemma}[Restriction is the inhomogeneous restriction map]
+    \label{lem:mpug_restriction_inhomogeneous}
+    \lean{ScalarCocycle.toInhomogeneousCochain_comap,
+        ScalarThreeCochain.toInhomogeneousCochain_comap}
+    \leanok
+    \uses{def:mpug_h2_pullback, def:mpug_cochain_restriction, def:mpug_h3_group_cohomology}
+    Let $f:K\to G$ be a group homomorphism. Under the identification of scalar
+    $2$- and $3$-cochains with inhomogeneous cochains valued in the trivial
+    representation $\C^\times_{\mathrm{triv}}$, the pullback $f^*$ in degrees
+    two and three is the restriction map of inhomogeneous cochains along $f$,
+    $x\mapsto x\circ(f\times\cdots\times f)$, whose coefficient map is the
+    identity of $\C^\times$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:mpug_h2_pullback, def:mpug_cochain_restriction, def:mpug_h3_group_cohomology}
+    Both sides send a cochain $x$ to $(g_1,\dots,g_n)\mapsto x(f(g_1),\dots,f(g_n))$.
+\end{proof}
+
+\begin{lemma}[Scalar block independence and restriction of the stabilizer class]
+    \label{lem:mpug_scalar_bi_restriction}
+    \lean{StabilizerRepresentatives.inducedLSymbol_isBlockIndependent_iff_exists_extension,
+        StabilizerRepresentatives.inducedLSymbol_isBlockIndependent_iff_H2π_mem_range_map_subtype}
+    \leanok
+    \uses{lem:mpug_trivializing_extension, thm:mpug_stabilizer_extension_gauge, thm:mpug_h2_exact_extension, thm:mpug_block_independence_four_forms}
+    Let $G$ act on $\mathsf X$ with basepoint $x_0$, stabilizer
+    $H=\operatorname{Stab}_G(x_0)$, and representatives $k_x$ satisfying
+    $k_xx_0=x$ and $k_{x_0}=e$. For a two-cocycle
+    $\psi:H\times H\to\C^\times$, the following are equivalent:
+    \begin{enumerate}
+        \item The induced scalar $L$-symbol $L[\psi]$ is block independent
+              after a joint scalar gauge.
+        \item There is a two-cocycle $\Psi:G\times G\to\C^\times$ with
+              $\Psi|_{H\times H}=\psi$ exactly.
+        \item The class $[\psi]$ belongs to the image of the restriction map
+              $H^2(G,\C^\times)\to H^2(H,\C^\times)$ for trivial coefficients.
+    \end{enumerate}
+    No normality or finiteness assumption is imposed on $H$ or $G$.
+    This is the $L$-symbol form of
+    \cite[lines~7042--7064]{FrancoRubio2025MPUGauging} for the induced symbols.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:mpug_block_independence_four_forms, lem:mpug_trivializing_extension, thm:mpug_stabilizer_extension_gauge, thm:mpug_h2_exact_extension}
+    By Lemma~\ref{thm:mpug_block_independence_four_forms}, scalar block
+    independence is equivalent to the existence of a trivializing scalar
+    gauge. Lemma~\ref{lem:mpug_trivializing_extension} constructs an exact
+    extension from such a gauge, and
+    Lemma~\ref{thm:mpug_stabilizer_extension_gauge} constructs a trivializing
+    gauge from an exact extension. Finally,
+    Lemma~\ref{thm:mpug_h2_exact_extension} identifies exact extension of
+    $\psi$ with membership of $[\psi]$ in the image of restriction.
+\end{proof}
+
+\begin{lemma}[Scalar block independence with circle coefficients]
+    \label{lem:mpug_scalar_bi_restriction_circle}
+    \lean{ScalarCohomology.circleRepresentationRes,
+        ScalarCohomology.circleToComplexUnits_map_comp_map_res,
+        ScalarCohomology.circleToComplexUnits_map_res_apply,
+        ScalarCohomology.mem_range_map_circleRepresentationRes_iff,
+        LSymbol.isBlockIndependent_gauge_iff,
+        StabilizerRepresentatives.inducedLSymbol_isBlockIndependent_iff_circle}
+    \leanok
+    \uses{lem:mpug_scalar_bi_restriction, thm:mpug_circle_complex_units_h2}
+    Restriction along a group homomorphism $f\colon S\to G$ commutes with
+    the maps $H^2(-,U(1))\to H^2(-,\C^\times)$ induced by inclusion of the
+    unit circle. If $G$ is finite, a class $c\in H^2(S,U(1))$ is the
+    restriction of a class of $G$ exactly when its image in
+    $H^2(S,\C^\times)$ is. Block independence of an $L$-symbol after
+    a joint scalar gauge is unchanged by any further joint scalar gauge.
+
+    Consequently, in the setting of Lemma~\ref{lem:mpug_scalar_bi_restriction}
+    with $G$ finite, the induced $L$-symbol $L[\psi]$ is block independent
+    after a joint scalar gauge if and only if the class in $H^2(H,U(1))$ of
+    the pointwise phase $\psi/|\psi|$ lies in the image of the restriction map
+    $H^2(G,U(1))\to H^2(H,U(1))$. For a cocycle of modulus one this phase is
+    $\psi$ itself. This is the coefficient group of
+    \cite[lines~7042--7064]{FrancoRubio2025MPUGauging}; the comparison of
+    coefficients is the algebraic one of
+    Lemma~\ref{thm:mpug_circle_complex_units_h2}.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:mpug_scalar_bi_restriction, thm:mpug_circle_complex_units_h2, thm:mpug_l_gauge_composition}
+    Both composites of restriction and inclusion are induced by the same
+    homomorphism $S\to G$ and the same coefficient map
+    $U(1)\to\C^\times$, so they agree. If $c=\operatorname{res}(a)$, then
+    the image of $c$ is the restriction of the image of $a$. Conversely, if
+    the image of $c$ is $\operatorname{res}(b)$, surjectivity of inclusion
+    for the finite group $G$ writes $b$ as the image of some $a$; then $c$
+    and $\operatorname{res}(a)$ have the same image, and inclusion is
+    injective for every group. Gauge invariance follows from
+    (\ref{eq:mpug_l_gauge_composition}) applied with the inverse gauge. By
+    Lemma~\ref{thm:mpug_circle_complex_units_h2} the class of the phase of
+    $\psi$ maps to $[\psi]$, and Lemma~\ref{lem:mpug_scalar_bi_restriction}
+    finishes the proof.
+\end{proof}

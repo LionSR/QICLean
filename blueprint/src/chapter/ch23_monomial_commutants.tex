@@ -1,0 +1,91 @@
+\section{Matrix algebras as finite-group commutants}
+\label{sec:monomial_commutants}
+
+\begin{definition}[Finite signed permutation representations]%
+    \label{def:peps_signed_permutation_representation}
+    \lean{Matrix.signedPermutationSubgroup,
+        Matrix.instFiniteSignedPermutationSubgroup,
+        Matrix.signedPermutationRepresentation,
+        Matrix.signedPermutationRepresentation_mem_unitaryGroup,
+        Matrix.signedPermutationRepresentation_range}
+    \leanok
+    For a finite index set $I$, let $G_I$ be the group of matrices sending
+    each standard basis vector to another standard basis vector with sign
+    $+1$ or $-1$. Its defining representation is unitary, and $G_I$ is finite,
+    providing the finite-dimensional matrix representations in the construction
+    of \cite[Theorem~4.1]{Schuch2010PEPS}.
+\end{definition}
+
+\begin{lemma}[Matrix units from signed permutations]%
+    \label{thm:peps_signed_permutation_span}
+    \lean{Matrix.exists_signedPermutationRepresentation_sub_eq_single,
+        Matrix.span_signedPermutationRepresentation}
+    \leanok
+    \uses{def:peps_signed_permutation_representation}
+    Every matrix unit $E_{ij}$ is of the form $(P-Q)/2$ for two signed
+    permutation matrices $P,Q\in G_I$. Consequently,
+    $\operatorname{span}_{\mathbb C}G_I=M_I(\mathbb C)$.
+\end{lemma}
+
+\begin{proof}\leanok
+    For any permutation taking $j$ to $i$ with permutation matrix $P$,
+    negating only column $j$ produces a signed permutation matrix $Q$ with
+    $P-Q=2E_{ij}$. Since the matrix units span all matrices, $G_I$ spans
+    $M_I(\mathbb C)$; the empty index set has zero matrix space.
+\end{proof}
+
+\begin{definition}[Independent groups on multiplicity factors]%
+    \label{def:peps_block_signed_permutation_representation}
+    \lean{Matrix.blockSignedPermutationRepresentation,
+        Matrix.blockSignedPermutationRepresentation_mem_unitaryGroup}
+    \leanok
+    \uses{def:peps_signed_permutation_representation}
+    For finitely many pairs of dimensions $(m_k,d_k)$, the finite group
+    $G=\prod_kG_{m_k}$ has the unitary representation
+    $U(g)=\bigoplus_k g_k\otimes I_{d_k}$ on
+    $\bigoplus_k\mathbb C^{m_k}\otimes\mathbb C^{d_k}$.
+\end{definition}
+
+\begin{lemma}[Commutant of independent multiplicity actions]%
+    \label{thm:peps_block_signed_permutation_commutant}
+    \lean{Matrix.commutes_blockSignedPermutationRepresentation_iff}
+    \leanok
+    \uses{def:peps_block_signed_permutation_representation,
+        thm:peps_signed_permutation_span}
+    A matrix commutes with every $U(g)$ if and only if it is of the form
+    $\bigoplus_k I_{m_k}\otimes B_k$, with $B_k\in M_{d_k}(\mathbb C)$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Two group elements which agree on all factors except $k$ produce,
+    by their half-difference, $E_{ij}\otimes I_{d_k}$ supported on block $k$.
+    Thus the span of $U(G)$ contains every
+    $\bigoplus_k C_k\otimes I_{d_k}$, and commutation passes to this span.
+    Swapping the two tensor factors on each block and applying the commutant
+    formula for a direct sum of full matrix algebras characterizes the commutant;
+    conversely, $I_{m_k}\otimes B_k$ commutes with $g_k\otimes I_{d_k}$.
+\end{proof}
+
+\begin{lemma}[Unital matrix algebras as finite-group commutants]%
+    \label{thm:peps_finite_group_commutant_unital}
+    \lean{StarSubalgebra.exists_finite_unitary_group_commutant}
+    \leanok
+    \uses{thm:peps_block_signed_permutation_commutant}
+    Let $S\subset M_I(\mathbb C)$ be a unital C*-subalgebra, with $I$ finite.
+    In the unital setting of \cite[Theorem~4.1]{Schuch2010PEPS},
+    there exist a finite group $G$ and a unitary representation $U$ such that
+    $S=\{A\in M_I(\mathbb C): AU(g)=U(g)A\text{ for every }g\in G\}$.
+    Although the source's definition of C*-algebra does not require the identity,
+    the printed nonunital assertion fails because every commutant contains
+    the identity \cite{gap:scp10_finite_group_commutant_unital}.
+\end{lemma}
+
+\begin{proof}\leanok
+    The unitary block-decomposition theorem for matrix C*-algebras
+    \cite[Theorem~6.14]{Wolf2012Quantum} gives a unitary $W$ with
+    $W^*SW=\bigoplus_k I_{m_k}\otimes M_{d_k}(\mathbb C)$.
+    On the multiplicity factors, the independent signed permutation groups
+    have this block algebra as their commutant. Conjugating their
+    representation by $W$ therefore gives a finite unitary group with
+    commutant $S$, with all decomposition data obtained from $S$.
+\end{proof}

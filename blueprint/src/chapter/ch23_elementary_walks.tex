@@ -1,0 +1,67 @@
+\section{Directed walks and multiplicative coboundaries}
+
+Let $E$ be a directed relation on a set $V$. A directed walk from $a$ to
+$b$ is a finite sequence of edges $a=v_0\to v_1\to\cdots\to v_n=b$,
+including the walk of length zero. For edge weights $\kappa_{a,b}$ in a
+monoid, the weight of a walk is the ordered product of the weights of its
+edges.
+
+\begin{lemma}[Equivalent forms of reachability]
+    \label{lem:elementary_walk_reachability}
+    \lean{DirectedWalk.reaches_iff_reflTransGen}
+    \leanok
+    A vertex $b$ is reachable from $a$ by a finite directed walk if and only
+    if $(a,b)$ lies in the reflexive transitive closure of $E$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    A walk gives an element of the reflexive transitive closure by induction
+    on its edges. Conversely, appending the final edge at each induction step
+    in the reflexive transitive closure constructs a finite directed walk.
+\end{proof}
+
+\begin{lemma}[Finite cyclic form of a closed directed walk]
+    \label{lem:directed_closed_walk_finite_cycle}
+    \lean{DirectedWalk.closedConsVertices,
+        DirectedWalk.closedConsVertices_edge,
+        DirectedWalk.weight_closedCons_eq_fin_prod}
+    \leanok
+    Every nonempty closed directed walk of length $N$ determines a cyclic
+    family of vertices $v_0,\ldots,v_{N-1}$. Each $v_n\to v_{n+1}$ is an
+    edge, where $v_N=v_0$, and for any edge weights in a commutative monoid,
+    $\operatorname{wt}(w)=\prod_{n=0}^{N-1}\kappa_{v_n,v_{n+1}}$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Enumerating the sources of the successive edges gives the vertices, with
+    the last edge ending at the initial vertex because the walk is closed. The
+    product identity follows by induction on the number of edges.
+\end{proof}
+
+\begin{lemma}[Closed-walk criterion for vertex weights]
+    \label{thm:directed_cycle_coboundary}
+    \lean{DirectedWalk.exists_vertex_of_closedWalk_weight_eq_one}
+    \leanok
+    \uses{lem:elementary_walk_reachability}
+    Suppose that every edge $a\to b$ admits a directed return walk from $b$
+    to $a$. Let $G$ be a group and assign a weight $\kappa_{a,b}\in G$ to each
+    ordered pair of vertices. If the product of the edge weights along every
+    closed directed walk is one, then there are vertex weights $z_a\in G$
+    such that $\kappa_{a,b}=z_a^{-1}z_b$ whenever $a\to b$ is an edge. This is
+    the graph-theoretic coboundary step of
+    \cite[Appendix~C.2, lines~1446--1450]{Cirac2016MPDO_arXiv}.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Reachability is an equivalence relation because every edge has a return
+    walk. Choosing one representative vertex in each reachability class and a
+    walk from that representative to every vertex $a$ in its class defines
+    $z_a$ as the product of the edge weights along this walk. If two such walks
+    have the same endpoints, appending a common return walk produces two closed
+    walks of weight one, so the original walk weights agree. Comparing the
+    chosen walk to $b$ with the chosen walk to $a$ followed by the edge
+    $a\to b$ gives $z_b=z_a\kappa_{a,b}$.
+\end{proof}

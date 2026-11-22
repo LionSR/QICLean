@@ -103,13 +103,15 @@ of~\cite[lines 1010--1024]{Arad2016RigorousRG}.
 
 \begin{theorem}[Order under the Euclidean matrix action]
     \label{thm:matrix_euclidean_order}
-    \lean{Matrix.toEuclideanCLM_le_of_le}
+    \lean{Matrix.toEuclideanLin_le_toEuclideanLin_iff,
+        Matrix.toEuclideanCLM_le_toEuclideanCLM_iff}
     \leanok
-    If complex square matrices satisfy $A\le B$, their bounded actions on
-    the corresponding finite-dimensional Euclidean space satisfy the same order.
-    The index set may be empty.
+    Complex square matrices satisfy $A\le B$ exactly when their actions on the
+    corresponding finite-dimensional Euclidean space, as linear or as bounded
+    operators, satisfy $A\le B$ in the operator order. The index set may be empty.
 \end{theorem}
 \begin{proof}
     \leanok
-    The positive matrix $B-A$ defines a positive Euclidean operator.
+    The matrix $B-A$ is positive semidefinite exactly when the Euclidean
+    operator it defines is positive.
 \end{proof}

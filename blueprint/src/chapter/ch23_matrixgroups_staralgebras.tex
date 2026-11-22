@@ -1,0 +1,204 @@
+\section{Star-subalgebras and star-isomorphisms of full matrix algebras}
+
+This section collects identifications of star-subalgebras, the product of two
+commuting star-subalgebras, and the unitary implementation of a
+star-isomorphism between full matrix algebras on two coordinate sets.
+
+\begin{lemma}[Coordinate identifications preserve ambient values]
+    \label{lem:star_subalgebra_coordinate_equivalences}
+    \lean{StarSubalgebra.equivMapOfInjective,
+        StarSubalgebra.equivMapOfInjective_coe,
+        StarSubalgebra.equivOfEq,StarSubalgebra.equivOfEq_coe}
+    \leanok
+    Let $A,B$ be unital star-algebras over a commutative star-semiring
+    $R$. An injective star-algebra homomorphism $f:A\to B$ identifies
+    every star-subalgebra $S\subseteq A$ with its image $f(S)$, and the
+    identification sends $a\in S$ to the same ambient value $f(a)$.
+    Equal star-subalgebras are identified by preserving every ambient
+    element. These identifications retain both multiplication and star.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Restrict the injective homomorphism to its image, using the usual
+    algebra isomorphism, and retain its preservation of star. The equality
+    identification changes the membership proof and leaves the element
+    itself unchanged, so it also preserves star.
+\end{proof}
+
+\begin{definition}[Multiplication of commuting factors]
+    \label{def:qca_commuting_factor_multiplication}
+    \lean{StarSubalgebra.commutingMulMap,
+        StarSubalgebra.commutingMulMap_tmul}
+    \leanok
+    Let $\mathcal C$ be a nontrivial complex star-algebra and let
+    $\mathcal A,\mathcal B\subseteq\mathcal C$ be unital star-subalgebras
+    whose elements commute with each other. Multiplication defines a unital
+    star-algebra homomorphism
+    \begin{align}
+        \mu_{\mathcal A,\mathcal B}
+        \colon \mathcal A\otimes_{\mathbb C}\mathcal B
+         & \longrightarrow \mathcal C, \notag \\
+        \mu_{\mathcal A,\mathcal B}(a\otimes b)
+         & =ab.
+    \end{align}
+\end{definition}
+
+\begin{lemma}[Algebraic product of commuting factors]
+    \label{thm:qca_commuting_factor_product}
+    \lean{StarSubalgebra.commutingMulMap_range,
+        StarSubalgebra.sup_toSubmodule_eq_mul}
+    \leanok
+    \uses{def:qca_commuting_factor_multiplication}
+    The image of $\mu_{\mathcal A,\mathcal B}$ is the algebraic join
+    $\mathcal A\vee\mathcal B$.  Its underlying complex vector space is
+    \begin{align}
+        \mathcal A\mathcal B
+         & =\operatorname{span}_{\mathbb C}
+        \{ab\mid a\in\mathcal A,\ b\in\mathcal B\}.
+        \label{eq:qca_commuting_factor_product_span}
+    \end{align}
+    Thus every element of the join is a finite complex-linear sum of
+    products $ab$.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{def:qca_commuting_factor_multiplication}
+    The involution reverses products.  Since $a^*\in\mathcal A$ and
+    $b^*\in\mathcal B$ commute,
+    \begin{align}
+        \mu_{\mathcal A,\mathcal B}\bigl((a\otimes b)^*\bigr)
+         & =a^*b^*=b^*a^*=(ab)^*.
+    \end{align}
+    The image contains both factors because $a=a\mathbf 1$ and
+    $b=\mathbf 1b$.  Conversely, every pure tensor maps to an element of
+    the join, and linearity gives the reverse inclusion.  The description
+    of the underlying vector space is the range formula for the linear
+    multiplication map.
+\end{proof}
+
+\begin{lemma}[Product of two full matrix factors]
+    \label{thm:qca_commuting_full_matrix_product}
+    \lean{StarSubalgebra.commutingMulMap_injective_of_equiv_matrix,
+        StarSubalgebra.commutingSupEquivMatrix,
+        StarSubalgebra.nonempty_equiv_sup_matrix,
+        StarSubalgebra.finrank_sup_of_equiv_matrix}
+    \leanok
+    \uses{def:qca_commuting_factor_multiplication,
+        thm:qca_commuting_factor_product}
+    Suppose that $\mathcal C$ is a nontrivial complex star-algebra,
+    that $p,q>0$, and that
+    \begin{align}
+        \mathcal A & \cong M_p(\mathbb C), \notag \\
+        \mathcal B & \cong M_q(\mathbb C)
+    \end{align}
+    as star-algebras.  Then $\mu_{\mathcal A,\mathcal B}$ is injective and
+    \begin{align}
+        \mathcal A\vee\mathcal B
+         & \cong M_{pq}(\mathbb C), \notag \\
+        \dim_{\mathbb C}(\mathcal A\vee\mathcal B)
+         & =(pq)^2.
+        \label{eq:qca_commuting_full_matrix_product}
+    \end{align}
+    This is the unital single-block specialization of Schumacher--Werner
+    Proposition~\texttt{Cscom}
+    \cite[lines~2119--2138]{SchumacherWerner2004QCA}, as used in
+    \cite[lines~1270--1308]{Gross2012IndexTheory}; the restriction is
+    recorded in \cite{gap:gnvw12_cscom_single_block_scope}.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{def:qca_commuting_factor_multiplication,
+        thm:qca_commuting_factor_product}
+    The source of the multiplication homomorphism is
+    \begin{align}
+        M_p(\mathbb C)\otimes_{\mathbb C}M_q(\mathbb C)
+         & \cong M_{pq}(\mathbb C).
+    \end{align}
+    This is a simple ring.  The kernel of a unital homomorphism from a
+    simple ring to a nonzero ring is not the whole ring, and is therefore
+    zero.  Hence multiplication is injective.  Its image is the join by
+    Lemma~\ref{thm:qca_commuting_factor_product}; the matrix presentation
+    and dimension formula in
+    Equation~(\ref{eq:qca_commuting_full_matrix_product}) follow.
+\end{proof}
+
+\begin{lemma}[Prescribed coordinates of commuting products]
+    \label{lem:commuting_product_coordinates}
+    \lean{StarSubalgebra.commutingMulEquivSup,
+        StarSubalgebra.commutingMulEquivSup_tmul_coe,
+        StarSubalgebra.commutingSupEquivMatrix_apply_mul}
+    \leanok
+    \uses{thm:qca_commuting_full_matrix_product}
+    For commuting full matrix factors $\mathcal R$ and $\mathcal S$ with
+    prescribed presentations $e_R$ and $e_S$, multiplication identifies
+    $\mathcal R\otimes\mathcal S$ with $\mathcal R\vee\mathcal S$, and the
+    induced matrix coordinates $e_{R\vee S}$ of the join satisfy
+    \begin{align}
+        e_{R\vee S}(ab) & =e_R(a)\otimes e_S(b).
+    \end{align}
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    \uses{thm:qca_commuting_full_matrix_product}
+    Multiplication is injective by
+    Lemma~\ref{thm:qca_commuting_full_matrix_product} and has the join as its
+    range. Transport the tensor product of the two presentations through this
+    multiplication isomorphism. A pure tensor maps to its product in the
+    ambient algebra and to its Kronecker coordinates.
+\end{proof}
+
+\begin{definition}[Conjugation by a rectangular unitary]
+    \label{def:rectangular_unitary_conjugation}
+    \lean{Matrix.IsUnitaryBetween.conjStarAlgEquiv,
+        Matrix.IsUnitaryBetween.conjStarAlgEquiv_apply}
+    \leanok
+    Let $M,N$ be finite sets and let $U\in\C^{M\times N}$ satisfy
+    $U^\dagger U=I_N$ and $UU^\dagger=I_M$. Then $A\mapsto UAU^\dagger$ is a
+    star-algebra isomorphism from $M_N(\C)$ to $M_M(\C)$, with inverse
+    $B\mapsto U^\dagger BU$.
+\end{definition}
+
+\begin{lemma}[A full-matrix star-isomorphism has a unitary implementer]
+    \label{lem:qca_full_matrix_spatial_implementer}
+    \lean{Matrix.exists_unitary_conj_of_starAlgEquiv_matrix_between}
+    \leanok
+    \uses{def:rectangular_unitary_conjugation}
+    Let $I,J$ be nonempty finite coordinate sets and let
+    $f:M_I(\C)\to M_J(\C)$ be a complex star-algebra
+    isomorphism. Then $|I|=|J|$ and there is a unitary map
+    $U:\C^I\to\C^J$ with
+    \begin{align}
+        U^\dagger U=\Id_I,\qquad UU^\dagger=\Id_J,\qquad
+        f(A)=UAU^\dagger\quad(A\in M_I(\C)).
+    \end{align}
+    This applies between distinct coordinate sets, as required for the
+    unitaries in \cite[equations~\texttt{bruleU} and~\texttt{bruleV},
+        lines~980--1001]{SchumacherWerner2004QCA}.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    The algebra isomorphism is complex linear, so $|I|^2=|J|^2$ and
+    $|I|=|J|$. Choose an equivalence of the two coordinate sets and
+    transport $f$ to an automorphism of one full matrix algebra.
+    The unitary Skolem--Noether theorem implements that automorphism.
+    Let $\sigma:J\to I$ be the chosen equivalence, let $P_\sigma$ be its
+    permutation matrix, and let $W\in M_I(\C)$ be a unitary with
+    $P_\sigma^\dagger f(A)P_\sigma=WAW^\dagger$ for all $A$. Put
+    $U=P_\sigma W$. Since multiplication and adjoints respect the
+    reindexing,
+    \begin{align}
+        f(A)
+         & =P_\sigma WAW^\dagger P_\sigma^\dagger
+        =UAU^\dagger,
+         &
+        U^\dagger U
+         & =W^\dagger W=\Id_I,
+         &
+        UU^\dagger
+         & =P_\sigma P_\sigma^\dagger=\Id_J.
+        \label{eq:qca_full_matrix_spatial_transport}
+    \end{align}
+\end{proof}

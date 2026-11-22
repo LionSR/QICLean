@@ -1,0 +1,143 @@
+\section{Restriction and unit-circle coefficients}
+\label{sec:projective_restriction}
+
+\begin{definition}[Pullback of scalar cohomology]
+    \label{def:mpug_h2_pullback}
+    \lean{ScalarCocycle.comap,
+        ScalarCocycle.comap_apply,
+        ScalarCocycle.mapCocycles₂_cocyclesOfIsMulCocycle₂,
+        ScalarCocycle.map_H2π}
+    \leanok
+    \uses{def:h2_cx, def:scalar_representation_res}
+    Let $f:K\to G$ be a group homomorphism. For a scalar $2$-cochain
+    $\omega:G\times G\to\C^\times$, define
+    $(f^*\omega)(a,b)=\omega(f(a),f(b))$.
+    The restriction map
+    $f^*:H^2(G,\C^\times)\to H^2(K,\C^\times)$ induced by $f$, with the
+    identity of $\C^\times$ as coefficient map, satisfies
+    $f^*[\omega]=[f^*\omega]$ for every $2$-cocycle $\omega$.
+\end{definition}
+
+\begin{definition}[Restriction of the trivial coefficients]
+    \label{def:scalar_representation_res}
+    \lean{ScalarCohomology.scalarRepresentationRes}
+    \leanok
+    \uses{lem:scalar_cohomology_trivial_action}
+    Let $f:K\to G$ be a group homomorphism. Restricting the trivial
+    representation of $G$ on $\C^\times$ along $f$ gives the trivial
+    representation of $K$ on $\C^\times$, and the identity of $\C^\times$ is a
+    morphism of representations between them. It is the coefficient map of
+    the restriction of cochains and of cohomology along $f$.
+\end{definition}
+
+\begin{lemma}[Pullback preserves cocycles and cohomology]
+    \label{thm:mpug_h2_pullback_preserves}
+    \lean{ScalarCocycle.isMulCocycle₂_comap,
+        ScalarCohomology.isMulCoboundary₂_div_comap}
+    \leanok
+    \uses{def:mpug_h2_pullback, def:cohomologous_to, def:is_cocycle}
+    Let $f:K\to G$ be a group homomorphism. If $\omega$ is a scalar
+    $2$-cocycle on $G$, then $f^*\omega$ is a scalar $2$-cocycle on $K$.
+    If $\omega_1$ and $\omega_2$ are cohomologous scalar $2$-cochains on $G$,
+    then $f^*\omega_1$ and $f^*\omega_2$ are cohomologous on $K$.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{def:mpug_h2_pullback, def:cohomologous_to, def:is_cocycle}
+    For $a,b,c\in K$, substituting $f(a),f(b),f(c)$ into the cocycle equation
+    for $\omega$ and using $f(ab)=f(a)f(b)$ and $f(bc)=f(b)f(c)$ shows that
+    $f^*\omega$ is a $2$-cocycle.
+    If $\omega_1(g,h)=\varphi(g)\varphi(h)\varphi(gh)^{-1}\omega_2(g,h)$,
+    then with $\eta=\varphi\circ f$, substituting $g=f(a)$ and $h=f(b)$ gives
+    $(f^*\omega_1)(a,b)=\eta(a)\eta(b)\eta(ab)^{-1}(f^*\omega_2)(a,b)$,
+    so $\eta$ gives the required cohomology relation.
+\end{proof}
+
+\begin{lemma}[Exact extension of a subgroup cocycle]
+    \label{thm:mpug_h2_exact_extension}
+    \lean{ScalarCocycle.H2π_mem_range_map_subtype_iff,
+        ScalarCocycle.isMulCocycle₂_coboundary_mul}
+    \leanok
+    \uses{def:mpug_h2_pullback, def:is_cocycle}
+    Let $H\le G$ be any subgroup, let $\iota:H\hookrightarrow G$ be its
+    inclusion, and let $\psi:H\times H\to\C^\times$ be a $2$-cocycle.
+    Then $[\psi]$ belongs to the image of $\iota^*$ if and only if there is
+    a $2$-cocycle $\Psi:G\times G\to\C^\times$ with
+    $\Psi(a,b)=\psi(a,b)$ for every $a,b\in H$.
+    No normalization of either cocycle is required.
+    This is the adjustment of representatives implicit in the extension
+    condition of \cite[lines~7042--7064]{FrancoRubio2025MPUGauging},
+    here stated with $\C^\times$ coefficients.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{def:mpug_h2_pullback, def:cohomologous_to, def:is_cocycle}
+    If $[\psi]=\iota^*[\omega]$, there is a cochain
+    $\varphi:H\to\C^\times$ such that
+    $\psi(a,b)=\varphi(a)\varphi(b)\varphi(ab)^{-1}\omega(a,b)$.
+    Extending $\varphi$ to a function $\Phi:G\to\C^\times$ that takes value $1$
+    outside $H$, define
+    $\Psi(g,h)=\Phi(g)\Phi(h)\Phi(gh)^{-1}\omega(g,h)$.
+    In the cocycle equation for $\Psi$, cancellation leaves the common
+    factor $\Phi(g)\Phi(h)\Phi(k)\Phi(ghk)^{-1}$ multiplied by the two sides
+    of the cocycle equation for $\omega$. Hence $\Psi$ is a cocycle, and
+    $\Phi|_H=\varphi$ gives $\Psi|_{H\times H}=\psi$ exactly.
+    Conversely, any exact extension $\Psi$ satisfies
+    $\iota^*[\Psi]=[\psi]$.
+\end{proof}
+
+\begin{lemma}[Circle and nonzero-complex coefficients in degree two]
+    \label{thm:mpug_circle_complex_units_h2}
+    \lean{Complex.div_toUnits_unitsPhase,
+        ScalarCocycle.circlePhase_isMulCocycle₂,
+        ScalarCocycle.circlePhaseInclusion_isMulCocycle₂,
+        ScalarCocycle.H2π_circlePhaseInclusion,
+        ScalarCocycle.circlePhaseMathlibCocycle,
+        ScalarCocycle.H2π_map_circlePhaseMathlibCocycle,
+        ScalarCohomology.circleToComplexUnits_map_injective,
+        ScalarCohomology.circleToComplexUnits_map_surjective,
+        ScalarCohomology.circleToComplexUnits_map_bijective}
+    \leanok
+    \uses{thm:mpug_h2_group_cohomology_comparison,
+        thm:mpug_positive_generalized_cocycle}
+    Let $G$ be finite, with $U(1)$ and $\C^\times$ carrying the trivial
+    $G$-actions.  Inclusion of the unit circle induces an equivalence
+    \begin{align}
+        H^2(G,U(1))
+         & \simeq H^2(G,\C^\times).
+        \label{eq:mpug_circle_complex_units_h2}
+    \end{align}
+    More concretely, for a $\C^\times$-valued cocycle $\omega$, define its
+    pointwise phase and radial residual by
+    \begin{align}
+        u(g,h)
+         & =\frac{\omega(g,h)}{|\omega(g,h)|}\in U(1),
+         &
+        r(g,h)
+         & =\frac{\omega(g,h)}{u(g,h)}=|\omega(g,h)|.
+        \label{eq:mpug_circle_phase_residual}
+    \end{align}
+    Then $u$ is a cocycle, $r$ is a positive coboundary, and hence $\omega$
+    is cohomologous to the inclusion of $u$.  The inclusion map is injective
+    for every group because pointwise phase is its left inverse; finiteness is
+    used only to prove surjectivity.
+
+    As recorded in \cite{gap:fbc25_circle_complex_units_cohomology}, this
+    algebraic group-cohomology statement for a finite discrete group replaces
+    the comparison of sheaf cohomology with topological coefficient groups
+    invoked in the footnote at
+    \cite[line~1931]{FrancoRubio2025MPUGauging}.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{thm:mpug_positive_generalized_cocycle}
+    The phase map $q(z)=z/|z|$ is multiplicative and satisfies
+    $q(u)=u$ for $u\in U(1)$, so it preserves the cocycle equation and
+    retracts inclusion.  The polar identity in
+    (\ref{eq:mpug_circle_phase_residual}) identifies the residual $r$ with a
+    positive cocycle.  Applying
+    Lemma~\ref{thm:mpug_positive_generalized_cocycle} to the one-point label
+    set writes $r=d\chi$.  Therefore $\omega\sim u$, which proves
+    surjectivity of coefficient inclusion on degree-two classes.  Its left
+    inverse induced by $q$ proves injectivity.
+\end{proof}

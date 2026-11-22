@@ -1,0 +1,192 @@
+\section{Range projections and their defects}
+\label{sec:perturbations_projections}
+
+For a closed subspace $Z$ of a Hilbert space, $P_Z$ denotes the orthogonal
+projection onto $Z$, and $P_T$ the orthogonal projection onto the range of a
+map $T$.
+
+\begin{lemma}[Continuity of injective range projectors]
+    \label{thm:continuous_injective_range_projector}
+    \lean{ContinuousLinearMap.continuous_of_euclideanSingle,
+        ContinuousLinearMap.continuousAt_range_starProjection_of_injective,
+        ContinuousLinearMap.continuous_injectiveRangeProjector}
+    \leanok
+    Let $E$ be a finite-dimensional Hilbert space, $F$ a Hilbert space, and
+    $T_x\colon E\to F$ a family of bounded maps continuous at $x_0$, with
+    $T_{x_0}$ injective. Then $x\mapsto P_{T_x}$ is continuous at $x_0$; no
+    injectivity of $T_x$ for $x\neq x_0$ is assumed. In particular, for a
+    continuous family of injective maps, the orthogonal projection
+    $T_x(T_x^\dagger T_x)^{-1}T_x^\dagger$ onto the range of $T_x$ depends
+    continuously on $x$. A family of maps out of $\C^I$, for a finite set $I$,
+    is continuous when its values on the standard basis vectors are.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Injectivity is an open condition, so near $x_0$ the projection is
+    $T_x(T_x^\dagger T_x)^{-1}T_x^\dagger$. The Gram operator
+    $T_x^\dagger T_x$ is continuous in $x$ and invertible at $x_0$, and
+    inversion is continuous at invertible elements of a Banach algebra. The
+    last statement holds because a vector is a finite combination of the
+    standard basis vectors.
+\end{proof}
+
+\begin{lemma}[Supported Gram inverses and range projections]
+    \label{thm:supported_gram_projector_cancellation}
+    \lean{ContinuousLinearMap.comp_supportedGramInverse_adjoint_eq_starProjection,
+        ContinuousLinearMap.starProjection_comp_sub_of_supportedGramFactorizations}
+    \leanok
+    Let $T:E\to\mathcal H$ be a continuous linear map from a finite-dimensional
+    Hilbert space to a complete Hilbert space. Suppose $Q=Q^*$, $TQ=T$, and
+    $(T^*T)H=Q$. Then $P_T=THT^*$.
+
+    More generally, let $T:E\to\mathcal H$, $L:F\to\mathcal H$, and
+    $C:G\to\mathcal H$ have finite-dimensional domains and a common
+    factorization $C=TJ_1=LJ_2$. For $S\in\{T,L,C\}$, suppose
+    $Q_S=Q_S^*$, $SQ_S=S$, and $(S^*S)H_S=Q_S$. If also $H_T=H_T^*$, then
+    \begin{align}
+        P_TP_L-P_C
+         & =TH_T\bigl[T^*L-(T^*T)J_1H_CJ_2^*(L^*L)\bigr]H_LL^*.
+        \label{eq:ph_supported_gram_residual}
+    \end{align}
+    This is the algebra behind the projector comparison in
+    \cite[Lemma~6.1(ii)]{Nachtergaele1996Spectral}.
+\end{lemma}
+\begin{proof}\leanok
+    The vector $THT^*x$ lies in $\operatorname{ran}T$. Taking adjoints of
+    $TQ=T$ gives $QT^*=T^*$, so
+    $T^*(x-THT^*x)=T^*x-QT^*x=0$. Thus $THT^*$ is the orthogonal range
+    projection. For the three-map identity, self-adjointness of $H_T$ gives
+    $H_T(T^*T)=Q_T$. Consequently
+    $TH_T(T^*T)=T$ and $(L^*L)H_LL^*=L^*$.
+    Expanding the right-hand side of~(\ref{eq:ph_supported_gram_residual})
+    and using $TJ_1=C$ and $J_2^*L^*=C^*$ gives
+    $P_TP_L-CH_CC^*$.
+\end{proof}
+
+\begin{lemma}[Norm control from supported projector cancellation]
+    \label{thm:supported_gram_projector_norm}
+    \lean{ContinuousLinearMap.norm_starProjection_comp_sub_le_of_supported_factorization,
+        ContinuousLinearMap.tendsto_norm_starProjection_comp_sub_zero_of_supported_factorizations}
+    \leanok
+    Let $T:E\to F$, $L:G\to F$, and $C:W\to F$ be bounded
+    maps, with finite-dimensional domains and a complete Hilbert space $F$.
+    Suppose
+    \begin{align}
+        P_TP_L-P_C=T H_T R H_L L^*.
+        \notag
+    \end{align}
+    Then
+    \begin{align}
+        \|P_TP_L-P_C\|
+        \le \|T\|\|H_T\|\|H_L\|\|L\|\|R\|.
+        \notag
+    \end{align}
+    For a family along any filter, assume this factorization eventually
+    holds, the product $\|T\|\|H_T\|\|H_L\|\|L\|$ is eventually
+    bounded, and $\|R\|\to0$. Then $\|P_TP_L-P_C\|\to0$.
+    The spaces may vary with the index.
+\end{lemma}
+\begin{proof}\leanok
+    Apply submultiplicativity of the operator norm and $\|L^*\|=\|L\|$.
+    The eventual bound then gives a constant multiple of $\|R\|$;
+    squeeze the nonnegative projection norm between zero and this quantity.
+\end{proof}
+
+\begin{lemma}[Three-operator perturbation estimate]
+    \label{thm:three_operator_perturbation}
+    \lean{ContinuousLinearMap.norm_comp_three_sub_le}
+    \leanok
+    For bounded linear operators $A,a:G\to W$, $B,b:F\to G$, and
+    $C,c:E\to F$ between normed spaces,
+    \begin{align}
+        \|ABC-abc\|\le
+        \|A-a\|\|B\|\|C\|+
+        \|a\|\|B-b\|\|C\|+
+        \|a\|\|b\|\|C-c\|.
+    \end{align}
+    No finite-dimensional or completeness hypothesis is required.
+\end{lemma}
+\begin{proof}\leanok
+    Use $ABC-abc=(A-a)BC+a(B-b)C+ab(C-c)$, the triangle inequality,
+    and submultiplicativity of the operator norm.
+\end{proof}
+
+\begin{lemma}[Vanishing three-operator perturbations]
+    \label{thm:three_operator_perturbation_limit}
+    \lean{ContinuousLinearMap.tendsto_norm_comp_three_sub_zero_of_bounds}
+    \leanok
+    \uses{thm:three_operator_perturbation}
+    Let the normed spaces and operators in Lemma~\ref{thm:three_operator_perturbation}
+    vary along an arbitrary filter. Suppose the three individual differences
+    tend to zero in norm, and the products $\|B\|\|C\|$, $\|a\|\|C\|$,
+    and $\|a\|\|b\|$ have a common eventual upper bound.
+    Then $\|ABC-abc\|\to0$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:three_operator_perturbation}
+    Bound the product difference by the common bound times the sum of the
+    three individual norm differences, and apply the squeeze theorem.
+\end{proof}
+
+\begin{lemma}[Isometric conjugation of a projection defect]
+    \label{thm:isometric_projection_defect_transport}
+    \lean{Submodule.norm_map_starProjection_comp_sub_eq}
+    \leanok
+    Let $U,V,W$ be closed subspaces of a Hilbert space and let $F$ be a
+    surjective linear isometry to another Hilbert space. Then
+    \begin{align}
+        \|P_{FU}P_{FV}-P_{FW}\|=\|P_W-P_VP_U\|.
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    Orthogonal projections are conjugated by $F$, and conjugation by a
+    surjective isometry preserves the operator norm. Taking the adjoint
+    reverses the order of the two projections and preserves the norm.
+\end{proof}
+
+\begin{lemma}[Finite sector projection estimate]
+    \label{thm:finite_sector_projection_estimate}
+    \lean{Submodule.norm_starProjection_comp_sub_le_sector_errors}
+    \leanok
+    Let $U,V,W$ and $S_i,T_i,C_i$ be subspaces of a finite-dimensional
+    real or complex Hilbert space, with $i$ ranging over a finite set $I$.
+    Set
+    $e_U=\|P_U-\sum_iP_{S_i}\|$,
+    $e_V=\|P_V-\sum_iP_{T_i}\|$, and
+    $e_W=\|\sum_iP_{C_i}-P_W\|$. Then
+    \begin{align}
+        \|P_UP_V-P_W\|
+        \leq e_U+|I|e_V+
+        \sum_{i,j\in I}\|P_{S_i}P_{T_j}-\delta_{ij}P_{C_i}\|+e_W.
+    \end{align}
+    No orthogonality of the sector subspaces is required.
+    This finite-sum estimate assembles the projection comparisons in
+    \cite[Lemmas~commutation(ii) and disjoint]{Nachtergaele1996Spectral}.
+\end{lemma}
+\begin{proof}\leanok
+    Put $P=\sum_iP_{S_i}$, $Q=\sum_iP_{T_i}$, and $Z=\sum_iP_{C_i}$.
+    Expand
+    $P_UP_V-P_W=(P_U-P)P_V+P(P_V-Q)+(PQ-Z)+(Z-P_W)$.
+    Every orthogonal projection has norm at most one, so $\|P\|\leq|I|$.
+    Expand $PQ-Z$ as the stated double sum and apply the triangle inequality.
+\end{proof}
+
+\begin{lemma}[Vanishing sector defects give a vanishing joint projection defect]
+    \label{thm:sector_projection_defect_limit}
+    \lean{Submodule.tendsto_norm_starProjection_comp_sub_zero_of_sector_errors}
+    \leanok
+    \uses{thm:finite_sector_projection_estimate}
+    Let the subspaces in Lemma~\ref{thm:finite_sector_projection_estimate}
+    vary along an arbitrary filter, allowing the finite-dimensional ambient
+    Hilbert spaces to vary. Suppose the three projection-sum errors tend to
+    zero, and suppose $\|P_{S_i}P_{T_i}-P_{C_i}\|\to0$ for each $i$, while
+    $\|P_{S_i}P_{T_j}\|\to0$ for each $i\ne j$.
+    Then $\|P_UP_V-P_W\|\to0$.
+    The finite index set is fixed and may be empty.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:finite_sector_projection_estimate}
+    The finite double sum of sector errors tends to zero.
+    Apply Lemma~\ref{thm:finite_sector_projection_estimate} and squeeze the
+    nonnegative joint defect between zero and its vanishing upper bound.
+\end{proof}

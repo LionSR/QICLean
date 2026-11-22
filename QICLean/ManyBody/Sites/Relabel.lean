@@ -353,6 +353,27 @@ theorem sitePermOp_mul_mul_conjTranspose_mem_supportedOperators (π : Equiv.Perm
   exact reindex_siteConfigurationEquiv_mem_supportedOperators π _
     (fun v ↦ by simp [π.injective.eq_iff]) hA
 
+/-- Relabelling the sites of a configuration by a permutation `p` carries operators supported
+on `S` to operators supported on `p '' S`. This is the case of
+`reindex_siteConfigurationEquiv_mem_supportedOperators` with identical sites and the identity on
+labels, stated in `submatrix` form.
+
+Moved from TNLean, `TNLean/Algebra/SupportedOperatorsSitePermutation.lean` at commit
+`49b78ed821` (Apache-2.0), with the local dimension `Fin d` generalized to a finite type `α`. -/
+theorem submatrix_comp_perm_mem_supportedOperators {S : Finset V} (p : Equiv.Perm V)
+    {A : Matrix (V → α) (V → α) ℂ} (hA : A ∈ supportedOperators (fun _ : V ↦ α) S) :
+    A.submatrix (fun σ ↦ σ ∘ p) (fun σ ↦ σ ∘ p) ∈ supportedOperators (fun _ : V ↦ α)
+        (S.image p) := by
+  have h := reindex_siteConfigurationEquiv_mem_supportedOperators
+    (X := fun _ : V ↦ α) (X' := fun _ : V ↦ α) p (fun _ ↦ Equiv.refl _)
+    (D := S) (D' := S.image p) (fun v ↦ by simp) hA
+  have hsymm : ⇑(siteConfigurationEquiv (X := fun _ : V ↦ α)
+      (X' := fun _ : V ↦ α) p (fun _ ↦ Equiv.refl _)).symm = fun σ ↦ σ ∘ p := by
+    funext σ v
+    rw [siteConfigurationEquiv_symm_apply]
+    rfl
+  rwa [Matrix.reindex_apply, hsymm] at h
+
 /-- **A local permutation of sites.** If `π` fixes every site outside `D`, the operator
 moving the content of every site along `π` is supported on `D`. -/
 theorem sitePermOp_mem_supportedOperators {π : Equiv.Perm V} {D : Finset V}

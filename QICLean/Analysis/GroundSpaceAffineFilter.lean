@@ -19,6 +19,19 @@ These are supporting spectral estimates for ALVV, arXiv:1602.08828v2,
 Figure `fig:algo1`, lines 1620–1643, and the final refinement in the proof
 of `t:alg1`, lines 1809–1817. No spatial representation, trimming operation
 or algorithmic running time is asserted here.
+
+For a positive matrix, the operator norm is a valid upper end of the spectrum, and the filter
+normalized by it has the rate `γ / (‖H‖ - μ)`. That form was moved from TNLean,
+`TNLean/MPS/AreaLaw/PhysicalDGFilterTrimming.lean` at commit `49b78ed821` (Apache-2.0).
+Changes: stated for an arbitrary positive matrix in place of the Hamiltonian of a chain with
+positive terms.
+
+## Main results
+
+* `Matrix.IsHermitian.normalized_affine_ground_filter_spec` — the filter fixes the ground span
+  and contracts its complement.
+* `Matrix.PosSemidef.normalized_affine_ground_filter_spec_of_norm` — the same with the operator
+  norm as upper end of the spectrum.
 -/
 
 open scoped InnerProductSpace MatrixOrder ComplexOrder Matrix.Norms.L2Operator
@@ -158,5 +171,44 @@ theorem IsHermitian.normalized_affine_ground_filter_spec
       _ ≤ (1 - c) * ‖x‖ ^ 2 := by
         rw [mul_pow]
         exact mul_le_mul_of_nonneg_right hsq (sq_nonneg _)
+
+/-- **The affine filter normalized by the operator norm.** Let `H ≥ 0` have two eigenvalues
+`μ < ν` and no spectrum strictly between `μ` and `μ + γ`, with `γ > 0`. With `M = ‖H‖` and
+`c = γ / (M - μ)`, the filter `(M - μ)⁻¹ (M - H)` has `M > 0`, `M - μ > 0`, `0 < c ≤ 1`, fixes
+the span `G` of the eigenvectors of energy at most `μ`, preserves `Gᗮ` and contracts squared
+norms on `Gᗮ` by `1 - c`. ALVV, arXiv:1602.08828v2, hypothesis (DG), lines 275–279, and the
+final filter, lines 1620–1643. -/
+theorem PosSemidef.normalized_affine_ground_filter_spec_of_norm
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    {H : Matrix ι ι ℂ} (hH : H.PosSemidef) {mu nu gamma : ℝ} (hgamma : 0 < gamma)
+    (hmu : mu ∈ spectrum ℝ H) (hnu : nu ∈ spectrum ℝ H) (hmunu : mu < nu)
+    (hgap : ∀ z ∈ spectrum ℝ H, z = mu ∨ mu + gamma ≤ z) :
+    let G := Submodule.spectralSpanLE hH.isHermitian.eigenvectorBasis
+      hH.isHermitian.eigenvalues mu
+    let M := ‖H‖
+    let K := toEuclideanCLM (n := ι) (𝕜 := ℂ) ((M - mu)⁻¹ • (M • 1 - H))
+    let c := gamma / (M - mu)
+    0 < M ∧ 0 < M - mu ∧ 0 < c ∧ c ≤ 1 ∧
+      (∀ x ∈ G, K x = x) ∧
+      (∀ x ∈ Gᗮ, K x ∈ Gᗮ) ∧
+      ∀ x ∈ Gᗮ, ‖K x‖ ^ 2 ≤ (1 - c) * ‖x‖ ^ 2 := by
+  intro G M K c
+  have hupper : ∀ z ∈ spectrum ℝ H, z ≤ M :=
+    (le_algebraMap_iff_spectrum_le hH.isHermitian.isSelfAdjoint).mp
+      (IsSelfAdjoint.le_algebraMap_norm_self H hH.isHermitian.isSelfAdjoint)
+  have hE1 : mu + gamma ≤ M := by
+    rcases hgap nu hnu with heq | hexc
+    · exact False.elim (ne_of_gt hmunu heq)
+    · exact hexc.trans (hupper nu hnu)
+  have hmu0 : 0 ≤ mu := spectrum_nonneg_of_nonneg hH.nonneg hmu
+  have hspec := hH.isHermitian.normalized_affine_ground_filter_spec
+    (by linarith : mu < mu + gamma) hE1
+    (fun z hz ↦ (hgap z hz).elim Or.inl fun he ↦ Or.inr ⟨he, hupper z hz⟩)
+  have hrate : (mu + gamma - mu) / (M - mu) = c := by
+    dsimp only [c]
+    congr 1
+    ring
+  rw [hrate] at hspec
+  exact ⟨by linarith, by linarith [hupper nu hnu], hspec⟩
 
 end Matrix

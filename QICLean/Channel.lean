@@ -63,6 +63,7 @@ import QICLean.Channel.FilterNormalization
 import QICLean.Channel.FixedPoint
 import QICLean.Channel.GaugeConjugation
 import QICLean.Channel.InformationallyCompleteEffects
+import QICLean.Channel.InjectivePositiveMapRank
 import QICLean.Channel.Irreducible
 import QICLean.Channel.JamiolkowskiSpectrum
 import QICLean.Channel.KoashiImoto

@@ -1,0 +1,103 @@
+\section{Pure states and asymptotic preparation with measurements}
+\label{sec:circuitplacement_asymptotic}
+
+\begin{lemma}[Unitary matrices preserve inner products]
+    \label{lem:unitary_preserves_inner_product}
+    \lean{Matrix.star_mulVec_dotProduct_mulVec_of_mem_unitary,
+        Matrix.inner_eq_of_mulVec_eq, Matrix.norm_eq_of_mulVec_eq,
+        Matrix.conjTranspose_mulVec_eq_of_mulVec_eq}
+    \leanok
+    A unitary matrix $U$ satisfies $\overline{(Ux)}\cdot(Uy)=\overline{x}\cdot y$
+    for coordinate vectors $x$, $y$, and so preserves inner products and norms.
+    If $Ux=y$, then $U^\dagger y=x$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Both identities follow from $U^\dagger U=\id$.
+\end{proof}
+
+\begin{lemma}[Unit-modulus multiples of unitary matrices]
+    \label{lem:unit_phase_scalar}
+    \lean{Complex.mul_star_self_of_norm_eq_one, Complex.star_mul_self_of_norm_eq_one,
+        Matrix.IsUnitaryBetween.smul_of_norm_eq_one}
+    \leanok
+    A complex number $c$ with $\lvert c\rvert=1$ satisfies
+    $c\overline{c}=\overline{c}c=1$. Hence $cA$ is unitary between two
+    coordinate spaces whenever $A$ is.
+\end{lemma}
+
+\begin{proof}\leanok
+    $c\overline{c}=\lvert c\rvert^2=1$, and
+    $(cA)^\dagger(cA)=\overline{c}c\,A^\dagger A$, and similarly on the other
+    side.
+\end{proof}
+
+\begin{lemma}[Trace norm of a difference of pure states]
+    \label{lem:qc_pure_state_trace_norm}
+    \lean{Matrix.traceNorm_vecMulVec_le, Matrix.traceNorm_pureStateProj_sub_le,
+        Matrix.rectangularTraceNorm_vecMulVec_sub_le}
+    \leanok
+    \uses{lem:pure_trace_distance, lem:unitary_preserves_inner_product,
+        lem:unit_phase_scalar}
+    For vectors $\ket u,\ket v$,
+    $\lVert\ket u\bra v\rVert_1\leq\lVert u\rVert\,\lVert v\rVert$. For unit
+    vectors $\ket\psi,\ket\varphi$ of a finite-dimensional space,
+    \begin{align}
+        \bigl\lVert\ket\psi\bra\psi-\ket\varphi\bra\varphi\bigr\rVert_1
+         & \leq2\sqrt{2\bigl(1-\lvert\braket{\psi|\varphi}\rvert\bigr)}.\notag
+    \end{align}
+\end{lemma}
+
+\begin{proof}\leanok
+    Choosing $U$ unitary with
+    $\lVert\ket u\bra v\rVert_1=\operatorname{tr}(\ket v\bra u U)
+        =\lvert\braket{u|Uv}\rvert\leq\lVert u\rVert\,\lVert v\rVert$ gives the
+    first bound. With $\ket{\varphi'}=c\ket\varphi$, $\lvert c\rvert=1$ and
+    $\braket{\psi|\varphi'}=\lvert\braket{\psi|\varphi}\rvert$,
+    \begin{align}
+        \ket\psi\bra\psi-\ket\varphi\bra\varphi
+         & =\ket{\psi-\varphi'}\bra\psi+\ket{\varphi'}\bra{\psi-\varphi'},\notag
+    \end{align}
+    so the triangle inequality gives the bound
+    $2\lVert\psi-\varphi'\rVert=2\sqrt{2(1-\lvert\braket{\psi|\varphi}\rvert)}$.
+    Alternatively, the trace norm equals
+    $2\sqrt{1-\lvert\braket{\psi|\varphi}\rvert^2}$ by
+    Lemma~\ref{lem:pure_trace_distance}, and $1-t^2\leq2(1-t)$ for
+    $0\leq t\leq1$.
+\end{proof}
+
+\begin{definition}[Asymptotic preparation with measurements]
+    \label{def:qc_asymptotic_measurement_preparation}
+    \lean{QuantumCircuit.IsAsymptoticallyPreparedWithMeasurementsInDepth}
+    \leanok
+    \uses{def:measurement_one_round}
+    A sequence $(\ket{\varphi_N})_N$ on rings of $N$ sites is
+    \emph{asymptotically prepared with measurements in depth
+        $f\colon\mathbb N\to\mathbb R$} if there exist unit vectors
+    $\ket{\psi_N}$ that, for all large $N$, are converted from a product vector
+    by one round of measurements in depth $T_1$ followed by a unitary circuit of
+    depth $T_2$ with $T_1+T_2\leq f(N)$, such that
+    $\lim_{N\to\infty}\lVert\ket{\psi_N}\bra{\psi_N}
+        -\ket{\varphi_N}\bra{\varphi_N}\rVert_1=0$ (specializing~\cite[paragraph
+        ``Phases of matter'']{Piroli2021LOCC}).
+\end{definition}
+
+\begin{lemma}[Asymptotic preparation from overlap errors]
+    \label{lem:qc_asymptotic_preparation_of_overlap}
+    \lean{QuantumCircuit.isAsymptoticallyPreparedWithMeasurementsInDepth_of_one_sub_norm_inner_le}
+    \leanok
+    \uses{def:qc_asymptotic_measurement_preparation,
+        lem:qc_pure_state_trace_norm}
+    If $\varepsilon_N\to0$ and for all large $N$, $\lVert\varphi_N\rVert=1$ and
+    some unit vector $\ket{\psi_N}$, converted from a product vector by one round
+    of measurements followed by a unitary circuit in total depth at most $f(N)$,
+    satisfies $1-\lvert\braket{\psi_N|\varphi_N}\rvert\leq\varepsilon_N$, then
+    $(\ket{\varphi_N})_N$ is asymptotically prepared with measurements in depth
+    $f$.
+\end{lemma}
+
+\begin{proof}\leanok
+    By Lemma~\ref{lem:qc_pure_state_trace_norm},
+    $\lVert\ket{\psi_N}\bra{\psi_N}-\ket{\varphi_N}\bra{\varphi_N}\rVert_1
+        \leq2\sqrt{2\varepsilon_N}\to0$.
+\end{proof}

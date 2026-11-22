@@ -7,6 +7,8 @@ import Mathlib.Algebra.Order.Chebyshev
 import Mathlib.Basic.Real.Basic
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.Ring
+import Mathlib.Analysis.Normed.Group.Basic
+import Mathlib.Analysis.Real.Sqrt
 
 /-!
 # Equality in the finite Cauchy--Schwarz inequality
@@ -24,12 +26,17 @@ nonemptiness assumption, so the empty and singleton cases are included.
 * `Finset.sum_pairwise_sq_sub`: the pairwise-difference form of the variance identity.
 * `Finset.sq_sum_eq_card_mul_sum_sq_iff`: equality holds exactly when the family is
   constant on the finite set.
+* `Finset.norm_sum_le_mul_sqrt_mul_sqrt`: if `‖z_i‖ ≤ c a_i b_i` termwise with `c ≥ 0`, then
+  `‖∑ z_i‖ ≤ c √(∑ a_i²) √(∑ b_i²)`, by the triangle and Cauchy--Schwarz inequalities.
 
 ## References
 
 * Wolf, *Quantum Channels & Operations*, Chapter 2, Proposition "SIC POVMs",
   equations (2.31)--(2.32); `Notes/WolfNoteTexSource/ch02_representations.tex`,
   lines 802--815
+
+The termwise Cauchy--Schwarz bound `Finset.norm_sum_le_mul_sqrt_mul_sqrt` is moved from TNLean,
+`TNLean/Algebra/FinsetNormSumCauchySchwarz.lean` at commit `49b78ed821` (Apache-2.0).
 -/
 
 open scoped BigOperators
@@ -115,5 +122,16 @@ theorem sq_sum_eq_card_mul_sum_sq_iff :
           ring
     · simp at hs
       simp [hs]
+
+/-- If \(\|z_i\|\le c\,a_ib_i\) for every \(i\in s\) and \(c\ge0\), then
+\(\|\sum_{i\in s}z_i\|\le c\sqrt{\sum_{i\in s}a_i^2}\sqrt{\sum_{i\in s}b_i^2}\). -/
+theorem norm_sum_le_mul_sqrt_mul_sqrt {ι E : Type*} [SeminormedAddCommGroup E]
+    (s : Finset ι) (z : ι → E) (a b : ι → ℝ) {c : ℝ} (hc : 0 ≤ c)
+    (h : ∀ i ∈ s, ‖z i‖ ≤ c * a i * b i) :
+    ‖∑ i ∈ s, z i‖ ≤
+      c * (Real.sqrt (∑ i ∈ s, a i ^ 2) * Real.sqrt (∑ i ∈ s, b i ^ 2)) := by
+  refine (norm_sum_le s z).trans ((Finset.sum_le_sum h).trans ?_)
+  simpa only [mul_assoc, ← Finset.mul_sum] using
+    mul_le_mul_of_nonneg_left (Real.sum_mul_le_sqrt_mul_sqrt s a b) hc
 
 end Finset

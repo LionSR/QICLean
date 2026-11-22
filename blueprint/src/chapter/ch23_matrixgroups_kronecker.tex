@@ -1,0 +1,425 @@
+\section{Kronecker products, the swap matrix, and rank-one reshapes}
+
+This section collects factorization statements for Kronecker products of
+complex matrices, the action of the swap matrix on Kronecker products, the
+realignment of a bipartite matrix, and rank-one factorizations.
+
+\begin{lemma}[Scalar factors of an identity Kronecker product]
+    \label{thm:mpug_kronecker_identity_factors}
+    \lean{Matrix.exists_eq_smul_one_of_kronecker_eq_one}
+    \leanok
+    Let $M$ and $N$ be nonempty sets, and let
+    $A\in\operatorname{Mat}_M(\C)$ and $B\in\operatorname{Mat}_N(\C)$. If
+    $A\otimes B=\mathbf 1$, then there is a nonzero $c\in\C$ such that
+    \begin{align}
+        A & =c\mathbf 1, & B & =c^{-1}\mathbf 1.
+        \label{eq:mpug_kronecker_identity_factors}
+    \end{align}
+\end{lemma}
+
+\begin{proof}\leanok
+    For any $i_0\in M$ and $j_0\in N$, the
+    $((i_0,j_0),(i_0,j_0))$ entry gives
+    $A_{i_0i_0}B_{j_0j_0}=1$. Thus $c=A_{i_0i_0}$ is nonzero and
+    $B_{j_0j_0}=c^{-1}$. Comparing every
+    $((i,j_0),(i',j_0))$ entry gives $A_{ii'}=c\delta_{ii'}$; comparing every
+    $((i_0,j),(i_0,j'))$ entry gives $B_{jj'}=c^{-1}\delta_{jj'}$.
+\end{proof}
+
+\begin{lemma}[Kronecker product of unitary maps]
+    \label{thm:matrix_unitary_between_kronecker}
+    \lean{Matrix.IsUnitaryBetween.kronecker}
+    \leanok
+    Let $A,B,C,E$ be finite sets, possibly empty, and let
+    $M\colon\C^B\to\C^A$ and $P\colon\C^E\to\C^C$ be unitary maps:
+    $M^\dagger M=I_B$, $MM^\dagger=I_A$, $P^\dagger P=I_E$, and
+    $PP^\dagger=I_C$. Then $M\otimes P$ is a unitary map from
+    $\C^{B\times E}$ to $\C^{A\times C}$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The adjoint and multiplication identities for Kronecker products give
+    \begin{align}
+        (M\otimes P)^\dagger(M\otimes P)
+         & =(M^\dagger M)\otimes(P^\dagger P)
+        =I_B\otimes I_E=I_{B\times E},        \\
+        (M\otimes P)(M\otimes P)^\dagger
+         & =(MM^\dagger)\otimes(PP^\dagger)
+        =I_A\otimes I_C=I_{A\times C}.
+    \end{align}
+\end{proof}
+
+\begin{lemma}[Unitarity from an adjoint Kronecker product]
+    \label{thm:matrix_unitary_adjoint_kronecker}
+    \lean{Matrix.isUnitaryBetween_of_conjTranspose_kronecker}
+    \leanok
+    \uses{thm:mpug_kronecker_identity_factors}
+    Let $M,N$ be nonempty finite sets, and let
+    $K\colon\C^N\to\C^M$ be a complex matrix. If
+    $K^\dagger\otimes K\colon\C^{M\times N}\to\C^{N\times M}$
+    is unitary, then $K$ is unitary between its coordinate spaces:
+    \begin{align}
+        K^\dagger K & =I_N, \\
+        KK^\dagger  & =I_M.
+    \end{align}
+    No equality of $|M|$ and $|N|$ is assumed. This is the matrix implication
+    used in \cite[lines~5444--5487]{FrancoRubio2025MPUGauging}.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{thm:mpug_kronecker_identity_factors}
+    The isometry identity for $K^\dagger\otimes K$ gives
+    \begin{align}
+        (KK^\dagger)\otimes(K^\dagger K) & =I_{M\times N}.
+    \end{align}
+    By Lemma~\ref{thm:mpug_kronecker_identity_factors}, there is a
+    nonzero $c\in\C$ with $KK^\dagger=cI_M$ and
+    $K^\dagger K=c^{-1}I_N$. Consequently,
+    \begin{align}
+        (KK^\dagger)^2
+         & =K(K^\dagger K)K^\dagger
+        =c^{-1}KK^\dagger=I_M.
+    \end{align}
+    For any $i\in M$, the $(i,i)$ entry gives $c^2=1$, while positivity
+    of the Gram matrix gives $c=(KK^\dagger)_{ii}\geq0$.
+    Thus $c=1$, and the two scalar Gram identities become
+    $K^\dagger K=I_N$ and $KK^\dagger=I_M$.
+\end{proof}
+
+\begin{lemma}[Unitary factors of a unitary Kronecker product]
+    \label{thm:mpug_unitary_kronecker_factors}
+    \lean{Matrix.exists_pos_real_rescaling_mem_unitaryGroup_of_kronecker_mem_unitaryGroup,
+        Matrix.exists_pos_real_smul_unitary_factors_of_kronecker_mem_unitaryGroup}
+    \leanok
+    \uses{thm:mpug_kronecker_identity_factors}
+    Let $M$ and $N$ be nonempty finite sets. If
+    $K_1\in\operatorname{Mat}_M(\C)$ and
+    $K_2\in\operatorname{Mat}_N(\C)$ satisfy that $K_1\otimes K_2$ is
+    unitary, then there are a positive real number $\delta$ and unitary
+    matrices $W_1,W_2$ such that
+    \begin{align}
+        K_1 & =\delta W_1, & K_2 & =\delta^{-1}W_2.
+        \label{eq:mpug_unitary_kronecker_factors}
+    \end{align}
+    Equivalently, $\delta^{-1}K_1$ and $\delta K_2$ are unitary. This is the
+    factor-by-factor step in the decomposition lemma of
+    \cite[lines~1052--1066]{FrancoRubio2025MPUGauging}.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{thm:mpug_kronecker_identity_factors}
+    Unitarity gives
+    \begin{align}
+        (K_1^\dagger K_1)\otimes(K_2^\dagger K_2)=\mathbf 1.
+    \end{align}
+    Lemma~\ref{thm:mpug_kronecker_identity_factors} gives a nonzero
+    $c\in\C$ such that
+    $K_1^\dagger K_1=c\mathbf 1$ and
+    $K_2^\dagger K_2=c^{-1}\mathbf 1$. Positivity of the first Gram matrix
+    makes $c$ a positive real number. Taking $\delta=\sqrt c$ shows directly
+    that $\delta^{-1}K_1$ and $\delta K_2$ have identity Gram matrices; these
+    are $W_1$ and $W_2$ in
+    (\ref{eq:mpug_unitary_kronecker_factors}).
+\end{proof}
+
+\begin{lemma}[Comparison of factorizations from one-sided inverses]
+    \label{thm:mpug_factorization_comparison}
+    \lean{Matrix.factorization_comparison_of_one_sided_inverses}
+    \leanok
+    Let $A,B,\widetilde B,C$ be finite index sets, possibly empty, and let
+    $\mathbb S$ be a semiring. Suppose that
+    \begin{align}
+        X            & \in\operatorname{Mat}_{A\times B}(\mathbb S),           \\
+        Y            & \in\operatorname{Mat}_{B\times C}(\mathbb S),           \\
+        \widetilde X & \in\operatorname{Mat}_{A\times\widetilde B}(\mathbb S), \\
+        \widetilde Y & \in\operatorname{Mat}_{\widetilde B\times C}(\mathbb S)
+    \end{align}
+    satisfy $XY=\widetilde X\widetilde Y$. If
+    $L\in\operatorname{Mat}_{\widetilde B\times A}(\mathbb S)$ and
+    $R\in\operatorname{Mat}_{C\times B}(\mathbb S)$ satisfy
+    $L\widetilde X=I_{\widetilde B}$ and $YR=I_B$, then the rectangular
+    comparison matrix $K=LX\in\operatorname{Mat}_{\widetilde B\times B}(\mathbb S)$
+    obeys
+    \begin{align}
+        K            & =\widetilde YR, \\
+        X            & =\widetilde XK, \\
+        \widetilde Y & =KY.
+    \end{align}
+    The intermediate index sets $B$ and $\widetilde B$ are independent, and
+    no equality of their cardinalities is assumed or concluded. These are the
+    one-sided-inverse identities in the proof of
+    \cite[lines~1052--1066]{FrancoRubio2025MPUGauging}.
+\end{lemma}
+
+\begin{proof}\leanok
+    Associativity and the two inverse identities give
+    \begin{align}
+        LX & =(LX)(YR)=L(XY)R
+        =L(\widetilde X\widetilde Y)R=\widetilde YR.
+    \end{align}
+    Multiplying $XY=\widetilde X\widetilde Y$ on the right by $R$ gives
+    $X=\widetilde XK$. Multiplying it on the left by $L$ gives
+    $\widetilde Y=KY$.
+\end{proof}
+
+\begin{lemma}[Reciprocal unitary gauges from a Kronecker comparison]
+    \label{thm:mpug_reciprocal_unitary_gauges}
+    \lean{Matrix.exists_reciprocal_unitary_gauges_of_comparison}
+    \leanok
+    \uses{thm:mpug_unitary_kronecker_factors}
+    For $i=1,2$, suppose that two factorizations of one matrix are related
+    by square comparison matrices $K_i$ through
+    \begin{align}
+        X_i & =\widetilde X_iK_i, & \widetilde Y_i & =K_iY_i.
+        \label{eq:mpug_comparison_matrices}
+    \end{align}
+    If $K_1\otimes K_2$ is unitary, then there are a positive real number
+    $\delta$ and unitary matrices $W_1,W_2$ such that
+    \begin{align}
+        \widetilde X_1 & =\delta^{-1}X_1W_1,          &
+        \widetilde Y_1 & =\delta W_1^\dagger Y_1,       \\
+        \widetilde X_2 & =\delta X_2W_2,              &
+        \widetilde Y_2 & =\delta^{-1}W_2^\dagger Y_2.
+        \label{eq:mpug_reciprocal_unitary_gauges}
+    \end{align}
+    Thus the positive scalar factors in the orientation of
+    \cite[lines~1052--1066]{FrancoRubio2025MPUGauging} are
+    $\delta_1=\delta^{-1}$ and $\delta_2=\delta$, and hence
+    $\delta_1\delta_2=1$.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{thm:mpug_unitary_kronecker_factors}
+    Applying Lemma~\ref{thm:mpug_unitary_kronecker_factors} to
+    $K_1\otimes K_2$ gives $\delta>0$ and unitary matrices $U_1,U_2$ with
+    $K_1=\delta U_1$ and $K_2=\delta^{-1}U_2$. Setting
+    $W_i=U_i^\dagger$ and substituting into
+    (\ref{eq:mpug_comparison_matrices}) gives
+    (\ref{eq:mpug_reciprocal_unitary_gauges}), while positivity of $\delta$
+    gives $\delta^{-1}\delta=1$.
+\end{proof}
+
+\begin{lemma}[Swap contraction of a Kronecker product]
+    \label{lem:matrix_trace_swap_kronecker}
+    \lean{Matrix.trace_swapMatrix_mul_kronecker,
+        Matrix.trace_swapMatrix_mul_kronecker_conjTranspose_of_mem_unitaryGroup}
+    \leanok
+    For matrices $A,B\in\mathbb C^{n\times n}$ and the swap matrix
+    $\mathbb S$ on $\mathbb C^n\otimes\mathbb C^n$,
+    \begin{align}
+        \tr\!\left[\mathbb S(A\otimes B)\right] & =\tr(AB).
+    \end{align}
+    In particular, if $U$ is unitary, then
+    \begin{align}
+        \tr\!\left[\mathbb S(U\otimes U^\dagger)\right] & =n.
+    \end{align}
+    This is the identity of \cite[lines~1608--1610]{Cirac2017MPU}.
+\end{lemma}
+
+\begin{proof}\leanok
+    In product coordinates the swap matrix has entries
+    $\mathbb S_{(i,j),(k,l)}=\delta_{i,l}\delta_{j,k}$. Therefore
+    \begin{align}
+        \tr\!\left[\mathbb S(A\otimes B)\right]
+         & =\sum_{i,j}A_{j,i}B_{i,j}
+        =\sum_{i,j}A_{i,j}B_{j,i}
+        =\tr(AB).
+    \end{align}
+    Taking $A=U$ and $B=U^\dagger$ gives
+    $\tr(UU^\dagger)=\tr(\Id)=n$.
+\end{proof}
+
+\begin{lemma}[The swap matrix exchanges the Kronecker factors]
+    \label{thm:matrix_swap_kronecker_intertwine}
+    \lean{Matrix.swapMatrix_mul_kronecker, Matrix.kronecker_mul_swapMatrix}
+    \leanok
+    For matrices $A,B\in\mathbb C^{n\times n}$ and the swap matrix
+    $\mathbb S$ on $\mathbb C^n\otimes\mathbb C^n$,
+    \begin{align}
+        \mathbb S(A\otimes B) & =(B\otimes A)\mathbb S,
+        \label{eq:matrix_swap_kron_left}                \\
+        (A\otimes B)\mathbb S & =\mathbb S(B\otimes A).
+        \label{eq:matrix_swap_kron_right}
+    \end{align}
+    The equivalent two-sided identity is stated in
+    \cite[lines~1316--1319]{Cirac2017MPU} and used without a printed
+    derivation at \cite[lines~1624--1630]{Cirac2017MPU}.
+\end{lemma}
+
+\begin{proof}\leanok
+    In product coordinates the swap matrix has entries
+    $\mathbb S_{(i,j),(k,l)}=\delta_{i,l}\delta_{j,k}$, so both sides
+    of~(\ref{eq:matrix_swap_kron_left}) have entry
+    \begin{align}
+        \left[\mathbb S(A\otimes B)\right]_{(i_1,i_2),(j_1,j_2)}
+         & =A_{i_2,j_1}B_{i_1,j_2}
+        =\left[(B\otimes A)\mathbb S\right]_{(i_1,i_2),(j_1,j_2)}.
+    \end{align}
+    Exchanging $A$ and $B$ gives~(\ref{eq:matrix_swap_kron_right}).
+\end{proof}
+
+\begin{lemma}[Swap contraction of a scaled unitary Kronecker product]
+    \label{thm:matrix_trace_swap_scaled_kronecker}
+    \lean{Matrix.trace_swapMatrix_mul_of_eq_smul_kronecker_conjTranspose}
+    \leanok
+    \uses{lem:matrix_trace_swap_kronecker}
+    Let $x\in\mathbb C^{n\times n}$ be unitary, let $\sigma\in\mathbb C$, and let
+    $M=\sigma\,x\otimes x^\dagger$. Then
+    \begin{align}
+        \tr\!\left[\mathbb SM\right] & =\sigma n.
+    \end{align}
+    This is the evaluation in \cite[lines~1608--1610]{Cirac2017MPU}, where
+    $n=d^2$.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{lem:matrix_trace_swap_kronecker}
+    The trace is linear, so
+    $\tr[\mathbb SM]=\sigma\tr[\mathbb S(x\otimes x^\dagger)]$, and
+    Lemma~\ref{lem:matrix_trace_swap_kronecker} evaluates the remaining
+    contraction as $n$.
+\end{proof}
+
+\begin{lemma}[Unitarity of the swap matrix]
+    \label{thm:mpu_swap_matrix_unitary}
+    \lean{Matrix.swapMatrix_isUnitaryBetween}
+    \leanok
+    Let $d\in\N$. On $\C^d\otimes\C^d$, let $\mathbb S$ be the swap matrix,
+    defined on the standard basis by
+    $\mathbb S(e_k\otimes e_\ell)=e_\ell\otimes e_k$. With columns indexed by
+    source coordinates $(k,\ell)$ and rows indexed by target coordinates
+    $(i,j)$, its entries are
+    \begin{align}
+        \mathbb S_{(i,j),(k,\ell)} & =\delta_{i,\ell}\delta_{j,k}.
+    \end{align}
+    Then $\mathbb S$ is unitary between the two product-coordinate orders:
+    \begin{align}
+        \mathbb S^\dagger\mathbb S & =\Id, \\
+        \mathbb S\mathbb S^\dagger & =\Id.
+    \end{align}
+    This is the exchange matrix of \cite[lines~2009--2034]{Cirac2017MPU}.
+\end{lemma}
+
+\begin{proof}\leanok
+    The swap matrix is self-adjoint and involutive, so
+    $\mathbb S^\dagger=\mathbb S$ and $\mathbb S^2=\Id$. Substitution gives
+    both identities.
+\end{proof}
+
+\begin{lemma}[Rank-one factorizations]
+    \label{thm:rank_one_factorizations}
+    \lean{LinearMap.exists_smulRight_of_finrank_range_eq_one,
+        Matrix.exists_eq_vecMulVec_of_rank_eq_one,
+        Matrix.exists_rectangular_factors_of_rank_eq_one}
+    \leanok
+    Let $f\colon X\to Y$ be a linear map over a division ring $K$ whose range
+    has dimension one.  Then there are a nonzero linear functional
+    $\varphi\colon X\to K$, a nonzero vector $y\in Y$, and a vector $x\in X$
+    such that
+    \begin{align}
+        \varphi(x) & =1, & f(x) & =y, & f(z) & =\varphi(z)y
+        \quad\text{for every }z\in X.
+        \notag
+    \end{align}
+    Consequently, if $I$ and $J$ are finite index sets, then every rank-one
+    matrix $M\in K^{I\times J}$ over a field is an outer product of two
+    nonzero vectors: there are $w\in K^I$ and $v\in K^J$ such that
+    \begin{align}
+        M_{ij} & =w_i v_j.
+        \notag
+    \end{align}
+    In particular, as in
+    \cite[proof of Proposition~20, lines~3866--3936]{Molnar2018SemiInjective},
+    if both indices of $M$ are the product $D_B\times D_A$, then there are
+    nonzero rectangular matrices $W\in K^{D_B\times D_A}$ and
+    $V\in K^{D_A\times D_B}$ such that
+    \begin{align}
+        M_{(b,a),(b',a')}
+         & =W_{ba}V_{a'b'}.
+        \notag
+    \end{align}
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    An isomorphism from the scalar division ring to the one-dimensional range
+    of $f$ sends $1$ to a nonzero vector $y$, while its inverse composed with
+    $f$ defines $\varphi$.  For any preimage $x$ of $y$, this construction
+    gives $\varphi(x)=1$, $f(x)=y$, and $f(z)=\varphi(z)y$.
+
+    In standard bases this factorization is an outer product of two nonzero
+    coordinate vectors; when the index set is $D_B\times D_A$, reshaping the
+    left vector as a $D_B\times D_A$ matrix $W$ and the right vector as a
+    $D_A\times D_B$ matrix $V$ preserves the displayed index order.
+\end{proof}
+
+\begin{lemma}[Realignment of a bipartite matrix]
+    \label{lem:matrix_realignment_kronecker}
+    \lean{Matrix.realign, Matrix.realign_kronecker, Matrix.realign_kronecker_mul,
+        Matrix.rank_realign_eq_one_iff}
+    \leanok
+    \uses{thm:rank_one_factorizations}
+    For a matrix $M$ from $\mathbb C^{m'}\otimes\mathbb C^{n'}$ to
+    $\mathbb C^{m}\otimes\mathbb C^{n}$, its realignment $R(M)$ is the matrix
+    with rows indexed by pairs $(i,i')$, columns indexed by pairs $(k,k')$,
+    and entries
+    \begin{align}
+        R(M)_{(i,i'),(k,k')} & =M_{(i,k),(i',k')}.
+        \notag
+    \end{align}
+    Then $R(A\otimes B)=\operatorname{vec}A\,(\operatorname{vec}B)^{\mathsf T}$,
+    and for matrices $h$ and $k$ acting on the first and second Kronecker
+    factors,
+    \begin{align}
+        R\bigl((h\otimes k)M\bigr) & =(h\otimes\mathbb 1)\,R(M)\,
+                                                                (k\otimes\mathbb 1)^{\mathsf T}.
+        \notag
+    \end{align}
+    Moreover, $R(M)$ has rank one if and only if $M=A\otimes B$ with
+    $A\neq0$ and $B\neq0$. This is the first step of the direct construction
+    of a local unitary gauge that replaces the slice theorem in the proof of
+    \cite[Corollary~IV.7]{Cirac2017MPU}; see
+    \cite{gap:mpu_standard_form_path_cross_section}.
+    % Source lines: paper_v2.tex 942--947.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{thm:rank_one_factorizations}
+    The first two identities are entrywise computations. If $R(M)$ has rank
+    one, it is an outer product $wv^{\mathsf T}$ of nonzero vectors, and
+    reading $w$ and $v$ as matrices $A$ and $B$ gives $M=A\otimes B$.
+    Conversely, $R(A\otimes B)$ is the outer product of the nonzero vectors
+    $\operatorname{vec}A$ and $\operatorname{vec}B$, which has rank one.
+\end{proof}
+
+\begin{lemma}[Rank from a factorization and an identity minor]
+    \label{lem:matrix_rank_of_factor_identity_minor}
+    \lean{Matrix.rank_eq_card_of_eq_mul_of_submatrix_eq_one}
+    \leanok
+    Let $M=AB$ with $A\in K^{I\times k}$ and $B\in K^{k\times J}$ over a
+    field $K$, where $k$ is a finite set. If some choice of rows
+    $r\colon k\to I$ and columns $c\colon k\to J$ gives the identity
+    submatrix, $M_{r(a),c(b)}=\delta_{ab}$, then $\operatorname{rank}M=|k|$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The factorization bounds the rank by the rank of $A$, which is at most
+    $|k|$. A submatrix has rank at most that of $M$, and the identity
+    submatrix has rank $|k|$.
+\end{proof}
+
+\begin{lemma}[Support under a permutation of sites]
+    \label{aux:permuted-operator-support}
+    \lean{ManyBody.submatrix_comp_perm_mem_supportedOperators}
+    \leanok
+    Let all sites carry the same finite set of basis labels, and let $p$ be a
+    permutation of the sites. If an operator $A$ on the configurations is
+    supported on a set of sites $X$, then the operator with entries
+    $A_{\sigma\circ p,\tau\circ p}$ at $(\sigma,\tau)$ is supported on $p(X)$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Relabelling the configurations along $p$ is the case of identical sites
+    and identical labels of the covariance of supported operators under
+    relabelling of sites and labels.
+\end{proof}

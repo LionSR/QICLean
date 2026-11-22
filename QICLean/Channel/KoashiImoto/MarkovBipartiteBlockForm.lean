@@ -370,11 +370,11 @@ structure MarkovBipartiteBlockForm
       (Fin dA × Fin dB × Fin dC) ℂ)
     (hρ_dm : ρ_ABC.PosSemidef ∧ ρ_ABC.trace = 1)
     [Nonempty (ActiveConditionalEffectIndex (traceC_ABC ρ_ABC))] where
-  F : Kraus.PreservingKrausFamily
-    (normalizedConditionalSlice (traceC_ABC ρ_ABC))
+  F : KrausFamily (Fin dB) (Fin dB)
+  F_isPreserving : Kraus.IsPreserving (normalizedConditionalSlice (traceC_ABC ρ_ABC)) F.op
   n : ℕ
   V : Matrix (Fin dB) (Fin n) ℂ
-  petzMiddleChannel_eq : ∀ X, Kraus.map F.Kfam X =
+  petzMiddleChannel_eq : ∀ X, Kraus.map F.op X =
     petzMiddleChannel ρ_ABC hρ_dm.1 X
   V_isometry : Vᴴ * V = 1
   V_range : V * Vᴴ = (Kraus.commonAverage_posSemidef
@@ -410,22 +410,23 @@ structure MarkovBipartiteBlockForm
         (Matrix.blockDiagonal' fun j ↦
           (q x j : ℂ) • (σ j ⊗ₖ τ x j))
   preserving_support_action :
-    ∀ G : Kraus.PreservingKrausFamily
-        (normalizedConditionalSlice (traceC_ABC ρ_ABC)),
+    ∀ G : KrausFamily (Fin dB) (Fin dB),
+      Kraus.IsPreserving (normalizedConditionalSlice (traceC_ABC ρ_ABC)) G.op →
       Kraus.IsPreserving
           (Kraus.supportCompressedFamily V
             (normalizedConditionalSlice (traceC_ABC ρ_ABC)))
-          (Kraus.supportCompressedKraus V G.Kfam) ∧
-        ∀ X, Kraus.map G.Kfam (V * X * Vᴴ) =
-          V * Kraus.map (Kraus.supportCompressedKraus V G.Kfam) X * Vᴴ
+          (Kraus.supportCompressedKraus V G.op) ∧
+        ∀ X, Kraus.map G.op (V * X * Vᴴ) =
+          V * Kraus.map (Kraus.supportCompressedKraus V G.op) X * Vᴴ
   preserving_block_action :
-    ∀ G : Kraus.PreservingKrausFamily
-        (Kraus.supportCompressedFamily V
-          (normalizedConditionalSlice (traceC_ABC ρ_ABC))),
-      ∃ C : (i : Fin G.numKraus) → ∀ j,
+    ∀ G : KrausFamily (Fin n) (Fin n),
+      Kraus.IsPreserving
+          (Kraus.supportCompressedFamily V
+            (normalizedConditionalSlice (traceC_ABC ρ_ABC))) G.op →
+      ∃ C : G.Index → ∀ j,
           Matrix (Fin (m j)) (Fin (m j)) ℂ,
         (∀ i,
-          Matrix.reindex e.symm e.symm (star U * G.Kfam i * U) =
+          Matrix.reindex e.symm e.symm (star U * G.op i * U) =
             Matrix.blockDiagonal' fun j ↦
               C i j ⊗ₖ (1 : Matrix (Fin (d j)) (Fin (d j)) ℂ)) ∧
         (∀ j, Kraus.IsTP (fun i ↦ C i j)) ∧
@@ -433,7 +434,7 @@ structure MarkovBipartiteBlockForm
         ∀ j (A : Matrix (Fin (m j)) (Fin (m j)) ℂ)
             (B : Matrix (Fin (d j)) (Fin (d j)) ℂ),
           Matrix.reindex e.symm e.symm
-              (star U * Kraus.map G.Kfam
+              (star U * Kraus.map G.op
                 (U * Matrix.reindex e e
                   (Matrix.directSumBlockEmbedding (m := m) (d := d) j
                     (A ⊗ₖ B)) * star U) * U) =
@@ -491,7 +492,7 @@ theorem exists_markovBipartiteBlockForm_jointSupport
     activeConditionalEffectIndex_nonempty (traceC_ABC ρ_ABC) (by
       rw [← trace_eq_trace_traceC_ABC]
       exact hρ_dm.2)
-  obtain ⟨F, n, V, hFmap, hV, hVrange, hrec, K, d, m, e, U, σ, q, τ,
+  obtain ⟨F, n, V, hF, hFmap, hV, hVrange, hrec, K, d, m, e, U, σ, q, τ,
       hU, hd, hm, hσpos, hσtrace, hqnonneg, hqsum, hτpos, hτtrace,
       hfamily, hpres, haction⟩ :=
     exists_normalizedConditionalSliceBlockForm_preservingBlockAction_jointSupport
@@ -607,6 +608,7 @@ theorem exists_markovBipartiteBlockForm_jointSupport
     exact hcompressedTrace
   exact ⟨{
     F := F
+    F_isPreserving := hF
     n := n
     V := V
     petzMiddleChannel_eq := hFmap

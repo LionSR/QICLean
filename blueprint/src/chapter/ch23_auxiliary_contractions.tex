@@ -1,0 +1,252 @@
+\section{Contractions and the cyclic insertion map}
+
+Throughout, $\lVert\cdot\rVert$ is the operator norm of a complex matrix acting
+between Euclidean spaces, and a contraction is a matrix or operator of norm at
+most one.
+
+\begin{lemma}[Elementary contractions]
+    \label{lem:matrix_l2_contractions}
+    \lean{Matrix.l2_opNorm_le_one_of_conjTranspose_mul_self_le_one,
+        Matrix.IsIsometry.l2_opNorm_le_one,
+        Matrix.l2_opNorm_conjTranspose_mul_mul_le_one,
+        Matrix.l2_opNorm_list_prod_le_one,
+        Matrix.l2_opNorm_kronecker_le_one,
+        Matrix.l2_opNorm_toMatrix_toPEquiv_le,
+        Matrix.norm_submatrix_equiv_le}
+    \leanok
+    Let $A$ and $F$ be complex matrices indexed by finite sets.
+    \begin{enumerate}
+        \item If $\lVert A^\dagger A\rVert\le1$, then $\lVert A\rVert\le1$; in
+              particular every isometry $A^\dagger A=I$ is a contraction.
+        \item If $A$ and the square matrix $F$ are contractions, so is
+              $A^\dagger FA$.
+        \item A finite product of square contractions is a contraction, and
+              the Kronecker product of two contractions is a contraction.
+        \item The matrix of a bijection between two finite coordinate sets is a
+              contraction, and relabelling both coordinates of a square matrix
+              along one bijection does not increase its norm.
+    \end{enumerate}
+\end{lemma}
+
+\begin{proof}\leanok
+    The identity $\lVert A^\dagger A\rVert=\lVert A\rVert^2$ gives the first
+    statement. The second and third follow from submultiplicativity, the
+    identity $\lVert A^\dagger\rVert=\lVert A\rVert$, induction on the length
+    of the product, and $\lVert A\otimes B\rVert\le\lVert A\rVert\,\lVert B\rVert$.
+    The matrix of a bijection is a relabelling of the identity matrix, and
+    relabelling coordinates is conjugation by isometries.
+\end{proof}
+
+\begin{lemma}[Operator norm of a block-diagonal matrix]
+    \label{lem:block_diagonal_operator_norm}
+    \lean{Matrix.l2_opNorm_le_of_blocks}
+    \leanok
+    Let $Y$ be a complex matrix with rows indexed by a finite set $\alpha$ and
+    columns indexed by a finite set $\beta$, and let $u:\alpha\to U$ and
+    $u':\beta\to U$ be labellings by a finite set $U$ such that $Y_{ab}=0$
+    whenever $u(a)\ne u'(b)$. If $c\ge0$ and, for every label $z\in U$,
+    \begin{align}
+        \sum_{u(a)=z}\ \sum_{u'(b)=z}\lvert Y_{ab}\rvert^2\le c^2,
+        \notag
+    \end{align}
+    then $\lVert Y\rVert\le c$.
+\end{lemma}
+
+\begin{proof}\leanok
+    For a vector $v$, the entry $(Yv)_a$ involves only the coordinates $v_b$
+    with $u'(b)=u(a)$, so the Cauchy--Schwarz inequality bounds
+    $\lvert(Yv)_a\rvert^2$ by the squared Hilbert--Schmidt norm of the row
+    restricted to that block times the squared norm of the corresponding part
+    of $v$. Summing over $a$, grouped by labels, gives
+    $\lVert Yv\rVert^2\le c^2\lVert v\rVert^2$.
+\end{proof}
+
+\begin{lemma}[Regrouping Kronecker products]
+    \label{lem:kronecker_shuffle}
+    \lean{Matrix.kronecker_kronecker_eq_submatrix,
+        Matrix.toMatrix_toPEquiv_prodCongr,
+        Matrix.toMatrix_toPEquiv_submatrix}
+    \leanok
+    For complex matrices $A_1,B_1,A_2,B_2$,
+    \begin{align}
+        (A_1\otimes B_1)\otimes(A_2\otimes B_2)
+        =\Pi\,\bigl((A_1\otimes A_2)\otimes(B_1\otimes B_2)\bigr)\,\Pi'^{\dagger},
+        \notag
+    \end{align}
+    where $\Pi$ and $\Pi'$ exchange the two middle factors of the row and
+    column coordinates. The matrix of a product $f\times g$ of bijections is the
+    Kronecker product of the matrices of $f$ and $g$, and relabelling the
+    coordinates of the matrix of a bijection gives the matrix of the composed
+    bijection.
+\end{lemma}
+
+\begin{proof}\leanok
+    Compare entries: both sides of the first identity have entry
+    $(A_1)_{aa'}(B_1)_{bb'}(A_2)_{cc'}(B_2)_{dd'}$ at the corresponding
+    coordinates, and the matrix of a bijection has entry one exactly on its
+    graph.
+\end{proof}
+
+\begin{lemma}[Product vectors]
+    \label{lem:kronecker_vectors}
+    \lean{EuclideanSpace.vecKron,
+        EuclideanSpace.norm_vecKron,
+        EuclideanSpace.norm_vecKron_self_sub_le,
+        EuclideanSpace.norm_toLp_comp_equiv}
+    \leanok
+    For vectors $x,x'\in\C^m$ and $y\in\C^n$, the product vector
+    $(x\otimes y)_{(i,j)}=x_iy_j$ satisfies
+    $\lVert x\otimes y\rVert=\lVert x\rVert\,\lVert y\rVert$ and
+    \begin{align}
+        \lVert x\otimes x-x'\otimes x'\rVert
+        \le\lVert x-x'\rVert\bigl(\lVert x\rVert+\lVert x'\rVert\bigr).
+        \notag
+    \end{align}
+    Relabelling the coordinates of a vector along a bijection preserves its
+    norm.
+\end{lemma}
+
+\begin{proof}\leanok
+    The squared norm of $x\otimes y$ is the product of the squared norms.
+    Writing $x\otimes x-x'\otimes x'=(x-x')\otimes x+x'\otimes(x-x')$ and using
+    the triangle inequality gives the estimate.
+\end{proof}
+
+\begin{lemma}[Matrices acting on Euclidean space]
+    \label{lem:matrix_euclidean_action}
+    \lean{Matrix.inner_toEuclideanCLM_eq_dotProduct,
+        Matrix.norm_toEuclideanCLM_le_of_norm_le_one,
+        Matrix.toEuclideanLin_one_apply,
+        Matrix.toEuclideanLin_mul_apply,
+        Matrix.schmidtCoeffMatrix_kronecker_one_mulVec}
+    \leanok
+    For a square complex matrix $A$ and vectors $x,y$, the inner product
+    $\langle x,Ay\rangle$ is the sum $\sum_i\overline{x_i}(Ay)_i$, and
+    $\lVert Ax\rVert\le\lVert x\rVert$ when $\lVert A\rVert\le1$. The identity
+    matrix acts as the identity and a product $AB$ acts as the composition.
+    For a vector $\psi$ on a product $\alpha\times\beta$ with coefficient
+    matrix $\Psi_{ab}=\psi_{(a,b)}$ and a matrix $K$ with columns indexed by
+    $\alpha$, the vector $(K\otimes I)\psi$ has coefficient matrix $K\Psi$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Each statement is a direct computation in coordinates.
+\end{proof}
+
+\begin{lemma}[Rescaling an approximate contraction]
+    \label{lem:rescaled_contraction}
+    \lean{norm_le_one_add_of_norm_sub_le,
+        norm_inv_one_add_smul_le_one,
+        norm_inv_one_add_smul_sub_le}
+    \leanok
+    Let $\delta\ge0$ and let $A,B$ be elements of a complex normed space with
+    $\lVert B\rVert\le1$ and $\lVert A-B\rVert\le\delta$. Then
+    $\lVert A\rVert\le1+\delta$, the rescaling $(1+\delta)^{-1}A$ has norm at
+    most one, and
+    \begin{align}
+        \lVert(1+\delta)^{-1}A-B\rVert\le2\delta.
+        \notag
+    \end{align}
+\end{lemma}
+
+\begin{proof}\leanok
+    The first bound is the triangle inequality. Since
+    $\lVert(1+\delta)^{-1}A-A\rVert=\delta(1+\delta)^{-1}\lVert A\rVert\le\delta$,
+    the triangle inequality gives the last estimate.
+\end{proof}
+
+Let $\eta$ be a unit vector of a finite-dimensional Hilbert space $\mathcal W$
+and let $m\ge1$.
+
+\begin{definition}[Cyclic insertion map]
+    \label{def:peps_cyclic_insertion}
+    \lean{CyclicInsertion.insertAt, CyclicInsertion.cyclicInsertion,
+        CyclicInsertion.idealInsertion}
+    \leanok
+    For $k\in\{0,\dots,m-1\}$, let $I_k:\mathcal W\to\mathcal W^{\otimes m}$
+    place its input in factor $k$ and $\eta$ in the remaining $m-1$ factors.
+    Define the cyclic and ideal insertion maps by
+    \begin{align}
+        T_m & =\frac1m\sum_{k=0}^{m-1} I_k,          &
+        P_m & =|\eta^{\otimes m}\rangle\langle\eta|.
+        \label{eq:peps_cyclic_insertion}
+    \end{align}
+\end{definition}
+
+\begin{lemma}[Insertions as permutations of the factors]
+    \label{thm:peps_insertion_permutation}
+    \lean{CyclicInsertion.insertAt_perm,
+        CyclicInsertion.cyclicInsertion_eq_sum_addRight,
+        CyclicInsertion.registerPerm_pair_index}
+    \leanok
+    \uses{def:peps_cyclic_insertion}
+    For any permutation $\sigma$ of $\{0,\dots,m-1\}$ with induced factor
+    permutation $U_\sigma$ on $\mathcal W^{\otimes m}$, $I_{\sigma(k)}=U_\sigma I_k$,
+    so $T_m=m^{-1}\sum_{k=0}^{m-1}U_{(+k)}I_0$. On
+    $\mathcal W=\mathcal U\otimes\mathcal V$, $U_\sigma$ permutes the
+    $\mathcal U$ and $\mathcal V$ coordinates by $\sigma$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Verify $I_{\sigma(k)}=U_\sigma I_k$ and the pair-coordinate action of
+    $U_\sigma$ on product basis vectors.
+\end{proof}
+
+\begin{lemma}[Contractivity and the fixed vector]
+    \label{thm:peps_cyclic_insertion_basic}
+    \lean{CyclicInsertion.norm_cyclicInsertion_le_one,
+        CyclicInsertion.cyclicInsertion_self}
+    \leanok
+    \uses{def:peps_cyclic_insertion}
+    The map $T_m$ satisfies $\|T_m\|\le 1$ and $T_m\eta=\eta^{\otimes m}$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Since $\|\eta\|=1$, each $I_k$ is an isometry with $I_k\eta=\eta^{\otimes m}$,
+    so~(\ref{eq:peps_cyclic_insertion}) gives
+    $\|T_m\|\le m^{-1}\sum_{k=0}^{m-1}\|I_k\|=1$ and $T_m\eta=\eta^{\otimes m}$.
+\end{proof}
+
+\begin{lemma}[One-effect estimate]
+    \label{thm:peps_one_effect_estimate}
+    \lean{CyclicInsertion.norm_cyclicInsertion_of_inner_eq_zero,
+        CyclicInsertion.norm_cyclicInsertion_sub_ideal_le,
+        CyclicInsertion.norm_cyclicInsertion_sub_ideal_eq,
+        CyclicInsertion.cyclicInsertion_sub_ideal_eq_zero,
+        CyclicInsertion.norm_rTensor_cyclicInsertion_sub_ideal_le}
+    \leanok
+    \uses{def:peps_cyclic_insertion}
+    For every $v\perp\eta$, $\|T_mv\|=\|v\|/\sqrt m$. Hence
+    $\|T_m-P_m\|\le m^{-1/2}$ (with equality if $\{\eta\}^\perp\neq\{0\}$ and
+    $T_m=P_m$ if $\{\eta\}^\perp=\{0\}$), and
+    $\|(T_m-P_m)\otimes\mathbf 1_{\mathcal S}\|\le m^{-1/2}$ for any spectator
+    space $\mathcal S$.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{thm:peps_cyclic_insertion_basic}
+    For $v\perp\eta$ and $j\neq k$,
+    $\langle I_jv,I_kv\rangle=|\langle v,\eta\rangle|^2\|\eta\|^{2(m-2)}=0$
+    and $\|I_kv\|=\|v\|$, so $\|\sum_{k=0}^{m-1}I_kv\|^2=m\|v\|^2$ and
+    $\|T_mv\|=\|v\|/\sqrt m$. For any $v\in\mathcal W$, set
+    $v_\perp=v-\langle\eta,v\rangle\eta\perp\eta$; by
+    Lemma~\ref{thm:peps_cyclic_insertion_basic},
+    $\|(T_m-P_m)v\|=\|T_mv_\perp\|=\|v_\perp\|/\sqrt m\le\|v\|/\sqrt m$, with
+    equality on any nonzero $v\in\{\eta\}^\perp$. Tensoring with
+    $\mathbf 1_{\mathcal S}$ preserves the norm bound.
+\end{proof}
+
+\begin{lemma}[Combining pair vectors]
+    \label{thm:peps_pair_combine}
+    \lean{EuclideanSpace.pairCombine, EuclideanSpace.norm_pairCombine}
+    \leanok
+    For $\eta\in\mathcal U\otimes\mathcal V$ and
+    $\eta'\in\mathcal U'\otimes\mathcal V'$, the regrouped pair vector
+    $\eta\otimes\eta'\in(\mathcal U\otimes\mathcal U')\otimes(\mathcal V\otimes\mathcal V')$
+    satisfies $\|\eta\otimes\eta'\|=\|\eta\|\,\|\eta'\|$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Regrouping the product coordinates factors
+    $\|\eta\otimes\eta'\|^2=\|\eta\|^2\|\eta'\|^2$.
+\end{proof}

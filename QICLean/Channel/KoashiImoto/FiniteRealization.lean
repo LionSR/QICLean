@@ -117,12 +117,13 @@ families.
 `https://sirui-lu.com/TNLean/paper-gaps/hjpw04_petz_factorization_maximally_mixed_scope.pdf`. -/
 theorem exists_finset_preservingKrausFamily_iInf_eq (ρ : Kidx → Mat)
     (hρbar : (commonAverage ρ).PosDef) :
-    ∃ S : Finset (PreservingKrausFamily ρ), S.Nonempty ∧
-      (⨅ F ∈ S,
-        adjointFixedPointsStarSubalgebra F.Kfam F.isPreserving.1 hρbar F.map_commonAverage) =
-          commonInvariantStarSubalgebra ρ hρbar :=
-  StarSubalgebra.exists_finset_iInf_eq
-    (fun F : PreservingKrausFamily ρ =>
-      adjointFixedPointsStarSubalgebra F.Kfam F.isPreserving.1 hρbar F.map_commonAverage)
+    ∃ S : Finset {K : KrausFamily (Fin D) (Fin D) // IsPreserving ρ K.op}, S.Nonempty ∧
+      (⨅ F ∈ S, adjointFixedPointsStarSubalgebra F.1.op F.2.1 hρbar
+          (map_commonAverage_of_isPreserving ρ F.2)) =
+        commonInvariantStarSubalgebra ρ hρbar := by
+  obtain ⟨S, hS, hSeq⟩ := StarSubalgebra.exists_finset_iInf_eq
+    (fun F : {K : KrausFamily (Fin D) (Fin D) // IsPreserving ρ K.op} =>
+      adjointFixedPointsStarSubalgebra F.1.op F.2.1 hρbar (map_commonAverage_of_isPreserving ρ F.2))
+  exact ⟨S, hS, hSeq.trans iInf_subtype⟩
 
 end Kraus

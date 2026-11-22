@@ -1,0 +1,455 @@
+\section{Matrix identities, isometric frames and nonnegative matrices}
+
+\begin{definition}[Embedding replacing an occupied frame]
+    \label{def:isometric_frame_embedding}
+    \lean{Matrix.isometricFrameEmbedding, Matrix.finIsometricFrameEmbedding,
+        Matrix.unitaryDirectSum, Matrix.unitaryDirectSumHom}
+    \leanok
+    Let $F:S\to H$ and $J:S\to K$ be linear isometries between finite-dimensional
+    complex Hilbert spaces, and let $E:H\to K\oplus H$ be given by
+    \begin{align}
+        \label{eq:isometric_frame_embedding}
+        Ev=(JF^\dagger v,(I-FF^\dagger)v).
+    \end{align}
+    The first summand carries the prescribed target frame, while the second
+    retains the orthogonal complement of the range of $F$. For unitaries $V$ on
+    $K$ and $U$ on $H$, write $V\oplus U$ for their direct sum on $K\oplus H$.
+    This places two isometric frames in a common space, as
+    in~\cite[Section~II.F.2]{Schuch2011Phases}.
+\end{definition}
+
+\begin{lemma}[Isometry and covariance of the frame embedding]
+    \label{thm:isometric_frame_embedding}
+    \lean{Matrix.isometricFrameEmbedding_isometry,
+        Matrix.isometricFrameEmbedding_mul_frame,
+        Matrix.conjTranspose_intertwiner_of_unitary,
+        Matrix.isometricFrameEmbedding_intertwiner,
+        Matrix.finIsometricFrameEmbedding_isometry,
+        Matrix.finIsometricFrameEmbedding_intertwiner,
+        Matrix.finIsometricFrameEmbedding_mul_frame}
+    \leanok
+    \uses{def:isometric_frame_embedding}
+    The map $E$ in~(\ref{eq:isometric_frame_embedding}) satisfies $E^\dagger E=I$
+    and $EF=(J,0)$. If unitary actions obey $U_gF=FS_g$ and $V_gJ=JS_g$,
+    then $(V_g\oplus U_g)E=EU_g$. The direct sum preserves multiplication,
+    so two unitary representations give a unitary representation on $K\oplus H$.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{def:isometric_frame_embedding}
+    With $P=FF^\dagger$, idempotence and self-adjointness $P^2=P=P^\dagger$
+    give $E^\dagger E=FJ^\dagger JF^\dagger+(I-P)^2=P+I-P=I$ and $EF=(J,0)$.
+    Taking adjoints of $U_gF=FS_g$ and multiplying by the unitary actions
+    gives $F^\dagger U_g=S_gF^\dagger$. Thus $U_gP=PU_g$ and
+    $V_gJF^\dagger=JF^\dagger U_g$, establishing the two components of the
+    intertwining identity.
+\end{proof}
+
+\begin{lemma}[Inverse of a unitary invertible matrix]
+    \label{lem:unitary_general_linear_inverse}
+    \lean{Matrix.coe_gl_inv_eq_conjTranspose_of_mem_unitaryGroup}
+    \leanok
+    The inverse of an invertible complex matrix that is unitary is its
+    conjugate transpose.
+\end{lemma}
+
+\begin{proof}\leanok
+    The conjugate transpose is a left inverse, and a left inverse of an
+    invertible element is its inverse.
+\end{proof}
+
+\begin{lemma}[Coordinate inclusions]
+    \label{lem:coordinate_inclusion}
+    \lean{Matrix.coordinateInclusion,
+        Matrix.coordinateInclusion_isometry,
+        Matrix.conjTranspose_coordinateInclusion_mul,
+        Matrix.mul_coordinateInclusion,
+        Matrix.coordinateInclusion_compression,
+        Matrix.coordinateInclusion_projection_mul_of_rowSupport,
+        Matrix.coordinateInclusion_intertwine_of_rowSupport}
+    \leanok
+    An injection $e:\{1,\ldots,D\}\to\{1,\ldots,K\}$ defines an
+    isometry $J_e$ by $J_e\ket a=\ket{e(a)}$. Its adjoint selects the
+    included coordinates, so $J_e^\dagger M J_e$ is the corresponding
+    submatrix. If the rows of $M$ are supported on these coordinates,
+    then $J_eJ_e^\dagger M=M$ and $MJ_e=J_e(J_e^\dagger M J_e)$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The columns of $J_e$ are distinct coordinate vectors. Multiplication
+    by $J_e$ and $J_e^\dagger$ selects columns and rows.
+\end{proof}
+
+\begin{lemma}[Anticommuting invertible operators force even dimension]
+    \label{lem:even_finrank_of_anticommute}
+    \lean{Module.End.even_finrank_of_anticommute,
+        Module.End.isUnit_restrict_of_isUnit,
+        Module.End.even_finrank_eigenspace_of_anticommute,
+        Matrix.even_finrank_eigenspace_of_anticommute}
+    \leanok
+    Let $f,g$ be invertible operators on a finite-dimensional vector
+    space $V$ over a field of characteristic zero with $fg=-gf$. Then
+    $\dim V$ is even. Consequently, if a matrix $\Lambda$ commutes with two
+    anticommuting invertible matrices $X$ and $Y$, every eigenspace of
+    $\Lambda$ has even dimension.
+\end{lemma}
+
+\begin{proof}\leanok
+    Taking determinants in $fg=-gf$ gives
+    $\det f\det g=(-1)^{\dim V}\det g\det f$ with $\det f\det g\neq0$, so
+    $(-1)^{\dim V}=1$. For the second statement, $X$ and $Y$ map each eigenspace
+    of $\Lambda$ into itself, and their restrictions are invertible and
+    anticommute.
+\end{proof}
+
+\begin{definition}[Extension of a matrix along an isometry]
+    \label{def:spt_supported_matrix_extension}
+    \lean{Matrix.isometryExtendByIdentity}
+    \leanok
+    For an isometry $K:\C^D\to\C^k$ and a matrix $X\in\MN{D}$, set
+    $\widetilde X=KXK^\dagger+(I-KK^\dagger)$.
+\end{definition}
+
+\begin{lemma}[Comparison of supported frames]
+    \label{thm:spt_supported_frame_comparison}
+    \lean{Matrix.isometryExtendByIdentity_mul_isometry,
+        Matrix.isometry_conjTranspose_mul_isometryExtendByIdentity,
+        Matrix.isometry_reconstruct_of_supportProj,
+        Matrix.commute_isometryExtendByIdentity_of_commute_compression,
+        Matrix.isometry_absorption_of_projector_absorption,
+        Matrix.isIsometry_conjTranspose_mul_of_absorption,
+        Matrix.isometry_double_compression_eq_of_absorption,
+        Matrix.commute_compression_of_commute_isometryExtendByIdentity,
+        Matrix.supportFrame_dimension_pos_of_trace_one}
+    \leanok
+    \uses{def:spt_supported_matrix_extension}
+    Let $K:\C^D\to\C^k$ be isometric. Then
+    $\widetilde X K=KX$ and $K^\dagger\widetilde X=XK^\dagger$.
+    If $\sigma\geq0$ has support $KK^\dagger$, then
+    $\sigma=K(K^\dagger\sigma K)K^\dagger$; commutation of $X$ with
+    $K^\dagger\sigma K$ implies commutation of $\widetilde X$ with $\sigma$.
+    If $J:\C^r\to\C^k$ is isometric and $KK^\dagger J=J$, then
+    $K^\dagger J$ is isometric and
+    $(K^\dagger J)^\dagger(K^\dagger M K)(K^\dagger J)=J^\dagger M J$.
+    The absorption $KK^\dagger JJ^\dagger=JJ^\dagger$ already implies
+    $KK^\dagger J=J$.
+    An operator $P$ commuting with $\widetilde X$ has compression
+    $K^\dagger P K$ commuting with $X$.
+    Finally, $\operatorname{tr}\sigma=1$ forces $D>0$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Multiply the defining matrix extension by $K$ and $K^\dagger$ and
+    use $K^\dagger K=I$. The support projection absorbs $\sigma$ on
+    both sides, giving the reconstruction identity. The same identities
+    prove the commutation and nested-compression assertions.
+    Multiplication of $KK^\dagger JJ^\dagger=JJ^\dagger$ by $J$ gives
+    frame absorption. If $D=0$, the support is zero and hence
+    $\sigma=0$, contradicting its trace.
+\end{proof}
+
+\begin{lemma}[Matrices of orthogonal projections]
+    \label{lem:star_projection_matrices}
+    \lean{Submodule.starProjectionMatrix,
+        Submodule.toEuclideanLin_starProjectionMatrix,
+        Submodule.isStarProjection_starProjectionMatrix,
+        Matrix.isStarProjection_reindex,
+        Matrix.isStarProjection_toEuclideanCLM_iff,
+        Matrix.isSymmetricProjection_toEuclideanLin_iff}
+    \leanok
+    The matrix, in the standard basis, of the orthogonal projection onto a
+    subspace of $\C^n$ is self-adjoint and idempotent, and a matrix is
+    self-adjoint and idempotent exactly when the operator it defines is an
+    orthogonal projection. Relabelling both
+    coordinates of a self-adjoint idempotent matrix along one bijection gives
+    a self-adjoint idempotent matrix.
+\end{lemma}
+
+\begin{proof}\leanok
+    The passage from operators to matrices is a star-algebra isomorphism, and
+    so is relabelling the coordinates; both preserve self-adjointness and
+    idempotence.
+\end{proof}
+
+\begin{lemma}[Weighted matrix sums]
+    \label{thm:peps_weighted_density_sum}
+    \lean{Matrix.sum_smul_mul_mul_conjTranspose}
+    \leanok
+    For finite families $c_\alpha,d_\beta\in\C$ and compatible rectangular
+    matrices $K_\alpha,L_\beta,R$,
+    \begin{align}
+        \Bigl(\sum_\alpha c_\alpha K_\alpha\Bigr)R
+        \Bigl(\sum_\beta d_\beta L_\beta\Bigr)^\dagger
+         & =\sum_{\alpha,\beta}c_\alpha\overline{d_\beta}
+        K_\alpha R L_\beta^\dagger.
+        \label{eq:peps_weighted_density_sum}
+    \end{align}
+\end{lemma}
+
+\begin{proof}\leanok
+    Expand by bilinearity of matrix multiplication and conjugate linearity of
+    $(\cdot)^\dagger$.
+\end{proof}
+
+\begin{lemma}[Hermitian partial sums]
+    \label{thm:hermitian_partial_sums}
+    \lean{Matrix.isHermitian_sum, Matrix.isHermitian_sum_of_subset}
+    \leanok
+    Let $A_i$ be square matrices with entries in a commutative additive monoid
+    equipped with an additive involution, and let $T\subseteq S$ be finite sets.
+    If $A_i^\dagger=A_i$ for every $i\in S$, then
+    $(\sum_{i\in T}A_i)^\dagger=\sum_{i\in T}A_i$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Conjugate transposition preserves finite sums, and each summand indexed by
+    $T$ is Hermitian because $T\subseteq S$.
+\end{proof}
+
+\begin{lemma}[Equal bipartite sums of independent families]
+    \label{lem:equal_bipartite_sums}
+    \lean{LinearIndependent.exists_dual_isolating,
+        LinearIndependent.exists_left_eq_sum_of_sum_mul_eq,
+        LinearIndependent.right_eq_sum_of_sum_mul_eq,
+        LinearIndependent.sum_mul_eq_ite_of_eq_sum}
+    \leanok
+    Let $K$ be a finite set and let $a_\mu,b_\mu$ and $a'_\mu,b'_\mu$, for
+    $\mu\in K$, be complex-valued functions on sets $V_1$ and $V_2$ with
+    \begin{align}
+        \sum_{\mu\in K}a_\mu(p)\,a'_\mu(q)=\sum_{\nu\in K}b_\nu(p)\,b'_\nu(q)
+        \qquad(p\in V_1,\ q\in V_2).
+        \label{eq:equal_bipartite_sums}
+    \end{align}
+    If the family $(a'_\mu)$ is linearly independent, there is a matrix $g$
+    with $a_\mu=\sum_\nu g_{\mu\nu}b_\nu$. If moreover $(b_\nu)$ is linearly
+    independent, then $b'_\nu=\sum_\mu g_{\mu\nu}a'_\mu$ with the same $g$.
+    If $(a_\mu)$ is linearly independent, $a=gb$ and $b=g'a$, then
+    $gg'=I$.
+\end{lemma}
+
+\begin{proof}\leanok
+    A linearly independent family has dual functionals isolating each member:
+    take the coordinate functional on its span and extend it. Applying the
+    functional dual to $a'_\mu$ to~(\ref{eq:equal_bipartite_sums}) gives the
+    first expansion, with $g_{\mu\nu}$ its value on $b'_\nu$. Substituting
+    it into~(\ref{eq:equal_bipartite_sums}) and applying the dual functionals
+    of $(b_\nu)$ gives the second. Finally $a=gg'a$ and linear independence
+    of $(a_\mu)$ give $gg'=I$. This is the linear algebra
+    of~\cite[Lemma~5]{Molnar2018NormalPEPS}.
+\end{proof}
+
+\begin{lemma}[A spanning family indexed by the dimension]
+    \label{lem:fin_span_of_finrank}
+    \lean{Submodule.exists_fin_span_of_finrank_le}
+    \leanok
+    A finite-dimensional subspace $W$ of dimension at most $D$ contains $D$
+    vectors $u_1,\ldots,u_D$ whose span contains $W$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Choose an injective linear map from $W$ into $K^D$ and a left inverse
+    $h:K^D\to W$. The images under $h$ of the standard basis vectors span the
+    range of $h$, which is $W$.
+\end{proof}
+
+\begin{definition}[Exchange of the middle coordinates]
+    \label{def:chain_middle_factor_exchange}
+    \lean{Matrix.middleFactorExchangeEquiv, Matrix.exchangedMiddleFactor,
+        Matrix.exchangedMiddleFamily}
+    \leanok
+    Let $A,B,C,O$ be arbitrary sets. Define the bijection
+    \begin{align}
+        \Phi\colon (B\times O)\times(A\times C)
+                      & \longrightarrow(A\times O)\times(B\times C),\notag \\
+        ((b,o),(a,c)) & \longmapsto((a,o),(b,c)).\notag
+    \end{align}
+    Let $R$ be a set with distinguished elements $0,1$ and a binary
+    multiplication. For arbitrary sets $Y,Z$ and a matrix $X$ on $Y\times Z$
+    over $R$, write $X^{\mathrm R}_{yy'}$ for the matrix on $Z$ with entries
+    $(X^{\mathrm R}_{yy'})_{z,z'}=X_{(y,z),(y',z')}$.
+    Suppose equality on $B$ is decidable, and write $E_{bb'}$ for the
+    standard matrix unit on $B$. For $V$ on $A\times C$, set
+    \begin{align}
+        V_{a,a',b,b'}=E_{bb'}\otimes V^{\mathrm R}_{aa'}.\notag
+    \end{align}
+    For an arbitrary index set $I$ and a family $(V_t)_{t\in I}$, apply
+    this definition to each $V_t$.
+    The resulting family depends only on the original middle matrices.
+\end{definition}
+
+\begin{lemma}[Matrix-unit expansion after exchanging the middle]
+    \label{thm:chain_middle_factor_exchange}
+    \lean{Matrix.reindex_kronecker_middleFactorExchange,
+        Matrix.reindex_sum_kronecker_middleFactorExchange}
+    \leanok
+    \uses{def:chain_middle_factor_exchange}
+    Let $A,B$ be finite sets with decidable equality, let $C,O$ be arbitrary
+    sets, and let $R$ be a semiring. Let $M$ be a matrix on $B\times O$ and $V$
+    a matrix on $A\times C$, both over $R$. Transporting both indices by $\Phi$ gives
+    \begin{align}
+        (M\otimes V)^\Phi
+         & =\sum_{a,a'\in A}\sum_{b,b'\in B}
+        \bigl(E_{aa'}\otimes M^{\mathrm R}_{bb'}\bigr)\otimes V_{a,a',b,b'}.\notag
+    \end{align}
+    For a finite index set $I$ and prescribed matrices $V_t$, the same
+    family $(V_{t,a,a',b,b'})$ therefore gives such a decomposition of
+    $(\sum_{t\in I}M_t\otimes V_t)^\Phi$ for every family $(M_t)$.
+    No commutativity of $R$ or nonemptiness of the index sets is required.
+    This is the change of the two cuts in~\cite[Proposition~5.7]{Arad2016RigorousRG}.
+\end{lemma}
+
+\begin{proof}\leanok
+    At row $((a,o),(b,c))$ and column $((a',o'),(b',c'))$, the matrix
+    units leave exactly the summand with these four transferred labels.
+    Its entry is
+    \begin{align}
+        M_{(b,o),(b',o')}\,V_{(a,c),(a',c')},\notag
+    \end{align}
+    which is the corresponding entry on the left, in the same
+    multiplication order. This proves the first identity. Summing it over
+    $t$ proves the finite-family assertion.
+\end{proof}
+
+\begin{lemma}[Number of exchanged middle factors]
+    \label{thm:chain_middle_factor_exchange_card}
+    \lean{Matrix.card_exchangedMiddleFamily_index}
+    \leanok
+    \uses{def:chain_middle_factor_exchange}
+    If $I,A,B$ are finite, the prescribed family has $|I|\,|A|^2|B|^2$ indexed
+    terms, including repetitions and zero matrices.
+\end{lemma}
+
+\begin{proof}\leanok
+    Its index set is $I\times(A\times A)\times(B\times B)$; take cardinalities.
+\end{proof}
+
+\begin{definition}[Retained word coefficients]
+    \label{def:core_word_coefficients}
+    \lean{Matrix.coreWordCoeff}
+    \leanok
+    Let $m$ be a finite set, let $I$ be an arbitrary set, and choose
+    $R_a\in\C^{m\times m}$ for $a\in I$. For a finite list $s$ of pairs
+    $(K,c)\in\C^{m\times m}\times\C$ and a word $w$ in $I$, define
+    $C_R(s,w)\in\C^{m\times m}$ recursively by
+    \begin{align}
+        C_R(\varnothing,\varnothing) & =\Id_m,\notag                \\
+        C_R(\varnothing,aw)          & =0,\notag                    \\
+        C_R((K,c)::s,\varnothing)    & =K C_R(s,\varnothing),\notag \\
+        C_R((K,c)::s,aw)             & =K C_R(s,aw)+cR_a C_R(s,w).
+        \label{eq:core_word_recursion}
+    \end{align}
+    Here $aw$ is the word obtained by placing $a$ before $w$, and $(K,c)::s$
+    places the displayed pair before the list $s$.
+\end{definition}
+
+\begin{lemma}[Expansion over interior words]
+    \label{thm:core_word_product}
+    \lean{Matrix.prod_coreStep_eq_sum}
+    \leanok
+    \uses{def:core_word_coefficients}
+    Let $I,m,n$ be finite sets. Choose
+    $R_a\in\C^{m\times m}$ and $N_a\in\C^{n\times n}$ for $a\in I$.
+    For a list $s=((K_0,c_0),\ldots,(K_{h-1},c_{h-1}))$,
+    \begin{align}
+        \prod_{j=0}^{h-1}\left(K_j\otimes \Id_n+
+        \sum_{a\in I}(c_jR_a)\otimes N_a\right)
+        =\sum_{t=0}^{h}\ \sum_{w\in I^t}
+        C_R(s,w)\otimes\left(\prod_{j=0}^{t-1}N_{w_j}\right).
+        \label{eq:core_word_product}
+    \end{align}
+    Every displayed product is taken in increasing order. Empty products are
+    identity matrices, and the empty alphabet and empty matrix index sets are
+    included. No commutativity assumption is made on the matrices.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{def:core_word_coefficients}
+    Introduce a central formal variable $X$ and the matrix polynomial
+    \begin{align}
+        P_s(X)=\prod_{(K,c)\in s}
+        \left(K\otimes \Id_n+X\sum_{a\in I}(cR_a)\otimes N_a\right),
+        \label{eq:core_word_polynomial}
+    \end{align}
+    with the product in list order. Induction on $s$, using the coefficient
+    recurrence for left multiplication by a linear polynomial, gives
+    \begin{align}
+        [X^t]P_s(X)=\sum_{w\in I^t}C_R(s,w)\otimes
+        \left(\prod_{j=0}^{t-1}N_{w_j}\right).
+        \label{eq:core_word_coefficient}
+    \end{align}
+    At a positive degree, split each word into its first letter and remaining
+    word. The constant term of the new factor contributes
+    $K C_R(s,aw)$, while its linear term contributes $cR_a C_R(s,w)$.
+    These are the two terms in~(\ref{eq:core_word_recursion}).
+
+    The same recursion shows that $C_R(s,w)=0$ when $|w|>|s|$. Thus
+    $\deg P_s\le h$. Evaluation at $X=1$ preserves the ordered product because
+    the identity matrix commutes with every coefficient. Summing
+    (\ref{eq:core_word_coefficient}) over $0\le t\le h$ gives
+    (\ref{eq:core_word_product}).
+\end{proof}
+
+\begin{theorem}[Weak Perron--Frobenius theorem]
+    \label{thm:weak_perron_frobenius}
+    \lean{Matrix.exists_nonneg_mulVec_eq_spectralRadius_smul,
+        Matrix.exists_fixedPoint_of_compact_convex_pi,
+        Matrix.exists_eigenvector_of_mem_spectrum,
+        Matrix.norm_mul_norm_le_of_eigenvector,
+        Matrix.ofReal_mem_spectrum_of_mulVec_eq,
+        Matrix.exists_mem_spectrum_spectralRadius_eq}
+    \leanok
+    Let $M$ be a square real matrix with nonnegative entries over a nonempty
+    finite index set, and let $\rho$ be its spectral radius as a complex
+    matrix. Then $\rho$ is an eigenvalue of $M$ with an eigenvector $v\ne0$
+    whose entries are nonnegative.
+\end{theorem}
+
+\begin{proof}\leanok
+    Choose a complex eigenvalue $\mu$ with $|\mu|=\rho$ and
+    an eigenvector $u\neq0$, and let $|u|$ be the vector of moduli
+    $|u_i|$. The triangle inequality gives $M|u|\geq\rho\,|u|$ entrywise.
+    Hence the set $K$ of vectors $x$ with nonnegative entries,
+    $\sum_ix_i=1$ and $Mx\geq\rho x$ entrywise is nonempty; it is compact
+    and convex. For $x\in K$ the vector $(M+1)x$ is nonnegative with
+    positive entry sum, and the map
+    $x\mapsto(M+1)x/\sum_i((M+1)x)_i$ sends $K$ into itself, because
+    $M(M+1)x-\rho(M+1)x=(M+1)(Mx-\rho x)$ and $M+1$ has nonnegative
+    entries. Because this map is continuous on $K$, Brouwer's fixed-point
+    theorem yields a nonnegative fixed point $x\neq0$ with $Mx=sx$ for some
+    real $s$. Since $x\in K$ forces $s\geq\rho$ while $s$ is an eigenvalue
+    of $M$ and therefore satisfies $s\leq\rho$, we obtain $Mx=\rho x$.
+\end{proof}
+
+\begin{lemma}[Spectral radius from a positive left eigenvector]
+    \label{lem:spectral_radius_positive_left_eigenvector}
+    \lean{Matrix.spectralRadius_map_ofReal_eq_of_pos_vecMul_eq,
+        Matrix.norm_le_of_mem_spectrum_of_pos_vecMul_eq,
+        Matrix.ofReal_mem_spectrum_of_pos_vecMul_eq}
+    \leanok
+    Let $M$ be a square real matrix with nonnegative entries over a nonempty
+    finite index set. If $\delta M=r\delta$ for a row vector $\delta$ with
+    positive entries, then the spectral radius of $M$ is $r$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The vector $\delta$ shows that $r$ is an eigenvalue. For a complex
+    eigenvector $Mv=\mu v$, pairing $\delta$ with the moduli $|v_i|$ gives
+    $|\mu|\sum_i\delta_i|v_i|\le\sum_{i,j}\delta_iM_{ij}|v_j|=r\sum_j\delta_j|v_j|$,
+    hence $|\mu|\le r$.
+\end{proof}
+
+\begin{lemma}[Uniqueness of the positive eigenvector of a positive matrix]
+    \label{lem:positive_eigenvector_unique}
+    \lean{Matrix.exists_eq_smul_of_pos_of_mulVec_eq}
+    \leanok
+    If a real square matrix $M$ with positive entries has an eigenvector $u$
+    with positive entries for the eigenvalue $\rho$, then every real
+    eigenvector $w$ of $M$ for $\rho$ is a multiple of $u$.
+\end{lemma}
+
+\begin{proof}\leanok
+    With $t=\min_iw_i/u_i$, the vector $w-tu$ is a nonnegative eigenvector
+    with a vanishing entry $i_0$. The $i_0$ entry of $M(w-tu)$ is a sum of
+    nonnegative terms with positive coefficients that equals zero, so
+    $w-tu=0$.
+\end{proof}

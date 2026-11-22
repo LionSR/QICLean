@@ -1,0 +1,196 @@
+\section{Cocycle-twisted regular representations}
+\label{sec:projective_twisted_regular}
+
+\begin{definition}[Cocycle-twisted regular matrices]
+    \label{def:mpug_twisted_regular_matrices}
+    \lean{ScalarCocycle.phase,
+        ScalarCocycle.twistedLeftRegular,
+        ScalarCocycle.twistedRightRegular}
+    \leanok
+    \uses{def:scalar_cocycle, thm:mpug_circle_complex_units_h2}
+    Let $G$ be a group and let $\omega$ be a $\C^\times$-valued scalar
+    cochain.  Write
+    \begin{align}
+        \phi(g,h) & =\frac{\omega(g,h)}{|\omega(g,h)|}\in U(1).
+    \end{align}
+    On the standard basis of $\C^G$, define
+    \begin{align}
+        L_g^\phi
+         & =\sum_{h\in G}\phi(g,h)^{-1}|gh\rangle\langle h|,
+         &
+        R_g^\phi
+         & =\sum_{h\in G}\phi(h,g^{-1})^{-1}|hg^{-1}\rangle\langle h|.
+        \label{eq:mpug_twisted_regular_matrices}
+    \end{align}
+    Whereas \cite[lines~412--418]{FrancoRubio2025MPUGauging} starts from a
+    $U(1)$-valued cocycle $\Omega$, taking $\Omega=\phi$ reproduces its
+    inverse conventions.
+\end{definition}
+
+\begin{lemma}[Cocycle equation for the circle phase]
+    \label{lem:mpug_circle_phase_cocycle}
+    \lean{ScalarCocycle.phase_isCocycle}
+    \leanok
+    \uses{def:is_cocycle, thm:mpug_circle_complex_units_h2}
+    If $\omega$ is a cocycle, then its circle phase satisfies
+    \begin{align}
+        \phi(g,h)\phi(gh,k)
+         & =\phi(g,hk)\phi(h,k)
+    \end{align}
+    for all $g,h,k\in G$.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{thm:mpug_circle_complex_units_h2}
+    The pointwise phase map $z\mapsto z/|z|$ is multiplicative, so it preserves
+    the cocycle equation.
+\end{proof}
+
+\begin{lemma}[Action of the twisted regular matrices]
+    \label{thm:mpug_twisted_regular_action}
+    \lean{ScalarCocycle.twistedLeftRegular_mulVec_apply,
+        ScalarCocycle.twistedRightRegular_mulVec_apply}
+    \leanok
+    \uses{def:mpug_twisted_regular_matrices}
+    If $G$ is finite, then for $v\in\C^G$ and $g,h\in G$,
+    \begin{align}
+        (L_g^\phi v)(gh)
+         & =\phi(g,h)^{-1}v(h),
+         &
+        (R_g^\phi v)(hg^{-1})
+         & =\phi(h,g^{-1})^{-1}v(h).
+    \end{align}
+    % Source anchor: arXiv:2502.20257, lines 412--418.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{def:mpug_twisted_regular_matrices}
+    In each matrix-vector product, exactly one summand is nonzero: the column
+    indexed by $h$.
+\end{proof}
+
+\begin{lemma}[Multiplication laws for twisted regular matrices]
+    \label{thm:mpug_twisted_regular_multiplication}
+    \lean{ScalarCocycle.twistedLeftRegular_mul,
+        ScalarCocycle.twistedRightRegular_mul}
+    \leanok
+    \uses{def:mpug_twisted_regular_matrices,
+        lem:mpug_circle_phase_cocycle}
+    If $G$ is finite and $\omega$ is a cocycle, then
+    \begin{align}
+        L_g^\phi L_h^\phi
+         & =\phi(g,h)^{-1}L_{gh}^\phi,           \\
+        R_g^\phi R_h^\phi
+         & =\phi(h^{-1},g^{-1})^{-1}R_{gh}^\phi.
+        \label{eq:mpug_twisted_regular_multiplication}
+    \end{align}
+    % Source anchor: arXiv:2502.20257, lines 406--418.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{lem:mpug_circle_phase_cocycle}
+    Expanding the matrix products entrywise reduces the two scalar identities
+    to the cocycle equation at $(g,h,k)$ and $(k,h^{-1},g^{-1})$, respectively.
+\end{proof}
+
+\begin{lemma}[Commutation of twisted left and right actions]
+    \label{thm:mpug_twisted_regular_commutation}
+    \lean{ScalarCocycle.twistedLeftRegular_commute}
+    \leanok
+    \uses{def:mpug_twisted_regular_matrices}
+    If $G$ is finite and $\omega$ is a cocycle, then
+    \begin{align}
+        L_g^\phi R_h^\phi
+         & =R_h^\phi L_g^\phi.
+        \label{eq:mpug_twisted_regular_commutation}
+    \end{align}
+    % Source anchor: arXiv:2502.20257, lines 406--418 and 457.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{lem:mpug_circle_phase_cocycle}
+    Expanding both matrix products entrywise and applying the cocycle equation
+    at $(g,k,h^{-1})$ yields the equality.
+\end{proof}
+
+\begin{lemma}[Unitarity of twisted regular matrices]
+    \label{thm:mpug_twisted_regular_unitary}
+    \lean{ScalarCocycle.twistedLeftRegular_mem_unitaryGroup,
+        ScalarCocycle.twistedRightRegular_mem_unitaryGroup}
+    \leanok
+    \uses{def:mpug_twisted_regular_matrices}
+    If $G$ is finite, the matrices $L_g^\phi$ and $R_g^\phi$ are unitary for
+    every $g\in G$.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{def:mpug_twisted_regular_matrices}
+    Each matrix is a permutation matrix whose nonzero entries have modulus
+    one.  Distinct columns therefore have disjoint support, while every column
+    has squared norm one.
+\end{proof}
+
+\begin{lemma}[A coefficient identity for the circle phase]
+    \label{thm:mpug_onsite_gauss_phase}
+    \lean{ScalarCocycle.onsiteGauss_phase_div}
+    \leanok
+    \uses{def:mpug_twisted_regular_matrices,
+        lem:mpug_circle_phase_cocycle}
+    Suppose that $\omega$ is a cocycle and impose the additional normalization
+    \begin{align}
+        \phi(t^{-1},t) & =1
+    \end{align}
+    for every $t\in G$.  Then
+    \begin{align}
+        \frac{\phi(ag^{-1},gb)}{\phi(a,b)}
+         & =\frac{1}{\phi(a,g^{-1})\phi(g,b)}.
+        \label{eq:mpug_onsite_gauss_phase}
+    \end{align}
+    The scalar convention $S_{t^{-1}}=S_t^{-1}$ appears in
+    \cite[line~238]{FrancoRubio2025MPUGauging}, and the coefficient rewrite is
+    at lines 3763--3766. The displayed normalization remains an explicit
+    assumption here; it is not a consequence of cocyclicity.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{lem:mpug_circle_phase_cocycle}
+    Applying the cocycle equation first at $(a,g^{-1},gb)$ and then at
+    $(g^{-1},g,b)$, together with $\phi(e,b)=1$ from the normalization at
+    $t=e$, yields the identity.
+\end{proof}
+
+\begin{theorem}[A unitary projective representation for every class]
+    \label{thm:twisted_regular_projective}
+    \lean{ScalarCocycle.inverse,
+        ScalarCocycle.inverse_isCocycle,
+        ScalarCocycle.inverse_circlePhaseInclusion,
+        ScalarCocycle.twistedLeftRegularGL,
+        ScalarCocycle.twistedLeftRegularGL_mul,
+        ScalarCocycle.twistedLeftRegularProjective,
+        ScalarCocycle.twistedLeftRegularProjective_mem_unitaryGroup,
+        ScalarCocycle.regularProjectiveForClass,
+        ScalarCocycle.regularProjectiveForClass_mem_unitaryGroup}
+    \leanok
+    \uses{def:projective_rep, thm:mpug_twisted_regular_multiplication,
+        thm:mpug_twisted_regular_unitary, thm:mpug_circle_complex_units_h2}
+    Let $G$ be a finite group and $\omega$ a $\C^\times$-valued $2$-cocycle.
+    There is a unitary projective representation of $G$ on $\C^G$ whose
+    factor system is the pointwise phase $\omega/|\omega|$, a cocycle
+    cohomologous to $\omega$. This is the input of the construction
+    \cite[Section~III.A]{Cirac2021Matrix} starting from any solution of the
+    cocycle condition.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:mpug_twisted_regular_multiplication,
+        thm:mpug_twisted_regular_unitary, thm:mpug_circle_complex_units_h2}
+    The pointwise inverse $\omega^{-1}$ is again a cocycle, and its pointwise
+    phase is the inverse of the phase $\bar\omega=\omega/|\omega|$ of
+    $\omega$. By Lemma~\ref{thm:mpug_twisted_regular_multiplication}, the
+    twisted left regular matrices $L_g$ of $\omega^{-1}$ satisfy
+    $L_gL_h=\bar\omega(g,h)L_{gh}$, and by
+    Lemma~\ref{thm:mpug_twisted_regular_unitary} they are unitary, hence
+    invertible. Relabelling $G$ by $\{1,\dots,|G|\}$ gives the representation.
+    By Lemma~\ref{thm:mpug_circle_complex_units_h2}, $\bar\omega$ is
+    cohomologous to $\omega$ because $G$ is finite.
+\end{proof}

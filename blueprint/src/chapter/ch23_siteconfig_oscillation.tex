@@ -1,0 +1,348 @@
+\section{Physical-site oscillation with a spectator}
+\label{sec:qc_site_oscillation}
+
+Let $I$ and $J$ be finite sets, let $q\in\N$, and put
+$\mathcal H=(\C^q)^{\otimes I}$ and $\mathcal K=\C^J$.
+The spectator space $\mathcal K$ has arbitrary finite dimension, including
+zero. Write $\mathcal A_X$ for the physical operators acting on
+$X\subseteq I$, as in Definition~\ref{def:sites_supported}.
+Operators $B,C$ on $\mathcal H\otimes\mathcal K$ are arbitrary complex
+matrices. Their norm is the operator norm induced by the Euclidean norm:
+$\|B\|=\sup_{\|\psi\|_2\le1}\|B\psi\|_2$.
+For physical operators $U$, write $\widehat U=U\otimes\mathbb 1_{\mathcal K}$,
+and use $[A,B]=AB-BA$.
+
+\subsection{The on-site unitary supremum}
+
+\begin{definition}[Oscillation at a physical site]
+    \label{def:qc_site_oscillation}
+    \uses{def:sites_supported}
+    \lean{QuantumCircuit.siteOscillation}
+    \leanok
+    Following \cite{OpenAI2026AreaLaw}, for $y\in I$, define the on-site
+    unitary supremum
+    \begin{align}
+        d_y(B) & =\sup\bigl\{\|[\widehat U,B]\|:
+        U\in\mathcal A_{\{y\}},\ U^\dagger U=UU^\dagger=\mathbb 1\bigr\},
+        \label{eq:qc_osc_supremum}
+    \end{align}
+    where every test unitary acts as the identity on the spectator.
+\end{definition}
+
+\begin{lemma}[Bounds for the oscillation supremum]
+    \label{thm:qc_site_oscillation_bounds}
+    \uses{def:qc_site_oscillation}
+    \lean{QuantumCircuit.siteOscillation_bddAbove,
+        QuantumCircuit.siteOscillation_nonneg,
+        QuantumCircuit.norm_commutator_le_siteOscillation,
+        QuantumCircuit.norm_commutator_le_siteOscillation_right,
+        QuantumCircuit.siteOscillation_le,
+        QuantumCircuit.siteOscillation_le_two_mul_norm}
+    \leanok
+    The set in~(\ref{eq:qc_osc_supremum}) contains zero and is bounded
+    above by $2\|B\|$. In particular, its supremum is finite and
+    $0\le d_y(B)\le2\|B\|$. Every unitary $U\in\mathcal A_{\{y\}}$
+    satisfies $\|[\widehat U,B]\|=\|[B,\widehat U]\|\le d_y(B)$.
+    If these commutator norms are all at most a real number $r$, then
+    $d_y(B)\le r$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{def:qc_site_oscillation}
+    The identity is an admissible unitary with zero commutator, and for each
+    admissible $U$ the operator $\widehat U$ is unitary, so
+    \begin{align}
+        \|[\widehat U,B]\|
+         & \le\|\widehat UB\|+\|B\widehat U\|=2\|B\|.
+        \label{eq:qc_osc_commutator_bound}
+    \end{align}
+    The upper- and lower-bound properties of the supremum then yield the
+    stated inequalities, since reversing a commutator changes only its sign.
+\end{proof}
+
+\begin{lemma}[Subadditivity and absolute homogeneity]
+    \label{thm:qc_site_oscillation_seminorm}
+    \uses{def:qc_site_oscillation}
+    \lean{QuantumCircuit.siteOscillation_add_le,
+        QuantumCircuit.siteOscillation_smul,
+        QuantumCircuit.siteOscillation_neg,
+        QuantumCircuit.siteOscillation_sub_le,
+        QuantumCircuit.siteOscillation_sum_le}
+    \leanok
+    For every $c\in\C$,
+    \begin{align}
+        d_y(B+C) & \le d_y(B)+d_y(C),
+        \label{eq:qc_osc_subadditivity}
+    \end{align}
+    \begin{align}
+        d_y(cB) & =|c|d_y(B).
+        \label{eq:qc_osc_homogeneity}
+    \end{align}
+    Consequently $d_y(-B)=d_y(B)$ and
+    $d_y(B-C)\le d_y(B)+d_y(C)$.
+    For any finite set $F$ and any family $(B_k)_{k\in F}$,
+    $d_y(\sum_{k\in F}B_k)\le\sum_{k\in F}d_y(B_k)$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{thm:qc_site_oscillation_bounds,thm:qc_site_oscillation_commutant}
+    The identities
+    $[\widehat U,B+C]=[\widehat U,B]+[\widehat U,C]$ and
+    $[\widehat U,cB]=c[\widehat U,B]$, combined with the norm inequalities
+    and the supremum bound, give~(\ref{eq:qc_osc_subadditivity}) and
+    $d_y(cB)\le|c|d_y(B)$.
+    When $c\ne0$, applying this scalar bound to $c^{-1}$ and $cB$ yields
+    the reverse inequality in~(\ref{eq:qc_osc_homogeneity}), whereas $c=0$
+    reduces to $d_y(0)=0$.
+    Setting $c=-1$ gives invariance under negation, which together with
+    $B-C=B+(-C)$ yields the subtraction bound.
+    For a finite sum, distributing the commutator gives
+    \begin{align}
+        \Bigl\|\Bigl[\widehat U,\sum_{k\in F}B_k\Bigr]\Bigr\|
+         & \le\sum_{k\in F}\|[\widehat U,B_k]\|
+        \le\sum_{k\in F}d_y(B_k),
+    \end{align}
+    and taking the supremum over $U$ completes the bound.
+\end{proof}
+
+\begin{lemma}[Vanishing on the physical commutant]
+    \label{thm:qc_site_oscillation_commutant}
+    \uses{def:qc_site_oscillation}
+    \lean{QuantumCircuit.siteOscillation_eq_zero_of_commute,
+        QuantumCircuit.siteOscillation_zero,
+        QuantumCircuit.siteOscillation_one_kronecker}
+    \leanok
+    If $[\widehat U,B]=0$ for every $U\in\mathcal A_{\{y\}}$, then
+    $d_y(B)=0$. In particular, $d_y(0)=0$, and every operator $S$ on
+    the spectator satisfies $d_y(\mathbb 1_{\mathcal H}\otimes S)=0$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{thm:qc_site_oscillation_bounds}
+    The commutation hypothesis bounds every norm in the supremum by
+    zero, whereas $d_y(B)\ge0$. For a spectator operator,
+    $(U\otimes\mathbb 1)(\mathbb 1\otimes S)=U\otimes S
+        =(\mathbb 1\otimes S)(U\otimes\mathbb 1)$.
+\end{proof}
+
+\subsection{Averaging physical sites}
+\label{sec:qc_spectator_expectation}
+
+For $K\subseteq I$, let $E_K$ be the normalized partial-trace expectation
+of Definition~\ref{def:sites_region_expectation}. The set $K$ consists of the
+retained physical sites. Thus averaging over a set $Q\subseteq I$
+means using $K=I\setminus Q$.
+
+\begin{definition}[Site expectation with a spectator]
+    \label{def:qc_spectator_expectation}
+    \uses{def:sites_region_expectation}
+    \lean{QuantumCircuit.spectatorSiteExpectation,
+        QuantumCircuit.spectatorBasis, QuantumCircuit.spectatorConfigEquiv}
+    \leanok
+    Regard the spectator as one more site $\ast$ carrying the space
+    $\mathcal K=\C^J$, so that $\mathcal H\otimes\mathcal K$ is the space of
+    the sites $I\sqcup\{\ast\}$. Define $E_K^{\mathcal K}=E_{K\cup\{\ast\}}$,
+    the normalized partial-trace expectation of this system onto the retained
+    physical sites and the spectator site.
+\end{definition}
+
+\begin{lemma}[Spectator blocks]
+    \label{thm:qc_spectator_blocks}
+    \uses{def:qc_spectator_expectation}
+    \lean{QuantumCircuit.spectatorSiteExpectation_apply}
+    \leanok
+    For $a,b\in J$, let $B_{ab}$ be the physical matrix whose entries are
+    $(B_{ab})_{\sigma,\tau}=B_{(\sigma,a),(\tau,b)}$. Then
+    \begin{align}
+        \bigl(E_K^{\mathcal K}(B)\bigr)_{(\sigma,a),(\tau,b)}
+         & =\bigl(E_K(B_{ab})\bigr)_{\sigma,\tau}.
+        \label{eq:qc_spectator_blocks}
+    \end{align}
+    In particular, when $q>0$, set $Q=I\setminus K$ and write
+    $u\sqcup\rho$ for the configuration equal to $u$ on $K$ and to
+    $\rho$ on $Q$. Then
+    \begin{align}
+        \bigl(E_K^{\mathcal K}(B)\bigr)_{(\sigma,a),(\tau,b)}
+         & =q^{-|Q|}\mathbf1_{\{\sigma|_Q=\tau|_Q\}}
+        \sum_{\rho\in\{0,\ldots,q-1\}^{Q}}
+        B_{(\sigma|_K\sqcup\rho,a),(\tau|_K\sqcup\rho,b)},
+        \label{eq:qc_spectator_trace}
+    \end{align}
+    with both spectator indices left unchanged.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{def:qc_spectator_expectation,def:sites_region_expectation}
+    The sites outside $K\cup\{\ast\}$ are the physical sites outside $K$, so
+    both sides are $q^{-|Q|}$ times the partial trace over the configurations
+    $\rho$ of $Q$, taken with the spectator labels $a$ and $b$ held fixed.
+\end{proof}
+
+\begin{lemma}[Preservation of spectator factors]
+    \label{thm:qc_spectator_factors}
+    \uses{def:qc_spectator_expectation}
+    \lean{QuantumCircuit.spectatorSiteExpectation_kronecker,
+        QuantumCircuit.spectatorSiteExpectation_one_kronecker,
+        QuantumCircuit.spectatorSiteExpectation_univ}
+    \leanok
+    Suppose $q>0$. For physical operators $A$ and spectator operators $S$,
+    \begin{align}
+        E_K^{\mathcal K}(A\otimes S) & =E_K(A)\otimes S,
+        \label{eq:qc_spectator_tensor}
+    \end{align}
+    \begin{align}
+        E_K^{\mathcal K}(\mathbb 1\otimes S) & =\mathbb 1\otimes S.
+        \label{eq:qc_spectator_fixed}
+    \end{align}
+    Retaining all physical sites gives $E_I^{\mathcal K}(B)=B$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{thm:qc_spectator_blocks,def:sites_region_expectation,
+        thm:sites_region_expectation}
+    By Lemma~\ref{thm:qc_spectator_blocks}, the $(a,b)$ block of $A\otimes S$ is $S_{ab}A$, so linearity of $E_K$
+    gives $E_K(S_{ab}A)=S_{ab}E_K(A)$, proving~(\ref{eq:qc_spectator_tensor}).
+    Since $E_K$ fixes the physical identity, this identity
+    specializes to~(\ref{eq:qc_spectator_fixed}), and because every physical
+    matrix is supported on $I$, $E_I(B_{ab})=B_{ab}$ on every block.
+\end{proof}
+
+\begin{lemma}[Commutation on the averaged sites]
+    \label{thm:qc_spectator_commutant}
+    \uses{def:qc_spectator_expectation}
+    \lean{QuantumCircuit.spectatorSiteExpectation_commute}
+    \leanok
+    For every $U\in\mathcal A_{I\setminus K}$,
+    $[E_K^{\mathcal K}(B),\widehat U]=0$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{thm:qc_spectator_blocks,def:sites_region_expectation}
+    By Lemma~\ref{thm:qc_spectator_blocks}, each block $E_K(B_{ab})$ is supported on $K$ by its partial-trace
+    formula. Since operators on disjoint sets of physical sites commute,
+    $E_K(B_{ab})U=UE_K(B_{ab})$, and matrix multiplication by $\widehat U$
+    acts separately on each spectator block to give the commutation identity.
+\end{proof}
+
+\begin{lemma}[Contraction with an arbitrary spectator]
+    \label{thm:qc_spectator_contraction}
+    \uses{def:qc_spectator_expectation}
+    \lean{QuantumCircuit.norm_spectatorSiteExpectation_le}
+    \leanok
+    $\|E_K^{\mathcal K}(B)\|\le\|B\|$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{def:qc_spectator_expectation,thm:sites_region_expectation}
+    This is the contraction property of Theorem~\ref{thm:sites_region_expectation}
+    for the system of the sites $I\sqcup\{\ast\}$.
+\end{proof}
+
+\begin{lemma}[Averaging error from on-site commutator bounds]
+    \label{thm:qc_spectator_error}
+    \uses{def:qc_spectator_expectation}
+    \lean{QuantumCircuit.norm_sub_spectatorSiteExpectation_le}
+    \leanok
+    Let $\varepsilon:I\to\R$ satisfy
+    $\|[B,\widehat U]\|\le\varepsilon_y$ for each $y\notin K$ and
+    every unitary $U\in\mathcal A_{\{y\}}$. Then
+    \begin{align}
+        \|B-E_K^{\mathcal K}(B)\|
+         & \le\sum_{y\notin K}\varepsilon_y.
+        \label{eq:qc_spectator_error}
+    \end{align}
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{def:qc_spectator_expectation,thm:sites_region_expectation_localization}
+    The sites of $I\sqcup\{\ast\}$ outside $K\cup\{\ast\}$ are the physical
+    sites $y\notin K$. An operator of the enlarged system acting on $\{y\}$ is
+    $\widehat U=U\otimes\mathbb 1_{\mathcal K}$ for an operator
+    $U\in\mathcal A_{\{y\}}$, which is unitary when $\widehat U$ is and
+    $\mathcal K\neq0$; when $\mathcal K=0$ every operator is zero. Hence the
+    hypothesis is that of Theorem~\ref{thm:sites_region_expectation_localization} for
+    the enlarged system, which gives~(\ref{eq:qc_spectator_error}).
+\end{proof}
+
+For $q>0$, setting $K=I\setminus Q$ and $\varepsilon_y=d_y(B)$ in
+Lemma~\ref{thm:qc_spectator_error} together with
+Lemma~\ref{thm:qc_site_oscillation_bounds} yields the physical-site
+averaging estimate of \cite{OpenAI2026AreaLaw}:
+\begin{align}
+    \|B-E_{I\setminus Q}^{\mathcal K}(B)\|
+     & \le\sum_{y\in Q}d_y(B).
+    \label{eq:qc_osc_averaging_error}
+\end{align}
+By Lemma~\ref{thm:qc_spectator_commutant}, the averaged operator
+$E_{I\setminus Q}^{\mathcal K}(B)$ commutes with $U\otimes\mathbb 1_{\mathcal K}$
+for every $U\in\mathcal A_Q$, with no factor depending on $\dim\mathcal K$.
+
+\subsection{Operators supported on the retained sites}
+
+For $S\subseteq I$, let $\mathcal A_S$ be the algebra of physical operators
+supported on $S$, and $E_S^{\mathcal K}$ the expectation of
+Definition~\ref{def:qc_spectator_expectation}. For $a,b\in J$, define the
+physical block $B_{ab}$ by $(B_{ab})_{\sigma,\tau}=B_{(\sigma,a),(\tau,b)}$.
+
+\begin{lemma}[Physical support and spectator expectation]
+    \label{thm:al_spectator_support_fixed}
+    \uses{def:qc_spectator_expectation,def:sites_supported}
+    \lean{QuantumCircuit.spectatorSiteExpectation_eq_self_iff}
+    \leanok
+    For every $S\subseteq I$ and arbitrary spectator index set $J$,
+    \begin{align}
+        E_S^{\mathcal K}(B)=B
+         & \quad\Longleftrightarrow\quad
+        \forall a,b\in J,\ B_{ab}\in\mathcal A_S.
+        \label{eq:al_propagation_support_fixed}
+    \end{align}
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{def:qc_spectator_expectation,thm:sites_region_expectation}
+    By~(\ref{eq:qc_spectator_blocks}), $E_S^{\mathcal K}(B)=B$ is equivalent
+    to $E_S(B_{ab})=B_{ab}$ for all $a,b\in J$, which holds if and only if
+    $B_{ab}\in\mathcal A_S$ by Theorem~\ref{thm:sites_region_expectation}.
+\end{proof}
+
+\begin{lemma}[Vanishing oscillation outside the physical support]
+    \label{thm:al_spectator_support_oscillation_zero}
+    \uses{def:qc_site_oscillation,def:sites_supported}
+    \lean{QuantumCircuit.siteOscillation_eq_zero_of_not_mem_support}
+    \leanok
+    If $B_{ab}\in\mathcal A_S$ for all $a,b\in J$ and $y\notin S$, then
+    $d_y(B)=0$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{thm:al_spectator_support_fixed,thm:qc_spectator_commutant,
+        thm:qc_site_oscillation_commutant}
+    By Lemma~\ref{thm:al_spectator_support_fixed}, $E_S^{\mathcal K}(B)=B$.
+    For $U\in\mathcal A_{\{y\}}\subseteq\mathcal A_{I\setminus S}$,
+    Lemma~\ref{thm:qc_spectator_commutant} gives
+    $[B,\widehat U]=[E_S^{\mathcal K}(B),\widehat U]=0$, so $d_y(B)=0$ by
+    Lemma~\ref{thm:qc_site_oscillation_commutant}.
+\end{proof}
+
+\begin{lemma}[Initial oscillation bounded by the support indicator]
+    \label{thm:al_spectator_support_indicator}
+    \uses{def:qc_site_oscillation,def:sites_supported}
+    \lean{QuantumCircuit.siteOscillation_le_support_indicator}
+    \leanok
+    As the initial support estimate of
+    \cite{OpenAI2026AreaLaw}, if $B_{ab}\in\mathcal A_S$ for all
+    $a,b\in J$, then for every $y\in I$,
+    \begin{align}
+        d_y(B) & \le2\|B\|\mathbf1_S(y).
+        \label{eq:al_propagation_support_indicator}
+    \end{align}
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{thm:al_spectator_support_oscillation_zero,
+        thm:qc_site_oscillation_bounds}
+    For $y\in S$, Lemma~\ref{thm:qc_site_oscillation_bounds} gives
+    $d_y(B)\le2\|B\|$; for $y\notin S$, both sides of
+    (\ref{eq:al_propagation_support_indicator}) vanish by
+    Lemma~\ref{thm:al_spectator_support_oscillation_zero}.
+\end{proof}

@@ -1,0 +1,93 @@
+\section{The Lieb--Robinson bound on the ring}
+\label{sec:ring_dynamics_lieb_robinson}
+
+Let $\Lambda=\Z_N$ be the ring of $N$ sites. For $X\subseteq\Lambda$, write
+$\mathcal A_X$ for the algebra of operators supported on $X$. The oriented bond
+indexed by $j$ has support $e_j=\{j,j+1\}$; distinct oriented bonds are counted
+separately, even when their supports agree. All norms are operator norms, and
+$\tau_t(A)=e^{itH}Ae^{-itH}$ for a Hamiltonian $H$.
+
+\begin{definition}[Distance on the ring]
+    \label{aux:ring-support-distance}
+    \lean{ManyBody.ringSupportDistance}\leanok
+    For nonempty $X,Y\subseteq\Lambda$, let $d(X,Y)$ be the least integer $r\geq0$
+    for which there exist $x\in X$, $y\in Y$, and $m\in\mathbb Z$ such that
+    $|m|\leq r$ and $y=x+m\pmod N$.
+\end{definition}
+
+\begin{lemma}[Distance on the ring and cycle-graph distance]
+    \label{aux:ring-support-distance-cycle}
+    \lean{ManyBody.ringSupportDistance_le_edist}\leanok
+    \uses{aux:ring-support-distance}
+    For nonempty $X,Y\subseteq\Lambda$, $x\in X$ and $y\in Y$, the distance $d(X,Y)$ is at
+    most the distance from $x$ to $y$ in the cycle graph on $\Lambda$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:sites_ring_ball}
+    If the cycle-graph distance from $x$ to $y$ is $\ell$, then $y$ lies in the ball of
+    radius $\ell$ about $x$, so $y=x+m$ with $|m|\le\ell$.
+\end{proof}
+
+\begin{lemma}[Separation and distance on the ring]
+    \label{aux:ring-support-distance-separation}
+    \lean{ManyBody.isGraphSeparated_iff_lt_ringSupportDistance}\leanok
+    \uses{aux:ring-support-distance, aux:ring-support-distance-cycle}
+    For nonempty $X,Y\subseteq\Lambda$ and $r\in\mathbb N$, every site of $X$ is at distance
+    larger than $r$ from every site of $Y$ in the cycle graph on $\Lambda$ if and only if
+    $r<d(X,Y)$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:sites_ring_ball}
+    A minimizing displacement places a site of $Y$ in the ball of radius $d(X,Y)$ about a
+    site of $X$; conversely $d(X,Y)$ is at most the cycle-graph distance of any two such
+    sites.
+\end{proof}
+
+\begin{lemma}[Lieb--Robinson bound on the ring]
+    \label{aux:finite-ring-lieb-robinson}
+    \lean{ManyBody.norm_heisenberg_commutator_le_ringSupportDistance}\leanok
+    \uses{aux:ring-support-distance}
+    Let $H=\sum_j h_j$, with Hermitian $h_j\in\mathcal A_{e_j}$ and
+    $\|h_j\|\leq1$. Suppose $A\in\mathcal A_X$ and $B\in\mathcal A_Y$,
+    where $X,Y$ are nonempty and disjoint. For every $a\geq0$ and $t\in\mathbb R$,
+    \[
+        \|[\tau_t(A),B]\|
+        \leq2\|A\|\|B\|\,|X|e^{-a d(X,Y)}
+        \bigl(e^{8e^a|t|}-1\bigr).
+    \]
+    The constants are independent of $N$ and of the dimension of the sites. This is the
+    nearest-neighbour case on the ring of~\cite[Appendix~A,
+        Theorem~A.2]{HastingsKoma2006SpectralGap}.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:dynamics_lieb_robinson_hastings_koma, aux:ring-support-distance-cycle}
+    Apply Theorem~\ref{thm:dynamics_lieb_robinson_hastings_koma} on the cycle graph with
+    $\mu=a$ and $n=d(X,Y)$, which is at most the cycle-graph distance between the supports
+    by Lemma~\ref{aux:ring-support-distance-cycle}. Each bond $e_j$ has at most two sites
+    and diameter at most one, and at most two bonds meet a site, so the site budget is at
+    most $s=4e^a$ and $2s=8e^a$.
+\end{proof}
+
+\begin{lemma}[Lieb--Robinson bound of a translation-invariant interaction]
+    \label{aux:interaction-hamiltonian-lieb-robinson}
+    \lean{ManyBody.Interaction.norm_hamiltonian_translationInvariant_commutator_le_exp_abs_of_disjoint}
+    \leanok
+    \uses{aux:finite-ring-lieb-robinson, def:hamiltonians_translation_invariant,
+        lem:hamiltonians_translation_invariant_terms, def:sites_ring_window}
+    Let $h$ be a Hermitian two-site operator with $\|h\|\leq1$, and let
+    $H_N$ be its translation-invariant Hamiltonian on the ring of $N$ sites, which is
+    $\sum_j h_{j,j+1}$ for $N\geq2$ and $0$ for $N=1$. For nonempty disjoint $X,Y$ and
+    $A\in\mathcal A_X$, $B\in\mathcal A_Y$, the estimate
+    \[
+        \|[e^{itH_N}Ae^{-itH_N},B]\|
+        \leq2\|A\|\|B\|\,|X|e^{-a d(X,Y)}
+        \bigl(e^{8e^a|t|}-1\bigr)
+    \]
+    holds for every $a\geq0$ and $t\in\mathbb R$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:sites_place_along_support}
+    The terms are Hermitian, of norm at most $\|h\|$, and the term at $j$ is supported on
+    $\{j+0,j+1\}$, which is the bond $e_j$.
+    Apply Lemma~\ref{aux:finite-ring-lieb-robinson}.
+\end{proof}

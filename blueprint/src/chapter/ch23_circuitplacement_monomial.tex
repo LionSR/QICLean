@@ -1,0 +1,31 @@
+\section{Placement of monomial matrices}
+\label{sec:circuitplacement_monomial}
+
+\begin{lemma}[A placed monomial matrix is monomial]
+    \label{lem:sites_place_along_monomial}
+    \lean{ManyBody.placeAlongPerm, ManyBody.placeAlongPerm_apply_apply,
+        ManyBody.placeAlongPerm_apply_of_forall_ne, ManyBody.eq_placeAlongPerm_iff,
+        ManyBody.placeAlong_monomial}
+    \leanok
+    \uses{def:mpug_monomial_matrix, lem:sites_place_along_hom}
+    Let $w\colon W\to V$ be an injection of finite sets of sites, the site $u$ of
+    $W$ carrying the basis of the site $w(u)$, and let $\sigma$ be a
+    permutation of the configurations of $W$. For a configuration $c$ of $V$,
+    let $c\circ w$ be its restriction to the image of $w$, and let
+    $\sigma_w(c)$ be the configuration that agrees with $c$ outside the image of
+    $w$ and whose restriction is $\sigma(c\circ w)$; then $\sigma_w$ is a
+    permutation of the configurations of $V$. For every $\varphi$, the monomial
+    matrix $M(\sigma,\varphi)$ placed along $w$, with the identity outside the
+    image, is the monomial matrix $M(\sigma_w,\varphi_w)$ with
+    $\varphi_w(c)=\varphi(c\circ w)$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The permutation $\sigma_w$ is $\sigma$ acting on the first factor of the
+    splitting of a configuration into its restrictions to the image of $w$ and
+    to its complement. A configuration $t$ equals $\sigma_w(s)$ exactly when
+    $t$ and $s$ agree outside the image and $t\circ w=\sigma(s\circ w)$. The
+    entry of the placed matrix at $(t,s)$ is the entry of $M(\sigma,\varphi)$ at
+    $(t\circ w,s\circ w)$ when $t$ and $s$ agree outside the image, and zero
+    otherwise; this is $\varphi(s\circ w)$ exactly when $t=\sigma_w(s)$.
+\end{proof}

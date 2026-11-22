@@ -1,0 +1,279 @@
+\section{Invariant flags and the word algebra}
+
+\begin{lemma}[Composition-series triangular form]
+    \label{lem:asym_composition_gauge}
+    \lean{exists_linearEquiv_blockTriangular_of_flag}
+    \leanok
+    Let $V$ be a finite-dimensional complex vector space, let
+    $0=H_0\subseteq H_1\subseteq\cdots\subseteq H_r=V$ be a flag of
+    subspaces, and let $(f_i)_i$ be endomorphisms of $V$ each preserving every
+    $H_k$. Fix coordinates on each subquotient $H_k/H_{k-1}$. There is a
+    linear isomorphism of $V$ with the graded coordinate space
+    $\bigoplus_k\C^{\dim H_k/H_{k-1}}$ in which every $f_i$ is block upper
+    triangular, its $k$-th diagonal block is the matrix of the map induced by
+    $f_i$ on $H_k/H_{k-1}$, the coordinates of a vector of $H_k$ in block $k$
+    are the coordinates of its class in $H_k/H_{k-1}$, and the coordinates of
+    a vector of $H_{k-1}$ vanish in the blocks $k,k+1,\ldots,r$. In
+    particular $\dim V=\sum_k\dim H_k/H_{k-1}$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Choose a complement of $H_{k-1}$ in $H_k$ for every $k$, and send a
+    graded coordinate vector to the sum of the lifts of its blocks through
+    these complements. If the image of a vector lies in $H_p$, its blocks past
+    $p$ vanish: otherwise the last nonzero block, modulo the earlier ones,
+    would give a nonzero class of a subquotient lying in $H_{p}$. Hence the
+    map is injective, and comparison of dimensions makes it an isomorphism.
+    Applying this vanishing to the images $f_i(H_k)\subseteq H_k$ gives block
+    triangularity, and reading the $k$-th block modulo $H_{k-1}$ identifies
+    the diagonal blocks.
+\end{proof}
+
+\begin{lemma}[Diagonal blocks of block-triangular products]
+    \label{lem:asym_triangular}
+    \lean{Matrix.blockDiag'_mul_of_blockTriangular, Matrix.blockTriangular_evalWord,
+        Matrix.blockDiag'_evalWord, Matrix.blockProj_mul_blockEmbed_self,
+        Matrix.blockProj_mul_blockEmbed_of_ne, Matrix.blockProj_mul_mul_blockEmbed}
+    \leanok
+    \uses{def:kraus_eval_word}
+    Let $o$ be a finite index set with block sizes $n_k$, $k\in o$, and let
+    $T^1,\ldots,T^d$ be block upper triangular for the resulting
+    decomposition of $\MN{\sum_k n_k}$. Write $T^i_{kk}$ for the $k$-th
+    diagonal block of $T^i$. Then $T^w$ is block upper triangular for every
+    word $w$, and its $k$-th diagonal block is the word evaluation of the
+    diagonal blocks,
+    \begin{align}
+        (T^w)_{kk} & =T^{i_1}_{kk}T^{i_2}_{kk}\cdots T^{i_N}_{kk}
+        \label{eq:asym_triangular_word}
+    \end{align}
+    for $w=(i_1,\ldots,i_N)$. If $P_k$ is the coordinate embedding of the
+    $k$-th block and $Q_k$ the coordinate projection onto it, then for every
+    matrix $M$ on the same space, $Q_kMP_k=M_{kk}$, and
+    \begin{align}
+        Q_kP_l & =\begin{cases}\id, & k=l,\\0, & k\ne l.\end{cases}
+        \label{eq:asym_block_biorthogonality}
+    \end{align}
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    For two block upper-triangular matrices $X,Y$,
+    $(XY)_{kk}=\sum_l X_{kl}Y_{lk}$; the terms with $l<k$ vanish because
+    $X_{kl}=0$, and those with $l>k$ vanish because $Y_{lk}=0$, leaving
+    $(XY)_{kk}=X_{kk}Y_{kk}$. Inducting on the word length preserves block
+    triangularity and extends this diagonal-block factorization to
+    (\ref{eq:asym_triangular_word}). Since $P_k$ embeds the $k$-th coordinate
+    block and $Q_k=P_k^{\mathsf T}$ projects onto it, direct coordinate
+    multiplication gives $Q_kMP_k=M_{kk}$ and
+    (\ref{eq:asym_block_biorthogonality}).
+\end{proof}
+
+\begin{lemma}[Products of strictly block-triangular matrices]
+    \label{lem:wordflags_strict_triangular_nilpotent}
+    \lean{Matrix.StrictBlockTriangular, Matrix.evalWord_eq_zero_of_strictBlockTriangular}
+    \leanok
+    \uses{def:kraus_eval_word}
+    Let the blocks of a block decomposition carry labels in
+    $\{0,\ldots,r-1\}$, and let $R^1,\ldots,R^d$ be strictly block upper
+    triangular: every entry whose column label is at most its row label
+    vanishes. Then $R^w=0$ for every word $w$ of length at least $r$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    By induction on the length of $w$, the entry of $R^w$ in row block label
+    $a$ and column block label $b$ vanishes unless $b\ge a+|w|$. For
+    $|w|\ge r$ no label $b<r$ satisfies this.
+\end{proof}
+
+\begin{definition}[Word algebra and positive ideal]
+    \label{def:asym_word_algebra}
+    \lean{WordAlgebra, WordAlgebra.aug}
+    \leanok
+    Fix $d\geq1$. The \emph{word algebra} is the free unital associative
+    algebra $F=\C\langle x_1,\ldots,x_d\rangle$, realized as the algebra of
+    finite $\C$-linear combinations of words in the $d$ letters under
+    concatenation, so that the words form a basis. The \emph{augmentation}
+    $\mathrm{aug}:F\to\C$ is the algebra map sending every generator to
+    zero; on a basis word $w$, $\mathrm{aug}(w)=1$ if $w$ is empty and $0$
+    otherwise. The \emph{positive ideal} is the two-sided ideal
+    $F_+=\ker(\mathrm{aug})$ of elements with zero constant term.
+\end{definition}
+
+\begin{definition}[Word traces]
+    \label{def:asym_word_traces}
+    \lean{WordAlgebra.traceChar, WordAlgebra.traceWord}
+    \leanok
+    \uses{def:asym_word_algebra}
+    For a finite-dimensional $F$-module $M$, the \emph{trace character} is
+    the linear functional $p\mapsto\tr(\rho_M(p))$ on $F$, and the
+    \emph{word trace} of a word $w$ is $\tr(\rho_M(w))$.
+\end{definition}
+
+\begin{lemma}[Positive-ideal separation of linear functionals]
+    \label{lem:asym_ker_aug_separation}
+    \lean{WordAlgebra.linearMap_eq_on_ker_aug}
+    \leanok
+    \uses{def:asym_word_algebra}
+    Two $\C$-linear functionals on $F$ agreeing on every nonempty word
+    agree on the positive ideal $F_+$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Their difference agrees with $(\chi_1(1)-\chi_2(1))\cdot\mathrm{aug}$ on
+    every basis word, hence on all of $F$ by linearity; on $F_+$ the
+    augmentation vanishes, so the two functionals agree there.
+\end{proof}
+
+\begin{lemma}[The zero module is the only simple module with trivial
+        generator action]
+    \label{lem:asym_zero_module}
+    \lean{WordAlgebra.finrank_eq_one_of_isSimpleModule_of_forall_smul_eq_zero}
+    \leanok
+    \uses{def:asym_word_algebra}
+    Any finite-dimensional simple $F$-module on which every generator acts as
+    zero has dimension one.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    If every generator acts as zero, $F$ acts through the augmentation, so
+    the $F$-submodules and the $\C$-subspaces coincide; simplicity as a
+    $\C$-vector space forces dimension one.
+\end{proof}
+
+\begin{lemma}[Nilpotent modules of the word algebra]
+    \label{lem:wordflags_nilpotent_module}
+    \lean{WordAlgebra.ofWord_smul_eq_zero_of_traceWord_eq_zero,
+        WordAlgebra.traceWord_eq_zero_of_forall_ofWord_smul_eq_zero}
+    \leanok
+    \uses{def:asym_word_traces}
+    Let $M$ be a finite-dimensional $F$-module. If the word trace of every
+    nonempty word vanishes on $M$, then every word of length at least
+    $\dim M$ acts on $M$ as zero. Conversely, if every word of some length
+    acts as zero, the word trace of every nonempty word vanishes.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    The nonunital algebra generated by the letters is spanned by nonempty
+    words, so every element has zero trace together with all its positive
+    powers and is therefore nilpotent. A nonunital algebra of nilpotent
+    endomorphisms of $M$ annihilates every product of $\dim M$ of its
+    elements, and longer words contain such a product as a prefix.
+    Conversely, a power of a nonempty word is a word of arbitrarily large
+    length, so every nonempty word acts nilpotently and has trace zero.
+\end{proof}
+
+\begin{lemma}[Trace additivity over an invariant subspace]
+    \label{lem:wordflags_trace_invariant_subspace}
+    \lean{LinearMap.trace_eq_trace_restrict_add_trace_quotient}
+    \leanok
+    Let $f$ be an endomorphism of a finite-dimensional vector space $V$
+    preserving a subspace $W$. Then the trace of $f$ is the trace of its
+    restriction to $W$ plus the trace of the map induced on $V/W$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Choose a projection $P$ onto $W$ along a complement. Then
+    $\tr f=\tr(fP)+\tr(f(\id-P))$; the first term is the trace of the
+    restriction, and cyclicity of the trace along the quotient map and its
+    section through the complement identifies the second with the trace on
+    $V/W$.
+\end{proof}
+
+\begin{lemma}[A star-closed matrix algebra acts semisimply]
+    \label{lem:wordflags_star_closed_semisimple}
+    \lean{StarSubalgebra.isSemisimpleModule}
+    \leanok
+    A unital algebra of complex square matrices closed under conjugate
+    transposition makes the coordinate space a semisimple module: every
+    invariant subspace has an invariant complement.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    The orthogonal complement of an invariant subspace is invariant, because
+    the conjugate transposes of the members of the algebra belong to it and
+    preserve the subspace.
+\end{proof}
+
+\begin{lemma}[Factoring a linear map through a surjection on a subspace]
+    \label{lem:wordflags_subspace_factorization}
+    \lean{Matrix.exists_mulVec_eq_of_surjOn}
+    \leanok
+    Let $U$ be a subspace of a complex vector space, let $f$ map $U$ onto
+    $\C^m$, and let $g$ be a linear map to $\C^n$ vanishing on the vectors of
+    $U$ that $f$ sends to zero. Then there is an $n\times m$ matrix $X$ with
+    $g(x)=Xf(x)$ for every $x\in U$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Take $X$ to be $g$ composed with a linear right inverse of $f$ on $U$;
+    the difference of $x$ and the lift of $f(x)$ lies in the kernel of $f$,
+    so $g$ takes the same value on both.
+\end{proof}
+
+\begin{lemma}[One step against another]
+    \label{lem:asym_uniq_step}
+    \lean{CoveringMatching.step_sup_eq_of_lt,
+        CoveringMatching.step_sup_eq_of_lt',
+        CoveringMatching.step_inf_eq_of_lt,
+        CoveringMatching.step_lt_symm}
+    \leanok
+    In a modular lattice let $P\lessdot Q$ and $P'\lessdot Q'$ be covering
+    pairs and put $U=Q\wedge Q'$. If $P\vee(Q\wedge P')<P\vee(Q\wedge Q')$,
+    then $P\vee U=Q$, $Q\wedge P'\leq P$, $P'\vee U=Q'$,
+    $Q'\wedge P\leq P'$, $P\wedge Q'=Q\wedge P'$, and the strict inequality
+    holds with the two pairs exchanged.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    $P\vee(Q\wedge P')$ and $P\vee U$ lie between $P$ and $Q$ with the first
+    strictly below the second, so the first is $P$ and the second is $Q$,
+    since nothing lies strictly between $P$ and $Q$. Then $P'\vee U$ equals
+    $P'$ or $Q'$, and the first case gives $U\leq Q\wedge P'\leq P$, so
+    $P\vee U=P\neq Q$; hence $P'\vee U=Q'$. Next $P'\vee(Q'\wedge P)$ equals
+    $P'$ or $Q'$; in the second case $Q'\leq P\vee P'$ and the modular law
+    gives $U\leq Q\wedge(P\vee P')=P\vee(Q\wedge P')=P$, again contradicting
+    $P\vee U=Q$. The two inclusions $Q\wedge P'\leq P\wedge Q'$ and
+    $Q'\wedge P\leq Q\wedge P'$ give the equality, and the exchanged
+    inequality is $P'<Q'$.
+\end{proof}
+
+\begin{proposition}[The matching]
+    \label{prop:asym_uniq_matching}
+    \lean{CoveringMatching.CoveringChain,
+        CoveringMatching.CoveringChain.jump,
+        CoveringMatching.CoveringChain.jump_spec,
+        CoveringMatching.CoveringChain.jump_jump,
+        CoveringMatching.CoveringChain.jumpEquiv,
+        CoveringMatching.CoveringChain.length_eq,
+        CoveringMatching.CoveringChain.jump_sup_eq}
+    \leanok
+    \uses{lem:asym_uniq_step}
+    Let $\bot=M_0\lessdot M_1\lessdot\cdots\lessdot M_r=\top$ and
+    $\bot=M'_0\lessdot\cdots\lessdot M'_{r'}=\top$ be two chains of covering
+    pairs in a modular lattice. For every $k$ there is exactly one $k'$ with
+    $M_{k-1}\vee(M_k\wedge M'_{k'-1})<M_{k-1}\vee(M_k\wedge M'_{k'})$, namely
+    the least $k'$ with $M_k\wedge M'_{k'}\not\leq M_{k-1}$. Writing
+    $k'=\pi(k)$, the map $\pi$ is a bijection with inverse the same rule for
+    the chains exchanged, so $r=r'$; and with $U=M_k\wedge M'_{\pi(k)}$ and
+    $K=M_{k-1}\wedge M'_{\pi(k)}$ one has $M_{k-1}\vee U=M_k$,
+    $M'_{\pi(k)-1}\vee U=M'_{\pi(k)}$, $U\wedge M_{k-1}=U\wedge
+        M'_{\pi(k)-1}=K$ and $K=M_k\wedge M'_{\pi(k)-1}$.
+\end{proposition}
+
+\begin{proof}
+    \leanok
+    The elements $M_{k-1}\vee(M_k\wedge M'_j)$ increase with $j$ from
+    $M_{k-1}$ to $M_k$, so exactly one step is strict, and the least $k'$
+    above is such a step. Lemma~\ref{lem:asym_uniq_step} applied to the two
+    covering pairs shows that any strict step equals it, that the rule for
+    the exchanged chains sends $k'$ back to $k$, and gives the identities.
+\end{proof}

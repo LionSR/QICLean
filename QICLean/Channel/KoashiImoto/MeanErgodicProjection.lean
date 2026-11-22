@@ -51,9 +51,7 @@ finite-dimensional Schrödinger mean-ergodic theorem entrywise.
 (arXiv:quant-ph/0304007v2, lines 761-763). Documented in
 `https://sirui-lu.com/TNLean/paper-gaps/hjpw04_petz_factorization_maximally_mixed_scope.pdf`.
 
-As in `SingleWitness.lean`, the declarations below state the finite state-family instances in
-their own signatures so that dependent projections through the bundled witness remain stable
-during elaboration.
+The declarations below state the finite state-family instances in their own signatures.
 -/
 
 open scoped Matrix ComplexOrder MatrixOrder BigOperators Matrix.Norms.Frobenius
@@ -67,7 +65,7 @@ local notation "Mat" => Matrix (Fin D) (Fin D) ℂ
 
 section TraceAdjointHeisenbergIdentification
 
-variable {d : ℕ}
+variable {ι : Type*} [Fintype ι]
 
 /-- **The trace-pairing adjoint of a Kraus family's Schrödinger action is its Heisenberg
 adjoint.**
@@ -76,7 +74,7 @@ Both `Matrix.traceAdjointMap (mapLM K)` and `adjointMapLM K` satisfy the same tr
 characterization `tr(E^*(ρ) X) = tr(ρ E(X))` (`Matrix.trace_traceAdjointMap_mul` and
 `Kraus.trace_mul_map_eq_trace_adjointMap_mul`), so they agree by nondegeneracy of the trace
 pairing (`Matrix.ext_iff_trace_mul_right`). -/
-theorem traceAdjointMap_mapLM (K : Fin d → Mat) :
+theorem traceAdjointMap_mapLM (K : ι → Mat) :
     Matrix.traceAdjointMap (mapLM K) = adjointMapLM K := by
   apply LinearMap.ext
   intro ρ
@@ -88,13 +86,16 @@ theorem traceAdjointMap_mapLM (K : Fin d → Mat) :
 /-- **The trace adjoint of a trace-preserving Kraus map satisfies the Schwarz inequality.**
 
 After `Kraus.traceAdjointMap_mapLM` identifies the trace adjoint with the
-Heisenberg Kraus map, this is `KadisonSchwarz.kadison_schwarz_adjoint`. -/
-theorem isSchwarzMap_traceAdjointMap_mapLM_of_isTP (K : Fin d → Mat) (h_tp : IsTP K) :
+Heisenberg Kraus map, this is the Kadison--Schwarz inequality `Kraus.kadison_schwarz` for the
+unital family of adjoint Kraus operators. -/
+theorem isSchwarzMap_traceAdjointMap_mapLM_of_isTP (K : ι → Mat) (h_tp : IsTP K) :
     IsSchwarzMap (Matrix.traceAdjointMap (mapLM K)) := by
   intro A
-  have hKS := KadisonSchwarz.kadison_schwarz_adjoint K h_tp A
-  change (adjointMap K (Aᴴ * A) - (adjointMap K A)ᴴ * adjointMap K A).PosSemidef at hKS
-  simpa only [traceAdjointMap_mapLM, adjointMapLM_apply, adjointMap_conjTranspose] using hKS
+  have hKS := kadison_schwarz (fun i => (K i)ᴴ)
+    (by simpa only [IsUnital, IsTP, Matrix.conjTranspose_conjTranspose] using h_tp) A
+  rw [map_conjTranspose] at hKS
+  simpa only [traceAdjointMap_mapLM, adjointMapLM_apply, adjointMap_apply, map_apply,
+    Matrix.conjTranspose_conjTranspose] using hKS
 
 end TraceAdjointHeisenbergIdentification
 
@@ -123,24 +124,31 @@ private theorem trace_birkhoffAverage_traceAdjointMap_mul
 arXiv:quant-ph/0304007v2, lines 846-849: the preserving Kraus family with `A_0 = A_{F_0}`,
 given by `Kraus.exists_preservingKrausFamily_adjointFixedPointsStarSubalgebra_eq`. -/
 noncomputable def commonInvariantKrausFamily {Kidx : Type*} [Fintype Kidx] [Nonempty Kidx]
-    {ρ : Kidx → Mat} (hρbar : (commonAverage ρ).PosDef) : PreservingKrausFamily ρ :=
+    {ρ : Kidx → Mat} (hρbar : (commonAverage ρ).PosDef) : KrausFamily (Fin D) (Fin D) :=
   (exists_preservingKrausFamily_adjointFixedPointsStarSubalgebra_eq hρbar).choose
+
+/-- The witness `F_0` preserves every state of the family. -/
+theorem isPreserving_commonInvariantKrausFamily
+    {Kidx : Type*} [Fintype Kidx] [Nonempty Kidx] {ρ : Kidx → Mat}
+    (hρbar : (commonAverage ρ).PosDef) :
+    IsPreserving ρ (commonInvariantKrausFamily hρbar).op :=
+  (exists_preservingKrausFamily_adjointFixedPointsStarSubalgebra_eq hρbar).choose_spec.choose
 
 /-- The witness `F_0`'s adjoint fixed-point subalgebra is exactly `A_0`
 (arXiv:quant-ph/0304007v2, lines 846-847). -/
 theorem adjointFixedPointsStarSubalgebra_commonInvariantKrausFamily
     {Kidx : Type*} [Fintype Kidx] [Nonempty Kidx] {ρ : Kidx → Mat}
     (hρbar : (commonAverage ρ).PosDef) :
-    adjointFixedPointsStarSubalgebra (commonInvariantKrausFamily hρbar).Kfam
-        (commonInvariantKrausFamily hρbar).isPreserving.1 hρbar
-        (commonInvariantKrausFamily hρbar).map_commonAverage
+    adjointFixedPointsStarSubalgebra (commonInvariantKrausFamily hρbar).op
+        (isPreserving_commonInvariantKrausFamily hρbar).1 hρbar
+        (map_commonAverage_of_isPreserving ρ (isPreserving_commonInvariantKrausFamily hρbar))
       = commonInvariantStarSubalgebra ρ hρbar :=
-  (exists_preservingKrausFamily_adjointFixedPointsStarSubalgebra_eq hρbar).choose_spec
+  (exists_preservingKrausFamily_adjointFixedPointsStarSubalgebra_eq hρbar).choose_spec.choose_spec
 
 /-- The Schrödinger action of the witness `F_0`, as a matrix endomorphism. -/
 noncomputable def commonInvariantMapLM {Kidx : Type*} [Fintype Kidx] [Nonempty Kidx]
     {ρ : Kidx → Mat} (hρbar : (commonAverage ρ).PosDef) : Mat →ₗ[ℂ] Mat :=
-  mapLM (commonInvariantKrausFamily hρbar).Kfam
+  mapLM (commonInvariantKrausFamily hρbar).op
 
 theorem isPositiveMap_commonInvariantMapLM {Kidx : Type*} [Fintype Kidx] [Nonempty Kidx]
     {ρ : Kidx → Mat} (hρbar : (commonAverage ρ).PosDef) :
@@ -150,7 +158,7 @@ theorem isPositiveMap_commonInvariantMapLM {Kidx : Type*} [Fintype Kidx] [Nonemp
 theorem isTracePreservingMap_commonInvariantMapLM {Kidx : Type*} [Fintype Kidx] [Nonempty Kidx]
     {ρ : Kidx → Mat} (hρbar : (commonAverage ρ).PosDef) :
     IsTracePreservingMap (commonInvariantMapLM hρbar) :=
-  isTracePreservingMap_mapLM_of_isTP _ (commonInvariantKrausFamily hρbar).isPreserving.1
+  isTracePreservingMap_mapLM_of_isTP _ (isPreserving_commonInvariantKrausFamily hρbar).1
 
 /-- **The trace-adjoint projection associated with `F_0`.**
 
@@ -289,11 +297,11 @@ theorem mem_range_commonInvariantMeanErgodicProjection_iff
       Y ∈ commonInvariantStarSubalgebra ρ hρbar := by
   obtain ⟨-, -, -, hrange, -⟩ := commonInvariantMeanErgodicProjection_bundle hρbar
   rw [hrange, LinearMap.mem_ker, LinearMap.sub_apply, Module.End.one_apply, sub_eq_zero]
-  change Matrix.traceAdjointMap (mapLM (commonInvariantKrausFamily hρbar).Kfam) Y = Y ↔ _
+  change Matrix.traceAdjointMap (mapLM (commonInvariantKrausFamily hρbar).op) Y = Y ↔ _
   rw [traceAdjointMap_mapLM, adjointMapLM_apply, ← mem_adjointFixedPoints,
-    ← mem_adjointFixedPointsStarSubalgebra (commonInvariantKrausFamily hρbar).Kfam
-      (commonInvariantKrausFamily hρbar).isPreserving.1 hρbar
-      (commonInvariantKrausFamily hρbar).map_commonAverage,
+    ← mem_adjointFixedPointsStarSubalgebra (commonInvariantKrausFamily hρbar).op
+      (isPreserving_commonInvariantKrausFamily hρbar).1 hρbar
+      (map_commonAverage_of_isPreserving ρ (isPreserving_commonInvariantKrausFamily hρbar)),
     adjointFixedPointsStarSubalgebra_commonInvariantKrausFamily]
 
 end CommonInvariantProjection

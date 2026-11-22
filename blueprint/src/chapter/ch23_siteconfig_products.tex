@@ -1,0 +1,208 @@
+\section{Product vectors and placed configurations}
+\label{sec:siteconfig_products}
+
+Throughout this section $V$ is a finite set of sites with the finite basis
+$X_v$ at the site $v$, as in Chapter~\ref{ch:sites}, and $\mathcal A_D$ is the
+algebra of operators supported on a region $D$.
+
+\begin{definition}[Product vector]
+    \label{def:siteconfig_product_vector}
+    \lean{QuantumCircuit.productVector}
+    \leanok
+    \uses{def:sites_config}
+    As in \cite[Appendix~A, ``Product states'']{Cirac2021Matrix}, for vectors
+    $\ket{\phi^v}\in\C^{X_v}$ the product vector
+    $\bigotimes_{v\in V}\ket{\phi^v}$ has the coefficient
+    $\prod_{v\in V}\phi^v_{\sigma(v)}$ on the configuration $\sigma$. For the
+    sites $\{1,\dots,N\}$ it is $\ket{\phi^1}\otimes\cdots\otimes\ket{\phi^N}$.
+\end{definition}
+
+\begin{lemma}[Product operators on product vectors]
+    \label{lem:siteconfig_product_vector_action}
+    \lean{QuantumCircuit.prodOp_mulVec_productVector,
+        QuantumCircuit.star_productVector_dotProduct_prodOp_mulVec,
+        QuantumCircuit.smul_productVector, QuantumCircuit.productVector_pi_smul}
+    \leanok
+    \uses{def:siteconfig_product_vector, thm:sites_product_span}
+    For on-site matrices $m_v$, possibly rectangular,
+    $(\bigotimes_v m_v)(\bigotimes_v\ket{\phi^v})=\bigotimes_v m_v\ket{\phi^v}$,
+    and for square $m_v$ the expectation is
+    $\bra\pi\bigotimes_v m_v\ket\pi=\prod_v\bra{\phi^v}m_v\ket{\phi^v}$ for
+    $\ket\pi=\bigotimes_v\ket{\phi^v}$. A scalar multiple $c\ket\pi$ is the
+    product vector with $\ket{\phi^v}$ replaced by $c\ket{\phi^v}$ at one site,
+    and $\bigotimes_v c_v\ket{\phi^v}=(\prod_v c_v)\bigotimes_v\ket{\phi^v}$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    The coefficient of $(\bigotimes_v m_v)\ket\pi$ at $\sigma$ is
+    $\sum_\tau\prod_v (m_v)_{\sigma(v)\tau(v)}\phi^v_{\tau(v)}$, and the sum of
+    a product over all configurations is the product of the sums over each
+    site. The expectation is the same computation for the dot product, and the
+    scalar identities are distributivity of the product.
+\end{proof}
+
+\begin{lemma}[Diagonal entries of disjointly supported products]
+    \label{thm:ldp_offsupport_matrix_elements}
+    \lean{QuantumCircuit.productVector_single,
+        QuantumCircuit.mul_apply_eq_mul_of_mem_supportedOperators}
+    \leanok
+    \uses{def:siteconfig_product_vector, def:sites_supported}
+    A computational-basis vector $\ket\sigma$ is the product vector
+    $\bigotimes_v\ket{\sigma(v)}$. If $A\in\mathcal A_D$ and
+    $B\in\mathcal A_{D'}$ with $D\cap D'=\emptyset$, then
+    $\bra\sigma AB\ket\sigma=\bra\sigma A\ket\sigma\bra\sigma B\ket\sigma$
+    for every configuration $\sigma$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    The product $\prod_v\delta_{\sigma(v),\tau(v)}$ is $\delta_{\sigma,\tau}$.
+    In $(AB)_{\sigma\sigma}=\sum_\rho A_{\sigma\rho}B_{\rho\sigma}$, a
+    configuration $\rho\neq\sigma$ differs from $\sigma$ at a site outside $D$
+    or outside $D'$, where $A_{\sigma\rho}$ or $B_{\rho\sigma}$ vanishes.
+\end{proof}
+
+\begin{lemma}[Support of complementary products]
+    \label{thm:physical_complementary_product_support}
+    \lean{QuantumCircuit.mem_supportedOperators_complementProd}
+    \leanok
+    \uses{def:complement_product, thm:sites_supported_subalgebra}
+    Let $h_0,\ldots,h_{n-1}$ be operators supported on a common region $S$.
+    Then $(1-h_{n-1})\cdots(1-h_0)$ is supported on $S$
+    \cite[lines 1543--1568]{Arad2016RigorousRG}.
+\end{lemma}
+\begin{proof}
+    \leanok
+    The identity belongs to the algebra $\mathcal A_S$, which is closed under
+    subtraction and multiplication. Induct on $n$.
+\end{proof}
+
+From here on every site carries the same finite basis $\alpha$, and the
+configurations are the maps $V\to\alpha$. For an injection $e\colon J\to V$ and
+an operator $X$ on $\alpha^J$, write $\iota_e(X)$ for $X$ placed along $e$
+(Definition~\ref{def:sites_place_along}); its entry at $(x,y)$ is
+$X_{x\circ e,\,y\circ e}$ when $x$ and $y$ agree outside $e(J)$, and $0$
+otherwise.
+
+\begin{lemma}[Products of operators placed on disjoint sets of sites]
+    \label{lem:siteconfig_placed_products}
+    \lean{QuantumCircuit.AgreeOff, QuantumCircuit.agreeOff_refl,
+        QuantumCircuit.AgreeOff.symm, QuantumCircuit.AgreeOff.trans,
+        QuantumCircuit.sum_agreeOff, QuantumCircuit.eq_extend_of_agreeOff,
+        QuantumCircuit.sum_extend_zero, QuantumCircuit.noncommProd_placeAlong_apply}
+    \leanok
+    \uses{def:sites_place_along, thm:sites_place_along_support}
+    For an injection $e\colon J\to V$, the configurations agreeing with $x$
+    outside $e(J)$ correspond to their restrictions to $e(J)$. If injections
+    $e_k\colon J_k\to V$, $k\in K$, have pairwise disjoint ranges, then the
+    operators $\iota_{e_k}(X_k)$ commute and
+    \begin{align}
+        \Bigl(\prod_{k\in K}\iota_{e_k}(X_k)\Bigr)_{x,y}
+         & =\begin{cases}\prod_{k\in K}(X_k)_{x\circ e_k,\,y\circ e_k},
+                   & \text{if }x=y\text{ outside }\bigcup_k e_k(J_k), \\
+                0, & \text{otherwise,}\end{cases}\notag
+    \end{align}
+    as for the tensor product of gates on disjoint sets of sites
+    in~\cite[Eqs.~(10)--(12)]{Malz2024Preparation}.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Induct on $K$. Adding the operator $\iota_{e_a}(X_a)$, the sum over the
+    intermediate configuration collapses to the configuration equal to $y$ on
+    $e_a(J_a)$ and to $x$ elsewhere, since the entries of $\iota_{e_a}(X_a)$
+    vanish unless its two configurations agree outside $e_a(J_a)$.
+\end{proof}
+
+\begin{lemma}[Products of matrices placed on disjoint windows]
+    \label{lem:qc_placed_configurations}
+    \lean{QuantumCircuit.placeCfg, QuantumCircuit.placeCfg_apply,
+        QuantumCircuit.placeCfg_comp, QuantumCircuit.placeCfg_apply_of_notMem,
+        QuantumCircuit.eq_placeCfg, QuantumCircuit.placeCfg_injective,
+        QuantumCircuit.injective_window, QuantumCircuit.disjoint_range_window,
+        QuantumCircuit.list_prod_placeAlong_placeCfg, Matrix.mul_apply_extend,
+        QuantumCircuit.inputCfg, QuantumCircuit.inputCfg_self}
+    \leanok
+    \uses{lem:siteconfig_placed_products}
+    Let $\alpha=\{0,\dots,d-1\}$ with $d\ge1$, and let
+    $W_1,\dots,W_n\colon\{1,\dots,m\}\to V$ be windows such that
+    $(p,t)\mapsto W_p(t)$ is injective. For contents $c_p\in\alpha^m$, the
+    configuration $\operatorname{place}(c)$ equals $c_p(t)$ at $W_p(t)$ and $0$
+    outside the windows; $\operatorname{place}$ is injective, and every
+    configuration vanishing outside the windows is the placement of its
+    restrictions to the windows.
+    \begin{enumerate}
+        \item If $Y_p\ket{\iota_p(c_p)}=\sum_{e_p}V_p(e_p,c_p)\ket{o_p(e_p)}$
+              for injective maps $o_p$, then
+              \begin{align}
+                  \Bigl(\prod_{p=1}^n\iota_{W_p}(Y_p)\Bigr)
+                  \ket{\operatorname{place}(\iota_p(c_p))}
+                   & =\sum_{e}\Bigl(\prod_{p=1}^n V_p(e_p,c_p)\Bigr)
+                  \ket{\operatorname{place}(o_p(e_p))}.\notag
+              \end{align}
+        \item For injective $R,R'$ into a basis, if
+              $M\ket{x_0}=\sum_a f(a)\ket{R(a)}$ and
+              $G\ket{R(a)}=\sum_b g(a,b)\ket{R'(b)}$, then
+              $GM\ket{x_0}=\sum_b\bigl(\sum_a g(a,b)f(a)\bigr)\ket{R'(b)}$.
+    \end{enumerate}
+    On a chain of $n$ sites, the configuration carrying a given configuration
+    on the last $r$ sites and $0$ elsewhere is the given configuration when
+    $n=r$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Item (1) follows from Lemma~\ref{lem:siteconfig_placed_products}, since
+    every output with nonzero amplitude vanishes outside the windows. Item (2)
+    is linearity of matrix multiplication.
+\end{proof}
+
+\begin{lemma}[Permutations of configurations]
+    \label{lem:qc_permutation_layers}
+    \lean{QuantumCircuit.IsLocalPerm,
+        QuantumCircuit.IsLocalPerm.permMatrix_mem_supportedOperators,
+        Matrix.finKronecker_permMatrix_mulVec}
+    \leanok
+    \uses{def:sites_supported}
+    Let $\sigma$ be a permutation of the configurations of a system with any
+    bases $X_v$ such that $\sigma(x)$ agrees with $x$ outside a region $S$ and
+    $\sigma(x)|_S$ depends only on $x|_S$. Then its permutation matrix
+    $(P_\sigma v)(x)=v(\sigma x)$ is supported on $S$. For permutations
+    $\tau_i$ of the labels of the sites $i=0,\dots,N-1$,
+    $(\bigotimes_i P_{\tau_i}v)(x)=v(\tau_0(x_0),\dots,\tau_{N-1}(x_{N-1}))$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    The entry $(P_\sigma)_{x,y}=\delta_{y,\sigma(x)}$ vanishes when $x$ and $y$
+    differ outside $S$, and depends only on $x|_S$ and $y|_S$ when $x$ and
+    $y$ agree outside $S$. Finally
+    $(\bigotimes_i P_{\tau_i})_{x,y}=\prod_i\delta_{y_i,\tau_i(x_i)}$.
+\end{proof}
+
+\begin{lemma}[Placed operators acting on configurations]
+    \label{lem:qc_configuration_layers}
+    \lean{QuantumCircuit.apply_eq_ite_of_mulVec_eq_comp, QuantumCircuit.sigmaSite,
+        QuantumCircuit.sigmaSite_injective, QuantumCircuit.layerCfg,
+        QuantumCircuit.layerCfg_apply, QuantumCircuit.layerCfg_comp,
+        QuantumCircuit.layerCfg_apply_of_forall_ne, QuantumCircuit.eq_layerCfg_iff,
+        QuantumCircuit.noncommProd_placeAlong_mulVec_eq_comp,
+        QuantumCircuit.placeAlong_mulVec_eq_comp,
+        QuantumCircuit.placeAlong_mulVec_productVector}
+    \leanok
+    \uses{lem:siteconfig_placed_products, lem:qc_permutation_layers,
+        def:siteconfig_product_vector}
+    If operators $X_k$ on pairwise disjoint sets of sites $S_k$ act by
+    $(X_kv)(u)=v(f_k(u))$, so that $(X_k)_{u,w}=\delta_{w,f_k(u)}$, then the
+    product of the placed operators acts by $v\mapsto v\circ\rho$, where
+    $\rho(x)|_{S_k}=f_k(x|_{S_k})$ and $\rho(x)$ agrees with $x$ outside
+    $\bigcup_k S_k$. If $\ket\pi=\bigotimes_i\ket{v_i}$ has $\ket{v_i}=\ket z$
+    for all $i$ in the range $S$ of an injection $e$, then
+    $(\iota_e(X)\ket\pi)(y)=X_{y\circ e,(z,\dots,z)}\prod_{i\notin S}v_i(y_i)$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    By Lemma~\ref{lem:siteconfig_placed_products} the entry of the product at
+    $(x,y)$ is
+    $\prod_k\delta_{y|_{S_k},f_k(x|_{S_k})}$ when $x$ and $y$ agree outside
+    $\bigcup_k S_k$, and $0$ otherwise, which is $\delta_{y,\rho(x)}$. For a
+    single placed operator, only the input configuration equal to
+    $(z,\dots,z)$ on $S$ and to $y$ outside $S$ contributes to
+    $(\iota_e(X)\ket\pi)(y)$.
+\end{proof}
