@@ -55,7 +55,7 @@ one-dimensional ground space.
         Matrix.mem_eigenspace_toEuclideanLin_reindex_iff,
         Matrix.eigenspace_toEuclideanLin_reindex,
         Matrix.hasEigenvalue_toEuclideanLin_reindex_iff,
-        Matrix.ker_toEuclideanLin_reindex_map, Matrix.norm_gap_toEuclideanLin_reindex,
+        Matrix.ker_toEuclideanLin_reindex_map,
         ManyBody.mem_groundSpace_reindex_iff, ManyBody.groundSpace_reindex,
         ManyBody.groundSpace_reindex_eq_span, ManyBody.isGapped_reindex_iff,
         ManyBody.groundSpace_submatrix, ManyBody.groundSpace_submatrix_eq_span,
@@ -72,24 +72,13 @@ one-dimensional ground space.
     $\ker(H'-E_0)=\C P_e\Omega$. These statements hold for $UHU^{*}$ with a unitary $U$
     in place of $P_e$, and more generally for any invertible $F$ with $H'F=FH$.
 
-    For the relabelling $P_e$, moreover, $\ker H'=P_e\ker H$, and if
-    $\|H\psi\|\ge\gamma\|\psi\|$ for every $\psi\perp\ker H$, then
-    $\|H'\psi\|\ge\gamma\|\psi\|$ for every $\psi\perp\ker H'$; neither
-    statement needs $H$ to be Hermitian.
+    For the relabelling $P_e$, moreover, $\ker H'=P_e\ker H$; this does not need
+    $H$ to be Hermitian.
 \end{lemma}
 \begin{proof}\leanok
     If $H'F=FH$, then $H'\psi=\mu\psi$ if and only if $HF^{-1}\psi=\mu F^{-1}\psi$.
     Both $P_e$ and a unitary $U$ satisfy this with $H'=FHF^{*}$. The kernel is the
-    eigenspace at $0$, so $P_e(\ker H)=\ker H'$. Since $P_e$ is unitary,
-    \[
-      P_e\bigl((\ker H)^{\perp}\bigr)=(\ker H')^{\perp},\qquad
-      \|P_e\psi\|=\|\psi\| .
-    \]
-    For $\psi\perp\ker H$, the relation $H'P_e=P_eH$ then gives
-    \[
-      \|H'(P_e\psi)\|=\|P_eH\psi\|=\|H\psi\|\ge\gamma\|\psi\|=\gamma\|P_e\psi\|,
-    \]
-    which is the bound at every vector orthogonal to $\ker H'$.
+    eigenspace at $0$, so $P_e(\ker H)=\ker H'$.
 \end{proof}
 
 \begin{lemma}[Scaling and shifting the energy]
@@ -350,20 +339,10 @@ kernel, either from the quadratic form or from the norm.
     The kernel may be zero, and no sign of $\Delta$ is assumed.
 \end{theorem}
 \begin{proof}\leanok
-    \uses{thm:quadratic_gap_off_kernel}
-    Theorem~\ref{thm:quadratic_gap_off_kernel} gives the first statement, so (1)
-    implies (2). Given (2), the Cauchy--Schwarz inequality
-    $\operatorname{Re}\langle v,Hv\rangle\le\lVert v\rVert\lVert Hv\rVert$ gives
-    (3) after division by $\lVert v\rVert$. Given (3) with $\Delta\ge0$, expand
-    $v\perp\ker H$ in an orthonormal eigenbasis $Hb_k=\lambda_kb_k$: the
-    coefficients at $\lambda_k=0$ vanish, and every $\lambda_k\neq0$ has
-    $b_k\perp\ker H$, so $\lambda_k=\lVert Hb_k\rVert\ge\Delta$; hence
-    $\operatorname{Re}\langle v,Hv\rangle=\sum_k\lambda_k\lvert c_k\rvert^2\ge
-        \Delta\lVert v\rVert^2$. For $\Delta<0$, (2) holds because $H\ge0$. Finally,
-    given (2), let $H\psi=\mu\psi$ with $\psi\neq0$ and $\mu\neq0$. Then $\mu$ is
-    real and $\psi\perp\ker H$, since $\mu\langle w,\psi\rangle=\langle Hw,\psi\rangle
-        =0$ for $w\in\ker H$. Thus $\Delta\lVert\psi\rVert^2\le\mu\lVert\psi\rVert^2$,
-    which is (1).
+    \uses{lem:gap_eigenvalue_forms}
+    The operator $v\mapsto Hv$ on $\C^n$ is symmetric when $H$ is Hermitian and positive
+    when $H\ge0$, and its eigenvalues are those of $H$. Lemma~\ref{lem:gap_eigenvalue_forms}
+    gives the first statement and the equivalence of (1), (2) and (3).
 \end{proof}
 
 \begin{theorem}[The gap above the kernel]
@@ -449,26 +428,30 @@ kernel, either from the quadratic form or from the norm.
 
 \begin{theorem}[Persistence of the gap]
     \label{thm:hamiltonians_kernel_gap_continuity}
-    \lean{ManyBody.eventually_isGapped_zero}
+    \lean{ManyBody.eventually_forall_hasEigenvalue, ManyBody.eventually_isGapped_zero}
     \leanok
     \uses{def:hamiltonians_gap}
     Let $x\mapsto H_x$ be a family of positive semidefinite matrices on a
     topological space, continuous at $x_0$, such that the orthogonal projection
-    onto $\ker H_x$ is continuous at $x_0$. If $H_{x_0}$ is gapped at $0$ with
-    gap $\Delta$, then for every $\Delta'<\Delta$ the matrix $H_x$ is gapped at
-    $0$ with gap $\Delta'$ for all $x$ near $x_0$.
+    onto $\ker H_x$ is continuous at $x_0$. If every eigenvalue of $H_{x_0}$ other
+    than $0$ is at least $\Delta$, then for every $\Delta'<\Delta$ every eigenvalue
+    of $H_x$ other than $0$ is at least $\Delta'$ for all $x$ near $x_0$. If $H_{x_0}$
+    is gapped at $0$ with gap $\Delta$, then for every $\Delta'<\Delta$ the matrix
+    $H_x$ is gapped at $0$ with gap $\Delta'$ for all $x$ near $x_0$.
 \end{theorem}
 \begin{proof}\leanok
-    \uses{thm:hamiltonians_kernel_gap, lem:kernel_gap_perturbation}
-    The projection onto $\ker H_{x_0}$ is nonzero, so by continuity the
-    projection onto $\ker H_x$ is nonzero, and $\ker H_x\neq0$, near $x_0$. If
-    $\Delta\le0$, then $\Delta'<0$ and the norm bound of
-    Theorem~\ref{thm:hamiltonians_kernel_gap} holds trivially. If $\Delta>0$,
-    Theorem~\ref{thm:hamiltonians_kernel_gap} turns the gap of $H_{x_0}$ into a
-    norm bound on $(\ker H_{x_0})^\perp$; Lemma~\ref{lem:kernel_gap_perturbation}
-    with $K_x=\ker H_x$ gives the norm bound with
-    $\max(\Delta',\Delta/2)$ on $(\ker H_x)^\perp$ near $x_0$, and
-    Theorem~\ref{thm:hamiltonians_kernel_gap} turns it back into a gap.
+    \uses{thm:hamiltonians_kernel_spectrum, thm:hamiltonians_kernel_gap,
+        lem:kernel_gap_perturbation}
+    If $\Delta\le0$, then $\Delta'<0$ and the norm bound of
+    Theorem~\ref{thm:hamiltonians_kernel_spectrum} holds trivially. If $\Delta>0$,
+    Theorem~\ref{thm:hamiltonians_kernel_spectrum} turns the bound on the eigenvalues
+    of $H_{x_0}$ into a norm bound on $(\ker H_{x_0})^\perp$;
+    Lemma~\ref{lem:kernel_gap_perturbation} with $K_x=\ker H_x$ gives the norm bound
+    with $\max(\Delta',\Delta/2)$ on $(\ker H_x)^\perp$ near $x_0$, and
+    Theorem~\ref{thm:hamiltonians_kernel_spectrum} turns it back into a bound on the
+    eigenvalues. For the gap, the projection onto $\ker H_{x_0}$ is nonzero, so by
+    continuity the projection onto $\ker H_x$ is nonzero, and $\ker H_x\neq0$, near
+    $x_0$; Theorem~\ref{thm:hamiltonians_kernel_gap} combines the two.
 \end{proof}
 
 \begin{lemma}[Uniform bounds from local bounds on a compact set]
