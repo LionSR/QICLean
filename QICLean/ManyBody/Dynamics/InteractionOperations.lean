@@ -86,6 +86,11 @@ SwappedPlaneInteraction`), the doubled interaction conjugated by `ManyBody.pairS
   `ManyBody.Interaction.hamiltonian_pad`, `ManyBody.Interaction.hamiltonian_append`,
   `ManyBody.Interaction.hamiltonian_conj`, `ManyBody.Interaction.hamiltonian_mapTerm`,
   `ManyBody.Interaction.hamiltonian_restrict` — the Hamiltonians of the new interactions.
+* `ManyBody.Interaction.hamiltonian_restrict_le`,
+  `ManyBody.Interaction.hamiltonian_restrict_add_hamiltonian_restrict_le`,
+  `ManyBody.Interaction.sum_hamiltonian_restrict_eq_hamiltonian_restrict`,
+  `ManyBody.Interaction.commute_hamiltonian_restrict` — order, sums and commutation of the
+  Hamiltonians of restrictions.
 * `ManyBody.Interaction.hamiltonian_le_hamiltonian_supportProj`,
   `ManyBody.Interaction.hamiltonian_supportProj_mulVec_eq_zero_iff` — the range projections lie
   above the terms of norm at most one and keep the kernel of the Hamiltonian.
@@ -693,6 +698,57 @@ variable (Φ p) in
 /-- The terms of the restriction have at most the norms of the terms. -/
 theorem norm_restrict_term_le (i : ι) : ‖(Φ.restrict p).term i‖ ≤ ‖Φ.term i‖ :=
   forall_restrict_term (P := fun M ↦ ‖M‖ ≤ ‖Φ.term i‖) (by simp) le_rfl
+
+variable [Fintype ι]
+
+/-- The Hamiltonians of two restrictions of an interaction commute when every term of the first
+commutes with every term of the second. -/
+theorem commute_hamiltonian_restrict (p q : ι → Prop) [DecidablePred p] [DecidablePred q]
+    (h : ∀ i j, p i → q j → Commute (Φ.term i) (Φ.term j)) :
+    Commute (Φ.restrict p).hamiltonian (Φ.restrict q).hamiltonian :=
+  Commute.sum_left _ _ _ fun i _ ↦ Commute.sum_right _ _ _ fun j _ ↦ by
+    by_cases hi : p i
+    · by_cases hj : q j
+      · simpa [hi, hj] using h i j hi hj
+      · simp [hj]
+    · simp [hi]
+
+/-- For positive terms, the Hamiltonian of a restriction of an interaction is below the
+Hamiltonian. -/
+theorem hamiltonian_restrict_le (hΦ : ∀ i, 0 ≤ Φ.term i) (p : ι → Prop) [DecidablePred p] :
+    (Φ.restrict p).hamiltonian ≤ Φ.hamiltonian :=
+  Finset.sum_le_sum fun i _ ↦ forall_restrict_term (P := (· ≤ Φ.term i)) (hΦ i) le_rfl
+
+/-- Summing the Hamiltonians of a family of restrictions of an interaction gives the Hamiltonian
+of one restriction when every index of the latter lies in exactly one member of the family and
+no other index lies in any. -/
+theorem sum_hamiltonian_restrict_eq_hamiltonian_restrict {κ : Type*} (s : Finset κ)
+    (P : κ → ι → Prop) [∀ n, DecidablePred (P n)] (Q : ι → Prop) [DecidablePred Q] (g : ι → κ)
+    (hg : ∀ i, Q i → g i ∈ s) (h : ∀ i, ∀ n ∈ s, P n i ↔ Q i ∧ n = g i) :
+    ∑ n ∈ s, (Φ.restrict (P n)).hamiltonian = (Φ.restrict Q).hamiltonian := by
+  simp only [hamiltonian, restrict_term]
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  by_cases hQ : Q i
+  · rw [ite_eq_left hQ, Finset.sum_eq_single_of_mem (g i) (hg i hQ) fun n hn hne ↦
+      ite_eq_right fun hP ↦ hne ((h i n hn).mp hP).2]
+    exact ite_eq_left ((h i _ (hg i hQ)).mpr ⟨hQ, rfl⟩)
+  · rw [ite_eq_right hQ]
+    exact Finset.sum_eq_zero fun n hn ↦ ite_eq_right fun hP ↦ hQ ((h i n hn).mp hP).1
+
+/-- For positive terms, the Hamiltonians of two restrictions of an interaction to disjoint
+sets of indices add up to at most the Hamiltonian. -/
+theorem hamiltonian_restrict_add_hamiltonian_restrict_le (hΦ : ∀ i, 0 ≤ Φ.term i)
+    (p q : ι → Prop) [DecidablePred p] [DecidablePred q] (hpq : ∀ i, p i → ¬q i) :
+    (Φ.restrict p).hamiltonian + (Φ.restrict q).hamiltonian ≤ Φ.hamiltonian := by
+  simp only [hamiltonian, restrict_term]
+  rw [← Finset.sum_add_distrib]
+  refine Finset.sum_le_sum fun i _ ↦ ?_
+  by_cases hp : p i
+  · rw [ite_eq_left hp, ite_eq_right (hpq i hp), add_zero]
+  · rw [ite_eq_right hp, zero_add]
+    split_ifs
+    exacts [le_rfl, hΦ i]
 
 end Restrict
 
