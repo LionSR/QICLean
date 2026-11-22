@@ -10,7 +10,9 @@ import QICLean.Spectral.Gap.WeightedPositiveKernel
 
 Two positive operators which bound one another up to strictly positive
 constants have the same kernel. Consequently a norm gap transfers through
-the lower comparison, on the common kernel complement.
+the lower comparison, on the common kernel complement. A one-sided comparison
+`κ P ≤ m Q` transfers the gap as well once the two kernels are known to agree
+(`LinearMap.IsPositive.norm_gap_of_scaled_comparison`).
 
 Moved from TNLean, `TNLean/MPS/ParentHamiltonian/Martingale/PositiveComparisonGap.lean` at
 commit `414a18fb88`, with no change to the statements.
@@ -52,6 +54,39 @@ theorem ker_eq_of_smul_le_of_le_smul {P Q : E →ₗ[ℂ] E}
   · simpa only [LinearMap.ker_smul _ _ hb', LinearMap.ker_smul _ _ ha'] using
       (hP.smul_of_nonneg (by exact_mod_cast ha.le)).ker_le_of_le hLower
 
+/-- A comparison `κ P ≤ m Q` of positive operators with equal kernels transfers a gap `γ` above
+the kernel of `P` to the gap `κ γ / m` above the kernel of `Q`. -/
+theorem norm_gap_of_scaled_comparison [FiniteDimensional ℂ E]
+    {P Q : E →ₗ[ℂ] E} (hP : P.IsPositive) {κ γ m : ℝ}
+    (hκ : 0 < κ) (hγ : 0 < γ) (hm : 0 < m)
+    (hOrder : (κ : ℂ) • P ≤ (m : ℂ) • Q)
+    (hKer : LinearMap.ker P = LinearMap.ker Q)
+    (hGap : ∀ v ∈ (LinearMap.ker P)ᗮ, γ * ‖v‖ ≤ ‖P v‖) :
+    ∀ v ∈ (LinearMap.ker Q)ᗮ, (κ * γ / m) * ‖v‖ ≤ ‖Q v‖ := by
+  have hκ' : (κ : ℂ) ≠ 0 := by exact_mod_cast hκ.ne'
+  have hm' : (m : ℂ) ≠ 0 := by exact_mod_cast hm.ne'
+  have hGapScaled : ∀ u ∈ (LinearMap.ker ((κ : ℂ) • P))ᗮ,
+      (κ * γ) * ‖u‖ ≤ ‖((κ : ℂ) • P) u‖ := by
+    intro u hu
+    have hu' : u ∈ (LinearMap.ker P)ᗮ := by
+      simpa only [LinearMap.ker_smul _ _ hκ'] using hu
+    simpa only [LinearMap.smul_apply, norm_smul, Complex.norm_real,
+      Real.norm_eq_abs, abs_of_pos hκ, mul_assoc] using
+      mul_le_mul_of_nonneg_left (hGap u hu') hκ.le
+  have hKerScaled : LinearMap.ker ((κ : ℂ) • P) =
+      LinearMap.ker ((m : ℂ) • Q) := by
+    simp only [LinearMap.ker_smul _ _ hκ', LinearMap.ker_smul _ _ hm', hKer]
+  have hTransfer := norm_gap_of_le_of_ker_eq
+    (hP.smul_of_nonneg (by exact_mod_cast hκ.le))
+    (mul_nonneg hκ.le hγ.le) hOrder hKerScaled hGapScaled
+  intro v hv
+  have hv' : v ∈ (LinearMap.ker ((m : ℂ) • Q))ᗮ := by
+    simpa only [LinearMap.ker_smul _ _ hm'] using hv
+  have h := hTransfer v hv'
+  rw [div_mul_eq_mul_div, div_le_iff₀ hm]
+  simpa only [LinearMap.smul_apply, norm_smul, Complex.norm_real,
+    Real.norm_eq_abs, abs_of_pos hm, mul_comm m] using h
+
 /-- A gap transfers through a two-sided positive comparison, with the ratio
 of the lower comparison constants. Equality of the kernels is derived from
 the two order bounds. -/
@@ -61,31 +96,8 @@ theorem norm_gap_of_smul_le_of_le_smul [FiniteDimensional ℂ E]
     (hLower : (a : ℂ) • P ≤ (b : ℂ) • Q)
     (hUpper : (b : ℂ) • Q ≤ (c : ℂ) • P)
     (hGap : ∀ v ∈ (LinearMap.ker P)ᗮ, γ * ‖v‖ ≤ ‖P v‖) :
-    ∀ v ∈ (LinearMap.ker Q)ᗮ, (a * γ / b) * ‖v‖ ≤ ‖Q v‖ := by
-  have ha' : (a : ℂ) ≠ 0 := by exact_mod_cast ha.ne'
-  have hb' : (b : ℂ) ≠ 0 := by exact_mod_cast hb.ne'
-  have hker := hP.ker_eq_of_smul_le_of_le_smul hQ ha hb hc hLower hUpper
-  have hscaledGap : ∀ v ∈ (LinearMap.ker ((a : ℂ) • P))ᗮ,
-      (a * γ) * ‖v‖ ≤ ‖((a : ℂ) • P) v‖ := by
-    intro v hv
-    have hv' : v ∈ (LinearMap.ker P)ᗮ := by
-      simpa only [LinearMap.ker_smul _ _ ha'] using hv
-    simpa only [LinearMap.smul_apply, norm_smul, Complex.norm_real,
-      Real.norm_eq_abs, abs_of_pos ha, mul_assoc] using
-      mul_le_mul_of_nonneg_left (hGap v hv') ha.le
-  have hkerScaled : LinearMap.ker ((a : ℂ) • P) =
-      LinearMap.ker ((b : ℂ) • Q) := by
-    simpa only [LinearMap.ker_smul _ _ ha', LinearMap.ker_smul _ _ hb'] using hker
-  have hTransfer := norm_gap_of_le_of_ker_eq
-    (hP.smul_of_nonneg (by exact_mod_cast ha.le))
-    (mul_nonneg ha.le hγ.le) hLower hkerScaled hscaledGap
-  intro v hv
-  have hv' : v ∈ (LinearMap.ker ((b : ℂ) • Q))ᗮ := by
-    simpa only [LinearMap.ker_smul _ _ hb'] using hv
-  have h := hTransfer v hv'
-  rw [div_mul_eq_mul_div]
-  apply (div_le_iff₀ hb).mpr
-  simpa only [LinearMap.smul_apply, norm_smul, Complex.norm_real,
-    Real.norm_eq_abs, abs_of_pos hb, mul_comm b] using h
+    ∀ v ∈ (LinearMap.ker Q)ᗮ, (a * γ / b) * ‖v‖ ≤ ‖Q v‖ :=
+  hP.norm_gap_of_scaled_comparison ha hγ hb hLower
+    (hP.ker_eq_of_smul_le_of_le_smul hQ ha hb hc hLower hUpper) hGap
 
 end LinearMap.IsPositive
