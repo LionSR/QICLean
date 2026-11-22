@@ -20,7 +20,8 @@ assumed.
 
 These are ingredients of the tree example concerning equation `oibu` of Hastings,
 arXiv:cond-mat/0508554v3, lines 1690–1694, described in the
-[tree-basis note](https://github.com/LionSR/TNLean/blob/7d5a1b33adfea1ea6963734f09fcbbe647a5faae/docs/paper-gaps/hastings05_tree_basis_counterexample.tex).
+tree-basis note
+`docs/paper-gaps/hastings05_tree_basis_counterexample.tex`.
 
 Moved from TNLean, `TNLean/Lattice/TreeBasisCounterexample/HardCoreNumber.lean`. Changes:
 namespace `ManyBody.HardCore` in place of `TNLean.Lattice.TreeBasisCounterexample`.

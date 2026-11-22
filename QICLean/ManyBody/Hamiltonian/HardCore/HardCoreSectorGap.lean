@@ -19,7 +19,8 @@ these sectors.
 Only the one-particle coefficient inequality is an input; the many-body sector bound is proved
 from the qubit lowerings and the particle number. This is a partial certificate for the
 argument of the
-[tree-basis note](https://github.com/LionSR/TNLean/blob/7d5a1b33adfea1ea6963734f09fcbbe647a5faae/docs/paper-gaps/hastings05_tree_basis_counterexample.tex),
+tree-basis note
+`docs/paper-gaps/hastings05_tree_basis_counterexample.tex`,
 concerning Hastings, arXiv:cond-mat/0508554v3, equation `oibu`, lines 1690–1694. The specific
 tree incidence matrix, its one-particle bound and the full vacuum-plus-mode kernel statement
 are not asserted here.

@@ -17,7 +17,8 @@ occupation-minus-mode inequality of the tree example.
 These are algebraic ingredients of the counterexample to the unrestricted metric-lattice
 summability assertion of Hastings, arXiv:cond-mat/0508554v3, equation `oibu`, lines 1690–1694.
 The complete tree family is described in the
-[tree-basis note](https://github.com/LionSR/TNLean/blob/7d5a1b33adfea1ea6963734f09fcbbe647a5faae/docs/paper-gaps/hastings05_tree_basis_counterexample.tex);
+tree-basis note
+`docs/paper-gaps/hastings05_tree_basis_counterexample.tex`;
 this module proves the lifting step and does not assert that the full counterexample is
 formalized.
 
