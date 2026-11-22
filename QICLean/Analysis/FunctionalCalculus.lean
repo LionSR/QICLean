@@ -11,6 +11,7 @@ Authors: QICLean contributors
 import QICLean.Analysis.FunctionalCalculus.CfcComplex
 import QICLean.Analysis.FunctionalCalculus.CfcConjugation
 import QICLean.Analysis.FunctionalCalculus.CfcKronecker
+import QICLean.Analysis.FunctionalCalculus.CfcUnitaryConjugation
 import QICLean.Analysis.FunctionalCalculus.FiniteKroneckerPowers
 import QICLean.Analysis.FunctionalCalculus.MatrixCFCIntegral
 import QICLean.Analysis.FunctionalCalculus.MatrixPowers
@@ -31,5 +32,6 @@ import QICLean.Analysis.FunctionalCalculus.SpectralPhase
 import QICLean.Analysis.FunctionalCalculus.SpectralPowers
 import QICLean.Analysis.FunctionalCalculus.SpectralQuadraticForm
 import QICLean.Analysis.FunctionalCalculus.SqrtHolder
+import QICLean.Analysis.FunctionalCalculus.SqrtLipschitz
 import QICLean.Analysis.FunctionalCalculus.TraceCFC
 import QICLean.Analysis.FunctionalCalculus.ViableSubspaceSpectralProjector

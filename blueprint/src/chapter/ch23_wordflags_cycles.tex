@@ -1,0 +1,284 @@
+\section{Finite cycles, product identities and rank inequalities}
+
+\begin{lemma}[Finite-cycle coboundary]
+    \label{lem:finite_cycle_coboundary}
+    \lean{Fin.exists_succ_coboundary_of_prod_eq_one,
+        Fin.exists_cyclic_coboundary_of_prod_eq_one,
+        Fin.exists_complex_unit_cyclic_coboundary_of_prod_eq_one}
+    \leanok
+    Let $G$ be a commutative group, and let
+    $\kappa_0,\ldots,\kappa_n\in G$. If
+    $\prod_{k=0}^{n}\kappa_k=1$, then there are
+    $\varphi_0,\ldots,\varphi_n\in G$ such that
+    $\kappa_k=\varphi_k\varphi_{k+1}^{-1}$ for every $k<n$, and
+    $\kappa_n=\varphi_n\varphi_0^{-1}$.
+    Equivalently, on a nonempty finite cyclic index set, a product-one family
+    satisfies $\kappa_k=\varphi_k\varphi_{k+1}^{-1}$ for every cyclic edge.
+    In particular, a product-one family of complex unit phases admits such a
+    choice with all $\varphi_k$ again of unit modulus.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Set $\varphi_k=(\kappa_0\cdots\kappa_{k-1})^{-1}$, with the empty product
+    equal to $1$. For $k<n$,
+    \begin{align}
+        \varphi_k\varphi_{k+1}^{-1}
+         & =
+        (\kappa_0\cdots\kappa_{k-1})^{-1}
+        (\kappa_0\cdots\kappa_k)
+        =\kappa_k. \notag
+    \end{align}
+    Separating the final factor in the product-one hypothesis gives
+    $(\kappa_0\cdots\kappa_{n-1})\kappa_n=1$, which gives
+    \begin{align}
+        \varphi_n\varphi_0^{-1}
+        =
+        (\kappa_0\cdots\kappa_{n-1})^{-1}
+        =
+        \kappa_n. \notag
+    \end{align}
+    For unit phases the same construction runs in the circle group.
+\end{proof}
+
+\begin{lemma}[Coordinates for a cyclic step]
+    \label{thm:periodic_step_coordinates}
+    \lean{Fin.stepOrbit_bijective, Fin.stepOrbitEquiv, Fin.stepOrbitEquiv_add_one}
+    \leanok
+    Let $m>0$, $p\geq0$, and $r=\gcd(m,p)$. Every residue $u$ modulo $m$
+    has a unique expression $u=\alpha+pk\pmod m$, with
+    $0\leq\alpha<r$ and $0\leq k<m/r$.
+    In these coordinates from
+    \cite[proof of Theorem~4.1]{DeLasCuevas2017Irreducible}, adding $p$
+    preserves $\alpha$ and increments $k$ by one modulo $m/r$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    If two such expressions agree modulo $m$, reduction modulo $r$
+    identifies their representatives $\alpha$. Cancelling that common
+    representative gives $pk=pk'\pmod m$, hence $k=k'\pmod{m/r}$.
+    Their bounds imply $k=k'$. There are $r(m/r)=m$ pairs of coordinates,
+    so this injective map to the $m$ residues is also surjective.
+    Since $m$ divides $p(m/r)$, reducing $k+1$ modulo $m/r$ does not
+    change $\alpha+p(k+1)$ modulo $m$.
+\end{proof}
+
+\begin{lemma}[Orbit roots as consecutive products]
+    \label{thm:periodic_orbit_phase_products}
+    \lean{Fin.exists_stepOrbit_phases}
+    \leanok
+    \uses{thm:periodic_step_coordinates}
+    Let $G$ be an abelian group, $m>0$, $p\ge0$, $r=\gcd(m,p)$,
+    and $q=m/r$. Suppose $c_\alpha\in G$ satisfies $c_\alpha^q=1$
+    for every $0\le\alpha<r$. There are $b_u\in G$, indexed modulo
+    $m$, such that, writing $u=\alpha_u+pk_u$ for the coordinates of
+    Lemma~\ref{thm:periodic_step_coordinates},
+    \begin{align}
+        \prod_{j=0}^{p-1}b_{u+j} & = c_{\alpha_u}.
+        \label{eq:periodic_orbit_phase_product}
+    \end{align}
+    For $G=U(1)$, these are the local phases in
+    \cite[proof of Theorem~4.1]{DeLasCuevas2017Irreducible}, where the
+    coordinate $k_u$ is now advanced modulo $q$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    \uses{thm:periodic_step_coordinates}
+    Put $f_u=c_{\alpha_u}^{k_u}$ and $b_u=f_{u+1}/f_u$.
+    The coordinate shift and $c_\alpha^q=1$ give
+    $f_{u+p}=c_{\alpha_u}f_u$, including when $k_u=q-1$.
+    The product telescopes to $f_{u+p}/f_u=c_{\alpha_u}$,
+    proving~(\ref{eq:periodic_orbit_phase_product}).
+\end{proof}
+
+\begin{lemma}[Multiplication of an orthogonal resolution]
+    \label{thm:periodic_orthogonal_resolution_multiplication}
+    \lean{orthogonalProjection_mul_eq_ite_of_sum_eq_one}
+    \leanok
+    If orthogonal projections $P_u$ satisfy $\sum_u P_u=\Id$, then
+    $P_uP_v=\delta_{uv}P_u$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Each projection is idempotent, $P_u^2=P_u$, and distinct projections in an
+    orthogonal resolution have orthogonal ranges, $P_uP_v=0$ for $u\ne v$.
+\end{proof}
+
+\begin{lemma}[Eventually constant weighted cycle sums]
+    \label{thm:beigi_eventually_constant_sector_graph}
+    \lean{FiniteWeightedDigraph.cyclicEdgeWeight_eq_one,
+        FiniteWeightedDigraph.cycle_eq_constant,
+        FiniteWeightedDigraph.cycleWeightSum_eq_card_loop}
+    \leanok
+    Let $G$ be a finite directed graph whose edge weights are non-negative
+    integers, and let
+    \begin{align}
+        s_N
+         & =
+        \sum_{(a_0,\ldots,a_{N-1})}
+        \prod_{n=0}^{N-1}w(a_n,a_{n+1}) \notag
+    \end{align}
+    be the weighted sum over ordered cyclic vertex sequences, indices modulo
+    $N$. Suppose that $s_N$ is constant for all sufficiently large $N$. By
+    the comparison in \cite[Section~IV]{Beigi2012Classification}, every edge
+    that belongs to a directed cycle of positive weight then has weight one,
+    every such cycle is a repetition of a single loop, and, for every $N>0$,
+    $s_N=\#\{a:w(a,a)>0\}$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    For a sufficiently large $N$, the sums at lengths $N$,
+    $N+1$, and $N(N+1)$ share their common eventual value. Repeating each
+    ordered $N$-cycle $N+1$ times gives an injection into the cycles of length
+    $N(N+1)$, while repeating each ordered $(N+1)$-cycle $N$ times gives a
+    second injection. Comparison of the three weighted sums shows first that
+    every positive cyclic weight is one. Both injections must then be
+    exhaustive. Hence a cycle at the common length has periods $N$ and
+    $N+1$; comparison of adjacent entries gives period one. Repeating an
+    arbitrary shorter cycle to a sufficiently large length proves that it is
+    constant. The only surviving ordered cycles at any positive length are
+    therefore the constant words supported on positive loops, each of weight
+    one.
+\end{proof}
+
+\begin{lemma}[Factor scalars from a product tensor identity]
+    \label{thm:periodic_product_tensor_phase_extraction}
+    \lean{PiTensorProduct.exists_kappa_of_tprod_eq_smul}
+    \leanok
+    Let $z\in\C$ be nonzero. For each position $v=0,\ldots,m-1$, let
+    $\{A_v^i\}_i$ and $\{B_v^i\}_i$ be families of complex matrices with the
+    same rectangular size. Suppose that for every choice of letters
+    $\sigma=(\sigma_v)_v$,
+    \begin{align}
+        \bigotimes_{v=0}^{m-1} A_v^{\sigma_v}
+         & =
+        z\,\bigotimes_{v=0}^{m-1} B_v^{\sigma_v}.
+        \notag
+    \end{align}
+    Suppose also that for each $v$ there is a reference letter $i_v$ and a
+    matrix entry $(r_v,c_v)$ with
+    $(B_v^{i_v})_{r_v,c_v}\ne 0$. Then there are scalars
+    $\kappa_v\in\C$ such that
+    \begin{align}
+        \prod_{v=0}^{m-1}\kappa_v & =z,
+        \notag                                      \\
+        A_v^i                     & =\kappa_v B_v^i
+        \notag
+    \end{align}
+    for every position $v$ and every letter $i$. This is the extraction step
+    of \cite[Appendix~A, lines~1072--1080]{DeLasCuevas2017Irreducible}.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    For each position choose the coordinate functional at the nonzero
+    reference entry and normalize it so that it takes the value $1$ on
+    $B_v^{i_v}$. Applying the tensor product of these functionals to the
+    reference identity gives $\prod_v\kappa_v=z$. To prove the
+    proportionality at position $v$, replace only the $v$-th functional by the
+    coordinate functional at an arbitrary entry $(r,c)$ and apply the
+    identity with $\sigma_v=i$ and all other letters fixed at their
+    references. The product over the other positions is nonzero because its
+    product with $\kappa_v$ is $z$, so cancellation gives
+    $(A_v^i)_{r,c}=(\kappa_v B_v^i)_{r,c}$ for every entry.
+\end{proof}
+
+\begin{lemma}[Product-one factor scalars after choosing a root]
+    \label{thm:periodic_product_one_phase_extraction}
+    \lean{PiTensorProduct.exists_kappa_product_one_of_tprod_eq_root_smul}
+    \leanok
+    \uses{thm:periodic_product_tensor_phase_extraction}
+    In the setting of
+    Lemma~\ref{thm:periodic_product_tensor_phase_extraction}, let $m>0$ and
+    choose $\xi\in\C$ with $\xi^m=z$. Then there are scalars $\kappa_v\in\C$
+    with $\prod_v\kappa_v=1$ and $A_v^i=\kappa_v\xi\,B_v^i$ for every
+    position $v$ and every letter $i$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Lemma~\ref{thm:periodic_product_tensor_phase_extraction} yields
+    scalars $\mu_v$ with $\prod_v\mu_v=z$ and $A_v^i=\mu_vB_v^i$. Since
+    $m>0$, the identities $\xi^m=z$ and $z\ne0$ imply $\xi\ne0$, so the
+    ratios $\kappa_v=\mu_v/\xi$ satisfy
+    $\prod_v\kappa_v=(\prod_v\mu_v)/\xi^m=z/z=1$ and
+    $A_v^i=(\kappa_v\xi)B_v^i$.
+\end{proof}
+
+\begin{definition}[Common buffer length of a finite family]
+    \label{def:common_buffer_length}
+    \lean{commonBufferLength, commonBufferLength_pos,
+        le_commonBufferLength_add_one, commonBufferLength_le}
+    \leanok
+    For a finite family of natural numbers $(N_i)_{i\in I}$, the
+    \emph{common buffer length} is
+    \begin{align}
+        L & =\max\Bigl(1,\max_{i\in I}(N_i-1)\Bigr),
+        \label{eq:common_buffer_length}
+    \end{align}
+    with $N_i-1$ read as $0$ when $N_i=0$.  It is positive, satisfies
+    $N_i\leq L+1$ for every $i\in I$, and is the least positive integer with
+    this property.
+\end{definition}
+
+\begin{lemma}[Choi rank and the Kraus span]
+    \label{thm:periodic_choi_rank_kraus_span}
+    \lean{Channel.choiRank_mapLM_eq_finrank_span,
+        Channel.choiRank_mapLM_eq_finrank_wordSpan_one}
+    \leanok
+    Let $\mathcal F(X)=\sum_a A^aX(A^a)^*$ on $\MN{D}$, and let
+    $S=\spn_{\C}\{A^a\}_a$. The Choi rank of $\mathcal F$ is
+    $\dim_{\C}S$, including when $D=0$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    For $D>0$, let $C$ have columns equal to the vectorized Kraus operators,
+    multiplied by the common nonzero normalization of the Choi matrix. That
+    matrix is $CC^*$, whose rank is the rank of $C$. Vectorization preserves
+    the dimension of the Kraus span. For $D=0$, both ranks are zero.
+\end{proof}
+
+\begin{lemma}[Rank under an injective positive map]
+    \label{thm:periodic_injective_positive_rank}
+    \lean{Matrix.rank_le_rank_map_of_injective_positive,
+        Matrix.rank_le_rank_map_of_injective_positive_fintype}
+    \leanok
+    Let $\Phi:\MN{D}\to\MN{D}$ be an injective positive linear map.
+    If $A\ge0$, then $\operatorname{rank}A\le\operatorname{rank}\Phi(A)$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    The positive matrices bounded above by a positive multiple of $A$
+    span the matrix algebra on its support. Positivity carries this span
+    into the analogous span for $\Phi(A)$. Their complex dimensions are
+    $(\operatorname{rank}A)^2$ and $(\operatorname{rank}\Phi(A))^2$,
+    respectively, so injectivity gives the inequality.
+\end{proof}
+
+\begin{lemma}[Choi rank under injective composition]
+    \label{thm:periodic_injective_composition_choi_rank}
+    \lean{Channel.choiRank_le_comp_of_injective,
+        Channel.choiRank_le_pow_of_injective}
+    \leanok
+    Let $\mathcal F$ and $\mathcal G$ be completely positive maps on
+    $\MN{D}$, and suppose $\mathcal F$ is injective. Then
+    $\operatorname{rank}C_{\mathcal G}\le
+        \operatorname{rank}C_{\mathcal F\circ\mathcal G}$.
+    Consequently $\operatorname{rank}C_{\mathcal F}\le
+        \operatorname{rank}C_{\mathcal F^p}$ for every $p>0$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    \uses{thm:periodic_injective_positive_rank}
+    Apply Lemma~\ref{thm:periodic_injective_positive_rank} to the
+    injective positive map $\mathcal F\otimes\mathrm{id}$ and the
+    positive Choi matrix $C_{\mathcal G}$. The image is
+    $C_{\mathcal F\circ\mathcal G}$. Iteration gives the power inequality.
+\end{proof}

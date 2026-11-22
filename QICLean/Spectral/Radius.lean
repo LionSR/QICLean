@@ -8,6 +8,7 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Spectral.Radius
 
+import QICLean.Spectral.Radius.NonnegativeSpectralRadius
 import QICLean.Spectral.Radius.PowerDecay
 import QICLean.Spectral.Radius.SpectralRadius
 import QICLean.Spectral.Radius.SubperipheralSpectrum

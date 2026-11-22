@@ -8,6 +8,7 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Representation.Twirl
 
+import QICLean.Representation.Twirl.FiniteGroupUnitaryAverage
 import QICLean.Representation.Twirl.ReplicaSpectralLaw
 import QICLean.Representation.Twirl.UnitaryCommutant
 import QICLean.Representation.Twirl.UnitaryTwirl

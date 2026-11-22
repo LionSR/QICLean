@@ -8,8 +8,10 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Kraus
 
+import QICLean.Kraus.BlockTriangularWord
 import QICLean.Kraus.Blocking
 import QICLean.Kraus.CPPrimitive
+import QICLean.Kraus.ChoiRankSpan
 import QICLean.Kraus.Injectivity
 import QICLean.Kraus.IrreducibleAction
 import QICLean.Kraus.MixedMap

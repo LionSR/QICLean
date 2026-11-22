@@ -30,10 +30,11 @@ repositories stay on the same Lean/Mathlib toolchain.
 The extraction-era `QICLean.MPS` compatibility layer has been dissolved.
 Channel-generic declarations live under `QICLean.Kraus`, while genuinely
 matrix-product-*state* definitions such as `GaugeEquiv`, `SameMPV`, and `mpv`
-now live in TNLean. The root-level abbrev `MPSTensor d D` remains in
-`QICLean/Kraus/Word.lean` as a synonym for a finite Kraus family so TNLean can
-state its tensor-network theory over the same underlying type; QICLean does
-not declare an API under `namespace MPSTensor`.
+now live in TNLean, together with the tensor types `MPTensor α β` and
+`MPSTensor d D`, which are abbreviations of the family type `α → Matrix β β ℂ`.
+QICLean states its Kraus-family theory on that family type directly: word
+evaluation, word spans, injectivity, normality, blocking and the transfer map
+take an arbitrary index type `ι` and an arbitrary finite basis `n`.
 
 ## What you need
 
@@ -122,9 +123,10 @@ order (see
 `namespace Kraus`, over finite families of matrices. In particular,
 `QICLean/Kraus/Injectivity.lean` contains injectivity and normality, and
 `QICLean/Kraus/Wielandt/` contains the span-growth and quantum Wielandt
-development. The spelling `MPSTensor d D` may still appear as an argument
-type because it is a reducible root-level abbrev for the same finite-family
-type, but it does not introduce a separate namespace or compatibility API.
+development. QICLean does not define `MPSTensor`; the arguments are written
+as families `ι → Matrix n n ℂ`, with `Fin d` and `Fin D` only where a proof uses
+the dimensions as numbers (the Wielandt bounds, the Perron–Frobenius
+statements over `Fin D`).
 
 ## A first reading path
 

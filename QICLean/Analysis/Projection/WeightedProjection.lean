@@ -269,21 +269,4 @@ theorem norm_le_of_subtypeL_comp_eq_domRestrict
 end ContinuousLinearMap
 end
 
-namespace Matrix
-
-open scoped MatrixOrder
-
-/-- The matrix order is transported to the actual Euclidean operator order.
-Auxiliary to the weighted spectral argument of ALVV, t:ais, lines 1010--1024. -/
-theorem toEuclideanCLM_le_of_le {n : Type*} [Fintype n] [DecidableEq n]
-    {A B : Matrix n n ℂ} (hAB : A ≤ B) :
-    toEuclideanCLM (n := n) (𝕜 := ℂ) A ≤ toEuclideanCLM (n := n) (𝕜 := ℂ) B := by
-  apply ContinuousLinearMap.le_def.mpr
-  have hpos : (B - A).toEuclideanLin.IsPositive :=
-    Matrix.isPositive_toEuclideanLin_iff.mpr (Matrix.le_iff.mp hAB)
-  have hposC : (toEuclideanCLM (n := n) (𝕜 := ℂ) (B - A)).IsPositive := by
-    apply (ContinuousLinearMap.isPositive_toLinearMap_iff _).mp
-    simpa only [Matrix.coe_toEuclideanCLM_eq_toEuclideanLin] using hpos
-  simpa only [map_sub] using hposC
-end Matrix
 end

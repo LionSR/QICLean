@@ -9,10 +9,12 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Spectral.Eigenvalue
 
 import QICLean.Spectral.Eigenvalue.AdjointEigenvalues
+import QICLean.Spectral.Eigenvalue.AnticommutingEvenDimension
 import QICLean.Spectral.Eigenvalue.CommutingHermitian
 import QICLean.Spectral.Eigenvalue.CompactSVD
 import QICLean.Spectral.Eigenvalue.CompressionEnergyBounds
 import QICLean.Spectral.Eigenvalue.CompressionEnergyInterval
+import QICLean.Spectral.Eigenvalue.ConstantTracePowers
 import QICLean.Spectral.Eigenvalue.DensityMaxEigenvector
 import QICLean.Spectral.Eigenvalue.DominantEigenvectorUniqueness
 import QICLean.Spectral.Eigenvalue.EigenspaceMap
@@ -28,6 +30,8 @@ import QICLean.Spectral.Eigenvalue.KyFanNorm
 import QICLean.Spectral.Eigenvalue.MatrixReindexEuclidean
 import QICLean.Spectral.Eigenvalue.MatrixSpectralDecomp
 import QICLean.Spectral.Eigenvalue.NonzeroTraceEigenvalue
+import QICLean.Spectral.Eigenvalue.ProjectiveCommutantEigenspace
+import QICLean.Spectral.Eigenvalue.SemisimpleTracePowers
 import QICLean.Spectral.Eigenvalue.ShiftedDensityClipping
 import QICLean.Spectral.Eigenvalue.ShiftedFilterClipping
 import QICLean.Spectral.Eigenvalue.ShiftedTracePowerSpectrum
@@ -35,3 +39,4 @@ import QICLean.Spectral.Eigenvalue.ShiftedZeroTraceNilpotent
 import QICLean.Spectral.Eigenvalue.TailTraceNorm
 import QICLean.Spectral.Eigenvalue.TensorEnergyMinimum
 import QICLean.Spectral.Eigenvalue.VariationalBound
+import QICLean.Spectral.Eigenvalue.WordAlgebra

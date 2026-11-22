@@ -500,10 +500,10 @@ in Theorem~\ref{thm:wolf_6_2_item_3}.
     \label{def:kraus_exact_word_span}
     \lean{Kraus.wordSpan}
     \leanok
-    For a finite Kraus family $K_0,\ldots,K_{d-1}\in\MN{D}$ and
-    $N\in\mathbb N$, define
+    For a family $\{K_i\}_{i\in I}$ of matrices on~$\C^n$, indexed by an
+    arbitrary set~$I$, and $N\in\mathbb N$, define
     \begin{align}
-        S_N(K)&=\operatorname{span}\{K_{i_1}\cdots K_{i_N}:0\leq i_j<d\}.
+        S_N(K)&=\operatorname{span}\{K_{i_1}\cdots K_{i_N}:i_1,\ldots,i_N\in I\}.
         \notag
     \end{align}
     The empty product is the identity matrix.

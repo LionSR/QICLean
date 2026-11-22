@@ -3,6 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
+import QICLean.Spectral.Gap.CompactKernelGap
 import QICLean.Spectral.Perturbation.KernelGapPerturbation
 import QICLean.Spectral.Gap.KernelSpectralGap
 import QICLean.Spectral.Gap.PositiveGapTransfer
@@ -171,7 +172,7 @@ theorem forall_hasEigenvalue_iff_norm {H : Matrix n n ℂ} (hH : H.PosSemidef) {
   (forall_hasEigenvalue_iff_re_inner hH).trans (re_inner_iff_norm hH)
 
 /-- The gap at `0` is a nonzero kernel together with the spectral bound above it. -/
-private theorem isGapped_zero_iff {H : Matrix n n ℂ} {Δ : ℝ} :
+theorem isGapped_zero_iff {H : Matrix n n ℂ} {Δ : ℝ} :
     IsGapped H 0 Δ ↔ groundSpace H 0 ≠ ⊥ ∧
       ∀ μ : ℂ, Module.End.HasEigenvalue (toEuclideanLin H) μ → μ = 0 ∨ (Δ : ℂ) ≤ μ := by
   simp only [IsGapped, Complex.ofReal_zero, zero_add]
@@ -272,5 +273,58 @@ theorem _root_.IsCompact.exists_uniform_isGapped {X : Type*} [TopologicalSpace X
     ∃ Δ : ℝ, 0 < Δ ∧ ∃ N₀ : ℕ, ∀ x ∈ S, ∀ N, N₀ ≤ N → IsGapped (H x N) (E x N) Δ :=
   hS.exists_uniform_pos_nat_bounds (fun Δ N₀ x ↦ ∀ N, N₀ ≤ N → IsGapped (H x N) (E x N) Δ)
     (fun hle h N hN ↦ (h N hN).mono hle) (fun hle h N hN ↦ h N (hle.trans hN)) hlocal
+
+/-- The spectral bound above the kernel is weaker for a smaller gap. -/
+theorem forall_hasEigenvalue_mono {H : Matrix n n ℂ} {Δ Δ' : ℝ} (hΔ : Δ' ≤ Δ)
+    (h : ∀ μ : ℂ, Module.End.HasEigenvalue (toEuclideanLin H) μ → μ = 0 ∨ (Δ : ℂ) ≤ μ) :
+    ∀ μ : ℂ, Module.End.HasEigenvalue (toEuclideanLin H) μ → μ = 0 ∨ (Δ' : ℂ) ≤ μ :=
+  fun μ hμ ↦ (h μ hμ).imp_right (Complex.real_le_real.mpr hΔ).trans
+
+/-- A positive semidefinite matrix has a positive gap above its kernel: every nonzero
+eigenvalue is at least some `Δ > 0`. -/
+theorem exists_pos_forall_hasEigenvalue {H : Matrix n n ℂ} (hH : H.PosSemidef) :
+    ∃ Δ : ℝ, 0 < Δ ∧
+      ∀ μ : ℂ, Module.End.HasEigenvalue (toEuclideanLin H) μ → μ = 0 ∨ (Δ : ℂ) ≤ μ := by
+  obtain ⟨Δ, hΔ, h⟩ := (toEuclideanLin H).exists_pos_mul_norm_le_of_mem_orthogonal_ker
+  exact ⟨Δ, hΔ, (forall_hasEigenvalue_iff_norm hH).mpr h⟩
+
+/-- An orthogonal projection has eigenvalues `0` and `1` only, so its gap above the kernel
+is `1`. -/
+theorem forall_hasEigenvalue_one_of_isStarProjection {P : Matrix n n ℂ}
+    (hP : IsStarProjection P) :
+    ∀ μ : ℂ, Module.End.HasEigenvalue (toEuclideanLin P) μ → μ = 0 ∨ (1 : ℂ) ≤ μ := by
+  intro μ hμ
+  obtain ⟨v, hv⟩ := hμ.exists_hasEigenvector
+  have h1 : toEuclideanLin P v = μ • v := hv.apply_eq_smul
+  have h2 : toEuclideanLin P (toEuclideanLin P v) = toEuclideanLin P v := by
+    simp only [← coe_toEuclideanCLM_eq_toEuclideanLin, ContinuousLinearMap.coe_coe,
+      ← mul_apply_eq_comp, ← map_mul, hP.isIdempotentElem.eq]
+  rw [h1, map_smul, h1, smul_smul] at h2
+  have h3 : (μ * μ - μ) • v = 0 := by rw [sub_smul, h2, sub_self]
+  rcases smul_eq_zero.mp h3 with h | h
+  · have : μ * (μ - 1) = 0 := by linear_combination h
+    rcases mul_eq_zero.mp this with h0 | h1'
+    · exact Or.inl h0
+    · exact Or.inr (sub_eq_zero.mp h1').ge
+  · exact absurd h hv.2
+
+/-- **A uniform gap above the kernel on a compact parameter set.** For a continuous family of
+positive semidefinite matrices whose kernel projections depend continuously on the parameter,
+one `Δ > 0` bounds every nonzero eigenvalue from below on a compact set of parameters. -/
+theorem _root_.IsCompact.exists_uniform_forall_hasEigenvalue {X : Type*} [TopologicalSpace X]
+    {S : Set X} (hS : IsCompact S) {H : X → Matrix n n ℂ} (hH : Continuous H)
+    (hpos : ∀ x, (H x).PosSemidef)
+    (hK : Continuous fun x ↦ (groundSpace (H x) 0).starProjection) :
+    ∃ Δ : ℝ, 0 < Δ ∧ ∀ x ∈ S,
+      ∀ μ : ℂ, Module.End.HasEigenvalue (toEuclideanLin (H x)) μ → μ = 0 ∨ (Δ : ℂ) ≤ μ := by
+  have hcont : Continuous fun x ↦ toEuclideanCLM (𝕜 := ℂ) (H x) :=
+    (LinearMap.continuous_of_finiteDimensional
+      (toEuclideanCLM (n := n) (𝕜 := ℂ)).toAlgEquiv.toLinearMap).comp hH
+  have hK' : Continuous fun x ↦
+      (LinearMap.ker (toEuclideanCLM (𝕜 := ℂ) (H x)).toLinearMap).starProjection := by
+    simpa only [groundSpace_zero, coe_toEuclideanCLM_eq_toEuclideanLin] using hK
+  obtain ⟨Δ, hΔ, h⟩ := ContinuousLinearMap.exists_uniform_norm_gap_of_compact
+    (fun x ↦ toEuclideanCLM (𝕜 := ℂ) (H x)) hcont hK' hS
+  exact ⟨Δ, hΔ, fun x hx ↦ (forall_hasEigenvalue_iff_norm (hpos x)).mpr (h x hx)⟩
 
 end ManyBody

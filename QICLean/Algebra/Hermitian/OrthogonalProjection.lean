@@ -25,6 +25,10 @@ channels and irreducibility.
 * `isOrthogonalProjection_posSemidef`
 * `isOrthogonalProjection_sum_of_pairwise_mul_eq_zero`
 * `orthogonalProjection_mul_eq_zero_of_sum_eq_one`
+* `orthogonalProjection_mul_eq_ite_of_sum_eq_one`
+
+The last declaration was moved from TNLean, `TNLean/Algebra/OrthogonalResolution.lean` at commit
+`49b78ed821` (Apache-2.0).
 -/
 
 open scoped Matrix ComplexOrder BigOperators MatrixOrder
@@ -296,3 +300,14 @@ theorem orthogonalProjection_mul_eq_zero_of_sum_eq_one {m : ℕ}
   have hBl := hBzero l
   rw [hB] at hBl
   simpa [Ne.symm hkl] using hBl
+
+/-- Orthogonal projections summing to the identity have the Kronecker-delta
+multiplication table. Source: arXiv:1708.00029, paragraph following `lem:unique-dec`. -/
+theorem orthogonalProjection_mul_eq_ite_of_sum_eq_one {m : ℕ}
+    (P : Fin m → Matrix (Fin D) (Fin D) ℂ)
+    (hproj : ∀ u, IsOrthogonalProjection (P u)) (hsum : ∑ u, P u = 1)
+    (u v : Fin m) : P u * P v = if u = v then P u else 0 := by
+  split_ifs with huv
+  · subst v
+    exact (hproj u).2
+  · exact orthogonalProjection_mul_eq_zero_of_sum_eq_one P hproj hsum huv

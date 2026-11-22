@@ -24,4 +24,5 @@ import QICLean.Spectral.LowEnergy.RitzGroundSpace
 import QICLean.Spectral.LowEnergy.RitzGroundSpaceCloseness
 import QICLean.Spectral.LowEnergy.RitzSubspace
 import QICLean.Spectral.LowEnergy.ShiftedLowEnergyCoordinates
+import QICLean.Spectral.LowEnergy.SoftTruncationLowRestriction
 import QICLean.Spectral.LowEnergy.WeightedLowRestriction

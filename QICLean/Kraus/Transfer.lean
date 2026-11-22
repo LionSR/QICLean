@@ -22,30 +22,26 @@ open scoped Matrix ComplexOrder BigOperators
 
 namespace Kraus
 
-variable {d D : ℕ}
+variable {ι n : Type*} [Fintype ι] [Fintype n] [DecidableEq n]
 
 /-- The transfer operator associated to a finite Kraus family `A`:
 $$E_A(X) = \sum_i A_i X A_i^{\dagger}.$$
 
-This is the finite-index specialization of `Kraus.mapLM`. -/
-noncomputable abbrev transferMap (A : MPSTensor d D) :
-    Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ :=
+It is the Kraus map `Kraus.mapLM` of the family. -/
+noncomputable abbrev transferMap (A : ι → Matrix n n ℂ) : Matrix n n ℂ →ₗ[ℂ] Matrix n n ℂ :=
   mapLM A
 
 @[kraus_transfer]
-lemma transferMap_apply (A : MPSTensor d D) (X : Matrix (Fin D) (Fin D) ℂ) :
-    transferMap (d := d) (D := D) A X = ∑ i : Fin d, A i * X * (A i)ᴴ := by
+lemma transferMap_apply (A : ι → Matrix n n ℂ) (X : Matrix n n ℂ) :
+    transferMap A X = ∑ i, A i * X * (A i)ᴴ := by
   rw [mapLM_apply, map_apply]
 
 /-- Gauge covariance of the transfer map. -/
-lemma transferMap_gauge_conj (A : MPSTensor d D) (X : GL (Fin D) ℂ)
-    (Y : Matrix (Fin D) (Fin D) ℂ) :
-    transferMap (d := d) (D := D)
-        (fun i => (X : Matrix _ _ ℂ) * A i * (X⁻¹ : Matrix _ _ ℂ)) Y
-      = (X : Matrix _ _ ℂ)
-          * transferMap (d := d) (D := D) A
-              ((X⁻¹ : Matrix _ _ ℂ) * Y * ((X⁻¹ : Matrix _ _ ℂ)ᴴ))
-          * (X : Matrix _ _ ℂ)ᴴ := by
+lemma transferMap_gauge_conj (A : ι → Matrix n n ℂ) (X : GL n ℂ) (Y : Matrix n n ℂ) :
+    transferMap (fun i => (X : Matrix n n ℂ) * A i * (X⁻¹ : Matrix n n ℂ)) Y
+      = (X : Matrix n n ℂ)
+          * transferMap A ((X⁻¹ : Matrix n n ℂ) * Y * ((X⁻¹ : Matrix n n ℂ)ᴴ))
+          * (X : Matrix n n ℂ)ᴴ := by
   classical
   simp [Finset.mul_sum, Finset.sum_mul, Matrix.mul_assoc]
 
@@ -53,8 +49,8 @@ lemma transferMap_gauge_conj (A : MPSTensor d D) (X : GL (Fin D) ℂ)
 
 This is a local family-specific auxiliary lemma; later chapters subsume it under the
 abstract completely-positive / positive-map framework. -/
-lemma transferMap_pos (A : MPSTensor d D) {X : Matrix (Fin D) (Fin D) ℂ}
-    (hX : X.PosSemidef) : (transferMap (d := d) (D := D) A X).PosSemidef := by
+lemma transferMap_pos (A : ι → Matrix n n ℂ) {X : Matrix n n ℂ}
+    (hX : X.PosSemidef) : (transferMap A X).PosSemidef := by
   classical
   simpa [transferMap_apply] using
     Matrix.posSemidef_sum (s := Finset.univ) (x := fun i => A i * X * (A i)ᴴ) (by

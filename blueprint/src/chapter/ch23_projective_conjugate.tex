@@ -1,0 +1,154 @@
+\section{Representations projective up to complex conjugation}
+\label{sec:projective_conjugate}
+
+\begin{definition}[Conjugation and reflection parities]
+    \label{def:symmetry_parity}
+    \lean{SymmetryParity,
+        SymmetryParity.oddParity,
+        SymmetryParity.parityConj,
+        SymmetryParity.parityConjMatrix,
+        SymmetryParity.symmetryLetter}
+    \leanok
+    A \emph{parity} is an element of the group $\mathbb Z_2=\{0,1\}$. For a
+    parity $p$, let $C_p$ be the identity of $\C$ when $p=0$ and complex
+    conjugation when $p=1$, and apply $C_p$ entrywise to matrices. For two
+    parities $t$ (time reversal) and $r$ (reflection), define on square
+    matrices
+    \begin{align}
+        T_{t,r}(M) & =
+        \begin{cases}
+            C_t(M),             & r=0, \\
+            C_t(M)^{\mathsf T}, & r=1.
+        \end{cases}
+        \label{eq:symmetry_parity_action}
+    \end{align}
+    % Source anchor: arXiv:2011.12127, Section III.A, lines 1114--1120.
+\end{definition}
+
+\begin{lemma}[Composition of the parity actions]
+    \label{lem:symmetry_parity_composition}
+    \lean{SymmetryParity.symmetryParity_cases,
+        SymmetryParity.oddParity_mul_self,
+        SymmetryParity.oddParity_ne_one,
+        SymmetryParity.parityConj_one,
+        SymmetryParity.parityConj_odd,
+        SymmetryParity.parityConj_mul,
+        SymmetryParity.parityConj_self,
+        SymmetryParity.parityConjMatrix_apply,
+        SymmetryParity.parityConjMatrix_one,
+        SymmetryParity.parityConjMatrix_self,
+        SymmetryParity.parityConjMatrix_odd,
+        SymmetryParity.parityConjMatrix_mul,
+        SymmetryParity.parityConjMatrix_smul,
+        SymmetryParity.parityConjMatrix_sum,
+        SymmetryParity.parityConjMatrix_comp,
+        SymmetryParity.parityConjMatrix_transpose,
+        SymmetryParity.symmetryLetter_trivial,
+        SymmetryParity.symmetryLetter_timeReversal,
+        SymmetryParity.symmetryLetter_reflection,
+        SymmetryParity.symmetryLetter_both,
+        SymmetryParity.symmetryLetter_comp,
+        SymmetryParity.symmetryLetter_self,
+        SymmetryParity.symmetryLetter_smul,
+        SymmetryParity.symmetryLetter_sum,
+        SymmetryParity.symmetryLetter_mul,
+        SymmetryParity.symmetryLetter_one,
+        SymmetryParity.symmetryLetter_list_prod,
+        SymmetryParity.symmetryLetter_conjugation}
+    \leanok
+    \uses{def:symmetry_parity}
+    The conjugations satisfy $C_pC_q=C_{p+q}$, respect sums, products and
+    transposes of matrices, and are conjugate-linear exactly when $p=1$. The
+    actions (\ref{eq:symmetry_parity_action}) compose by addition of both
+    parities, but $T_{t,r}(zM)=C_t(z)T_{t,r}(M)$. For every matrix $X$,
+    \begin{align}
+        T_{t,r}(X^\dagger M X)
+         & =C_{t+r}(X)^\dagger T_{t,r}(M)C_{t+r}(X).
+    \end{align}
+    On an ordered product of matrices, $T_{t,r}$ applies to every factor and
+    reverses the order of the factors when $r=1$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Conjugation commutes with transpose. Transpose reverses the two outer
+    factors of $X^\dagger M X$, giving the additional conjugation of $X$.
+    Induction on the number of factors gives the ordered-product identity.
+\end{proof}
+
+\begin{definition}[Twisted circle cocycles and conjugate-projective representations]
+    \label{def:spt_mixed_circle_cocycles}
+    \lean{ConjugateProjectiveRepresentation.parityUnitsAction,
+        ConjugateProjectiveRepresentation.parityUnitsAction_coe_smul,
+        ConjugateProjectiveRepresentation,
+        ConjugateProjectiveRepresentation.map_mul,
+        ConjugateProjectiveRepresentation.factor_unitary,
+        ConjugateProjectiveRepresentation.rephase_unitary,
+        ConjugateProjectiveRepresentation.cocycle_of_assoc,
+        ConjugateProjectiveRepresentation.isMulCocycle₂,
+        ConjugateProjectiveRepresentation.factorSystem_rephase,
+        ConjugateProjectiveRepresentation.parityUnitary,
+        ConjugateProjectiveRepresentation.parityUnitary_coe,
+        ConjugateProjectiveRepresentation.parityUnitaryAction,
+        ConjugateProjectiveRepresentation.parityUnitaryCoefficientRepresentation,
+        ConjugateProjectiveRepresentation.parityUnitaryH1Class,
+        ConjugateProjectiveRepresentation.parityUnitaryH2Class,
+        ConjugateProjectiveRepresentation.parityUnitary_toUnits,
+        ConjugateProjectiveRepresentation.isMulCocycle₂_toUnits,
+        ConjugateProjectiveRepresentation.unitaryScalar,
+        ConjugateProjectiveRepresentation.unitaryScalar_coe,
+        ConjugateProjectiveRepresentation.parityUnitaryH2Class_eq_of_isMulCoboundary₂,
+        ConjugateProjectiveRepresentation.parityUnitaryH1Class_eq_of_isMulCoboundary₁,
+        ConjugateProjectiveRepresentation.isMulCoboundary₂_unitary_of_rephase,
+        ConjugateProjectiveRepresentation.parityUnitaryH2Class_eq_of_rephase}
+    \leanok
+    \uses{lem:symmetry_parity_composition}
+    Let $t,r:G\to\mathbb Z_2$ be homomorphisms. The coefficients are the unit
+    circle $\mathrm U(1)$, on which $g$ acts by $C_{t(g)}$ or by
+    $C_{t(g)+r(g)}$. A twisted character and factor system satisfy
+    \begin{align}
+        \phi(gh) & =\phi(g)C_{t(g)}(\phi(h)),               \\
+        \omega(gh,k)\omega(g,h)
+                 & =C_{t(g)+r(g)}(\omega(h,k))\omega(g,hk).
+    \end{align}
+    A unitary conjugate-projective representation $g\mapsto X_g$ has
+    \begin{align}
+        X_gC_{t(g)+r(g)}(X_h) & =\omega(g,h)X_{gh}.
+        \label{eq:spt_mixed_virtual_law}
+    \end{align}
+    Associativity forces the displayed two-cocycle equation, and unitarity
+    forces $|\omega|=1$. Rephasing $X_g$ by $\xi(g)$ changes the factor
+    system by
+    \begin{align}
+        \omega'(g,h) & =
+        \frac{\xi(g)C_{t(g)+r(g)}(\xi(h))}{\xi(gh)}\omega(g,h).
+    \end{align}
+    These are the multiplicative cocycles and coboundaries of group cohomology
+    for the specified coefficient action. Their classes belong to
+    $H^1_t(G,\mathrm U(1))$ and $H^2_{t+r}(G,\mathrm U(1))$
+    \cite[Section~III.A]{Cirac2021Matrix}.
+\end{definition}
+
+\begin{lemma}[Regular realization of a twisted circle cocycle]
+    \label{thm:spt_mixed_regular_realization}
+    \lean{ConjugateProjectiveRepresentation.conjugateLeftRegular,
+        ConjugateProjectiveRepresentation.conjugateLeftRegular_apply,
+        ConjugateProjectiveRepresentation.conjugateLeftRegular_mul,
+        ConjugateProjectiveRepresentation.conjugateLeftRegular_mem_unitaryGroup,
+        ConjugateProjectiveRepresentation.conjugateLeftRegularGL,
+        ConjugateProjectiveRepresentation.conjugateLeftRegularGL_coe,
+        ConjugateProjectiveRepresentation.conjugateRegularRepresentation,
+        ConjugateProjectiveRepresentation.conjugateRegularUnitaryRepresentation}
+    \leanok
+    \uses{def:spt_mixed_circle_cocycles}
+    For every finite group $G$ and genuine circle-valued two-cocycle $\omega$,
+    there is a unitary conjugate-projective representation on $\C^G$
+    with factor system exactly $\omega$. No normalization of the chosen
+    representative is required.
+\end{lemma}
+
+\begin{proof}\leanok
+    The matrices $L_g$ with entries $L_g(x,y)=\omega(g,y)$ when $x=gy$ and
+    zero otherwise are permutation matrices with unit-modulus weights, hence
+    unitary, and the two-cocycle equation at $(g,h,y)$ gives
+    $L_gC_{t(g)+r(g)}(L_h)=\omega(g,h)L_{gh}$ entrywise.
+\end{proof}

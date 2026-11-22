@@ -10,14 +10,14 @@ import QICLean.ManyBody.Sites.ReplicaSwap
 # The cores of the exchanged doubled vector are uncorrelated
 
 Let `Ω` be a unit vector on the sites `V`, and `Ψ = Ω ⊗ Ω` the doubled vector on the sites
-`V ⊕ V`. The exchange `F_R` of the two replicas on a region `R` moves the content of the first
-replica on `R` to the second. In `F_R Ψ`, a core `R₀ ⊆ R` and a core `C₀` disjoint from `R`,
-both read in the first replica, come from different factors of `Ψ`, so they have no mutual
-information.
+`V ⊕ V`. The exchange `F_R = ManyBody.replicaSwapOp R` of the two copies on a region `R` moves
+the content of the first replica on `R` to the second. In `F_R Ψ`, a core `R₀ ⊆ R` and a core
+`C₀` disjoint from `R`, both read in the first replica, come from different factors of `Ψ`, so
+they have no mutual information.
 
 Moved from TNLean, `TNLean/Lattice/ReplicaSwap.lean` at commit `e41c3b63`
-(`mutualInformation_relabelSites_replicaSwap_eq_zero`), restated with the operator of the
-exchange on the sites `V ⊕ V`.
+(`mutualInformation_relabelSites_replicaSwap_eq_zero`), restated with the exchange of the two
+copies on the sites `V ⊕ V`.
 
 ## Main results
 
@@ -57,11 +57,11 @@ lines 355–365. -/
 theorem regionMutualInformation_replicaSwap_eq_zero {Ω : EuclideanSpace ℂ (Config fun _ : V ↦ α)}
     (hΩ : ‖Ω‖ = 1) {R R₀ C₀ : Finset V} (hR₀ : R₀ ⊆ R) (hC₀ : Disjoint C₀ R) :
     regionMutualInformation
-      (WithLp.toLp 2 (sitePermOp (replicaSwap R) *ᵥ
+      (WithLp.toLp 2 (replicaSwapOp α R *ᵥ
         WithLp.ofLp (sumSitesProduct (X := fun _ : V ⊕ V ↦ α) Ω Ω)))
       (R₀.disjSum ∅) (C₀.disjSum ∅) = 0 := by
   set Ψ := sumSitesProduct (X := fun _ : V ⊕ V ↦ α) Ω Ω
-  rw [sitePermOp_mulVec_eq_relabelVector]
+  rw [← sitePermOp_replicaSwap, sitePermOp_mulVec_eq_relabelVector]
   have hent (D D' : Finset (V ⊕ V)) (hD : ∀ w, w ∈ D ↔ replicaSwap R w ∈ D') :
       regionEntropy
         (relabelVector (X := fun _ : V ⊕ V ↦ α) (X' := fun _ : V ⊕ V ↦ α) (replicaSwap R)

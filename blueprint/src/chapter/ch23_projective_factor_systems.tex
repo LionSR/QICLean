@@ -1,0 +1,401 @@
+\section{Factor systems and their classes}
+\label{sec:projective_factor_systems}
+
+\begin{definition}[Scalar 2-cochain]\label{def:scalar_cocycle}
+    \lean{ScalarCocycle}
+    \leanok
+    A \emph{scalar 2-cochain} on a group $G$ is a function
+    $\omega : G \times G \to \C^{\times}$.
+\end{definition}
+
+\begin{definition}[Multiplicative 2-cocycle condition]\label{def:is_cocycle}
+    \lean{groupCohomology.IsMulCocycle₂}
+    \leanok
+    \uses{def:scalar_cocycle}
+    A scalar 2-cochain $\omega \colon G \times G \to \C^{\times}$ is a
+    \emph{2-cocycle} if it satisfies, for all $g,h,k \in G$,
+    \begin{align}
+        \omega(g,h) \omega(gh,k)
+         & =\omega(g,hk) \omega(h,k).
+        \notag
+    \end{align}
+\end{definition}
+
+\begin{definition}[Projective representation]\label{def:projective_rep}
+    \lean{ProjectiveRepresentation}
+    \leanok
+    \uses{def:scalar_cocycle}
+    Given a scalar 2-cochain $\omega$, a \emph{projective representation}
+    of $G$ on $\C^D$ is a map $\rho : G \to \GL_{D}(\C)$ satisfying, for all
+    $g,h \in G$,
+    \begin{align}
+        \rho(g) \rho(h)
+         & =\omega(g,h) \rho(gh).
+        \label{eq:symmetry_projective_law}
+    \end{align}
+\end{definition}
+
+\begin{lemma}[Associativity forces the cocycle condition]%
+    \label{lem:cocycle_of_assoc}
+    \lean{ProjectiveRepresentation.cocycle_of_assoc}
+    \leanok
+    \uses{def:projective_rep, def:scalar_cocycle}
+    If $\rho$ is a projective representation with factor system $\omega$
+    and $D > 0$, then $\omega$ satisfies the 2-cocycle identity
+    \begin{align}
+        \omega(g,h) \omega(gh,k)
+         & =\omega(g,hk) \omega(h,k).
+        \label{eq:symmetry_cocycle_identity}
+    \end{align}
+\end{lemma}
+
+\begin{proof}\leanok\uses{def:projective_rep}
+    Expanding $\rho(g)\,(\rho(h)\rho(k))$ and
+    $(\rho(g)\rho(h))\rho(k)$ with the projective multiplication law
+    (\ref{eq:symmetry_projective_law}) and equating the results by matrix
+    associativity relates the scalar factors; since $D > 0$, cancelling the
+    invertible matrix factor gives (\ref{eq:symmetry_cocycle_identity}).
+\end{proof}
+
+\begin{lemma}[A projective factor system is a cocycle]
+    \label{thm:is_cocycle_of_projective_rep}
+    \lean{ScalarCocycle.isMulCocycle₂_of_projRep}
+    \leanok
+    \uses{def:is_cocycle, def:projective_rep, lem:cocycle_of_assoc}
+    If $D>0$ and $\rho:G\to\GL_D(\C)$ obeys
+    $\rho(g)\rho(h)=\omega(g,h)\rho(gh)$, then $\omega$ is a
+    $\C^\times$-valued $2$-cocycle.
+\end{lemma}
+
+\begin{proof}\leanok
+    By Lemma~\ref{lem:cocycle_of_assoc}, associativity gives the scalar
+    cocycle identity in $\C$.  Because the inclusion
+    $\C^\times\hookrightarrow\C$ is injective, the same identity holds in
+    $\C^\times$, satisfying Definition~\ref{def:is_cocycle}.
+\end{proof}
+
+\begin{definition}[Cohomologous cochains]\label{def:cohomologous_to}
+    \lean{ScalarCohomology.isMulCoboundary₂_div_iff}
+    \leanok
+    \uses{def:scalar_cocycle}
+    Two scalar two-cochains $\omega_1,\omega_2$ are \emph{cohomologous}
+    (written $\omega_1 \sim \omega_2$) if there exists
+    $\varphi \colon G \to \C^{\times}$ such that, for all $g,h \in G$,
+    \begin{align}
+        \omega_1(g,h)
+         & =\varphi(g)\varphi(h)\varphi(gh)^{-1}\omega_2(g,h).
+        \label{eq:symmetry_cohomologous}
+    \end{align}
+\end{definition}
+
+\begin{definition}[Coboundary]\label{def:is_coboundary}
+    \mathlibok
+    \uses{def:scalar_cocycle}
+    Let $G$ act trivially on $\C^{\times}$.
+    A scalar 2-cochain $\omega$ is a \emph{coboundary} if there exists
+    $\varphi \colon G \to \C^{\times}$ such that, for all $g,h \in G$,
+    \begin{align}
+        \omega(g,h)
+         & =\varphi(g)\varphi(h)\varphi(gh)^{-1}.
+        \label{eq:symmetry_coboundary}
+    \end{align}
+\end{definition}
+
+\begin{lemma}[The trivial action on scalar coefficients]
+    \label{lem:scalar_cohomology_trivial_action}
+    \lean{ScalarCohomology.ofMulDistribMulAction_ρ_apply}
+    \leanok
+    Every group acts on a commutative coefficient group, such as $\C^\times$
+    or the unit circle, by the trivial action $g\cdot z=z$. This action
+    respects the group operation of the coefficients, so it defines a
+    representation of $G$ on the coefficients written additively, and every
+    group element acts on it as the identity.
+\end{lemma}
+
+\begin{proof}\leanok
+    Each axiom of an action by group automorphisms holds by definition when
+    every element acts as the identity.
+\end{proof}
+
+\begin{definition}[Second cohomology group]\label{def:h2_cx}
+    \mathlibok
+    \uses{def:cohomologous_to, def:is_cocycle,
+        lem:scalar_cohomology_trivial_action}
+    Let $G$ act trivially on $\C^{\times}$. The second cohomology group
+    is the quotient
+    \begin{align}
+        H^2(G,\C^{\times})
+         & :=Z^2(G,\C^{\times})/B^2(G,\C^{\times})
+        \label{eq:symmetry_h2_quotient}
+    \end{align}
+    of $2$-cocycles by coboundaries. The \emph{class} $[\omega]$ of a
+    $2$-cocycle $\omega$ is its image in this quotient.
+\end{definition}
+
+\begin{definition}[Non-trivial cohomology class]\label{def:nontrivial_class}
+    \mathlibok
+    \uses{def:cohomologous_to, def:h2_cx}
+    A factor system $\omega$ that is a $2$-cocycle has a \emph{non-trivial
+        class} when $[\omega]\neq 0$ in $H^2(G,\C^{\times})$.
+\end{definition}
+
+\begin{lemma}[Cohomology relation is an equivalence relation]%
+    \label{thm:cohomologous_equivalence}
+    \lean{ScalarCohomology.isMulCoboundary₂_div_self,
+        ScalarCohomology.isMulCoboundary₂_div_symm,
+        ScalarCohomology.isMulCoboundary₂_div_trans}
+    \leanok
+    \uses{def:cohomologous_to}
+    The relation ``cohomologous to'' is reflexive, symmetric, and
+    transitive on the set of $\C^\times$-valued scalar $2$-cochains, and
+    therefore also on the subset of cocycles.
+\end{lemma}
+
+\begin{proof}\leanok\uses{def:cohomologous_to}
+    The trivial cochain $\varphi=1$ establishes reflexivity, replacing $\varphi$
+    by $\varphi^{-1}$ gives symmetry, and pointwise multiplication of the
+    relating $1$-cochains $\varphi$ and $\psi$ in
+    (\ref{eq:symmetry_cohomologous}) establishes transitivity.
+\end{proof}
+
+\begin{lemma}[Cohomologous cochains differ by a coboundary]%
+    \label{thm:coboundary_iff_cohomologous_one}
+    \lean{ScalarCohomology.isMulCoboundary₂_div_iff_quotient_mk_eq}
+    \leanok
+    \uses{def:is_coboundary, def:cohomologous_to}
+    Two scalar $2$-cochains satisfy $\omega_1\sim\omega_2$ if and only if
+    the pointwise ratio $\omega_1\omega_2^{-1}$ is a coboundary. In
+    particular, $\omega$ is a coboundary if and only if $\omega \sim 1$,
+    where $1(g,h)=1$ for all $g,h$.
+    Equivalently, $\omega_1$ and $\omega_2$ have the same image in
+    $C^2(G,\C^\times)/B^2(G,\C^\times)$, where $C^2$ is the group of all
+    scalar two-cochains and $B^2$ its subgroup of coboundaries. This quotient
+    includes arbitrary cochains, not only cocycles.
+\end{lemma}
+
+\begin{proof}\leanok\uses{def:is_coboundary, def:cohomologous_to}
+    Dividing both sides of (\ref{eq:symmetry_cohomologous}) by
+    $\omega_2(g,h)$ and reordering the factors of
+    $\varphi(g)\varphi(h)\varphi(gh)^{-1}$ in the commutative group
+    $\C^\times$ identify $\omega_1\omega_2^{-1}$ as a coboundary; for
+    $\omega_2=1$ the ratio reduces to $\omega_1$ itself.
+    Equality in the quotient by $B^2$ is exactly membership of
+    $\omega_1\omega_2^{-1}$ in $B^2$.
+\end{proof}
+
+\begin{lemma}[Coboundary changes preserve the cocycle equation]%
+    \label{thm:cochain_coboundary_preserves_cocycle}
+    \lean{ScalarCohomology.isMulCocycle₂_of_isMulCoboundary₂_div}
+    \leanok
+    \uses{def:cohomologous_to, def:is_cocycle}
+    If two scalar two-cochains $\omega_1$ and $\omega_2$ are
+    cohomologous and $\omega_2$ is a cocycle, then $\omega_1$ is a cocycle.
+\end{lemma}
+
+\begin{proof}\leanok\uses{def:cohomologous_to, def:is_cocycle}
+    Write $\omega_1(g,h)=\varphi(g)\varphi(h)\varphi(gh)^{-1}\omega_2(g,h)$.
+    Substituting in the cocycle equation for $\omega_1$ leaves the common
+    factor $\varphi(g)\varphi(h)\varphi(k)\varphi(ghk)^{-1}$ multiplying
+    the two sides of the cocycle equation for $\omega_2$.
+\end{proof}
+
+\begin{lemma}[Cocycles and classes for trivial coefficients]
+    \label{thm:mpug_h2_trivial_coefficients}
+    \lean{ScalarCohomology.isMulCocycle₂_iff,
+        ScalarCohomology.H2π_eq_iff_isMulCoboundary₂_div,
+        ScalarCohomology.eventually_H2π_eq_iff_isMulCoboundary₂_div}
+    \leanok
+    \uses{def:is_coboundary, def:cohomologous_to, def:is_cocycle, def:h2_cx}
+    Let $G$ act trivially on $\C^\times$, and let
+    $f(g,h)=\omega(g,h)$. The multiplicative cocycle equation
+    \begin{align}
+        f(gh,k)f(g,h)
+         & =f(h,k)f(g,hk)
+        \label{eq:mpug_h2_cocycle_comparison}
+    \end{align}
+    is equivalent to Definition~\ref{def:is_cocycle}.
+
+    If $\pi$ denotes the canonical map from multiplicative $2$-cocycles to
+    degree-two group cohomology, then for any two cocycles $\omega_1$ and
+    $\omega_2$,
+    \begin{align}
+        \omega_1\sim\omega_2
+         & \quad\Longleftrightarrow\quad
+        \pi(\omega_1)=\pi(\omega_2).
+        \label{eq:mpug_h2_class_comparison}
+    \end{align}
+    The same equivalence holds eventually along a filter for two families of
+    cocycles indexed by the filter's index set.
+    % Source anchor: arXiv:2502.20257, lines 1927--1931.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{def:is_coboundary, def:cohomologous_to, def:is_cocycle,
+        thm:coboundary_iff_cohomologous_one}
+    Since $\C^\times$ is commutative,
+    (\ref{eq:mpug_h2_cocycle_comparison}) is obtained from the cocycle
+    equation by interchanging the two factors on each side.
+    By Lemma~\ref{thm:coboundary_iff_cohomologous_one},
+    $\omega_1\sim\omega_2$ holds when $\omega_1\omega_2^{-1}$ is a
+    coboundary. In additive notation this ratio is the difference of the
+    corresponding cochains, so the quotient criterion for $\pi$ gives
+    (\ref{eq:mpug_h2_class_comparison}). The statement for families follows
+    pointwise.
+\end{proof}
+
+\begin{lemma}[Every class has a scalar cocycle representative]
+    \label{thm:mpug_h2_group_cohomology_comparison}
+    \lean{ScalarCocycle.exists_H2π_eq}
+    \leanok
+    \uses{def:h2_cx, thm:mpug_h2_trivial_coefficients}
+    Endowing $\C^\times$ with the trivial $G$-action, every element of
+    $H^2\bigl(G,\C^\times_{\mathrm{triv}}\bigr)$ is the class $\pi(\omega)$ of
+    a scalar $2$-cocycle $\omega$. Together with
+    (\ref{eq:mpug_h2_class_comparison}), this identifies the group
+    $H^2(H,\C^\times)$ of \cite[lines~1927--1931]{FrancoRubio2025MPUGauging}
+    with the scalar $2$-cocycles modulo $\sim$:
+    \begin{align}
+        Z^2(G,\C^\times)/{\sim}
+         & \simeq H^2\bigl(G,\C^\times_{\mathrm{triv}}\bigr).
+        \label{eq:mpug_h2_equivalence}
+    \end{align}
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{thm:mpug_h2_trivial_coefficients}
+    Currying and uncurrying identify a multiplicative representative
+    $f:G\times G\to\C^\times$ in the inhomogeneous cochain complex with a
+    scalar $2$-cochain, and by (\ref{eq:mpug_h2_cocycle_comparison}) the
+    cocycle conditions agree.
+\end{proof}
+
+\begin{lemma}[The trivial class]\label{thm:trivial_class}
+    \lean{ScalarCocycle.H2π_one,
+        ScalarCohomology.H2π_eq_zero_iff_isMulCoboundary₂}
+    \leanok
+    \uses{def:cohomologous_to, def:h2_cx}
+    The class of the constant cocycle $1$ is zero, and $[\omega]=0$ exactly
+    when $\omega$ is cohomologous to $1$.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{thm:mpug_h2_trivial_coefficients}
+    The constant cocycle $1$ is the identity of the group of cocycles, so its
+    class is zero. By (\ref{eq:mpug_h2_class_comparison}) of
+    Lemma~\ref{thm:mpug_h2_trivial_coefficients}, $\omega\sim1$ exactly
+    when $[\omega]=[1]=0$.
+\end{proof}
+
+\begin{definition}[Commutator phase]\label{def:comm_phase}
+    \lean{ScalarCocycle.commPhase}
+    \leanok
+    \uses{def:scalar_cocycle}
+    The \emph{commutator phase} of a $2$-cochain $\omega$ at a pair $g,h$ is
+    $\beta_\omega(g,h):=\omega(g,h) \omega(h,g)^{-1}$, defined for any
+    $\C^{\times}$-valued $2$-cochain.
+\end{definition}
+
+\begin{lemma}[The commutator phase is a class invariant]\label{thm:comm_phase_invariant}
+    \lean{ScalarCocycle.commPhase_eq_of_isMulCoboundary₂_div}
+    \leanok
+    \uses{def:comm_phase, def:cohomologous_to}
+    If $\omega_1\sim\omega_2$ and $gh=hg$, then
+    $\beta_{\omega_1}(g,h)=\beta_{\omega_2}(g,h)$.
+\end{lemma}
+
+\begin{proof}\leanok\uses{def:comm_phase, def:cohomologous_to}
+    For a cochain $\varphi$ with
+    $\omega_1(g,h)=\varphi(g)\varphi(h)\varphi(gh)^{-1}\omega_2(g,h)$,
+    substituting into the ratio and using
+    $gh=hg$ and the commutativity of $\C^{\times}$ gives
+    \begin{align}
+        \beta_{\omega_1}(g,h)
+         & =
+        \frac{\varphi(g)\varphi(h)\varphi(gh)^{-1} \omega_2(g,h)}
+        {\varphi(h)\varphi(g)\varphi(hg)^{-1} \omega_2(h,g)}
+        \notag                                  \\
+         & =\frac{\omega_2(g,h)}{\omega_2(h,g)}
+        =\beta_{\omega_2}(g,h),
+        \label{eq:symmetry_comm_phase_invariance}
+    \end{align}
+    where the $\varphi$-factors cancel since
+    $\varphi(gh)=\varphi(hg)$.
+\end{proof}
+
+\begin{lemma}[Commutator-phase non-triviality test]\label{thm:nontrivial_of_comm_phase}
+    \lean{ScalarCocycle.H2π_ne_zero_of_commPhase_ne_one}
+    \leanok
+    \uses{def:nontrivial_class, def:comm_phase, thm:comm_phase_invariant}
+    If a $2$-cocycle $\omega$ has $\beta_\omega(g,h)\neq 1$ at a commuting
+    pair $g,h$, then $\omega$ has a non-trivial class.
+\end{lemma}
+
+\begin{proof}\leanok\uses{thm:comm_phase_invariant, thm:trivial_class}
+    The trivial cocycle has commutator phase $1$ at every pair, so by
+    Lemma~\ref{thm:comm_phase_invariant} and
+    (\ref{eq:symmetry_comm_phase_invariance}), any cocycle cohomologous to it
+    has $\beta=1$ at every commuting pair. Contrapositively,
+    $\beta_\omega(g,h)\neq 1$ for one commuting pair forces $\omega$ to be
+    non-cohomologous to the trivial cocycle.
+\end{proof}
+
+\begin{lemma}[The commutator phase of a cocycle is a bicharacter]
+    \label{thm:comm_phase_bicharacter}
+    \lean{ScalarCocycle.commPhase_swap,
+        ScalarCocycle.apply_one_right,
+        ScalarCocycle.apply_one_left,
+        ScalarCocycle.commPhase_one_right,
+        ScalarCocycle.commPhase_mul_right,
+        ScalarCocycle.commPhase_mul_left,
+        ScalarCocycle.commPhase_pow_left}
+    \leanok
+    \uses{def:comm_phase, def:is_cocycle}
+    For every $2$-cochain, $\beta_\omega(h,g)=\beta_\omega(g,h)^{-1}$. If
+    $\omega$ is a $2$-cocycle, then $\omega(g,e)=\omega(e,g)=\omega(e,e)$, so
+    $\beta_\omega(g,e)=1$, and for $g$ commuting with $h$ and $k$,
+    \begin{align}
+        \beta_\omega(g,hk) & =\beta_\omega(g,h)\,\beta_\omega(g,k).
+        \label{eq:symmetry_comm_phase_bicharacter}
+    \end{align}
+    The same holds in the first argument, and
+    $\beta_\omega(g^n,h)=\beta_\omega(g,h)^n$ when $gh=hg$.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{def:comm_phase, def:is_cocycle}
+    The cocycle equation at $(g,e,e)$ and $(e,e,g)$ gives the values at the
+    identity. For (\ref{eq:symmetry_comm_phase_bicharacter}), the cocycle
+    equation at $(g,h,k)$, $(h,g,k)$ and $(h,k,g)$ reads
+    \begin{align}
+        \omega(g,h)\omega(gh,k) & =\omega(g,hk)\omega(h,k),
+        \notag                                              \\
+        \omega(h,g)\omega(gh,k) & =\omega(h,gk)\omega(g,k),
+        \notag                                              \\
+        \omega(h,k)\omega(hk,g) & =\omega(h,gk)\omega(k,g),
+        \notag
+    \end{align}
+    using $hg=gh$ and $kg=gk$. Dividing the first by the third and
+    substituting the second for $\omega(h,gk)$ gives
+    $\omega(g,hk)/\omega(hk,g)
+        =\omega(g,h)\omega(g,k)/(\omega(h,g)\omega(k,g))$. Antisymmetry gives
+    the first argument, and induction on $n$ gives the powers.
+\end{proof}
+
+\begin{lemma}[No one-dimensional eigenspace for a commutant of a non-trivial
+        projective representation]
+    \label{lem:projective_commutant_eigenspace}
+    \lean{ProjectiveRepresentation.finrank_eigenspace_ne_one_of_commute}
+    \leanok
+    \uses{def:projective_rep, def:scalar_cocycle, def:nontrivial_class}
+    Let $\rho$ be a projective representation of $G$ on $\C^D$ whose factor
+    system $\omega$ is a cocycle with non-trivial class, and let $\Lambda$
+    commute with every $\rho(g)$. Then no eigenspace of $\Lambda$ is
+    one-dimensional \cite[Section~III.A]{Cirac2021Matrix}.
+\end{lemma}
+
+\begin{proof}\leanok
+    Each $\rho(g)$ maps every eigenspace of $\Lambda$ into itself.  If an
+    eigenspace were spanned by one vector $v$, then $\rho(g)v=c_gv$ with
+    $c_g\neq0$, and $\rho(g)\rho(h)=\omega(g,h)\rho(gh)$ applied to $v$ gives
+    $\omega(g,h)=c_gc_hc_{gh}^{-1}$, a coboundary.
+\end{proof}

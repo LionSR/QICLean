@@ -11,3 +11,4 @@ Authors: QICLean contributors
 import QICLean.Entropy.Surprisal.FilterMoment
 import QICLean.Entropy.Surprisal.GapSurprisal
 import QICLean.Entropy.Surprisal.MarginalTails
+import QICLean.Entropy.Surprisal.TailRadiusWeights

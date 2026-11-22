@@ -8,16 +8,20 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Algebra
 
+import QICLean.Algebra.Cohomology
 import QICLean.Algebra.Combinatorics
 import QICLean.Algebra.Hermitian
 import QICLean.Algebra.Kronecker
 import QICLean.Algebra.Matrix
 import QICLean.Algebra.MatrixAlgebra
+import QICLean.Algebra.Module
+import QICLean.Algebra.MonoidAux
 import QICLean.Algebra.Nilpotent
 import QICLean.Algebra.OperatorSchmidt
 import QICLean.Algebra.PartialTrace
 import QICLean.Algebra.PerronFrobenius
 import QICLean.Algebra.Polynomial
+import QICLean.Algebra.PreBialgebra
 import QICLean.Algebra.SpinCover
 import QICLean.Algebra.StarSubalgebra
 import QICLean.Algebra.Unitary

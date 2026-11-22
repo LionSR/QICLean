@@ -9,6 +9,15 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Analysis.Topology
 
 import QICLean.Analysis.Topology.CompactUniformBounds
+import QICLean.Analysis.Topology.ContinuousIdempotentFrames
+import QICLean.Analysis.Topology.ConvexWeightsCompactness
 import QICLean.Analysis.Topology.GramMatrixLI
+import QICLean.Analysis.Topology.KroneckerLocalSection
+import QICLean.Analysis.Topology.KroneckerPathLifting
+import QICLean.Analysis.Topology.MatrixGroupJoined
 import QICLean.Analysis.Topology.MatrixRankClosed
 import QICLean.Analysis.Topology.MatrixTracePowerContinuity
+import QICLean.Analysis.Topology.NearestKronecker
+import QICLean.Analysis.Topology.NewtonIdempotent
+import QICLean.Analysis.Topology.OrthogonalGroupJoined
+import QICLean.Analysis.Topology.UniformSelectionBounds

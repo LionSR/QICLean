@@ -27,6 +27,23 @@ lines 599–603, equation e:cutdown. These are auxiliary estimates from a lower
 bound on the gap; the attained-first-excitation ratio estimate is developed
 separately in `QICLean.Spectral.Filter.PhysicalPowerFilter`. No locality or spatial
 rank estimate is used here.
+
+Every eigenvalue of such a sum lies between 0 and the number of terms. An excited unit vector
+orthogonal to Ω gives E₀ + Δ ≤ N - 1, and then the ratio form of e:cutdown holds with the
+lower bound Δ in place of an attained first excited energy.
+
+The last two results were moved from TNLean, `TNLean/MPS/AreaLaw/ViableSet/PowerProjector.lean`,
+`TNLean/MPS/AreaLaw/ViableSet/SampledProjector.lean` and
+`TNLean/MPS/AreaLaw/Huang/PhysicalFilterFamily.lean` at commit `49b78ed821` (Apache-2.0).
+Changes: stated for an arbitrary finite family of matrices in place of the bond terms of a
+chain, with the number of terms in place of the number of sites less one.
+
+## Main results
+
+* `Matrix.power_filter_exp_spec_of_posSemidef_terms` — the exponential estimate.
+* `Matrix.norm_power_filter_sub_ground_le_of_lower_gap_log_threshold` — the logarithmic power.
+* `Matrix.eigenvalue_nonneg_and_le_card_of_posSemidef_terms` — `0 ≤ E ≤ |κ|`.
+* `Matrix.norm_power_filter_apply_le_ratio_of_lower_gap` — equation e:cutdown.
 -/
 
 open scoped Matrix.Norms.L2Operator MatrixOrder ComplexOrder InnerProductSpace
@@ -252,5 +269,102 @@ theorem norm_power_filter_sub_ground_le_at_lower_gap_ceil
   exact norm_power_filter_sub_ground_le_of_lower_gap_log_threshold
     h hpos hupper hΩ hHΩ hgap hΔ hη m (Nat.le_ceil _)
 
+/-- **Eigenvalues of a sum of positive contractions.** If `H = ∑ᵢ hᵢ` is a finite sum of
+matrices with `0 ≤ hᵢ ≤ 1` and `H Ω = E Ω` for a unit vector `Ω`, then `0 ≤ E ≤ |κ|`, the
+number of terms. LVV, arXiv:1307.5143v1, `algo53.tex`, lines 283–284 and 607, where this
+makes the normalization `(1 - ε₀/n)⁻¹` of the power filter well defined. -/
+theorem eigenvalue_nonneg_and_le_card_of_posSemidef_terms
+    {ι κ : Type*} [Fintype ι] [DecidableEq ι] [Fintype κ]
+    (h : κ → Matrix ι ι ℂ) (hpos : ∀ i, (h i).PosSemidef) (hupper : ∀ i, h i ≤ 1)
+    {E : ℝ} {Ω : EuclideanSpace ℂ ι} (hΩ : ‖Ω‖ = 1)
+    (hHΩ : (∑ i, h i) *ᵥ WithLp.ofLp Ω = (E : ℂ) • WithLp.ofLp Ω) :
+    0 ≤ E ∧ E ≤ Fintype.card κ := by
+  have hHu : (∑ i, h i) ≤ (Fintype.card κ : ℝ) • (1 : Matrix ι ι ℂ) := by
+    simpa only [Finset.sum_const, Finset.card_univ, Nat.cast_smul_eq_nsmul] using
+      (show (∑ i, h i) ≤ ∑ _ : κ, (1 : Matrix ι ι ℂ) from
+        Finset.sum_le_sum fun i _ => hupper i)
+  refine ⟨?_, eigenvalue_le_scalar_of_upper hHu hΩ hHΩ⟩
+  have hneg : -(∑ i, h i) ≤ (0 : ℝ) • (1 : Matrix ι ι ℂ) := by
+    rw [zero_smul, neg_nonpos]
+    exact Finset.sum_nonneg fun i _ => (hpos i).nonneg
+  have hnegΩ : -(∑ i, h i) *ᵥ WithLp.ofLp Ω = ((-E : ℝ) : ℂ) • WithLp.ofLp Ω := by
+    rw [neg_mulVec, hHΩ, Complex.ofReal_neg, neg_smul]
+  linarith [eigenvalue_le_scalar_of_upper hneg hΩ hnegΩ]
+
+/-- **Equation `e:cutdown` from a lower bound on the gap.** Let `H = ∑ᵢ hᵢ` be a finite sum
+of matrices with `0 ≤ hᵢ ≤ 1`, `N` one more than the number of terms, `Ω` a unit vector with
+`H Ω = E₀ Ω`, and `H - E₀ ≥ Δ (1 - |Ω⟩⟨Ω|)` with `Δ > 0`. For every unit vector `ψ`
+orthogonal to `Ω`, the normalized power `A = ((1 - H/N) / (1 - E₀/N))^m` satisfies
+`‖A ψ‖ ≤ r^m` and `|⟨ψ, A ψ⟩| ≤ r^m` with `r = (1 - (E₀ + Δ)/N) / (1 - E₀/N)`. The energy
+`E₀ + Δ` need not be attained: `Δ` is any positive lower bound on the gap. LVV,
+arXiv:1307.5143v1, `algo53.tex`, line 603. -/
+theorem norm_power_filter_apply_le_ratio_of_lower_gap
+    {ι κ : Type*} [Fintype ι] [DecidableEq ι] [Fintype κ]
+    (h : κ → Matrix ι ι ℂ)
+    (hpos : ∀ i, (h i).PosSemidef) (hupper : ∀ i, h i ≤ 1)
+    {E0 Δ : ℝ} {Ω : EuclideanSpace ℂ ι}
+    (hΩ : ‖Ω‖ = 1)
+    (hHΩ : (∑ i, h i) *ᵥ WithLp.ofLp Ω = (E0 : ℂ) • WithLp.ofLp Ω)
+    (hgap : ((∑ i, h i) - (E0 : ℂ) • 1 - (Δ : ℂ) •
+      (1 - vecMulVec (WithLp.ofLp Ω) (star (WithLp.ofLp Ω)))).PosSemidef)
+    (hΔ : 0 < Δ) (m : ℕ) {ψ : EuclideanSpace ℂ ι} (hψ : ‖ψ‖ = 1) (horth : ⟪Ω, ψ⟫_ℂ = 0) :
+    let H := ∑ i, h i
+    let N : ℝ := ((Fintype.card κ + 1 : ℕ) : ℝ)
+    let A : Matrix ι ι ℂ := ((1 - E0 / N)⁻¹ • (1 - N⁻¹ • H)) ^ m
+    let r : ℝ := (1 - (E0 + Δ) / N) / (1 - E0 / N)
+    ‖toEuclideanLin A ψ‖ ≤ r ^ m ∧ ‖⟪ψ, toEuclideanLin A ψ⟫_ℂ‖ ≤ r ^ m := by
+  classical
+  let H : Matrix ι ι ℂ := ∑ i, h i
+  let N : ℝ := ((Fintype.card κ + 1 : ℕ) : ℝ)
+  let P : Matrix ι ι ℂ := vecMulVec (WithLp.ofLp Ω) (star (WithLp.ofLp Ω))
+  have hH : H.IsHermitian := (posSemidef_sum Finset.univ fun i _ => hpos i).isHermitian
+  have hHu : H ≤ (Fintype.card κ : ℝ) • (1 : Matrix ι ι ℂ) := by
+    simpa only [H, Finset.sum_const, Finset.card_univ, Nat.cast_smul_eq_nsmul] using
+      (show (∑ i, h i) ≤ ∑ _ : κ, (1 : Matrix ι ι ℂ) from
+        Finset.sum_le_sum fun i _ => hupper i)
+  have hcardN : (Fintype.card κ : ℝ) < N := by simp [N]
+  have hN : 0 < N := Nat.cast_pos.mpr (Nat.succ_pos _)
+  -- The excited vector `ψ` gives `E₀ + Δ ≤ |κ|`.
+  have hexc : E0 + Δ ≤ (Fintype.card κ : ℝ) := by
+    have hlow := PosSemidef.gap_le (H := H) hgap ψ
+    rw [hψ, horth, norm_zero] at hlow
+    have hup := (isPositive_toEuclideanLin_iff.mpr (Matrix.le_iff.mp hHu)).re_inner_nonneg_right ψ
+    rw [map_sub, LinearMap.sub_apply, inner_sub_right, map_sub] at hup
+    have hc : RCLike.re ⟪ψ, toEuclideanLin ((Fintype.card κ : ℝ) •
+        (1 : Matrix ι ι ℂ)) ψ⟫_ℂ = (Fintype.card κ : ℝ) := by
+      rw [← Complex.coe_smul, map_smul, LinearMap.smul_apply, inner_smul_right]
+      simp [inner_self_eq_norm_sq_to_K, hψ]
+    rw [hc, RCLike.re_to_complex] at hup
+    linarith
+  have hE0N : E0 < N := by linarith
+  have ha : 0 < N - E0 := sub_pos.mpr hE0N
+  have hbound : ∀ t ∈ spectrum ℝ H, t ≤ (Fintype.card κ : ℝ) :=
+    (le_algebraMap_iff_spectrum_le hH.isSelfAdjoint).mp (by
+      simpa only [Algebra.algebraMap_eq_smul_one] using hHu)
+  have hspectrum : ∀ t ∈ spectrum ℝ H, t = E0 ∨ t ∈ Set.Icc (E0 + Δ) N := by
+    intro t ht
+    obtain ⟨k, rfl⟩ := hH.spectrum_real_eq_range_eigenvalues ▸ ht
+    exact (GaussianFilter.eigenvector_ground_or_gap hH hΩ hHΩ hgap hΔ k).elim
+      (fun hg => Or.inl hg.1)
+      (fun he => Or.inr ⟨by linarith [he.1], (hbound _ ht).trans hcardN.le⟩)
+  obtain ⟨-, -, -, -, -, -, -, herror, -, -⟩ :=
+    hH.power_approximates_isolated_energy_projection (lt_add_of_pos_right E0 hΔ)
+      (hexc.trans hcardN.le) hspectrum m
+  rw [hH.complement_spectralProjectionGE_eq_rankOne hΩ hHΩ hgap hΔ] at herror
+  have hratio : (1 - (E0 + Δ) / N) / (1 - E0 / N) = (N - (E0 + Δ)) / (N - E0) := by
+    rw [one_sub_div hN.ne', one_sub_div hN.ne', div_div_div_cancel_right₀ hN.ne']
+  dsimp only
+  rw [normalized_affine_filter_eq_smul_raw H E0 N hN.ne', hratio]
+  set K := ((N - E0)⁻¹ • (N • (1 : Matrix ι ι ℂ) - H)) ^ m
+  have hPψ : toEuclideanLin P ψ = 0 := by
+    simp [P, toEuclideanLin_vecMulVec_star_self_apply, horth]
+  have hn : ‖toEuclideanLin (K - P) ψ‖ ≤ ‖K - P‖ * ‖ψ‖ :=
+    (toEuclideanCLM (n := ι) (𝕜 := ℂ) (K - P)).le_opNorm ψ
+  have hvec : ‖toEuclideanLin K ψ‖ ≤ ((N - (E0 + Δ)) / (N - E0)) ^ m := by
+    refine le_trans ?_ herror
+    simpa only [map_sub, LinearMap.sub_apply, hPψ, sub_zero, hψ, mul_one] using hn
+  have hinner : ‖⟪ψ, toEuclideanLin K ψ⟫_ℂ‖ ≤ ‖toEuclideanLin K ψ‖ := by
+    simpa only [hψ, one_mul] using norm_inner_le_norm ψ (toEuclideanLin K ψ)
+  exact ⟨hvec, hinner.trans hvec⟩
 
 end Matrix

@@ -5,6 +5,8 @@ Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Sites.Placement
 import QICLean.Algebra.Unitary.MatrixUnitaryBetween
+import QICLean.ManyBody.Sites.SitewiseProduct
+import QICLean.Spectral.Gap.DoubledSystemGap
 
 /-!
 # Conjugation by on-site unitaries, and the exchange of two copies on a region
@@ -18,8 +20,12 @@ On the system with basis `X v × X v` at every site, which carries two copies of
 paired at every site, the exchange of the two copies at the sites of a region `A` is the product
 operator `ManyBody.pairSwapOp A` of the exchange `(a, b) ↦ (b, a)` at the sites of `A` and the
 identity elsewhere. It is a unitary involution supported on `A`, it preserves every support by
-conjugation, and it commutes with every operator supported away from `A`. Conjugating the
-doubled interaction `(hᵢ ⊗ 1 + 1 ⊗ hᵢ)ᵢ` by it gives an interaction with the same supports.
+conjugation, and it commutes with every operator supported away from `A`. The doubled operator
+`h ⊗ 1 + 1 ⊗ h` of an operator `h` supported on `S` is, on paired sites, supported on `S`, so
+conjugating the doubled interaction `(hᵢ ⊗ 1 + 1 ⊗ hᵢ)ᵢ` by the exchange gives an interaction
+with the same supports. This is the one description of the exchange of two copies; on the sites
+`V ⊕ V` of two replicas it is `ManyBody.replicaSwapOp`, its transport along
+`ManyBody.replicaPairEquiv`.
 
 These generalize TNLean's `TNLean.Lattice.sheetSwapOp` (`Circuit/RegionalSwap`, at commit
 `414a18fb88`), the exchange of the two sheets of `(ι → Fin q) × (ι → Fin q)` at the sites of a
@@ -38,6 +44,8 @@ region; the sheets there are the two copies here, paired at every site.
   `ManyBody.pairSwapOp_empty`.
 * `ManyBody.pairSwapOp_mul_mul_conjTranspose_mem_supportedOperators`,
   `ManyBody.pairSwapOp_mul_mul_conjTranspose_of_disjoint`.
+* `ManyBody.reindex_doubledHamiltonian_mem_supportedOperators` — the doubled operator on paired
+  sites keeps the support.
 -/
 
 open Matrix
@@ -64,6 +72,16 @@ theorem prodOp_mul_mul_conjTranspose_mem_supportedOperators {S : Finset V}
   | smul c A _ ihA =>
     rw [Matrix.mul_smul, Matrix.smul_mul]
     exact SMulMemClass.smul_mem c ihA
+
+/-- **The doubled operator keeps the support.** If `h` is supported on `S`, the doubled operator
+`h ⊗ 1 + 1 ⊗ h`, with the two copies of every site paired, is supported on `S`. -/
+theorem reindex_doubledHamiltonian_mem_supportedOperators {S : Finset V}
+    {h : Matrix (Config X) (Config X) ℂ} (hh : h ∈ supportedOperators X S) :
+    reindex (Equiv.arrowProdEquivProdArrow V X X).symm (Equiv.arrowProdEquivProdArrow V X X).symm
+      (doubledHamiltonian h) ∈ supportedOperators (fun v ↦ X v × X v) S := by
+  rw [doubledHamiltonian, reindex_apply, submatrix_add, ← Finset.union_self S]
+  exact add_mem (reindex_kronecker_mem_supportedOperators hh (one_mem _))
+    (reindex_kronecker_mem_supportedOperators (one_mem _) hh)
 
 /-! ### The exchange of two copies -/
 

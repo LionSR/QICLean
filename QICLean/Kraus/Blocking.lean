@@ -5,6 +5,7 @@ Authors: TNLean contributors
 -/
 import QICLean.Kraus.Word
 import QICLean.Kraus.Injectivity
+import QICLean.Kraus.Transfer
 
 import Mathlib.Data.Fintype.Card
 import Mathlib.Data.Fintype.EquivFin
@@ -13,26 +14,34 @@ import Mathlib.Data.Fin.Tuple.Basic
 /-!
 # Physical blocking of finite Kraus families
 
-A length-$L$ block is indexed by a word of length $L$. The definitions in this
-file identify blocked indices with words, evaluate a finite matrix family on
-those words, and compare word spans before and after blocking.
+Blocking `L` sites of a family $A = (A_i)_{i \in \iota}$ replaces the index set $\iota$ by the
+words $w : \{0, \ldots, L - 1\} \to \iota$ of length $L$; the member at $w$ is the ordered
+product $A_{w_0} \cdots A_{w_{L-1}}$. The definitions in this file evaluate words of blocks,
+compare word spans before and after blocking, and identify the transfer map of the blocked
+family with the $L$-th power of the transfer map.
+
+For an index set `Fin d`, the words of length $L$ are also numbered by `Fin (d ^ L)`; the
+blocked family on that numbering is the reindexing of the general one.
 
 ## Main definitions
 
-* `Kraus.blockPhysDim` is the number of words of length $L$.
-* `Kraus.wordOfBlock` decodes a blocked index as a word.
-* `Kraus.blockTensor` groups products of $L$ matrices into one blocked family.
-* `Kraus.flattenBlockedWord` concatenates a word of blocked indices.
+* `Kraus.block` groups products of $L$ matrices into one family indexed by words.
+* `Kraus.blockPhysDim` is the number of words of length $L$ over `Fin d`.
+* `Kraus.decodeBlockEquiv` numbers the words of length $L$ over `Fin d`.
+* `Kraus.blockTensor` is `Kraus.block` on that numbering.
+* `Kraus.flattenBlockedWord` concatenates a word of numbered blocks.
 
 ## Main results
 
-* `Kraus.isNBlkInjective_iff_blockTensor_isInjective` identifies fixed-length
-  spanning with injectivity of the blocked family.
-* `Kraus.evalWord_blockTensor` evaluates blocked words by flattening them.
-* `Kraus.wordSpan_blockTensor` identifies blocked word spans with the original
-  word spans at the multiplied length.
-* `Kraus.HasEventuallyFullWordSpan.blockTensor` preserves eventual fullness
-  under positive-length blocking.
+* `Kraus.evalWord_block` evaluates a word of blocks as the concatenated word.
+* `Kraus.block_block` blocks twice as blocking once.
+* `Kraus.isNBlkInjective_iff_isInjective_block` identifies fixed-length spanning with
+  injectivity of the blocked family.
+* `Kraus.transferMap_block` the transfer map of the blocked family is the $L$-th power.
+* `Kraus.wordSpan_block` identifies blocked word spans with the original word spans at the
+  multiplied length.
+* `Kraus.HasEventuallyFullWordSpan.block` preserves eventual fullness under positive-length
+  blocking.
 * `Kraus.evalWord_replicate` evaluates a constant word as a matrix power.
 -/
 
@@ -40,7 +49,111 @@ open scoped Matrix
 
 namespace Kraus
 
-variable {d D L : ℕ}
+/-! ### Blocking into words -/
+
+section Block
+
+variable {ι n : Type*} [Fintype n] [DecidableEq n]
+
+/-- Blocking `L` sites: the family indexed by the words `w : Fin L → ι` of length `L`, whose
+member at `w` is the ordered product of the letters of `w`. -/
+def block (A : ι → Matrix n n ℂ) (L : ℕ) : (Fin L → ι) → Matrix n n ℂ :=
+  fun w => evalWord A (List.ofFn w)
+
+@[simp] theorem block_apply (A : ι → Matrix n n ℂ) (L : ℕ) (w : Fin L → ι) :
+    block A L w = evalWord A (List.ofFn w) := rfl
+
+/-- A word of blocks evaluates to the concatenated word. -/
+theorem evalWord_block (A : ι → Matrix n n ℂ) (L : ℕ) (ws : List (Fin L → ι)) :
+    evalWord (block A L) ws = evalWord A (ws.flatMap List.ofFn) := by
+  induction ws with
+  | nil => rfl
+  | cons w ws ih => simp [ih, evalWord_append]
+
+/-- A configuration of `N` blocks of length `L` evaluates to the configuration of `N * L`
+sites in which site `k` carries letter `k mod L` of block `k / L`. -/
+theorem evalWord_block_ofFn (A : ι → Matrix n n ℂ) (L N : ℕ) (σ : Fin N → Fin L → ι) :
+    evalWord (block A L) (List.ofFn σ) =
+      evalWord A (List.ofFn fun k : Fin (N * L) => σ k.divNat k.modNat) := by
+  rw [evalWord_block, List.ofFn_mul, List.flatMap_def, List.map_ofFn]
+  congr 2
+  refine congrArg List.ofFn (funext fun i => congrArg List.ofFn (funext fun j => ?_))
+  have hlt : (i : ℕ) * L + j < N * L := by
+    calc (i : ℕ) * L + j < (i + 1) * L := by rw [Nat.add_mul, one_mul]; omega
+      _ ≤ N * L := Nat.mul_le_mul_right _ i.2
+  have hdiv : (Fin.divNat (⟨i * L + j, hlt⟩ : Fin (N * L))) = i := by
+    ext
+    rw [Fin.coe_divNat, Fin.val_mk, Nat.add_comm, Nat.add_mul_div_right _ _ (Fin.pos j),
+      Nat.div_eq_of_lt j.2, zero_add]
+  have hmod : (Fin.modNat (⟨i * L + j, hlt⟩ : Fin (N * L))) = j := by
+    ext; simp [Fin.modNat, Nat.mod_eq_of_lt j.2]
+  simp [hdiv, hmod]
+
+/-- Blocking `M` blocks of length `L` is blocking `M * L` sites. -/
+theorem block_block (A : ι → Matrix n n ℂ) (L M : ℕ) (σ : Fin M → Fin L → ι) :
+    block (block A L) M σ = block A (M * L) (fun k => σ k.divNat k.modNat) := by
+  rw [block_apply, evalWord_block_ofFn, block_apply]
+
+/-- Block injectivity at length `N` is injectivity of the family blocked at length `N`. -/
+theorem isNBlkInjective_iff_isInjective_block (A : ι → Matrix n n ℂ) (N : ℕ) :
+    IsNBlkInjective A N ↔ IsInjective (block A N) := Iff.rfl
+
+/-- The one-letter span of a blocked family is the length-`L` word span of the
+original family. -/
+@[simp] theorem wordSpan_block_one (A : ι → Matrix n n ℂ) (L : ℕ) :
+    wordSpan (block A L) 1 = wordSpan A L := by
+  rw [wordSpan_one]
+  rfl
+
+/-- Blocking identifies words of length `k` in the blocked family with words
+of length `k * L` in the original family. -/
+theorem wordSpan_block (A : ι → Matrix n n ℂ) (L k : ℕ) :
+    wordSpan (block A L) k = wordSpan A (k * L) := by
+  induction k with
+  | zero => simp
+  | succ k ih =>
+    rw [wordSpan_succ, ih, wordSpan_block_one, ← wordSpan_add, Nat.succ_mul]
+
+/-- Eventual fullness of exact word spans is preserved by blocking at a
+positive length. -/
+theorem HasEventuallyFullWordSpan.block {A : ι → Matrix n n ℂ}
+    (hA : HasEventuallyFullWordSpan A) {L : ℕ} (hL : 0 < L) :
+    HasEventuallyFullWordSpan (Kraus.block A L) := by
+  obtain ⟨N, hN⟩ := Filter.eventually_atTop.mp hA
+  refine Filter.eventually_atTop.mpr ⟨N, fun k hk => ?_⟩
+  rw [wordSpan_block]
+  exact hN _ (hk.trans (Nat.le_mul_of_pos_right k hL))
+
+/-- The transfer map of the family blocked at length `L` is the `L`-th power of the
+transfer map. -/
+theorem transferMap_block [Fintype ι] (A : ι → Matrix n n ℂ) (L : ℕ) :
+    transferMap (block A L) = transferMap A ^ L := by
+  classical
+  induction L with
+  | zero =>
+      ext X : 1
+      simp
+  | succ L ih =>
+      ext X : 1
+      rw [pow_succ', Module.End.mul_apply, ← ih]
+      simp only [transferMap_apply, block_apply, List.ofFn_succ, evalWord_cons,
+        Matrix.conjTranspose_mul, Finset.mul_sum, Finset.sum_mul]
+      rw [← (Fin.consEquiv (fun _ : Fin (L + 1) => ι)).sum_comp, Fintype.sum_prod_type]
+      refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun w _ => ?_
+      simp [Fin.consEquiv, Matrix.mul_assoc]
+
+/-- Evaluating a repeated single-letter word gives a matrix power. -/
+lemma evalWord_replicate (A : ι → Matrix n n ℂ) (i : ι) (L : ℕ) :
+    evalWord A (List.replicate L i) = (A i) ^ L := by
+  induction L with
+  | zero => simp
+  | succ n ih => rw [List.replicate_succ, evalWord, ih, pow_succ']
+
+end Block
+
+/-! ### Words numbered by `Fin (d ^ L)` -/
+
+variable {d L : ℕ} {n : Type*} [Fintype n] [DecidableEq n]
 
 /-- Blocked physical dimension: the number of length-`L` words over an alphabet of size `d`.
 
@@ -93,40 +206,28 @@ noncomputable def decodeBlockEquiv (d L : ℕ) :
     decodeBlock d L ((decodeBlockEquiv d L).symm w) = w := by
   rw [← decodeBlockEquiv_apply, Equiv.apply_symm_apply]
 
-/-- Block a finite matrix family by grouping words of length `L` into one index. -/
-noncomputable def blockTensor (A : Fin d → Matrix (Fin D) (Fin D) ℂ) (L : ℕ) :
-    Fin (blockPhysDim d L) → Matrix (Fin D) (Fin D) ℂ :=
-  fun i => Kraus.evalWord A (wordOfBlock d L i)
+/-- The family blocked at length `L`, with the words numbered by `Fin (blockPhysDim d L)`
+through `decodeBlockEquiv`. -/
+noncomputable def blockTensor (A : Fin d → Matrix n n ℂ) (L : ℕ) :
+    Fin (blockPhysDim d L) → Matrix n n ℂ :=
+  reindexPhysical (decodeBlockEquiv d L) (block A L)
 
-@[simp] lemma blockTensor_one_apply (A : Fin d → Matrix (Fin D) (Fin D) ℂ)
+/-- Numbering the words does not change the set of blocked matrices. -/
+theorem range_blockTensor (A : Fin d → Matrix n n ℂ) (L : ℕ) :
+    Set.range (blockTensor A L) = Set.range (block A L) :=
+  (decodeBlockEquiv d L).surjective.range_comp _
+
+@[simp] lemma blockTensor_one_apply (A : Fin d → Matrix n n ℂ)
     (i : Fin (blockPhysDim d 1)) :
-    blockTensor (d := d) (D := D) A 1 i = A (singleBlockEquiv d i) := by
-  simp [blockTensor, Kraus.evalWord]
+    blockTensor A 1 i = A (singleBlockEquiv d i) := by
+  change evalWord A (wordOfBlock d 1 i) = _
+  simp [evalWord]
 
 /-- Equivalence between `N`-block injectivity and injectivity of the blocked
 tensor `blockTensor A N`. -/
-lemma isNBlkInjective_iff_blockTensor_isInjective (A : Fin d → Matrix (Fin D) (Fin D) ℂ) (N : ℕ) :
-    Kraus.IsNBlkInjective A N ↔ Kraus.IsInjective (blockTensor A N) := by
-  classical
-  have hRange :
-      Set.range (fun i : Fin (blockPhysDim d N) =>
-        Kraus.evalWord A (List.ofFn (decodeBlock d N i))) =
-        Set.range (fun σ : Fin N → Fin d => Kraus.evalWord A (List.ofFn σ)) := by
-    ext M
-    constructor
-    · rintro ⟨i, rfl⟩
-      exact ⟨decodeBlock d N i, rfl⟩
-    · rintro ⟨σ, rfl⟩
-      exact ⟨Fin.cast (blockPhysDim_eq_pow d N).symm (finFunctionFinEquiv σ), by
-        simp [decodeBlock, Fin.cast_cast]⟩
-  unfold Kraus.IsNBlkInjective Kraus.IsInjective blockTensor
-  have hSpan :
-      Submodule.span ℂ
-          (Set.range fun i : Fin (blockPhysDim d N) =>
-            Kraus.evalWord A (List.ofFn (decodeBlock d N i))) =
-        Submodule.span ℂ (Set.range fun σ : Fin N → Fin d => Kraus.evalWord A (List.ofFn σ)) := by
-    simp [hRange]
-  exact ⟨hSpan.trans, hSpan.symm.trans⟩
+lemma isNBlkInjective_iff_blockTensor_isInjective (A : Fin d → Matrix n n ℂ) (N : ℕ) :
+    IsNBlkInjective A N ↔ IsInjective (blockTensor A N) := by
+  rw [isNBlkInjective_iff_isInjective_block, IsInjective, IsInjective, range_blockTensor]
 
 /-- Flatten a word in blocked indices into an ordinary word in `Fin d` (list-level). -/
 noncomputable def flattenBlockedWord (d L : ℕ) : List (Fin (blockPhysDim d L)) → List (Fin d)
@@ -146,60 +247,32 @@ lemma flattenBlockedWord_cons (d L : ℕ) (i : Fin (blockPhysDim d L))
   | nil => simp [flattenBlockedWord]
   | cons i w ih => simp [flattenBlockedWord_cons, ih]
 
-lemma evalWord_blockTensor (A : Fin d → Matrix (Fin D) (Fin D) ℂ) (L : ℕ) :
-    ∀ w : List (Fin (blockPhysDim d L)),
-      Kraus.evalWord (blockTensor (d := d) (D := D) A L) w =
-        Kraus.evalWord A (flattenBlockedWord d L w) := by
-  intro w
-  induction w with
-  | nil =>
-      simp [flattenBlockedWord, Kraus.evalWord]
-  | cons i w ih =>
-      -- Flattening splits off the first block word:
-      -- `flattenBlockedWord (i :: w) = wordOfBlock i ++ flattenBlockedWord w`.
-      simp [Kraus.evalWord, blockTensor, flattenBlockedWord_cons, ih,
-        Kraus.evalWord_append]
+lemma evalWord_blockTensor (A : Fin d → Matrix n n ℂ) (L : ℕ)
+    (w : List (Fin (blockPhysDim d L))) :
+    evalWord (blockTensor A L) w = evalWord A (flattenBlockedWord d L w) := by
+  rw [blockTensor, evalWord_reindexPhysical, evalWord_block, flattenBlockedWord,
+    List.flatMap_def, List.map_map]
+  rfl
 
 /-- The one-letter span of a blocked family is the length-`L` word span of the
 original family. -/
-@[simp] theorem wordSpan_blockTensor_one
-    (A : Fin d → Matrix (Fin D) (Fin D) ℂ) (L : ℕ) :
+@[simp] theorem wordSpan_blockTensor_one (A : Fin d → Matrix n n ℂ) (L : ℕ) :
     wordSpan (blockTensor A L) 1 = wordSpan A L := by
-  classical
-  rw [wordSpan_one, wordSpan]
-  congr 1
-  ext M
-  constructor
-  · rintro ⟨i, rfl⟩
-    exact ⟨decodeBlock d L i, rfl⟩
-  · rintro ⟨σ, rfl⟩
-    refine ⟨(decodeBlockEquiv d L).symm σ, ?_⟩
-    simp [blockTensor, wordOfBlock]
+  rw [wordSpan_one, range_blockTensor, ← wordSpan_one, wordSpan_block_one]
 
-/-- Blocking identifies words of length `n` in the blocked family with words
-of length `n * L` in the original family. -/
-theorem wordSpan_blockTensor (A : Fin d → Matrix (Fin D) (Fin D) ℂ) (L n : ℕ) :
-    wordSpan (blockTensor A L) n = wordSpan A (n * L) := by
-  induction n with
-  | zero =>
-    simp
-  | succ n ih =>
-    rw [wordSpan_succ, ih, wordSpan_blockTensor_one]
-    rw [← wordSpan_add]
-    congr 1
-    simp [Nat.add_mul]
+/-- Blocking identifies words of length `k` in the blocked family with words
+of length `k * L` in the original family. -/
+theorem wordSpan_blockTensor (A : Fin d → Matrix n n ℂ) (L k : ℕ) :
+    wordSpan (blockTensor A L) k = wordSpan A (k * L) := by
+  rw [wordSpan_eq_of_range_eq (range_blockTensor A L), wordSpan_block]
 
 /-- Eventual fullness of exact word spans is preserved by blocking at a
 positive length. -/
-theorem HasEventuallyFullWordSpan.blockTensor
-    {A : Fin d → Matrix (Fin D) (Fin D) ℂ}
-    (hA : HasEventuallyFullWordSpan A) {L : ℕ} (hL : 0 < L) :
-    HasEventuallyFullWordSpan (blockTensor A L) := by
-  obtain ⟨N, hN⟩ := Filter.eventually_atTop.mp hA
-  refine Filter.eventually_atTop.mpr ⟨N, ?_⟩
-  intro n hn
-  rw [wordSpan_blockTensor]
-  exact hN _ (hn.trans (Nat.le_mul_of_pos_right n hL))
+theorem HasEventuallyFullWordSpan.blockTensor {A : Fin d → Matrix n n ℂ}
+    (hA : HasEventuallyFullWordSpan A) (hL : 0 < L) :
+    HasEventuallyFullWordSpan (Kraus.blockTensor A L) := by
+  simpa only [HasEventuallyFullWordSpan, wordSpan_eq_of_range_eq (range_blockTensor A L)]
+    using hA.block hL
 
 /-- Length of a flattened blocked word. -/
 lemma length_flattenBlockedWord (d L : ℕ) :
@@ -212,14 +285,5 @@ lemma length_flattenBlockedWord (d L : ℕ) :
       -- Flattening splits off the first block word.
       simp [flattenBlockedWord_cons, ih, length_wordOfBlock,
         Nat.succ_mul, Nat.add_comm]
-
-/-! ### Evaluation on repeated words -/
-
-/-- Evaluating a repeated single-letter word gives a matrix power. -/
-lemma evalWord_replicate (A : Fin d → Matrix (Fin D) (Fin D) ℂ) (i : Fin d) (L : ℕ) :
-    Kraus.evalWord A (List.replicate L i) = (A i) ^ L := by
-  induction L with
-  | zero => simp
-  | succ n ih => rw [List.replicate_succ, Kraus.evalWord, ih, pow_succ']
 
 end Kraus

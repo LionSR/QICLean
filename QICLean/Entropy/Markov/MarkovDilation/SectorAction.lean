@@ -113,14 +113,10 @@ theorem MarkovDilation.exists_normalizedSliceSectorBlocks
     · exact fun X ↦ (hSmap X).symm
     · exact
         (petzMiddleChannel_isKrausCPTP ρ_ABC hρ_dm).trace_map
-  let G : Kraus.PreservingKrausFamily
-      (normalizedConditionalSlice (traceC_ABC ρ_ABC)) :=
-    { numKraus := dC * r
-      Kfam := S
-      isPreserving := ⟨hStp, fun x ↦ by
-        rw [hSmap]
-        exact petzMiddleChannel_normalizedConditionalSlice
-          ρ_ABC hρ_dm hSSA x⟩ }
+  have hG : Kraus.IsPreserving (normalizedConditionalSlice (traceC_ABC ρ_ABC)) S :=
+    ⟨hStp, fun x ↦ by
+      rw [hSmap]
+      exact petzMiddleChannel_normalizedConditionalSlice ρ_ABC hρ_dm hSSA x⟩
   have hSsupport : ∀ k, S k * F.jointSupport.V =
       F.jointSupport.V *
         (Kraus.supportCompressedKraus F.jointSupport.V S) k := by
@@ -132,7 +128,7 @@ theorem MarkovDilation.exists_normalizedSliceSectorBlocks
         (1 - hμbar.supportProj) * S k * hμbar.supportProj = 0 := by
       simpa only [Kraus.stationaryProj] using
         (Kraus.lowerZero_of_posSemidef_fixedPoint S
-          (Kraus.commonAverage μ) hμbar G.map_commonAverage).2
+          (Kraus.commonAverage μ) hμbar (Kraus.map_commonAverage_of_isPreserving μ hG)).2
     have hQV : hμbar.supportProj * F.jointSupport.V =
         F.jointSupport.V := by
       rw [← F.jointSupport.V_range]
@@ -153,15 +149,10 @@ theorem MarkovDilation.exists_normalizedSliceSectorBlocks
     rw [← hQKV, ← F.jointSupport.V_range]
     simp only [Kraus.supportCompressedKraus, Matrix.mul_assoc]
   obtain ⟨hGsupport, _⟩ :=
-    F.jointSupport.preserving_support_action G
-  let Gsupport : Kraus.PreservingKrausFamily
-      (Kraus.supportCompressedFamily F.jointSupport.V
-        (normalizedConditionalSlice (traceC_ABC ρ_ABC))) :=
-    { numKraus := dC * r
-      Kfam := Kraus.supportCompressedKraus F.jointSupport.V S
-      isPreserving := hGsupport }
+    F.jointSupport.preserving_support_action ⟨Fin (dC * r), S⟩ hG
   obtain ⟨C, hCblock, hCtp, hCfix, _⟩ :=
-    F.jointSupport.preserving_block_action Gsupport
+    F.jointSupport.preserving_block_action
+      ⟨Fin (dC * r), Kraus.supportCompressedKraus F.jointSupport.V S⟩ hGsupport
   have hSblock : ∀ k, S k * (F.jointSupport.V * F.jointSupport.U) =
       (F.jointSupport.V * F.jointSupport.U) *
         Matrix.reindex F.jointSupport.e F.jointSupport.e

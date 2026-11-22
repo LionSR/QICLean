@@ -51,7 +51,7 @@ theorem regionMutualInformation_cores_le_of_reset_unitary
     {U : Matrix (Config fun _ : V ⊕ V ↦ α) (Config fun _ : V ⊕ V ↦ α) ℂ}
     (hU : U ∈ unitaryGroup _ ℂ) (hUs : U ∈ supportedOperators (fun _ : V ⊕ V ↦ α) S) {δ : ℝ}
     (hδ : ‖toEuclideanLin U (sumSitesProduct (X := fun _ : V ⊕ V ↦ α) Ω Ω) -
-      toEuclideanLin (sitePermOp (replicaSwap D))
+      toEuclideanLin (replicaSwapOp α D)
           (sumSitesProduct (X := fun _ : V ⊕ V ↦ α) Ω Ω)‖
         ≤ δ) :
     regionMutualInformation Ω R₀ C₀ ≤
@@ -59,9 +59,10 @@ theorem regionMutualInformation_cores_le_of_reset_unitary
   set Ψ := sumSitesProduct (X := fun _ : V ⊕ V ↦ α) Ω Ω
   have hΨ : ‖Ψ‖ = 1 := by
     rw [norm_sumSitesProduct, hΩ, mul_one]
-  have hF : ‖toEuclideanLin (sitePermOp (α := α) (replicaSwap D)) Ψ‖ = 1 := by
+  have hF : ‖toEuclideanLin (replicaSwapOp α D) Ψ‖ = 1 := by
     have h := sitePermOp_mulVec_eq_relabelVector (α := α) (replicaSwap D) Ψ
-    change ‖WithLp.toLp 2 (sitePermOp _ *ᵥ WithLp.ofLp Ψ)‖ = 1
+    rw [sitePermOp_replicaSwap] at h
+    change ‖WithLp.toLp 2 (replicaSwapOp α D *ᵥ WithLp.ofLp Ψ)‖ = 1
     rw [h, norm_relabelVector, hΨ]
   have hXJ : Disjoint (R₀.disjSum (∅ : Finset V)) (C₀.disjSum ∅) := by
     refine Finset.disjoint_left.mpr ?_

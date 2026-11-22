@@ -21,10 +21,11 @@ never over matrix-product-state vocabulary.
 **The extraction-era `QICLean.MPS` compatibility layer is dissolved.** Its
 channel-generic declarations now live under `QICLean.Kraus`; pure delegation
 wrappers were deleted, and genuinely matrix-product-*state* vocabulary was
-re-homed in TNLean. The root-level abbrev `MPSTensor d D` remains in
-`QICLean/Kraus/Word.lean` because TNLean uses it as a synonym for a finite
-Kraus family, but QICLean declares no API under `namespace MPSTensor`. Do not
-add matrix-product-state vocabulary or new compatibility wrappers here.
+re-homed in TNLean, including the tensor types `MPTensor` and `MPSTensor`,
+which TNLean defines as abbreviations of the family type `α → Matrix β β ℂ`.
+QICLean states its Kraus-family theory on that type directly, for an arbitrary
+index type and finite basis. Do not add matrix-product-state vocabulary or new
+compatibility wrappers here.
 
 ## Build Commands and Mathlib Cache Policy
 
@@ -110,7 +111,8 @@ wrappers for downstream notation.
 - `Choi` — the Choi-Jamiolkowski matrix of a linear map
 - `IsIrreducibleMap`, `IsPrimitive` — channel-level irreducibility and primitivity (Wolf Ch. 6)
 - `channelPeriod`, `peripheralEigenvalues` — the peripheral spectrum of a channel
-- `evalWord` — product of Kraus operators along a word `w : List (Fin d)`
+- `evalWord` — product of Kraus operators along a word `w : List ι`
+- `block` — the family of products of `L` Kraus operators, indexed by words `Fin L → ι`
 - `IsInjective` — the Kraus family spans the full matrix algebra
 - `IsNormal` — the quantum Wielandt normality predicate
 - `cumulativeSpan` — span of all products of Kraus operators of length `<= n`

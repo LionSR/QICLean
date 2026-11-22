@@ -54,6 +54,7 @@ characterization. `preimage_graphNeighborhood_cycleGraph_subset` is
   sites, two sites separated by `2T` and a third outside both neighbourhoods of radius `T`.
 * `ManyBody.preimage_graphNeighborhood_cycleGraph_subset` — blocking rescales ring distances by
   the block size.
+* `ManyBody.map_ringWindow` — the window starting at `i` is the set of sites `i + j`, `j < k`.
 * `ManyBody.ringWindow_trans_finRotate` — the rotation of the ring moves each window of
   consecutive sites to the next one.
 * `ManyBody.chainWindow_trans_ringWindow` — consecutive sites inside a window of the ring form a
@@ -283,13 +284,27 @@ theorem ringWindow_apply (hk : k ≤ N) (i : Fin N) (j : Fin k) :
     ringWindow hk i j = i + Fin.castLE hk j :=
   rfl
 
+/-- The window of `k ≤ N` consecutive sites starting at `i` consists of the sites `i + j` for
+`j < k`. The right-hand side is defined for every `k`, and is the whole ring for `k ≥ N`. -/
+theorem map_ringWindow (hk : k ≤ N) (i : Fin N) :
+    Finset.univ.map (ringWindow hk i) = (Finset.range k).image fun j : ℕ ↦ i + (j : Fin N) := by
+  have hcast (j : Fin k) : (Fin.castLE hk j : Fin N) = ((j : ℕ) : Fin N) :=
+    Fin.ext (by simp [Fin.val_natCast, Nat.mod_eq_of_lt (j.isLt.trans_le hk)])
+  ext v
+  simp only [Finset.mem_map, Finset.mem_univ, true_and, ringWindow_apply, Finset.mem_image,
+    Finset.mem_range, hcast]
+  exact ⟨fun ⟨j, hj⟩ ↦ ⟨j, j.isLt, hj⟩, fun ⟨j, hj, hv⟩ ↦ ⟨⟨j, hj⟩, hv⟩⟩
+
+/-- The sites `i + j` for `j < 2` are the bond `{i, i + 1}`. -/
+theorem image_range_two_add (i : Fin N) :
+    ((Finset.range 2).image fun j : ℕ ↦ i + (j : Fin N)) = {i, i + 1} := by
+  ext v
+  simp [Finset.range_add_one, eq_comm, or_comm]
+
 /-- The window of two sites starting at `i` is the bond `{i, i + 1}`. -/
 theorem map_ringWindow_two (hk : 2 ≤ N) (i : Fin N) :
     Finset.univ.map (ringWindow hk i) = {i, i + 1} := by
-  have h0 : (Fin.castLE hk 0 : Fin N) = 0 := Fin.ext (by simp)
-  have h1 : (Fin.castLE hk 1 : Fin N) = 1 := Fin.ext (by simp [Nat.mod_eq_of_lt hk])
-  ext j
-  simp [Fin.exists_fin_two, h0, h1, eq_comm]
+  rw [map_ringWindow, image_range_two_add]
 
 /-- **Rotating a window.** The rotation `j ↦ j + 1` of the ring carries the window starting at
 `i` to the window starting at `i + 1`. -/

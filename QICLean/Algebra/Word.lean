@@ -8,11 +8,15 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Algebra.Word
 
+import QICLean.Algebra.Word.CoreWordCoefficients
 import QICLean.Algebra.Word.FiniteSumPowers
+import QICLean.Algebra.Word.FunctionalWordComparison
 import QICLean.Algebra.Word.LowFrequencyWordPartition
 import QICLean.Algebra.Word.OneMarkerFullCounts
 import QICLean.Algebra.Word.OneWindowWordPartition
+import QICLean.Algebra.Word.OrderedProduct
 import QICLean.Algebra.Word.TaggedInterleavings
+import QICLean.Algebra.Word.TwoMarkerScalarRecovery
 import QICLean.Algebra.Word.TwoMarkerWordCoefficients
 import QICLean.Algebra.Word.WordCoefficientExpansion
 import QICLean.Algebra.Word.WordMultiplicity

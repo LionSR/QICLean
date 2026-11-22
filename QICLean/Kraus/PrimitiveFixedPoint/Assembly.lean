@@ -67,11 +67,11 @@ injective tensor, one instead expects the eigenvector statement
 `∃ ρ c, ρ.PosSemidef ∧ ρ ≠ 0 ∧ 0 < c ∧ E(ρ) = c • ρ`, and then rescales to the
 fixed-point setting. -/
 theorem exists_posSemidef_fixedPoint
-    (A : MPSTensor d D)
+    (A : Fin d → Matrix (Fin D) (Fin D) ℂ)
     (hNorm : ∑ i : Fin d, (A i)ᴴ * A i = 1)
     (hD : 0 < D) :
     ∃ ρ : Matrix (Fin D) (Fin D) ℂ, ρ.PosSemidef ∧ ρ ≠ 0 ∧
-      transferMap (d := d) (D := D) A ρ = ρ :=
+      transferMap A ρ = ρ :=
   (isChannel_mapLM A hNorm).exists_posSemidef_fixedPoint
     (E := transferMap A) hD
 
@@ -87,11 +87,11 @@ section PerronFrobenius
 The transfer map of an injective MPS tensor has a unique PSD fixed point
 (up to scalar), and it is positive definite. -/
 theorem quantum_perron_frobenius [DecidableEq (Fin D)]
-    (A : MPSTensor d D) (hA : IsInjective A)
+    (A : Fin d → Matrix (Fin D) (Fin D) ℂ) (hA : IsInjective A)
     (hNorm : ∑ i : Fin d, (A i)ᴴ * A i = 1)
     (hD : 0 < D) :
     ∃ ρ : Matrix (Fin D) (Fin D) ℂ,
-      HasUniqueFixedPoint (transferMap (d := d) (D := D) A) ρ := by
+      HasUniqueFixedPoint (transferMap A) ρ := by
   have hIrr := injective_implies_irreducibleCP A hA
   obtain ⟨ρ, hρ_psd, hρ_ne, hρ_fix⟩ := exists_posSemidef_fixedPoint A (by convert hNorm) hD
   exact ⟨ρ, {
@@ -109,10 +109,10 @@ theorem quantum_perron_frobenius [DecidableEq (Fin D)]
 /-- **Injectivity implies unique fixed point** (without the `0 < D` hypothesis).
 Extends `quantum_perron_frobenius` to the case `D = 0`, which holds vacuously. -/
 theorem injective_transfer_unique_fixed_point' [DecidableEq (Fin D)]
-    (A : MPSTensor d D) (hA : IsInjective A)
+    (A : Fin d → Matrix (Fin D) (Fin D) ℂ) (hA : IsInjective A)
     (hNorm : ∑ i : Fin d, (A i)ᴴ * A i = 1) :
     ∃ ρ : Matrix (Fin D) (Fin D) ℂ,
-      HasUniqueFixedPoint (transferMap (d := d) (D := D) A) ρ := by
+      HasUniqueFixedPoint (transferMap A) ρ := by
   by_cases hD : 0 < D
   · exact quantum_perron_frobenius A hA hNorm hD
   · push Not at hD
@@ -192,12 +192,12 @@ may not span), but the transfer map can still be irreducible.
 **Proof**: The normalization makes the transfer map a channel, so channel fixed-point
 existence and uniqueness under irreducibility applies directly. -/
 theorem quantum_perron_frobenius_irreducible [DecidableEq (Fin D)]
-    (A : MPSTensor d D)
-    (hIrr : IsIrreducibleMap (transferMap (d := d) (D := D) A))
+    (A : Fin d → Matrix (Fin D) (Fin D) ℂ)
+    (hIrr : IsIrreducibleMap (transferMap A))
     (hNorm : ∑ i : Fin d, (A i)ᴴ * A i = 1)
     (hD : 0 < D) :
     ∃ ρ : Matrix (Fin D) (Fin D) ℂ,
-      HasUniqueFixedPoint (transferMap (d := d) (D := D) A) ρ := by
+      HasUniqueFixedPoint (transferMap A) ρ := by
   exact IsChannel.exists_hasUniqueFixedPoint_of_irreducible
     (isChannel_mapLM A (by unfold IsTP; convert hNorm)) hIrr hD
 

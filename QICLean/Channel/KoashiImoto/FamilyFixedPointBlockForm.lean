@@ -82,9 +82,9 @@ theorem exists_commonInvariant_fixedPointBlockForm_with_algebra
   have hSchwarz :
       IsSchwarzMap (Matrix.traceAdjointMap (commonInvariantMapLM hρbar)) := by
     exact isSchwarzMap_traceAdjointMap_mapLM_of_isTP _
-      (commonInvariantKrausFamily hρbar).isPreserving.1
-  have hρbarFix : commonInvariantMapLM hρbar (commonAverage ρ) = commonAverage ρ := by
-    exact (commonInvariantKrausFamily hρbar).map_commonAverage
+      (isPreserving_commonInvariantKrausFamily hρbar).1
+  have hρbarFix : commonInvariantMapLM hρbar (commonAverage ρ) = commonAverage ρ :=
+    map_commonAverage_of_isPreserving ρ (isPreserving_commonInvariantKrausFamily hρbar)
   obtain ⟨K, d, m, e, U, σ, hU, hd, hm, hAdjoint, hσpos, hσtrace, -, hfixed⟩ :=
     IsPositiveMap.exists_block_densities_of_meanErgodicProjection_with_adjoint
       (isPositiveMap_commonInvariantMapLM hρbar)
@@ -93,12 +93,12 @@ theorem exists_commonInvariant_fixedPointBlockForm_with_algebra
   · intro A
     rw [← adjointFixedPointsStarSubalgebra_commonInvariantKrausFamily hρbar,
       mem_adjointFixedPointsStarSubalgebra]
-    change adjointMap (commonInvariantKrausFamily hρbar).Kfam A = A ↔ _
+    change adjointMap (commonInvariantKrausFamily hρbar).op A = A ↔ _
     simpa only [commonInvariantMapLM, traceAdjointMap_mapLM, adjointMapLM_apply] using hAdjoint A
   · intro x
     apply (hfixed (ρ x)).1
     simpa only [commonInvariantMapLM, mapLM_apply] using
-      (commonInvariantKrausFamily hρbar).isPreserving.2 x
+      (isPreserving_commonInvariantKrausFamily hρbar).2 x
 
 /-- **Simultaneous density-block form of a full-support invariant family.**
 

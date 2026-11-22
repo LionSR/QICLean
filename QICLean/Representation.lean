@@ -11,6 +11,7 @@ Authors: QICLean contributors
 import QICLean.Representation.Bell
 import QICLean.Representation.Character
 import QICLean.Representation.Coherent
+import QICLean.Representation.GaussOperator
 import QICLean.Representation.Partition
 import QICLean.Representation.Permutation
 import QICLean.Representation.Replica
@@ -18,4 +19,6 @@ import QICLean.Representation.SchurWeyl
 import QICLean.Representation.SymmetricGroup
 import QICLean.Representation.TensorPower
 import QICLean.Representation.Twirl
+import QICLean.Representation.UnitaryCompletionClass
 import QICLean.Representation.YoungSubgroup
+import QICLean.Representation.ZMod2Representation

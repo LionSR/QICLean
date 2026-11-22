@@ -50,16 +50,19 @@ namespace Kraus
 
 local notation "Mat" => Matrix (Fin D) (Fin D) ℂ
 
+variable {ι : Type*} [Fintype ι]
+
 /-- A finite Kraus family's Schrödinger action is completely positive. -/
-theorem isCPMap_mapLM (K : Fin d → Mat) : IsCPMap (mapLM K) :=
-  ⟨d, K, fun X => (mapLM_apply K X).trans (map_apply K X)⟩
+theorem isCPMap_mapLM (K : ι → Mat) : IsCPMap (mapLM K) :=
+  ⟨Fintype.card ι, K ∘ (Fintype.equivFin ι).symm, fun X => (mapLM_apply K X).trans
+    ((map_apply K X).trans (Fintype.sum_equiv (Fintype.equivFin ι) _ _ fun i => by simp))⟩
 
 /-- A finite Kraus family's Schrödinger action is positive. -/
-theorem isPositiveMap_mapLM (K : Fin d → Mat) : IsPositiveMap (mapLM K) :=
+theorem isPositiveMap_mapLM (K : ι → Mat) : IsPositiveMap (mapLM K) :=
   (isCPMap_mapLM K).isPositiveMap
 
 /-- A trace-preserving finite Kraus family's Schrödinger action preserves the trace. -/
-theorem isTracePreservingMap_mapLM_of_isTP (K : Fin d → Mat) (h_tp : IsTP K) :
+theorem isTracePreservingMap_mapLM_of_isTP (K : ι → Mat) (h_tp : IsTP K) :
     IsTracePreservingMap (mapLM K) := by
   intro X
   show Matrix.trace (mapLM K X) = Matrix.trace X

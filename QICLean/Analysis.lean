@@ -10,6 +10,7 @@ Authors: QICLean contributors
 
 import QICLean.Analysis.Calculus
 import QICLean.Analysis.ClusterExpansion
+import QICLean.Analysis.Cohomology
 import QICLean.Analysis.Complex
 import QICLean.Analysis.Convexity
 import QICLean.Analysis.CyclicInequality

@@ -10,13 +10,23 @@ Authors: QICLean contributors
 
 import QICLean.Analysis.Isometry.CoisometricCompression
 import QICLean.Analysis.Isometry.CompressedPartialSwap
+import QICLean.Analysis.Isometry.ConjugationCovariantGauge
 import QICLean.Analysis.Isometry.EuclideanReindex
 import QICLean.Analysis.Isometry.FiniteOrbit
 import QICLean.Analysis.Isometry.FramePerturbation
 import QICLean.Analysis.Isometry.IsometricCompression
 import QICLean.Analysis.Isometry.IsometricDomainExtension
+import QICLean.Analysis.Isometry.OrthogonalComplexStructure
 import QICLean.Analysis.Isometry.PolarUnitaryCorrection
 import QICLean.Analysis.Isometry.PositiveProjectionCompression
 import QICLean.Analysis.Isometry.ProjectionIntertwiningNorm
 import QICLean.Analysis.Isometry.RestoringOperators
 import QICLean.Analysis.Isometry.RestoringVectors
+import QICLean.Analysis.Isometry.SkewUnitaryNormalForm
+import QICLean.Analysis.Isometry.SupportedIsometricCompression
+import QICLean.Analysis.Isometry.UnitPhaseScalar
+import QICLean.Analysis.Isometry.UnitaryCongruence
+import QICLean.Analysis.Isometry.UnitaryEntrywiseConjugation
+import QICLean.Analysis.Isometry.UnitaryExpectation
+import QICLean.Analysis.Isometry.UnitaryKronecker
+import QICLean.Analysis.Isometry.UnitaryMulVecInner

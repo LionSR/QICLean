@@ -1,0 +1,122 @@
+\section{Matrix-valued functions of one real variable}
+
+Matrix-valued functions of a real parameter are differentiated entry by
+entry, without fixing a matrix norm.
+
+\begin{lemma}[A first-order quotient rule]
+    \label{lem:glm_l_path_quotient_rule}
+    \lean{Matrix.hasDerivAt_mul_entries,Matrix.hasDerivAt_trace_of_entries,
+        Matrix.differentiableAt_det_of_entries,
+        Matrix.differentiableAt_inv_of_entries,
+        Matrix.hasDerivAt_entries_of_eventually_eq_mul}
+    \leanok
+    Let $R(\gamma)$, $L(\gamma)$ and $P(\gamma)$ be finite complex matrices
+    depending on a real parameter, with $P$ square. Suppose $R=LP$ on a
+    neighbourhood of $\gamma_0$ and $P(\gamma_0)=1$. Suppose also that the
+    entries of $R$ and $P$ are differentiable at $\gamma_0$ with derivatives
+    $R'$ and $P'$. Then the entries of $L$ are differentiable at $\gamma_0$,
+    with derivative $R'-L(\gamma_0)P'$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    The determinant of $P$ is a polynomial in its entries. It is therefore
+    differentiable at $\gamma_0$, and it is nonzero near $\gamma_0$ because
+    $\det P(\gamma_0)=1$. By Cramer's rule the entries of $P^{-1}$ are
+    differentiable at $\gamma_0$. Near $\gamma_0$ we have $L=RP^{-1}$, so
+    $L$ is differentiable there. The product rule applied to $R=LP$ gives
+    $R'=L'P(\gamma_0)+L(\gamma_0)P'=L'+L(\gamma_0)P'$.
+\end{proof}
+
+\begin{lemma}[A frame whose derivative stays in its span]
+    \label{lem:glm_l_path_frame}
+    \lean{Matrix.hasDerivAt_inv_entries,
+        Matrix.eventually_exists_eq_sum_smul_of_hasDerivAt,
+        Matrix.exists_eq_sum_smul_of_hasDerivAt}
+    \leanok
+    Let $U\subseteq\mathbb R$ be open and connected, and let $V^i(\gamma)$,
+    $i=1,\ldots,M$, be complex matrices of a fixed size depending on
+    $\gamma\in U$. Suppose that at every $\gamma\in U$ the entries of each
+    $V^i$ are differentiable, with
+    \[
+        \frac{d}{d\gamma}V^i(\gamma)=\sum_{i'}X(\gamma)_{ii'}V^{i'}(\gamma)
+    \]
+    for some square matrix $X(\gamma)$, and that there are matrices
+    $\widehat V^k(\gamma)$ and a scalar $c(\gamma)$ with
+    $c(\gamma)\operatorname{tr}(V^i(\gamma)\widehat V^k(\gamma))=\delta_{ik}$.
+    Then for $\gamma_0,\gamma\in U$ there is an invertible matrix $G$ with
+    $V^i(\gamma)=\sum_kG_{ik}V^k(\gamma_0)$ for every $i$. No continuity of
+    $\gamma\mapsto X(\gamma)$ is assumed.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{lem:glm_l_path_quotient_rule}
+    Fix $t\in U$ and put
+    $Q(\gamma)_{ik}=c(t)\operatorname{tr}(V^i(\gamma)\widehat V^k(t))$. Then
+    $Q(t)=1$ and $Q'=XQ$ wherever the derivative hypothesis holds. The
+    determinant of $Q$ is differentiable at $t$, so $Q$ is invertible on a
+    ball around $t$. On that ball the entries of $Q^{-1}$ are differentiable
+    by Cramer's rule, and differentiating $Q^{-1}Q=1$ gives
+    $(Q^{-1})'=-Q^{-1}Q'Q^{-1}=-Q^{-1}X$. Hence
+    $(Q^{-1}V)'=-Q^{-1}XV+Q^{-1}XV=0$, so $Q^{-1}V$ is constant on the ball
+    and equals $V(t)$. Thus $V(\gamma)=Q(\gamma)V(t)$ near $t$.
+
+    The relation ``$V(\gamma)=GV(\gamma')$ for an invertible $G$'' is
+    reflexive, symmetric and transitive, and by the first step it holds for
+    all $\gamma$ near any $\gamma'\in U$. Its classes are therefore open, and
+    since $U$ is connected there is only one class.
+\end{proof}
+
+\begin{lemma}[Transport by a continuous matrix differential equation]
+    \label{lem:glm_l_path_matrix_ode}
+    \lean{Matrix.eqOn_of_hasDerivAt_mul,
+        Matrix.eq_mul_initial_of_hasDerivAt_mul,
+        Matrix.isUnit_of_hasDerivAt_mul,
+        Matrix.eq_mul_initial_of_hasDerivAt_mul_entries,
+        Matrix.eq_mul_initial_mul_inv_of_hasDerivAt,
+        Matrix.eq_kronecker_mul_initial_mul_inv_of_hasDerivAt}
+    \leanok
+    Let $I=[\alpha,\beta]$ and $t_0\in I$. A continuous square matrix
+    coefficient $X$ has at most one differentiable solution of $F'=XF$
+    with prescribed value at $t_0$. If $g'=Xg$ and $g(t_0)=1$, then $g(t)$
+    is invertible and $F(t)=g(t)F(t_0)$, also for rectangular $F$.
+    For the two-sided rectangular case, let $X:I\to\mathbb C^{n\times n}$
+    and $Y:I\to\mathbb C^{m\times m}$ be continuous, and let
+    $F:I\to\mathbb C^{n\times m}$, $G:I\to\mathbb C^{n\times n}$ and
+    $H:I\to\mathbb C^{m\times m}$ satisfy
+    \[
+        F'=XF-FY,\qquad G'=XG,\qquad H'=YH,\qquad G(t_0)=1,\quad H(t_0)=1.
+    \]
+    Here the functions are defined in real neighborhoods of the interval so
+    that the derivatives, entrywise for $F$, exist at every point of $I$,
+    including its endpoints. Then $G(t)$ and $H(t)$ are invertible and
+    \[
+        F(t)=G(t)F(t_0)H(t)^{-1}\qquad(t\in I).
+    \]
+    More generally, let $X_1,X_2,X_3$ be continuous matrix coefficients
+    and let $g_\nu'=X_\nu g_\nu$, $g_\nu(t_0)=1$. If
+    $L'= (X_1\otimes1+1\otimes X_2)L-LX_3$, then
+    \begin{align}
+        L(t) & =(g_1(t)\otimes g_2(t))L(t_0)g_3(t)^{-1}.
+        \label{eq:glm_l_path_integrated}
+    \end{align}
+    All derivatives are assumed to exist at every point of $I$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Continuity bounds $\|X(t)\|$ on the compact interval. Uniqueness for a
+    uniformly Lipschitz differential equation applies both forwards and
+    backwards from $t_0$. Comparing $F$ with $gF(t_0)$ gives transport.
+    If $g(t)U=g(t)V$, uniqueness backwards to $t_0$ gives $U=V$;
+    finite dimensionality therefore makes $g(t)$ invertible.
+    Apply transport columnwise to rectangular matrices. For the two-sided
+    equation, the product rule gives
+    \[
+        (FH)'=(XF-FY)H+F(YH)=X(FH),\qquad (FH)(t_0)=F(t_0).
+    \]
+    Rectangular transport yields $F(t)H(t)=G(t)F(t_0)$; multiplying by
+    the inverse of $H(t)$ proves the two-sided formula. The product rule
+    gives $(Lg_3)'=(X_1\otimes1+1\otimes X_2)Lg_3$ and
+    $(g_1\otimes g_2)'=(X_1\otimes1+1\otimes X_2)(g_1\otimes g_2)$.
+    Transport of $Lg_3$, followed by multiplication by $g_3^{-1}$,
+    proves~(\ref{eq:glm_l_path_integrated}).
+\end{proof}

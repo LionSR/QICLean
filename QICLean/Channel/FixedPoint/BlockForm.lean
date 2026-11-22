@@ -78,7 +78,7 @@ theorem adjointFixedPoints_blockDiagonal_iff
               (Matrix.blockDiagonal' fun k =>
                 (1 : Matrix (Fin (mult k)) (Fin (mult k)) ℂ) ⊗ₖ B k) := by
   obtain ⟨n, dims, mult, e, U, hU, hdims, hmult, hiff⟩ :=
-    (adjointFixedPointsStarSubalgebra (d := d) (D := D) K h_tp hρ
+    (adjointFixedPointsStarSubalgebra (D := D) K h_tp hρ
       hρ_fix).exists_unitary_conj_blockDiagonal_iff
   refine ⟨n, dims, mult, e, U, hU, hdims, hmult, fun X => Iff.trans ?_ (hiff X)⟩
   exact ((mem_adjointFixedPointsStarSubalgebra K h_tp hρ hρ_fix X).trans
@@ -110,7 +110,7 @@ theorem fixedPoints_blockDiagonal_iff
               (Matrix.blockDiagonal' fun k =>
                 (1 : Matrix (Fin (mult k)) (Fin (mult k)) ℂ) ⊗ₖ B k) := by
   obtain ⟨n, dims, mult, e, U, hU, hdims, hmult, hiff⟩ :=
-    (fixedPointsStarSubalgebra (d := d) (D := D) K h_unital hρ
+    (fixedPointsStarSubalgebra (D := D) K h_unital hρ
       hρ_fix).exists_unitary_conj_blockDiagonal_iff
   refine ⟨n, dims, mult, e, U, hU, hdims, hmult, fun X => Iff.trans ?_ (hiff X)⟩
   exact ((mem_fixedPointsStarSubalgebra K h_unital hρ hρ_fix X).trans

@@ -11,6 +11,7 @@ Authors: QICLean contributors
 import QICLean.Channel.Choi.Doeblin
 import QICLean.Channel.Choi.Jamiolkowski
 import QICLean.Channel.Choi.JamiolkowskiSpectrum
+import QICLean.Channel.Choi.MatrixSylvesterBound
 import QICLean.Channel.Choi.OperatorNormFrobenius
 import QICLean.Channel.Choi.Rectangular
 import QICLean.Channel.Choi.RectangularChoi

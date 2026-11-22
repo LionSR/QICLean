@@ -8,8 +8,15 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Algebra.Unitary
 
+import QICLean.Algebra.Unitary.IsometricFrameEmbedding
+import QICLean.Algebra.Unitary.MatrixCoordinateInclusion
 import QICLean.Algebra.Unitary.MatrixGramConjugation
 import QICLean.Algebra.Unitary.MatrixGramUnitary
 import QICLean.Algebra.Unitary.MatrixIsometryEntries
 import QICLean.Algebra.Unitary.MatrixUnitaryBetween
+import QICLean.Algebra.Unitary.SingletMatrix
+import QICLean.Algebra.Unitary.StackedIsometryCard
+import QICLean.Algebra.Unitary.SymplecticOrthogonalFour
+import QICLean.Algebra.Unitary.UnitaryFactorizationComparison
 import QICLean.Algebra.Unitary.UnitaryTraceZero
+import QICLean.Algebra.Unitary.UnitaryVectorSwap

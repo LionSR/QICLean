@@ -51,11 +51,11 @@ section PosDef
 only positivity, whereas a transfer map is completely positive. See
 `docs/paper-gaps/wolf_thm6_3_positive_map_cp_scope.tex`. -/
 theorem posSemidef_fixedPoint_isPosDef_of_irreducible
-    (A : MPSTensor d D)
-    (hIrr : IsIrreducibleMap (transferMap (d := d) (D := D) A))
+    (A : Fin d → Matrix (Fin D) (Fin D) ℂ)
+    (hIrr : IsIrreducibleMap (transferMap A))
     (ρ : Matrix (Fin D) (Fin D) ℂ)
     (hρ_psd : ρ.PosSemidef) (hρ_ne : ρ ≠ 0)
-    (hρ_fix : transferMap (d := d) (D := D) A ρ = ρ) :
+    (hρ_fix : transferMap A ρ = ρ) :
     ρ.PosDef :=
   posDef_of_posSemidef_fixedPoint_irreducible_cp _ (transferMap_isCPMap A)
     hIrr ρ hρ_psd hρ_ne hρ_fix
@@ -68,10 +68,10 @@ then `ρ` is positive definite.
 only positivity, whereas a transfer map is completely positive. See
 `docs/paper-gaps/wolf_thm6_3_positive_map_cp_scope.tex`. -/
 theorem posSemidef_fixedPoint_isPosDef
-    (A : MPSTensor d D) (hA : IsInjective A)
+    (A : Fin d → Matrix (Fin D) (Fin D) ℂ) (hA : IsInjective A)
     (ρ : Matrix (Fin D) (Fin D) ℂ)
     (hρ_psd : ρ.PosSemidef) (hρ_ne : ρ ≠ 0)
-    (hρ_fix : transferMap (d := d) (D := D) A ρ = ρ) :
+    (hρ_fix : transferMap A ρ = ρ) :
     ρ.PosDef :=
   posSemidef_fixedPoint_isPosDef_of_irreducible A
     (injective_implies_irreducibleCP A hA) ρ hρ_psd hρ_ne hρ_fix

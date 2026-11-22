@@ -9,8 +9,18 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Representation.Character
 
 import QICLean.Representation.Character.Branching
+import QICLean.Representation.Character.Delta
+import QICLean.Representation.Character.DeltaPositive
 import QICLean.Representation.Character.IrrepLabelCount
 import QICLean.Representation.Character.IrrepLabels
+import QICLean.Representation.Character.Projector
 import QICLean.Representation.Character.RegularTrace
+import QICLean.Representation.Character.SemiRegular
+import QICLean.Representation.Character.SemiRegularGroupAlgebra
+import QICLean.Representation.Character.TensorProduct
+import QICLean.Representation.Character.Theta
+import QICLean.Representation.Character.TranslatedOrthogonality
+import QICLean.Representation.Character.Twirl
+import QICLean.Representation.Character.UnitaryAlgebra
 import QICLean.Representation.Character.WeylCharacter
 import QICLean.Representation.Character.WeylDimension

@@ -1,0 +1,68 @@
+\section{Entropies of flat densities and harmonic weights}
+
+\begin{lemma}[Entropy of a flat density operator]%
+    \label{thm:peps_flat_density_entropy}
+    \lean{Matrix.IsHermitian.eigenvalues_eq_zero_or_inv_of_mul_self_eq_inv_smul,
+        vonNeumannEntropy_of_mul_self_eq_inv_smul}
+    \leanok
+    \uses{def:von_neumann_entropy}
+    Let $\rho$ be a finite-dimensional positive semidefinite matrix of
+    trace one. As in the spectral step of the proof of
+    \cite[Theorem~6.9]{Schuch2010PEPS}, if $\rho^2=r^{-1}\rho$ for a positive
+    real number $r$, then $S(\rho)=\log r$.
+\end{lemma}
+
+\begin{proof}\leanok
+    For each eigenvalue $\lambda$, the identity gives
+    $\lambda(\lambda-r^{-1})=0$. In either case
+    $-\lambda\log\lambda=\lambda\log r$, with the value at zero
+    interpreted continuously. Summing and using
+    $\sum\lambda=\operatorname{tr}\rho=1$ proves $S(\rho)=\log r$.
+\end{proof}
+
+\begin{lemma}[All finite R\'enyi orders of a flat density]%
+    \label{thm:peps_flat_density_renyi_entropy}
+    \lean{trace_cfc_rpow_of_mul_self_eq_inv_smul,
+        renyiEntropy_of_mul_self_eq_inv_smul,
+        renyiEntropy_of_mul_self_eq_inv_smul_of_rank}
+    \leanok
+    \uses{def:renyi_entropy}
+    Let $\rho\geq0$ have trace one and satisfy $\rho^2=r^{-1}\rho$, with
+    $r>0$. For every $\alpha>0$,
+    $\operatorname{tr}(\rho^\alpha)=r^{1-\alpha}$ and
+    $S_\alpha(\rho)=\log r$. If $\operatorname{rank}\rho=r$, the same
+    entropy formula also holds at order zero.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{thm:peps_flat_density_entropy}
+    Every eigenvalue is zero or $r^{-1}$. For positive order,
+    $\lambda^\alpha=\lambda r^{1-\alpha}$. Summing uses trace one;
+    taking logarithms proves the entropy formula away from order one.
+    The von Neumann and rank conventions give the remaining orders.
+\end{proof}
+
+\begin{lemma}[Harmonic weights inside the tail radius]
+    \label{lem:harmonic_tail_weights}
+    \lean{Entropy.harmonic_weight_le_half,
+        Entropy.harmonic_weight_ratio_le,
+        Entropy.le_tailRadius_of_le}
+    \leanok
+    Let $Z\ge4$ and $c\ge1$, and put $a=2/(Zc)$. Then $a\le1/2$ and
+    $a/(1-a)\le4/(Zc)$. If moreover $\vartheta\ge0$,
+    $1\le\mathcal B\le K'c$ and $Z\ge128\sqrt{(1+\vartheta)K'}$, then
+    \begin{align}
+        \frac4{Zc}\le\frac1{32\sqrt{(1+\vartheta)\mathcal B}},
+        \notag
+    \end{align}
+    so the tilt $a/(1-a)$ lies inside the tail radius of the marginal tail
+    bound. These are the weight estimates of the proof of
+    \cite[Lemma~3.2]{OpenAI2026AreaLaw}.
+\end{lemma}
+
+\begin{proof}\leanok
+    The first two bounds are elementary: $a\le1/2$ gives
+    $a/(1-a)\le2a$. For the last, $\sqrt{(1+\vartheta)\mathcal B}\le
+        \sqrt{(1+\vartheta)K'}\sqrt c\le\sqrt{(1+\vartheta)K'}\,c$, and
+    multiplying the lower bound on $Z$ by $c$ gives the claim.
+\end{proof}

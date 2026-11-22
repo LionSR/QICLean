@@ -18,6 +18,7 @@ import QICLean.Channel.Positive.NPositiveIntegral
 import QICLean.Channel.Positive.NPositivityChainStrict
 import QICLean.Channel.Positive.PositiveFunctional
 import QICLean.Channel.Positive.PositiveSkolemNoether
+import QICLean.Channel.Positive.PureStateTraceNorm
 import QICLean.Channel.Positive.QuantumChernoff
 import QICLean.Channel.Positive.ReductionCriterion
 import QICLean.Channel.Positive.TraceNormContractionCoefficient

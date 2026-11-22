@@ -8,8 +8,13 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Analysis.TensorProduct
 
+import QICLean.Analysis.TensorProduct.CyclicInsertion
+import QICLean.Analysis.TensorProduct.EuclideanExtendByZero
+import QICLean.Analysis.TensorProduct.EuclideanFiberwiseMap
 import QICLean.Analysis.TensorProduct.FamilyImage
 import QICLean.Analysis.TensorProduct.MatrixTensorCoordinates
 import QICLean.Analysis.TensorProduct.MatrixTensorDecomposition
 import QICLean.Analysis.TensorProduct.OperatorPower
+import QICLean.Analysis.TensorProduct.TensorProductContraction
+import QICLean.Analysis.TensorProduct.TensorProductRegrouping
 import QICLean.Analysis.TensorProduct.Weights

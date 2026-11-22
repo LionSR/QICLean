@@ -12,7 +12,10 @@ import QICLean.Analysis.Calculus.CauchyTransform
 import QICLean.Analysis.Calculus.DifferentiableInnerAction
 import QICLean.Analysis.Calculus.Kernel
 import QICLean.Analysis.Calculus.LiebScalarIntegral
+import QICLean.Analysis.Calculus.MatrixEntrywiseDeriv
 import QICLean.Analysis.Calculus.MatrixEvolution
+import QICLean.Analysis.Calculus.MatrixFrameDeriv
+import QICLean.Analysis.Calculus.MatrixLinearODE
 import QICLean.Analysis.Calculus.ProjectedEvolution
 import QICLean.Analysis.Calculus.RectangleSimplePoles
 import QICLean.Analysis.Calculus.SinhRatioDensity

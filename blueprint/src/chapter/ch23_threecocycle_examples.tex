@@ -1,0 +1,538 @@
+\section{Three-cocycles of cyclic groups and of the Klein four-group}
+\label{sec:threecocycle_examples}
+
+This section computes the degree-three cohomology of the groups of order two,
+of the cyclic groups $\Z_n$, and of the Klein four-group with coefficients in
+$\C^\times$ and the trivial action. Explicit representatives are given in each
+case, following Garre-Rubio and Schuch~\cite{GarreRubioSchuch2024DomainWall}
+for $\Z_n$ and Garre-Rubio, Lootens and Moln\'ar~\cite{GarreRubio2023MPOSym}
+for $\Z_2\times\Z_2$, and the classes are detected by the cyclic invariants of
+Section~\ref{sec:threecocycle_cochains}. For $\Z_n$ the invariant at the
+generator is the phase of an interchange of domain walls.
+
+\begin{definition}[Two scalar three-cochains]
+    \label{def:asymex_z2_cocycles}
+    \lean{ScalarThreeCochain.cyclicTwoCocycle,
+        ScalarThreeCochain.cyclicTwoCocycle_generator,
+        ScalarThreeCochain.cyclicTwoCocycle_zero}
+    \leanok
+    \uses{def:mpug_three_cocycle}
+    Write $\Z_2=\{e,s\}$ multiplicatively, with $s^2=e$.
+    Identify $e,s$ with the bits $0,1$ only in exponents.
+    For $p\in\{0,1\}$, define
+    \begin{align}
+        \omega_p(a,b,c) & =(-1)^{pabc}.
+    \end{align}
+    Thus $\omega_p(s,s,s)=(-1)^p$, all other values are one,
+    and $\omega_0$ is the constant cochain one.
+\end{definition}
+
+\begin{lemma}[Normalization, cocycle equation, and unit modulus]
+    \label{thm:asymex_z2_properties}
+    \lean{ScalarThreeCochain.cyclicTwoCocycle_isNormalized,
+        ScalarThreeCochain.cyclicTwoCocycle_isCocycle,
+        ScalarThreeCochain.cyclicTwoCocycle_norm}
+    \leanok
+    \uses{def:asymex_z2_cocycles}
+    Each $\omega_p$ is normalized, has unit modulus, and satisfies,
+    for all $a,b,c,d\in\Z_2$,
+    \begin{align}
+        \omega_p(a,b,c)\omega_p(a,bc,d)\omega_p(b,c,d)
+         & =\omega_p(ab,c,d)\omega_p(a,b,cd).
+    \end{align}
+    Normalization means that its value is one whenever any argument is $e$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{def:asymex_z2_cocycles}
+    An identity argument excludes the triple $(s,s,s)$, proving
+    normalization, and checking the two choices for each of $a,b,c,d$
+    and for $p$ with $s^2=e$ verifies the cocycle equation.
+    Every value is either one or a power of $-1$, so its modulus is one.
+\end{proof}
+
+\begin{lemma}[Distinct scalar gauge classes]
+    \label{thm:asymex_z2_classes}
+    \lean{ScalarThreeCochain.cyclicTwoCocycle_cohomologousTo_iff,
+        ScalarThreeCochain.cyclicTwoCocycle_one_not_isTrivialGaugeClass,
+        ScalarThreeCochain.cyclicTwoCocycle_sigma_generator,
+        ScalarThreeCochain.cyclicTwoCocycle_fusionGauge_generator}
+    \leanok
+    \uses{def:asymex_z2_cocycles, def:mpug_cohomologous_to, def:mpug_inversion_cochains}
+    The cochains $\omega_p$ and $\omega_q$ are cohomologous if and
+    only if $p=q$, even when the scalar two-cochain implementing the
+    gauge change is not required to be normalized.
+    The inversion scalar $\sigma_\omega(g)=\omega(g,g^{-1},g)$
+    therefore satisfies $\sigma_{\omega_p}(s)=(-1)^p$.
+    For a normalized scalar two-cochain $\beta$, the gauge
+    transform satisfies
+    \begin{align}
+        (\beta\cdot\omega_p)(s,s,s) & =(-1)^p,
+    \end{align}
+    where the convention is
+    \begin{align}
+        (\beta\cdot\omega)(a,b,c)
+         & =\frac{\beta(b,c)\beta(a,bc)}
+            {\beta(a,b)\beta(ab,c)}\omega(a,b,c).
+    \end{align}
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{def:asymex_z2_cocycles, thm:asymex_z2_properties, def:mpug_cohomologous_to, thm:mpug_z2_trivial_scalar_class}
+    Since $s^{-1}=s$, the inversion scalar equals
+    $\omega_p(s,s,s)$. The criterion in Lemma~\ref{thm:mpug_z2_trivial_scalar_class}
+    identifies triviality of the scalar gauge
+    class with $\sigma_\omega(s)=1$. Hence $\omega_1$ is not
+    gauge trivial. If $p\neq q$, one representative is $\omega_0=1$
+    and the other is $\omega_1$, so cohomology (using symmetry when
+    needed) would contradict this nontriviality, whereas for $p=q$
+    reflexivity applies. Finally, substituting $s^2=e$ into the
+    coboundary factor and using $\beta(e,s)=\beta(s,e)=1$
+    gives $(\beta\cdot\omega_p)(s,s,s)=(-1)^p$.
+\end{proof}
+
+\begin{definition}[The cocycles of the cyclic groups]
+    \label{def:asymex_group_cocycle_cyclic}
+    \lean{ScalarThreeCochain.cyclicCocycle,
+        ScalarThreeCochain.rootOfUnity,
+        ScalarThreeCochain.rootOfUnity_pow}
+    \leanok
+    \uses{def:mpug_scalar_cochains}
+    Represent residues of $\Z_n$ by $\{0,\ldots,n-1\}$ and write
+    $[b+c]$ for the representative of $b+c$. Define
+    \begin{align}
+        \omega_j(a,b,c)
+         & =\exp\Bigl\{\frac{2\pi\mathrm{i}\,j}{n^2}\,a\bigl(b+c-[b+c]\bigr)\Bigr\},
+        \notag
+    \end{align}
+    and let $\zeta=e^{2\pi\mathrm{i}/n}$.
+\end{definition}
+
+\begin{lemma}[The cyclic instances]
+    \label{thm:asymex_group_cocycle_cyclic}
+    \lean{ScalarThreeCochain.cyclicCocycle_val,
+        ScalarThreeCochain.cyclicCocycle_isCocycle,
+        ScalarThreeCochain.cyclicCocycle_isNormalized,
+        ScalarThreeCochain.cyclicCocycle_norm}
+    \leanok
+    \uses{def:asymex_group_cocycle_cyclic, def:mpug_three_cocycle}
+    For every $n\geq1$ and $j\in\N$, the value is
+    $\omega_j(a,b,c)=\zeta^{ja\lfloor(b+c)/n\rfloor}$, and $\omega_j$ is a
+    normalized three-cocycle of $\Z_n$ with values of modulus one. These are
+    the cocycles of~\cite[Section~IV.D]{GarreRubioSchuch2024DomainWall}.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Since $b+c-[b+c]=n\lfloor(b+c)/n\rfloor$, the exponential is the stated
+    power of $\zeta$. The cocycle equation reduces modulo $n$ to the carry
+    identity
+    \begin{align}
+        \Bigl\lfloor\frac{k+l}{n}\Bigr\rfloor
+        +\Bigl\lfloor\frac{h+[k+l]}{n}\Bigr\rfloor
+         & =\Bigl\lfloor\frac{h+k}{n}\Bigr\rfloor
+        +\Bigl\lfloor\frac{[h+k]+l}{n}\Bigr\rfloor,
+        \notag
+    \end{align}
+    both sides counting the multiples of $n$ in $h+k+l$. An identity
+    argument makes the exponent zero, and every power of $\zeta$ has
+    modulus one.
+\end{proof}
+
+\begin{lemma}[Inverses of the cyclic cocycles]
+    \label{thm:asymex_z3anomalous_cocycle_family_class}
+    \lean{ScalarThreeCochain.cyclicCocycle_inv}
+    \leanok
+    \uses{thm:asymex_group_cocycle_cyclic}
+    For every $n\geq1$ and $j\in\N$, the pointwise inverse of $\omega_j$ is
+    $\omega_{(n-1)j}$. For $n=3$ the inverse of $\omega_1$ is $\omega_2$, whose
+    domain-wall phase at the generator is the entry $j=2$, $a=1$ of the table
+    of~\cite{GarreRubioSchuch2024DomainWall}.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{thm:asymex_group_cocycle_cyclic}
+    By Lemma~\ref{thm:asymex_group_cocycle_cyclic}, $\omega_j(a,b,c)$ is the
+    power $\zeta^{ja\lfloor(b+c)/n\rfloor}$ of $\zeta=e^{2\pi\mathrm{i}/n}$, and
+    $\zeta^{n}=1$ gives $\zeta^{-m}=\zeta^{(n-1)m}$.
+\end{proof}
+
+\begin{definition}[The domain-wall phase]
+    \label{def:asymex_group_cocycle_domain_wall_phase}
+    \lean{ScalarThreeCochain.domainWallPhase,
+        ScalarThreeCochain.domainWallPhase_eq_inv_cyclicInvariant}
+    \leanok
+    \uses{def:mpug_cyclic_invariant}
+    For a scalar three-cochain $\omega$ of a group $G$ and $g\in G$ of order
+    $o(g)$, set
+    \begin{align}
+        P_g(\omega) & =\prod_{k=1}^{o(g)}\omega(g,g^k,g)^{-1}
+        =I_{g,o(g)}(\omega)^{-1}.
+        \notag
+    \end{align}
+\end{definition}
+
+\begin{lemma}[Gauge invariance of the domain-wall phase]
+    \label{thm:asymex_group_cocycle_domain_wall_phase_gauge}
+    \lean{ScalarThreeCochain.CohomologousTo.domainWallPhase_eq}
+    \leanok
+    \uses{def:asymex_group_cocycle_domain_wall_phase}
+    Cohomologous three-cochains have the same phase $P_g$ for every $g\in G$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{thm:mpug_cyclic_invariant_gauge}
+    Because $P_g(\omega)=I_{g,o(g)}(\omega)^{-1}$,
+    Lemma~\ref{thm:mpug_cyclic_invariant_gauge} implies that cohomologous
+    three-cochains share the same domain-wall phase.
+\end{proof}
+
+\begin{lemma}[Domain-wall phases of the cyclic cocycles]
+    \label{thm:asymex_group_cocycle_cyclic_domain_wall}
+    \lean{ScalarThreeCochain.cyclicInvariant_cyclicCocycle,
+        ScalarThreeCochain.val_toAdd_pow,
+        ScalarThreeCochain.sum_carry,
+        ScalarThreeCochain.orderOf_eq_div_gcd,
+        ScalarThreeCochain.orderOf_mul_val,
+        ScalarThreeCochain.cyclicInvariant_cyclicCocycle_one,
+        ScalarThreeCochain.domainWallPhase_cyclicCocycle_eq_exp,
+        ScalarThreeCochain.domainWallPhase_cyclicCocycle_eq_exp_sum,
+        ScalarThreeCochain.sum_carry_orderOf,
+        ScalarThreeCochain.domainWallPhase_cyclicCocycle,
+        ScalarThreeCochain.domainWallPhase_cyclicCocycle_three,
+        ScalarThreeCochain.domainWallPhase_cyclicCocycle_four,
+        ScalarThreeCochain.not_cohomologousTo_cyclicCocycle}
+    \leanok
+    \uses{def:asymex_group_cocycle_domain_wall_phase, thm:asymex_group_cocycle_cyclic}
+    Let $n\geq1$, $j\in\N$ and $a\in\{0,\ldots,n-1\}$, with order
+    $o(a)=n/\gcd(n,a)$ in $\Z_n$. For every $m\in\N$,
+    $I_{a,m}(\omega_j)=\zeta^{ja\lfloor ma/n\rfloor}$. The domain-wall phase is
+    \begin{align}
+        P_a(\omega_j)
+         & =\exp\Bigl\{-\frac{2\pi\mathrm{i}\,j}{n^2}\,a
+        \sum_{k=0}^{o(a)-1}\bigl([ka]+a-[ka+a]\bigr)\Bigr\}
+        =\exp\Bigl\{-\frac{2\pi\mathrm{i}\,j\,a^2}{n\gcd(n,a)}\Bigr\},
+        \notag
+    \end{align}
+    the carry sum being equal to $o(a)\,a$. For $n=3$ the phases are
+    $e^{-2\pi\mathrm{i}/3}$ for $j=1$ and $e^{2\pi\mathrm{i}/3}$ for $j=2$, at
+    both $a=1$ and $a=2$. For $n=4$ and $a=1,2,3$ they are
+    $-\mathrm{i},-1,-\mathrm{i}$ for $j=1$, then $-1,1,-1$ for $j=2$, and
+    $\mathrm{i},-1,\mathrm{i}$ for $j=3$. Both tables agree with those printed
+    in~\cite[Section~IV.D]{GarreRubioSchuch2024DomainWall}. If $n>1$ and
+    $j\not\equiv j'\pmod n$, then $\omega_j$ and $\omega_{j'}$ are not
+    cohomologous.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{thm:mpug_cyclic_invariant_gauge, thm:asymex_group_cocycle_cyclic}
+    By Lemma~\ref{thm:asymex_group_cocycle_cyclic},
+    $\omega_j(a,[ka],a)=\zeta^{ja\lfloor([ka]+a)/n\rfloor}$. Writing
+    $[ka]+a=[(k+1)a]+n\lfloor([ka]+a)/n\rfloor$ and summing over $k<m$, the
+    carries add up to $\lfloor ma/n\rfloor$, which gives $I_{a,m}(\omega_j)$.
+    At $m=o(a)$ one has $o(a)\,a=n\,(a/\gcd(n,a))$, which gives the carry sum
+    and the closed form. The tables follow by reducing the exponent modulo
+    $n$, with $\zeta=\mathrm{i}$ for $n=4$. At the generator $a=1$ and $m=n$
+    the cyclic invariant of $\omega_j$ is $\zeta^j$, and $\zeta$ is a
+    primitive $n$-th root of unity, so the gauge invariance of
+    Lemma~\ref{thm:mpug_cyclic_invariant_gauge} separates the classes.
+\end{proof}
+
+\begin{lemma}[The classes of the cyclic cocycles]
+    \label{thm:asymex_group_cocycle_cyclic_classes}
+    \lean{ScalarThreeCochain.cyclicCocycleSubtype,
+        ScalarThreeCochain.isPrimitiveRoot_rootOfUnity,
+        ScalarThreeCochain.cyclicCocycle_eq_of_modEq,
+        ScalarThreeCochain.cyclicCocycle_zero,
+        ScalarThreeCochain.isTrivialGaugeClass_cyclicCocycle_iff,
+        ScalarThreeCochain.anomalyClass_cyclicCocycle_eq_zero_iff,
+        ScalarThreeCochain.anomalyClass_cyclicCocycle_eq_iff,
+        ScalarThreeCochain.mem_zpowers_ofAdd_one,
+        ScalarThreeCochain.norm_scalarRepresentation_apply,
+        ScalarThreeCochain.applyAsHom_ofAdd_one_sub_id,
+        ScalarThreeCochain.normKerEquivRootsOfUnity,
+        ScalarThreeCochain.nat_card_groupCohomology_three_cyclic,
+        ScalarThreeCochain.exists_anomalyClass_cyclicCocycle_eq,
+        ScalarThreeCochain.exists_cohomologousTo_cyclicCocycle,
+        ScalarThreeCochain.ofAdd_one_pow_self,
+        ScalarThreeCochain.cohomologousTo_of_cyclicInvariant_eq,
+        ScalarThreeCochain.orderOf_ofAdd_one,
+        ScalarThreeCochain.cohomologousTo_iff_domainWallPhase_eq,
+        ScalarThreeCochain.anomalyClass_eq_iff_domainWallPhase_eq}
+    \leanok
+    \uses{thm:asymex_group_cocycle_cyclic_domain_wall, thm:mpug_h3_group_cohomology}
+    Let $n>1$. The group $H^3(\Z_n,\C^\times_{\mathrm{triv}})$ has $n$
+    elements and consists of the classes $[\omega_0],\ldots,[\omega_{n-1}]$,
+    with $[\omega_j]=[\omega_{j'}]$ exactly when $j\equiv j'\pmod n$. In
+    particular $[\omega_j]=0$ exactly when $n\mid j$, and every
+    three-cocycle of $\Z_n$ is cohomologous to some $\omega_j$ with
+    $0\leq j<n$. Two three-cocycles $\omega$ and $\eta$ of
+    $\Z_n$ are cohomologous exactly when $P_1(\omega)=P_1(\eta)$, the
+    domain-wall phases at the generator $1$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{thm:asymex_group_cocycle_cyclic_domain_wall, thm:mpug_h3_group_cohomology, thm:asymex_group_cocycle_domain_wall_phase_gauge}
+    The value $\omega_j(a,b,c)=\zeta^{ja\lfloor(b+c)/n\rfloor}$ depends on $j$
+    only modulo $n$, and $\omega_0=1$. By
+    Lemma~\ref{thm:asymex_group_cocycle_cyclic_domain_wall} the classes of
+    $\omega_j$ and $\omega_{j'}$ differ when $j\not\equiv j'\pmod n$, so
+    $[\omega_0],\ldots,[\omega_{n-1}]$ are $n$ distinct classes. The
+    periodic resolution of the finite cyclic group $\Z_n$ identifies
+    $H^3(\Z_n,A)$ with $\ker N/\operatorname{im}(\rho(1)-1)$, where
+    $N=\sum_{g\in\Z_n}\rho(g)$. For the trivial action on $\C^\times$ one has
+    $\rho(1)-1=0$ and $N(z)=z^n$, so $H^3(\Z_n,\C^\times_{\mathrm{triv}})$ is
+    the group of $n$-th roots of unity and has $n$ elements. Hence the $n$
+    classes of the $\omega_j$ exhaust it. If $\omega\sim\omega_j$ and
+    $\eta\sim\omega_{j'}$ with $P_1(\omega)=P_1(\eta)$, then
+    $\zeta^{-j}=P_1(\omega_j)=P_1(\omega_{j'})=\zeta^{-j'}$, so
+    $j\equiv j'\pmod n$ and $\omega\sim\eta$; conversely,
+    Lemma~\ref{thm:asymex_group_cocycle_domain_wall_phase_gauge} shows
+    that cohomologous cocycles have equal domain-wall phases.
+\end{proof}
+
+\begin{definition}[The mixed cocycle of type II]
+    \label{def:asymex_group_cocycle_klein}
+    \lean{ScalarThreeCochain.kleinCocycle}
+    \leanok
+    \uses{def:mpug_scalar_cochains}
+    For $a=(a_1,a_2)$, $b=(b_1,b_2)$ and $c=(c_1,c_2)$ in $\Z_2\times\Z_2$,
+    define $\omega(a,b,c)=(-1)^{a_1b_2c_2}$.
+\end{definition}
+
+\begin{lemma}[A three-cocycle of the Klein four-group]
+    \label{thm:asymex_group_cocycle_klein}
+    \lean{ScalarThreeCochain.kleinCocycle_isCocycle,
+        ScalarThreeCochain.kleinCocycle_isNormalized,
+        ScalarThreeCochain.kleinCocycle_norm}
+    \leanok
+    \uses{def:asymex_group_cocycle_klein, def:mpug_three_cocycle}
+    The function $\omega$ is a normalized three-cocycle with values $\pm1$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    The exponent $a_1b_2c_2$ is trilinear over $\Z_2$, hence an additive
+    three-cocycle, and it vanishes when any argument is zero.
+\end{proof}
+
+\begin{definition}[Klein-four cocycle representatives]
+    \label{def:asymex_klein_cocycle_family}
+    \lean{ScalarThreeCochain.kleinCocycleFamily}
+    \leanok
+    \uses{def:mpug_scalar_cochains}
+    For $p,q,r\in\Z_2$ and $a,b,c\in\Z_2^2$, set
+    \begin{align}
+        \omega_{pqr}(a,b,c)
+        =(-1)^{p a_1b_1c_1+q a_2b_2c_2+r a_1b_2c_2}.
+    \end{align}
+    These are the representatives in the $\Z_2\times\Z_2$ table
+    of~\cite[Section~6]{GarreRubio2023MPOSym}. The exponent is evaluated in $\Z_2$.
+\end{definition}
+
+\begin{lemma}[Cocycle equation and restriction signs]
+    \label{thm:asymex_klein_cocycle_restrictions}
+    \lean{ScalarThreeCochain.kleinCocycleFamily_isCocycle,
+        ScalarThreeCochain.kleinCocycleFamily_isNormalized,
+        ScalarThreeCochain.kleinCocycleFamily_signs,
+        ScalarThreeCochain.kleinCocycleFamily_restriction_iff,
+        ScalarThreeCochain.kleinCocycleFamily_one_subgroup_iff,
+        ScalarThreeCochain.kleinCocycleFamily_zero_zero_one}
+    \leanok
+    \uses{def:asymex_klein_cocycle_family, def:mpug_scalar_cochains, def:mpug_three_cocycle, def:asymex_group_cocycle_klein}
+    Each $\omega_{pqr}$ is a normalized three-cocycle. At
+    $a=(1,0)$, $b=(0,1)$, and $a+b=(1,1)$ its diagonal values are
+    \begin{align}
+        \bigl(\omega_{pqr}(a,a,a),\omega_{pqr}(b,b,b),
+        \omega_{pqr}(a+b,a+b,a+b)\bigr)
+        =\bigl((-1)^p,(-1)^q,(-1)^{p+q+r}\bigr).
+    \end{align}
+    Its restriction to the subgroup generated by $(x,y)$ is identically one
+    if and only if $px+qy+rxy=0$ in $\Z_2$. In particular, for every subgroup
+    $H\leq\Z_2\times\Z_2$, $\omega_{111}|_H=1$ if and only if $H=\{0\}$.
+    The representative $\omega_{001}$ is the cocycle
+    $(-1)^{a_1b_2c_2}$ of Definition~\ref{def:asymex_group_cocycle_klein}.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{def:asymex_klein_cocycle_family}
+    The exponent is additive in each argument, which gives the cocycle equation,
+    and vanishes if any argument is zero. Substitution gives the three signs.
+    On the subgroup generated by $g=(x,y)$, normalization leaves only the value
+    at $(g,g,g)$ to check. Since $x^2=x$ and $y^2=y$, this value is
+    $(-1)^{px+qy+rxy}$. For $p=q=r=1$, the exponent is nonzero at every
+    nonzero $g$. Hence any subgroup on which the restriction is one contains
+    only zero.
+\end{proof}
+
+\begin{lemma}[Trivial restrictions of all Klein-four representatives]
+    \label{thm:asymex_klein_subgroup_table}
+    \lean{ScalarThreeCochain.kleinCocycleFamily_isTrivialGaugeClass_comap_iff,
+        ScalarThreeCochain.kleinCocycleFamily_isTrivialGaugeClass_comap_iff_generators}
+    \leanok
+    \uses{def:asymex_klein_cocycle_family, def:mpug_cochain_restriction, def:mpug_trivial_gauge_class}
+    Let $H\leq\Z_2^2$, with $a=(1,0)$ and $b=(0,1)$.
+    The restriction of $\omega_{pqr}$ to $H$ represents the trivial
+    cohomology class if and only if $pu+qv+ruv=0$ for every $(u,v)\in H$.
+    Equivalently, $H$ must avoid precisely the elements in the right column:
+    \begin{center}
+        \begin{tabular}{c@{\qquad}c}
+            $(p,q,r)$ & forbidden elements of $H$ \\[2pt]
+            $(0,0,0)$ & none                      \\
+            $(1,0,0)$ & $a,ab$                    \\
+            $(0,1,0)$ & $b,ab$                    \\
+            $(1,1,0)$ & $a,b$                     \\
+            $(0,0,1)$ & $ab$                      \\
+            $(0,1,1)$ & $b$                       \\
+            $(1,0,1)$ & $a$                       \\
+            $(1,1,1)$ & $a,b,ab$
+        \end{tabular}
+    \end{center}
+    This gives the subgroup restrictions in
+    \cite[Section~6]{GarreRubio2023MPOSym}, allowing arbitrary
+    gauges.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{thm:asymex_klein_cocycle_restrictions, thm:mpug_cyclic_invariant_gauge}
+    If the restricted class is trivial, its cyclic invariant at every
+    element of $H$ is one. Since each element has square equal to the
+    identity and the representative is normalized, this invariant is
+    $\omega_{pqr}(g,g,g)$; hence $pu+qv+ruv=0$.
+    Conversely, write $Q(x)=px_1+qx_2+rx_1x_2$. A check over the finitely
+    many $p,q,r\in\Z_2$ and $g,h,k\in\Z_2^2$ gives
+    \begin{align}
+        Q(g)=Q(h)=Q(k)=Q(g+h)=Q(g+k)=Q(h+k)=0
+        \implies pg_1h_1k_1+qg_2h_2k_2+rg_1h_2k_2=0.
+        \notag
+    \end{align}
+    Subgroup closure therefore makes
+    the entire restriction identically one.
+    Testing the identity and the three nonidentity elements gives the table.
+\end{proof}
+
+\begin{lemma}[Distinct Klein-four classes and the last-row restriction]
+    \label{thm:asymex_klein_distinct_classes}
+    \lean{ScalarThreeCochain.kleinCocycleFamily_diagonal_eq_of_cohomologousTo,
+        ScalarThreeCochain.kleinCocycleFamily_cohomologousTo_iff,
+        ScalarThreeCochain.kleinCocycleFamily_one_isTrivialGaugeClass_comap_iff}
+    \leanok
+    \uses{def:asymex_klein_cocycle_family, thm:asymex_klein_cocycle_restrictions, def:mpug_cohomologous_to, def:mpug_trivial_gauge_class, def:mpug_cochain_restriction}
+    As in the classification and last-row subgroup analysis
+    of~\cite[Section~6]{GarreRubio2023MPOSym}, the representatives
+    $\omega_{pqr}$ and $\omega_{p'q'r'}$ are cohomologous if and only if
+    $(p,q,r)=(p',q',r')$, and for every subgroup $H\leq\Z_2^2$ the class of
+    $\omega_{111}|_H$ is trivial if and only if $H=\{0\}$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{thm:asymex_klein_cocycle_restrictions, thm:asymex_klein_subgroup_table, thm:mpug_cyclic_invariant_gauge, thm:mpug_cohomologous_to_equivalence}
+    For an element $g$ of order dividing two, the cyclic product
+    $\omega(g,0,g)\omega(g,g,g)$ is invariant under multiplication by a
+    three-coboundary. Normalization reduces it to $\omega(g,g,g)$.
+    The three signs therefore agree for cohomologous representatives;
+    they recover $p$, $q$, and then $r$. Conversely, equal parameters give
+    the same cocycle. If the restriction of $\omega_{111}$ to $H$ has
+    trivial class, Lemma~\ref{thm:asymex_klein_subgroup_table} gives
+    diagonal value $1$ at every $g\in H$.
+    The last row has diagonal value $-1$ at every nonzero element, so
+    $H=\{0\}$. On the trivial subgroup the cocycle is identically one.
+\end{proof}
+
+\begin{lemma}[Four-point orbits for the last Klein-four class]
+    \label{thm:asymex_klein_four_blocks}
+    \lean{LSymbol.stabilizer_eq_bot_of_kleinCocycleFamily_one,
+        LSymbol.card_orbit_of_kleinCocycleFamily_one,
+        LSymbol.card_of_kleinCocycleFamily_one}
+    \leanok
+    \uses{def:mpug_l_symbols, def:asymex_klein_cocycle_family}
+    Let $G=\Z_2^2$ act on a set $X$, and let $L$ be compatible with
+    $\omega_{111}$. For each $x\in X$, the stabilizer $G_x$ is trivial
+    and $|Gx|=4$. In particular, as in the count for the last class
+    in~\cite[Section~6]{GarreRubio2023MPOSym}, if $X$ is nonempty and the
+    action is transitive, then $|X|=4$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{thm:mpug_fixed_block_trivializes, thm:asymex_klein_distinct_classes}
+    Compatibility implies $\omega_{111}|_{G_x}=d(L^x|_{G_x})$.
+    Thus the restricted class is trivial and $G_x=\{0\}$.
+    The orbit--stabilizer identity gives $|Gx|\,|G_x|=|G|=4$.
+    For a transitive action, $Gx=X$.
+\end{proof}
+
+\begin{lemma}[Triviality from the Klein diagonal signs]
+    \label{thm:asymex_klein_trivial_diagonal}
+    \lean{ScalarThreeCochain.isTrivialGaugeClass_of_klein_diagonal_eq_one}
+    \leanok
+    \uses{def:mpug_three_cocycle, def:mpug_scalar_cochains, def:mpug_trivial_gauge_class}
+    In the trivial-class case of the classification in
+    \cite[Section~6]{GarreRubio2023MPOSym}, a normalized three-cocycle on
+    $G=\{e,a,b,c=ab\}\cong\Z_2^2$ whose diagonal values $\omega(g,g,g)$ are
+    all one is a coboundary.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Set $(s_1,s_2,s_3,s_4,s_5,s_6)=
+        (\omega(a,a,b),\omega(a,b,a),\omega(a,b,b),\omega(a,b,c),
+        \omega(b,a,a),\omega(b,a,b))$.
+    Choose $t\in\C^\times$ with $t^2=s_1s_5/s_2$ and define a normalized
+    two-cochain by its values on $\{a,b,c\}^2$:
+    \begin{align}
+        \label{eq:asymex_klein_trivial_gauge}
+        (\beta(g,h))_{g,h\in\{a,b,c\}}
+         & =\begin{pmatrix}
+                ts_4/(s_3s_6)   & 1/s_3 & ts_1s_4/s_6 \\
+                1/(ts_3)        & 1     & s_6/t       \\
+                s_1s_4/(s_2s_6) & 1     & 1
+            \end{pmatrix}.
+    \end{align}
+    The six corresponding values of $d\beta$ are $s_1,\ldots,s_6$.
+    Hence $\eta=\omega/(d\beta)$ has those six values equal to one.
+    Its diagonal values remain one because $g^2=e$ and $\beta$ is normalized.
+    Applying the cocycle equation successively to the remaining triples
+    gives one for all eighteen other nonidentity entries. Thus $\eta=1$
+    and $\omega=d\beta$.
+\end{proof}
+
+\begin{lemma}[Complete classification of Klein three-cocycles]
+    \label{thm:asymex_klein_complete_classification}
+    \lean{ScalarThreeCochain.cohomologousTo_of_klein_diagonal_eq,
+        ScalarThreeCochain.cohomologousTo_iff_klein_cyclicInvariant_eq,
+        ScalarThreeCochain.cohomologousTo_iff_klein_three_cyclicInvariants,
+        ScalarThreeCochain.exists_cohomologousTo_kleinCocycleFamily,
+        ScalarThreeCochain.existsUnique_cohomologousTo_kleinCocycleFamily,
+        ScalarThreeCochain.kleinCocycleFamily_add,
+        ScalarThreeCochain.kleinAnomalyClass,
+        ScalarThreeCochain.kleinAnomalyClass_bijective,
+        ScalarThreeCochain.kleinH3Equiv}
+    \leanok
+    \uses{def:asymex_klein_cocycle_family, def:mpug_cohomologous_to, def:mpug_h3_group_cohomology, def:mpug_three_cocycle, def:mpug_scalar_cochains}
+    Every three-cocycle on $\Z_2^2$ is cohomologous to exactly one
+    $\omega_{pqr}$. The correspondence $[\omega_{pqr}]\mapsto(p,q,r)$ is
+    an isomorphism $H^3(\Z_2\times\Z_2,\C^\times_{\mathrm{triv}})\cong\Z_2^3$.
+    Two arbitrary three-cocycles $\omega,\nu$ are cohomologous if and only if
+    \begin{align}
+        \label{eq:asymex_klein_complete_detectors}
+        \omega(g,e,g)\omega(g,g,g) & =\nu(g,e,g)\nu(g,g,g)
+    \end{align}
+    at $g=a,b,c$. For normalized cocycles these products reduce to the
+    diagonal values. This is the classification and detector assertion
+    of \cite[Section~6]{GarreRubio2023MPOSym} with $\C^\times$ coefficients;
+    the source states it for $U(1)$, and the degree-three comparison of the
+    two coefficient groups is not formalized
+    here~\cite{gap:glm23_klein_h3_circle_coefficients}.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{thm:asymex_three_cocycle_normalization, thm:asymex_klein_trivial_diagonal, thm:asymex_klein_distinct_classes, thm:mpug_cyclic_invariant_gauge, thm:mpug_h3_group_cohomology}
+    After normalizing both cocycles, their quotient has trivial diagonal
+    precisely when their three signs agree, so
+    Lemma~\ref{thm:asymex_klein_trivial_diagonal} proves sufficiency of
+    (\ref{eq:asymex_klein_complete_detectors}). Necessity follows from
+    invariance of the cyclic products under coboundaries.
+    The cocycle equation at $(g,g,g,g)$ makes each normalized diagonal
+    value a sign. If the signs are $(-1)^p,(-1)^q,(-1)^t$, the matching
+    representative is $\omega_{p,q,p+q+t}$.
+    Lemma~\ref{thm:asymex_klein_distinct_classes} proves uniqueness.
+    Finally $\omega_{pqr}\omega_{p'q'r'}=\omega_{p+p',q+q',r+r'}$, so
+    this bijection of cohomology classes is a group isomorphism.
+\end{proof}

@@ -79,9 +79,9 @@ noncomputable def supportCompressedFamily {n : ℕ}
   fun x ↦ Vᴴ * ρ x * V
 
 /-- Compress every Kraus operator along an isometry `V`. -/
-noncomputable def supportCompressedKraus {n r : ℕ}
-    (V : Matrix (Fin D) (Fin n) ℂ) (Kfam : Fin r → Mat) :
-    Fin r → Matrix (Fin n) (Fin n) ℂ :=
+noncomputable def supportCompressedKraus {n : ℕ} {ι : Type*}
+    (V : Matrix (Fin D) (Fin n) ℂ) (Kfam : ι → Mat) :
+    ι → Matrix (Fin n) (Fin n) ℂ :=
   fun i ↦ Vᴴ * Kfam i * V
 
 /-- Compression intertwines a support-preserving Kraus map with its ambient
@@ -89,8 +89,8 @@ action.
 
 This is the operation-transport step in HJPW,
 arXiv:quant-ph/0304007v2, Appendix A, lines 761--763. -/
-theorem map_supportCompressedKraus_intertwines {n r : ℕ}
-    (V : Matrix (Fin D) (Fin n) ℂ) (Kfam : Fin r → Mat) (Q : Mat)
+theorem map_supportCompressedKraus_intertwines {n : ℕ} {ι : Type*} [Fintype ι]
+    (V : Matrix (Fin D) (Fin n) ℂ) (Kfam : ι → Mat) (Q : Mat)
     (hV : Vᴴ * V = 1) (hVrange : V * Vᴴ = Q)
     (hQproj : IsOrthogonalProjection Q)
     (hLower : ∀ i, (1 - Q) * Kfam i * Q = 0) :
@@ -168,11 +168,11 @@ theorem exists_commonAverageSupportCompression
       (∀ x, (supportCompressedFamily V ρ x).trace = 1) ∧
       (commonAverage (supportCompressedFamily V ρ)).PosDef ∧
       (∀ x, V * supportCompressedFamily V ρ x * Vᴴ = ρ x) ∧
-      ∀ F : PreservingKrausFamily ρ,
+      ∀ F : KrausFamily (Fin D) (Fin D), IsPreserving ρ F.op →
         IsPreserving (supportCompressedFamily V ρ)
-            (supportCompressedKraus V F.Kfam) ∧
-          ∀ X, map F.Kfam (V * X * Vᴴ) =
-            V * map (supportCompressedKraus V F.Kfam) X * Vᴴ := by
+            (supportCompressedKraus V F.op) ∧
+          ∀ X, map F.op (V * X * Vᴴ) =
+            V * map (supportCompressedKraus V F.op) X * Vᴴ := by
   classical
   let hρbar := commonAverage_posSemidef ρ hρpos
   obtain ⟨n, V, hV, hVrange⟩ :=
@@ -213,70 +213,70 @@ theorem exists_commonAverageSupportCompression
       _ = ρ x := by
         rw [hVrange]
         exact commonAverage_supports_family ρ hρpos x
-  · intro F
+  · intro F hF
     have hQproj := hρbar.isOrthogonalProjection_supportProj
-    have hInv : ∀ i : Fin F.numKraus,
-        (1 - hρbar.supportProj) * F.Kfam i * hρbar.supportProj = 0 := by
+    have hInv : ∀ i : F.Index,
+        (1 - hρbar.supportProj) * F.op i * hρbar.supportProj = 0 := by
       simpa only [stationaryProj] using
-        (lowerZero_of_posSemidef_fixedPoint F.Kfam (commonAverage ρ)
-          hρbar F.map_commonAverage).2
+        (lowerZero_of_posSemidef_fixedPoint F.op (commonAverage ρ)
+          hρbar (map_commonAverage_of_isPreserving ρ hF)).2
     constructor
     · constructor
       · have hQV : hρbar.supportProj * V = V := by
           rw [← hVrange]
           simp [Matrix.mul_assoc, hV]
-        have hKV : ∀ i : Fin F.numKraus,
-            hρbar.supportProj * F.Kfam i * V = F.Kfam i * V := by
+        have hKV : ∀ i : F.Index,
+            hρbar.supportProj * F.op i * V = F.op i * V := by
           intro i
           have h := hInv i
           rw [Matrix.sub_mul, Matrix.sub_mul, Matrix.one_mul, sub_eq_zero] at h
           calc
-            hρbar.supportProj * F.Kfam i * V =
-                hρbar.supportProj * F.Kfam i * (hρbar.supportProj * V) := by
+            hρbar.supportProj * F.op i * V =
+                hρbar.supportProj * F.op i * (hρbar.supportProj * V) := by
                   rw [hQV]
-            _ = (hρbar.supportProj * F.Kfam i * hρbar.supportProj) * V := by
+            _ = (hρbar.supportProj * F.op i * hρbar.supportProj) * V := by
               simp [Matrix.mul_assoc]
-            _ = (F.Kfam i * hρbar.supportProj) * V := by rw [← h]
-            _ = F.Kfam i * V := by rw [Matrix.mul_assoc, hQV]
+            _ = (F.op i * hρbar.supportProj) * V := by rw [← h]
+            _ = F.op i * V := by rw [Matrix.mul_assoc, hQV]
         calc
-          ∑ i : Fin F.numKraus,
-              (supportCompressedKraus V F.Kfam i)ᴴ *
-                supportCompressedKraus V F.Kfam i
-              = Vᴴ * (∑ i : Fin F.numKraus, (F.Kfam i)ᴴ * F.Kfam i) * V := by
+          ∑ i : F.Index,
+              (supportCompressedKraus V F.op i)ᴴ *
+                supportCompressedKraus V F.op i
+              = Vᴴ * (∑ i : F.Index, (F.op i)ᴴ * F.op i) * V := by
                   rw [Matrix.mul_sum, Matrix.sum_mul]
                   refine Finset.sum_congr rfl fun i _ ↦ ?_
                   simp only [supportCompressedKraus, Matrix.conjTranspose_mul,
                     Matrix.conjTranspose_conjTranspose]
                   calc
-                    Vᴴ * ((F.Kfam i)ᴴ * V) * (Vᴴ * F.Kfam i * V) =
-                        Vᴴ * (F.Kfam i)ᴴ *
-                          ((V * Vᴴ) * F.Kfam i * V) := by
+                    Vᴴ * ((F.op i)ᴴ * V) * (Vᴴ * F.op i * V) =
+                        Vᴴ * (F.op i)ᴴ *
+                          ((V * Vᴴ) * F.op i * V) := by
                             simp [Matrix.mul_assoc]
-                    _ = Vᴴ * ((F.Kfam i)ᴴ * F.Kfam i) * V := by
+                    _ = Vᴴ * ((F.op i)ᴴ * F.op i) * V := by
                       rw [hVrange, hKV]
                       simp [Matrix.mul_assoc]
-          _ = 1 := by rw [F.isPreserving.1, Matrix.mul_one, hV]
+          _ = 1 := by rw [hF.1, Matrix.mul_one, hV]
       · intro x
         have hsupp := commonAverage_supports_family ρ hρpos x
         have hmap :
-            map (supportCompressedKraus V F.Kfam)
+            map (supportCompressedKraus V F.op)
                 (supportCompressedFamily V ρ x) =
-              Vᴴ * map F.Kfam (ρ x) * V := by
+              Vᴴ * map F.op (ρ x) * V := by
           unfold map supportCompressedKraus supportCompressedFamily
           rw [Matrix.mul_sum, Matrix.sum_mul]
           refine Finset.sum_congr rfl fun i _ ↦ ?_
           simp only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose]
           calc
-            Vᴴ * F.Kfam i * V * (Vᴴ * ρ x * V) *
-                  (Vᴴ * ((F.Kfam i)ᴴ * V)) =
-                Vᴴ * (F.Kfam i * ((V * Vᴴ) * ρ x * (V * Vᴴ)) *
-                  (F.Kfam i)ᴴ) * V := by
+            Vᴴ * F.op i * V * (Vᴴ * ρ x * V) *
+                  (Vᴴ * ((F.op i)ᴴ * V)) =
+                Vᴴ * (F.op i * ((V * Vᴴ) * ρ x * (V * Vᴴ)) *
+                  (F.op i)ᴴ) * V := by
                     simp [Matrix.mul_assoc]
-            _ = Vᴴ * (F.Kfam i * ρ x * (F.Kfam i)ᴴ) * V := by
+            _ = Vᴴ * (F.op i * ρ x * (F.op i)ᴴ) * V := by
               rw [hVrange, hsupp]
-        rw [hmap, F.isPreserving.2 x]
+        rw [hmap, hF.2 x]
         rfl
-    · exact map_supportCompressedKraus_intertwines V F.Kfam hρbar.supportProj
+    · exact map_supportCompressedKraus_intertwines V F.op hρbar.supportProj
         hV hVrange hQproj hInv
 
 /-- **Unrestricted Koashi--Imoto state and preserving-operation block form.**
@@ -317,17 +317,17 @@ theorem exists_commonInvariant_normalizedStateBlockForm_preservingBlockAction_jo
             Matrix.reindex e e
               (Matrix.blockDiagonal' fun j ↦
                 (q x j : ℂ) • (σ j ⊗ₖ τ x j))) ∧
-          (∀ F : PreservingKrausFamily ρ,
+          (∀ F : KrausFamily (Fin D) (Fin D), IsPreserving ρ F.op →
             IsPreserving (supportCompressedFamily V ρ)
-                (supportCompressedKraus V F.Kfam) ∧
-              ∀ X, map F.Kfam (V * X * Vᴴ) =
-                V * map (supportCompressedKraus V F.Kfam) X * Vᴴ) ∧
-          ∀ G : PreservingKrausFamily (supportCompressedFamily V ρ),
-            ∃ C : (i : Fin G.numKraus) → ∀ j,
+                (supportCompressedKraus V F.op) ∧
+              ∀ X, map F.op (V * X * Vᴴ) =
+                V * map (supportCompressedKraus V F.op) X * Vᴴ) ∧
+          ∀ G : KrausFamily (Fin n) (Fin n), IsPreserving (supportCompressedFamily V ρ) G.op →
+            ∃ C : G.Index → ∀ j,
                 Matrix (Fin (m j)) (Fin (m j)) ℂ,
               (∀ i,
                 Matrix.reindex e.symm e.symm
-                    (star U * G.Kfam i * U) =
+                    (star U * G.op i * U) =
                   Matrix.blockDiagonal' fun j ↦
                     C i j ⊗ₖ (1 : Matrix (Fin (d j)) (Fin (d j)) ℂ)) ∧
               (∀ j, IsTP (fun i ↦ C i j)) ∧
@@ -335,7 +335,7 @@ theorem exists_commonInvariant_normalizedStateBlockForm_preservingBlockAction_jo
               ∀ j (A : Matrix (Fin (m j)) (Fin (m j)) ℂ)
                   (B : Matrix (Fin (d j)) (Fin (d j)) ℂ),
                 Matrix.reindex e.symm e.symm
-                    (star U * map G.Kfam
+                    (star U * map G.op
                       (U * Matrix.reindex e e
                         (Matrix.directSumBlockEmbedding (m := m) (d := d) j
                           (A ⊗ₖ B)) * star U) * U) =

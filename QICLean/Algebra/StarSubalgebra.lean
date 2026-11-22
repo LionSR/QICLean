@@ -10,6 +10,8 @@ Authors: QICLean contributors
 
 import QICLean.Algebra.StarSubalgebra.BlockDiagonal
 import QICLean.Algebra.StarSubalgebra.BlockForm
+import QICLean.Algebra.StarSubalgebra.CommutingProduct
+import QICLean.Algebra.StarSubalgebra.Equiv
 import QICLean.Algebra.StarSubalgebra.Factor
 import QICLean.Algebra.StarSubalgebra.IntertwinerIsometry
 import QICLean.Algebra.StarSubalgebra.IrreducibleDecomp
@@ -20,3 +22,4 @@ import QICLean.Algebra.StarSubalgebra.Schur
 import QICLean.Algebra.StarSubalgebra.Semisimple
 import QICLean.Algebra.StarSubalgebra.SimpleModule
 import QICLean.Algebra.StarSubalgebra.Spatial
+import QICLean.Algebra.StarSubalgebra.StarClosedSemisimple

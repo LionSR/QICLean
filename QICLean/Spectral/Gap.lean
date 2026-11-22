@@ -11,6 +11,8 @@ Authors: QICLean contributors
 import QICLean.Spectral.Gap.BoundedCongruenceGap
 import QICLean.Spectral.Gap.CompactKernelGap
 import QICLean.Spectral.Gap.DoubledSystemGap
+import QICLean.Spectral.Gap.EuclideanFiberwiseGap
+import QICLean.Spectral.Gap.EuclideanSigmaFiberwiseMap
 import QICLean.Spectral.Gap.FiniteRangeKnabe
 import QICLean.Spectral.Gap.GroundProjection
 import QICLean.Spectral.Gap.IsometricCompressionGap

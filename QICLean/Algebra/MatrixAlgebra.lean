@@ -12,8 +12,11 @@ import QICLean.Algebra.MatrixAlgebra.BlockPermutation
 import QICLean.Algebra.MatrixAlgebra.Burnside
 import QICLean.Algebra.MatrixAlgebra.CornerSkolemNoether
 import QICLean.Algebra.MatrixAlgebra.MatrixAlgHomCentralizer
+import QICLean.Algebra.MatrixAlgebra.MatrixAlgebraCoordinates
 import QICLean.Algebra.MatrixAlgebra.MatrixFamilyAction
+import QICLean.Algebra.MatrixAlgebra.MatrixStarEquivSpatial
 import QICLean.Algebra.MatrixAlgebra.MatrixUnitConjugator
+import QICLean.Algebra.MatrixAlgebra.MatrixUnitFactorization
 import QICLean.Algebra.MatrixAlgebra.ScalarCommutant
 import QICLean.Algebra.MatrixAlgebra.SkolemNoether
 import QICLean.Algebra.MatrixAlgebra.SkolemNoetherUnitary

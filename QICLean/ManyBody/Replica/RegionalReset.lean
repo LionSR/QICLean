@@ -17,9 +17,9 @@ import QICLean.ManyBody.Sites.ReplicaSwap
 
 Let `Ω` be a gapped ground vector of a Hamiltonian `H` on the sites `V`, and let `R, C` be
 disjoint regions with `I_Ω(R : C) ≤ b`. On the two replicas `V ⊕ V` put `Ψ = Ω ⊗ Ω` and
-`Φ = F_R Ψ`, where `F_R` exchanges the replicas on `R`. With the doubled Hamiltonian
-`K = H ⊗ 1 + 1 ⊗ H`, there are a contraction `W` on the two copies of the buffer
-`Q = (R ∪ C)ᶜ` and a real `z ≥ exp (-2 b)` such that, for every `L ≥ 1` and
+`Φ = F_R Ψ`, where `F_R = ManyBody.replicaSwapOp R` exchanges the two copies on `R`. With the
+doubled Hamiltonian `K = H ⊗ 1 + 1 ⊗ H`, there are a contraction `W` on the two copies of the
+buffer `Q = (R ∪ C)ᶜ` and a real `z ≥ exp (-2 b)` such that, for every `L ≥ 1` and
 `B = 1 + b + log L`, the truncated Gaussian integral `M` of variance `A B` and cutoff `T₀ B`
 between the generators `F_R K F_R*` and `K`, applied to the placement of `W` on `Q ⊔ Q`, has
 both residuals `‖M Ψ - z Φ‖` and `‖M* Φ - z Ψ‖` at most `3 exp (-10 b) L^(-r)`. The constants
@@ -130,7 +130,8 @@ private theorem reindex_replicaCoords_partialSwap :
           ManyBody.ComplConfig (fun _ : V ↦ α) (R ∪ C))
               (ManyBody.ComplConfig (fun _ : V ↦ α) (R ∪ C) ×
           ManyBody.ComplConfig (fun _ : V ↦ α) (R ∪ C)) ℂ)) =
-      sitePermOp (replicaSwap R) := by
+      replicaSwapOp α R := by
+  rw [← sitePermOp_replicaSwap]
   set G := replicaCoords (α := α) R C hRC
   set π := replicaSwap R
   have hC (v : V) (hv : v ∈ C) : v ∉ R := fun h ↦ Finset.disjoint_left.mp hRC h hv
@@ -276,7 +277,7 @@ theorem regional_physicalBuffer_filter {Δ r : ℝ} (hΔ : 0 < Δ) (hr : 0 ≤ r
     (hI : ManyBody.regionMutualInformation Ω R C ≤ b) :
     let K := reindex (Equiv.sumArrowEquivProdArrow V V α).symm
       (Equiv.sumArrowEquivProdArrow V V α).symm (doubledHamiltonian H)
-    let F := sitePermOp (α := α) (replicaSwap R)
+    let F := replicaSwapOp α R
     let Ψ := ManyBody.sumSitesProduct (X := fun _ : V ⊕ V ↦ α) Ω Ω
     ∃ (W : Matrix (RegionConfig (fun _ : V ⊕ V ↦ α) (((R ∪ C)ᶜ).disjSum (R ∪ C)ᶜ))
         (RegionConfig (fun _ : V ⊕ V ↦ α) (((R ∪ C)ᶜ).disjSum (R ∪ C)ᶜ)) ℂ) (z : ℝ),

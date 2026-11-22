@@ -16,5 +16,7 @@ import QICLean.Algebra.Polynomial.MatrixPolynomialDegree
 import QICLean.Algebra.Polynomial.MatrixPolynomialParameter
 import QICLean.Algebra.Polynomial.NewtonGirard
 import QICLean.Algebra.Polynomial.OrderedPolynomialGaps
+import QICLean.Algebra.Polynomial.PowerSumSecondDifference
 import QICLean.Algebra.Polynomial.ScalarPowerSumIdentity
+import QICLean.Algebra.Polynomial.TailPowerSumUniqueness
 import QICLean.Algebra.Polynomial.TracePowerCharPoly

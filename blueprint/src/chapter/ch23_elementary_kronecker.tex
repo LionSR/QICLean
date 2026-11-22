@@ -1,0 +1,175 @@
+\section{Finite tensor products and tensor powers of matrices}
+
+All matrices in this section are complex and indexed by finite sets. For a
+finite set of sites $\nu$ and matrices $K_k$ with rows indexed by $I_k$ and
+columns by $J_k$, the tensor product $\bigotimes_kK_k$ is the matrix with
+rows indexed by $\prod_kI_k$, columns by $\prod_kJ_k$, and entries
+$\bigl(\bigotimes_kK_k\bigr)_{x,y}=\prod_k(K_k)_{x_k,y_k}$.
+
+\begin{lemma}[Algebra of finite tensor products]
+    \label{lem:elementary_finite_tensor_product_algebra}
+    \lean{Matrix.piKronecker, Matrix.piKronecker_mul, Matrix.piKronecker_one,
+        Matrix.rectKronecker, Matrix.rectKronecker_eq_finKronecker,
+        Matrix.rectKronecker_mul, Matrix.rectKronecker_one,
+        Matrix.sum_rectKronecker, Matrix.finKronecker_one,
+        Matrix.finKronecker_conjTranspose, Matrix.finKronecker_transpose,
+        Matrix.finKronecker_diagonal}
+    \leanok
+    Finite tensor products of rectangular matrices are multiplicative,
+    $\bigl(\bigotimes_kK_k\bigr)\bigl(\bigotimes_kL_k\bigr)
+        =\bigotimes_kK_kL_k$, and the tensor product of identities is the
+    identity. Transposes and adjoints are taken factorwise. Summing tensor
+    products over all choice functions gives the tensor product of the sums,
+    and the tensor power of a diagonal matrix $\operatorname{diag}(f)$ is
+    diagonal with entries $\prod_kf(\sigma_k)$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Each entry of the product is a sum over intermediate configurations of
+    products over the sites; distributing the finite product over the sums
+    gives the product of the factorwise products. The remaining identities
+    are entrywise computations with $\prod_k\delta_{x_k,y_k}=\delta_{x,y}$.
+\end{proof}
+
+\begin{lemma}[A scalar at one site]
+    \label{lem:elementary_finite_tensor_scalar_site}
+    \lean{Matrix.finKronecker_ite_smul_one}
+    \leanok
+    \uses{lem:elementary_finite_tensor_product_algebra}
+    A finite tensor product of identities in which the factor at one site is
+    replaced by $c\Id$ equals $c\Id$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    The scalar factors out of the product of the entries.
+\end{proof}
+
+\begin{lemma}[Adjoints and isometries under tensor powers]
+    \label{lem:elementary_tensor_power_isometry}
+    \lean{Matrix.rectKronecker_conjTranspose,
+        Matrix.rectKronecker_conjTranspose_mul_self,
+        Matrix.finKronecker_conjTranspose_mul_self}
+    \leanok
+    \uses{lem:elementary_finite_tensor_product_algebra}
+    Adjoints distribute over finite tensor products,
+    $(\bigotimes_j E_j)^\dagger=\bigotimes_j E_j^\dagger$. If
+    $E^\dagger E=\Id$, then $T_L=E^{\otimes L}$ satisfies
+    $T_L^\dagger T_L=\Id$ for every $L\ge0$. These identities apply to the
+    inclusions in \cite[Section~II.F.2]{Schuch2011Phases}.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Multiplication and adjoints commute with tensor powers, so
+    $T_L^\dagger T_L=(E^\dagger E)^{\otimes L}=\Id$.
+\end{proof}
+
+\begin{lemma}[Tensor powers of maps on labels]
+    \label{lem:elementary_tensor_power_label_map}
+    \lean{Matrix.finKronecker_mul_apply_of_eq_ite,
+        Matrix.mul_finKronecker_apply_of_eq_ite}
+    \leanok
+    If $u_{ij}=\delta_{j,f(i)}$ for a map $f$ on labels, then left
+    multiplication by $u^{\otimes N}$ sends the row configuration $\sigma$ of
+    a matrix to $f\circ\sigma$. If $u_{ij}=\delta_{i,g(j)}$, right
+    multiplication by $u^{\otimes N}$ sends the column configuration $\tau$
+    to $g\circ\tau$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    The entries of $u^{\otimes N}$ are products of Kronecker deltas, so only
+    one intermediate configuration contributes.
+\end{proof}
+
+\begin{lemma}[Trace of an ordered product of linear combinations]
+    \label{lem:elementary_trace_product_sums}
+    \lean{Matrix.trace_prod_ofFn_sum_smul}
+    \leanok
+    \uses{lem:elementary_ordered_product_sum}
+    For scalars $f_l(j)$ and square matrices $B_l(j)$,
+    \begin{align}
+        \operatorname{tr}\prod_{l=0}^{L-1}\sum_jf_l(j)B_l(j)
+         & =\sum_{c}\Bigl(\prod_lf_l(c(l))\Bigr)
+        \operatorname{tr}\prod_{l=0}^{L-1}B_l(c(l)),
+        \notag
+    \end{align}
+    the sum running over all choice functions $c$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Distribute the ordered product over the sums, extract the scalars, and
+    use linearity of the trace.
+\end{proof}
+
+\begin{definition}[Tensor power of a rectangular matrix]
+    \label{def:elementary_matrix_tensor_power}
+    \lean{Matrix.tensorPower}
+    \leanok
+    For a matrix $V$ with rows indexed by $I$ and columns by $J$, its
+    $N$-fold tensor power $V^{\otimes N}$ is the matrix indexed by $I^N$ and
+    $J^N$ with entries
+    \begin{align}
+        (V^{\otimes N})_{s,t}
+         & =\prod_{n=1}^{N}V_{s_n,t_n}.
+        \notag
+    \end{align}
+\end{definition}
+
+\begin{lemma}[Products and adjoints of tensor powers]
+    \label{lem:mpdo_tensor_power_laws}
+    \lean{Matrix.tensorPower_mul, Matrix.conjTranspose_tensorPower,
+        Matrix.tensorPower_one, Matrix.tensorPower_zero, Matrix.tensorPower_smul}
+    \leanok
+    \uses{def:elementary_matrix_tensor_power}
+    Let $I,J,K$ be finite sets, $X\in\C^{I\times J}$, $Y\in\C^{J\times K}$,
+    $c\in\C$ and $N\ge0$. Then $X^{\otimes N}Y^{\otimes N}=(XY)^{\otimes N}$,
+    $(X^{\otimes N})^\dagger=(X^\dagger)^{\otimes N}$ and
+    $(cX)^{\otimes N}=c^NX^{\otimes N}$. On every configuration space,
+    $\Id^{\otimes N}=\Id$, and $0^{\otimes N}=0$ for $N\geq1$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Distributing finite products over sums gives
+    \begin{align}
+        \sum_{r\in J^N}\prod_{n=1}^{N}X_{s_n,r_n}Y_{r_n,t_n}
+         & =\prod_{n=1}^{N}\sum_{j\in J}X_{s_n,j}Y_{j,t_n}.
+        \notag
+    \end{align}
+    Conjugation and scalars distribute over the finite product, and
+    $\prod_n\delta_{s_n,t_n}=\delta_{s,t}$ gives the identity formula.
+\end{proof}
+
+\begin{lemma}[Tensor powers of isometries and partial isometries]
+    \label{lem:elementary_tensor_power_partial_isometry}
+    \lean{Matrix.IsIsometry.tensorPower, Matrix.IsUnitaryBetween.tensorPower,
+        Matrix.tensorPower_mem_unitaryGroup,
+        Matrix.sum_star_tensorPower_mulVec_mul,
+        Matrix.sum_norm_sq_tensorPower_mulVec_le}
+    \leanok
+    \uses{lem:mpdo_tensor_power_laws}
+    The tensor power of an isometry is an isometry, and the tensor power of a
+    unitary matrix is unitary. For matrices $W,W'$ with the same rows and
+    vectors $\psi,\varphi$ on $M$ sites,
+    $\braket{W^{\otimes M}\psi}{W'^{\otimes M}\varphi}
+        =\braket{\psi}{(W^\dagger W')^{\otimes M}\varphi}$. If $W^\dagger W$ is
+    idempotent, then $\lVert W^{\otimes M}\psi\rVert\leq\lVert\psi\rVert$.
+    This is the step used for the isometry $W^{\otimes M}$ in
+    \cite[eq.~(19)]{Malz2024Preparation}.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    The entries of $(W^{\otimes M})^\dagger W^{\otimes M}$ factor over the
+    sites, giving $\prod_k(W^\dagger W)_{s_k,t_k}=\delta_{st}$ for an
+    isometry. The inner product identity is
+    $(W^{\otimes M})^\dagger W'^{\otimes M}=(W^\dagger W')^{\otimes M}$. If
+    $W^\dagger W$ is idempotent, then $\Pi=(W^\dagger W)^{\otimes M}$ is a
+    Hermitian idempotent, so $\Id-\Pi\geq0$ and
+    $\lVert\psi\rVert^2-\lVert W^{\otimes M}\psi\rVert^2
+        =\braket{\psi}{(\Id-\Pi)\psi}\geq0$.
+\end{proof}

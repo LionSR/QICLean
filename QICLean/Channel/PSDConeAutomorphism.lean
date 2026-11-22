@@ -9,5 +9,6 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Channel.PSDConeAutomorphism
 
 import QICLean.Channel.PSDConeAutomorphism.FaceDimension
+import QICLean.Channel.PSDConeAutomorphism.InjectivePositiveMapRank
 import QICLean.Channel.PSDConeAutomorphism.RankPreservation
 import QICLean.Channel.PSDConeAutomorphism.RankPreserver
