@@ -4,6 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Spectral.Gap.PositiveGapTransfer
+import QICLean.Spectral.Eigenvalue.EuclideanEigenvectorBasis
+import QICLean.Analysis.Order.LowEnergyPerturbation
 
 /-!
 # The gap above the kernel in eigenvalue, quadratic and norm form
@@ -29,13 +31,17 @@ bounded below by `Δ`.
   eigenvalue form of the gap is its quadratic form and its norm form.
 * `LinearMap.IsPositive.quadraticForm_sq_ge_of_forall_hasEigenvalue` — a positive operator with
   gap `γ ≥ 0` above its kernel satisfies `H² ≥ γ H` as a quadratic form on the whole space.
+* `Matrix.IsHermitian.mul_norm_sq_le_re_inner_of_spectral_gap` — for a Hermitian matrix, a lower
+  bound for every nonzero real point of the spectrum bounds the quadratic form on the orthogonal
+  complement of the kernel. This is the spectral step used with detectability in ALVV,
+  arXiv:1602.08828v2, `lem:dl` and `thm:FF-tH`, lines 1508–1519 and 1562–1568.
 
-The last statement is moved from TNLean, `TNLean/MPS/ParentHamiltonian/Martingale/
-QuadraticFormGap.lean` at commit `414a18fb88`, with the norm-form hypothesis replaced by the
-eigenvalue form.
+The quadratic-form inequality `H² ≥ γ H` is moved from TNLean,
+`TNLean/MPS/ParentHamiltonian/Martingale/QuadraticFormGap.lean` at commit `414a18fb88`, with the
+norm-form hypothesis replaced by the eigenvalue form.
 -/
 
-open scoped InnerProductSpace ComplexOrder
+open scoped BigOperators InnerProductSpace ComplexOrder
 
 variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
 
@@ -66,19 +72,8 @@ theorem mul_norm_sq_le_re_inner_of_forall_hasEigenvalue [FiniteDimensional ℂ E
       Complex.real_le_real.mp
   have hv_sq : ‖v‖ ^ 2 = ∑ i, ‖(b.repr v) i‖ ^ 2 := by
     rw [← b.repr.norm_map v, EuclideanSpace.norm_sq_eq]
-  have hHv : H v = ∑ i, ((μ i : ℂ) * (b.repr v) i) • b i := by
-    nth_rw 1 [← b.sum_repr v]
-    rw [map_sum]
-    refine Finset.sum_congr rfl fun i _ ↦ ?_
-    rw [map_smul, hH.apply_eigenvectorBasis rfl, smul_smul]
-    exact congrArg (· • b i) (mul_comm _ _)
-  have hquad : (⟪H v, v⟫_ℂ).re = ∑ i, μ i * ‖(b.repr v) i‖ ^ 2 := by
-    rw [hHv, sum_inner, Complex.re_sum]
-    refine Finset.sum_congr rfl fun i _ ↦ ?_
-    rw [inner_smul_left, b.repr_apply_apply, map_mul, Complex.conj_ofReal, mul_assoc,
-      ← Complex.normSq_eq_conj_mul_self, Complex.sq_norm]
-    simp
-  rw [← hH v v, hv_sq, hquad, Finset.mul_sum]
+  rw [hv_sq, b.re_inner_apply_eq_sum_of_eigen μ H (hH.apply_eigenvectorBasis rfl) v,
+    Finset.mul_sum]
   refine Finset.sum_le_sum fun i _ ↦ ?_
   rcases hμGap i with hzero | hbound
   · have hcoeff : (b.repr v) i = 0 := by
@@ -132,33 +127,18 @@ finite-dimensional space, every eigenvalue other than `0` is at least `Δ` exact
 theorem forall_hasEigenvalue_iff_norm {H : E →ₗ[ℂ] E} (hH : H.IsPositive) {Δ : ℝ} :
     (∀ μ : ℂ, Module.End.HasEigenvalue H μ → μ = 0 ∨ (Δ : ℂ) ≤ μ) ↔
       ∀ v ∈ (LinearMap.ker H)ᗮ, Δ * ‖v‖ ≤ ‖H v‖ := by
-  refine ⟨fun h v hv ↦ ?_, fun hn μ hμ ↦ ?_⟩
+  refine hH.forall_hasEigenvalue_iff_re_inner.trans ⟨fun hq v hv ↦ ?_, fun hn v hv ↦ ?_⟩
   · rcases eq_or_ne v 0 with rfl | hv0
     · simp
     refine le_of_mul_le_mul_right ?_ (norm_pos_iff.mpr hv0)
     calc Δ * ‖v‖ * ‖v‖ = Δ * ‖v‖ ^ 2 := by ring
-      _ ≤ (⟪v, H v⟫_ℂ).re := (hH.forall_hasEigenvalue_iff_re_inner.mp h) v hv
+      _ ≤ (⟪v, H v⟫_ℂ).re := hq v hv
       _ ≤ ‖v‖ * ‖H v‖ := re_inner_le_norm (𝕜 := ℂ) _ _
       _ = ‖H v‖ * ‖v‖ := mul_comm _ _
-  rcases eq_or_ne μ 0 with hμ0 | hμ0
-  · exact Or.inl hμ0
-  right
-  obtain ⟨ψ, hψ⟩ := hμ.exists_hasEigenvector
-  have hreal : μ.im = 0 :=
-    Complex.conj_eq_iff_im.mp (hH.isSymmetric.conj_eigenvalue_eq_self hμ)
-  have hψ0 : 0 < ‖ψ‖ := norm_pos_iff.mpr hψ.2
-  have hre : 0 ≤ μ.re := by
-    have h := hH.re_inner_nonneg_right ψ
-    rw [hψ.apply_eq_smul, inner_smul_right, inner_self_eq_norm_sq_to_K] at h
-    have h' : 0 ≤ μ.re * ‖ψ‖ ^ 2 := by simpa [← Complex.ofReal_pow] using h
-    exact nonneg_of_mul_nonneg_left h' (pow_pos hψ0 2)
-  have hnorm : ‖μ‖ = μ.re := by
-    rw [← Complex.re_add_im μ, hreal]
-    simp [abs_of_nonneg hre]
-  have hg := hn ψ (hH.isSymmetric.mem_orthogonal_ker_of_apply_eq_smul hμ0 hψ.apply_eq_smul)
-  rw [hψ.apply_eq_smul, norm_smul, hnorm] at hg
-  rw [Complex.le_def]
-  exact ⟨by simpa using le_of_mul_le_mul_right hg hψ0, by simp [hreal]⟩
+  rcases lt_or_ge Δ 0 with hΔ | hΔ
+  · exact (mul_nonpos_of_nonpos_of_nonneg hΔ.le (sq_nonneg _)).trans
+      (hH.re_inner_nonneg_right v)
+  · exact (hH.re_inner_ge_of_norm_gap hΔ hn v hv).trans_eq (inner_re_symm (𝕜 := ℂ) _ _)
 
 /-- **The quadratic-form inequality `H² ≥ γ H` from the gap.** If every eigenvalue of a positive
 operator `H` on a finite-dimensional space other than `0` is at least `γ ≥ 0`, then
@@ -198,3 +178,37 @@ theorem quadraticForm_sq_ge_of_forall_hasEigenvalue {H : E →ₗ[ℂ] E} (hH : 
       exact (inner_self_eq_norm_sq (𝕜 := ℂ) (H v)).symm
 
 end LinearMap.IsPositive
+
+namespace Matrix.IsHermitian
+
+/-- The actual spectral gap controls every vector orthogonal to the kernel.
+The real bound may have either sign. Auxiliary to ALVV,
+arXiv:1602.08828v2, `lem:dl` and `thm:FF-tH`, lines 1508–1519 and 1562–1568. -/
+theorem mul_norm_sq_le_re_inner_of_spectral_gap
+    {n : Type*} [Fintype n] [DecidableEq n] {A : Matrix n n ℂ} (hA : A.IsHermitian)
+    {γ : ℝ} (hγgap : ∀ e ∈ spectrum ℝ A, e = 0 ∨ γ ≤ e)
+    (x : EuclideanSpace ℂ n)
+    (horth : ∀ z : EuclideanSpace ℂ n,
+      Matrix.toEuclideanCLM (𝕜 := ℂ) (n := n) A z = 0 → ⟪z, x⟫_ℂ = 0) :
+    γ * ‖x‖ ^ 2 ≤ (⟪x, Matrix.toEuclideanCLM (𝕜 := ℂ) (n := n) A x⟫_ℂ).re := by
+  have hnorm : ‖x‖ ^ 2 = ∑ j, ‖hA.eigenvectorBasis.repr x j‖ ^ 2 := by
+    simpa only [LinearIsometryEquiv.norm_map] using
+      EuclideanSpace.norm_sq_eq (hA.eigenvectorBasis.repr x)
+  change γ * ‖x‖ ^ 2 ≤
+    (⟪x, (Matrix.toEuclideanCLM (𝕜 := ℂ) (n := n) A).toLinearMap x⟫_ℂ).re
+  rw [hnorm, Finset.mul_sum,
+    hA.eigenvectorBasis.re_inner_apply_eq_sum_of_eigen hA.eigenvalues
+      (Matrix.toEuclideanCLM (𝕜 := ℂ) (n := n) A).toLinearMap
+      hA.toEuclideanCLM_eigenvectorBasis x]
+  refine Finset.sum_le_sum fun j _ ↦ ?_
+  rcases hγgap (hA.eigenvalues j) (hA.eigenvalues_mem_spectrum_real j) with hz | hj
+  · have hzero : Matrix.toEuclideanCLM (𝕜 := ℂ) (n := n) A
+        (hA.eigenvectorBasis j) = 0 := by
+      simpa only [hz, map_zero, zero_smul] using
+        hA.toEuclideanCLM_eigenvectorBasis j
+    have hcoeff : hA.eigenvectorBasis.repr x j = 0 :=
+      (hA.eigenvectorBasis.repr_apply_apply x j).trans (horth _ hzero)
+    simpa only [hcoeff, norm_zero, zero_pow two_ne_zero, mul_zero] using (le_refl (0 : ℝ))
+  · exact mul_le_mul_of_nonneg_right hj (sq_nonneg _)
+
+end Matrix.IsHermitian

@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Spectral.Gap.DoubledSystemGap
-import QICLean.Analysis.Order.GlobalGap
+import QICLean.Spectral.Eigenvalue.GlobalGap
 
 /-! Regression checks for the doubled full-system gap and the physical partial swap. -/
 

@@ -6,7 +6,7 @@ the first column is the name after the reorganization.
 
 ## Modules placed by their imports, not by their statements
 
-155 modules state objects of one layer but import a module of a higher one (placed
+154 modules state objects of one layer but import a module of a higher one (placed
 higher), or are imported by a module of a lower one (placed lower). Each is a candidate for
 a split that moves the declarations the importer needs.
 
@@ -78,7 +78,7 @@ a split that moves the declarations the importer needs.
 | `Spectral.Gap.SupportedParentProjection` | Analysis | Spectral | `imports Spectral.Gap.IsometricCompressionGap` |
 | `Spectral.Gap.WeightedPositiveKernel` | Analysis | Spectral | `imports Spectral.Gap.PositiveGapTransfer` |
 | `Analysis.Convexity.DiagonalJensen` | Channel | Analysis | `imported by Analysis.Convexity.OperatorConvexity` |
-| `Analysis.Norm.RootChannel` | Channel | Analysis | `imported by Analysis.Norm.ContractionWordDecay` |
+| `Analysis.Norm.RootChannel` | Channel | Analysis | `imported by Spectral.Gap.ContractionWordDecay` |
 | `Analysis.Norm.TraceNormContractivity` | Channel | Analysis | `imported by Spectral.Filter.ChebyshevSpectralFilter` |
 | `Analysis.TraceNorm.RectangularTraceNormContraction` | Channel | Analysis | `imported by Analysis.TraceNorm.SubnormalizedPureStateError` |
 | `Entropy.Markov.AmbientMarkovBipartiteBlockForm` | Channel | Entropy | `imports Entropy.Markov.MarkovBipartiteBlockForm` |
@@ -161,7 +161,6 @@ a split that moves the declarations the importer needs.
 | `Analysis.FunctionalCalculus.SpectralFunUnique` | Spectral | Analysis | `imported by Analysis.Support.Power` |
 | `Analysis.FunctionalCalculus.SpectralQuadraticForm` | Spectral | Analysis | `imported by Analysis.TraceInequality.MatrixBernsteinInputs` |
 | `Analysis.FunctionalCalculus.ViableSubspaceSpectralProjector` | Spectral | Analysis | `imported by Analysis.FunctionalCalculus.ViableSubspaceSpectralProjector` |
-| `Analysis.Order.GlobalGap` | Spectral | Analysis | `imported by Analysis.Norm.ContractionWordDecay` |
 | `Analysis.Order.HermitianTracePower` | Spectral | Analysis | `imported by Analysis.TraceInequality.TracePurity` |
 | `Analysis.Order.LowEnergyPerturbation` | Spectral | Analysis | `imported by Analysis.Order.WeylMonotonicity` |
 | `Analysis.Order.WeylMonotonicity` | Spectral | Analysis | `imported by Analysis.Exponential.TraceExponentialPerturbation` |
@@ -636,8 +635,8 @@ would push the target past 1000 lines.
 | `Spectral.Filter.ChebyshevGroundFilter` | merge into QICLean.Spectral.Filter.ChebyshevSpectralFilter (one Chebyshev filter from a ground vector and a gap of one Hermitian matrix) |
 | `Spectral.Filter.EnergyWeightedPowerOrder` | one Loewner bound for H(1-H/A)^tau of one Hermitian matrix; merge into QICLean.Spectral.Filter.EnergyTruncation or keep beside it |
 | `Spectral.Filter.Gaussian.UniformGroundEstimate` | merge into QICLean.Spectral.Filter.Gaussian.GroundEstimate; one uniform-constant version of the truncated ground estimate |
-| `Spectral.Gap.GroundProjection` | merge into QICLean.Analysis.Order.GlobalGap; one identity spectralProjectionGE = rank-one ground projection from a global gap |
-| `Spectral.Gap.KernelSpectralGap` | merge into QICLean.Analysis.Order.GlobalGap; one lemma quadratic-form gap above the kernel of a Hermitian matrix |
+| `Spectral.Gap.GroundProjection` | merged into QICLean.Spectral.Filter.Gaussian.SpectralGap, which proves the ground-or-excited dichotomy it uses; one identity spectralProjectionGE = rank-one ground projection from a global gap |
+| `Spectral.Gap.KernelSpectralGap` | merged into QICLean.Spectral.Gap.EigenvalueGap, the forms of the gap above a kernel; one lemma quadratic-form gap above the kernel of a Hermitian matrix |
 | `Spectral.LowEnergy.Order` | merge into QICLean.Analysis.Order.LowEnergyPerturbation (defines spectralSpanLE); one monotonicity lemma |
 | `Spectral.LowEnergy.RitzGroundSpaceCloseness` | merge into QICLean.Spectral.LowEnergy.RitzGroundSpace (sole importer target): one corollary for a trial space close to the ground space |
 | `Spectral.Perturbation.ClusterNormPerturbation` | merge into QICLean.Spectral.Perturbation.BufferedSpectralNormPerturbation: one low-cluster stability theorem; imports ViableSubspaceDimension |

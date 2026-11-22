@@ -234,7 +234,6 @@ SUBLAYER_DEBT: frozenset[str] = frozenset({
         "QICLean.Spectral.Eigenvalue.HermitianSpectrumPreserver -> QICLean.Spectral.Perturbation.HermitianSpectrumPerturbation",
         "QICLean.Spectral.Eigenvalue.TensorEnergyMinimum -> QICLean.Spectral.LowEnergy.RitzCompression",
         "QICLean.Spectral.Eigenvalue.VariationalBound -> QICLean.Spectral.Filter.Gaussian.CommutatorSeries",
-        "QICLean.Spectral.Gap.GroundProjection -> QICLean.Spectral.Filter.Gaussian.SpectralGap",
         "QICLean.Spectral.Perturbation.ClusterNormPerturbation -> QICLean.Spectral.LowEnergy.Order",
 })
 DEEP_ROOTS: frozenset[str] = frozenset({"ManyBody", "Circuit"})

@@ -10,16 +10,16 @@ Authors: QICLean contributors
 
 import QICLean.Spectral.Gap.BoundedCongruenceGap
 import QICLean.Spectral.Gap.CompactKernelGap
+import QICLean.Spectral.Gap.ContractionWordDecay
+import QICLean.Spectral.Gap.ContractionWordDecaySpectator
 import QICLean.Spectral.Gap.DoubledSystemGap
 import QICLean.Spectral.Gap.EigenvalueGap
 import QICLean.Spectral.Gap.EuclideanFiberwiseGap
 import QICLean.Spectral.Gap.EuclideanSigmaFiberwiseMap
 import QICLean.Spectral.Gap.FiniteRangeKnabe
-import QICLean.Spectral.Gap.GroundProjection
 import QICLean.Spectral.Gap.IsometricCompressionGap
 import QICLean.Spectral.Gap.IsometricConjugationGap
 import QICLean.Spectral.Gap.IsometricGapTransfer
-import QICLean.Spectral.Gap.KernelSpectralGap
 import QICLean.Spectral.Gap.OrthogonalKernelGap
 import QICLean.Spectral.Gap.PositiveComparisonGap
 import QICLean.Spectral.Gap.PositiveGapTransfer

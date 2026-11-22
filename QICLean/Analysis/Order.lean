@@ -14,7 +14,6 @@ import QICLean.Analysis.Order.ConeNormBound
 import QICLean.Analysis.Order.DensityMatrix
 import QICLean.Analysis.Order.FiniteKroneckerOrder
 import QICLean.Analysis.Order.FloorPin
-import QICLean.Analysis.Order.GlobalGap
 import QICLean.Analysis.Order.HermitianTracePower
 import QICLean.Analysis.Order.InverseCompressionLowerPin
 import QICLean.Analysis.Order.LowEnergyPerturbation

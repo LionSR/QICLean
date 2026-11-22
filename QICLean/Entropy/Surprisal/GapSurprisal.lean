@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Analysis.Norm.BipartiteDecomposition
 import QICLean.Channel.Schmidt.SchmidtTilt
-import QICLean.Analysis.Order.GlobalGap
+import QICLean.Spectral.Eigenvalue.GlobalGap
 import Mathlib.Analysis.Complex.ExponentialBounds
 
 /-!

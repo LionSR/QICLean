@@ -5,6 +5,8 @@ Authors: QICLean contributors
 -/
 import QICLean.Spectral.Gap.PositiveGapUniqueness
 import QICLean.Analysis.Exponential.MatrixFilter
+import QICLean.Analysis.FunctionalCalculus.TraceCFC
+import QICLean.Spectral.Projection.ShiftedDensityTruncation
 
 /-!
 # Gaussian spectral decay across a positive gap
@@ -22,6 +24,13 @@ is a positive lower bound; no equality with the actual spectral gap is asserted.
 
 Independently formalized from the manuscript; no upstream Lean proof text is
 reused.
+
+The same ground-or-excited dichotomy identifies the canonical spectral projection below the
+excited-energy threshold `E₀ + Δ` with the rank-one projection onto the ground vector
+(`Matrix.IsHermitian.complement_spectralProjectionGE_eq_rankOne`), for every `Δ > 0` and with
+no spectral ceiling. Sources for that identity: LVV, arXiv:1307.5143v1, lines 599–603, equation
+e:cutdown; the OpenAI area-law manuscript, Theorem thm:area, 00-introduction.tex, lines 44–47,
+and the polynomial-PEPS manuscript, equation eq:global-gap.
 
 ## References and reuse
 
@@ -154,3 +163,28 @@ theorem norm_sub_ground_le_of_coefficients {H : Matrix n n ℂ} (hH : H.IsHermit
       simpa only [mul_pow] using hsq)
 
 end GaussianFilter
+
+/-- The canonical ground projection from the original global gap. Supporting spectral
+identity for LVV, arXiv:1307.5143v1, `algo53.tex`, lines 599–603 (`e:cutdown`),
+and the OpenAI area-law global gap, `thm:area`, `00-introduction.tex`, lines 44–47. -/
+theorem Matrix.IsHermitian.complement_spectralProjectionGE_eq_rankOne
+    {n : Type*} [Fintype n] [DecidableEq n]
+    {H : Matrix n n ℂ} (hH : H.IsHermitian) {E₀ Δ : ℝ}
+    {Ω : EuclideanSpace ℂ n} (hΩ : ‖Ω‖ = 1)
+    (hHΩ : H *ᵥ WithLp.ofLp Ω = (E₀ : ℂ) • WithLp.ofLp Ω)
+    (hgap : (H - (E₀ : ℂ) • 1 - (Δ : ℂ) •
+      (1 - Matrix.vecMulVec (WithLp.ofLp Ω) (star (WithLp.ofLp Ω)))).PosSemidef)
+    (hΔ : 0 < Δ) :
+    1 - Matrix.spectralProjectionGE H (E₀ + Δ) =
+      Matrix.vecMulVec (WithLp.ofLp Ω) (star (WithLp.ofLp Ω)) := by
+  apply Matrix.toEuclideanLin.injective
+  refine hH.eigenvectorBasis.toBasis.ext fun k ↦ ?_
+  rw [toEuclideanLin_vecMulVec_star_self_apply]
+  apply (WithLp.ofLp_injective 2)
+  change (1 - spectralProjectionGE H (E₀ + Δ)) *ᵥ WithLp.ofLp (hH.eigenvectorBasis k) =
+    ⟪Ω, hH.eigenvectorBasis k⟫_ℂ • WithLp.ofLp Ω
+  rw [sub_mulVec, one_mulVec, spectralProjectionGE, hH.cfc_mulVec_eigenvectorBasis]
+  rcases GaussianFilter.eigenvector_ground_or_gap hH hΩ hHΩ hgap hΔ k with
+    ⟨hlam, hground⟩ | ⟨henergy, horth⟩
+  · simpa [hlam, show ¬ E₀ + Δ ≤ E₀ by linarith] using congrArg WithLp.ofLp hground
+  · simp [show E₀ + Δ ≤ hH.eigenvalues k by linarith, inner_eq_zero_symm.mpr horth]

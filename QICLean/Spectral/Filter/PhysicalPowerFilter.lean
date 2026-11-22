@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Spectral.Filter.GroundSpaceAffineFilter
 import QICLean.Spectral.Filter.PowerSpectralFilter
-import QICLean.Spectral.Gap.GroundProjection
+import QICLean.Spectral.Filter.Gaussian.SpectralGap
 
 /-!
 # Spectral powers of a sum of positive contractions
