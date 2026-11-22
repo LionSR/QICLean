@@ -156,7 +156,54 @@ theorem sum_castLE_extend_zero {r s : ℕ} {β : Type*} [AddCommMonoid β]
           intro α _
           by_cases hlt : α.val < r <;> simp [hlt]
 
+/-- Two sums over initial segments of the natural numbers agree when the summands agree at the
+common positions and vanish at the positions beyond the other segment. -/
+theorem sum_eq_sum_of_val_eq {M : Type*} [AddCommMonoid M] {a b : ℕ} (f : Fin a → M)
+    (g : Fin b → M) (hfg : ∀ (k : ℕ) (ha : k < a) (hb : k < b), f ⟨k, ha⟩ = g ⟨k, hb⟩)
+    (hf : ∀ i : Fin a, b ≤ i.val → f i = 0) (hg : ∀ i : Fin b, a ≤ i.val → g i = 0) :
+    ∑ i, f i = ∑ i, g i := by
+  have key (c : ℕ) (u : Fin c → M) :
+      ∑ i, u i = ∑ k ∈ Finset.range c, if h : k < c then u ⟨k, h⟩ else 0 := by
+    rw [Finset.sum_range]
+    exact Fintype.sum_congr _ _ fun i ↦ by rw [dite_eq_left i.isLt]
+  have hsub (c e : ℕ) (u : Fin c → M) (hu : ∀ i : Fin c, e ≤ i.val → u i = 0) :
+      ∑ k ∈ Finset.range c, (if h : k < c then u ⟨k, h⟩ else 0) =
+        ∑ k ∈ Finset.range (min c e), if h : k < c then u ⟨k, h⟩ else 0 := by
+    refine (Finset.sum_subset (fun k hk ↦ ?_) fun k hk hk' ↦ ?_).symm
+    · rw [Finset.mem_range] at hk ⊢
+      omega
+    · rw [Finset.mem_range] at hk hk'
+      rw [dite_eq_left hk]
+      exact hu _ (by simp only; omega)
+  rw [key, key, hsub a b f hf, hsub b a g hg, min_comm b a]
+  refine Finset.sum_congr rfl fun k hk ↦ ?_
+  rw [Finset.mem_range] at hk
+  rw [dite_eq_left (by omega), dite_eq_left (by omega)]
+  exact hfg k _ _
+
 end Fin
+
+namespace Finset
+
+/-- Each position `i < c` is the sum `n + j` of at most `b` pairs with `j < b`: a double sum of
+nonnegative terms over `n < a`, `j < b`, with every `n + j < c`, is at most `b` times the sum
+over `i < c`. -/
+theorem sum_range_sum_range_add_le {M : Type*} [AddCommMonoid M] [PartialOrder M]
+    [IsOrderedAddMonoid M] (g : ℕ → M) (hg : ∀ i, 0 ≤ g i) {a b c : ℕ}
+    (hc : ∀ n < a, ∀ j < b, n + j < c) :
+    ∑ n ∈ range a, ∑ j ∈ range b, g (n + j) ≤ b • ∑ i ∈ range c, g i := by
+  rw [sum_comm]
+  calc ∑ j ∈ range b, ∑ n ∈ range a, g (n + j)
+      ≤ ∑ j ∈ range b, ∑ i ∈ range c, g i := by
+        refine sum_le_sum fun j hj ↦ ?_
+        rw [← sum_image (g := (· + j)) fun x _ y _ hxy ↦ by simpa using hxy]
+        refine sum_le_sum_of_subset_of_nonneg ?_ fun i _ _ ↦ hg i
+        intro i hi
+        obtain ⟨n, hn, rfl⟩ := mem_image.mp hi
+        exact mem_range.mpr (hc n (mem_range.mp hn) j (mem_range.mp hj))
+    _ = b • ∑ i ∈ range c, g i := by rw [sum_const, card_range]
+
+end Finset
 
 namespace LinearIndependent
 
