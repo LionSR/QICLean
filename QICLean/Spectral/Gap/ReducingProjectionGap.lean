@@ -12,8 +12,9 @@ import Mathlib.Analysis.InnerProductSpace.Projection.Basic
 Let \(H\le K\) be positive operators which agree on the range of an
 orthogonal projection \(Q\), with \(QH=HQ\) and \(1-Q\le 2H\).
 The penalty forces every vector in \(\ker H\) into the range of \(Q\),
-so \(H\) and \(K\) have the same kernel. A norm gap \(\delta\) for
-\(K\) then gives the norm gap \(\min(\delta,1/2)\) for \(H\).
+so \(H\) and \(K\) have the same kernel. If every eigenvalue of \(K\)
+other than \(0\) is at least \(\delta\), then every eigenvalue of \(H\)
+other than \(0\) is at least \(\min(\delta,1/2)\).
 
 These are the finite-dimensional operator estimates used in the sector
 decomposition of GLM23, arXiv:2203.12563, Section 5, lines 1690–1692 and
@@ -21,7 +22,8 @@ decomposition of GLM23, arXiv:2203.12563, Section 5, lines 1690–1692 and
 agreement on its range, and the penalty inequality.
 
 Moved from TNLean, `TNLean/MPS/ParentHamiltonian/Martingale/ReducingProjectionGap.lean` at
-commit `414a18fb88`, with no change to the statements.
+commit `414a18fb88`. The gap transfer, stated there with norm bounds on the orthogonal
+complements of the kernels, is stated here with eigenvalues.
 -/
 
 open scoped InnerProductSpace ComplexOrder
@@ -155,18 +157,21 @@ theorem ker_eq_of_le_of_eq_on_projection
 
 /-- A positive operator agreeing with a gapped comparison operator on a
 reducing projection inherits the gap \(\min(\delta,1/2)\), when its
-complementary projection is bounded by \(2H\). -/
-theorem norm_gap_of_reducing_projection [FiniteDimensional ℂ E]
+complementary projection is bounded by \(2H\): if every eigenvalue of \(K\)
+other than \(0\) is at least \(\delta\), so is every eigenvalue of \(H\)
+other than \(0\) at least \(\min(\delta,1/2)\). -/
+theorem forall_hasEigenvalue_of_reducing_projection [FiniteDimensional ℂ E]
     {H K Q : E →ₗ[ℂ] E} (hH : H.IsPositive) (hK : K.IsPositive)
     (hQ : Q.IsSymmetricProjection) (hComm : Commute Q H)
     (hHK : H ≤ K) (hActive : H * Q = K * Q)
     (hPenalty : 1 - Q ≤ (2 : ℂ) • H) {δ : ℝ} (hδ : 0 ≤ δ)
-    (hGap : ∀ v ∈ (LinearMap.ker K)ᗮ, δ * ‖v‖ ≤ ‖K v‖) :
-    ∀ v ∈ (LinearMap.ker H)ᗮ, min δ (1 / 2) * ‖v‖ ≤ ‖H v‖ := by
+    (hGap : ∀ μ : ℂ, Module.End.HasEigenvalue K μ → μ = 0 ∨ (δ : ℂ) ≤ μ) :
+    ∀ μ : ℂ, Module.End.HasEigenvalue H μ → μ = 0 ∨ ((min δ (1 / 2) : ℝ) : ℂ) ≤ μ := by
+  replace hGap := hK.forall_hasEigenvalue_iff_norm.mp hGap
   have hker := hH.ker_eq_of_le_of_eq_on_projection hQ hHK hActive hPenalty
   have hCommApply (z : E) : H (Q z) = Q (H z) :=
     LinearMap.congr_fun hComm.eq.symm z
-  intro v hv
+  refine hH.forall_hasEigenvalue_iff_re_inner.mpr fun v hv ↦ ?_
   let x := Q v
   let y := v - x
   have hsum : x + y = v := by dsimp [y]; abel
@@ -216,11 +221,7 @@ theorem norm_gap_of_reducing_projection [FiniteDimensional ℂ E]
     exact add_le_add
       ((mul_le_mul_of_nonneg_right (min_le_left _ _) (sq_nonneg _)).trans hactive)
       ((mul_le_mul_of_nonneg_right (min_le_right _ _) (sq_nonneg _)).trans hinactive)
-  have hbound := hquadratic.trans (re_inner_le_norm (𝕜 := ℂ) (H v) v)
-  by_cases hv0 : v = 0
-  · simp [hv0]
-  · exact le_of_mul_le_mul_right
-      (by simpa only [pow_two, mul_assoc] using hbound) (norm_pos_iff.mpr hv0)
+  rwa [hH.isSymmetric v v] at hquadratic
 
 end IsPositive
 end LinearMap

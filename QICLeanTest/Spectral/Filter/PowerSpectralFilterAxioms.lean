@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Spectral.Gap.GroundProjection
+import QICLean.Spectral.Filter.Gaussian.SpectralGap
 import QICLean.Spectral.Filter.PowerSpectralFilter
 
 /-! # Axiom guards for power approximations and the global-gap ground projection -/

@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Analysis.Exponential.MatrixFilter
-import QICLean.Analysis.Order.GlobalGap
+import QICLean.Spectral.Eigenvalue.GlobalGap
 import QICLean.Analysis.Norm.RootChannel
 
 /-!

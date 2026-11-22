@@ -3,8 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import Mathlib.Analysis.InnerProductSpace.Positive
-import Mathlib.Analysis.InnerProductSpace.Spectrum
+import QICLean.Spectral.Gap.EigenvalueGap
 
 /-!
 # Abstract martingale criterion (quadratic form → norm bound)
@@ -13,14 +12,16 @@ For a positive operator \(H\) on a finite-dimensional complex Hilbert space, the
 quadratic-form inequality \(H² ≥ γ H\) (with \(γ > 0\)) implies the norm lower bound
 \(γ ‖v‖ ≤ ‖H v‖\) on the orthogonal complement of \(\ker H\). This is the
 operator-theoretic kernel of the Kastoryano–Lucia / Nachtergaele martingale
-method for spectral gaps. The converse, from a norm gap to the quadratic-form
-inequality, is `LinearMap.IsPositive.quadraticForm_sq_ge_of_norm_gap`.
+method for spectral gaps. In eigenvalue form,
+`FrustrationFree.forall_hasEigenvalue_of_martingale_of_finiteDimensional`, every eigenvalue of
+\(H\) other than \(0\) is at least \(γ\). The converse, from the gap to the quadratic-form
+inequality, is `LinearMap.IsPositive.quadraticForm_sq_ge_of_forall_hasEigenvalue`.
 
 Moved from TNLean, `TNLean/MPS/ParentHamiltonian/Martingale/AbstractCriterion.lean` at
 commit `414a18fb88`, with no change to the statements.
 -/
 
-open scoped BigOperators InnerProductSpace
+open scoped BigOperators InnerProductSpace ComplexOrder
 
 namespace FrustrationFree
 
@@ -130,5 +131,16 @@ theorem spectralGap_of_martingale_of_finiteDimensional {E : Type*} [NormedAddCom
   have h3 : 0 ≤ ‖H v‖ := norm_nonneg _
   have hsqrt := Real.sqrt_le_sqrt h1
   rwa [Real.sqrt_sq h2, Real.sqrt_sq h3] at hsqrt
+
+/-- **Abstract martingale criterion, eigenvalue form.** If a positive operator \(H\) on a
+finite-dimensional complex Hilbert space satisfies \(γ ⟨v, H v⟩ ≤ ⟨H v, H v⟩\) for all \(v\),
+with \(γ > 0\), then every eigenvalue of \(H\) other than \(0\) is at least \(γ\). -/
+theorem forall_hasEigenvalue_of_martingale_of_finiteDimensional {E : Type*}
+    [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E] {γ : ℝ} (hγ : 0 < γ)
+    {H : E →ₗ[ℂ] E} (hH : H.IsPositive)
+    (hOpIneq : ∀ v, γ * (⟪H v, v⟫_ℂ).re ≤ (⟪H v, H v⟫_ℂ).re) :
+    ∀ μ : ℂ, Module.End.HasEigenvalue H μ → μ = 0 ∨ (γ : ℂ) ≤ μ :=
+  hH.forall_hasEigenvalue_iff_norm.mpr
+    (spectralGap_of_martingale_of_finiteDimensional hγ hH hOpIneq)
 
 end FrustrationFree

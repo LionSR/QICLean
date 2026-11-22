@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Spectral.Filter.ChebyshevSpectralFilter
-import QICLean.Spectral.Gap.GroundProjection
+import QICLean.Spectral.Filter.Gaussian.SpectralGap
 
 /-!
 # A Chebyshev filter from a unit ground vector and a global gap

@@ -3,8 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import Mathlib.Analysis.InnerProductSpace.LinearMap
-import Mathlib.Analysis.InnerProductSpace.Orthogonal
+import QICLean.Spectral.Eigenvalue.MatrixReindexEuclidean
 
 /-!
 # Exact kernel and gap transport under an isometric conjugacy
@@ -12,7 +11,8 @@ import Mathlib.Analysis.InnerProductSpace.Orthogonal
 If \(Q=UPU^{-1}\) for a linear isometric equivalence \(U\), then
 \(\ker Q=U(\ker P)\), and \(U\) carries their orthogonal complements
 onto one another. Every real norm-gap bound \(\delta\) is consequently
-preserved in both directions. Positivity, finite dimensionality, and
+preserved in both directions, and \(P\) and \(Q\) have the same
+eigenvalues. Positivity, finite dimensionality, and
 nonzero-dimensional Hilbert spaces are not required.
 
 This is the operator transport used when exchanging the two endpoints in
@@ -100,5 +100,14 @@ theorem norm_gap_iff_of_conj
   · intro hGap x hx
     have h := hGap (U x) ((U.mem_orthogonal_ker_iff_of_conj P Q hPQ x).mp hx)
     simpa only [← U.map_apply_eq_of_conj P Q hPQ x, U.norm_map] using h
+
+/-- An isometric conjugacy preserves and reflects eigenvalues. -/
+theorem hasEigenvalue_iff_of_conj
+    (U : E ≃ₗᵢ[ℂ] F) (P : E →ₗ[ℂ] E) (Q : F →ₗ[ℂ] F)
+    (hPQ : U.toLinearEquiv.conj P = Q) (μ : ℂ) :
+    Module.End.HasEigenvalue P μ ↔ Module.End.HasEigenvalue Q μ := by
+  rw [Module.End.hasEigenvalue_iff, Module.End.hasEigenvalue_iff,
+    Module.End.eigenspace_eq_map_of_intertwine U.toLinearEquiv P Q
+      (fun x ↦ (U.map_apply_eq_of_conj P Q hPQ x).symm), Ne, Ne, Submodule.map_eq_bot_iff]
 
 end LinearIsometryEquiv

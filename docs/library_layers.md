@@ -103,6 +103,19 @@ of one matrix's spectrum, made of 121 modules from `Analysis` and `Algebra`.
 of matrix sets) to `Analysis/FixedPoint` and `Analysis/Topology`. Neither
 remains a directory.
 
+A follow-up placed three modules of `Analysis` at their content and merged two one-lemma modules
+of `Spectral/Gap`. `Analysis/Order/GlobalGap` (a gap `H - E₀ ≥ Δ (1 - |Ω⟩⟨Ω|)` above a ground
+energy) moved to `Spectral/Eigenvalue/GlobalGap`, the lowest part of the layer, since
+`Spectral/Perturbation` imports it. `Analysis/Norm/ContractionWordDecay` and
+`ContractionWordDecaySpectator`, which bound words of contractions by such a gap and were the
+reason `GlobalGap` stayed in `Analysis`, moved to `Spectral/Gap`. `Spectral/Gap/KernelSpectralGap`
+was merged into `Spectral/Gap/EigenvalueGap`, which states the gap above a kernel in eigenvalue,
+quadratic and norm form, and `Spectral/Gap/GroundProjection` into
+`Spectral/Filter/Gaussian/SpectralGap`, which proves the ground-or-excited dichotomy it uses; this
+removed one import against the order inside `Spectral`. `Analysis/Resolvent/PhaseGap` stays: its
+phase gap is the vector `A^z a₀ - V B^z b₀` of a resolvent compression, not a spectral gap. The
+module map records the moves.
+
 ## Directories
 
 Counts are modules with declarations; aggregators are generated.
@@ -136,10 +149,10 @@ Counts are modules with declarations; aggregators are generated.
 | `Analysis/Logarithm` | 5 | matrix logarithms |
 | `Analysis/Majorization` | 7 | majorization of vectors and spectra, doubly stochastic matrices |
 | `Analysis/Metric` | 3 | ball kernels and distance profiles in metric spaces |
-| `Analysis/Norm` | 25 | operator, Frobenius and Schatten norms, contractions |
+| `Analysis/Norm` | 23 | operator, Frobenius and Schatten norms, contractions |
 | `Analysis/OperatorMean` | 12 | operator means and mean trees |
 | `Analysis/Optimization` | 7 | semidefinite and conic programs, duality |
-| `Analysis/Order` | 17 | the Loewner order, density matrices, positive cones |
+| `Analysis/Order` | 16 | the Loewner order, density matrices, positive cones |
 | `Analysis/Parameter` | 32 | real parameter choices and budgets with no matrices |
 | `Analysis/Projection` | 26 | projections, two-projection geometry, closeness of subspaces |
 | `Analysis/Real` | 35 | scalar real analysis: special functions, series, decay, inequalities |
@@ -150,9 +163,9 @@ Counts are modules with declarations; aggregators are generated.
 | `Analysis/Topology` | 4 | closedness and continuity of matrix sets and maps |
 | `Analysis/TraceInequality` | 15 | trace inequalities (Hölder, Klein, fidelity) |
 | `Analysis/TraceNorm` | 15 | the trace norm and trace distance |
-| `Spectral/Eigenvalue` | 27 | eigenvalues, eigenvectors, extremal eigenvalues, singular values |
+| `Spectral/Eigenvalue` | 28 | eigenvalues, eigenvectors, extremal eigenvalues, singular values |
 | `Spectral/Filter` | 29 | spectral filters and truncations of one matrix; `Filter/Gaussian` |
-| `Spectral/Gap` | 17 | gaps above a kernel and their transfer and perturbation |
+| `Spectral/Gap` | 18 | gaps above a kernel in eigenvalue, quadratic and norm form, and their transfer and perturbation |
 | `Spectral/Jordan` | 9 | Jordan blocks and Fitting decompositions |
 | `Spectral/LowEnergy` | 21 | low-energy subspaces of one matrix; `LowEnergy/Basis` |
 | `Spectral/Perturbation` | 9 | perturbation of eigenvalues and spectral clusters |
@@ -321,14 +334,14 @@ it is repaired by moving the module or the lemma, never by changing the order to
 |---|---|---|
 | `Algebra` | Combinatorics < Polynomial < Module < PerronFrobenius < Matrix < Unitary < (top) < Hermitian < Word < OperatorSchmidt < Nilpotent < MatrixAlgebra < StarSubalgebra < Kronecker < SpinCover < Cohomology | 2 |
 | `Analysis` | Complex < Calculus < Metric < Subspace < Projection < Topology < Order < FixedPoint < Real < FunctionalCalculus < Support < Logarithm < Isometry < Norm < TraceNorm < Resolvent < TensorProduct < Convexity < OperatorMean < TraceInequality < Majorization < Optimization < FilterFunction < Exponential < ClusterExpansion < CyclicInequality < Parameter < Cohomology < (top) | 30 |
-| `Spectral` | Eigenvalue < Projection < Radius < Jordan < Perturbation < Gap < Filter < LowEnergy < (top) | 6 |
+| `Spectral` | Eigenvalue < Projection < Radius < Jordan < Perturbation < Gap < Filter < LowEnergy < (top) | 5 |
 | `Channel` | Choi < KrausMap < Twirl < (top) < Dilation < PartialTrace < Convexity < Schmidt < Schwarz < Positive < Entanglement < OperatorMean < Determinant < FixedPoint < ConditionalExpectation < Irreducible < Wigner < Peripheral < Semigroup < PerronFrobenius < KoashiImoto < Recovery < POVM < Measurement < OperatorSystem < PSDConeAutomorphism < LorentzNormalForm < ChoiTypeMap < Gluing | 40 |
 | `Kraus` | Tactic < (top) < MixedMap < PrimitiveFixedPoint < Wielandt | 0 |
 | `Entropy` | Classical < VonNeumann < Relative < Renyi < MutualInformation < Recovery < Markov < StrongSubadditivity < Conditional < Surprisal < Typical < (top) | 13 |
 | `Probability` | Measurable < Measure < Concentration < (top) < Gaussian < Haar < PoissonWord < Sampling | 1 |
 | `Representation` | Partition < SymmetricGroup < Permutation < TensorPower < YoungSubgroup < Character < Replica < SchurWeyl < Twirl < Coherent < Bell < (top) | 17 |
 
-109 imports are recorded. `ManyBody` and `Circuit` keep the orders of
+108 imports are recorded. `ManyBody` and `Circuit` keep the orders of
 `docs/many_body_circuit_architecture.md`, which the same script checks.
 
 ## Enforcement

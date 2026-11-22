@@ -477,7 +477,7 @@ QICLean.Analysis.GaussianFilter.SpectralGap QICLean.Spectral.Filter.Gaussian.Spe
 QICLean.Analysis.GaussianFilter.UniformGroundEstimate QICLean.Spectral.Filter.Gaussian.UniformGroundEstimate
 QICLean.Analysis.GroundEnergyBounds QICLean.Spectral.Eigenvalue.GroundEnergyBounds
 QICLean.Analysis.GroundEnergyResidual QICLean.Spectral.Perturbation.GroundEnergyResidual
-QICLean.Analysis.GroundProjection QICLean.Spectral.Gap.GroundProjection
+QICLean.Analysis.GroundProjection QICLean.Spectral.Filter.Gaussian.SpectralGap merge
 QICLean.Analysis.GroundShiftSpectralComparison QICLean.Spectral.Perturbation.GroundShiftSpectralComparison
 QICLean.Analysis.GroundSpaceAffineFilter QICLean.Spectral.Filter.GroundSpaceAffineFilter
 QICLean.Analysis.IsometricCompressionGap QICLean.Spectral.Gap.IsometricCompressionGap
@@ -491,7 +491,7 @@ QICLean.Analysis.JordanConditionNumber QICLean.Spectral.Jordan.ConditionNumber
 QICLean.Analysis.JordanSimilarity QICLean.Spectral.Jordan.Similarity
 QICLean.Analysis.KernelCompletion QICLean.Spectral.Projection.KernelCompletion
 QICLean.Analysis.KernelGapPerturbation QICLean.Spectral.Perturbation.KernelGapPerturbation
-QICLean.Analysis.KernelSpectralGap QICLean.Spectral.Gap.KernelSpectralGap
+QICLean.Analysis.KernelSpectralGap QICLean.Spectral.Gap.EigenvalueGap merge
 QICLean.Analysis.KyFanNorm QICLean.Spectral.Eigenvalue.KyFanNorm
 QICLean.Analysis.LowEnergyBasis.Construction QICLean.Spectral.LowEnergy.Basis.Construction
 QICLean.Analysis.LowEnergyBasis.Iteration QICLean.Spectral.LowEnergy.Basis.Iteration
@@ -1929,3 +1929,15 @@ KEEP QICLean.Representation.Character.UnitaryAlgebra
 KEEP QICLean.Representation.GaussOperator
 KEEP QICLean.Representation.UnitaryCompletionClass
 KEEP QICLean.Representation.ZMod2Representation
+
+# Spectral layer follow-up (the gap above a ground energy and the gap above a kernel)
+QICLean.Analysis.Order.GlobalGap QICLean.Spectral.Eigenvalue.GlobalGap
+QICLean.Analysis.Norm.ContractionWordDecay QICLean.Spectral.Gap.ContractionWordDecay
+QICLean.Analysis.Norm.ContractionWordDecaySpectator QICLean.Spectral.Gap.ContractionWordDecaySpectator
+QICLean.Spectral.Gap.KernelSpectralGap QICLean.Spectral.Gap.EigenvalueGap merge
+QICLean.Spectral.Gap.GroundProjection QICLean.Spectral.Filter.Gaussian.SpectralGap merge
+QICLeanTest.Analysis.Order.GlobalGap QICLeanTest.Spectral.Eigenvalue.GlobalGap
+QICLeanTest.Analysis.Norm.ContractionWordDecay QICLeanTest.Spectral.Gap.ContractionWordDecay
+QICLeanTest.Analysis.Norm.ContractionWordDecayAxioms QICLeanTest.Spectral.Gap.ContractionWordDecayAxioms
+QICLeanTest.Analysis.Norm.ContractionWordDecaySpectator QICLeanTest.Spectral.Gap.ContractionWordDecaySpectator
+QICLeanTest.Analysis.Norm.ContractionWordDecaySpectatorAxioms QICLeanTest.Spectral.Gap.ContractionWordDecaySpectatorAxioms

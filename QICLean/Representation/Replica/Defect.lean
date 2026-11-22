@@ -6,7 +6,7 @@ Authors: QICLean contributors
 import QICLean.Algebra.Kronecker.KroneckerFactorPositivity
 import QICLean.Spectral.Eigenvalue.HermitianExtremalEigenvalues
 import QICLean.Algebra.Matrix.MatrixAux
-import QICLean.Analysis.Order.GlobalGap
+import QICLean.Spectral.Eigenvalue.GlobalGap
 import QICLean.Spectral.Projection.ShiftedDensityTruncation
 import QICLean.Analysis.FunctionalCalculus.CfcKronecker
 

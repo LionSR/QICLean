@@ -19,6 +19,7 @@ import QICLean.Spectral.Eigenvalue.DensityMaxEigenvector
 import QICLean.Spectral.Eigenvalue.DominantEigenvectorUniqueness
 import QICLean.Spectral.Eigenvalue.EigenspaceMap
 import QICLean.Spectral.Eigenvalue.EuclideanEigenvectorBasis
+import QICLean.Spectral.Eigenvalue.GlobalGap
 import QICLean.Spectral.Eigenvalue.GroundEnergyBounds
 import QICLean.Spectral.Eigenvalue.HermitianExtremalEigenvalues
 import QICLean.Spectral.Eigenvalue.HermitianNilpotent
