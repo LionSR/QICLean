@@ -22,6 +22,7 @@ import QICLean.ManyBody.Entropy.RegionEntropy
 import QICLean.ManyBody.Entropy.RegionEntropyInequalities
 import QICLean.ManyBody.Entropy.RegionPurificationSplitting
 import QICLean.ManyBody.Entropy.RegionStrongSubadditivity
+import QICLean.ManyBody.Entropy.RelabelMutualInformation
 import QICLean.ManyBody.Entropy.SumSitesProduct
 import QICLean.ManyBody.Entropy.SupportedMarginalTails
 import QICLean.ManyBody.Entropy.TwoFamilies

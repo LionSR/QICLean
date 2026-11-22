@@ -45,6 +45,8 @@ written out with `Equiv.arrowProdEquivProdArrow` and `finProdFinEquiv`.
 ## Main results
 
 * `GaussianFilter.regional_physicalBuffer_filter` — the two-sided Gaussian filter.
+* `GaussianFilter.exists_regional_physicalBuffer_filter` — the same with the constants `A` and
+  `T₀` chosen once for every system, depending only on `Δ` and `r`.
 * `ManyBody.reindex_physicalBuffer_eq_place` — an operator on the two copies of the buffer, in
   the coordinates of two regions and the buffer, is its placement on the paired sites.
 
@@ -59,6 +61,8 @@ written out with `Equiv.arrowProdEquivProdArrow` and `finProdFinEquiv`.
 open Matrix ManyBody
 open scoped Kronecker ComplexOrder Matrix.Norms.L2Operator
 
+universe u v
+
 namespace GaussianFilter
 
 /-- The variance coefficient `A = 2 (30 + r) / Δ²` of the Gaussian filter of the information
@@ -71,8 +75,11 @@ reset; it meets `30 + r ≤ T₀² / (2 A)` with equality. Polynomial PEPS appro
 `02-information.tex`, lines 443–450. -/
 noncomputable def resetCutoff (Δ r : ℝ) : ℝ := 2 * (30 + r) / Δ
 
-private theorem resetCutoff_nonneg {Δ r : ℝ} (hΔ : 0 < Δ) (hr : 0 ≤ r) :
-    0 ≤ resetCutoff Δ r := by
+theorem resetVariance_pos {Δ r : ℝ} (hΔ : 0 < Δ) (hr : 0 ≤ r) : 0 < resetVariance Δ r := by
+  unfold resetVariance
+  positivity
+
+theorem resetCutoff_pos {Δ r : ℝ} (hΔ : 0 < Δ) (hr : 0 ≤ r) : 0 < resetCutoff Δ r := by
   unfold resetCutoff
   positivity
 
@@ -320,7 +327,7 @@ theorem regional_physicalBuffer_filter {Δ r : ℝ} (hΔ : 0 < Δ) (hr : 0 ≤ r
       quantumRelativeEntropy_product_marginals (ManyBody.jointMatrix_posSemidef _ Ω R C hRC)]
     rw [ManyBody.regionMutualInformation_eq_matrix _ Ω R C hRC] at hI
     exact hI
-  have hfilter := physicalBuffer_filter_of_le hΔ hr (resetCutoff_nonneg hΔ hr)
+  have hfilter := physicalBuffer_filter_of_le hΔ hr (resetCutoff_pos hΔ hr).le
     (le_resetVariance_mul_sq_div_two hΔ.ne') (le_resetCutoff_sq_div hΔ.ne' hr) _ _ _
     (reindex s s H) Ωs E₀ b hunit heigs hgaps hb hbound
   obtain ⟨W, z, hWherm, hW, hz, -, hfil⟩ := hfilter
@@ -376,6 +383,41 @@ theorem regional_physicalBuffer_filter {Δ r : ℝ} (hΔ : 0 < Δ) (hr : 0 ≤ r
         ((z : ℂ) • doubledRegroup Ωs) ∘ G.symm := rfl
     rw [hsc, ← Pi.sub_comp, norm_toLp_comp_symm, WithLp.toLp_sub, WithLp.toLp_smul]
     exact hrev
+
+/-- **The two-sided Gaussian filter of the information reset, with constants chosen once.** For
+a gap `Δ > 0` and an exponent `r ≥ 0` there are constants `A, T₀ > 0` such that the statement of
+`GaussianFilter.regional_physicalBuffer_filter` holds on every finite set of sites with every
+finite alphabet, with the Gaussian integral of variance `A B` truncated at `T₀ B`. No gap of a
+restricted Hamiltonian and no bound on any purifying dimension is assumed. Polynomial PEPS
+approximation, `02-information.tex`, lines 355–452, equations `eq:info-split-overlap`,
+`eq:info-reset-overlap` and `eq:info-gaussian-two-sided`. -/
+theorem exists_regional_physicalBuffer_filter {Δ r : ℝ} (hΔ : 0 < Δ) (hr : 0 ≤ r) :
+    ∃ A T₀ : ℝ, 0 < A ∧ 0 < T₀ ∧
+      ∀ {V : Type u} [Fintype V] [DecidableEq V] {α : Type v} [Fintype α] [DecidableEq α]
+        {H : Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ}, H.IsHermitian →
+        ∀ {E₀ : ℝ} {Ω : EuclideanSpace ℂ (Config fun _ : V ↦ α)}, ‖Ω‖ = 1 →
+        IsGapped H E₀ Δ → groundSpace H E₀ = Submodule.span ℂ {Ω} →
+        ∀ {R C : Finset V}, Disjoint R C → ∀ {b : ℝ},
+        ManyBody.regionMutualInformation Ω R C ≤ b →
+        let K := reindex (Equiv.sumArrowEquivProdArrow V V α).symm
+          (Equiv.sumArrowEquivProdArrow V V α).symm (doubledHamiltonian H)
+        let F := replicaSwapOp α R
+        let Ψ := ManyBody.sumSitesProduct (X := fun _ : V ⊕ V ↦ α) Ω Ω
+        ∃ (W : Matrix (RegionConfig (fun _ : V ⊕ V ↦ α) (((R ∪ C)ᶜ).disjSum (R ∪ C)ᶜ))
+            (RegionConfig (fun _ : V ⊕ V ↦ α) (((R ∪ C)ᶜ).disjSum (R ∪ C)ᶜ)) ℂ) (z : ℝ),
+          W.IsHermitian ∧ ‖W‖ ≤ 1 ∧ Real.exp (-2 * b) ≤ z ∧
+          ∀ L : ℝ, 1 ≤ L →
+            let B := 1 + b + Real.log L
+            let M := gaussianIntertwinerTruncated (Real.toNNReal (A * B)) (T₀ * B)
+              (F * K * Fᴴ) K (place (((R ∪ C)ᶜ).disjSum (R ∪ C)ᶜ) W)
+            ‖M‖ ≤ 1 ∧
+              ‖toEuclideanLin M Ψ - (z : ℂ) • toEuclideanLin F Ψ‖ ≤
+                3 * Real.exp (-10 * b) * L ^ (-r) ∧
+              ‖toEuclideanLin Mᴴ (toEuclideanLin F Ψ) - (z : ℂ) • Ψ‖ ≤
+                3 * Real.exp (-10 * b) * L ^ (-r) :=
+  ⟨resetVariance Δ r, resetCutoff Δ r, resetVariance_pos hΔ hr, resetCutoff_pos hΔ hr,
+    fun hH _ _ hΩ hgs hspan _ _ hRC _ hI ↦
+      regional_physicalBuffer_filter hΔ hr hH hΩ hgs hspan hRC hI⟩
 
 end GaussianFilter
 

@@ -30,6 +30,7 @@ import QICLean.Analysis.Norm.NormedRingTelescoping
 import QICLean.Analysis.Norm.OperatorNormConvergence
 import QICLean.Analysis.Norm.OrderedIdempotentTracePerturbation
 import QICLean.Analysis.Norm.PrincipalSubmatrixNorm
+import QICLean.Analysis.Norm.ReindexMulVec
 import QICLean.Analysis.Norm.RootChannel
 import QICLean.Analysis.Norm.SchattenNorm
 import QICLean.Analysis.Norm.SchattenVariational
