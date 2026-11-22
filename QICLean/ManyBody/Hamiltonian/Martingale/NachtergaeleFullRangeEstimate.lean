@@ -37,7 +37,7 @@ printed statement; without it the printed statement is false, by
 
 **Scope restriction (full finite range):**
 `energy_lower_bound_of_nachtergaele_c1_c3_full_range` and
-`norm_lower_bound_of_nachtergaele_c1_c3_full_range` are the case \(n_0=0\) of
+`forall_hasEigenvalue_of_nachtergaele_c1_c3_full_range` are the case \(n_0=0\) of
 the threshold estimate, where that correction is empty. They assume the three
 estimates on the entire finite range, which is stronger than the source's
 lower-threshold hypotheses. This extra hypothesis is recorded in
@@ -55,7 +55,7 @@ Moved from TNLean, `TNLean/MPS/ParentHamiltonian/Martingale/NachtergaeleFullRang
 commit `414a18fb88`, with no change to the statements.
 -/
 
-open scoped BigOperators InnerProductSpace
+open scoped BigOperators InnerProductSpace ComplexOrder
 
 namespace FrustrationFree
 
@@ -639,12 +639,13 @@ theorem energy_lower_bound_of_nachtergaele_c1_c3_full_range
   simpa only [Nat.zero_sub, Finset.Ico_self, Finset.sum_empty, mul_zero,
     add_zero, hnorm] using h
 
-/-- Norm-gap form of the full-range C1--C3 estimate above. The ground-space
-identity identifies the last filtration range with the kernel of the positive
-Hamiltonian. The energy estimate and Cauchy--Schwarz supply the global
-quadratic-form hypothesis used by
-`spectralGap_of_martingale_of_finiteDimensional`. -/
-theorem norm_lower_bound_of_nachtergaele_c1_c3_full_range
+/-- Spectral-gap form of the full-range C1--C3 estimate above: every eigenvalue of the positive
+Hamiltonian other than \(0\) is at least
+\((\gamma/d)(1-\epsilon\sqrt{l+1})^2\). The ground-space identity identifies the last
+filtration range with the kernel of the Hamiltonian. The energy estimate and Cauchy--Schwarz
+supply the global quadratic-form hypothesis used by
+`forall_hasEigenvalue_of_martingale_of_finiteDimensional`. -/
+theorem forall_hasEigenvalue_of_nachtergaele_c1_c3_full_range
     [FiniteDimensional ℂ E]
     (G : NestedGroundProjections (E := E)) (Q : ℕ → E →ₗ[ℂ] E)
     (localHamiltonian : ℕ → E →ₗ[ℂ] E) (H : E →ₗ[ℂ] E)
@@ -671,9 +672,8 @@ theorem norm_lower_bound_of_nachtergaele_c1_c3_full_range
           (G.martingaleDifference n).toContinuousLinearMap‖ ≤ ε)
     (hH : H.IsPositive)
     (hground : LinearMap.range (G.projection N) = LinearMap.ker H) :
-    ∀ v ∈ (LinearMap.ker H)ᗮ,
-      (γ / d) * (1 - ε * Real.sqrt ((l + 1 : ℕ) : ℝ)) ^ 2 * ‖v‖ ≤
-        ‖H v‖ := by
+    ∀ μ : ℂ, Module.End.HasEigenvalue H μ →
+      μ = 0 ∨ (((γ / d) * (1 - ε * Real.sqrt ((l + 1 : ℕ) : ℝ)) ^ 2 : ℝ) : ℂ) ≤ μ := by
   let gap := (γ / d) *
     (1 - ε * Real.sqrt ((l + 1 : ℕ) : ℝ)) ^ 2
   have hs : 0 < Real.sqrt ((l + 1 : ℕ) : ℝ) :=
@@ -683,7 +683,7 @@ theorem norm_lower_bound_of_nachtergaele_c1_c3_full_range
   have hgap : 0 < gap := by
     dsimp only [gap]
     positivity
-  apply spectralGap_of_martingale_of_finiteDimensional hgap hH
+  apply forall_hasEigenvalue_of_martingale_of_finiteDimensional hgap hH
   apply operator_inequality_of_energy_lower_bound hgap hH
   intro v hv
   exact energy_lower_bound_of_nachtergaele_c1_c3_full_range G Q localHamiltonian H

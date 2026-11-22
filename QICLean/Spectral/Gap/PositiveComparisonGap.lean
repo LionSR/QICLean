@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Spectral.Gap.WeightedPositiveKernel
+import QICLean.Spectral.Gap.EigenvalueGap
 
 /-!
 # Gap transfer through two-sided positive comparisons
@@ -87,5 +88,19 @@ theorem norm_gap_of_smul_le_of_le_smul [FiniteDimensional ℂ E]
   apply (div_le_iff₀ hb).mpr
   simpa only [LinearMap.smul_apply, norm_smul, Complex.norm_real,
     Real.norm_eq_abs, abs_of_pos hb, mul_comm b] using h
+
+/-- **A gap transfers through a two-sided positive comparison, eigenvalue form.** If
+`a P ≤ b Q ≤ c P` for positive operators with `a, b, c > 0` and every eigenvalue of `P` other
+than `0` is at least `γ > 0`, then every eigenvalue of `Q` other than `0` is at least
+`a γ / b`. -/
+theorem forall_hasEigenvalue_of_smul_le_of_le_smul [FiniteDimensional ℂ E]
+    {P Q : E →ₗ[ℂ] E} (hP : P.IsPositive) (hQ : Q.IsPositive)
+    {a b c γ : ℝ} (ha : 0 < a) (hb : 0 < b) (hc : 0 < c) (hγ : 0 < γ)
+    (hLower : (a : ℂ) • P ≤ (b : ℂ) • Q) (hUpper : (b : ℂ) • Q ≤ (c : ℂ) • P)
+    (hGap : ∀ μ : ℂ, Module.End.HasEigenvalue P μ → μ = 0 ∨ (γ : ℂ) ≤ μ) :
+    ∀ μ : ℂ, Module.End.HasEigenvalue Q μ → μ = 0 ∨ ((a * γ / b : ℝ) : ℂ) ≤ μ :=
+  hQ.forall_hasEigenvalue_iff_norm.mpr
+    (hP.norm_gap_of_smul_le_of_le_smul hQ ha hb hc hγ hLower hUpper
+      (hP.forall_hasEigenvalue_iff_norm.mp hGap))
 
 end LinearMap.IsPositive

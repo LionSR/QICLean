@@ -14,9 +14,11 @@ An operator is a linear map. An operator $H$ is positive, $H\ge0$, when it is
 symmetric and $\operatorname{Re}\langle Hv,v\rangle\ge0$ for every $v$; $H\le K$ means
 $K-H\ge0$; an orthogonal projection is a symmetric idempotent. For $\gamma\in\R$, the
 operator $H$ has norm gap $\gamma$ when $\gamma\lVert v\rVert\le\lVert Hv\rVert$ for every
-$v\perp\ker H$. For a positive semidefinite matrix this is condition~(3) of
-Theorem~\ref{thm:hamiltonians_kernel_spectrum}, and together with $\ker H\neq0$ it is the
-gap at energy $0$ of Theorem~\ref{thm:hamiltonians_kernel_gap}.
+$v\perp\ker H$, and gap $\gamma$ above its kernel when every eigenvalue of $H$ other
+than $0$ is at least $\gamma$. For $H\ge0$ on a finite-dimensional space the two notions
+agree (Lemma~\ref{lem:gap_eigenvalue_forms}). For a positive semidefinite matrix the norm
+gap is condition~(3) of Theorem~\ref{thm:hamiltonians_kernel_spectrum}, and together with
+$\ker H\neq0$ it is the gap at energy $0$ of Theorem~\ref{thm:hamiltonians_kernel_gap}.
 
 \section{Gaps of positive operators above the kernel}
 \label{sec:martingale_gaps_kernel}
@@ -24,9 +26,39 @@ gap at energy $0$ of Theorem~\ref{thm:hamiltonians_kernel_gap}.
 \subsection{Quadratic forms and norms}
 \label{sec:martingale_gaps_forms}
 
+\begin{lemma}[Three forms of the gap above the kernel]
+    \label{lem:gap_eigenvalue_forms}
+    \lean{LinearMap.IsSymmetric.mem_orthogonal_ker_of_apply_eq_smul,
+        LinearMap.IsSymmetric.mul_norm_sq_le_re_inner_of_forall_hasEigenvalue,
+        LinearMap.IsSymmetric.forall_hasEigenvalue_of_re_inner,
+        LinearMap.IsPositive.forall_hasEigenvalue_iff_re_inner,
+        LinearMap.IsPositive.forall_hasEigenvalue_iff_norm}
+    \leanok
+    Let $H$ be a symmetric operator on a complex inner product space and $\gamma\in\R$.
+    An eigenvector of $H$ with a nonzero eigenvalue is orthogonal to $\ker H$. If
+    $\gamma\lVert v\rVert^2\le\operatorname{Re}\langle v,Hv\rangle$ for every
+    $v\perp\ker H$, then $H$ has gap $\gamma$ above its kernel; on a finite-dimensional
+    space the converse holds. If moreover $H\ge0$ and the space is finite-dimensional,
+    then $H$ has gap $\gamma$ above its kernel if and only if $\gamma$ is a norm gap of
+    $H$. No sign of $\gamma$ and no nonzero kernel is assumed.
+\end{lemma}
+\begin{proof}\leanok
+    If $H\psi=\mu\psi$ with $\mu\neq0$ and $w\in\ker H$, then
+    $\mu\langle w,\psi\rangle=\langle Hw,\psi\rangle=0$. The eigenvalue $\mu$ of a
+    symmetric operator is real, and $\operatorname{Re}\langle\psi,H\psi\rangle=
+        \mu\lVert\psi\rVert^2$, so the quadratic-form bound at $\psi$ gives $\mu\ge\gamma$.
+    Conversely, expand $v\perp\ker H$ in an orthonormal eigenbasis $H\psi_k=\lambda_k\psi_k$
+    as $v=\sum_kc_k\psi_k$; then $c_k=0$ whenever $\lambda_k=0$, and
+    $\operatorname{Re}\langle v,Hv\rangle=\sum_k\lambda_k\lvert c_k\rvert^2
+        \ge\gamma\lVert v\rVert^2$. For $H\ge0$, the Cauchy--Schwarz inequality turns the
+    quadratic-form bound into the norm gap, and a norm gap at an eigenvector $\psi$ with
+    eigenvalue $\mu\neq0$ gives $\gamma\le\lvert\mu\rvert=\mu$, since $\mu\ge0$.
+\end{proof}
+
 \begin{lemma}[A quadratic-form inequality gives a norm gap]
     \label{lem:gap_quadratic_form_to_norm}
-    \lean{FrustrationFree.spectralGap_of_martingale_of_finiteDimensional}
+    \lean{FrustrationFree.spectralGap_of_martingale_of_finiteDimensional,
+        FrustrationFree.forall_hasEigenvalue_of_martingale_of_finiteDimensional}
     \leanok
     Let $H\ge0$ on a finite-dimensional complex Hilbert space, and let $\gamma>0$
     satisfy $\gamma\operatorname{Re}\langle Hv,v\rangle\le\lVert Hv\rVert^2$ for every
@@ -42,16 +74,18 @@ gap at energy $0$ of Theorem~\ref{thm:hamiltonians_kernel_gap}.
     $\lVert Hv\rVert^2=\sum_k\lvert c_k\rvert^2\lambda_k^2\ge\gamma^2\lVert v\rVert^2$.
 \end{proof}
 
-\begin{lemma}[A norm gap gives the quadratic-form inequality]
+\begin{lemma}[A gap above the kernel gives the quadratic-form inequality]
     \label{lem:gap_norm_to_quadratic_form}
-    \lean{LinearMap.IsPositive.quadraticForm_sq_ge_of_norm_gap}
+    \lean{LinearMap.IsPositive.quadraticForm_sq_ge_of_forall_hasEigenvalue}
     \leanok
-    Let $H\ge0$ on a finite-dimensional complex Hilbert space, and let $\gamma\ge0$
-    be a norm gap of $H$. Then
+    Let $H\ge0$ on a finite-dimensional complex Hilbert space with gap $\gamma\ge0$
+    above its kernel. Then
     $\gamma\operatorname{Re}\langle Hv,v\rangle\le\operatorname{Re}\langle Hv,Hv\rangle$
     for every $v$.
 \end{lemma}
 \begin{proof}\leanok
+    \uses{lem:gap_eigenvalue_forms}
+    By Lemma~\ref{lem:gap_eigenvalue_forms}, $\gamma$ is a norm gap of $H$.
     Put $w=v-P_{\ker H}v$. Then $w\perp\ker H$ and $Hw=Hv$, and symmetry gives
     $\langle Hv,v\rangle=\langle Hv,w\rangle$. Hence
     $\gamma\operatorname{Re}\langle Hv,v\rangle\le\gamma\lVert Hv\rVert\lVert w\rVert
@@ -106,11 +140,14 @@ gap at energy $0$ of Theorem~\ref{thm:hamiltonians_kernel_gap}.
     \label{lem:gap_positive_comparison}
     \lean{LinearMap.IsPositive.ker_le_of_le,
         LinearMap.IsPositive.ker_eq_of_smul_le_of_le_smul,
-        LinearMap.IsPositive.norm_gap_of_smul_le_of_le_smul}
+        LinearMap.IsPositive.norm_gap_of_smul_le_of_le_smul,
+        LinearMap.IsPositive.forall_hasEigenvalue_of_smul_le_of_le_smul}
     \leanok
     If $0\le P\le Q$, then $\ker Q\subseteq\ker P$. Consequently, if $P,Q\ge0$ and
     $a,b,c>0$ satisfy $aP\le bQ\le cP$, then $\ker P=\ker Q$. On a finite-dimensional
-    space, a norm gap $\gamma>0$ of $P$ then gives the norm gap $a\gamma/b$ of $Q$.
+    space, a norm gap $\gamma>0$ of $P$ then gives the norm gap $a\gamma/b$ of $Q$, and
+    a gap $\gamma>0$ of $P$ above its kernel gives the gap $a\gamma/b$ of $Q$ above its
+    kernel.
 \end{lemma}
 \begin{proof}\leanok
     The quadratic form of a positive operator vanishes only on its kernel; evaluating
@@ -172,31 +209,31 @@ gap at energy $0$ of Theorem~\ref{thm:hamiltonians_kernel_gap}.
 \begin{theorem}[A gap through a reducing projection]
     \label{thm:gap_reducing_projection}
     \lean{LinearMap.re_inner_ge_half_of_one_sub_le_twice,
-        LinearMap.IsPositive.norm_gap_of_reducing_projection}
+        LinearMap.IsPositive.forall_hasEigenvalue_of_reducing_projection}
     \leanok
     Let $H,Q$ be operators on a complex inner product space with $1-Q\le2H$. Then
     $\tfrac12\lVert v\rVert^2\le\operatorname{Re}\langle Hv,v\rangle$ for every $v$ with
     $Qv=0$. Suppose in addition that the space is finite-dimensional, $H,K\ge0$, $Q$ is an
-    orthogonal projection commuting with $H$, $H\le K$, $HQ=KQ$, and $\delta\ge0$ is a
-    norm gap of $K$. Then $\min(\delta,1/2)$ is a norm gap of $H$.
+    orthogonal projection commuting with $H$, $H\le K$, $HQ=KQ$, and $K$ has gap
+    $\delta\ge0$ above its kernel. Then $H$ has gap $\min(\delta,1/2)$ above its kernel.
 \end{theorem}
 \begin{proof}\leanok
-    \uses{lem:gap_reducing_projection_kernel, lem:gap_energy_to_norm}
+    \uses{lem:gap_reducing_projection_kernel, lem:gap_eigenvalue_forms}
     If $Qv=0$, then $\lVert v\rVert^2=\langle(1-Q)v,v\rangle\le2\operatorname{Re}\langle
         Hv,v\rangle$. For the gap, $\ker H=\ker K$ by
     Lemma~\ref{lem:gap_reducing_projection_kernel}, and $Q$ fixes this kernel. Let
     $v\perp\ker H$ and write $v=x+y$ with $x=Qv$ and $y=(1-Q)v$. Then $x\perp\ker K$,
     since $\langle x,w\rangle=\langle v,Qw\rangle=\langle v,w\rangle=0$ for
     $w\in\ker K$, and the cross terms vanish because $Q$ commutes with $H$. Since
-    $Hx=HQv=KQv=Kx$ and a norm gap $\delta\ge0$ of $K\ge0$ bounds its quadratic form
-    on $(\ker K)^\perp$,
+    $Hx=HQv=KQv=Kx$ and the gap $\delta\ge0$ of $K\ge0$ above its kernel bounds its
+    quadratic form on $(\ker K)^\perp$ (Lemma~\ref{lem:gap_eigenvalue_forms}),
     \begin{align*}
         \operatorname{Re}\langle Hv,v\rangle
         =\operatorname{Re}\langle Kx,x\rangle+\operatorname{Re}\langle Hy,y\rangle
         \ge\delta\lVert x\rVert^2+\tfrac12\lVert y\rVert^2
         \ge\min(\delta,1/2)\lVert v\rVert^2,
     \end{align*}
-    and Lemma~\ref{lem:gap_energy_to_norm} gives the norm gap.
+    and Lemma~\ref{lem:gap_eigenvalue_forms} gives the gap of $H$ above its kernel.
 \end{proof}
 
 \subsection{Isometries}
@@ -208,20 +245,23 @@ gap at energy $0$ of Theorem~\ref{thm:hamiltonians_kernel_gap}.
         LinearIsometryEquiv.mem_ker_iff_of_conj,
         LinearIsometryEquiv.ker_eq_map_of_conj,
         LinearIsometryEquiv.mem_orthogonal_ker_iff_of_conj,
-        LinearIsometryEquiv.norm_gap_iff_of_conj}
+        LinearIsometryEquiv.norm_gap_iff_of_conj,
+        LinearIsometryEquiv.hasEigenvalue_iff_of_conj}
     \leanok
     Let $U:E\to F$ be a surjective complex linear isometry of inner product spaces,
     and let $P$ on $E$ and $Q$ on $F$ satisfy $Q=UPU^{-1}$. Then $UPx=QUx$,
     $\ker Q=U(\ker P)$ and $(\ker Q)^\perp=U((\ker P)^\perp)$. For every $\delta\in\R$,
-    $\delta$ is a norm gap of $P$ if and only if it is a norm gap of $Q$. Neither
-    finite dimension nor positivity is needed.
+    $\delta$ is a norm gap of $P$ if and only if it is a norm gap of $Q$, and $P$ and $Q$
+    have the same eigenvalues. Neither finite dimension nor positivity is needed.
 \end{lemma}
 \begin{proof}\leanok
     Substituting $Ux$ in the conjugation gives $UPx=QUx$. Injectivity of $U$
     identifies kernel membership, and surjectivity gives the kernel equality. The
     identity $\langle Uz,Ux\rangle=\langle z,x\rangle$ identifies the orthogonal
     complements, and applying the norm estimate at $x$ and at $Ux$, with
-    $\lVert Ux\rVert=\lVert x\rVert$, gives the equivalence.
+    $\lVert Ux\rVert=\lVert x\rVert$, gives the equivalence. The map $U$ carries an
+    eigenvector of $P$ to an eigenvector of $Q$ with the same eigenvalue, and $U^{-1}$
+    carries them back.
 \end{proof}
 
 \begin{lemma}[Projection onto an isometric image]
@@ -371,12 +411,15 @@ Write $q_H(y)=\operatorname{Re}\langle Hy,y\rangle$, and likewise $q_K$.
 
 \begin{lemma}[Combining quadratic-form bounds]
     \label{lem:gap_inclusion_quadratic}
-    \lean{LinearIsometry.re_inner_ge_of_intertwines}
+    \lean{LinearIsometry.re_inner_ge_of_intertwines,
+        LinearIsometry.forall_hasEigenvalue_of_intertwines}
     \leanok
     Suppose $H$ is symmetric, $HU=UK$, $\delta,c\in\R$, $\delta\lVert x\rVert^2\le
         q_K(x)$ for $x\perp\ker K$, and $c\lVert y\rVert^2\le q_H(y)$ whenever $U^*y=0$.
     Then $\min\{\delta,c\}\lVert v\rVert^2\le q_H(v)$ for $v\perp\ker H$. Neither
-    constant needs to be nonnegative.
+    constant needs to be nonnegative. In particular, on finite-dimensional spaces, if $K$
+    has gap $\delta$ above its kernel, then $H$ has gap $\min\{\delta,c\}$ above its
+    kernel.
 \end{lemma}
 \begin{proof}\leanok
     For $v\perp\ker H$, the vector $x=U^*v$ lies in $(\ker K)^\perp$, because
@@ -899,13 +942,14 @@ treats the argument for an abstract decreasing family of projections.
     $\lVert v\rVert^2$ by Lemma~\ref{lem:martingale_norm_decomposition}.
 \end{proof}
 
-\begin{theorem}[A norm gap from the full-range estimate]
+\begin{theorem}[A gap from the full-range estimate]
     \label{thm:martingale_full_range_norm_gap}
-    \lean{FrustrationFree.NestedGroundProjections.norm_lower_bound_of_nachtergaele_c1_c3_full_range}
+    \lean{FrustrationFree.NestedGroundProjections.forall_hasEigenvalue_of_nachtergaele_c1_c3_full_range}
     \leanok
     \uses{thm:martingale_full_range_estimate}
     In the setting of Theorem~\ref{thm:martingale_full_range_estimate}, suppose $H\ge0$
-    and $\operatorname{ran}G_N=\ker H$. Then $\kappa$ is a norm gap of $H$.
+    and $\operatorname{ran}G_N=\ker H$. Then $H$ has gap $\kappa$ above its kernel: every
+    eigenvalue of $H$ other than $0$ is at least $\kappa$.
 \end{theorem}
 \begin{proof}\leanok
     \uses{thm:martingale_full_range_estimate, lem:gap_energy_to_norm,
@@ -916,22 +960,22 @@ treats the argument for an abstract decreasing family of projections.
     Lemma~\ref{lem:gap_energy_to_norm} give $\kappa\lVert w\rVert\le\lVert Hx\rVert$, so
     $\kappa\operatorname{Re}\langle Hx,x\rangle\le\kappa\lVert Hx\rVert\lVert w\rVert
         \le\lVert Hx\rVert^2$, and Lemma~\ref{lem:gap_quadratic_form_to_norm} gives the
-    norm gap.
+    gap.
 \end{proof}
 
 \begin{theorem}[A sharp gap from two ground spaces]
     \label{thm:martingale_two_ground_projections}
-    \lean{FrustrationFree.norm_gap_of_two_ground_projection_bounds}
+    \lean{FrustrationFree.forall_hasEigenvalue_of_two_ground_projection_bounds}
     \leanok
     Let $H$ be an operator on a finite-dimensional complex Hilbert space, $W=\ker H$,
     and $W\subseteq U\cap V$ for subspaces $U,V$. Suppose $\kappa\ge0$, $c<1$,
     $\lVert P_W-P_UP_V\rVert\le c$ and $\kappa\bigl((1-P_U)+(1-P_V)\bigr)\le H$. Then
-    $\kappa(1-c)$ is a norm gap of $H$. This is a two-subspace consequence of the
+    $H\ge0$ and $H$ has gap $\kappa(1-c)$ above its kernel. This is a two-subspace consequence of the
     ground-projection estimate of~\cite[Section~6, the three-interval commutation lemma,
         part~(ii)]{Nachtergaele1996Spectral}.
 \end{theorem}
 \begin{proof}\leanok
-    \uses{lem:gap_quadratic_form_to_norm}
+    \uses{lem:gap_quadratic_form_to_norm, lem:gap_eigenvalue_forms}
     If $z\in U\cap V$ and $z\perp W$, then $\lVert z\rVert=\lVert(P_W-P_UP_V)z\rVert\le
         c\lVert z\rVert$, hence $z=0$; subtracting $P_Wv$ from $v\in U\cap V$ shows
     $W=U\cap V$. Put $L=(1-P_U)+(1-P_V)$. The projection defect bounds the cosine of the
@@ -941,6 +985,8 @@ treats the argument for an abstract decreasing family of projections.
     $(1-c)\lVert v\rVert^2\le\langle Lv,v\rangle$ for $v\perp W$, and $\kappa L\le H$
     with the Cauchy--Schwarz inequality gives
     $\kappa(1-c)\lVert v\rVert^2\le\langle Hv,v\rangle\le\lVert Hv\rVert\lVert v\rVert$.
+    Since $L\ge0$ and $\kappa\ge0$, also $H\ge\kappa L\ge0$, and
+    Lemma~\ref{lem:gap_eigenvalue_forms} turns the norm gap into the gap above the kernel.
 \end{proof}
 
 \section{Sweeps of projections}

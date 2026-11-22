@@ -3,8 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import Mathlib.Analysis.InnerProductSpace.LinearMap
-import Mathlib.Analysis.InnerProductSpace.Orthogonal
+import QICLean.Spectral.Eigenvalue.MatrixReindexEuclidean
 
 /-!
 # Exact kernel and gap transport under an isometric conjugacy
@@ -12,7 +11,8 @@ import Mathlib.Analysis.InnerProductSpace.Orthogonal
 If \(Q=UPU^{-1}\) for a linear isometric equivalence \(U\), then
 \(\ker Q=U(\ker P)\), and \(U\) carries their orthogonal complements
 onto one another. Every real norm-gap bound \(\delta\) is consequently
-preserved in both directions. Positivity, finite dimensionality, and
+preserved in both directions, and \(P\) and \(Q\) have the same
+eigenvalues. Positivity, finite dimensionality, and
 nonzero-dimensional Hilbert spaces are not required.
 
 This is the operator transport used when exchanging the two endpoints in
@@ -100,5 +100,27 @@ theorem norm_gap_iff_of_conj
   · intro hGap x hx
     have h := hGap (U x) ((U.mem_orthogonal_ker_iff_of_conj P Q hPQ x).mp hx)
     simpa only [← U.map_apply_eq_of_conj P Q hPQ x, U.norm_map] using h
+
+/-- An isometric conjugacy preserves and reflects eigenvalues. -/
+theorem hasEigenvalue_iff_of_conj
+    (U : E ≃ₗᵢ[ℂ] F) (P : E →ₗ[ℂ] E) (Q : F →ₗ[ℂ] F)
+    (hPQ : U.toLinearEquiv.conj P = Q) (μ : ℂ) :
+    Module.End.HasEigenvalue P μ ↔ Module.End.HasEigenvalue Q μ := by
+  constructor
+  · intro h
+    obtain ⟨x, hx⟩ := h.exists_hasEigenvector
+    refine Module.End.hasEigenvalue_of_hasEigenvector (x := U x) ⟨?_, ?_⟩
+    · rw [Module.End.mem_eigenspace_iff, ← U.map_apply_eq_of_conj P Q hPQ x,
+        hx.apply_eq_smul, U.map_smul]
+    · exact fun h0 ↦ hx.2 (U.map_eq_zero_iff.mp h0)
+  · intro h
+    obtain ⟨y, hy⟩ := h.exists_hasEigenvector
+    obtain ⟨x, rfl⟩ := U.surjective y
+    refine Module.End.hasEigenvalue_of_hasEigenvector (x := x) ⟨?_, ?_⟩
+    · rw [Module.End.mem_eigenspace_iff]
+      apply U.injective
+      rw [U.map_apply_eq_of_conj P Q hPQ x, hy.apply_eq_smul, U.map_smul]
+    · rintro rfl
+      exact hy.2 (map_zero U)
 
 end LinearIsometryEquiv
