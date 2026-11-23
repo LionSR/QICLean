@@ -13,11 +13,13 @@ import Mathlib.Order.Fin.Tuple
 import Mathlib.Order.Fin.Basic
 import Mathlib.Data.Finset.BooleanAlgebra
 import Mathlib.Logic.Equiv.Basic
+import Mathlib.Order.Interval.Finset.Nat
 
 /-!
 # Finite initial-segment sums
 
-This file collects small finite-sum identities.
+This file collects small finite-sum identities, among them the splitting of a sum over the
+nearest-neighbour bonds of a chain at four cuts (`Fin.sum_eq_five_internal_add_crossings`).
 -/
 
 open scoped BigOperators
@@ -366,3 +368,62 @@ theorem sum_eq_sum_subtype_ne_zero {ι R S : Type*} [Fintype ι] [AddCommMonoid 
 end Finset
 
 end FinsetComplSubtype
+
+namespace Fin
+
+/-- Classification of the nearest-neighbour bonds `{i, i + 1}` of a chain of `L` sites at four
+ordered cuts: a bond crosses a cut exactly when it is internal to none of the five intervals. -/
+private theorem four_cut_crossing_iff_not_internal
+    {L k1 k2 k3 k4 : ℕ} (h12 : k1 ≤ k2) (h23 : k2 ≤ k3)
+    (h34 : k3 ≤ k4) (i : Fin (L - 1)) :
+    (i.val + 1 = k1 ∨ i.val + 1 = k2 ∨ i.val + 1 = k3 ∨ i.val + 1 = k4) ↔
+      ¬ ((0 ≤ i.val ∧ i.val + 1 < k1) ∨
+        (k1 ≤ i.val ∧ i.val + 1 < k2) ∨
+        (k2 ≤ i.val ∧ i.val + 1 < k3) ∨
+        (k3 ≤ i.val ∧ i.val + 1 < k4) ∨
+        (k4 ≤ i.val ∧ i.val + 1 < L)) := by
+  have hi := i.isLt
+  omega
+
+/-- **Splitting a sum over the bonds of a chain at four cuts.** For cuts `k1 ≤ k2 ≤ k3 ≤ k4`, a
+sum over `Fin (L - 1)` is the sum over the indices `i` with `i, i + 1` in one of the five
+intervals `[0, k1)`, `[k1, k2)`, `[k2, k3)`, `[k3, k4)`, `[k4, L)`, plus the sum over the
+indices with `i + 1` one of the cuts. Supporting the hard truncation of Arad, Landau, Vazirani
+and Vidick, arXiv:1602.08828v2, `def:hard-trunc`, lines 873–886. -/
+theorem sum_eq_five_internal_add_crossings
+    {A : Type*} [AddCommMonoid A] {L k1 k2 k3 k4 : ℕ}
+    (h12 : k1 ≤ k2) (h23 : k2 ≤ k3) (h34 : k3 ≤ k4)
+    (h : Fin (L - 1) → A) :
+    (∑ i, h i) =
+      (∑ i ∈ (Finset.univ : Finset (Fin (L - 1))).filter
+        (fun i ↦ 0 ≤ i.val ∧ i.val + 1 < k1), h i) +
+      (∑ i ∈ (Finset.univ : Finset (Fin (L - 1))).filter
+        (fun i ↦ k1 ≤ i.val ∧ i.val + 1 < k2), h i) +
+      (∑ i ∈ (Finset.univ : Finset (Fin (L - 1))).filter
+        (fun i ↦ k2 ≤ i.val ∧ i.val + 1 < k3), h i) +
+      (∑ i ∈ (Finset.univ : Finset (Fin (L - 1))).filter
+        (fun i ↦ k3 ≤ i.val ∧ i.val + 1 < k4), h i) +
+      (∑ i ∈ (Finset.univ : Finset (Fin (L - 1))).filter
+        (fun i ↦ k4 ≤ i.val ∧ i.val + 1 < L), h i) +
+      (∑ i ∈ (Finset.univ : Finset (Fin (L - 1))).filter
+        (fun i ↦ i.val + 1 ∈ ({k1, k2, k3, k4} : Finset ℕ)), h i) := by
+  simp only [Finset.sum_filter, Finset.mem_insert, Finset.mem_singleton]
+  simp only [← Finset.sum_add_distrib]
+  apply Finset.sum_congr rfl
+  intro i _
+  have hi := i.isLt
+  have hclass := four_cut_crossing_iff_not_internal h12 h23 h34 i
+  have hcover :
+      (0 ≤ i.val ∧ i.val + 1 < k1) ∨
+      (k1 ≤ i.val ∧ i.val + 1 < k2) ∨
+      (k2 ≤ i.val ∧ i.val + 1 < k3) ∨
+      (k3 ≤ i.val ∧ i.val + 1 < k4) ∨
+      (k4 ≤ i.val ∧ i.val + 1 < L) ∨
+      (i.val + 1 = k1 ∨ i.val + 1 = k2 ∨ i.val + 1 = k3 ∨ i.val + 1 = k4) := by
+    omega
+  rcases hcover with h0 | h1 | h2 | h3 | h4 | hJ
+  all_goals
+    simp (disch := omega) only [ite_eq_left, ite_eq_right]
+  all_goals simp
+
+end Fin

@@ -8,5 +8,10 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Circuit.Party.Monomial
 
+import QICLean.Circuit.Party.Monomial.Chain
+import QICLean.Circuit.Party.Monomial.ChainForm
 import QICLean.Circuit.Party.Monomial.EffectChain
+import QICLean.Circuit.Party.Monomial.EffectStacks
 import QICLean.Circuit.Party.Monomial.Elimination
+import QICLean.Circuit.Party.Monomial.Stack
+import QICLean.Circuit.Party.Monomial.WeightedGate

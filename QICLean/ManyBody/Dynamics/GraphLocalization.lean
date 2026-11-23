@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Dynamics.GraphPropagation
 import QICLean.ManyBody.Sites.GraphBall
+import QICLean.ManyBody.Sites.Lattice.Chain
 import QICLean.ManyBody.Sites.Twirl
 import Mathlib.Algebra.Order.Field.GeomSum
 
@@ -62,6 +63,8 @@ is gone; the graph ball is in `QICLean.ManyBody.Sites.GraphBall`.
 * `ManyBody.norm_heisenberg_sub_regionExpectation_graphNeighborhood_le_of_sphere_le_two`:
   localization onto the real-radius neighborhood of an arbitrary finite support on a graph whose
   spheres have at most two sites (TNLean one-dimensional note, Lemma `lem:LR`).
+* `ManyBody.norm_heisenberg_sub_regionExpectation_pathGraph_le`: its case of the chain of `L`
+  sites with supports of range `R`.
 -/
 
 open NormedSpace
@@ -488,5 +491,35 @@ theorem norm_heisenberg_sub_regionExpectation_graphNeighborhood_le_of_sphere_le_
         rw [← Real.exp_add]
         norm_num]
       ring
+
+/-- **Localization on the chain.** For a family of Hermitian terms on the chain of `L` sites
+with supports of range `R` and term norms meeting any site summing to at most `b₀`, the
+Heisenberg evolution of an operator supported on `S` is approximated by its expectation onto the
+path-graph neighborhood of `S` of radius `⌊ℓ⌋₊`, with error
+`C' |S|² ‖A‖ exp(v |t| - ℓ / 2)`. For `ℓ < 0` the neighborhood is `S` itself. -/
+theorem norm_heisenberg_sub_regionExpectation_pathGraph_le
+    {L q R : ℕ} {κ : Type*} [Fintype κ]
+    (X : κ → ChainSupport L R)
+    (h : κ → Matrix (Fin L → Fin q) (Fin L → Fin q) ℂ)
+    (hHerm : ∀ k, (h k).IsHermitian)
+    (hSupport : ∀ k, IsSupportedOn (X := fun _ ↦ Fin q) (h k) (X k).1)
+    (b₀ : ℝ)
+    (hBudget : ∀ x : Fin L,
+      ∑ k ∈ Finset.univ.filter (fun k ↦ x ∈ (X k).1), ‖h k‖ ≤ b₀)
+    (S : Finset (Fin L))
+    {A : Matrix (Fin L → Fin q) (Fin L → Fin q) ℂ}
+    (hA : IsSupportedOn (X := fun _ ↦ Fin q) A S)
+    (ℓ : ℝ) (t : ℝ) :
+    ‖heisenbergEvolution (∑ k, h k) t A -
+        regionExpectation (graphNeighborhood (SimpleGraph.pathGraph L) S ⌊ℓ⌋₊)
+          (heisenbergEvolution (∑ k, h k) t A)‖ ≤
+      (2 * (2 + 4 * |b₀| * Real.exp (2 * R)) * Real.exp 1 /
+        (1 - Real.exp (-(1 / 2)))) * (S.card : ℝ) ^ 2 * ‖A‖ *
+          Real.exp ((2 * (R + 1) * |b₀| * Real.exp (2 * R) + 1) * |t| - ℓ / 2) :=
+  norm_heisenberg_sub_regionExpectation_graphNeighborhood_le_of_sphere_le_two
+    (SimpleGraph.pathGraph L)
+    (⟨h, hSupport⟩ : Interaction (fun _ : Fin L ↦ Fin q) fun k ↦ (X k).1)
+    hHerm R (fun k ↦ ChainSupport.edist_le (X k)) (fun k ↦ (X k).2.card_le)
+    (SimpleGraph.pathGraph_card_sphere_le_two L) b₀ hBudget S hA ℓ t
 
 end ManyBody

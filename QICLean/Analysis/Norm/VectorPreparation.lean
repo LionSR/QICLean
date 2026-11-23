@@ -26,6 +26,7 @@ of the preparation of `η` in front (`effectMatrix_eq_conjTranspose`).
 
 * `Matrix.prepMatrix_mul_apply`, `Matrix.toEuclideanLin_prepMatrix_prodComm` — entries and the
   action on vectors.
+* `Matrix.reindex_symm_prepMatrix` — a preparation with its rows relabelled.
 * `Matrix.conjTranspose_mul_prepMatrix`, `Matrix.norm_prepMatrix_le`, `Matrix.norm_prepMatrix` —
   a preparation is `‖v‖` times an isometry.
 * `Matrix.effectMatrix_eq_conjTranspose`, `Matrix.conjTranspose_prepMatrix`,
@@ -70,6 +71,13 @@ theorem prepMatrix_mul_apply {k : Type*} [Fintype n] (e : m ≃ α × n) (v : Eu
 `e`. -/
 theorem prepMatrix_eq_submatrix (e : m ≃ α × n) (v : EuclideanSpace ℂ α) :
     prepMatrix e v = (prepMatrix (Equiv.refl (α × n)) v).submatrix e id :=
+  rfl
+
+/-- A preparation with its rows read along `e` is the preparation along `e` followed by the
+reading `f` of the basis. -/
+theorem reindex_symm_prepMatrix {l : Type*} (e : l ≃ m) (f : m ≃ α × n)
+    (v : EuclideanSpace ℂ α) :
+    reindex e.symm (Equiv.refl n) (prepMatrix f v) = prepMatrix (e.trans f) v :=
   rfl
 
 /-- Appending a vector behind the input sends `u` to `u ⊗ v`. -/
