@@ -33,6 +33,8 @@ its configurations are pairs of a configuration of the fresh factors and a confi
   directions of `addPairConfigEquiv`.
 * `QuantumCircuit.Party.addPairConfigEquiv_eq_siteEquiv` — `addPairConfigEquiv` read party by
   party.
+* `QuantumCircuit.Party.card_pairFactor`, `QuantumCircuit.Party.card_addPair` — the dimensions of
+  the fresh factors and of the bases of `addPair`.
 * `QuantumCircuit.Party.norm_addPairMatrix_le`, `QuantumCircuit.Party.piKronecker_addPairMatrix` —
   party operations beside the fresh factors.
 
@@ -196,6 +198,27 @@ def addPairSiteEquiv (X : P → Type) (s : P) :
       ((Equiv.punitProd (X s)).symm.trans
         ((Equiv.cast (show PUnit = pairFactor hpq A B s by simp [pairFactor, hp, hq])).prodCongr
           (Equiv.refl _)))
+
+/-- The dimension of `pairFactor` at a party: `|A|` at `p`, `|B|` at `q`, and one elsewhere. -/
+theorem card_pairFactor [Fintype A] [Fintype B] (s : P) :
+    Fintype.card (pairFactor hpq A B s) =
+      (if s = p then Fintype.card A else 1) * (if s = q then Fintype.card B else 1) := by
+  rw [Fintype.card_eq_nat_card]
+  by_cases hp : s = p
+  · subst hp
+    simp [pairFactor, hpq, Nat.card_eq_fintype_card]
+  by_cases hq : s = q
+  · subst hq
+    simp [pairFactor, hp, Nat.card_eq_fintype_card]
+  simp [pairFactor, hp, hq]
+
+/-- The dimension of `addPair` at a party is that of the fresh factor there times that of the
+old basis. -/
+theorem card_addPair [∀ s, Fintype (X s)] [Fintype A] [Fintype B] (s : P) :
+    Fintype.card (addPair X hpq A B s) =
+      Fintype.card (pairFactor hpq A B s) * Fintype.card (X s) := by
+  rw [← Fintype.card_prod]
+  exact Fintype.card_congr (addPairSiteEquiv hpq A B X s)
 
 /-- The configurations of the fresh factors alone: a pair. -/
 def pairFactorConfigEquiv : Config (pairFactor hpq A B) ≃ A × B where
