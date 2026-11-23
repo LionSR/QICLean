@@ -8,5 +8,6 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Circuit.Party.Effect
 
+import QICLean.Circuit.Party.Effect.Error
 import QICLean.Circuit.Party.Effect.GateReplacement
 import QICLean.Circuit.Party.Effect.Replacement
