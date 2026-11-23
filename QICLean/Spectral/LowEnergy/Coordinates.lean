@@ -8,6 +8,7 @@ import Mathlib.Analysis.Matrix.Spectrum
 import Mathlib.Data.Fin.Basic
 import Mathlib.Tactic
 import QICLean.Analysis.Order.LowEnergyPerturbation
+import QICLean.Spectral.Eigenvalue.EuclideanEigenvectorBasis
 
 /-!
 # Closed spectral subspaces in isometric coordinates
@@ -15,7 +16,8 @@ import QICLean.Analysis.Order.LowEnergyPerturbation
 Closed low-energy spans are independent of a complete real-eigenvalue orthonormal basis.
 Isometric intertwining transports these spans and yields canonical spectral data for an actual
 Hermitian matrix. Two distinct spectral values also force the local dimension of a product
-configuration space to be at least two.
+configuration space to be at least two. A gap `γ` above the spectral value `μ` bounds the
+quadratic form below by `μ + γ` on the orthogonal complement of the spectral span at `μ`.
 
 These results support ALVV, arXiv:1602.08828v2,
 `def:hard-trunc`, lines 873–886, and Theorem `t:ais`, lines 1010–1024.
@@ -228,3 +230,39 @@ theorem spectralSpanLE_ne_bot_of_mem_spectrum
 end Matrix.IsHermitian
 end
 end
+
+section GroundComplement
+
+open Matrix
+
+/-- If every spectral value of a Hermitian matrix is `μ` or at least `μ + γ`, its quadratic form
+is at least `μ + γ` on the orthogonal complement of the spectral span at `μ`. -/
+theorem Matrix.IsHermitian.mul_norm_sq_le_re_inner_of_mem_orthogonal_ground
+    {σ : Type*} [Fintype σ] [DecidableEq σ] {H : Matrix σ σ ℂ} (hH : H.IsHermitian)
+    {mu gamma : ℝ} (hgap : ∀ z ∈ spectrum ℝ H, z = mu ∨ mu + gamma ≤ z)
+    {w : EuclideanSpace ℂ σ}
+    (hw : w ∈ (Submodule.spectralSpanLE hH.eigenvectorBasis hH.eigenvalues mu)ᗮ) :
+    (mu + gamma) * ‖w‖ ^ 2 ≤
+      (inner ℂ w ((toEuclideanCLM (𝕜 := ℂ) (n := σ) H).toLinearMap w)).re := by
+  classical
+  set b := hH.eigenvectorBasis
+  set a := hH.eigenvalues
+  have hE : ∀ j, (toEuclideanCLM (𝕜 := ℂ) (n := σ) H).toLinearMap (b j) = (a j : ℂ) • b j :=
+    fun j ↦ hH.toEuclideanCLM_eigenvectorBasis j
+  have hsum := b.re_inner_apply_eq_sum_of_eigen a _ hE w
+  have hnorm : ‖w‖ ^ 2 = ∑ j, ‖b.repr w j‖ ^ 2 := by
+    rw [← b.repr.norm_map w, EuclideanSpace.norm_sq_eq]
+  have hzero : ∀ j, a j ≤ mu → b.repr w j = 0 := by
+    intro j hj
+    rw [OrthonormalBasis.repr_apply_apply]
+    exact Submodule.inner_right_of_mem_orthogonal
+      (Submodule.subset_span (Set.mem_image_of_mem b (show j ∈ {j | a j ≤ mu} from hj))) hw
+  rw [hsum, hnorm, Finset.mul_sum]
+  refine Finset.sum_le_sum fun j _ ↦ ?_
+  by_cases hj : a j ≤ mu
+  · simp [hzero j hj]
+  · rcases hgap (a j) (hH.eigenvalues_mem_spectrum_real j) with h | h
+    · exact absurd h.le hj
+    · exact mul_le_mul_of_nonneg_right h (sq_nonneg _)
+
+end GroundComplement
