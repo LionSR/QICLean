@@ -12,7 +12,8 @@ Along a map of parties `f : P → Q`, a pair source keeps its fresh factors and 
 moves to the image parties when these differ (`PairSource.mapOwner`); a source whose endpoints
 have the same image becomes local and disappears from the inventory
 (`SourceInventory.mapOwner`). The map `affectedOwner A` keeps each affected party as a party and
-sends all others to one exterior party.
+sends all others to one exterior party; when every party is affected, the exterior block contains
+no party and has one configuration (`uniqueBlockSystemNone`).
 
 ## Main definitions
 
@@ -27,11 +28,13 @@ sends all others to one exterior party.
 * `QuantumCircuit.Party.SourceInventory.mem_mapOwner_affectedOwner`,
   `QuantumCircuit.Party.SourceInventory.map_partyPair_affectedOwner`,
   `QuantumCircuit.Party.SourceInventory.mapOwner_affectedOwner_eq_nil_iff`.
+* `QuantumCircuit.Party.affectedOwner_true_ne_none`,
+  `QuantumCircuit.Party.uniqueBlockSystemNone` — the exterior block when every party is affected.
 
 ## References
 
 * Polynomial-PEPS manuscript (September 24, 2026), Theorem 5.2, `04-compression.tex`,
-  lines 383–427.
+  lines 357–361 and 383–427.
 
 Adapted from TNLean, `TNLean/Lattice/PartyCircuit/SourceOwnerMap.lean` and
 `TNLean/Lattice/PartyCircuit/AffectedOwners.lean` at commit `ded76a266d` (Apache-2.0). Changes:
@@ -210,5 +213,28 @@ theorem mapOwner_affectedOwner_eq_nil_iff (A : P → Bool) (S : SourceInventory 
   exact forall₂_congr fun s _ ↦ by simp [affectedOwner_eq_iff, s.distinct]
 
 end SourceInventory
+
+/-! ### The exterior party when every party is affected -/
+
+omit [DecidableEq P] in
+/-- When every party is affected, no party goes to the exterior party. Source: Theorem 5.2,
+`04-compression.tex`, lines 357–361. -/
+theorem affectedOwner_true_ne_none (p : P) : affectedOwner (fun _ ↦ true) p ≠ none := by
+  simp
+
+omit [DecidableEq P] in
+/-- When every party is affected, no party goes to the exterior party: the parties sent there
+form an empty type. -/
+instance isEmpty_affectedOwner_true_eq_none :
+    IsEmpty {p : P // affectedOwner (fun _ ↦ true) p = none} :=
+  ⟨fun p ↦ affectedOwner_true_ne_none p.1 p.2⟩
+
+/-- When every party is affected, the exterior block contains no party, so it has exactly one
+configuration. Source: Theorem 5.2, `04-compression.tex`, lines 357–361. -/
+@[instance_reducible] def uniqueBlockSystemNone [Fintype P] (X : P → Type) :
+    Unique (ManyBody.blockSystem (affectedOwner fun _ : P ↦ true) X none) :=
+  haveI : IsEmpty {v // v ∈ ManyBody.blockPreimage (affectedOwner fun _ : P ↦ true) {none}} :=
+    ⟨fun v ↦ affectedOwner_true_ne_none v.1 ((ManyBody.mem_blockPreimage_singleton _).mp v.2)⟩
+  Pi.uniqueOfIsEmpty _
 
 end QuantumCircuit.Party
