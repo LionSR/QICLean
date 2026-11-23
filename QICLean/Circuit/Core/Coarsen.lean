@@ -22,8 +22,15 @@ The blocks of `L`, its cells and its remaining sites, are thereby distributed am
 of the coarse layer, and the Kraus operators of the two layers are the same products of local
 entries.
 
+## Main definitions
+
+* `QuantumCircuit.Layer.coarsen`, `QuantumCircuit.Layer.coarsenIndexEquiv` — the coarse layer, and
+  the identification of its Kraus indices with those of the layer.
+
 ## Main results
 
+* `QuantumCircuit.Layer.kraus_coarsen` — the Kraus operators of the coarse layer are those of the
+  layer, read on the blocks.
 * `QuantumCircuit.Layer.exists_coarsen` — a layer whose cells have disjoint covering cells is a
   layer on the blocks.
 -/
@@ -163,7 +170,7 @@ private theorem singletonEquiv_apply (Z : S' → Type) (z : (s : S') → Z s) (s
   rfl
 
 /-- The coarse layer. -/
-private noncomputable def coarsen : Layer Γ' KrausGate (blockSystem f X) (blockSystem f Y) where
+noncomputable def coarsen : Layer Γ' KrausGate (blockSystem f X) (blockSystem f Y) where
   cells := L.cells.image cover
   pairwiseDisjoint := pairwiseDisjoint_image_cover cover L hL
   gate c := coarseFamily f cover L hcover hL (.inl c)
@@ -185,7 +192,7 @@ private theorem toFibre_congr (i' : (coarsen f cover L hcover hL).Index) {β : L
   subst h; rfl
 
 /-- The Kraus indices of the coarse layer are those of the layer. -/
-private noncomputable def coarsenIndexEquiv :
+noncomputable def coarsenIndexEquiv :
     (coarsen f cover L hcover hL).Index ≃ L.Index where
   toFun i' := L.indexEquiv.symm fun β ↦
     toFibre f cover L hcover hL i' (coarseBlock f cover L hL β) ⟨β, rfl⟩
@@ -206,7 +213,7 @@ private noncomputable def coarsenIndexEquiv :
     exact key _ rfl
 
 /-- The Kraus operators of the coarse layer are those of the layer, read on the blocks. -/
-private theorem kraus_coarsen (i' : (coarsen f cover L hcover hL).Index) :
+theorem kraus_coarsen (i' : (coarsen f cover L hcover hL).Index) :
     (coarsen f cover L hcover hL).kraus KrausGate.ev i' =
       (L.kraus KrausGate.ev (coarsenIndexEquiv f cover L hcover hL i')).submatrix
         (blockConfigEquiv f Y) (blockConfigEquiv f X) := by
