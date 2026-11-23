@@ -56,6 +56,8 @@ count and the participations are those of the circuit (`PartyCircuit.gateCount_t
   operator, constructor by constructor.
 * `QuantumCircuit.Party.PartyCircuit.norm_op_le_one` — an allowed party circuit is a
   contraction.
+* `QuantumCircuit.Party.PartyCircuit.op_induction` — induction on the operator, one step at a
+  time.
 * `QuantumCircuit.Party.PartyCircuit.gateCount_toCircuit`,
   `QuantumCircuit.Party.PartyCircuit.participation_toCircuit` — the counts of the circuit.
 * `QuantumCircuit.Party.PartyCircuit.gateCount_eq_numGates`,
@@ -292,6 +294,70 @@ def IsLocalContractive : {X Y : P → Type} → [∀ s, Fintype (X s)] → [∀ 
   | _, _, _, _, localOp _ _ U => ‖U‖ ≤ 1
   | _, _, _, _, localOps U => ∀ p, ‖U p‖ ≤ 1
   | _, _, _, _, comp c c' => c.IsLocalContractive ∧ c'.IsLocalContractive
+
+/-! ### Induction step by step -/
+
+/-- A party circuit of one step: the empty circuit, one gate, or local operations; not a
+composition. -/
+def IsAtom : {X Y : P → Type} → PartyCircuit G X Y → Prop
+  | _, _, done _ => True
+  | _, _, gate _ _ _ => True
+  | _, _, localOp _ _ _ => True
+  | _, _, localOps _ => True
+  | _, _, comp _ _ => False
+
+section Snoc
+
+variable [GateFamily.UniqueOutcome G] (ev : Interpretation G) [∀ p, Fintype (X p)]
+  [∀ p, DecidableEq (X p)]
+
+omit [∀ p, Fintype (X p)] [∀ p, DecidableEq (X p)] in
+/-- The induction step, for a circuit applied after any matrix. -/
+private theorem op_mul_induction
+    {motive : ∀ {Y : P → Type} [∀ p, Fintype (Y p)] [∀ p, DecidableEq (Y p)],
+      Matrix (Config Y) (Config X) ℂ → Prop}
+    (step : ∀ {Y Z : P → Type} [∀ p, Fintype (Y p)] [∀ p, DecidableEq (Y p)]
+      [∀ p, Fintype (Z p)] [∀ p, DecidableEq (Z p)] (M : Matrix (Config Y) (Config X) ℂ)
+      (s : PartyCircuit G Y Z), s.IsAtom → motive M → motive (s.op ev * M)) :
+    {Y Z : P → Type} → [∀ p, Fintype (Y p)] → [∀ p, DecidableEq (Y p)] →
+      [∀ p, Fintype (Z p)] → [∀ p, DecidableEq (Z p)] → (c : PartyCircuit G Y Z) →
+        (M : Matrix (Config Y) (Config X) ℂ) → motive M → motive (c.op ev * M)
+  | Y, _, iF, iD, iF', iD', done _, M, h => by
+    obtain rfl : iF' = iF := Subsingleton.elim _ _
+    obtain rfl : iD' = iD := Subsingleton.elim _ _
+    exact step M (done Y) trivial h
+  | _, _, _, _, iF', iD', @gate _ _ _ _ iF iD D hY g, M, h => by
+    obtain rfl : iF' = iF := Subsingleton.elim _ _
+    obtain rfl : iD' = iD := Subsingleton.elim _ _
+    exact step M (gate D hY g) trivial h
+  | _, _, _, _, iF', iD', @localOp _ _ _ _ iF iD p hY A, M, h => by
+    obtain rfl : iF' = iF := Subsingleton.elim _ _
+    obtain rfl : iD' = iD := Subsingleton.elim _ _
+    exact step M (localOp p hY A) trivial h
+  | _, _, _, _, iF', iD', @localOps _ _ _ _ iF iD A, M, h => by
+    obtain rfl : iF' = iF := Subsingleton.elim _ _
+    obtain rfl : iD' = iD := Subsingleton.elim _ _
+    exact step M (localOps A) trivial h
+  | _, _, _, _, _, _, @comp _ _ _ _ _ _ _ c c', M, h => by
+    rw [op_comp, Matrix.mul_assoc]
+    exact op_mul_induction step c' _ (op_mul_induction step c M h)
+
+/-- **Induction step by step.** A property of matrices on the configurations of `X` that holds
+for the identity and passes from `M` to `op s * M` for every one-step circuit `s` holds for the
+operator of every party circuit from `X`. -/
+theorem op_induction
+    {motive : ∀ {Y : P → Type} [∀ p, Fintype (Y p)] [∀ p, DecidableEq (Y p)],
+      Matrix (Config Y) (Config X) ℂ → Prop}
+    (done : motive (1 : Matrix (Config X) (Config X) ℂ))
+    (step : ∀ {Y Z : P → Type} [∀ p, Fintype (Y p)] [∀ p, DecidableEq (Y p)]
+      [∀ p, Fintype (Z p)] [∀ p, DecidableEq (Z p)] (M : Matrix (Config Y) (Config X) ℂ)
+      (s : PartyCircuit G Y Z), s.IsAtom → motive M → motive (s.op ev * M))
+    [∀ p, Fintype (Y p)] [∀ p, DecidableEq (Y p)] (c : PartyCircuit G X Y) :
+    motive (c.op ev) := by
+  have h := op_mul_induction ev step c 1 done
+  rwa [Matrix.mul_one] at h
+
+end Snoc
 
 omit [Fintype P] in
 /-- An allowed party circuit has contractive local operations. -/
