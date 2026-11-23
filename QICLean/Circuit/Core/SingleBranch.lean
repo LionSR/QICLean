@@ -15,7 +15,10 @@ exactly one branch (`Circuit.IsSingle`). Its Kraus operator at that branch, `Cir
 the operator the circuit applies: the product of the matrices of its layers. It is multiplicative
 under composition, and it is a contraction in the operator norm when every local family is
 trace-nonincreasing. The condition `IsSingle` reads only the outcome and index types, so it
-needs neither an interpretation of the gates nor finiteness of the basis types.
+needs neither an interpretation of the gates nor finiteness of the basis types. A gate family
+whose gates have one outcome each (`GateFamily.UniqueOutcome`), such as a family of gates given
+by one matrix, gives circuits of one branch as soon as the onsite families have one member; a
+family of one member is trace-nonincreasing exactly when its operator is a contraction.
 
 A condition on the gates themselves, as syntax rather than as matrices, holds on a circuit when
 every gate of every layer on every branch satisfies it (`Circuit.ForallGate'`). A condition that
@@ -29,6 +32,7 @@ site. The length of the list is not the gate count in general: cells of cost zer
 
 ## Main definitions
 
+* `QuantumCircuit.GateFamily.UniqueOutcome` — gate families whose gates have one outcome.
 * `QuantumCircuit.Circuit.IsSingle` — every gate has one outcome and every onsite family one
   member.
 * `QuantumCircuit.Circuit.singleOp` — the Kraus operator of the unique branch.
@@ -39,7 +43,10 @@ site. The length of the list is not the gate count in general: cells of cost zer
 
 ## Main results
 
+* `KrausFamily.isTraceNonincreasing_iff_norm_le_one`, `KrausFamily.isTraceNonincreasing_single_iff`
+  — a family of one member is trace-nonincreasing exactly when its operator is a contraction.
 * `QuantumCircuit.Circuit.IsSingle.nonempty_unique_index` — one branch.
+* `QuantumCircuit.Circuit.isSingle_ofLayer` — one layer of gates with one outcome.
 * `QuantumCircuit.Circuit.isSingle_iff_forall` — `IsSingle` as a local property.
 * `QuantumCircuit.Circuit.singleOp_eq_kraus`, `QuantumCircuit.Circuit.singleOp_done`,
   `QuantumCircuit.Circuit.singleOp_step`, `QuantumCircuit.Circuit.singleOp_ofLayer`,
@@ -55,6 +62,49 @@ open Matrix ManyBody
 open scoped Matrix.Norms.L2Operator MatrixOrder ComplexOrder
 
 namespace QuantumCircuit
+
+/-! ### Gate families with one outcome, and single operators -/
+
+/-- A gate family whose every gate has exactly one outcome, as a gate given by one matrix has. -/
+class GateFamily.UniqueOutcome {S : Type} (G : Finset S → (S → Type) → (S → Type) → Type 1)
+    [GateFamily G] : Prop where
+  /-- Every gate has exactly one outcome. -/
+  nonempty_unique : ∀ ⦃D : Finset S⦄ ⦃X Y : S → Type⦄ (g : G D X Y),
+    Nonempty (Unique (GateFamily.Outcome g))
+
+/-- The outcome of a gate of a family whose gates have one outcome. -/
+noncomputable def GateFamily.UniqueOutcome.outcome {S : Type}
+    {G : Finset S → (S → Type) → (S → Type) → Type 1} [GateFamily G] [GateFamily.UniqueOutcome G]
+    {D : Finset S} {X Y : S → Type} (g : G D X Y) : GateFamily.Outcome g :=
+  (GateFamily.UniqueOutcome.nonempty_unique g).some.default
+
+/-- Every outcome of a gate of a family whose gates have one outcome is that outcome. -/
+theorem GateFamily.UniqueOutcome.eq_outcome {S : Type}
+    {G : Finset S → (S → Type) → (S → Type) → Type 1} [GateFamily G] [GateFamily.UniqueOutcome G]
+    {D : Finset S} {X Y : S → Type} {g : G D X Y} (i : GateFamily.Outcome g) :
+    i = GateFamily.UniqueOutcome.outcome g :=
+  (GateFamily.UniqueOutcome.nonempty_unique g).some.uniq i
+
+/-- A Kraus family with one member is trace-nonincreasing exactly when its operator is a
+contraction in the operator norm. -/
+theorem _root_.KrausFamily.isTraceNonincreasing_iff_norm_le_one {α β : Type} [Fintype α]
+    [DecidableEq α] [Fintype β] (K : KrausFamily α β) [Unique K.Index] :
+    K.IsTraceNonincreasing ↔ ‖K.op default‖ ≤ 1 := by
+  have heff : K.effect = (K.op default)ᴴ * K.op default := Fintype.sum_unique _
+  rw [KrausFamily.IsTraceNonincreasing, heff, ← CStarAlgebra.norm_le_one_iff_of_nonneg _
+    (posSemidef_conjTranspose_mul_self _).nonneg, l2_opNorm_conjTranspose_mul_self]
+  constructor
+  · intro h
+    nlinarith [norm_nonneg (K.op default)]
+  · intro h
+    nlinarith [norm_nonneg (K.op default)]
+
+/-- The family of one operator is trace-nonincreasing exactly when the operator is a
+contraction. -/
+theorem _root_.KrausFamily.isTraceNonincreasing_single_iff {α β : Type} [Fintype α] [DecidableEq α]
+    [Fintype β] (V : Matrix β α ℂ) : (KrausFamily.single V).IsTraceNonincreasing ↔ ‖V‖ ≤ 1 :=
+  letI : Unique (KrausFamily.single V).Index := inferInstanceAs (Unique Unit)
+  (KrausFamily.single V).isTraceNonincreasing_iff_norm_le_one
 
 namespace Circuit
 
@@ -118,6 +168,14 @@ theorem IsSingle.comp {c : Circuit Γ G X Y} {c' : Circuit Γ G Y Z} (hc : c.IsS
     (hc' : c'.IsSingle) : (c.comp c').IsSingle :=
   hc.append fun _ ↦ hc'
 
+omit [Fintype S] in
+/-- The circuit of one layer of a gate family with one outcome per gate has one branch when
+every onsite family of the layer has one member. -/
+theorem isSingle_ofLayer [GateFamily.UniqueOutcome G] [∀ s, Fintype (Y s)]
+    [∀ s, DecidableEq (Y s)] (L : Layer Γ G X Y) (h : ∀ s, Nonempty (Unique (L.onsite s).Index)) :
+    (ofLayer L).IsSingle :=
+  ⟨⟨fun b ↦ GateFamily.UniqueOutcome.nonempty_unique (L.gate b), h⟩, fun _ ↦ trivial⟩
+
 section SingleOp
 
 variable [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
@@ -166,16 +224,9 @@ theorem norm_singleOp_le_one [∀ s, Fintype (Z s)] (ev : Interpretation G) (c :
     ‖c.singleOp ev h‖ ≤ 1 := by
   obtain ⟨u⟩ := h.nonempty_unique_index
   let : Unique (c.krausFamily ev).Index := u
-  have heff : (c.singleOp ev h)ᴴ * c.singleOp ev h ≤ 1 := by
-    have hc := c.isTraceNonincreasing_krausFamily ev hT
-    rw [KrausFamily.IsTraceNonincreasing, KrausFamily.effect, Fintype.sum_unique] at hc
-    rw [singleOp_eq_kraus ev c h default]
-    exact hc
-  have hnorm : ‖(c.singleOp ev h)ᴴ * c.singleOp ev h‖ ≤ 1 :=
-    (CStarAlgebra.norm_le_one_iff_of_nonneg _
-      (posSemidef_conjTranspose_mul_self (c.singleOp ev h)).nonneg).mpr heff
-  rw [l2_opNorm_conjTranspose_mul_self] at hnorm
-  nlinarith [norm_nonneg (c.singleOp ev h)]
+  rw [singleOp_eq_kraus ev c h default]
+  exact ((c.krausFamily ev).isTraceNonincreasing_iff_norm_le_one).mp
+    (c.isTraceNonincreasing_krausFamily ev hT)
 
 end SingleOp
 

@@ -8,6 +8,7 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Analysis.Norm
 
+import QICLean.Analysis.Norm.ApproximateContractionRescaling
 import QICLean.Analysis.Norm.ApproximateProjector
 import QICLean.Analysis.Norm.BipartiteDecomposition
 import QICLean.Analysis.Norm.BlockDiagonalNorm
@@ -31,6 +32,7 @@ import QICLean.Analysis.Norm.NeumannInverse
 import QICLean.Analysis.Norm.NormedRingTelescoping
 import QICLean.Analysis.Norm.OperatorNormConvergence
 import QICLean.Analysis.Norm.OrderedIdempotentTracePerturbation
+import QICLean.Analysis.Norm.PiKroneckerNorm
 import QICLean.Analysis.Norm.PrincipalSubmatrixNorm
 import QICLean.Analysis.Norm.ReindexMulVec
 import QICLean.Analysis.Norm.RootChannel
@@ -40,5 +42,6 @@ import QICLean.Analysis.Norm.SquaredTriangle
 import QICLean.Analysis.Norm.ThreeOperatorPerturbation
 import QICLean.Analysis.Norm.TraceNormContractivity
 import QICLean.Analysis.Norm.UnitNormalizationDistance
+import QICLean.Analysis.Norm.VectorPreparation
 import QICLean.Analysis.Norm.WeightedRectangular
 import QICLean.Analysis.Norm.WeightedSupertrace

@@ -123,7 +123,7 @@ theorem rectangularTraceNorm_chronologicalGarbageDensity_marked_sub_le
     (γ : (t : ℕ) → EuclideanSpace ℂ (B t)) (hγ : ∀ t, ‖γ t‖ = 1)
     (ψ : EuclideanSpace ℂ (D 0)) (n : ℕ) (K : Matrix (P × E) (D n) ℂ)
     (S : Finset ℕ) (δ : ℝ) (hδ : 0 ≤ δ) (hG : ∀ t, ‖G t‖ ≤ 1)
-    (herror : ∀ t ∈ S, ‖A t - appendGarbageGate (G t) (γ t)‖ ≤ δ)
+    (herror : ∀ t ∈ S, ‖A t - prepMatrix (Equiv.prodComm _ _) (γ t) * G t‖ ≤ δ)
     (hψ : ‖ψ‖ ≤ 1) (hK : ‖K‖ ≤ 1) :
     rectangularTraceNorm
       (chronologicalGarbageDensity (markedChronologicalGarbageChain G A γ S δ) γ ψ n K -
@@ -156,7 +156,7 @@ theorem rectangularTraceNorm_chronologicalGarbageDensity_marked_sub_le_half
     (γ : (t : ℕ) → EuclideanSpace ℂ (B t)) (hγ : ∀ t, ‖γ t‖ = 1)
     (ψ : EuclideanSpace ℂ (D 0)) (n : ℕ) (K : Matrix (P × E) (D n) ℂ)
     (S : Finset ℕ) (ε : ℝ) (hε : 0 ≤ ε) (hS : 0 < S.card) (hG : ∀ t, ‖G t‖ ≤ 1)
-    (herror : ∀ t ∈ S, ‖A t - appendGarbageGate (G t) (γ t)‖ ≤ ε / (8 * S.card))
+    (herror : ∀ t ∈ S, ‖A t - prepMatrix (Equiv.prodComm _ _) (γ t) * G t‖ ≤ ε / (8 * S.card))
     (hψ : ‖ψ‖ ≤ 1) (hK : ‖K‖ ≤ 1) :
     rectangularTraceNorm
       (chronologicalGarbageDensity

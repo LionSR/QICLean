@@ -26,7 +26,7 @@ coisometries, unitaries and basis inclusions.
 
 * `Matrix.piKronecker` — the Kronecker product `⊗ₖ K k` of a finite family of matrices.
 * `Matrix.piKronecker_mul`, `Matrix.piKronecker_one`, `Matrix.piKronecker_smul`,
-  `Matrix.sum_piKronecker`.
+  `Matrix.sum_piKronecker`, `Matrix.piKronecker_kronecker`.
 * `Matrix.conjTranspose_piKronecker`, `Matrix.transpose_piKronecker`,
   `Matrix.trace_piKronecker`, `Matrix.piKronecker_diagonal`.
 * `Matrix.piKronecker_eq_zero_iff`, `Matrix.piKronecker_ne_zero`.
@@ -40,7 +40,7 @@ coisometries, unitaries and basis inclusions.
   (arXiv:2307.01696, Supplemental Material, proof of Lemma 1).
 -/
 
-open scoped BigOperators Matrix ComplexOrder
+open scoped BigOperators Matrix ComplexOrder Kronecker
 
 namespace Matrix
 
@@ -71,6 +71,16 @@ theorem piKronecker_mul [∀ k, Fintype (κ k)] [DecidableEq ν]
     piKronecker (fun k ↦ (1 : Matrix (ι k) (ι k) ℂ)) = 1 := by
   ext x y
   simp only [piKronecker_apply, one_apply, Fintype.prod_boole, ← funext_iff]
+
+/-- The Kronecker product of sitewise Kronecker products is the Kronecker product of the two
+Kronecker products, read along the pairing of configurations. -/
+theorem piKronecker_kronecker {ι' κ' : ν → Type*} (K : (k : ν) → Matrix (ι k) (κ k) ℂ)
+    (L : (k : ν) → Matrix (ι' k) (κ' k) ℂ) :
+    piKronecker (fun k ↦ K k ⊗ₖ L k) =
+      reindex (Equiv.arrowProdEquivProdArrow ν ι ι').symm
+        (Equiv.arrowProdEquivProdArrow ν κ κ').symm (piKronecker K ⊗ₖ piKronecker L) := by
+  ext x y
+  simp [kroneckerMap_apply, Finset.prod_mul_distrib]
 
 /-- Multiplying every factor by the same scalar `c` multiplies the product by `c ^ |ν|`. -/
 theorem piKronecker_smul (c : ℂ) (K : (k : ν) → Matrix (ι k) (κ k) ℂ) :
