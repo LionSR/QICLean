@@ -177,17 +177,28 @@ Counts are modules with declarations; aggregators are generated.
 | `Channel/Convexity` | 4 | Lieb concavity and convexity proved with positive maps |
 | `Channel/Dilation` | 13 | Stinespring and environment dilations, open systems |
 | `Channel/Entanglement` | 10 | entanglement witnesses, the maximally entangled vector, PPT |
+| `Channel/FixedPoint/MeanErgodic` | 4 | Cesàro means, the mean-ergodic projection and its adjoint, the limiting Gram metric |
+| `Channel/FixedPoint/Stationary` | 10 | stationary states, their spans and supports, maximal-rank fixed points |
+| `Channel/FixedPoint/Algebra` | 7 | the fixed-point algebra of a Schwarz map, its block form and conditional expectation |
+| `Channel/FixedPoint/DensityBlock` | 4 | the density-block form of the fixed points (Wolf Theorem 6.14) |
+| `Channel/FixedPoint/DirectSum` | 8 | maps on finite direct sums of matrix algebras and their fixed points |
+| `Channel/FixedPoint/Weighted` | 10 | fixed points in corners and with weights, canonical gauges, maximal supports of Kraus maps |
 | `Channel/Gluing` | 5 | gluing states across a tripartite cut |
 | `Channel/KrausMap` | 20 | maps given by Kraus families: CPTP, rank, freedom, gauges |
 | `Channel/Measurement` | 4 | effects and instruments |
 | `Channel/OperatorMean` | 20 | derivatives of operator means, which are n-positive maps, and transport along mean trees |
 | `Channel/OperatorSystem` | 4 | operator systems and their extensions |
 | `Channel/PartialTrace` | 13 | marginals: supports, ranks and contractions under the partial trace |
+| `Channel/Peripheral/Spectrum` | 12 | the peripheral spectrum: eigenvalues of modulus one, spectral radius, powers, conjugations, primitivity |
+| `Channel/Peripheral/Projection` | 4 | Jordan blocks, the peripheral spectral projection, Cesàro recurrence |
+| `Channel/Peripheral/Asymptotic` | 6 | the asymptotic image and the convergence of states |
+| `Channel/Peripheral/Irreducible` | 13 | irreducible Schwarz maps: their peripheral group, cyclic projections and cyclic decomposition |
+| `Channel/Peripheral/Cycles` | 10 | permutations of density blocks and the structure of cycles (Wolf Theorem 6.16) |
 | `Channel/Positive` | 13 | positive and k-positive maps, decomposability, examples |
 | `Channel/Recovery` | 2 | Petz recovery maps |
 | `Channel/Schmidt` | 21 | Schmidt decomposition, rank and number of bipartite vectors |
 | `Channel/Twirl` | 2 | Weyl twirls |
-| `Channel/…` | | `ChoiTypeMap`, `Determinant`, `FixedPoint`, `Irreducible`, `KoashiImoto`, `LorentzNormalForm`, `Peripheral`, `PerronFrobenius`, `POVM`, `PSDConeAutomorphism`, `Schwarz`, `Semigroup`, `Wigner` as before |
+| `Channel/…` | | `ChoiTypeMap`, `Determinant`, `Irreducible`, `KoashiImoto`, `LorentzNormalForm`, `PerronFrobenius`, `POVM`, `PSDConeAutomorphism`, `Schwarz`, `Semigroup`, `Wigner` as before |
 | `Kraus` | 63 | 14 top-level modules: words, word spans, transfer maps, blocking, injectivity |
 | `Kraus/MixedMap` | 7 | mixed transfer maps of two families and their gaps |
 | `Kraus/PrimitiveFixedPoint` | 7 | fixed points of primitive families |
@@ -253,6 +264,12 @@ python3 scripts/apply_library_layers.py --downstream ../TNLean   # a dependent
 The downstream mode rewrites every reference in the tracked text files of the
 dependent repository and then lists each `import QICLean.…` that names no module
 of this checkout.
+
+Later sections of the map divide `Channel/FixedPoint` (43 moves) and `Channel/Peripheral` (45
+moves and two test files) into subdirectories by object. The import-only module
+`Channel.Peripheral.CyclicDecomposition` was deleted; its six modules are now in
+`Channel/Peripheral/Irreducible`, whose aggregator replaces it. The import ratchet reads the recorded entries of its base revision under the moves of
+the map, so that moving a module renames its entries instead of adding new ones.
 
 ## How the modules were placed
 
@@ -343,6 +360,27 @@ it is repaired by moving the module or the lemma, never by changing the order to
 
 108 imports are recorded. `ManyBody` and `Circuit` keep the orders of
 `docs/many_body_circuit_architecture.md`, which the same script checks.
+
+### Order inside a subdirectory
+
+A subdirectory of a layer that is divided by object orders its own subdirectories in the same
+way. The orders are the tables under "inside" in `scripts/library_sublayers.json`. The script
+checks them between two modules of that subdirectory, in addition to the order of the layer,
+and an import against them would be an entry of `SUBLAYER_DEBT`.
+
+| Subdirectory | Order | Imports against the order |
+|---|---|---|
+| `Channel/FixedPoint` | MeanErgodic < Stationary < Algebra < DensityBlock < DirectSum < Weighted | 0 |
+| `Channel/Peripheral` | Spectrum < Projection < Asymptotic < Irreducible < Cycles | 0 |
+
+In `Channel/FixedPoint` one import went against the order when it was divided:
+`Stationary/TraceNonincreasingProductSpan` imported `DirectSum/DirectSumBlockRetraction` for the
+reindexing of a matrix endomorphism and the facts that positivity, trace preservation, trace
+nonincrease and positive definiteness survive it. These mention no direct sum, so they moved to
+the modules of their objects: the endomorphism and positive definiteness to
+`Algebra/Matrix/MatrixReindex`, its trace adjoint to `Algebra/Matrix/MatrixTracePairing`, the
+positivity and trace facts to `Channel/Basic`, and the Schwarz inequality to
+`Channel/Schwarz/AbstractMultiplicativeDomain`.
 
 ## Enforcement
 

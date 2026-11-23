@@ -8,8 +8,8 @@ import QICLean.Channel.Determinant.ChoiBound
 import QICLean.Channel.Determinant.Composition
 import QICLean.Channel.Determinant.HilbertSchmidt
 import QICLean.Channel.Determinant.UnitaryCharacterization
-import QICLean.Channel.Peripheral.CesaroRecurrence
-import QICLean.Channel.Peripheral.AntilinearConjugation
+import QICLean.Channel.Peripheral.Projection.CesaroRecurrence
+import QICLean.Channel.Peripheral.Spectrum.AntilinearConjugation
 import QICLean.Channel.PSDConeAutomorphism.RankPreservation
 import Mathlib.GroupTheory.Perm.Cycle.Type
 import Mathlib.LinearAlgebra.Matrix.Permutation

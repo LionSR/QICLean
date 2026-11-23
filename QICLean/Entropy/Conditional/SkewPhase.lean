@@ -6,6 +6,7 @@ Authors: QICLean contributors
 import QICLean.Channel.PartialTrace.ConditionalSkewStrip
 import QICLean.Entropy.Conditional.MarginalPhaseSingular
 import QICLean.Analysis.Complex.SkewFromPhases
+import QICLean.Channel.Schmidt.Rank
 
 /-!
 # The conditional skew estimate
@@ -90,29 +91,17 @@ theorem conjTranspose_cfcC_hat {M : Matrix n n ℂ} (hM : M.PosSemidef) (u : ℝ
     congr 1
     simp [Complex.conj_ofReal]
 
-/-- Coefficient matrix of a vector on `n × m`. -/
-def coeffMat (θ : n × m → ℂ) : Matrix n m ℂ := Matrix.of fun a b => θ (a, b)
-
 omit [Fintype n] [DecidableEq n] [DecidableEq m] in
 theorem partialTraceRight_vecMulVec (θ : n × m → ℂ) :
-    partialTraceRight (vecMulVec θ (star θ)) = coeffMat θ * (coeffMat θ)ᴴ := by
-  ext i j; simp [coeffMat, vecMulVec, mul_apply]
+    partialTraceRight (vecMulVec θ (star θ)) =
+      schmidtCoeffMatrix θ * (schmidtCoeffMatrix θ)ᴴ := by
+  ext i j; simp [vecMulVec, mul_apply]
 
 omit [DecidableEq n] [Fintype m] [DecidableEq m] in
 theorem partialTraceLeft_vecMulVec (θ : n × m → ℂ) :
-    partialTraceLeft (vecMulVec θ (star θ)) = ((coeffMat θ)ᴴ * coeffMat θ)ᵀ := by
-  ext i j; simp [coeffMat, vecMulVec, mul_apply, mul_comm]
-
-omit [DecidableEq n] in
-theorem kronecker_one_mulVec_apply (M : Matrix n n ℂ) (θ : n × m → ℂ) (a : n) (b : m) :
-    ((M ⊗ₖ (1 : Matrix m m ℂ)) *ᵥ θ) (a, b) = (M * coeffMat θ) a b := by
-  simp [mulVec, dotProduct, one_apply, Fintype.sum_prod_type, mul_apply, coeffMat]
-
-omit [DecidableEq m] in
-theorem one_kronecker_mulVec_apply (N : Matrix m m ℂ) (θ : n × m → ℂ) (a : n) (b : m) :
-    (((1 : Matrix n n ℂ) ⊗ₖ N) *ᵥ θ) (a, b) = (coeffMat θ * Nᵀ) a b := by
-  simp [mulVec, dotProduct, one_apply, Fintype.sum_prod_type, mul_apply, coeffMat,
-    mul_comm]
+    partialTraceLeft (vecMulVec θ (star θ)) =
+      ((schmidtCoeffMatrix θ)ᴴ * schmidtCoeffMatrix θ)ᵀ := by
+  ext i j; simp [vecMulVec, mul_apply, mul_comm]
 
 /-- **Schmidt mirroring.**  For a vector `θ` on `n ⊗ m` with marginals `ρ_n`, `ρ_m` and any
 function `g`, `(g(ρ_n) ⊗ I) θ = (I ⊗ g(ρ_m)) θ`.  Area-law manuscript,
@@ -120,7 +109,7 @@ function `g`, `(g(ρ_n) ⊗ I) θ = (I ⊗ g(ρ_m)) θ`.  Area-law manuscript,
 theorem cfcC_kronecker_one_mulVec (θ : n × m → ℂ) (g : ℝ → ℂ) :
     (cfcC (partialTraceRight (vecMulVec θ (star θ))) g ⊗ₖ (1 : Matrix m m ℂ)) *ᵥ θ =
       ((1 : Matrix n n ℂ) ⊗ₖ cfcC (partialTraceLeft (vecMulVec θ (star θ))) g) *ᵥ θ := by
-  set C := coeffMat θ
+  set C := schmidtCoeffMatrix θ
   have hA : (C * Cᴴ).IsHermitian := isHermitian_mul_conjTranspose_self C
   have hB : (Cᴴ * C).IsHermitian := isHermitian_conjTranspose_mul_self C
   have key : cfcC (C * Cᴴ) g * C = C * cfcC (Cᴴ * C) g :=
@@ -128,8 +117,12 @@ theorem cfcC_kronecker_one_mulVec (θ : n × m → ℂ) (g : ℝ → ℂ) :
   have htr : (cfcC ((Cᴴ * C)ᵀ) g)ᵀ = cfcC (Cᴴ * C) g := by
     rw [cfcC_transpose hB.transpose, transpose_transpose]
   funext ⟨a, b⟩
-  rw [kronecker_one_mulVec_apply, one_kronecker_mulVec_apply, partialTraceRight_vecMulVec,
-    partialTraceLeft_vecMulVec, htr, key]
+  have hL := congrFun (congrFun (schmidtCoeffMatrix_kronecker_one_mulVec
+    (cfcC (partialTraceRight (vecMulVec θ (star θ))) g) θ) a) b
+  have hR := congrFun (congrFun (schmidtCoeffMatrix_one_kronecker_mulVec
+    (cfcC (partialTraceLeft (vecMulVec θ (star θ))) g) θ) a) b
+  rw [schmidtCoeffMatrix_apply] at hL hR
+  rw [hL, hR, partialTraceRight_vecMulVec, partialTraceLeft_vecMulVec, htr, key]
 
 omit [DecidableEq n] in
 theorem norm_toLp_comp_equiv_symm {l : Type*} [Fintype l] (e : n ≃ l) (v : n → ℂ) :

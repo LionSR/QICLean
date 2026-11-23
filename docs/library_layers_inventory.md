@@ -663,7 +663,7 @@ left to a separate change.
 - `QICLean/Channel/ChoiTypeMap/YamagamiPositivity.lean`
 - `QICLean/Channel/Dilation/RadonNikodym.lean`
 - `QICLean/Channel/Entanglement/PositiveMapDetection.lean`
-- `QICLean/Channel/FixedPoint/WedderburnDecomp.lean`
+- `QICLean/Channel/FixedPoint/Algebra/WedderburnDecomp.lean`
 - `QICLean/Channel/OperatorSystem/Extension.lean`
 - `QICLean/Channel/PartialTrace/ConditionalSkewSetup.lean`
 - `QICLean/Channel/PartialTrace/ConditionalSkewStrip.lean`

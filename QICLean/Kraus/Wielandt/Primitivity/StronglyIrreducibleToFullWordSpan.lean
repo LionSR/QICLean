@@ -8,7 +8,7 @@ import QICLean.Spectral.Eigenvalue.HermitianExtremalEigenvalues
 import QICLean.Analysis.Norm.MatrixOperatorSpace
 import QICLean.Algebra.Matrix.TraceFormDuality
 import QICLean.Channel.Irreducible.Ergodicity
-import QICLean.Channel.Peripheral.IrreducibleChannel
+import QICLean.Channel.Peripheral.Irreducible.IrreducibleChannel
 import QICLean.Kraus.Injectivity
 import QICLean.Kraus.TracePairing
 import Mathlib.Analysis.Complex.Basic

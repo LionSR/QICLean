@@ -10,7 +10,10 @@ fail; --base-ref compares with the merge base, --base-revision with an exact com
 The order of the subdirectories inside each layer is read from
 scripts/library_sublayers.json (docs/library_layers.md, "Order inside each
 layer"); an import between two subdirectories of one layer that the table does
-not allow is recorded in SUBLAYER_DEBT, which may only shrink.
+not allow is recorded in SUBLAYER_DEBT, which may only shrink. The same file
+orders the subdirectories inside some subdirectories of a layer (its "inside"
+tables). The recorded entries of a base revision are read under the moves of
+scripts/library_layers_module_map.txt, so a moved module keeps its entries.
 """
 
 # Adapted from LionSR/TNLean scripts/check_import_layers.py at
@@ -120,9 +123,16 @@ DEBT: frozenset[str] = frozenset({})
 # part of one such as QICLean.Circuit without its own layers) maps each subdirectory, and
 # TOP_LEVEL for the modules directly below the prefix, to the subdirectories it may import
 # directly; the relation is closed transitively and must be acyclic. A module belongs to
-# the longest prefix that contains it.
+# the longest prefix that contains it. The tables under "inside" order the subdirectories
+# of one subdirectory of a layer (QICLean.Channel.FixedPoint); they are checked in
+# addition to the order of the layer, between two modules of that subdirectory.
 SUBLAYERS_PATH = Path(__file__).resolve().parent / "library_sublayers.json"
 TOP_LEVEL = "(top)"
+INSIDE_KEY = "inside"
+# The module map of scripts/apply_library_layers.py. A recorded entry of the base revision
+# is read under the moves of this map, so that moving a module renames its entries and
+# does not add one.
+MODULE_MAP_PATH = Path(__file__).resolve().parent / "library_layers_module_map.txt"
 # Existing imports against that order, as "importing module -> imported module". Never
 # add an entry: move the module to the subdirectory of its objects, or move the shared
 # declaration down.
@@ -164,25 +174,25 @@ SUBLAYER_DEBT: frozenset[str] = frozenset({
         "QICLean.Channel.Choi.Rectangular -> QICLean.Channel.Entanglement.MaximallyEntangled",
         "QICLean.Channel.Choi.SupportedMarginalChannel -> QICLean.Channel.KrausMap.KrausCPTP",
         "QICLean.Channel.Choi.WhitenedChoi -> QICLean.Channel.WeightedHilbertSchmidt",
-        "QICLean.Channel.Choi.WindowMinorization -> QICLean.Channel.FixedPoint.Cesaro",
+        "QICLean.Channel.Choi.WindowMinorization -> QICLean.Channel.FixedPoint.MeanErgodic.Cesaro",
         "QICLean.Channel.Choi.WindowMinorization -> QICLean.Channel.OrderedRectangular",
         "QICLean.Channel.ConditionNumberInterpolation -> QICLean.Channel.Positive.TraceNormContractionCoefficient",
         "QICLean.Channel.ConvexFunctionalMonotonicity -> QICLean.Channel.Dilation.EnvironmentDilation",
         "QICLean.Channel.Convexity.LiebConcavity -> QICLean.Channel.Schwarz.IntegralJensen",
         "QICLean.Channel.Determinant.PositiveExtremality -> QICLean.Channel.PSDConeAutomorphism.RankPreservation",
-        "QICLean.Channel.Determinant.PositiveExtremality -> QICLean.Channel.Peripheral.AntilinearConjugation",
-        "QICLean.Channel.Determinant.PositiveExtremality -> QICLean.Channel.Peripheral.CesaroRecurrence",
-        "QICLean.Channel.FixedPoint.AbstractWeightedFixedPoints -> QICLean.Channel.ConditionalExpectation.DirectSumConditionalExpectation",
-        "QICLean.Channel.FixedPoint.ConditionalExpectation -> QICLean.Channel.Semigroup.CPClosure",
-        "QICLean.Channel.FixedPoint.FullSupportBlockRetraction -> QICLean.Channel.ConditionalExpectation.PositiveConditionalExpectationDirectSum",
-        "QICLean.Channel.FixedPoint.LimitingGramMetric -> QICLean.Channel.Peripheral.Primitive",
-        "QICLean.Channel.FixedPoint.MeanErgodicProjection -> QICLean.Channel.Semigroup.CPClosure",
-        "QICLean.Channel.FixedPoint.StationarySupport -> QICLean.Channel.Irreducible.Basic",
-        "QICLean.Channel.FixedPoint.StationarySupport -> QICLean.Channel.Irreducible.Ergodicity",
+        "QICLean.Channel.Determinant.PositiveExtremality -> QICLean.Channel.Peripheral.Spectrum.AntilinearConjugation",
+        "QICLean.Channel.Determinant.PositiveExtremality -> QICLean.Channel.Peripheral.Projection.CesaroRecurrence",
+        "QICLean.Channel.FixedPoint.Algebra.ConditionalExpectation -> QICLean.Channel.Semigroup.CPClosure",
+        "QICLean.Channel.FixedPoint.DensityBlock.FullSupportBlockRetraction -> QICLean.Channel.ConditionalExpectation.PositiveConditionalExpectationDirectSum",
+        "QICLean.Channel.FixedPoint.MeanErgodic.LimitingGramMetric -> QICLean.Channel.Peripheral.Spectrum.Primitive",
+        "QICLean.Channel.FixedPoint.MeanErgodic.MeanErgodicProjection -> QICLean.Channel.Semigroup.CPClosure",
+        "QICLean.Channel.FixedPoint.Stationary.StationarySupport -> QICLean.Channel.Irreducible.Basic",
+        "QICLean.Channel.FixedPoint.Stationary.StationarySupport -> QICLean.Channel.Irreducible.Ergodicity",
+        "QICLean.Channel.FixedPoint.Weighted.AbstractWeightedFixedPoints -> QICLean.Channel.ConditionalExpectation.DirectSumConditionalExpectation",
         "QICLean.Channel.Irreducible.Growth.Exponential -> QICLean.Channel.Semigroup.ReducibleQDS.GeneratorCompression",
         "QICLean.Channel.Irreducible.KrausSetup -> QICLean.Channel.PerronFrobenius.Existence",
-        "QICLean.Channel.Irreducible.SpectralRadius -> QICLean.Channel.Peripheral.Conjugation",
-        "QICLean.Channel.Irreducible.SpectralRadius -> QICLean.Channel.Peripheral.SpectralRadius",
+        "QICLean.Channel.Irreducible.SpectralRadius -> QICLean.Channel.Peripheral.Spectrum.Conjugation",
+        "QICLean.Channel.Irreducible.SpectralRadius -> QICLean.Channel.Peripheral.Spectrum.SpectralRadius",
         "QICLean.Channel.KrausMap.KrausFamily -> QICLean.Channel.Schwarz.Basic",
         "QICLean.Channel.KrausMap.KrausFamilyDilation -> QICLean.Channel.Dilation.Stinespring",
         "QICLean.Channel.KrausMap.KrausFamilyTraceNorm -> QICLean.Channel.Dilation.Stinespring",
@@ -193,12 +203,12 @@ SUBLAYER_DEBT: frozenset[str] = frozenset({
         "QICLean.Channel.KrausMap.KrausRank -> QICLean.Channel.Schwarz.Basic",
         "QICLean.Channel.KrausMap.KrausRepresentation -> QICLean.Channel.Basic",
         "QICLean.Channel.OrderedCP -> QICLean.Channel.Dilation.Stinespring",
-        "QICLean.Channel.Peripheral.CesaroRecurrence -> QICLean.Channel.Semigroup.CPClosure",
-        "QICLean.Channel.Peripheral.SpectralRadius -> QICLean.Channel.PerronFrobenius.Existence",
+        "QICLean.Channel.Peripheral.Projection.CesaroRecurrence -> QICLean.Channel.Semigroup.CPClosure",
+        "QICLean.Channel.Peripheral.Spectrum.SpectralRadius -> QICLean.Channel.PerronFrobenius.Existence",
         "QICLean.Channel.Positive.BreuerHallIndecomposable -> QICLean.Channel.Entanglement.MaximallyEntangled",
         "QICLean.Channel.Positive.DecomposablePPT -> QICLean.Channel.Entanglement.PartialTranspose",
         "QICLean.Channel.Schwarz.EntropicJensen -> QICLean.Channel.OperatorMean.BlockDiagonal",
-        "QICLean.Channel.WeightedHilbertSchmidt -> QICLean.Channel.Peripheral.UnitalKraus",
+        "QICLean.Channel.WeightedHilbertSchmidt -> QICLean.Channel.Peripheral.Spectrum.UnitalKraus",
         "QICLean.Entropy.Classical.ProbabilityEntropyRankTails -> QICLean.Entropy.Relative.KleinInequality",
         "QICLean.Entropy.Markov.InvariantConditionalFamily -> QICLean.Entropy.StrongSubadditivity.SSAEqualityPetzRecovery",
         "QICLean.Entropy.MutualInformation.MutualInformation -> QICLean.Entropy.StrongSubadditivity.Basic",
@@ -380,6 +390,12 @@ def load_sublayers(path: Path = SUBLAYERS_PATH) -> dict[str, dict[str, frozenset
     return close_sublayers({prefix: table for prefix, table in data["layers"].items()})
 
 
+def load_inner_orders(path: Path = SUBLAYERS_PATH) -> dict[str, dict[str, frozenset[str]]]:
+    """Read and close the orders inside single subdirectories of a layer ("inside")."""
+    data = json.loads(path.read_text(encoding="utf-8"))
+    return close_sublayers(data.get(INSIDE_KEY, {}))
+
+
 def close_sublayers(
     tables: Mapping[str, Mapping[str, Iterable[str]]]
 ) -> dict[str, dict[str, frozenset[str]]]:
@@ -418,25 +434,56 @@ def sublayer_of(module: str, prefixes: Iterable[str]) -> tuple[str, str] | None:
 
 
 def sublayer_violations(
-    sources: Mapping[str, str], tables: Mapping[str, Mapping[str, frozenset[str]]]
+    sources: Mapping[str, str],
+    tables: Mapping[str, Mapping[str, frozenset[str]]],
+    inner: Mapping[str, Mapping[str, frozenset[str]]] | None = None,
 ) -> set[str]:
     """Return every ``"A -> B"`` between two subdirectories of one layer that the order forbids.
 
-    An import from or into a subdirectory that the table does not list is forbidden.
+    An import from or into a subdirectory that the table does not list is forbidden. The
+    orders ``inner`` inside single subdirectories of a layer are checked as well, for two
+    modules of the same such subdirectory.
     """
     found: set[str] = set()
     for module, targets in resolved_imports(sources).items():
         source = sublayer_of(module, tables)
-        if source is None:
-            continue
-        prefix, sub = source
         for target_module in targets:
+            if source is None:
+                break
+            prefix, sub = source
             target = sublayer_of(target_module, tables)
             if target is None or target[0] != prefix or target[1] == sub:
                 continue
             if target[1] not in tables[prefix].get(sub, frozenset()):
                 found.add(f"{module} -> {target_module}")
+        for prefix, table in (inner or {}).items():
+            source = sublayer_of(module, [prefix])
+            if source is None:
+                continue
+            for target_module in targets:
+                target = sublayer_of(target_module, [prefix])
+                if target is None or target[1] == source[1]:
+                    continue
+                if target[1] not in table.get(source[1], frozenset()):
+                    found.add(f"{module} -> {target_module}")
     return found
+
+
+def rename_entry(entry: str, renames: Mapping[str, str]) -> str:
+    """Rename both modules of a recorded ``"A -> B"`` along the module map."""
+    if " -> " not in entry:
+        return entry
+    first, second = entry.split(" -> ", 1)
+    return f"{renames.get(first, first)} -> {renames.get(second, second)}"
+
+
+def module_renames(path: Path = MODULE_MAP_PATH) -> dict[str, str]:
+    """Every old module name of the module map and the module that now holds it."""
+    if not path.is_file():
+        return {}
+    from apply_library_layers import read_map
+
+    return read_map(path).renames
 
 
 def in_examples(module: str) -> bool:
@@ -646,10 +693,11 @@ def check_sublayers(
     tables: Mapping[str, Mapping[str, frozenset[str]]],
     recorded: frozenset[str] = SUBLAYER_DEBT,
     base: frozenset[str] | None = None,
+    inner: Mapping[str, Mapping[str, frozenset[str]]] | None = None,
 ) -> list[str]:
     """Return the error messages of the check on the order inside each layer."""
     return ratchet_errors(
-        frozenset(sublayer_violations(sources, tables)),
+        frozenset(sublayer_violations(sources, tables, inner)),
         recorded,
         base,
         new="Import between subdirectories of one layer against their order",
@@ -696,9 +744,10 @@ def main() -> int:
 
     sources = tracked_sources(root)
     tables = load_sublayers(root / "scripts" / SUBLAYERS_PATH.name)
+    inner = load_inner_orders(root / "scripts" / SUBLAYERS_PATH.name)
     printed: Iterable[str] | None = None
     if args.print_sublayer_debt:
-        printed = sublayer_violations(sources, tables)
+        printed = sublayer_violations(sources, tables, inner)
     elif args.print_debt:
         printed = violations(sources)
     elif args.print_mutual_directories:
@@ -716,14 +765,18 @@ def main() -> int:
             read_base = records_at_revision if args.base_revision else records_at_merge_base
             revision = args.base_revision or args.base_ref
             base = read_base(root, revision, CHECKER_PATH, RECORDS)
+            renames = module_renames(root / "scripts" / MODULE_MAP_PATH.name)
         except (SyntaxError, ValueError) as error:
             print(f"::error title=Import layer check failed::{error}")
             return 1
+        base = {name: None if entries is None else
+                frozenset(rename_entry(entry, renames) for entry in entries)
+                for name, entries in base.items()}
 
     errors = check_layers(sources, DEBT, base["DEBT"])
     errors += check_mutual_directories(sources, MUTUAL_DIRECTORIES, base["MUTUAL_DIRECTORIES"])
     errors += check_examples_imports(sources, EXAMPLES_IMPORTS, base["EXAMPLES_IMPORTS"])
-    errors += check_sublayers(sources, tables, SUBLAYER_DEBT, base["SUBLAYER_DEBT"])
+    errors += check_sublayers(sources, tables, SUBLAYER_DEBT, base["SUBLAYER_DEBT"], inner)
     for message in errors:
         print(f"::error title=Import layer policy::{message}")
     if errors:

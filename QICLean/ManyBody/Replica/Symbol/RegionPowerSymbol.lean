@@ -109,54 +109,6 @@ theorem trace_regionState_toLp {D : Finset V} (θ : (∀ v, Fin (n v)) → ℂ) 
 
 end Entropy
 
-namespace Matrix.IsHermitian
-
-variable {m : Type*} [Fintype m] [DecidableEq m] {A : Matrix m m ℂ} (hA : A.IsHermitian)
-include hA
-
-/-- Real functions of a Hermitian matrix multiply pointwise. -/
-theorem cfc_mul_cfc (φ χ : ℝ → ℝ) : cfc φ A * cfc χ A = cfc (fun x => φ x * χ x) A := by
-  set hR := hA.isOrthogonalResolution_spectralProj
-  have hH := hA.isHermitian_spectralProj
-  rw [hA.eq_hom, hR.cfc_hom (fun u => hH u), hR.cfc_hom (fun u => hH u),
-    hR.cfc_hom (fun u => hH u), ← map_mul]
-  congr 1
-  ext u
-  simp
-
-theorem cfc_sub_cfc (φ χ : ℝ → ℝ) : cfc φ A - cfc χ A = cfc (fun x => φ x - χ x) A := by
-  set hR := hA.isOrthogonalResolution_spectralProj
-  have hH := hA.isHermitian_spectralProj
-  rw [hA.eq_hom, hR.cfc_hom (fun u => hH u), hR.cfc_hom (fun u => hH u),
-    hR.cfc_hom (fun u => hH u), ← map_sub]
-  congr 1
-  ext u
-  simp
-
-theorem mul_cfc (φ : ℝ → ℝ) : A * cfc φ A = cfc (fun x => x * φ x) A := by
-  have h := hA.cfc_mul_cfc (fun x => x) φ
-  rwa [cfc_id' ℝ A] at h
-
-/-- **Polynomial approximation on the spectrum**: if `|φ - p| ≤ M` at every eigenvalue, then
-`‖φ(A) - p(A)‖ ≤ M`. -/
-theorem l2_opNorm_cfc_sub_aeval_le (φ : ℝ → ℝ) (p : ℝ[X]) {M : ℝ} (hM0 : 0 ≤ M)
-    (hM : ∀ i, |φ (hA.eigenvalues i) - p.eval (hA.eigenvalues i)| ≤ M) :
-    ‖cfc φ A - aeval A p‖ ≤ M := by
-  set hR := hA.isOrthogonalResolution_spectralProj
-  have hH := hA.isHermitian_spectralProj
-  rw [hA.eq_hom, hR.cfc_hom (fun u => hH u), hR.aeval_hom, ← map_sub]
-  refine hR.l2_opNorm_hom_le (fun u => hH u) hM0 fun u _ => ?_
-  obtain ⟨i, -, hi⟩ := Finset.mem_image.mp u.2
-  simp only [Pi.sub_apply]
-  rw [← Complex.ofReal_sub, Complex.norm_real, Real.norm_eq_abs, ← hi]
-  exact hM i
-
-theorem l2_opNorm_cfc_le (φ : ℝ → ℝ) {M : ℝ} (hM0 : 0 ≤ M)
-    (hM : ∀ i, |φ (hA.eigenvalues i)| ≤ M) : ‖cfc φ A‖ ≤ M := by
-  simpa using hA.l2_opNorm_cfc_sub_aeval_le φ 0 hM0 (by simpa using hM)
-
-end Matrix.IsHermitian
-
 namespace TensorPower
 
 open Entropy

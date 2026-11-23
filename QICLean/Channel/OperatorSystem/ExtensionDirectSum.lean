@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Channel.OperatorSystem.Extension
-import QICLean.Channel.FixedPoint.DirectSumExtension
+import QICLean.Channel.FixedPoint.DirectSum.DirectSumExtension
 import QICLean.Channel.KrausMap.LocalizedKrausCPTP
 import Mathlib.LinearAlgebra.Matrix.Reindex
 
@@ -26,10 +26,10 @@ into a single ambient algebra `M_M(ℂ)`, `M = Σ_k d_k`, closing
 The direct-sum algebra `⊕_{k : Fin r} M_{d_k}(ℂ)` is represented as the dependent function type
 `∀ k : Fin r, Matrix (Fin (d k)) (Fin (d k)) ℂ`, matching the direct-sum matrix algebra used for
 Wolf's Theorem 6.14 block structure (`Matrix.directSumDiagonalEmbedding`,
-`QICLean/Channel/FixedPoint/DirectSumExtension.lean`). An **operator system** and **complete
-positivity at level `j`** for this domain (`Matrix.IsOperatorSystemDirectSum`,
-`Matrix.IsCPOnOperatorSystemDirectSum`, `Matrix.IsCPMapDirectSum`) are defined entrywise, block
-by block, mirroring the single-summand predicates in
+`QICLean/Channel/FixedPoint/DirectSum/DirectSumExtension.lean`). An **operator system** and
+**complete positivity at level `j`** for this domain (`Matrix.IsOperatorSystemDirectSum`,
+`Matrix.IsCPOnOperatorSystemDirectSum`, `Matrix.IsCPMapDirectSum`) are defined entrywise,
+block by block, mirroring the single-summand predicates in
 `QICLean/Channel/OperatorSystem/Basic.lean`; this is the direct-sum `C^*`-algebra's canonical
 order and star structure, in which each block carries its own adjoint and positivity
 independently of the others.

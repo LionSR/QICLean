@@ -285,7 +285,7 @@ jobs:
             QICLean.Analysis.Order.LowEnergyPerturbation \
             QICLean.Spectral.Radius.PowerDecay \
             QICLean.Channel.OrderedCP \
-            QICLean.Channel.Peripheral.RecurrentInverse \
+            QICLean.Channel.Peripheral.Asymptotic.RecurrentInverse \
             QICLean.Channel.Semigroup.Basic \
             QICLean.Channel.Semigroup.LindbladForm.TraceBridge \
             QICLean.Channel.Wigner.Rigidity \
@@ -307,7 +307,7 @@ jobs:
               "QICLean/Analysis/Order/LowEnergyPerturbation.lean",
               "QICLean/Spectral/Radius/PowerDecay.lean",
               "QICLean/Channel/OrderedCP.lean",
-              "QICLean/Channel/Peripheral/RecurrentInverse.lean",
+              "QICLean/Channel/Peripheral/Asymptotic/RecurrentInverse.lean",
               "QICLean/Channel/Semigroup/Basic.lean",
               "QICLean/Channel/Semigroup/LindbladForm/TraceBridge.lean",
               "QICLean/Channel/Wigner/Rigidity.lean",

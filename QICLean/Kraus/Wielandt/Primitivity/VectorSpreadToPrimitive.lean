@@ -6,7 +6,7 @@ Authors: TNLean contributors
 import QICLean.Spectral.Eigenvalue.EigenspaceMap
 import QICLean.Channel.Irreducible.FixedPointUniqueness
 import QICLean.Channel.KrausMap.KrausMap
-import QICLean.Channel.Peripheral.IrreducibleChannel
+import QICLean.Channel.Peripheral.Irreducible.IrreducibleChannel
 import QICLean.Channel.Semigroup.CPClosure
 import QICLean.Kraus.Wielandt.Primitivity.VectorSpreadPositivity
 

@@ -3,6 +3,7 @@ Copyright (c) 2025 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
+import QICLean.Algebra.Matrix.MatrixReindex
 import QICLean.Analysis.Order.DensityMatrix
 import Mathlib.Analysis.Matrix.PosDef
 import Mathlib.Analysis.Matrix.Order
@@ -50,6 +51,9 @@ Wolf's lecture notes.
   trace-preserving
 * `IsPositiveMap.map_isHermitian`: positive maps preserve Hermiticity
 * `IsChannel.map_densityMatrices`: channels map density matrices to density matrices
+* `Matrix.IsPositiveMap.reindexEndomorphism`, `Matrix.IsTracePreservingMap.reindexEndomorphism`,
+  `Matrix.IsTraceNonincreasingMap.reindexEndomorphism`: the three properties survive a
+  simultaneous change of the matrix index set
 
 ## References
 
@@ -295,3 +299,45 @@ theorem IsChannel.map_densityMatrices (hE : IsChannel E) :
   fun _ ⟨hρ_psd, hρ_tr⟩ => ⟨hE.pos _ hρ_psd, by rw [hE.tp, hρ_tr]⟩
 
 end ChannelPreserves
+
+namespace Matrix
+
+variable {α β : Type*} [Fintype α] [DecidableEq α]
+variable [Fintype β] [DecidableEq β]
+
+omit [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] in
+/-- Positivity is invariant under a simultaneous change of the matrix index
+set. -/
+theorem IsPositiveMap.reindexEndomorphism
+    {T : Matrix α α ℂ →ₗ[ℂ] Matrix α α ℂ} (hT : IsPositiveMap T)
+    (e : α ≃ β) : IsPositiveMap (reindexEndomorphism e T) := by
+  intro A hA
+  rw [reindexEndomorphism_apply]
+  exact (hT _ (hA.submatrix e)).submatrix e.symm
+
+omit [DecidableEq α] [DecidableEq β] in
+/-- Trace preservation is invariant under a simultaneous change of the matrix
+index set. -/
+theorem IsTracePreservingMap.reindexEndomorphism
+    {T : Matrix α α ℂ →ₗ[ℂ] Matrix α α ℂ}
+    (hT : IsTracePreservingMap T) (e : α ≃ β) :
+    IsTracePreservingMap (reindexEndomorphism e T) := by
+  intro A
+  rw [reindexEndomorphism_apply, Matrix.trace_reindex, hT, Matrix.trace_reindex]
+
+omit [DecidableEq α] [DecidableEq β] in
+/-- Trace nonincrease is invariant under a simultaneous change of matrix
+coordinates. -/
+theorem IsTraceNonincreasingMap.reindexEndomorphism
+    {T : Matrix α α ℂ →ₗ[ℂ] Matrix α α ℂ}
+    (hT : IsTraceNonincreasingMap T) (e : α ≃ β) :
+    IsTraceNonincreasingMap (reindexEndomorphism e T) := by
+  classical
+  intro A hA
+  rw [reindexEndomorphism_apply, Matrix.trace_reindex]
+  have htrace : Matrix.trace (A.submatrix e e) = Matrix.trace A := by
+    simpa only [Matrix.reindex_apply, Equiv.symm_symm] using
+      Matrix.trace_reindex e.symm A
+  exact (hT _ (hA.submatrix e)).trans_eq htrace
+
+end Matrix

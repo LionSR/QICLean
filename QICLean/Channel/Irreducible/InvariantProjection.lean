@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Algebra.Hermitian.OrthogonalProjection
-import QICLean.Channel.FixedPoint.SupportInvariance
+import QICLean.Channel.FixedPoint.Stationary.SupportInvariance
 import QICLean.Channel.Irreducible.Basic
 
 /-!

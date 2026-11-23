@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Kraus.PrimitiveFixedPoint.Basic
 import QICLean.Channel.KrausMap.KrausMap
-import QICLean.Channel.Peripheral.Spectrum
+import QICLean.Channel.Peripheral.Spectrum.Spectrum
 
 /-!
 # Peripheral primitivity from a complementary fixed-point gap

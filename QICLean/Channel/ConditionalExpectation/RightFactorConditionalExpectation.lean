@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Analysis.FunctionalCalculus.CfcKronecker
-import QICLean.Channel.FixedPoint.ConditionalExpectation
+import QICLean.Channel.FixedPoint.Algebra.ConditionalExpectation
 import QICLean.Channel.KrausMap.KrausCPTP
 import QICLean.Algebra.Hermitian.MaximallyMixed
 
