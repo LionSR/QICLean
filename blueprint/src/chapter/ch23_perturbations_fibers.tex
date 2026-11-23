@@ -165,17 +165,14 @@ otherwise.
     \label{thm:perturbations_fiberwise_gap}
     \lean{ContinuousLinearMap.singleRightFiber_mem_orthogonal_ker_rightFiberwiseMap_iff,
         ContinuousLinearMap.norm_gap_rightFiberwiseMap,
-        ContinuousLinearMap.norm_gap_rightFiberwiseMap_iff,
-        ContinuousLinearMap.norm_gap_rightFiberwiseMap_iff_rightFiberwiseMap}
+        ContinuousLinearMap.norm_gap_rightFiberwiseMap_iff}
     \leanok
     \uses{lem:right-spectator-kernel-projection, thm:euclidean_fiberwise_operator}
     Let $G:\C^I\to\C^J$ and $\delta\ge0$. If $\delta\lVert u\rVert\le\lVert Gu\rVert$
     for every $u\perp\ker G$, then
     $\delta\lVert x\rVert\le\lVert(G\otimes\Id_S)x\rVert$ for every
-    $x\perp\ker(G\otimes\Id_S)$. For nonempty $S$ the converse holds as well, so
-    for nonempty finite sets $S$ and $T$ the operators $G\otimes\Id_S$ and
-    $G\otimes\Id_T$ have the same such bounds. No positivity or symmetry of $G$
-    is assumed.
+    $x\perp\ker(G\otimes\Id_S)$. For nonempty $S$ the converse holds as well. No
+    positivity or symmetry of $G$ is assumed.
 \end{lemma}
 \begin{proof}
     \leanok
@@ -184,6 +181,33 @@ otherwise.
     first claim. Conversely, $\iota_su\perp\ker(G\otimes\Id_S)$ exactly when
     $u\perp\ker G$, with $\lVert\iota_su\rVert=\lVert u\rVert$ and
     $\lVert(G\otimes\Id_S)\iota_su\rVert=\lVert Gu\rVert$.
+\end{proof}
+
+\begin{lemma}[Gaps under a fiberwise conjugacy]
+    \label{lem:perturbations_fiberwise_conjugate_gap}
+    \lean{ContinuousLinearMap.smul_orthogonal_ker_projection_le_of_conj_rightFiberwiseMap,
+        ContinuousLinearMap.forall_hasEigenvalue_of_conj_rightFiberwiseMap}
+    \leanok
+    \uses{lem:right-spectator-kernel-projection, lem:gap_isometric_conjugation,
+        lem:gap_operator_form}
+    Let $E$ be a finite-dimensional complex Hilbert space, $U:E\to\C^{I\times S}$ a
+    surjective linear isometry, $G$ an operator on $E$ and $H$ an operator on $\C^I$ with
+    $UGU^{-1}=H\otimes\Id_S$. Let $P_G$ and $P_H$ be the orthogonal projections onto
+    $(\ker G)^\perp$ and $(\ker H)^\perp$, and $\kappa\in\R$. If $\kappa P_H\le H$,
+    then $\kappa P_G\le G$. Consequently, if $H\ge0$, $\kappa>0$ and every eigenvalue
+    of $H$ other than $0$ is at least $\kappa$, then every eigenvalue of $G$ other than
+    $0$ is at least $\kappa$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    By Lemma~\ref{lem:gap_isometric_conjugation}, $U$ conjugates the projection onto
+    $\ker G$ to the projection onto $\ker(H\otimes\Id_S)$, which is the extension of
+    the projection onto $\ker H$; hence $UP_GU^{-1}=P_H\otimes\Id_S$. Extending
+    $\kappa P_H\le H$ over the fibers gives $\kappa P_H\otimes\Id_S\le H\otimes\Id_S$,
+    and conjugating back by $U$ gives $\kappa P_G\le G$. For the second claim,
+    Lemma~\ref{lem:gap_operator_form} turns the eigenvalue bound of $H$ into
+    $\kappa P_H\le H$, and the bound $\kappa P_G\le G$ back into the eigenvalue
+    bound of $G$.
 \end{proof}
 
 \begin{lemma}[Quadratic-form bound on fibers]
@@ -310,16 +334,16 @@ otherwise.
 
 \begin{lemma}[Common norm gaps with dependent spectators]
     \label{thm:mpo_dependent_spectator_gap_iff}
-    \lean{ContinuousLinearMap.norm_gap_dependentRightFiberwiseMap,
-        ContinuousLinearMap.norm_gap_dependentRightFiberwiseMap_iff,
+    \lean{ContinuousLinearMap.norm_gap_dependentRightFiberwiseMap_iff,
         ContinuousLinearMap.norm_gap_dependentRightFiberwiseMap_iff_dependentRightFiberwiseMap}
     \leanok
     \uses{thm:mpo_sigma_fiber_gap_iff, thm:perturbations_fiberwise_gap}
-    Let $\delta\geq0$. If $\delta\|u\|\leq\|G_qu\|$ for every $q\in Q$ and
-    $u\perp\ker G_q$, then $\delta\|v\|\leq\|H_Sv\|$ for every $v\perp\ker H_S$.
-    If every $S_q$ is nonempty the converse holds, so for nonempty $S_q$ and
-    $T_q$ the operators $H_S$ and $H_T$ built from the same family $(G_q)$ have
-    the same such bounds, whatever the cardinalities of $S_q$ and $T_q$.
+    Let $\delta\geq0$ and let every $S_q$ be nonempty. Then
+    $\delta\|v\|\leq\|H_Sv\|$ for every $v\perp\ker H_S$ if and only if
+    $\delta\|u\|\leq\|G_qu\|$ for every $q\in Q$ and $u\perp\ker G_q$. Hence
+    for nonempty $S_q$ and $T_q$ the operators $H_S$ and $H_T$ built from the
+    same family $(G_q)$ have the same such bounds, whatever the cardinalities of
+    $S_q$ and $T_q$.
 \end{lemma}
 \begin{proof}
     \leanok

@@ -74,6 +74,34 @@ $\ker H\neq0$ it is the gap at energy $0$ of Theorem~\ref{thm:hamiltonians_kerne
     $\lVert Hv\rVert^2=\sum_k\lvert c_k\rvert^2\lambda_k^2\ge\gamma^2\lVert v\rVert^2$.
 \end{proof}
 
+\begin{theorem}[Martingale criterion for a finite family of projections]
+    \label{thm:gap_martingale_projections}
+    \lean{FrustrationFree.spectralGap_of_martingale_anticommutator_rowCol_of_finiteDimensional}
+    \leanok
+    \uses{lem:gap_quadratic_form_to_norm}
+    Let $P_i$ be a finite family of symmetric projections on a finite-dimensional
+    complex Hilbert space, let $H=\sum_iP_i$, and let $0<\gamma\le1$. Suppose that a
+    real matrix $(c_{ij})$ has row and column sums at most one away from the diagonal,
+    and that, for $i\ne j$ and every $v$,
+    \begin{align*}
+        \operatorname{Re}\langle P_iv,P_jv\rangle+\operatorname{Re}\langle P_jv,P_iv\rangle
+        \ge-(1-\gamma)c_{ij}
+        \bigl(\operatorname{Re}\langle P_iv,v\rangle+\operatorname{Re}\langle P_jv,v\rangle\bigr).
+    \end{align*}
+    Then $\gamma\operatorname{Re}\langle Hv,v\rangle\le\operatorname{Re}\langle Hv,Hv\rangle$
+    for every $v$, and every eigenvalue of $H$ other than $0$ is at least $\gamma$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:gap_quadratic_form_to_norm}
+    Expand $\langle Hv,Hv\rangle=\sum_i\langle P_iv,v\rangle+\sum_{i\ne j}
+        \langle P_iv,P_jv\rangle$, using $P_i^2=P_i$. Pairing the terms $(i,j)$ and $(j,i)$
+    and summing the hypothesis, the bounds on the row and column sums give
+    $\operatorname{Re}\langle Hv,Hv\rangle\ge\operatorname{Re}\langle Hv,v\rangle
+        -(1-\gamma)\operatorname{Re}\langle Hv,v\rangle=\gamma\operatorname{Re}\langle Hv,v\rangle$.
+    The operator $H$ is positive as a sum of projections, and
+    Lemma~\ref{lem:gap_quadratic_form_to_norm} gives the eigenvalue bound.
+\end{proof}
+
 \begin{lemma}[A gap above the kernel gives the quadratic-form inequality]
     \label{lem:gap_norm_to_quadratic_form}
     \lean{LinearMap.IsPositive.quadraticForm_sq_ge_of_forall_hasEigenvalue}
@@ -122,6 +150,35 @@ $\ker H\neq0$ it is the gap at energy $0$ of Theorem~\ref{thm:hamiltonians_kerne
     some constant $K>0$, and $\delta=K^{-1}$ works.
 \end{proof}
 
+\begin{lemma}[The gap above the kernel in operator form]
+    \label{lem:gap_operator_form}
+    \lean{LinearMap.IsPositive.smul_orthogonal_ker_projection_le_of_norm_gap,
+        LinearMap.IsPositive.smul_orthogonal_ker_projection_le_of_forall_hasEigenvalue,
+        LinearMap.forall_hasEigenvalue_of_smul_orthogonal_ker_projection_le,
+        LinearMap.IsPositive.exists_pos_smul_orthogonal_ker_projection_le,
+        LinearMap.IsPositive.exists_pos_le_smul_orthogonal_ker_projection}
+    \leanok
+    \uses{lem:gap_eigenvalue_forms, lem:gap_orthogonal_kernel}
+    Let $H$ be an operator on a finite-dimensional complex Hilbert space, let $P$ be the
+    orthogonal projection onto $(\ker H)^\perp$, and let $\gamma\in\R$. If
+    $\gamma P\le H$, then every eigenvalue of $H$ other than $0$ is at least $\gamma$.
+    Conversely, if $H\ge0$ and every eigenvalue of $H$ other than $0$ is at least
+    $\gamma$, or $\gamma\ge0$ is a norm gap of $H$, then $\gamma P\le H$. For $H\ge0$
+    there are $\gamma>0$ and $C>0$ with $\gamma P\le H\le CP$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:gap_eigenvalue_forms, lem:gap_orthogonal_kernel}
+    Since $H$ annihilates $\ker H$ and, for $H\ge0$, is symmetric,
+    $\langle Hv,v\rangle=\langle HPv,Pv\rangle$ and
+    $\langle Pv,v\rangle=\lVert Pv\rVert^2$ for every $v$. Hence $\gamma P\le H$ says
+    exactly that $\gamma\lVert w\rVert^2\le\operatorname{Re}\langle Hw,w\rangle$ for
+    every $w\perp\ker H$, and Lemma~\ref{lem:gap_eigenvalue_forms} turns this into the
+    eigenvalue bound and back; the operator $H$ is symmetric when $\gamma P\le H$, since
+    $H-\gamma P$ and $\gamma P$ are. Lemma~\ref{lem:gap_orthogonal_kernel} gives a norm
+    gap $\gamma>0$, and $C=\lVert H\rVert+1$ bounds
+    $\operatorname{Re}\langle Hw,w\rangle\le\lVert H\rVert\lVert w\rVert^2$.
+\end{proof}
+
 \begin{lemma}[One constant for all indices]
     \label{lem:gap_eventual_constant}
     \lean{Nat.exists_pos_forall_of_eventually}
@@ -140,22 +197,26 @@ $\ker H\neq0$ it is the gap at energy $0$ of Theorem~\ref{thm:hamiltonians_kerne
     \label{lem:gap_positive_comparison}
     \lean{LinearMap.IsPositive.ker_le_of_le,
         LinearMap.IsPositive.ker_eq_of_smul_le_of_le_smul,
-        LinearMap.IsPositive.norm_gap_of_smul_le_of_le_smul,
+        LinearMap.IsPositive.forall_hasEigenvalue_of_scaled_comparison,
         LinearMap.IsPositive.forall_hasEigenvalue_of_smul_le_of_le_smul}
     \leanok
     If $0\le P\le Q$, then $\ker Q\subseteq\ker P$. Consequently, if $P,Q\ge0$ and
     $a,b,c>0$ satisfy $aP\le bQ\le cP$, then $\ker P=\ker Q$. On a finite-dimensional
-    space, a norm gap $\gamma>0$ of $P$ then gives the norm gap $a\gamma/b$ of $Q$, and
-    a gap $\gamma>0$ of $P$ above its kernel gives the gap $a\gamma/b$ of $Q$ above its
-    kernel.
+    space, if $\kappa P\le mQ$ with $\kappa,m>0$, $P\ge0$ and $\ker P=\ker Q$, and every
+    eigenvalue of $P$ other than $0$ is at least $\gamma$, then every eigenvalue of $Q$
+    other than $0$ is at least $\kappa\gamma/m$; in particular $aP\le bQ\le cP$
+    transfers the gap $\gamma$ of $P$ above its kernel to the gap $a\gamma/b$ of $Q$
+    above its kernel.
 \end{lemma}
 \begin{proof}\leanok
+    \uses{lem:gap_eigenvalue_forms}
     The quadratic form of a positive operator vanishes only on its kernel; evaluating
-    the order relations at kernel vectors gives the inclusions. On the common
-    orthogonal complement of the kernel, the norm gap of $P$ gives
-    $\operatorname{Re}\langle Pv,v\rangle\ge\gamma\lVert v\rVert^2$, hence
-    $b\operatorname{Re}\langle Qv,v\rangle\ge a\gamma\lVert v\rVert^2$, and
-    Lemma~\ref{lem:gap_energy_to_norm} gives the norm gap of $Q$.
+    the order relations at kernel vectors gives the inclusions. The operator $Q$ is
+    positive, since $mQ\ge\kappa P\ge0$. On the common orthogonal complement of the
+    kernel, Lemma~\ref{lem:gap_eigenvalue_forms} gives
+    $\operatorname{Re}\langle v,Pv\rangle\ge\gamma\lVert v\rVert^2$, hence
+    $m\operatorname{Re}\langle v,Qv\rangle\ge\kappa\gamma\lVert v\rVert^2$, and
+    Lemma~\ref{lem:gap_eigenvalue_forms} again gives the eigenvalue bound for $Q$.
 \end{proof}
 
 \subsection{Reducing projections}
@@ -246,13 +307,16 @@ $\ker H\neq0$ it is the gap at energy $0$ of Theorem~\ref{thm:hamiltonians_kerne
         LinearIsometryEquiv.ker_eq_map_of_conj,
         LinearIsometryEquiv.mem_orthogonal_ker_iff_of_conj,
         LinearIsometryEquiv.norm_gap_iff_of_conj,
-        LinearIsometryEquiv.hasEigenvalue_iff_of_conj}
+        LinearIsometryEquiv.hasEigenvalue_iff_of_conj,
+        LinearIsometryEquiv.conj_starProjection_ker_of_conj}
     \leanok
     Let $U:E\to F$ be a surjective complex linear isometry of inner product spaces,
     and let $P$ on $E$ and $Q$ on $F$ satisfy $Q=UPU^{-1}$. Then $UPx=QUx$,
     $\ker Q=U(\ker P)$ and $(\ker Q)^\perp=U((\ker P)^\perp)$. For every $\delta\in\R$,
     $\delta$ is a norm gap of $P$ if and only if it is a norm gap of $Q$, and $P$ and $Q$
-    have the same eigenvalues. Neither finite dimension nor positivity is needed.
+    have the same eigenvalues. Neither finite dimension nor positivity is needed for
+    these statements. If $E$ and $F$ are finite-dimensional, then $U$ conjugates the
+    orthogonal projection onto $\ker P$ to the orthogonal projection onto $\ker Q$.
 \end{lemma}
 \begin{proof}\leanok
     Substituting $Ux$ in the conjugation gives $UPx=QUx$. Injectivity of $U$
@@ -261,7 +325,9 @@ $\ker H\neq0$ it is the gap at energy $0$ of Theorem~\ref{thm:hamiltonians_kerne
     complements, and applying the norm estimate at $x$ and at $Ux$, with
     $\lVert Ux\rVert=\lVert x\rVert$, gives the equivalence. The map $U$ carries an
     eigenvector of $P$ to an eigenvector of $Q$ with the same eigenvalue, and $U^{-1}$
-    carries them back.
+    carries them back. Finally, the orthogonal projection onto the image $U(\ker P)$ of a
+    subspace under a surjective isometry is $U$ composed with the projection onto
+    $\ker P$ and with $U^{-1}$.
 \end{proof}
 
 \begin{lemma}[Projection onto an isometric image]
@@ -311,22 +377,6 @@ $\ker H\neq0$ it is the gap at energy $0$ of Theorem~\ref{thm:hamiltonians_kerne
     $\langle w,Uv\rangle=\langle U^*w,v\rangle=0$.
 \end{proof}
 
-\begin{theorem}[A norm gap survives compression to a reducing image]
-    \label{thm:gap_compression}
-    \lean{LinearIsometry.norm_gap_compression_of_commute}
-    \leanok
-    \uses{def:gap_compression}
-    Suppose that $UU^*H=HUU^*$ and that $\delta\in\R$ is a norm gap of $H$. Then
-    $\delta$ is a norm gap of $U^*HU$. Either space may be zero. This is the
-    restriction step of~\cite[Section~5, lines 1695--1777]{GarreRubio2023MPOSym}.
-\end{theorem}
-\begin{proof}\leanok
-    \uses{lem:gap_compression_intertwines}
-    Let $K=U^*HU$ and $v\perp\ker K$. By
-    Lemma~\ref{lem:gap_compression_intertwines}, $Uv\perp\ker H$ and $HUv=UKv$, so
-    $\delta\lVert v\rVert=\delta\lVert Uv\rVert\le\lVert HUv\rVert=\lVert Kv\rVert$.
-\end{proof}
-
 \begin{lemma}[Nested subspaces]
     \label{lem:gap_supported_projection}
     \lean{Submodule.starProjection_comp_starProjection_eq_right_of_le,
@@ -360,8 +410,7 @@ $\ker H\neq0$ it is the gap at energy $0$ of Theorem~\ref{thm:hamiltonians_kerne
         LinearIsometry.compression_starProjection_of_le_range,
         LinearIsometry.compression_one_sub_starProjection_of_le_range,
         LinearIsometry.compression_one_sub_starProjection_eq_orthogonal_of_le_range,
-        LinearIsometry.ker_compression_one_sub_starProjection_of_le_range,
-        LinearIsometry.norm_gap_compression_one_sub_starProjection_of_le_range}
+        LinearIsometry.ker_compression_one_sub_starProjection_of_le_range}
     \leanok
     \uses{def:gap_compression}
     Let $U:E\to F$ be an isometry between finite-dimensional complex Hilbert spaces,
@@ -372,19 +421,16 @@ $\ker H\neq0$ it is the gap at energy $0$ of Theorem~\ref{thm:hamiltonians_kerne
         U^*(1-P_S)U                 & =1-P_{U^*S}=P_{(U^*S)^\perp}, \\
         \ker\bigl(U^*(1-P_S)U\bigr) & =U^*S.
     \end{align*}
-    Every norm gap of $1-P_S$ is a norm gap of $U^*(1-P_S)U$.
 \end{theorem}
 \begin{proof}\leanok
-    \uses{lem:gap_supported_projection, lem:gap_isometric_image_projection,
-        thm:gap_compression}
+    \uses{lem:gap_supported_projection, lem:gap_isometric_image_projection}
     Lemma~\ref{lem:gap_isometric_image_projection} with $G=E$ gives
     $P_{\operatorname{ran}U}=UU^*$, and Lemma~\ref{lem:gap_supported_projection} with
     $F=\operatorname{ran}U$ gives the commutation. The identities $U^*U=1$ and
     $S\subseteq\operatorname{ran}U$ give $U(U^*S)=S$. By
     Lemma~\ref{lem:gap_isometric_image_projection}, $P_S=P_{U(U^*S)}=UP_{U^*S}U^*$;
     multiplying by $U^*$ on the left and $U$ on the right gives $U^*P_SU=P_{U^*S}$,
-    and its complement and kernel follow. Theorem~\ref{thm:gap_compression} carries
-    the gap through the compression.
+    and its complement and kernel follow.
 \end{proof}
 
 Let $U:E\to F$ be an isometry of finite-dimensional complex inner product spaces, $K$ an
@@ -433,22 +479,6 @@ Write $q_H(y)=\operatorname{Re}\langle Hy,y\rangle$, and likewise $q_K$.
     \end{align*}
 \end{proof}
 
-\begin{theorem}[A norm gap through an isometric inclusion]
-    \label{thm:gap_inclusion_norm}
-    \lean{LinearIsometry.norm_gap_of_intertwines}
-    \leanok
-    Suppose $H,K\ge0$, $HU=UK$, $\delta\ge0$ is a norm gap of $K$, and
-    $c\lVert y\rVert^2\le q_H(y)$ whenever $U^*y=0$. Then $\min\{\delta,c\}$ is a norm
-    gap of $H$. No sign of $c$ is assumed.
-\end{theorem}
-\begin{proof}\leanok
-    \uses{lem:gap_inclusion_quadratic, lem:gap_energy_to_norm}
-    For the positive operator $K$, the norm gap $\delta\ge0$ gives
-    $q_K(x)\ge\delta\lVert x\rVert^2$ on $(\ker K)^\perp$.
-    Lemma~\ref{lem:gap_inclusion_quadratic} and Lemma~\ref{lem:gap_energy_to_norm}
-    give the claim.
-\end{proof}
-
 \subsection{Bounded congruences}
 \label{sec:martingale_gaps_congruence}
 
@@ -468,14 +498,12 @@ Write $q_H(y)=\operatorname{Re}\langle Hy,y\rangle$, and likewise $q_K$.
 
 \begin{theorem}[A gap under a bounded congruence]
     \label{thm:gap_bounded_congruence}
-    \lean{LinearMap.IsPositive.norm_gap_adjoint_congruence_of_inverse_bound,
-        LinearMap.IsPositive.bounded_congruence_gap}
+    \lean{LinearMap.IsPositive.norm_gap_adjoint_congruence_of_inverse_bound}
     \leanok
     \uses{lem:gap_congruence_kernel}
     Let $P\ge0$ on $F$ have norm gap $\delta\ge0$, and let $e:E\to F$ be invertible with
     $\lVert e^{-1}w\rVert\le C\lVert w\rVert$ for every $w$, where $C>0$. Then
-    $\delta/C^2$ is a norm gap of $Q=e^*Pe$. If $\delta>0$, then in addition
-    $\delta/C^2>0$, $Q\ge0$ and $\ker Q=e^{-1}(\ker P)$.
+    $\delta/C^2$ is a norm gap of $Q=e^*Pe$.
 \end{theorem}
 \begin{proof}\leanok
     \uses{lem:gap_congruence_kernel}
@@ -987,6 +1015,84 @@ treats the argument for an abstract decreasing family of projections.
     $\kappa(1-c)\lVert v\rVert^2\le\langle Hv,v\rangle\le\lVert Hv\rVert\lVert v\rVert$.
     Since $L\ge0$ and $\kappa\ge0$, also $H\ge\kappa L\ge0$, and
     Lemma~\ref{lem:gap_eigenvalue_forms} turns the norm gap into the gap above the kernel.
+\end{proof}
+
+\begin{lemma}[Ground-space subtraction in the commutator gap estimate]
+    \label{lem:martingale_ground_projection_commutator_gap}
+    \lean{FrustrationFree.energy_gap_sub_ground_projection,
+        FrustrationFree.commutator_ground_expectation,
+        FrustrationFree.commutator_ground_gap,
+        FrustrationFree.commutator_ground_gap_of_ker_eq_span}
+    \leanok
+    \uses{lem:gap_operator_form}
+    Let $H\geq0$ act on a finite-dimensional complex Hilbert space, let $K=\ker H$,
+    and suppose $\gamma\geq0$ and that every eigenvalue of $H$ other than $0$ is at
+    least $\gamma$. Then
+    $\operatorname{Re}\langle Hv,v\rangle\geq\gamma(\lVert v\rVert^2-\lVert P_Kv\rVert^2)$
+    for every $v$. For every $\psi\in K$ and every operator $X$,
+    \begin{align}
+        \langle X^*[H,X]\psi,\psi\rangle
+         & =\langle HX\psi,X\psi\rangle,
+         &
+        \operatorname{Re}\langle X^*[H,X]\psi,\psi\rangle
+         & \geq\gamma\bigl(\lVert X\psi\rVert^2-\lVert P_KX\psi\rVert^2\bigr).
+        \label{eq:martingale_ground_commutator}
+    \end{align}
+    If $K=\C\psi$ and $\lVert\psi\rVert=1$, the subtracted term is
+    $\lvert\langle\psi,X\psi\rangle\rvert^2$. This is the finite-volume estimate
+    of the limiting argument in~\cite[Section~6]{Nachtergaele1996Spectral}.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:gap_operator_form}
+    By Lemma~\ref{lem:gap_operator_form}, $H\geq\gamma P_{K^\perp}$, and Pythagoras
+    gives $\lVert P_{K^\perp}v\rVert^2=\lVert v\rVert^2-\lVert P_Kv\rVert^2$. Since
+    $H\psi=0$, the adjoint identity gives
+    $\langle X^*[H,X]\psi,\psi\rangle=\langle HX\psi,X\psi\rangle$; apply the
+    first estimate to $v=X\psi$. For a one-dimensional ground space,
+    $P_Kv=\langle\psi,v\rangle\psi$.
+\end{proof}
+
+\begin{theorem}[Limiting gap from decay of the ground projection]
+    \label{thm:martingale_commutator_gap_projection_limit}
+    \lean{FrustrationFree.commutator_gap_of_tendsto_ground_projection_zero}
+    \leanok
+    \uses{lem:martingale_ground_projection_commutator_gap}
+    Let $H_n,X_n$ act on finite-dimensional complex Hilbert spaces which may depend on
+    $n$. Suppose that, for all sufficiently large $n$, $H_n\geq0$, $\psi_n\in\ker H_n$,
+    and every eigenvalue of $H_n$ other than $0$ is at least the same constant
+    $\gamma\geq0$. Let $a,e\in\R$. If $\lVert X_n\psi_n\rVert^2\to a$,
+    $\lVert P_{\ker H_n}X_n\psi_n\rVert^2\to0$ and
+    $\operatorname{Re}\langle X_n^*[H_n,X_n]\psi_n,\psi_n\rangle\to e$, then
+    $\gamma a\leq e$. This is an intermediate step of the infinite-volume gap
+    of~\cite[Theorem~1.2]{Nachtergaele1996Spectral}: the decay of the full ground
+    projection is a hypothesis here, see
+    \cite{gap:nachtergaele96_infinite_volume_ground_projection}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:martingale_ground_projection_commutator_gap}
+    For all sufficiently large $n$, (\ref{eq:martingale_ground_commutator}) gives the
+    inequality before taking limits. Its left side tends to $\gamma(a-0)=\gamma a$ and
+    its right side to $e$, and the order of $\R$ is closed.
+\end{proof}
+
+\begin{corollary}[Limiting gap for one-dimensional ground spaces]
+    \label{cor:martingale_commutator_gap_rank_one_limit}
+    \lean{FrustrationFree.commutator_gap_of_tendsto_mean_zero_of_ker_eq_span}
+    \leanok
+    \uses{lem:martingale_ground_projection_commutator_gap}
+    Let $H_n,X_n$ act on finite-dimensional complex Hilbert spaces which may depend on
+    $n$. Suppose that, for all sufficiently large $n$, $H_n\geq0$,
+    $\lVert\psi_n\rVert=1$, $\ker H_n=\C\psi_n$, and every eigenvalue of $H_n$ other
+    than $0$ is at least the same constant $\gamma\geq0$. If
+    $\lVert X_n\psi_n\rVert^2\to a$, $\langle\psi_n,X_n\psi_n\rangle\to0$ and
+    $\operatorname{Re}\langle X_n^*[H_n,X_n]\psi_n,\psi_n\rangle\to e$, then
+    $\gamma a\leq e$.
+\end{corollary}
+\begin{proof}\leanok
+    \uses{lem:martingale_ground_projection_commutator_gap}
+    The rank-one projection formula makes the subtracted term the squared absolute
+    value of the mean, which tends to zero, so the finite-volume estimate passes to the
+    limit.
 \end{proof}
 
 \section{Sweeps of projections}

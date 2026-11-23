@@ -10,7 +10,7 @@ import QICLean.Spectral.Gap.PositiveGapTransfer
 # Weighted sums of positive operators
 
 Kernel equality and Loewner comparison for strictly positively weighted
-finite sums of positive operators, with the resulting gap transfer.  The
+finite sums of positive operators.  The
 statements are the analytic content of the blocked-sum comparison in
 Rozmán--Molnár--Schuch, arXiv:2607.19078v1, Lemma `block-obc`
 (statement at main.tex lines 607--651, argument at lines 795--811).  That
@@ -32,9 +32,6 @@ repository, so the citation is by arXiv identifier and lemma label.
   kernel with the intersection of the individual kernels.
 * `WeightedPositiveKernel.weighted_sum_le_sum`: weights at most one place the
   weighted sum below the unweighted sum in Loewner order.
-* `WeightedPositiveKernel.norm_gap_sum_of_weighted_sum`: under both
-  conditions on the weights, a norm gap of the weighted sum on the
-  orthogonal complement of its kernel is inherited by the unweighted sum.
 -/
 
 open scoped InnerProductSpace
@@ -196,30 +193,5 @@ theorem weighted_sum_le_sum {w : ι → ℝ} (hw : ∀ i, w i ≤ 1)
     rw [RCLike.ofReal_sub, RCLike.ofReal_one, sub_smul, one_smul]
   rw [hsub]
   exact isPositive_weighted_sum (fun i => sub_nonneg.mpr (hw i)) hP
-
-section GapTransfer
-
-variable {F : Type*} [NormedAddCommGroup F] [InnerProductSpace ℂ F]
-  [FiniteDimensional ℂ F]
-
-/-- A norm gap of a strictly positively weighted sum of positive operators,
-with weights at most one, is inherited by the unweighted sum.
-
-This is the gap step of the blocked-sum comparison in
-Rozmán--Molnár--Schuch, arXiv:2607.19078v1, Lemma `block-obc`, obtained
-from `LinearMap.IsPositive.norm_gap_of_le_of_ker_eq`: the weighted sum is
-positive, dominated by the unweighted sum, and has the same kernel, so a
-lower bound `γ * ‖v‖ ≤ ‖(∑ i, (w i : ℂ) • P i) v‖` on the orthogonal
-complement of that common kernel holds equally for `∑ i, P i`. -/
-theorem norm_gap_sum_of_weighted_sum {w : ι → ℝ} (hw : ∀ i, 0 < w i)
-    (hwle : ∀ i, w i ≤ 1) {P : ι → F →ₗ[ℂ] F} (hP : ∀ i, (P i).IsPositive)
-    {γ : ℝ} (hγ : 0 ≤ γ)
-    (hGap : ∀ v ∈ (LinearMap.ker (∑ i, (w i : ℂ) • P i))ᗮ,
-      γ * ‖v‖ ≤ ‖(∑ i, (w i : ℂ) • P i) v‖) :
-    ∀ v ∈ (LinearMap.ker (∑ i, P i))ᗮ, γ * ‖v‖ ≤ ‖(∑ i, P i) v‖ :=
-  (isPositive_weighted_sum (fun i => le_of_lt (hw i)) hP).norm_gap_of_le_of_ker_eq hγ
-    (weighted_sum_le_sum hwle hP) (ker_weighted_sum_eq_sum hw hP) hGap
-
-end GapTransfer
 
 end WeightedPositiveKernel

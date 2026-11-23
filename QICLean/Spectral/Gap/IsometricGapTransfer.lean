@@ -138,25 +138,6 @@ theorem re_inner_ge_of_intertwines (U : E →ₗᵢ[ℂ] F)
     ((mul_le_mul_of_nonneg_right (min_le_right _ _) (sq_nonneg _)).trans
       (hInactive y hadj))
 
-/-- A norm gap of a positive operator transfers through an isometric
-intertwiner when the orthogonal complement has a quadratic-form bound. The
-resulting gap is the minimum of the original gap and the complementary bound. -/
-theorem norm_gap_of_intertwines (U : E →ₗᵢ[ℂ] F)
-    {H : F →ₗ[ℂ] F} {K : E →ₗ[ℂ] E} (hH : H.IsPositive) (hK : K.IsPositive)
-    (hintertwine : ∀ x, H (U x) = U (K x)) {δ c : ℝ} (hδ : 0 ≤ δ)
-    (hGap : ∀ x ∈ (LinearMap.ker K)ᗮ, δ * ‖x‖ ≤ ‖K x‖)
-    (hInactive : ∀ y, U.toLinearMap.adjoint y = 0 →
-      c * ‖y‖ ^ 2 ≤ (⟪H y, y⟫_ℂ).re) :
-    ∀ v ∈ (LinearMap.ker H)ᗮ, min δ c * ‖v‖ ≤ ‖H v‖ := by
-  intro v hv
-  have hquadratic := U.re_inner_ge_of_intertwines hH.isSymmetric hintertwine
-    (hK.re_inner_ge_of_norm_gap hδ hGap) hInactive v hv
-  have hbound := hquadratic.trans (re_inner_le_norm (𝕜 := ℂ) (H v) v)
-  by_cases hv0 : v = 0
-  · simp [hv0]
-  · exact le_of_mul_le_mul_right
-      (by simpa only [pow_two, mul_assoc] using hbound) (norm_pos_iff.mpr hv0)
-
 /-- **Gap transfer along an isometric inclusion, eigenvalue form.** Let `U` be an isometric
 inclusion intertwining a symmetric operator `H` with `K`. If every eigenvalue of `K` other than
 `0` is at least `δ` and `c ‖y‖² ≤ Re ⟨H y, y⟩` off the image of `U`, then every eigenvalue of `H`

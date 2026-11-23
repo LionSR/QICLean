@@ -104,20 +104,4 @@ theorem norm_gap_adjoint_congruence_of_inverse_bound
   · exact (mul_le_mul_iff_left₀ (norm_pos_iff.mpr hv0)).mp
       (by simpa only [pow_two, mul_assoc, mul_comm, mul_left_comm] using hquadratic)
 
-/-- Positivity, the exact kernel, and the explicit positive gap of an
-invertible congruence follow from the original gap and an inverse bound. -/
-theorem bounded_congruence_gap {P : F →ₗ[ℂ] F} (hP : P.IsPositive)
-    (e : E ≃ₗ[ℂ] F) {δ C : ℝ} (hδ : 0 < δ) (hC : 0 < C)
-    (hInverse : ∀ w : F, ‖e.symm w‖ ≤ C * ‖w‖)
-    (hGap : ∀ w ∈ (LinearMap.ker P)ᗮ, δ * ‖w‖ ≤ ‖P w‖) :
-    0 < δ / C ^ 2 ∧
-      (e.toLinearMap.adjoint ∘ₗ P ∘ₗ e.toLinearMap).IsPositive ∧
-      LinearMap.ker (e.toLinearMap.adjoint ∘ₗ P ∘ₗ e.toLinearMap) =
-        (LinearMap.ker P).comap e.toLinearMap ∧
-      ∀ v ∈ (LinearMap.ker (e.toLinearMap.adjoint ∘ₗ P ∘ₗ e.toLinearMap))ᗮ,
-        (δ / C ^ 2) * ‖v‖ ≤
-          ‖(e.toLinearMap.adjoint ∘ₗ P ∘ₗ e.toLinearMap) v‖ :=
-  ⟨by positivity, hP.adjoint_conj e.toLinearMap, e.ker_adjoint_congruence P,
-    hP.norm_gap_adjoint_congruence_of_inverse_bound e hδ.le hC hInverse hGap⟩
-
 end LinearMap.IsPositive

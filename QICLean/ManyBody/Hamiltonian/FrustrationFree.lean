@@ -46,9 +46,8 @@ complement.
   positive in the matrix order.
 * `ManyBody.Interaction.mem_ker_toEuclideanLin_hamiltonian_iff` — for positive semidefinite
   terms, the kernel of the Hamiltonian is the common kernel of the operators of the terms.
-* `ManyBody.Interaction.isGapped_hamiltonian_zero_iff_inner`,
-  `ManyBody.Interaction.isGapped_hamiltonian_zero_iff_norm` — the gap of a positive interaction
-  above its zero space, in quadratic and in norm form.
+* `ManyBody.Interaction.isGapped_hamiltonian_zero_iff_inner` — the gap of a positive interaction
+  above its zero space, in quadratic form.
 * `ManyBody.Interaction.isFrustrationFree_of_pairwise_disjoint` — Hermitian terms on pairwise
   disjoint regions are frustration free.
 
@@ -270,16 +269,6 @@ theorem isGapped_hamiltonian_zero_iff_inner {Φ : Interaction X T}
     IsGapped Φ.hamiltonian 0 Δ ↔ Φ.zeroSpace ≠ ⊥ ∧
       ∀ v ∈ Φ.zeroSpaceᗮ, Δ * ‖v‖ ^ 2 ≤ (⟪v, toEuclideanLin Φ.hamiltonian v⟫_ℂ).re := by
   rw [isGapped_zero_iff_inner (posSemidef_hamiltonian h), zeroSpace_eq_groundSpace h,
-    groundSpace_zero]
-
-/-- **The gap above the zero space, in norm form.** For positive semidefinite terms, the
-Hamiltonian is gapped at `0` with gap `Δ` exactly when the zero space is nonzero and
-`Δ ‖v‖ ≤ ‖H v‖` for every `v` orthogonal to it. -/
-theorem isGapped_hamiltonian_zero_iff_norm {Φ : Interaction X T}
-    (h : ∀ i, (Φ.term i).PosSemidef) {Δ : ℝ} :
-    IsGapped Φ.hamiltonian 0 Δ ↔ Φ.zeroSpace ≠ ⊥ ∧
-      ∀ v ∈ Φ.zeroSpaceᗮ, Δ * ‖v‖ ≤ ‖toEuclideanLin Φ.hamiltonian v‖ := by
-  rw [isGapped_zero_iff_norm (posSemidef_hamiltonian h), zeroSpace_eq_groundSpace h,
     groundSpace_zero]
 
 /-- **Zero vectors of a positive interaction.** For positive semidefinite terms, six readings of

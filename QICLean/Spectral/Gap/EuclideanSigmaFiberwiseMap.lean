@@ -321,16 +321,6 @@ theorem norm_sq_eq_sum_norm_sq_dependentRightFiber
   rw [norm_sq_eq_sum_norm_sq_sigmaFiber]
   simp only [norm_sq_eq_sum_norm_sq_rightFiber, dependentRightFiber]
 
-/-- Common active norm gaps extend to dependent spectator fibers, including
-empty spectator types. -/
-theorem norm_gap_dependentRightFiberwiseMap
-    (G : ∀ q, EuclideanSpace ℂ (I q) →L[ℂ] EuclideanSpace ℂ (I q))
-    {δ : ℝ} (hδ : 0 ≤ δ)
-    (hGap : ∀ q, ∀ x ∈ (LinearMap.ker (G q).toLinearMap)ᗮ, δ * ‖x‖ ≤ ‖G q x‖) :
-    ∀ x ∈ (LinearMap.ker (dependentRightFiberwiseMap (S := S) G).toLinearMap)ᗮ,
-      δ * ‖x‖ ≤ ‖dependentRightFiberwiseMap (S := S) G x‖ :=
-  norm_gap_sigmaFiberwiseMap _ hδ fun q ↦ norm_gap_rightFiberwiseMap (G q) hδ (hGap q)
-
 /-- For nonempty spectator fibers, the extended operator has a common
 nonnegative norm gap exactly when every active operator does. -/
 theorem norm_gap_dependentRightFiberwiseMap_iff [∀ q, Nonempty (S q)]

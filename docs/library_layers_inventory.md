@@ -370,7 +370,7 @@ which declarations belong where; none of these splits needs a change of statemen
 | `Spectral.Filter.SoftTruncationHighProjection` | softTruncation_high_energy_floor, softTruncation_reverse_barrier_margin scalar -> Analysis/Real; IsHermitian.smul_spectralProjectionGE_le_softTruncation -> Spectral/Filter |
 | `Spectral.Filter.UntrimmedTensorFamilyPowers` | word_filter_error_ceil_log_le -> Analysis/Real; IsSpectralProjector.viability_word_power_ceil_log stays Spectral/Filter |
 | `Spectral.Gap.OrthogonalKernelGap` | exists_pos_mul_norm_le_of_mem_orthogonal_ker -> Spectral/Gap; Nat.exists_pos_forall_of_eventually (pure real/Nat quantifier lemma) -> Analysis/Real |
-| `Spectral.Gap.WeightedPositiveKernel` | kernel and Loewner lemmas stay Analysis/Order; norm_gap_sum_of_weighted_sum -> Spectral/Gap |
+| `Spectral.Gap.WeightedPositiveKernel` | kernel and Loewner lemmas stay Analysis/Order (its norm-gap transfer was deleted, having no user) |
 | `Spectral.LowEnergy.Coordinates` | spectralSpanLE_eq_of_eigenbases, exists_canonical_isometric_spectral_data, spectralSpanLE_ne_bot_of_mem_spectrum -> Spectral/LowEnergy; two_le_local_dimension_of_two_spectral_values mentions site configurations Fin L -> Fin q -> ManyBody/Sites |
 | `Spectral.LowEnergy.RitzCompression` | orthogonalCompression and its symmetry -> Analysis/Isometry; ritzSubspace of the compression -> Spectral/LowEnergy |
 | `Spectral.Radius.UpperTriangularBound` | IsStrictlyUpperTriangular, IsDiag mul_apply, wordProd, add_pow_eq_sum_wordProd -> Algebra/Matrix; power bounds (Wolf 8.103/8.105) stay Spectral/Radius |

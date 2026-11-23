@@ -11,6 +11,7 @@ Authors: QICLean contributors
 import QICLean.ManyBody.Hamiltonian.Martingale.AbstractCriterion
 import QICLean.ManyBody.Hamiltonian.Martingale.AnalyticBounds
 import QICLean.ManyBody.Hamiltonian.Martingale.DifferenceProjections
+import QICLean.ManyBody.Hamiltonian.Martingale.GroundExpectationGap
 import QICLean.ManyBody.Hamiltonian.Martingale.MovingWindowCount
 import QICLean.ManyBody.Hamiltonian.Martingale.NachtergaeleFullRangeEstimate
 import QICLean.ManyBody.Hamiltonian.Martingale.NachtergaeleLowerEndpoint

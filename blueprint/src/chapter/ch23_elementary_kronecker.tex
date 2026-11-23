@@ -155,3 +155,69 @@ All matrices in this section are complex and indexed by finite sets.
     $\lVert\psi\rVert^2-\lVert(\bigotimes_kW_k)\psi\rVert^2
         =\braket{\psi}{(\Id-\Pi)\psi}\geq0$.
 \end{proof}
+
+\begin{lemma}[Products and powers of finite tensor products]
+    \label{lem:elementary_finite_tensor_product_powers}
+    \lean{Matrix.piKroneckerMonoidHom, Matrix.list_prod_map_piKronecker,
+        Matrix.piKronecker_smul_one, Matrix.IsHermitian.piKronecker,
+        Matrix.transpose_piKronecker_map_star, Matrix.piKronecker_const_isometry,
+        Matrix.piKronecker_const_mul_conjTranspose, Matrix.reindex_piKronecker_two,
+        Matrix.reindex_piKronecker_three}
+    \leanok
+    \uses{lem:elementary_finite_tensor_product_algebra}
+    On square matrices, the finite tensor product is a homomorphism of monoids
+    from families to matrices; hence the ordered product of the tensor products
+    of finitely many families is the tensor product of the sitewise ordered
+    products. The tensor product of the scalar matrices $f_k\Id$ is
+    $\bigl(\prod_kf_k\bigr)\Id$, a tensor product of Hermitian matrices is
+    Hermitian, and the transpose of the tensor product of the entrywise
+    conjugates $\overline{K_k}$ is the adjoint of $\bigotimes_kK_k$. For one
+    matrix $V$ and $N\ge0$, $V^\dagger V=\Id$ implies
+    $(V^{\otimes N})^\dagger V^{\otimes N}=\Id$, and
+    $V^{\otimes N}(V^{\otimes N})^\dagger=(VV^\dagger)^{\otimes N}$. On two
+    and three sites, $V^{\otimes2}$ and $V^{\otimes3}$ are $V\otimes V$ and
+    $V\otimes(V\otimes V)$ after the configurations are relabelled as pairs
+    and right-associated triples.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Multiplicativity and the identity are
+    Lemma~\ref{lem:elementary_finite_tensor_product_algebra}; induct over the
+    list. The remaining identities follow from the factorwise adjoint and
+    transpose and from the entries $\prod_k(K_k)_{x_k,y_k}$.
+\end{proof}
+
+\begin{lemma}[Inner products after matrices on the sites, in coordinates]
+    \label{lem:elementary_tensor_power_coordinates}
+    \lean{Matrix.sum_star_mul_prod_eq_sum_conjTranspose_mul,
+        Matrix.sum_star_mul_prod_of_support, Matrix.IsIsometry.sum_star_mul_prod,
+        Matrix.IsIsometry.sum_star_mul_prod_const}
+    \leanok
+    \uses{lem:elementary_tensor_power_partial_isometry}
+    Let $W_k$ be matrices with columns indexed by a finite set $\kappa$ and rows
+    by $n_k$, one for each of $M$ sites, and let $\psi,\varphi$ be vectors
+    indexed by $\kappa^M$. Then
+    \begin{align}
+        \Bigl\langle\Bigl(\bigotimes_kW_k\Bigr)\psi,\Bigl(\bigotimes_kW_k\Bigr)\varphi\Bigr\rangle
+         & =\sum_{\tau,\tau'}\Bigl(\prod_k(W_k^\dagger W_k)_{\tau_k\tau'_k}\Bigr)
+        \overline{\psi(\tau)}\varphi(\tau').
+        \notag
+    \end{align}
+    If $W_k^\dagger W_k$ is the projection onto the coordinates of a set
+    $S_k\subseteq\kappa$ and $\overline{\psi(\tau)}\varphi(\tau)=0$ whenever
+    some $\tau_k\notin S_k$, the inner product is
+    $\langle\psi,\varphi\rangle$; in particular isometries $W_k$, and the power
+    $W^{\otimes M}$ of one isometry, preserve inner products. These are the
+    isometries and partial isometries on the blocks
+    in~\cite[Supplemental Material, proof of Lemma~1]{Malz2024Preparation}.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Expand both sums, exchange the order of summation, and sum the product
+    $\prod_k\overline{(W_k)_{s_k\tau_k}}(W_k)_{s_k\tau'_k}$ over the
+    configurations $s$; it factorizes into the entries of the Gram matrices
+    $W_k^\dagger W_k$. For a projection onto the coordinates of $S_k$, only
+    $\tau=\tau'$ with every $\tau_k\in S_k$ contributes.
+\end{proof}

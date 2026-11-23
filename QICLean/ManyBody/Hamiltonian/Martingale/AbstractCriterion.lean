@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Spectral.Gap.EigenvalueGap
+import QICLean.Analysis.Projection.Geometry
 
 /-!
 # Abstract martingale criterion (quadratic form → norm bound)
@@ -17,8 +18,15 @@ method for spectral gaps. In eigenvalue form,
 \(H\) other than \(0\) is at least \(γ\). The converse, from the gap to the quadratic-form
 inequality, is `LinearMap.IsPositive.quadraticForm_sq_ge_of_forall_hasEigenvalue`.
 
+For a finite family of symmetric projections whose anticommutator forms obey row- and
+column-summable bounds, the sum of the projections satisfies the quadratic-form inequality and
+hence has the gap `γ` above its kernel
+(`FrustrationFree.spectralGap_of_martingale_anticommutator_rowCol_of_finiteDimensional`).
+
 Moved from TNLean, `TNLean/MPS/ParentHamiltonian/Martingale/AbstractCriterion.lean` at
-commit `414a18fb88`, with no change to the statements.
+commit `414a18fb88`, with no change to the statements. The row–column criterion is moved from
+TNLean, `TNLean/MPS/ParentHamiltonian/ParentInteraction/Reduction.lean` at commit `600676ccac`
+(there in the namespace `MPSTensor`), with no change to the statement.
 -/
 
 open scoped BigOperators InnerProductSpace ComplexOrder
@@ -142,5 +150,36 @@ theorem forall_hasEigenvalue_of_martingale_of_finiteDimensional {E : Type*}
     ∀ μ : ℂ, Module.End.HasEigenvalue H μ → μ = 0 ∨ (γ : ℂ) ≤ μ :=
   hH.forall_hasEigenvalue_iff_norm.mpr
     (spectralGap_of_martingale_of_finiteDimensional hγ hH hOpIneq)
+
+open Classical in
+/-- Combined martingale criterion for a finite family of symmetric projections.
+
+If the anticommutator forms satisfy row- and column-summable bounds with
+constant \(γ\), then the sum \(H = \sum_i P_i\) of the projections satisfies
+both the quadratic-form inequality
+\(γ \operatorname{Re}\langle Hv, v\rangle \le \operatorname{Re}\langle Hv, Hv\rangle\)
+for every \(v\), and the gap \(γ\) above the kernel: every eigenvalue of \(H\) other than
+\(0\) is at least \(γ\), because \(H\) is positive (a sum of positive maps). -/
+theorem spectralGap_of_martingale_anticommutator_rowCol_of_finiteDimensional
+    {ι E : Type*} [Fintype ι] [NormedAddCommGroup E]
+    [InnerProductSpace ℂ E] [FiniteDimensional ℂ E]
+    {γ : ℝ} (hγpos : 0 < γ) (hγle : γ ≤ 1)
+    (P : ι → E →ₗ[ℂ] E)
+    (hP : ∀ i, (P i).IsSymmetricProjection)
+    (c : ι → ι → ℝ)
+    (hRow : ∀ i, (∑ j ∈ Finset.univ.erase i, c i j) ≤ 1)
+    (hCol : ∀ j, (∑ i ∈ Finset.univ.erase j, c i j) ≤ 1)
+    (hAnti : ∀ i j, j ∈ Finset.univ.erase i → ∀ v,
+      -(1 - γ) * c i j *
+          ((⟪P i v, v⟫_ℂ).re + (⟪P j v, v⟫_ℂ).re) ≤
+        (⟪P i v, P j v⟫_ℂ).re + (⟪P j v, P i v⟫_ℂ).re) :
+    (∀ v, γ * (⟪(∑ i, P i) v, v⟫_ℂ).re ≤ (⟪(∑ i, P i) v, (∑ i, P i) v⟫_ℂ).re) ∧
+    ∀ μ : ℂ, Module.End.HasEigenvalue (∑ i, P i) μ → μ = 0 ∨ (γ : ℂ) ≤ μ := by
+  have hQuad : ∀ v,
+      γ * (⟪(∑ i, P i) v, v⟫_ℂ).re ≤ (⟪(∑ i, P i) v, (∑ i, P i) v⟫_ℂ).re :=
+    ProjectionGeometry.quadraticForm_sum_projections_of_anticommutator_rowCol
+      hγle P hP c hRow hCol hAnti
+  exact ⟨hQuad, forall_hasEigenvalue_of_martingale_of_finiteDimensional hγpos
+    (LinearMap.isPositive_sum Finset.univ fun i _ => (hP i).isPositive) hQuad⟩
 
 end FrustrationFree

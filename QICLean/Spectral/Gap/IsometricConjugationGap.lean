@@ -13,13 +13,18 @@ If \(Q=UPU^{-1}\) for a linear isometric equivalence \(U\), then
 onto one another. Every real norm-gap bound \(\delta\) is consequently
 preserved in both directions, and \(P\) and \(Q\) have the same
 eigenvalues. Positivity, finite dimensionality, and
-nonzero-dimensional Hilbert spaces are not required.
+nonzero-dimensional Hilbert spaces are not required. On finite-dimensional
+spaces, \(U\) also conjugates the projection onto \(\ker P\) to the
+projection onto \(\ker Q\).
 
 This is the operator transport used when exchanging the two endpoints in
 GLM23, arXiv:2203.12563, Section 5, lines 1695–1777.
 
 Moved from TNLean, `TNLean/MPS/ParentHamiltonian/Martingale/IsometricConjugationGap.lean` at
-commit `414a18fb88`, with no change to the statements.
+commit `414a18fb88`, with no change to the statements. The conjugation of the kernel
+projections is moved from TNLean,
+`TNLean/MPS/ParentHamiltonian/Gap/Filtration/SpectatorTransport.lean` at commit `600676ccac`
+(there `MPSTensor.ker_starProjection_conj_linearIsometryEquiv`).
 -/
 
 open scoped InnerProductSpace
@@ -109,5 +114,23 @@ theorem hasEigenvalue_iff_of_conj
   rw [Module.End.hasEigenvalue_iff, Module.End.hasEigenvalue_iff,
     Module.End.eigenspace_eq_map_of_intertwine U.toLinearEquiv P Q
       (fun x ↦ (U.map_apply_eq_of_conj P Q hPQ x).symm), Ne, Ne, Submodule.map_eq_bot_iff]
+
+/-- An isometric conjugacy `U G U⁻¹ = H` of operators on finite-dimensional spaces conjugates the
+orthogonal projection onto `ker G` to the orthogonal projection onto `ker H`. -/
+theorem conj_starProjection_ker_of_conj [FiniteDimensional ℂ E] [FiniteDimensional ℂ F]
+    (U : E ≃ₗᵢ[ℂ] F) (G : E →ₗ[ℂ] E) (H : F →ₗ[ℂ] F)
+    (hconj : U.toLinearEquiv.toLinearMap.comp
+      (G.comp U.symm.toLinearEquiv.toLinearMap) = H) :
+    U.toLinearEquiv.toLinearMap.comp
+        ((LinearMap.ker G).starProjection.toLinearMap.comp
+          U.symm.toLinearEquiv.toLinearMap) =
+      (LinearMap.ker H).starProjection.toLinearMap := by
+  have hker : LinearMap.ker H = (LinearMap.ker G).map (U.toLinearEquiv : E →ₗ[ℂ] F) :=
+    U.ker_eq_map_of_conj G H hconj
+  apply LinearMap.ext
+  intro x
+  change U ((LinearMap.ker G).starProjection (U.symm x)) =
+    (LinearMap.ker H).starProjection x
+  simp only [hker, Submodule.starProjection_map_apply]
 
 end LinearIsometryEquiv

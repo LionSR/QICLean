@@ -192,21 +192,4 @@ theorem ker_compression_one_sub_starProjection_of_le_range
   rw [U.compression_one_sub_starProjection_eq_orthogonal_of_le_range S hS,
     Submodule.ker_starProjection, Submodule.orthogonal_orthogonal]
 
-/-- Compression preserves the norm gap of a supported parent interaction, with
-the kernel expressed directly in the compressed support coordinates. -/
-theorem norm_gap_compression_one_sub_starProjection_of_le_range
-    (U : E →ₗᵢ[ℂ] F) (S : Submodule ℂ F) (hS : S ≤ LinearMap.range U.toLinearMap)
-    {δ : ℝ} (hGap : ∀ w ∈ Sᗮ,
-      δ * ‖w‖ ≤ ‖(1 - S.starProjection.toLinearMap) w‖) :
-    ∀ v ∈ (S.map U.toLinearMap.adjoint)ᗮ,
-      δ * ‖v‖ ≤ ‖U.compression (1 - S.starProjection.toLinearMap) v‖ := by
-  have hker : LinearMap.ker (1 - S.starProjection.toLinearMap) = S := by
-    rw [← ContinuousLinearMap.toLinearMap_one, ← ContinuousLinearMap.toLinearMap_sub,
-      ← Submodule.starProjection_orthogonal', Submodule.ker_starProjection,
-      Submodule.orthogonal_orthogonal]
-  have h := U.norm_gap_compression_of_commute (1 - S.starProjection.toLinearMap)
-    (U.commute_rangeProjection_one_sub_starProjection_of_le_range S hS)
-    (by simpa only [hker] using hGap)
-  simpa only [U.ker_compression_one_sub_starProjection_of_le_range S hS] using h
-
 end LinearIsometry
