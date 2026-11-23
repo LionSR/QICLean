@@ -4,6 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Sites.Block
+import QICLean.ManyBody.Sites.Subregion
+import QICLean.Analysis.Norm.MatrixKroneckerContraction
 
 /-!
 # Systems changed on a region, and placement between two systems
@@ -39,12 +41,16 @@ equivalence `complCast hXY`.
 * `ManyBody.placeBetween_mul` — placements on a region compose.
 * `ManyBody.placeBetween_conjTranspose` — the adjoint of a placement.
 * `ManyBody.placeBetween_reindex_one_kronecker` — a placement beside spectator factors.
+* `ManyBody.norm_placeBetween_le`, `ManyBody.norm_submatrix_singleton_le` — norm bounds.
+* `ManyBody.subregionPlaceBetween`, `ManyBody.placeBetween_subregionPlaceBetween` — a matrix on
+  a region extended to a larger region; placing the extension is placing the matrix.
+* `ManyBody.reindex_blockConfigEquiv_placeBetween_singleton` — a matrix of one block.
 * `ManyBody.reindex_blockConfigEquiv_placeBetween` — a placement on a region of blocks is, on the
   sites, the placement on the preimage of the region.
 -/
 
 open Matrix
-open scoped Kronecker
+open scoped Kronecker Matrix.Norms.L2Operator
 
 universe u
 
@@ -267,6 +273,91 @@ theorem placeBetween_reindex_one_kronecker {W : V → Type} [∀ v, DecidableEq 
     · rw [zero_mul]
     · rfl
 
+/-- A placement between two systems does not increase the operator norm. -/
+theorem norm_placeBetween_le [∀ v, Fintype (X v)] [∀ v, Fintype (Y v)]
+    (hXY : ∀ v ∉ D, Y v = X v) (K : Matrix (RegionConfig Y D) (RegionConfig X D) ℂ) :
+    ‖placeBetween D hXY K‖ ≤ ‖K‖ := by
+  classical
+  refine (l2_opNorm_reindex_le _ _ _).trans ((l2_opNorm_kronecker_le _ _).trans ?_)
+  exact (mul_le_of_le_one_right (norm_nonneg K) (l2_opNorm_toMatrix_toPEquiv_le _))
+
+omit [Fintype V] [∀ v, DecidableEq (X v)] in
+/-- A matrix read through the evaluation at the one site of a one-site region does not change its
+operator norm bound. -/
+theorem norm_submatrix_singleton_le [∀ v, Fintype (X v)] [∀ v, Fintype (Y v)]
+    [∀ v, DecidableEq (X v)] (v₀ : V) (A : Matrix (Y v₀) (X v₀) ℂ) :
+    ‖A.submatrix (fun y : RegionConfig Y {v₀} ↦ y ⟨v₀, Finset.mem_singleton_self v₀⟩)
+      (fun x : RegionConfig X {v₀} ↦ x ⟨v₀, Finset.mem_singleton_self v₀⟩)‖ ≤ ‖A‖ := by
+  have hb : ∀ T : V → Type u, Function.Bijective
+      (fun y : RegionConfig T {v₀} ↦ y ⟨v₀, Finset.mem_singleton_self v₀⟩) := fun T ↦
+    ⟨fun y y' h ↦ funext fun v ↦ by
+      obtain rfl : v = ⟨v₀, Finset.mem_singleton_self v₀⟩ :=
+        Subtype.ext (Finset.mem_singleton.mp v.2)
+      exact h,
+    fun a ↦ ⟨fun v ↦ cast (congrArg T (Finset.mem_singleton.mp v.2).symm) a, rfl⟩⟩
+  exact l2_opNorm_reindex_le (Equiv.ofBijective _ (hb Y)).symm (Equiv.ofBijective _ (hb X)).symm A
+
+/-! ### Placement between two systems inside a larger region -/
+
+section Subregion
+
+variable {U : Finset V}
+
+/-- The extension of a matrix `K` from the configurations of `D ⊆ U` in `X` to those in a system
+`Y` agreeing with `X` outside `D`, to the configurations of `U`, by the identification of the
+equal bases on the sites of `U` outside `D`: the placement of `K` in the system of the sites of
+`U`. -/
+noncomputable def subregionPlaceBetween (hDU : D ⊆ U) (hXY : ∀ v ∉ D, Y v = X v)
+    (K : Matrix (RegionConfig Y D) (RegionConfig X D) ℂ) :
+    Matrix (RegionConfig Y U) (RegionConfig X U) ℂ :=
+  placeBetween (X := fun w : {v // v ∈ U} ↦ X w.1) (Y := fun w : {v // v ∈ U} ↦ Y w.1)
+    (D.subtype (· ∈ U)) (fun w hw ↦ hXY w.1 (by simpa using hw))
+    (reindex (subregionConfigEquiv hDU) (subregionConfigEquiv hDU) K)
+
+omit [Fintype V] in
+/-- Entries of the extension: the entry of `K` at the parts on `D` when the two configurations
+agree on the sites of `U` outside `D`, and zero otherwise. -/
+theorem subregionPlaceBetween_apply (hDU : D ⊆ U) (hXY : ∀ v ∉ D, Y v = X v)
+    (K : Matrix (RegionConfig Y D) (RegionConfig X D) ℂ) (y : RegionConfig Y U)
+    (x : RegionConfig X U) :
+    subregionPlaceBetween hDU hXY K y x =
+      if ∀ (w : {v // v ∈ U}) (hw : w.1 ∉ D), cast (hXY w.1 hw) (y w) = x w then
+        K (fun w ↦ y ⟨w.1, hDU w.2⟩) (fun w ↦ x ⟨w.1, hDU w.2⟩)
+      else 0 := by
+  rw [subregionPlaceBetween, placeBetween_apply]
+  exact if_congr ⟨fun h w hw ↦ h w (by simpa using hw), fun h w hw ↦ h w (by simpa using hw)⟩
+    rfl rfl
+
+omit [Fintype V] in
+/-- The extension does not increase the operator norm. -/
+theorem norm_subregionPlaceBetween_le [∀ v, Fintype (X v)] [∀ v, Fintype (Y v)]
+    (hDU : D ⊆ U) (hXY : ∀ v ∉ D, Y v = X v)
+    (K : Matrix (RegionConfig Y D) (RegionConfig X D) ℂ) :
+    ‖subregionPlaceBetween hDU hXY K‖ ≤ ‖K‖ := by
+  classical
+  exact (norm_placeBetween_le _ _).trans (l2_opNorm_reindex_le _ _ K)
+
+/-- **Nested placement between two systems.** Placing the extension of `K` from `D` to `U`
+gives the placement of `K`. -/
+theorem placeBetween_subregionPlaceBetween (hDU : D ⊆ U) (hXY : ∀ v ∉ D, Y v = X v)
+    (hU : ∀ v ∉ U, Y v = X v) (K : Matrix (RegionConfig Y D) (RegionConfig X D) ℂ) :
+    placeBetween U hU (subregionPlaceBetween hDU hXY K) = placeBetween D hXY K := by
+  ext σ τ
+  rw [placeBetween_apply, placeBetween_apply, subregionPlaceBetween_apply]
+  split_ifs with hUc hUD hD hD hD
+  · rfl
+  · push Not at hD
+    obtain ⟨v, hvD, hne⟩ := hD
+    by_cases hvU : v ∈ U
+    · exact absurd (hUD ⟨v, hvU⟩ hvD) hne
+    · exact absurd (hUc v hvU) hne
+  · exact absurd (fun (w : {v // v ∈ U}) hw ↦ hD w.1 hw) hUD
+  · rfl
+  · exact absurd (fun v hvU ↦ hD v fun hvD ↦ hvU (hDU hvD)) hUc
+  · rfl
+
+end Subregion
+
 /-! ### Placement between two systems read on blocks -/
 
 section Block
@@ -324,6 +415,19 @@ theorem reindex_blockConfigEquiv_placeBetween [∀ v, DecidableEq (X v)] (D' : F
   · exact absurd (key.mp h₁) h₂
   · exact absurd (key.mpr h₂) h₁
   · rfl
+
+/-- A matrix of one block, placed at that block of the blocked systems, is, read on the sites,
+the same matrix placed on the block. -/
+theorem reindex_blockConfigEquiv_placeBetween_singleton [∀ v, DecidableEq (X v)] (b : V')
+    (hY : ∀ v ∉ blockPreimage f {b}, Y v = X v)
+    (K : Matrix (blockSystem f Y b) (blockSystem f X b) ℂ) :
+    reindex (blockConfigEquiv f Y) (blockConfigEquiv f X)
+        (placeBetween {b} (blockSystem_eq_of_notMem f hY)
+          (K.submatrix (fun y ↦ y ⟨b, Finset.mem_singleton_self b⟩)
+            (fun x ↦ x ⟨b, Finset.mem_singleton_self b⟩))) =
+      placeBetween (blockPreimage f {b}) hY K := by
+  rw [reindex_blockConfigEquiv_placeBetween f {b} hY]
+  congr 1
 
 end Block
 
