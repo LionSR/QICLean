@@ -61,12 +61,15 @@ variable {P : Type} [DecidableEq P]
 /-- A gate family that can be run beside spectator factors, the factor `W p` in front of the
 basis of every party `p`. -/
 class GateFrame (G : Finset P → (P → Type) → (P → Type) → Type 1) [GateFamily G] where
-  /-- The gate beside the spectator factors `W`. -/
+  /-- The gate beside the spectator factors `W`; it may read the finiteness of the bases of the
+  spectators, of the input and of the output. -/
   frame : ∀ ⦃D : Finset P⦄ ⦃X Y : P → Type⦄ (W : P → Type) [∀ p, Fintype (W p)]
-    [∀ p, DecidableEq (W p)], G D X Y → G D (fun p ↦ W p × X p) (fun p ↦ W p × Y p)
+    [∀ p, DecidableEq (W p)] [∀ p, Fintype (X p)] [∀ p, DecidableEq (X p)] [∀ p, Fintype (Y p)]
+    [∀ p, DecidableEq (Y p)], G D X Y → G D (fun p ↦ W p × X p) (fun p ↦ W p × Y p)
   /-- The outcomes are unchanged. -/
   outcomeEquiv : ∀ ⦃D : Finset P⦄ ⦃X Y : P → Type⦄ (W : P → Type) [∀ p, Fintype (W p)]
-    [∀ p, DecidableEq (W p)] (g : G D X Y),
+    [∀ p, DecidableEq (W p)] [∀ p, Fintype (X p)] [∀ p, DecidableEq (X p)] [∀ p, Fintype (Y p)]
+    [∀ p, DecidableEq (Y p)] (g : G D X Y),
     GateFamily.Outcome (frame W g) ≃ GateFamily.Outcome g
 
 /-- An interpretation is compatible with framing when a framed gate acts as `1 ⊗ M` on the
@@ -174,20 +177,20 @@ end PairEffectGate
 
 /-- Pair sources run beside spectator factors. -/
 instance : GateFrame (P := P) SourceGate where
-  frame _ _ _ W _ _ g := g.frame W
-  outcomeEquiv _ _ _ _ _ _ _ := Equiv.refl Unit
+  frame _ _ _ W _ _ _ _ _ _ g := g.frame W
+  outcomeEquiv _ _ _ _ _ _ _ _ _ _ _ := Equiv.refl Unit
 
 /-- Pair effects run beside spectator factors. -/
 instance : GateFrame (P := P) PairEffectGate where
-  frame _ _ _ W _ _ g := g.frame W
-  outcomeEquiv _ _ _ _ _ _ _ := Equiv.refl Unit
+  frame _ _ _ W _ _ _ _ _ _ g := g.frame W
+  outcomeEquiv _ _ _ _ _ _ _ _ _ _ _ := Equiv.refl Unit
 
 /-- The gates of monomials run beside spectator factors. -/
 instance : GateFrame (ChainGate (P := P)) where
-  frame _ _ _ W _ _ g := match g with
+  frame _ _ _ W _ _ _ _ _ _ g := match g with
     | .inl g => .inl (g.frame W)
     | .inr g => .inr (g.frame W)
-  outcomeEquiv _ _ _ _ _ _ g := match g with
+  outcomeEquiv _ _ _ _ _ _ _ _ _ _ g := match g with
     | .inl _ => Equiv.refl Unit
     | .inr _ => Equiv.refl Unit
 
@@ -215,61 +218,67 @@ variable {G : Finset P → (P → Type) → (P → Type) → Type 1} [GateFamily
 
 /-- The party circuit `c` beside the spectator factors `W`, the factor `W p` in front of the
 basis of every party `p`: every gate framed, every local operation `A` replaced by `1 ⊗ A`. -/
-def frame : {X Y : P → Type} → PartyCircuit G X Y →
-    PartyCircuit G (fun p ↦ W p × X p) (fun p ↦ W p × Y p)
-  | _, _, done _ => done _
-  | _, _, gate D hY g => gate D (fun s hs ↦ congrArg (W s × ·) (hY s hs)) (GateFrame.frame W g)
-  | _, _, localOp p hY A =>
-    localOp p (fun s hs ↦ congrArg (W s × ·) (hY s hs)) ((1 : Matrix (W p) (W p) ℂ) ⊗ₖ A)
-  | _, _, localOps A => localOps fun p ↦ (1 : Matrix (W p) (W p) ℂ) ⊗ₖ A p
-  | _, _, comp c c' => comp (frame c) (frame c')
+def frame : {X Y : P → Type} → [∀ p, Fintype (X p)] → [∀ p, DecidableEq (X p)] →
+    PartyCircuit G X Y → PartyCircuit G (fun p ↦ W p × X p) (fun p ↦ W p × Y p)
+  | _, _, _, _, .done _ => .done _
+  | _, _, _, _, @PartyCircuit.gate _ _ _ _ _ _ D hY g =>
+    .gate D (fun s hs ↦ congrArg (W s × ·) (hY s hs)) (GateFrame.frame W g)
+  | _, _, _, _, @PartyCircuit.localOp _ _ _ _ _ _ p hY A =>
+    .localOp p (fun s hs ↦ congrArg (W s × ·) (hY s hs)) ((1 : Matrix (W p) (W p) ℂ) ⊗ₖ A)
+  | _, _, _, _, @PartyCircuit.localOps _ _ _ _ _ _ A =>
+    .localOps fun p ↦ (1 : Matrix (W p) (W p) ℂ) ⊗ₖ A p
+  | _, _, _, _, @PartyCircuit.comp _ _ _ _ _ _ _ c c' => .comp (frame c) (frame c')
 
 omit [DecidableEq P] in
 /-- Framing keeps the cells. -/
-@[simp] theorem gateCells_frame : {X Y : P → Type} → (c : PartyCircuit G X Y) →
+@[simp] theorem gateCells_frame : {X Y : P → Type} → [∀ p, Fintype (X p)] → [∀ p, DecidableEq (X p)] →
+    (c : PartyCircuit G X Y) →
     (c.frame W).gateCells = c.gateCells
-  | _, _, done _ => rfl
-  | _, _, gate _ _ _ => rfl
-  | _, _, localOp _ _ _ => rfl
-  | _, _, localOps _ => rfl
-  | _, _, comp c c' => congrArg₂ (· ++ ·) (gateCells_frame c) (gateCells_frame c')
+  | _, _, _, _, .done _ => rfl
+  | _, _, _, _, @PartyCircuit.gate _ _ _ _ _ _ _ _ _ => rfl
+  | _, _, _, _, @PartyCircuit.localOp _ _ _ _ _ _ _ _ _ => rfl
+  | _, _, _, _, @PartyCircuit.localOps _ _ _ _ _ _ _ => rfl
+  | _, _, _, _, @PartyCircuit.comp _ _ _ _ _ _ _ c c' => congrArg₂ (· ++ ·) (gateCells_frame c) (gateCells_frame c')
 
 omit [DecidableEq P] in
 /-- Framing keeps the number of gates. -/
-@[simp] theorem numGates_frame : {X Y : P → Type} → (c : PartyCircuit G X Y) →
+@[simp] theorem numGates_frame : {X Y : P → Type} → [∀ p, Fintype (X p)] → [∀ p, DecidableEq (X p)] →
+    (c : PartyCircuit G X Y) →
     (c.frame W).numGates = c.numGates
-  | _, _, done _ => rfl
-  | _, _, gate _ _ _ => rfl
-  | _, _, localOp _ _ _ => rfl
-  | _, _, localOps _ => rfl
-  | _, _, comp c c' => congrArg₂ (· + ·) (numGates_frame c) (numGates_frame c')
+  | _, _, _, _, .done _ => rfl
+  | _, _, _, _, @PartyCircuit.gate _ _ _ _ _ _ _ _ _ => rfl
+  | _, _, _, _, @PartyCircuit.localOp _ _ _ _ _ _ _ _ _ => rfl
+  | _, _, _, _, @PartyCircuit.localOps _ _ _ _ _ _ _ => rfl
+  | _, _, _, _, @PartyCircuit.comp _ _ _ _ _ _ _ c c' => congrArg₂ (· + ·) (numGates_frame c) (numGates_frame c')
 
 /-- Framing keeps the gate count. -/
-@[simp] theorem gateCount_frame : {X Y : P → Type} → (c : PartyCircuit G X Y) →
+@[simp] theorem gateCount_frame : {X Y : P → Type} → [∀ p, Fintype (X p)] → [∀ p, DecidableEq (X p)] →
+    (c : PartyCircuit G X Y) →
     (c.frame W).gateCount = c.gateCount
-  | _, _, done _ => rfl
-  | _, _, gate _ _ _ => rfl
-  | _, _, localOp _ _ _ => rfl
-  | _, _, localOps _ => rfl
-  | _, _, comp c c' => congrArg₂ (· + ·) (gateCount_frame c) (gateCount_frame c')
+  | _, _, _, _, .done _ => rfl
+  | _, _, _, _, @PartyCircuit.gate _ _ _ _ _ _ _ _ _ => rfl
+  | _, _, _, _, @PartyCircuit.localOp _ _ _ _ _ _ _ _ _ => rfl
+  | _, _, _, _, @PartyCircuit.localOps _ _ _ _ _ _ _ => rfl
+  | _, _, _, _, @PartyCircuit.comp _ _ _ _ _ _ _ c c' => congrArg₂ (· + ·) (gateCount_frame c) (gateCount_frame c')
 
 /-- Framing keeps the participations. -/
-@[simp] theorem participation_frame (p : P) : {X Y : P → Type} → (c : PartyCircuit G X Y) →
+@[simp] theorem participation_frame (p : P) : {X Y : P → Type} → [∀ p, Fintype (X p)] → [∀ p, DecidableEq (X p)] →
+    (c : PartyCircuit G X Y) →
     (c.frame W).participation p = c.participation p
-  | _, _, done _ => rfl
-  | _, _, gate _ _ _ => rfl
-  | _, _, localOp _ _ _ => rfl
-  | _, _, localOps _ => rfl
-  | _, _, comp c c' => congrArg₂ (· + ·) (participation_frame p c) (participation_frame p c')
+  | _, _, _, _, .done _ => rfl
+  | _, _, _, _, @PartyCircuit.gate _ _ _ _ _ _ _ _ _ => rfl
+  | _, _, _, _, @PartyCircuit.localOp _ _ _ _ _ _ _ _ _ => rfl
+  | _, _, _, _, @PartyCircuit.localOps _ _ _ _ _ _ _ => rfl
+  | _, _, _, _, @PartyCircuit.comp _ _ _ _ _ _ _ c c' => congrArg₂ (· + ·) (participation_frame p c) (participation_frame p c')
 
 /-- Framing keeps the number of gates containing a party. -/
-@[simp] theorem participationCount_frame (p : P) : {X Y : P → Type} →
-    (c : PartyCircuit G X Y) → (c.frame W).participationCount p = c.participationCount p
-  | _, _, done _ => rfl
-  | _, _, gate _ _ _ => rfl
-  | _, _, localOp _ _ _ => rfl
-  | _, _, localOps _ => rfl
-  | _, _, comp c c' =>
+@[simp] theorem participationCount_frame (p : P) : {X Y : P → Type} → [∀ p, Fintype (X p)] →
+    [∀ p, DecidableEq (X p)] → (c : PartyCircuit G X Y) → (c.frame W).participationCount p = c.participationCount p
+  | _, _, _, _, .done _ => rfl
+  | _, _, _, _, @PartyCircuit.gate _ _ _ _ _ _ _ _ _ => rfl
+  | _, _, _, _, @PartyCircuit.localOp _ _ _ _ _ _ _ _ _ => rfl
+  | _, _, _, _, @PartyCircuit.localOps _ _ _ _ _ _ _ => rfl
+  | _, _, _, _, @PartyCircuit.comp _ _ _ _ _ _ _ c c' =>
     congrArg₂ (· + ·) (participationCount_frame p c) (participationCount_frame p c')
 
 section Op
@@ -360,13 +369,14 @@ namespace Word
 variable (W : P → Type) [∀ p, Fintype (W p)] [∀ p, DecidableEq (W p)]
 
 /-- Framing keeps the source list. -/
-@[simp] theorem sources_frame : {X Y : P → Type} → (w : Word X Y) →
+@[simp] theorem sources_frame : {X Y : P → Type} → [∀ p, Fintype (X p)] → [∀ p, DecidableEq (X p)] →
+    (w : Word X Y) →
     Word.sources (w.frame W) = w.sources
-  | _, _, PartyCircuit.done _ => rfl
-  | _, _, PartyCircuit.gate _ _ _ => rfl
-  | _, _, PartyCircuit.localOp _ _ _ => rfl
-  | _, _, PartyCircuit.localOps _ => rfl
-  | _, _, PartyCircuit.comp w w' => congrArg₂ (· ++ ·) (sources_frame w') (sources_frame w)
+  | _, _, _, _, .done _ => rfl
+  | _, _, _, _, @PartyCircuit.gate _ _ _ _ _ _ _ _ _ => rfl
+  | _, _, _, _, @PartyCircuit.localOp _ _ _ _ _ _ _ _ _ => rfl
+  | _, _, _, _, @PartyCircuit.localOps _ _ _ _ _ _ _ => rfl
+  | _, _, _, _, @PartyCircuit.comp _ _ _ _ _ _ _ w w' => congrArg₂ (· ++ ·) (sources_frame w') (sources_frame w)
 
 /-- A framed allowed word is allowed. -/
 theorem isAllowed_frame {X Y : P → Type} [∀ p, Fintype (X p)] [∀ p, DecidableEq (X p)]
@@ -388,8 +398,8 @@ end Word
 /-- A weighted gate beside spectator factors: every monomial framed by the spectator factors of
 its cell. -/
 instance : GateFrame (WeightedGate (P := P)) where
-  frame D _ _ W _ _ g := ⟨g.terms.map fun t ↦ (t.1, t.2.frame fun s : ↥D ↦ W s)⟩
-  outcomeEquiv _ _ _ _ _ _ _ := Equiv.refl Unit
+  frame D _ _ W _ _ _ _ _ _ g := ⟨g.terms.map fun t ↦ (t.1, t.2.frame fun s : ↥D ↦ W s)⟩
+  outcomeEquiv _ _ _ _ _ _ _ _ _ _ _ := Equiv.refl Unit
 
 /-- A weighted sum of framed monomials is `1 ⊗` the weighted sum of the monomials. -/
 private theorem sum_map_op_frame {D : Finset P} {X Y W : P → Type} [∀ p, Fintype (X p)]
