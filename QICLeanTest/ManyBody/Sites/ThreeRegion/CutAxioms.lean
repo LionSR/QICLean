@@ -3,16 +3,16 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.ManyBody.Entropy.Cut.ThreeWayCut
+import QICLean.ManyBody.Sites.ThreeRegion.Cut
 import Lean.Elab.Command
 import Lean.Util.CollectAxioms
 
-/-! Standard-axiom audit of the three-way cut coordinates. -/
+/-! Standard-axiom audit of the coordinates of three regions. -/
 
 run_cmd do
   let allowed := #[``propext, ``Classical.choice, ``Quot.sound]
-  let decls := #[``Entropy.threeCutEquiv, ``Entropy.subsetSplitEquiv,
-    ``Entropy.threeCutEquiv_eq_trans,
+  let decls := #[``ManyBody.threeCutEquiv, ``ManyBody.subsetSplitEquiv,
+    ``ManyBody.threeCutEquiv_eq_trans,
     ``ManyBody.IsSupportedOn.reindex_threeCutEquiv_eq_kronecker_one,
     ``ManyBody.IsSupportedOn.reindex_threeCutEquiv_eq_one_kronecker]
   for decl in decls do
