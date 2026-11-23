@@ -186,3 +186,23 @@ theorem regionState_toEuclideanLin_of_mem_supportedOperators {S : Finset V}
     ← Matrix.mul_assoc, hUu, Matrix.one_mul]
 
 end ManyBody
+
+namespace Entropy
+
+variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
+
+/-- Expectations can be computed in cut coordinates. -/
+theorem inner_cutOperator (B : Finset V) (Y : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ)
+    (φ : EuclideanSpace ℂ (∀ v, Fin (n v))) :
+    ⟪ManyBody.cutVector B φ, toEuclideanLin (ManyBody.cutOperator B Y) (ManyBody.cutVector B φ)⟫_ℂ =
+      ⟪φ, toEuclideanLin Y φ⟫_ℂ := by
+  rw [Matrix.inner_toEuclideanLin_eq_trace, Matrix.inner_toEuclideanLin_eq_trace]
+  have hv : vecMulVec (WithLp.ofLp (ManyBody.cutVector B φ))
+      (star (WithLp.ofLp (ManyBody.cutVector B φ))) =
+      (vecMulVec (WithLp.ofLp φ) (star (WithLp.ofLp φ))).submatrix
+          (ManyBody.cutEquiv (fun v ↦ Fin (n v)) B).symm
+        (ManyBody.cutEquiv (fun v ↦ Fin (n v)) B).symm := by
+    ext a b; simp [vecMulVec_apply]
+  rw [hv, ManyBody.cutOperator, reindex_apply, submatrix_mul_equiv, trace_submatrix_equiv]
+
+end Entropy

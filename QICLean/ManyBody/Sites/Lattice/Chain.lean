@@ -8,6 +8,8 @@ import QICLean.Algebra.Combinatorics.PathGraphConnected
 import QICLean.ManyBody.Sites.Lattice.PathGraph
 import QICLean.ManyBody.Sites.GraphBoundary
 import Mathlib.Data.Finset.Max
+import Mathlib.Data.Finset.SymmDiff
+import Mathlib.Data.Nat.Dist
 import Mathlib.Order.Interval.Finset.Nat
 
 /-!
@@ -56,6 +58,9 @@ Changes: the family `fun i ↦ {i.castSucc, i.succ}`, written inline there, is n
   in a window of `2R` sites about one of its boundary edges.
 * `ManyBody.IsChainSupport.eq_interval_of_splits_of_range_one` — a range-one support split by
   a cut is the adjacent pair at that cut.
+* `ManyBody.interval_union_interval`, `ManyBody.card_interval_symmDiff_le_dist` — adjacent
+  intervals make up an interval, and moving the endpoints changes an interval at no more sites
+  than their displacement.
 * `ManyBody.ChainSupport.edist_le` — a support of range `R` has path-graph diameter at most `R`.
 * `ManyBody.interval_eq_chainBond`, `ManyBody.interval_eq_pair` — the interval `[i, i + 2)` is
   the bond `{i, i + 1}`.
@@ -117,6 +122,44 @@ theorem card_interval_le (a b : ℕ) : (interval L a b).card ≤ b - a := by
     (s := interval L a b) (t := Finset.Ico a b)
     (fun i hi ↦ Finset.mem_Ico.mpr (mem_interval.mp hi)) Fin.val_injective.injOn
   rwa [Nat.card_Ico] at h
+
+/-- Two adjacent intervals `[a, b)` and `[b, c)` with `a ≤ b ≤ c` make up `[a, c)`. -/
+theorem interval_union_interval {a b c : ℕ} (hab : a ≤ b) (hbc : b ≤ c) :
+    interval L a b ∪ interval L b c = interval L a c := by
+  ext x
+  simp only [Finset.mem_union, mem_interval]
+  omega
+
+open scoped symmDiff in
+/-- Moving the endpoints of an interval changes it at no more sites than the total displacement
+of the two endpoints. -/
+theorem card_interval_symmDiff_le_dist (a b c d : ℕ) :
+    ((interval L a b) ∆ (interval L c d)).card ≤ Nat.dist a c + Nat.dist b d := by
+  have hsub : (interval L a b) ∆ (interval L c d) ⊆
+      interval L (min a c) (max a c) ∪ interval L (min b d) (max b d) := by
+    intro i hi
+    simp only [Finset.mem_symmDiff, mem_interval, Finset.mem_union] at hi ⊢
+    omega
+  calc
+    _ ≤ (interval L (min a c) (max a c) ∪ interval L (min b d) (max b d)).card :=
+      Finset.card_le_card hsub
+    _ ≤ (interval L (min a c) (max a c)).card +
+        (interval L (min b d) (max b d)).card := Finset.card_union_le _ _
+    _ ≤ (max a c - min a c) + (max b d - min b d) :=
+      Nat.add_le_add (card_interval_le _ _) (card_interval_le _ _)
+    _ = Nat.dist a c + Nat.dist b d := by rw [Nat.dist_eq_max_sub_min, Nat.dist_eq_max_sub_min]
+
+open scoped symmDiff in
+/-- Cuts chosen in windows of `2ℓ` positions after `a` and after `b` give an interval within
+`2ℓ` sites of the interval `[a + ℓ + δ, b + ℓ + 1)`, for `δ ∈ {0, 1}`. Supporting geometry for
+Arad, Landau, Vazirani and Vidick, arXiv:1602.08828v2, `item:small-sr`, lines 830–831, and
+Proposition `prop:Cheby-AGSP-eff`, lines 1311–1333. -/
+theorem card_two_window_middle_symmDiff_le {a b ℓ : ℕ} (p s : Fin (2 * ℓ)) (δ : Fin 2) :
+    ((interval L (a + p.val + 1) (b + s.val + 1)) ∆
+      (interval L (a + ℓ + δ.val) (b + ℓ + 1))).card ≤ 2 * ℓ := by
+  apply le_trans (card_interval_symmDiff_le_dist _ _ _ _)
+  simp only [Nat.dist_eq_max_sub_min]
+  omega
 
 
 /-- A support of range `R`: a nonempty set of sites of diameter at most `R`. -/

@@ -10,19 +10,17 @@ import QICLean.Entropy.VonNeumann.Entropy
 /-!
 # Regional entropies with one local dimension
 
-Two facts about a system of sites `V` with the same local dimension `q` at every site, which
-the regional entropy inequalities of `QICLean.ManyBody.Entropy.RegionEntropyInequalities` do not
-contain. The statements use no geometry of `V`.
-
-* The dimension `q^{|D|}` of a region is at least one when `q ≥ 1`.
-* For `q = 1` every region of a unit vector has zero entropy.
+A fact about a system of sites `V` with the same local dimension `q` at every site, which the
+regional entropy inequalities of `QICLean.ManyBody.Entropy.RegionEntropyInequalities` do not
+contain: for `q = 1` every region of a unit vector has zero entropy. The statement uses no
+geometry of `V`.
 
 Moved from TNLean, `TNLean/Lattice/RegionEntropyInequalities.lean`. Changes: namespace
 `ManyBody` in place of `TNLean.Lattice`.
 
 ## Main results
 
-* `ManyBody.one_le_supportDim_const`, `ManyBody.regionEntropy_eq_zero_of_localDimension_one`.
+* `ManyBody.regionEntropy_eq_zero_of_localDimension_one`.
 
 ## References
 
@@ -32,14 +30,7 @@ Moved from TNLean, `TNLean/Lattice/RegionEntropyInequalities.lean`. Changes: nam
 
 namespace ManyBody
 
-variable {V : Type*} [Fintype V] [DecidableEq V] {q : ℕ}
-
-omit [Fintype V] [DecidableEq V] in
-/-- The dimension `q^{|D|}` of a region is at least one when `q ≥ 1`. -/
-theorem one_le_supportDim_const (hq : 1 ≤ q) (D : Finset V) :
-    1 ≤ Entropy.supportDim (fun _ : V ↦ q) D := by
-  rw [Entropy.supportDim, Finset.prod_const]
-  exact Nat.one_le_pow _ _ hq
+variable {V : Type*} [Fintype V] [DecidableEq V]
 
 /-- Every region of a unit vector on one-dimensional local spaces has zero entropy: the
 regional state has trace one on a one-dimensional configuration space, so its rank is at

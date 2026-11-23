@@ -10,6 +10,7 @@ Authors: QICLean contributors
 
 import QICLean.ManyBody.Entropy.AGSPRegionalEntropy
 import QICLean.ManyBody.Entropy.AuxiliaryPairEntropy
+import QICLean.ManyBody.Entropy.ChainInterval
 import QICLean.ManyBody.Entropy.ConditionalMovementRegional
 import QICLean.ManyBody.Entropy.ConditionalTwoFamilies
 import QICLean.ManyBody.Entropy.Cut

@@ -12,6 +12,9 @@ import Mathlib.Data.Int.Interval
 import Mathlib.Topology.Instances.Int
 import Mathlib.Topology.MetricSpace.Isometry
 import Mathlib.Topology.MetricSpace.Pseudo.Pi
+import Mathlib.Data.ZMod.ValMinAbs
+import Mathlib.Tactic.Abel
+import QICLean.ManyBody.Sites.Lattice.RingBlocks
 
 /-!
 # The graph of a metric interaction range
@@ -29,16 +32,22 @@ growth of Hastings' local index count, arXiv:cond-mat/0508554v3, lines 1273–12
 Moved from TNLean, `TNLean/Lattice/MetricInteractionGraph.lean` and
 `IntegerLatticeBallCount.lean` at commit `e113e005`, with no change to the statements.
 
+The cyclic distance `min (|i - v|, M - |i - v|)` of the ring of `M` sites is the least absolute
+residue of `i - v` in `ZMod M`, so it satisfies the triangle inequality and makes `Fin M` a metric
+space. Each of its balls of radius `R` has at most `2 ⌈R⌉₊ + 1` sites.
+
 ## Main definitions
 
 * `ManyBody.metricRangeGraph` — the graph of pairs within the interaction range.
 * `ManyBody.metricRangeBall` — the metric ball of radius `R`, as a region.
+* `ManyBody.cyclicMetricSpace` — the cyclic metric of the ring.
 
 ## Main results
 
 * `ManyBody.dist_le_range_mul_graphDist` — physical distance against graph distance.
 * `ManyBody.metricRangeGraph_neighbor_card_le` — the degree bound.
 * `ManyBody.card_centres_ball_le_polynomial_of_isometry` — polynomial ball growth.
+* `ManyBody.card_metricRangeBall_cyclicMetricSpace_le` — the balls of the cyclic metric.
 -/
 
 namespace ManyBody
@@ -314,5 +323,91 @@ theorem card_centres_ball_le_polynomial_of_isometry {σ κ : Type*}
       2 ^ D * (⌈r⌉₊ + 1) ^ D :=
   card_centres_ball_le_polynomial_of_dist_le e he.injective
     (fun a b ↦ (he.dist_eq a b).le) c hc i r
+
+/-! ### The cyclic metric of the ring -/
+
+private theorem val_finEquiv {M : ℕ} [NeZero M] (i : Fin M) :
+    (ZMod.finEquiv M i).val = (i : ℕ) := by
+  cases M
+  · exact (NeZero.ne 0 rfl).elim
+  · rfl
+
+/-- The cyclic distance on `Fin M` is the absolute value of the least absolute residue of the
+difference in `ZMod M`. -/
+theorem roundedPeriodicDistance_eq_valMinAbs {M : ℕ} [NeZero M] (i v : Fin M) :
+    roundedPeriodicDistance i v =
+      ((ZMod.finEquiv M i - ZMod.finEquiv M v).valMinAbs).natAbs := by
+  rcases le_total (i : ℕ) (v : ℕ) with hiv | hvi
+  · have hv : (ZMod.finEquiv M i).val ≤ (ZMod.finEquiv M v).val := by
+      simpa only [val_finEquiv] using hiv
+    rw [← ZMod.natAbs_valMinAbs_neg, neg_sub, ZMod.valMinAbs_natAbs_eq_min,
+      ZMod.val_sub hv, val_finEquiv, val_finEquiv]
+    simp only [roundedPeriodicDistance, Nat.dist_eq_sub_of_le hiv]
+  · have hv : (ZMod.finEquiv M v).val ≤ (ZMod.finEquiv M i).val := by
+      simpa only [val_finEquiv] using hvi
+    rw [ZMod.valMinAbs_natAbs_eq_min, ZMod.val_sub hv, val_finEquiv, val_finEquiv]
+    simp only [roundedPeriodicDistance, Nat.dist_eq_sub_of_le_right hvi]
+
+/-- The cyclic distance satisfies the triangle inequality. -/
+theorem roundedPeriodicDistance_triangle {M : ℕ} [NeZero M] (i v k : Fin M) :
+    roundedPeriodicDistance i k ≤ roundedPeriodicDistance i v + roundedPeriodicDistance v k := by
+  simp only [roundedPeriodicDistance_eq_valMinAbs]
+  have hid : ZMod.finEquiv M i - ZMod.finEquiv M k =
+      (ZMod.finEquiv M i - ZMod.finEquiv M v) +
+        (ZMod.finEquiv M v - ZMod.finEquiv M k) := by abel
+  rw [hid]
+  exact (ZMod.natAbs_valMinAbs_add_le _ _).trans (Int.natAbs_add_le _ _)
+
+/-- The metric space structure on `Fin M` given by the cyclic distance of the ring of `M`
+sites. It is not an instance, since `Fin M` carries another metric.
+Hastings, arXiv:cond-mat/0508554v3, lines 169–190 and 609–743. -/
+@[instance_reducible]
+noncomputable def cyclicMetricSpace (M : ℕ) [NeZero M] : MetricSpace (Fin M) where
+  dist i v := roundedPeriodicDistance i v
+  dist_self i := by simp [roundedPeriodicDistance]
+  dist_comm i v := by simp only [roundedPeriodicDistance, Nat.dist_comm]
+  dist_triangle i v k := by
+    exact_mod_cast roundedPeriodicDistance_triangle i v k
+  eq_of_dist_eq_zero {i v} hi := by
+    have hzero : roundedPeriodicDistance i v = 0 := by exact_mod_cast hi
+    rw [roundedPeriodicDistance_eq_valMinAbs, Int.natAbs_eq_zero,
+      ZMod.valMinAbs_eq_zero, sub_eq_zero] at hzero
+    exact (ZMod.finEquiv M).injective hzero
+
+/-- Every ball of radius `R` of the cyclic metric has at most `2 ⌈R⌉₊ + 1` sites, whatever the
+length of the ring. -/
+theorem card_metricRangeBall_cyclicMetricSpace_le {M : ℕ} [NeZero M] (R : ℝ) (i : Fin M) :
+    letI := cyclicMetricSpace M
+    (metricRangeBall R i).card ≤ 2 * Nat.ceil R + 1 := by
+  let _ := cyclicMetricSpace M
+  let f : Fin M → ℤ := fun v ↦ (ZMod.finEquiv M v - ZMod.finEquiv M i).valMinAbs
+  have hf : Set.MapsTo f (↑(metricRangeBall R i) : Set (Fin M))
+      (↑(Finset.Icc (-(Nat.ceil R : ℤ)) (Nat.ceil R : ℤ)) : Set ℤ) := by
+    intro v hv
+    have hvR : (roundedPeriodicDistance i v : ℝ) ≤ R :=
+      mem_metricRangeBall.mp hv
+    have hvceil : roundedPeriodicDistance i v ≤ Nat.ceil R := by
+      exact_mod_cast hvR.trans (Nat.le_ceil R)
+    have hd : roundedPeriodicDistance v i = roundedPeriodicDistance i v := by
+      simp only [roundedPeriodicDistance, Nat.dist_comm]
+    have hnat : (f v).natAbs ≤ Nat.ceil R := by
+      simpa only [f, ← roundedPeriodicDistance_eq_valMinAbs, hd] using hvceil
+    have hcast : ((f v).natAbs : ℤ) ≤ (Nat.ceil R : ℤ) := by exact_mod_cast hnat
+    have hpos : f v ≤ ((f v).natAbs : ℤ) := Int.le_natAbs
+    have hneg : -f v ≤ ((f v).natAbs : ℤ) := by simpa using (Int.le_natAbs (a := -f v))
+    simp only [Finset.mem_coe, Finset.mem_Icc]
+    omega
+  have hinj : Function.Injective f := by
+    intro a b hab
+    have hd := ZMod.injective_valMinAbs hab
+    have he : ZMod.finEquiv M a = ZMod.finEquiv M b := by
+      simpa using congrArg (fun x ↦ x + ZMod.finEquiv M i) hd
+    exact (ZMod.finEquiv M).injective he
+  have hc := Finset.card_le_card_of_injOn f hf hinj.injOn
+  have hcard : (Finset.Icc (-(Nat.ceil R : ℤ)) (Nat.ceil R : ℤ)).card =
+      2 * Nat.ceil R + 1 := by
+    rw [Int.card_Icc]
+    omega
+  exact hc.trans_eq hcard
 
 end ManyBody

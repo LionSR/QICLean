@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import Mathlib.Algebra.Order.Chebyshev
 import QICLean.Analysis.Subspace.ViableSubspace
+import QICLean.Algebra.Kronecker.KroneckerEmbed
 
 /-!
 # Closeness of low-energy subspaces under a perturbation on the low spectrum
@@ -34,6 +35,11 @@ statement uses `⌈(c - m) / (2 h)⌉`. Documented in
 * `Submodule.spectralSpanLE`: the span `T(c)`.
 * `Submodule.mul_norm_starProjection_orthogonal_spectralSpanLE_le`: Markov's inequality.
 * `Submodule.isCloseTo_spectralSpanLE_of_perturbation`: the closeness.
+* `Submodule.finrank_le_finrank_of_quadratic_window`: a subspace on which a quadratic form stays
+  below `μ + c` has dimension at most that of a subspace `G` whose orthogonal complement has
+  form at least `μ + γ`, for `c < γ`.
+* `Matrix.exists_slice_product_energy_le`: for `M ⊗ 1 + N` with `0 ≤ N ≤ c`, a vector of energy
+  at most `μ` has a slice `φ` all of whose products `φ ⊗ χ` have energy at most `μ + c`.
 -/
 
 open scoped InnerProductSpace
@@ -426,3 +432,118 @@ theorem commute_starProjection_spectralSpanLE
 end Submodule
 end
 end
+
+section QuadraticWindow
+
+open scoped InnerProductSpace ComplexOrder Kronecker
+open Matrix
+
+/-- A subspace on which the quadratic form of `T` stays below `μ + c` has dimension at most that
+of `G`, when the form is at least `μ + γ` on the orthogonal complement of `G` and `c < γ`. -/
+theorem Submodule.finrank_le_finrank_of_quadratic_window
+    {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E]
+    (T : E →ₗ[ℂ] E) (G V : Submodule ℂ E) {μ γ c : ℝ} (hc : c < γ)
+    (hG : ∀ w ∈ Gᗮ, (μ + γ) * ‖w‖ ^ 2 ≤ (inner ℂ w (T w)).re)
+    (hV : ∀ v ∈ V, (inner ℂ v (T v)).re ≤ (μ + c) * ‖v‖ ^ 2) :
+    Module.finrank ℂ V ≤ Module.finrank ℂ G := by
+  have hdisj : V ⊓ Gᗮ = ⊥ := by
+    rw [Submodule.eq_bot_iff]
+    intro w hw
+    by_contra hw0
+    have hpos : 0 < (γ - c) * ‖w‖ ^ 2 :=
+      mul_pos (sub_pos.2 hc) (by positivity)
+    have h1 := hG w hw.2
+    have h2 := hV w hw.1
+    nlinarith
+  have hsum := Submodule.finrank_sup_add_finrank_inf_eq V Gᗮ
+  rw [hdisj, finrank_bot, add_zero] at hsum
+  have hle := Submodule.finrank_le (V ⊔ Gᗮ)
+  have hG' := Submodule.finrank_add_finrank_orthogonal G
+  omega
+
+variable {α β : Type*} [Fintype α] [Fintype β] [DecidableEq α] [DecidableEq β]
+
+/-- **Product slices of bounded energy.** Let `M ⊗ 1 + N` act on a product,
+with `0 ≤ N ≤ c`. If a nonzero `Ψ` has energy at most `μ`, then some nonzero
+slice `φ` of `Ψ` makes every product `φ ⊗ χ` have energy at most `μ + c`. -/
+theorem Matrix.exists_slice_product_energy_le (M : Matrix α α ℂ)
+    (N : Matrix (α × β) (α × β) ℂ) (hN0 : N.PosSemidef) {c mu : ℝ}
+    (hN1 : ((c : ℂ) • (1 : Matrix (α × β) (α × β) ℂ) - N).PosSemidef)
+    (Ψ : α × β → ℂ) (hΨ : Ψ ≠ 0)
+    (hE : (star Ψ ⬝ᵥ ((M ⊗ₖ (1 : Matrix β β ℂ) + N) *ᵥ Ψ)).re ≤
+      mu * (star Ψ ⬝ᵥ Ψ).re) :
+    ∃ φ : α → ℂ, φ ≠ 0 ∧ ∀ χ : β → ℂ,
+      (star (fun p : α × β ↦ φ p.1 * χ p.2) ⬝ᵥ
+          ((M ⊗ₖ (1 : Matrix β β ℂ) + N) *ᵥ fun p : α × β ↦ φ p.1 * χ p.2)).re ≤
+        (mu + c) * (star (fun p : α × β ↦ φ p.1 * χ p.2) ⬝ᵥ
+          fun p : α × β ↦ φ p.1 * χ p.2).re := by
+  classical
+  set s : β → ℝ := fun b ↦
+    (star (fun a ↦ Ψ (a, b)) ⬝ᵥ (M *ᵥ fun a ↦ Ψ (a, b))).re
+  set n : β → ℝ := fun b ↦ (star (fun a ↦ Ψ (a, b)) ⬝ᵥ fun a ↦ Ψ (a, b)).re
+  have hNre : ∀ w : α × β → ℂ, 0 ≤ (star w ⬝ᵥ (N *ᵥ w)).re := fun w ↦
+    (Complex.nonneg_iff.mp (hN0.dotProduct_mulVec_nonneg w)).1
+  have hsplit : ∀ w : α × β → ℂ, star w ⬝ᵥ ((M ⊗ₖ (1 : Matrix β β ℂ) + N) *ᵥ w) =
+      star w ⬝ᵥ ((M ⊗ₖ (1 : Matrix β β ℂ)) *ᵥ w) + star w ⬝ᵥ (N *ᵥ w) := by
+    intro w
+    rw [add_mulVec, dotProduct_add]
+  have hsum : ∑ b, s b ≤ ∑ b, mu * n b := by
+    have h := hE
+    rw [hsplit, Complex.add_re, star_dotProduct_kronecker_one_mulVec_eq_sum_slices,
+      star_dotProduct_self_eq_sum_slices, Complex.re_sum, Complex.re_sum] at h
+    rw [← Finset.mul_sum]
+    linarith [hNre Ψ]
+  obtain ⟨b, hb0, hb⟩ : ∃ b, (fun a ↦ Ψ (a, b)) ≠ 0 ∧ s b ≤ mu * n b := by
+    by_contra hcon
+    push Not at hcon
+    obtain ⟨p, hp⟩ := Function.ne_iff.mp hΨ
+    have hlt : ∑ b, mu * n b < ∑ b, s b := by
+      refine Finset.sum_lt_sum (fun b _ ↦ ?_) ⟨p.2, Finset.mem_univ _, ?_⟩
+      · by_cases hzero : (fun a ↦ Ψ (a, b)) = 0
+        · have hs : s b = 0 := by simp only [s, hzero, star_zero, zero_dotProduct,
+            Complex.zero_re]
+          have hn : n b = 0 := by simp only [n, hzero, star_zero, zero_dotProduct,
+            Complex.zero_re]
+          rw [hs, hn, mul_zero]
+        · exact (hcon b hzero).le
+      · refine hcon p.2 fun hzero ↦ hp ?_
+        simpa using congrFun hzero p.1
+    linarith
+  refine ⟨fun a ↦ Ψ (a, b), hb0, fun χ ↦ ?_⟩
+  set φ : α → ℂ := fun a ↦ Ψ (a, b)
+  set v : α × β → ℂ := fun p ↦ φ p.1 * χ p.2
+  have hslice : ∀ b', (fun a ↦ v (a, b')) = χ b' • φ := by
+    intro b'
+    funext a
+    simp only [v, Pi.smul_apply, smul_eq_mul, mul_comm]
+  have hconj : ∀ z : ℂ, z * star z = ((‖z‖ ^ 2 : ℝ) : ℂ) := by
+    intro z
+    rw [Complex.star_def, Complex.mul_conj']
+    push_cast
+    rfl
+  have hleft : (star v ⬝ᵥ ((M ⊗ₖ (1 : Matrix β β ℂ)) *ᵥ v)).re =
+      ∑ b', ‖χ b'‖ ^ 2 * s b := by
+    rw [star_dotProduct_kronecker_one_mulVec_eq_sum_slices, Complex.re_sum]
+    refine Finset.sum_congr rfl fun b' _ ↦ ?_
+    rw [hslice, star_smul, mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul,
+      smul_eq_mul, ← mul_assoc, hconj, Complex.re_ofReal_mul]
+  have hnorm : (star v ⬝ᵥ v).re = ∑ b', ‖χ b'‖ ^ 2 * n b := by
+    rw [star_dotProduct_self_eq_sum_slices, Complex.re_sum]
+    refine Finset.sum_congr rfl fun b' _ ↦ ?_
+    rw [hslice, star_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul, smul_eq_mul,
+      ← mul_assoc, hconj, Complex.re_ofReal_mul]
+  have hright : (star v ⬝ᵥ (N *ᵥ v)).re ≤ c * (star v ⬝ᵥ v).re := by
+    have h := (Complex.nonneg_iff.mp (hN1.dotProduct_mulVec_nonneg v)).1
+    rw [sub_mulVec, dotProduct_sub, smul_mulVec, one_mulVec, dotProduct_smul,
+      Complex.sub_re, smul_eq_mul, Complex.re_ofReal_mul] at h
+    linarith
+  have hleft_le : (star v ⬝ᵥ ((M ⊗ₖ (1 : Matrix β β ℂ)) *ᵥ v)).re ≤
+      mu * (star v ⬝ᵥ v).re := by
+    rw [hleft, hnorm, Finset.mul_sum]
+    refine Finset.sum_le_sum fun b' _ ↦ ?_
+    have hχ : 0 ≤ ‖χ b'‖ ^ 2 := sq_nonneg _
+    nlinarith
+  rw [hsplit, Complex.add_re]
+  linarith
+
+end QuadraticWindow

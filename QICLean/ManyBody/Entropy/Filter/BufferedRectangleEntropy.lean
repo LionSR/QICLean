@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Sites.Lattice.IntegerRectangle
+import QICLean.ManyBody.Sites.Lattice.RectangleColumns
 import QICLean.ManyBody.Entropy.Typical.PlaneMarginalTails
 import QICLean.ManyBody.Entropy.QuditRegionEntropy
 import QICLean.ManyBody.Entropy.RegionEntropy
@@ -40,6 +41,8 @@ Moved from TNLean, `TNLean/Lattice/BufferedRectangleEntropy.lean`. Changes: name
   named constants `initialPaddingScale`, `initialPaddingConst` and `initialBufferConst`.
 * `ManyBody.exists_condEntropy_le_initialBuffer`: the integer-clearance specialization of
   Lemma 3.2 (`lem:initial-buffer`).
+* `ManyBody.cutLogBudget_stripInterval_le`: the cut budget of a column interval of a rectangle,
+  linear in its width.
 
 ## References
 
@@ -100,6 +103,19 @@ theorem cutLogBudget_le_card {Λ : Finset (ℤ × ℤ)} {q R : ℕ} (hq : 1 ≤ 
   rw [nsmul_eq_mul] at hsum
   rw [Entropy.cutLogBudget]
   linarith
+
+/-- The cut budget of a column interval of the rectangle `[0, L) × [0, w)` grows linearly with
+the width: `ℬ ≤ 1 + 2R 2^{2R(R+1)} w log² (e q^{1 + 2R(R+1)})`. -/
+theorem cutLogBudget_stripInterval_le {q : ℕ} (hq : 1 ≤ q) (L w R a b : ℕ) :
+    cutLogBudget (fun X : AdmissibleSupport (rectangularDomain L w) R ↦ X.1) (fun _ ↦ q)
+        (stripInterval L w a b) ≤
+      1 + (stripCrossConst R * w : ℕ) *
+        Real.log (Real.exp 1 * (q : ℝ) ^ (1 + 2 * R * (R + 1))) ^ 2 := by
+  refine (cutLogBudget_le_card hq _).trans ?_
+  have hc : ((crossingTerms (fun X : AdmissibleSupport (rectangularDomain L w) R ↦ X.1)
+      (stripInterval L w a b)).card : ℝ) ≤ (stripCrossConst R * w : ℕ) := by
+    exact_mod_cast card_crossingTerms_stripInterval_le L w R a b
+  gcongr
 
 /-- The constant `8 (R + 1) μ_R` of the crossing count, `μ_R = 2^{v_R - 1}`. -/
 noncomputable def bufferCrossConst (R : ℕ) : ℝ :=

@@ -322,4 +322,71 @@ theorem exists_disjoint_regional_clipping_structure
   · exact fun j ↦ commute_centered_partially_clipped_sum A e t T hcomm j
   · exact fun j u hu hut ↦ spectralProjectionGE_le_centered_partially_clipped_sum
       A e t u T (fun i ↦ (hpos i).isHermitian) he hu hut j
+
+section EnergyMerge
+
+open scoped BigOperators ComplexOrder MatrixOrder Matrix.Norms.L2Operator
+open Matrix
+
+/-- **Joining two disjoint regions.** For positive `A` and `B` supported on disjoint regions,
+their least eigenvalues `e_A` and `e_B` are attained by one unit vector, and adding a positive
+contraction `Y` gives a least eigenvalue `e_P` of `A + B + Y` with
+`e_A + e_B ≤ e_P ≤ e_A + e_B + 1`. Hence estimates from below with error at most three for `A`
+and `B` add to an estimate from below with error at most seven for `A + B + Y`.
+Arad–Landau–Vazirani–Vidick, arXiv:1602.08828v2, Figure `fig:algo1`, lines 1627–1632. -/
+theorem exists_disjoint_regional_energy_merge {L q : ℕ}
+    (hq : 0 < q) (S T : Finset (Fin L)) (hST : Disjoint S T)
+    (A B Y : Matrix (Fin L → Fin q) (Fin L → Fin q) ℂ)
+    (hAS : IsSupportedOn (X := fun _ ↦ Fin q) A S)
+    (hBT : IsSupportedOn (X := fun _ ↦ Fin q) B T)
+    (hA : A.PosSemidef) (hB : B.PosSemidef)
+    (hY : Y.PosSemidef) (hY1 : Y ≤ 1) :
+    ∃ (eA eB eP : ℝ) (x z : (Fin L → Fin q) → ℂ),
+      star x ⬝ᵥ x = 1 ∧ A *ᵥ x = (eA : ℂ) • x ∧ B *ᵥ x = (eB : ℂ) • x ∧
+      (A - (eA : ℂ) • 1).PosSemidef ∧ (B - (eB : ℂ) • 1).PosSemidef ∧
+      star z ⬝ᵥ z = 1 ∧ (A + B + Y) *ᵥ z = (eP : ℂ) • z ∧
+      (A + B + Y - (eP : ℂ) • 1).PosSemidef ∧
+      eA + eB ≤ eP ∧ eP ≤ eA + eB + 1 ∧
+      ∀ pA pB : ℝ, eA - 3 ≤ pA → pA ≤ eA → eB - 3 ≤ pB → pB ≤ eB →
+        eP - 7 ≤ pA + pB ∧ pA + pB ≤ eP := by
+  classical
+  have hcap (D : Matrix (Fin L → Fin q) (Fin L → Fin q) ℂ) (hD : D.PosSemidef) :
+      D ≤ (⌈‖D‖⌉₊ : ℝ) • 1 := by
+    simpa only [Algebra.algebraMap_eq_smul_one] using
+      (CStarAlgebra.norm_le_iff_le_algebraMap D (by positivity) hD.nonneg).mp (Nat.le_ceil ‖D‖)
+  have : NeZero q := ⟨hq.ne'⟩
+  obtain ⟨e, x, hx, hxe, he, hclip⟩ :=
+    exists_disjoint_regional_clipping_structure (X := fun _ ↦ Fin q)
+      ![S, T] ![A, B] ![⌈‖A‖⌉₊, ⌈‖B‖⌉₊]
+      (by intro i j hij; fin_cases i <;> fin_cases j <;> simp_all [disjoint_comm])
+      (by intro i; fin_cases i <;> simpa using (by assumption))
+      (by intro i; fin_cases i <;> simpa using (by assumption))
+      (by
+        intro i
+        fin_cases i
+        · exact hcap A hA
+        · exact hcap B hB)
+      Y 1 hY (by simpa using hY1)
+  obtain ⟨_hX, _hxzero, _hcomm, _hhigh, _hcap, _hnorm, E, z, hz, hze, hE, hE0, hE1⟩ :=
+    hclip 0 le_rfl ∅
+  simp only [Finset.notMem_empty, ite_false, Fin.sum_univ_two, cons_val_zero,
+    cons_val_one, Nat.cast_one] at hze hE hE1
+  have hsplit : A - (e 0 : ℂ) • 1 + (B - (e 1 : ℂ) • 1) + Y =
+      A + B + Y - ((e 0 + e 1 : ℝ) : ℂ) • 1 := by
+    rw [Complex.ofReal_add, add_smul]
+    abel
+  refine ⟨e 0, e 1, E + e 0 + e 1, x, z, hx, hxe 0, hxe 1, he 0, he 1, hz,
+    ?_, ?_, ?_, ?_, ?_⟩
+  · rw [hsplit, sub_mulVec, smul_mulVec, one_mulVec] at hze
+    simpa only [Complex.ofReal_add, add_smul, add_assoc] using (sub_eq_iff_eq_add.mp hze)
+  · convert hE using 1
+    simp only [Complex.ofReal_add, add_smul]
+    abel
+  · linarith only [hE0]
+  · linarith only [hE1]
+  · intro pA pB hpA hpAe hpB hpBe
+    constructor <;> linarith only [hpA, hpAe, hpB, hpBe, hE0, hE1]
+
+end EnergyMerge
+
 end ManyBody
