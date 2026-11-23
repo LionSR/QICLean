@@ -9,5 +9,6 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Circuit.Party.Original
 
 import QICLean.Circuit.Party.Original.Basic
+import QICLean.Circuit.Party.Original.Frame
 import QICLean.Circuit.Party.Original.FromWord
 import QICLean.Circuit.Party.Original.PairGate
