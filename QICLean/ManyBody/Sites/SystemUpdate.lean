@@ -42,6 +42,7 @@ equivalence `complCast hXY`.
 * `ManyBody.placeBetween_conjTranspose` — the adjoint of a placement.
 * `ManyBody.placeBetween_reindex_one_kronecker` — a placement beside spectator factors.
 * `ManyBody.norm_placeBetween_le`, `ManyBody.norm_submatrix_singleton_le` — norm bounds.
+* `ManyBody.placeBetween_piKronecker` — a placed product operator.
 * `ManyBody.subregionPlaceBetween`, `ManyBody.placeBetween_subregionPlaceBetween` — a matrix on
   a region extended to a larger region; placing the extension is placing the matrix.
 * `ManyBody.reindex_blockConfigEquiv_placeBetween_singleton` — a matrix of one block.
@@ -296,6 +297,31 @@ theorem norm_submatrix_singleton_le [∀ v, Fintype (X v)] [∀ v, Fintype (Y v)
       exact h,
     fun a ↦ ⟨fun v ↦ cast (congrArg T (Finset.mem_singleton.mp v.2).symm) a, rfl⟩⟩
   exact l2_opNorm_reindex_le (Equiv.ofBijective _ (hb Y)).symm (Equiv.ofBijective _ (hb X)).symm A
+
+/-- **A placed product operator is a product operator**: placing `⊗_{w ∈ D} K w` between two
+systems is the product of the `K w` on `D` and of the identifications of the equal bases outside
+`D`. -/
+theorem placeBetween_piKronecker (hXY : ∀ v ∉ D, Y v = X v)
+    (K : ∀ w : {v // v ∈ D}, Matrix (Y w) (X w) ℂ) :
+    placeBetween D hXY (piKronecker K) =
+      piKronecker fun v ↦
+        if h : v ∈ D then K ⟨v, h⟩ else (Equiv.cast (hXY v h)).toPEquiv.toMatrix := by
+  ext y x
+  rw [placeBetween_apply]
+  simp only [piKronecker_apply]
+  have key : ∀ k, (if h : k ∈ D then K ⟨k, h⟩ else (Equiv.cast (hXY k h)).toPEquiv.toMatrix)
+      (y k) (x k) = if h : k ∈ D then K ⟨k, h⟩ (y k) (x k) else
+        if cast (hXY k h) (y k) = x k then 1 else 0 := fun k ↦ by
+    by_cases h : k ∈ D <;> simp [h, PEquiv.toMatrix_apply, eq_comm]
+  rw [Finset.prod_congr rfl fun k _ ↦ key k, Fintype.prod_dite]
+  simp only [Finset.prod_boole, Finset.mem_univ, true_imp_iff]
+  split_ifs with ha hb hb
+  · rw [mul_one]
+    exact Finset.prod_congr (congrArg (@Finset.univ {v // v ∈ D}) (Subsingleton.elim _ _))
+      fun _ _ ↦ rfl
+  · exact absurd (fun (w : {a // a ∉ D}) ↦ ha w.1 w.2) hb
+  · exact absurd (fun v hv ↦ hb ⟨v, hv⟩) ha
+  · rw [mul_zero]
 
 /-! ### Placement between two systems inside a larger region -/
 
