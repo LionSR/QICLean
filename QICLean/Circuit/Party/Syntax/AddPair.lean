@@ -4,8 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Sites.Config
-import Mathlib.Analysis.CStarAlgebra.Matrix
-import Mathlib.Analysis.InnerProductSpace.PiL2
+import QICLean.Analysis.Norm.VectorPreparation
 
 /-!
 # Fresh factors in front of the bases of two parties
@@ -15,12 +14,10 @@ pair effects remove such factors. This module provides the basis types and matri
 The system `addPair X hpq α β` is `X` with the fresh first factor `α` at `p` and `β` at `q ≠ p`;
 its configurations are pairs of a configuration of the fresh factors and a configuration of `X`
 (`addPairConfigEquiv`), and at one party its basis is the fresh factor there times the old basis
-(`addPairSiteEquiv`). The preparation `prepMatrix e v` of a vector `v` on a fresh factor maps
-`|x⟩` to `v ⊗ |x⟩`, the new basis read through `e`; it is `‖v‖` times an isometry.
+(`addPairSiteEquiv`). The preparation of a vector on a fresh factor is `Matrix.prepMatrix`.
 
 ## Main definitions
 
-* `QuantumCircuit.Party.prepMatrix` — the preparation of a vector on a fresh factor.
 * `QuantumCircuit.Party.addPair`, `QuantumCircuit.Party.addPairLeft`,
   `QuantumCircuit.Party.addPairRight`, `QuantumCircuit.Party.addPairConfigEquiv`.
 * `QuantumCircuit.Party.pairFactor`, `QuantumCircuit.Party.addPairSiteEquiv` — the fresh factors
@@ -28,8 +25,6 @@ its configurations are pairs of a configuration of the fresh factors and a confi
 
 ## Main results
 
-* `QuantumCircuit.Party.conjTranspose_mul_prepMatrix`, `QuantumCircuit.Party.norm_prepMatrix_le`,
-  `QuantumCircuit.Party.norm_prepMatrix` — a preparation is `‖v‖` times an isometry.
 * `QuantumCircuit.Party.addPairConfigEquiv_apply_fst`,
   `QuantumCircuit.Party.addPairConfigEquiv_symm_apply_left` and their companions — the two
   directions of `addPairConfigEquiv`.
@@ -46,77 +41,6 @@ open scoped Matrix.Norms.L2Operator
 namespace QuantumCircuit.Party
 
 variable {P : Type} [DecidableEq P]
-
-/-! ### The preparation of a vector on a fresh factor -/
-
-section Prep
-
-variable {m n α : Type} [DecidableEq n]
-
-/-- The preparation of the vector `v ∈ ℂ^α` on a fresh factor: the matrix from `ℂ^n` to `ℂ^m`
-that maps `|x⟩` to `v ⊗ |x⟩`, the basis of `m` read as `α × n` through `e`. -/
-def prepMatrix (e : m ≃ α × n) (v : EuclideanSpace ℂ α) : Matrix m n ℂ :=
-  Matrix.of fun y x ↦ if (e y).2 = x then v (e y).1 else 0
-
-/-- The entries of a preparation. -/
-@[simp] theorem prepMatrix_apply (e : m ≃ α × n) (v : EuclideanSpace ℂ α) (y : m) (x : n) :
-    prepMatrix e v y x = if (e y).2 = x then v (e y).1 else 0 :=
-  rfl
-
-variable [Fintype m] [Fintype n] [Fintype α]
-
-omit [Fintype n] in
-/-- A preparation is `‖v‖` times an isometry. -/
-theorem conjTranspose_mul_prepMatrix (e : m ≃ α × n) (v : EuclideanSpace ℂ α) :
-    (prepMatrix e v)ᴴ * prepMatrix e v = ((‖v‖ ^ 2 : ℝ) : ℂ) • 1 := by
-  rcases isEmpty_or_nonempty α with hα | ⟨⟨a₀⟩⟩
-  · have : IsEmpty m := e.isEmpty
-    rw [Subsingleton.elim v 0, norm_zero]
-    ext x x'
-    simp [mul_apply]
-  let : Fintype n := Fintype.ofInjective (fun x ↦ e.symm (a₀, x)) fun _ _ h ↦ by simpa using h
-  ext x x'
-  rw [mul_apply, ← e.symm.sum_comp, Fintype.sum_prod_type, Matrix.smul_apply, one_apply]
-  split_ifs with h
-  · subst h
-    simp only [conjTranspose_apply, prepMatrix_apply, Equiv.apply_symm_apply, apply_ite star,
-      star_zero, ite_mul, zero_mul, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ,
-      ite_true, smul_eq_mul, mul_one, EuclideanSpace.norm_sq_eq, Complex.ofReal_sum,
-      Complex.ofReal_pow]
-    refine Finset.sum_congr rfl fun a _ ↦ ?_
-    rw [← Complex.conj_mul', Complex.star_def]
-  · simp only [conjTranspose_apply, prepMatrix_apply, Equiv.apply_symm_apply, apply_ite star,
-      star_zero, ite_mul, zero_mul, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ,
-      ite_true, smul_zero]
-    exact Finset.sum_eq_zero fun a _ ↦ ite_eq_right_iff.mpr fun h' ↦ absurd h'.symm h
-
-omit [Fintype m] [Fintype α] in
-/-- The identity matrix has operator norm at most `1`, and `0` on an empty basis. -/
-private theorem norm_one_le_one : ‖(1 : Matrix n n ℂ)‖ ≤ 1 := by
-  have h := l2_opNorm_conjTranspose_mul_self (1 : Matrix n n ℂ)
-  rw [conjTranspose_one, Matrix.one_mul] at h
-  nlinarith [norm_nonneg (1 : Matrix n n ℂ)]
-
-/-- A preparation of `v` has operator norm at most `‖v‖`. -/
-theorem norm_prepMatrix_le (e : m ≃ α × n) (v : EuclideanSpace ℂ α) :
-    ‖prepMatrix e v‖ ≤ ‖v‖ := by
-  have h := l2_opNorm_conjTranspose_mul_self (prepMatrix e v)
-  rw [conjTranspose_mul_prepMatrix, norm_smul, Complex.norm_real, Real.norm_eq_abs,
-    abs_of_nonneg (sq_nonneg _)] at h
-  have h1 : ‖(1 : Matrix n n ℂ)‖ ≤ 1 := norm_one_le_one
-  by_contra hlt
-  have hlt' := mul_lt_mul'' (not_le.mp hlt) (not_le.mp hlt) (norm_nonneg v) (norm_nonneg v)
-  nlinarith [mul_le_mul_of_nonneg_left h1 (sq_nonneg ‖v‖)]
-
-/-- A preparation of `v` on a nonempty basis has operator norm `‖v‖`. -/
-theorem norm_prepMatrix [Nonempty n] (e : m ≃ α × n) (v : EuclideanSpace ℂ α) :
-    ‖prepMatrix e v‖ = ‖v‖ := by
-  have h := l2_opNorm_conjTranspose_mul_self (prepMatrix e v)
-  rw [conjTranspose_mul_prepMatrix, norm_smul, Complex.norm_real, Real.norm_eq_abs,
-    abs_of_nonneg (sq_nonneg _), norm_one, mul_one] at h
-  nlinarith [norm_nonneg (prepMatrix e v), norm_nonneg v]
-
-end Prep
 
 /-! ### The canonical output: fresh factors in front -/
 

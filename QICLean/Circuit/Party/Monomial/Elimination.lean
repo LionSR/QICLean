@@ -71,8 +71,8 @@ combination of two normalized pair vectors into one is `EuclideanSpace.norm_pair
 Adapted from TNLean, `TNLean/Lattice/PartyCircuit/PairEffectElimination.lean` at commit
 `ded76a266d` (Apache-2.0).  Changes: operators are matrices on finite basis types with the
 operator norm; the inventory is a product of basis types; appending a vector and the
-reassociation and exchange of tensor factors become `appendVector` and
-`Matrix.reindex` along `Equiv.prodAssoc` and `prodPrependEquiv`; the definitions about one gate
+reassociation and exchange of tensor factors become `Matrix.prepMatrix` along `Equiv.prodComm`
+and `Matrix.reindex` along `Equiv.prodAssoc` and `prodPrependEquiv`; the definitions about one gate
 expansion are in the namespace `GateExpansion`.
 -/
 
@@ -193,9 +193,11 @@ def replaceGate (m : ℕ) : (L : GateExpansion X Y) → Matrix (Y × inventory m
   | [] => 0
   | p :: L =>
       p.1 • reindex (Equiv.prodAssoc _ _ _) (Equiv.refl X)
-          (appendVector (Y × p.2.stackIndex m) (inventoryVector m L) * p.2.replace m) +
+          (prepMatrix (Equiv.prodComm (Y × p.2.stackIndex m) _) (inventoryVector m L) *
+            p.2.replace m) +
         reindex (prodPrependEquiv _ _ _)
-          (Equiv.refl X) (appendVector (Y × inventory m L) (p.2.stackVector m) * replaceGate m L)
+          (Equiv.refl X) (prepMatrix (Equiv.prodComm (Y × inventory m L) _) (p.2.stackVector m) *
+            replaceGate m L)
 
 /-- The expansion of the replaced gate into terms with their coefficients: the term of a
 monomial `c M` with `n` effects and insertion positions `κ` has coefficient `c / m^n`.
@@ -207,10 +209,12 @@ def termList (m : ℕ) :
   | p :: L =>
       (Finset.univ.toList.map fun κ => (p.1 * ((m : ℂ) ^ p.2.effectCount)⁻¹,
         reindex (Equiv.prodAssoc _ _ _) (Equiv.refl X)
-          (appendVector (Y × p.2.stackIndex m) (inventoryVector m L) * p.2.replaceTerm m κ))) ++
+          (prepMatrix (Equiv.prodComm (Y × p.2.stackIndex m) _) (inventoryVector m L) *
+            p.2.replaceTerm m κ))) ++
       (termList m L).map fun q => (q.1,
         reindex (prodPrependEquiv _ _ _)
-          (Equiv.refl X) (appendVector (Y × inventory m L) (p.2.stackVector m) * q.2))
+          (Equiv.refl X)
+          (prepMatrix (Equiv.prodComm (Y × inventory m L) _) (p.2.stackVector m) * q.2))
 
 /-- **Expansion of the replaced gate** into the weighted terms of `termList`. -/
 theorem replaceGate_eq_sum_termList (m : ℕ) : (L : GateExpansion X Y) →
@@ -226,10 +230,10 @@ theorem replaceGate_eq_sum_termList (m : ℕ) : (L : GateExpansion X Y) →
         rfl
       · have key : ∀ l : List (ℂ × Matrix (Y × inventory m L) X ℂ),
             reindex (prodPrependEquiv _ _ _) (Equiv.refl X)
-                (appendVector (Y × inventory m L) (p.2.stackVector m) *
+                (prepMatrix (Equiv.prodComm (Y × inventory m L) _) (p.2.stackVector m) *
                   (l.map fun q => q.1 • q.2).sum) =
               ((l.map fun q => (q.1, reindex (prodPrependEquiv _ _ _) (Equiv.refl X)
-                (appendVector (Y × inventory m L) (p.2.stackVector m) * q.2))).map
+                (prepMatrix (Equiv.prodComm (Y × inventory m L) _) (p.2.stackVector m) * q.2))).map
                   fun q => q.1 • q.2).sum := by
           intro l
           induction l with
@@ -288,7 +292,7 @@ Polynomial-PEPS manuscript (September 24, 2026), Lemma 5.1 `lem:effects`, displa
 equation `eq:compression-effect-error`, `04-compression.tex`, lines 60–64 and 117–121. -/
 theorem norm_replaceGate_sub_le {m : ℕ} (hm : m ≠ 0) {r : ℕ} :
     (L : GateExpansion X Y) → (∀ p ∈ L, p.2.IsAllowed ∧ p.2.effectCount ≤ r) →
-    ‖replaceGate m L - appendVector Y (inventoryVector m L) * gate L‖ ≤
+    ‖replaceGate m L - prepMatrix (Equiv.prodComm Y _) (inventoryVector m L) * gate L‖ ≤
       r / Real.sqrt m * (L.map fun p => ‖p.1‖).sum
   | [], _ => by
       simp only [replaceGate, gate, Matrix.mul_zero, sub_self, norm_zero, List.map_nil,
@@ -300,35 +304,38 @@ theorem norm_replaceGate_sub_le {m : ℕ} (hm : m ≠ 0) {r : ℕ} :
       have ih := norm_replaceGate_sub_le hm L hL'
       have hGL : ‖inventoryVector m L‖ = 1 :=
         norm_inventoryVector m L fun q hq => (hL' q hq).1
-      have e1 : appendVector Y (vecKron (p.2.stackVector m) (inventoryVector m L)) *
+      have e1 : prepMatrix (Equiv.prodComm Y _)
+            (vecKron (p.2.stackVector m) (inventoryVector m L)) *
             (p.1 • p.2.eval) =
           p.1 • reindex (Equiv.prodAssoc _ _ _) (Equiv.refl X)
-            (appendVector (Y × p.2.stackIndex m) (inventoryVector m L) *
-              (appendVector Y (p.2.stackVector m) * p.2.eval)) := by
+            (prepMatrix (Equiv.prodComm (Y × p.2.stackIndex m) _) (inventoryVector m L) *
+              (prepMatrix (Equiv.prodComm Y _) (p.2.stackVector m) * p.2.eval)) := by
         ext ⟨y, s, i⟩ x
-        simp only [appendVector_mul_apply, reindex_apply, Matrix.smul_apply, submatrix_apply,
+        simp only [prepMatrix_prodComm_mul_apply, reindex_apply, Matrix.smul_apply, submatrix_apply,
           Equiv.refl_symm, Equiv.coe_refl, id_eq, Equiv.prodAssoc_symm_apply, vecKron,
           smul_eq_mul]
         ring
-      have e2 : appendVector Y (vecKron (p.2.stackVector m) (inventoryVector m L)) * gate L =
+      have e2 : prepMatrix (Equiv.prodComm Y _)
+            (vecKron (p.2.stackVector m) (inventoryVector m L)) * gate L =
           reindex (prodPrependEquiv _ _ _)
-            (Equiv.refl X) (appendVector (Y × inventory m L) (p.2.stackVector m) *
-              (appendVector Y (inventoryVector m L) * gate L)) := by
+            (Equiv.refl X) (prepMatrix (Equiv.prodComm (Y × inventory m L) _) (p.2.stackVector m) *
+              (prepMatrix (Equiv.prodComm Y _) (inventoryVector m L) * gate L)) := by
         ext ⟨y, s, i⟩ x
-        simp only [appendVector_mul_apply, reindex_apply, submatrix_apply, Equiv.refl_symm,
+        simp only [prepMatrix_prodComm_mul_apply, reindex_apply, submatrix_apply, Equiv.refl_symm,
           Equiv.coe_refl, id_eq, Equiv.symm_trans_apply, Equiv.prodCongr_symm,
           Equiv.prodCongr_apply, Prod.map, Equiv.prodComm_symm, Equiv.prodComm_apply, Prod.swap,
           Equiv.prodAssoc_symm_apply, vecKron, prodPrependEquiv]
         ring
       have hsplit : replaceGate m (p :: L) -
-          appendVector Y (inventoryVector m (p :: L)) * gate (p :: L) =
+          prepMatrix (Equiv.prodComm Y _) (inventoryVector m (p :: L)) * gate (p :: L) =
           p.1 • reindex (Equiv.prodAssoc _ _ _) (Equiv.refl X)
-            (appendVector (Y × p.2.stackIndex m) (inventoryVector m L) *
-              (p.2.replace m - appendVector Y (p.2.stackVector m) * p.2.eval)) +
+            (prepMatrix (Equiv.prodComm (Y × p.2.stackIndex m) _) (inventoryVector m L) *
+              (p.2.replace m - prepMatrix (Equiv.prodComm Y _) (p.2.stackVector m) * p.2.eval)) +
           reindex (prodPrependEquiv _ _ _)
             (Equiv.refl X)
-            (appendVector (Y × inventory m L) (p.2.stackVector m) *
-              (replaceGate m L - appendVector Y (inventoryVector m L) * gate L)) := by
+            (prepMatrix (Equiv.prodComm (Y × inventory m L) _) (p.2.stackVector m) *
+              (replaceGate m L -
+                prepMatrix (Equiv.prodComm Y _) (inventoryVector m L) * gate L)) := by
         simp only [replaceGate, gate, inventoryVector, Matrix.mul_add]
         rw [e1, e2]
         simp only [reindex_apply, Matrix.mul_sub, submatrix_sub, Pi.sub_apply, smul_sub]
@@ -339,15 +346,16 @@ theorem norm_replaceGate_sub_le {m : ℕ} (hm : m ≠ 0) {r : ℕ} :
         gcongr
         refine (l2_opNorm_reindex_le _ _ _).trans <| (l2_opNorm_mul _ _).trans ?_
         calc _ ≤ 1 * (p.2.effectCount / Real.sqrt m) :=
-              mul_le_mul ((norm_appendVector_le _).trans hGL.le) (p.2.norm_replace_sub_le hm hpA)
+              mul_le_mul ((norm_prepMatrix_le _ _).trans hGL.le) (p.2.norm_replace_sub_le hm hpA)
                 (norm_nonneg _) zero_le_one
           _ ≤ _ := by
               rw [one_mul]
               exact div_le_div_of_nonneg_right (by exact_mod_cast hpr) (Real.sqrt_nonneg _)
       · refine (l2_opNorm_reindex_le _ _ _).trans <| (l2_opNorm_mul _ _).trans ?_
-        calc _ ≤ 1 * ‖replaceGate m L - appendVector Y (inventoryVector m L) * gate L‖ :=
+        calc _ ≤ 1 * ‖replaceGate m L -
+              prepMatrix (Equiv.prodComm Y _) (inventoryVector m L) * gate L‖ :=
               mul_le_mul_of_nonneg_right
-                ((norm_appendVector_le _).trans (p.2.norm_stackVector m hpA).le) (norm_nonneg _)
+                ((norm_prepMatrix_le _ _).trans (p.2.norm_stackVector m hpA).le) (norm_nonneg _)
           _ ≤ _ := by rw [one_mul]; exact ih
 
 /-- Every term of the expansion of `G'_m` is a contraction. -/
@@ -361,10 +369,10 @@ theorem norm_term_le_one (m : ℕ) : (L : GateExpansion X Y) → (∀ p ∈ L, p
       simp only [termList, List.mem_append, List.mem_map] at hq
       rcases hq with ⟨κ, _, rfl⟩ | ⟨q', hq', rfl⟩
       · exact (l2_opNorm_reindex_le _ _ _).trans <| l2_opNorm_mul_le_one _ _
-          ((norm_appendVector_le _).trans (norm_inventoryVector m L hL').le)
+          ((norm_prepMatrix_le _ _).trans (norm_inventoryVector m L hL').le)
           (p.2.norm_replaceTerm_le_one m hp κ)
       · exact (l2_opNorm_reindex_le _ _ _).trans <| l2_opNorm_mul_le_one _ _
-          ((norm_appendVector_le _).trans (p.2.norm_stackVector m hp).le)
+          ((norm_prepMatrix_le _ _).trans (p.2.norm_stackVector m hp).le)
           (norm_term_le_one m L hL' q' hq')
 
 end GateExpansion
@@ -396,7 +404,7 @@ Polynomial-PEPS manuscript (September 24, 2026), Lemma 5.1 `lem:effects`,
 theorem pairEffectElimination {m r : ℕ} (hm : m ≠ 0) (L : GateExpansion X Y)
     (hL : ∀ p ∈ L, p.2.IsAllowed ∧ p.2.effectCount ≤ r) :
     ‖inventoryVector m L‖ = 1 ∧
-    ‖replaceGate m L - appendVector Y (inventoryVector m L) * gate L‖ ≤
+    ‖replaceGate m L - prepMatrix (Equiv.prodComm Y _) (inventoryVector m L) * gate L‖ ≤
       r / Real.sqrt m * (L.map fun p => ‖p.1‖).sum ∧
     replaceGate m L = ((termList m L).map fun q => q.1 • q.2).sum ∧
     (termList m L).length ≤ L.length * m ^ r ∧
@@ -446,13 +454,13 @@ Polynomial-PEPS manuscript (September 24, 2026), `04-compression.tex`, lines 210
 theorem replaceGate_rescaled {m r : ℕ} (hm : m ≠ 0) (L : GateExpansion X Y)
     (hL : ∀ p ∈ L, p.2.IsAllowed ∧ p.2.effectCount ≤ r) (hG : ‖gate L‖ ≤ 1) {δ : ℝ}
     (hδ : r / Real.sqrt m * (L.map fun p => ‖p.1‖).sum ≤ δ) :
-    ‖replaceGate m L - appendVector Y (inventoryVector m L) * gate L‖ ≤ δ ∧
+    ‖replaceGate m L - prepMatrix (Equiv.prodComm Y _) (inventoryVector m L) * gate L‖ ≤ δ ∧
     ‖replaceGate m L‖ ≤ 1 + δ ∧
     ‖(((1 + δ)⁻¹ : ℝ) : ℂ) • replaceGate m L‖ ≤ 1 ∧
-    ‖(((1 + δ)⁻¹ : ℝ) : ℂ) • replaceGate m L - appendVector Y (inventoryVector m L) * gate L‖ ≤
-      2 * δ := by
-  have hB : ‖appendVector Y (inventoryVector m L) * gate L‖ ≤ 1 :=
-    l2_opNorm_mul_le_one _ _ ((norm_appendVector_le _).trans
+    ‖(((1 + δ)⁻¹ : ℝ) : ℂ) • replaceGate m L -
+        prepMatrix (Equiv.prodComm Y _) (inventoryVector m L) * gate L‖ ≤ 2 * δ := by
+  have hB : ‖prepMatrix (Equiv.prodComm Y _) (inventoryVector m L) * gate L‖ ≤ 1 :=
+    l2_opNorm_mul_le_one _ _ ((norm_prepMatrix_le _ _).trans
       (norm_inventoryVector m L fun p hp => (hL p hp).1).le) hG
   have h := (norm_replaceGate_sub_le hm L hL).trans hδ
   have hδ0 : 0 ≤ δ := (norm_nonneg _).trans h
@@ -471,10 +479,11 @@ theorem replaceGate_rescaled_stackLength {r : ℕ} {S δ : ℝ} (hδ : 0 < δ)
     (L : GateExpansion X Y) (hL : ∀ p ∈ L, p.2.IsAllowed ∧ p.2.effectCount ≤ r)
     (hG : ‖gate L‖ ≤ 1) (hS : (L.map fun p => ‖p.1‖).sum ≤ S) :
     ‖replaceGate (stackLength r S δ) L -
-        appendVector Y (inventoryVector (stackLength r S δ) L) * gate L‖ ≤ δ ∧
+        prepMatrix (Equiv.prodComm Y _) (inventoryVector (stackLength r S δ) L) * gate L‖ ≤ δ ∧
     ‖(((1 + δ)⁻¹ : ℝ) : ℂ) • replaceGate (stackLength r S δ) L‖ ≤ 1 ∧
     ‖(((1 + δ)⁻¹ : ℝ) : ℂ) • replaceGate (stackLength r S δ) L -
-        appendVector Y (inventoryVector (stackLength r S δ) L) * gate L‖ ≤ 2 * δ := by
+        prepMatrix (Equiv.prodComm Y _) (inventoryVector (stackLength r S δ) L) * gate L‖ ≤
+      2 * δ := by
   have hsum : 0 ≤ (L.map fun p => ‖p.1‖).sum :=
     List.sum_nonneg fun x hx => by
       obtain ⟨p, _, rfl⟩ := List.mem_map.1 hx

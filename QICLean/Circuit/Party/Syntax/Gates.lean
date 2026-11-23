@@ -44,8 +44,11 @@ pair effect is its adjoint (`PairEffectGate.op_gate`).
   `QuantumCircuit.Party.PairEffectGate.ev_reindexInput`,
   `QuantumCircuit.Party.SourceGate.eq_reindexOutput` — the equivalences enter only by
   relabelling.
-* `QuantumCircuit.Party.SourceGate.op_gate`, `QuantumCircuit.Party.PairEffectGate.op_gate` —
-  the operators of one source and of one effect.
+* `QuantumCircuit.Party.SourceGate.op_gate`, `QuantumCircuit.Party.PairEffectGate.op_gate`,
+  `QuantumCircuit.Party.PairEffectGate.op_gate_eq_effectMatrix`,
+  `QuantumCircuit.Party.ChainGate.op_gate_inl`, `QuantumCircuit.Party.ChainGate.op_gate_inr` —
+  the operators of one source and of one effect, as the preparation `Matrix.prepMatrix` and the
+  effect `Matrix.effectMatrix` of its vector.
 * `QuantumCircuit.Party.SourceGate.norm_ev_le`, `QuantumCircuit.Party.PairEffectGate.norm_ev_le`
   — a normalized source or effect is a contraction.
 
@@ -551,6 +554,14 @@ theorem op_gate [Fintype P] [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] [�
   change placeBetween D _ g.regionMatrix = placeBetween D _ g.toSourceGate.regionMatrixᴴ
   rw [regionMatrix_eq_conjTranspose]
 
+/-- The operator of one pair effect is the effect `⟨η| ⊗ 1` on the removed factors, the input
+read through `configEquiv`. -/
+theorem op_gate_eq_effectMatrix [Fintype P] [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
+    [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)] (g : PairEffectGate D X Y) :
+    (PartyCircuit.gate D g.outside g).op PairEffectGate.ev =
+      (effectMatrix g.vector (Config Y)).submatrix id g.configEquiv := by
+  rw [op_gate, conjTranspose_prepMatrix]
+
 end PairEffectGate
 
 /-! ### Gates of monomials -/
@@ -567,6 +578,29 @@ instance : GateFamily.UniqueOutcome (ChainGate (P := P)) where
 /-- The interpretation of the gates of monomials. -/
 def chainEv : Interpretation (ChainGate (P := P)) :=
   Interpretation.sum SourceGate.ev PairEffectGate.ev
+
+namespace ChainGate
+
+variable [Fintype P] {D : Finset P} {X Y : P → Type} [∀ s, Fintype (X s)]
+  [∀ s, DecidableEq (X s)] [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)]
+
+/-- Among the gates of monomials, one pair source acts as the preparation of its vector. -/
+theorem op_gate_inl (g : SourceGate D X Y) :
+    (PartyCircuit.gate D g.outside (.inl g : ChainGate D X Y)).op chainEv =
+      prepMatrix g.configEquiv g.vector := by
+  rw [PartyCircuit.op_gate (G := ChainGate) chainEv D g.outside (.inl g), ← SourceGate.op_gate,
+    PartyCircuit.op_gate]
+  rfl
+
+/-- Among the gates of monomials, one pair effect acts as the effect of its vector. -/
+theorem op_gate_inr (g : PairEffectGate D X Y) :
+    (PartyCircuit.gate D g.outside (.inr g : ChainGate D X Y)).op chainEv =
+      (effectMatrix g.vector (Config Y)).submatrix id g.configEquiv := by
+  rw [PartyCircuit.op_gate (G := ChainGate) chainEv D g.outside (.inr g),
+    ← PairEffectGate.op_gate_eq_effectMatrix, PartyCircuit.op_gate]
+  rfl
+
+end ChainGate
 
 /-- Pair sources and pair effects are allowed when their vectors are normalized. -/
 def ChainGate.IsAllowed : ∀ ⦃D : Finset P⦄ ⦃X Y : P → Type⦄ [∀ s, Fintype (X s)]

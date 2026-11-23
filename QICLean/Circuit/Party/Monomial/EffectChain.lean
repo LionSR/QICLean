@@ -4,7 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Analysis.TensorProduct.CyclicInsertionMatrix
-import QICLean.Analysis.Norm.MatrixKroneckerContraction
+import QICLean.Analysis.Norm.VectorPreparation
+import QICLean.Algebra.Combinatorics.TupleEquiv
 
 /-!
 # Pair effects and the replaced monomial
@@ -36,8 +37,6 @@ The expansion of the replaced monomial into its terms and the gate expansions ar
 
 ## Main definitions
 
-* `QuantumCircuit.Party.effectMatrix` : the pair effect `⟨η| ⊗ 1` as a matrix.
-* `QuantumCircuit.Party.appendVector` : the matrix of `y ↦ y ⊗ v`.
 * `QuantumCircuit.Party.EffectChain` : a monomial written as a chain of matrices and pair
   effects.
 * `QuantumCircuit.Party.EffectChain.eval` : the matrix of a monomial.
@@ -62,8 +61,9 @@ Adapted from TNLean, `TNLean/Lattice/PartyCircuit/PairEffectChain.lean` at commi
 `ded76a266d` (Apache-2.0).  Changes: the bundled inner product spaces are replaced by finite
 basis types, continuous linear maps by matrices with the operator norm, tensor products of
 spaces by products of basis types, and the maps appending a vector, exchanging two tensor
-factors and tensoring with an identity by `appendVector`, `Matrix.reindex` and Kronecker
-products with identity matrices.
+factors and tensoring with an identity by the preparation `Matrix.prepMatrix` along
+`Equiv.prodComm`, `Matrix.reindex` and Kronecker products with identity matrices; the pair effect
+is `Matrix.effectMatrix`.
 -/
 
 noncomputable section
@@ -72,98 +72,6 @@ open scoped InnerProductSpace Kronecker Matrix.Norms.L2Operator
 open Matrix EuclideanSpace CyclicInsertion
 
 namespace QuantumCircuit.Party
-
-/-! ### Matrices of pair effects and appended vectors -/
-
-section Matrices
-
-variable {ι V X Y S : Type*}
-
-/-- The exchange `(w, (y, t)) ↦ (y, (w, t))` of the first two factors of a triple product. -/
-def prodLeftComm (W Y T : Type*) : W × (Y × T) ≃ Y × (W × T) where
-  toFun x := (x.2.1, (x.1, x.2.2))
-  invFun x := (x.2.1, (x.1, x.2.2))
-  left_inv _ := rfl
-  right_inv _ := rfl
-
-/-- The exchange of the first two factors on a triple. -/
-@[simp]
-theorem prodLeftComm_apply (W Y T : Type*) (x : W × (Y × T)) :
-    prodLeftComm W Y T x = (x.2.1, (x.1, x.2.2)) :=
-  rfl
-
-/-- The inverse exchange of the first two factors on a triple. -/
-@[simp]
-theorem prodLeftComm_symm_apply (W Y T : Type*) (x : Y × (W × T)) :
-    (prodLeftComm W Y T).symm x = (x.2.1, (x.1, x.2.2)) :=
-  rfl
-
-/-- The pair effect `⟨η| ⊗ 1 : ℂ^{ι × S} → ℂ^S` as a matrix: its entry at `(s, (i, s'))` is
-`conj (η i)` when `s = s'` and `0` otherwise. -/
-def effectMatrix (η : EuclideanSpace ℂ ι) (S : Type*) [DecidableEq S] : Matrix S (ι × S) ℂ :=
-  Matrix.of fun s x ↦ if s = x.2 then star (η x.1) else 0
-
-/-- The entries of the pair effect. -/
-@[simp]
-theorem effectMatrix_apply (η : EuclideanSpace ℂ ι) (S : Type*) [DecidableEq S] (s : S)
-    (x : ι × S) : effectMatrix η S s x = if s = x.2 then star (η x.1) else 0 :=
-  rfl
-
-/-- The pair effect sends a product vector `h ⊗ v` to `⟪η, h⟫ v`. -/
-theorem toEuclideanLin_effectMatrix_vecKron [Fintype ι] [DecidableEq ι] [Fintype S]
-    [DecidableEq S] (η h : EuclideanSpace ℂ ι) (v : EuclideanSpace ℂ S) :
-    toEuclideanLin (effectMatrix η S) (vecKron h v) = ⟪η, h⟫_ℂ • v := by
-  ext s
-  simp only [vecKron, toLpLin_toLp, toLin'_apply, mulVec, dotProduct, effectMatrix_apply,
-    RCLike.star_def, mul_comm, mul_ite, zero_mul, Fintype.sum_prod_type, Finset.sum_ite_eq,
-    Finset.mem_univ, ↓reduceIte, PiLp.inner_apply, RCLike.inner_apply, PiLp.smul_apply,
-    smul_eq_mul]
-  rw [Finset.mul_sum]
-  exact Finset.sum_congr rfl fun _ _ => by ring
-
-/-- Appending a fixed vector `v` behind the input: the matrix of `y ↦ y ⊗ v`, with entry
-`v w` at `((y, w), y)` and `0` at `((y', w), y)` for `y' ≠ y`. -/
-def appendVector (Y : Type*) [DecidableEq Y] (v : EuclideanSpace ℂ V) : Matrix (Y × V) Y ℂ :=
-  Matrix.of fun x y ↦ if x.1 = y then v x.2 else 0
-
-/-- The entries of the matrix appending a vector. -/
-@[simp]
-theorem appendVector_apply (Y : Type*) [DecidableEq Y] (v : EuclideanSpace ℂ V) (x : Y × V)
-    (y : Y) : appendVector Y v x y = if x.1 = y then v x.2 else 0 :=
-  rfl
-
-/-- Appending `v` after the matrix `A`: the entry at `((y, w), z)` is `v w * A y z`. -/
-theorem appendVector_mul_apply [Fintype Y] [DecidableEq Y] (v : EuclideanSpace ℂ V)
-    (A : Matrix Y X ℂ) (x : Y × V) (z : X) :
-    (appendVector Y v * A) x z = v x.2 * A x.1 z := by
-  simp [Matrix.mul_apply, appendVector_apply, ite_mul, zero_mul, Finset.sum_ite_eq]
-
-/-- Appending a vector multiplies norms by at most its norm. -/
-theorem norm_appendVector_le [Fintype Y] [DecidableEq Y] [Fintype V]
-    (v : EuclideanSpace ℂ V) : ‖appendVector Y v‖ ≤ ‖v‖ := by
-  refine l2_opNorm_le_of_forall (norm_nonneg _) fun u => ?_
-  have h : (EuclideanSpace.equiv (Y × V) ℂ).symm (appendVector Y v *ᵥ u) =
-      vecKron ((EuclideanSpace.equiv Y ℂ).symm u) v := by
-    ext ⟨y, w⟩
-    simp [mulVec, dotProduct, appendVector_apply, vecKron, mul_comm]
-  rw [h, norm_vecKron, mul_comm]
-
-/-- The pair effect is the adjoint of appending `η`, with the two factors exchanged. -/
-theorem effectMatrix_eq_conjTranspose [DecidableEq S] (η : EuclideanSpace ℂ ι) :
-    effectMatrix η S = reindex (Equiv.refl S) (Equiv.prodComm S ι) (appendVector S η)ᴴ := by
-  ext s ⟨i, s'⟩
-  by_cases h : s = s'
-  · subst h; simp
-  · simp [h, Ne.symm h]
-
-/-- A pair effect with a unit vector is a contraction. -/
-theorem norm_effectMatrix_le [Fintype ι] [DecidableEq ι] [Fintype S] [DecidableEq S]
-    {η : EuclideanSpace ℂ ι} (hη : ‖η‖ = 1) : ‖effectMatrix η S‖ ≤ 1 := by
-  rw [effectMatrix_eq_conjTranspose]
-  exact (l2_opNorm_reindex_le _ _ _).trans ((l2_opNorm_conjTranspose _).trans_le
-    ((norm_appendVector_le η).trans hη.le))
-
-end Matrices
 
 /-! ### Monomials as chains of matrices and pair effects -/
 
@@ -261,9 +169,9 @@ the stack of that occurrence, and the stack stays idle afterwards.  The output r
 Polynomial-PEPS manuscript (September 24, 2026), proof of Lemma 5.1, `04-compression.tex`,
 lines 100–106. -/
 def replace (m : ℕ) : {X : Type} → (M : EffectChain X Y) → Matrix (Y × M.stackIndex m) X ℂ
-  | _, final F => appendVector Y (EuclideanSpace.single () 1) * F
+  | _, final F => prepMatrix (Equiv.prodComm Y _) (EuclideanSpace.single () 1) * F
   | _, effect α β S F η rest =>
-      reindex (prodLeftComm _ _ _) (Equiv.refl _)
+      reindex (Equiv.prodLeftComm _ _ _) (Equiv.refl _)
         (((1 : Matrix (Fin m → α × β) (Fin m → α × β) ℂ) ⊗ₖ rest.replace m) *
           (cyclicInsertionMatrix η m ⊗ₖ (1 : Matrix S S ℂ)) * F)
 
@@ -278,9 +186,9 @@ Polynomial-PEPS manuscript (September 24, 2026), `04-compression.tex`, lines 96�
 121–123. -/
 def replaceTerm (m : ℕ) : {X : Type} → (M : EffectChain X Y) →
     (Fin M.effectCount → Fin m) → Matrix (Y × M.stackIndex m) X ℂ
-  | _, final F, _ => appendVector Y (EuclideanSpace.single () 1) * F
+  | _, final F, _ => prepMatrix (Equiv.prodComm Y _) (EuclideanSpace.single () 1) * F
   | _, effect α β S F η rest, κ =>
-      reindex (prodLeftComm _ _ _) (Equiv.refl _)
+      reindex (Equiv.prodLeftComm _ _ _) (Equiv.refl _)
         (((1 : Matrix (Fin m → α × β) (Fin m → α × β) ℂ) ⊗ₖ
             rest.replaceTerm m (Fin.tail κ)) *
           (insertAtMatrix η (κ (0 : Fin (rest.effectCount + 1))) ⊗ₖ (1 : Matrix S S ℂ)) * F)
@@ -289,7 +197,7 @@ def replaceTerm (m : ℕ) : {X : Type} → (M : EffectChain X Y) →
 theorem norm_replace_le_one (m : ℕ) : {X : Type} → [Fintype X] → [DecidableEq X] →
     (M : EffectChain X Y) → M.IsAllowed → ‖M.replace m‖ ≤ 1
   | _, _, _, final _, h =>
-      l2_opNorm_mul_le_one _ _ ((norm_appendVector_le _).trans (by simp)) h
+      l2_opNorm_mul_le_one _ _ ((norm_prepMatrix_le _ _).trans (by simp)) h
   | _, _, _, effect _ _ _ _ _ rest, h => by
       obtain ⟨hF, hη, hrest⟩ := h
       exact (l2_opNorm_reindex_le _ _ _).trans <| l2_opNorm_mul_le_one _ _
@@ -302,7 +210,7 @@ contraction. -/
 theorem norm_replaceTerm_le_one (m : ℕ) : {X : Type} → [Fintype X] → [DecidableEq X] →
     (M : EffectChain X Y) → M.IsAllowed → ∀ κ, ‖M.replaceTerm m κ‖ ≤ 1
   | _, _, _, final _, h, _ =>
-      l2_opNorm_mul_le_one _ _ ((norm_appendVector_le _).trans (by simp)) h
+      l2_opNorm_mul_le_one _ _ ((norm_prepMatrix_le _ _).trans (by simp)) h
   | _, _, _, effect _ _ _ _ _ rest, h, _ => by
       obtain ⟨hF, hη, hrest⟩ := h
       exact (l2_opNorm_reindex_le _ _ _).trans <| l2_opNorm_mul_le_one _ _
@@ -314,22 +222,23 @@ theorem norm_replaceTerm_le_one (m : ℕ) : {X : Type} → [Fintype X] → [Deci
 monomial equals replacing its first effect `⟨η|` by the ideal map `|η^{⊗ m}⟩⟨η|` and the
 remaining monomial by its own ideal augmentation, followed by the exchange of the first two
 output registers. -/
-theorem appendVector_mul_eval_effect {X : Type} {α β S : Type}
+theorem prepMatrix_mul_eval_effect {X : Type} {α β S : Type}
     [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype S] [DecidableEq S]
     (m : ℕ) (F : Matrix ((α × β) × S) X ℂ) (η : EuclideanSpace ℂ (α × β))
     (rest : EffectChain S Y) :
-    appendVector Y ((effect α β S F η rest).stackVector m) * (effect α β S F η rest).eval =
-      reindex (prodLeftComm _ _ _) (Equiv.refl _)
+    prepMatrix (Equiv.prodComm Y _) ((effect α β S F η rest).stackVector m) *
+        (effect α β S F η rest).eval =
+      reindex (Equiv.prodLeftComm _ _ _) (Equiv.refl _)
         (((1 : Matrix (Fin m → α × β) (Fin m → α × β) ℂ) ⊗ₖ
-            (appendVector Y (rest.stackVector m) * rest.eval)) *
+            (prepMatrix (Equiv.prodComm Y _) (rest.stackVector m) * rest.eval)) *
           (idealInsertionMatrix η m ⊗ₖ (1 : Matrix S S ℂ)) * F) := by
   rw [← mul_kronecker_mul, Matrix.one_mul, Matrix.mul_one]
   ext ⟨y, f, σ⟩ x
-  rw [appendVector_mul_apply, reindex_apply, submatrix_apply]
-  simp only [stackVector, eval, prodLeftComm_symm_apply, Equiv.refl_symm, Equiv.coe_refl,
+  rw [prepMatrix_prodComm_mul_apply, reindex_apply, submatrix_apply]
+  simp only [stackVector, eval, Equiv.prodLeftComm_symm_apply, Equiv.refl_symm, Equiv.coe_refl,
     id_eq, Matrix.mul_apply, Finset.mul_sum, effectMatrix_apply, mul_ite, mul_zero]
   refine Finset.sum_congr rfl fun ⟨i, s'⟩ _ => ?_
-  simp only [kronecker_apply, appendVector_mul_apply, idealInsertionMatrix_apply, vecKron,
+  simp only [kronecker_apply, prepMatrix_prodComm_mul_apply, idealInsertionMatrix_apply, vecKron,
     PiLp.toLp_apply, Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte]
   ring
 
@@ -341,22 +250,23 @@ Polynomial-PEPS manuscript (September 24, 2026), proof of Lemma 5.1, `04-compres
 lines 117–121. -/
 theorem norm_replace_sub_le {m : ℕ} (hm : m ≠ 0) : {X : Type} → [Fintype X] →
     [DecidableEq X] → (M : EffectChain X Y) → M.IsAllowed →
-    ‖M.replace m - appendVector Y (M.stackVector m) * M.eval‖ ≤ M.effectCount / Real.sqrt m
+    ‖M.replace m - prepMatrix (Equiv.prodComm Y _) (M.stackVector m) * M.eval‖ ≤
+      M.effectCount / Real.sqrt m
   | _, _, _, final F, _ => by
       simp only [replace, stackVector, eval, sub_self, norm_zero, effectCount,
         CharP.cast_eq_zero, zero_div, le_refl]
   | _, _, _, effect α β S F η rest, h => by
       obtain ⟨hF, hη, hrest⟩ := h
-      rw [appendVector_mul_eval_effect]
+      rw [prepMatrix_mul_eval_effect]
       set A := rest.replace m
-      set I := appendVector Y (rest.stackVector m) * rest.eval
+      set I := prepMatrix (Equiv.prodComm Y _) (rest.stackVector m) * rest.eval
       set T := cyclicInsertionMatrix η m
       set P := idealInsertionMatrix η m
       have hsplit : replace m (effect α β S F η rest) -
-          reindex (prodLeftComm _ _ _) (Equiv.refl _)
+          reindex (Equiv.prodLeftComm _ _ _) (Equiv.refl _)
             (((1 : Matrix (Fin m → α × β) (Fin m → α × β) ℂ) ⊗ₖ I) *
               (P ⊗ₖ (1 : Matrix S S ℂ)) * F) =
-          reindex (prodLeftComm _ _ _) (Equiv.refl _)
+          reindex (Equiv.prodLeftComm _ _ _) (Equiv.refl _)
             ((((1 : Matrix (Fin m → α × β) (Fin m → α × β) ℂ) ⊗ₖ (A - I)) *
                 (T ⊗ₖ (1 : Matrix S S ℂ)) +
               ((1 : Matrix (Fin m → α × β) (Fin m → α × β) ℂ) ⊗ₖ I) *
@@ -368,7 +278,7 @@ theorem norm_replace_sub_le {m : ℕ} (hm : m ≠ 0) : {X : Type} → [Fintype X
         simp only [Matrix.sub_apply, Matrix.add_apply, kronecker_apply]
         ring
       have hI : ‖I‖ ≤ 1 := l2_opNorm_mul_le_one _ _
-        ((norm_appendVector_le _).trans (norm_stackVector m rest hrest).le)
+        ((norm_prepMatrix_le _ _).trans (norm_stackVector m rest hrest).le)
         (norm_eval_le_one rest hrest)
       have hA := norm_replace_sub_le hm rest hrest
       have hT : ‖T‖ ≤ 1 := norm_cyclicInsertionMatrix_le_one hη m

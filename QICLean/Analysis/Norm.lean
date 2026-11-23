@@ -39,5 +39,6 @@ import QICLean.Analysis.Norm.SquaredTriangle
 import QICLean.Analysis.Norm.ThreeOperatorPerturbation
 import QICLean.Analysis.Norm.TraceNormContractivity
 import QICLean.Analysis.Norm.UnitNormalizationDistance
+import QICLean.Analysis.Norm.VectorPreparation
 import QICLean.Analysis.Norm.WeightedRectangular
 import QICLean.Analysis.Norm.WeightedSupertrace
