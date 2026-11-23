@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Analysis.TensorProduct.EuclideanFiberwiseMap
 import QICLean.Spectral.Gap.EigenvalueGap
+import QICLean.Spectral.Gap.IsometricConjugationGap
 
 /-!
 # Gaps of operators applied on the fibers of a finite product
@@ -13,13 +14,17 @@ Extending an operator independently over a finite spectator space preserves ever
 lower norm bound `δ ‖x‖ ≤ ‖G x‖` on the orthogonal complement of its kernel, and over a nonempty
 spectator space the extension has exactly the same such bounds as the operator. No positivity
 or symmetry of the operator is needed. The quadratic-form inequality
-`γ ⟨G x, x⟩ ≤ ⟨G x, G x⟩` also passes to the extension.
+`γ ⟨G x, x⟩ ≤ ⟨G x, G x⟩` also passes to the extension. An operator that an isometric
+coordinate change turns into such an extension inherits the operator form `κ P ≤ H` of the gap
+above the kernel, and for a positive operator the eigenvalue form of the gap.
 
 Moved from TNLean (Apache-2.0) at commit `49b78ed821`: the gap statements of
 `TNLean/MPS/ParentHamiltonian/Martingale/SpectatorGapEquivalence.lean` and
 `TNLean/MPS/ParentHamiltonian/Martingale/FiberwiseQuadraticFormGap.lean`. Changes: the fiber
 lemmas of the first file are in `QICLean.Analysis.TensorProduct.EuclideanFiberwiseMap`; the
-operator may have different source and target where this is free.
+operator may have different source and target where this is free. The transport of the gap along
+an isometric coordinate change is moved from TNLean,
+`TNLean/MPS/ParentHamiltonian/Gap/Comparison/IntervalGapTransport.lean` at commit `600676ccac`.
 
 ## Main results
 
@@ -29,6 +34,9 @@ operator may have different source and target where this is free.
   extension has exactly the gaps of the operator.
 * `ContinuousLinearMap.quadraticForm_sq_ge_rightFiberwiseMap` — the quadratic-form inequality
   passes to the extension.
+* `ContinuousLinearMap.smul_orthogonal_ker_projection_le_of_conj_rightFiberwiseMap`,
+  `ContinuousLinearMap.forall_hasEigenvalue_of_conj_rightFiberwiseMap` — the gap passes to an
+  operator isometrically conjugate to the extension.
 -/
 
 open scoped BigOperators InnerProductSpace ComplexOrder
@@ -129,3 +137,55 @@ theorem quadraticForm_sq_ge_rightFiberwiseMap_of_forall_hasEigenvalue
     (hG.quadraticForm_sq_ge_of_forall_hasEigenvalue hγ hGap)
 
 end LinearMap.IsPositive
+
+namespace ContinuousLinearMap
+
+variable {E I S : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E]
+  [Fintype I] [Fintype S]
+
+/-- **The operator form of the gap under a fiberwise conjugacy.** Let an isometric coordinate
+change `U` turn `G` into the extension of `H` over the spectator fibers `S`. If `κ P ≤ H` for
+the orthogonal projection `P` onto the orthogonal complement of `ker H`, then the same bound
+holds for `G` and the projection onto the orthogonal complement of `ker G`. -/
+theorem smul_orthogonal_ker_projection_le_of_conj_rightFiberwiseMap
+    (U : E ≃ₗᵢ[ℂ] EuclideanSpace ℂ (I × S)) (G : E →ₗ[ℂ] E)
+    (H : EuclideanSpace ℂ I →ₗ[ℂ] EuclideanSpace ℂ I) {κ : ℝ}
+    (hConj : U.toLinearEquiv.conj G =
+      (rightFiberwiseMap (S := S) H.toContinuousLinearMap).toLinearMap)
+    (hLocal : (κ : ℂ) • (LinearMap.ker H)ᗮ.starProjection.toLinearMap ≤ H) :
+    (κ : ℂ) • (LinearMap.ker G)ᗮ.starProjection.toLinearMap ≤ G := by
+  have hProj := U.conj_starProjection_ker_of_conj G _
+    (by simpa only [LinearEquiv.conj_apply, LinearMap.comp_assoc] using! hConj)
+  rw [ker_starProjection_rightFiberwiseMap] at hProj
+  have hProjConj : U.toLinearEquiv.conj (LinearMap.ker G).starProjection.toLinearMap =
+      (rightFiberwiseMap (S := S) (LinearMap.ker H).starProjection).toLinearMap := by
+    simpa only [LinearEquiv.conj_apply, LinearMap.comp_assoc] using! hProj
+  have hId : rightFiberwiseMap (S := S) (ContinuousLinearMap.id ℂ (EuclideanSpace ℂ I)) =
+      ContinuousLinearMap.id ℂ (EuclideanSpace ℂ (I × S)) := rfl
+  have hOrth : U.toLinearEquiv.conj (LinearMap.ker G)ᗮ.starProjection.toLinearMap =
+      (rightFiberwiseMap (S := S) (LinearMap.ker H)ᗮ.starProjection).toLinearMap := by
+    simp only [Submodule.starProjection_orthogonal, ContinuousLinearMap.toLinearMap_sub,
+      ContinuousLinearMap.coe_id, map_sub, LinearEquiv.conj_id, hProjConj,
+      rightFiberwiseMap_sub, hId]
+  refine (U.conj_le_conj_iff _ _).mp ?_
+  simpa only [map_smul, hOrth, hConj, rightFiberwiseMap_smul,
+    ContinuousLinearMap.toLinearMap_smul] using
+    (rightFiberwiseMap_mono (S := S) (G := (κ : ℂ) • (LinearMap.ker H)ᗮ.starProjection)
+      (H := H.toContinuousLinearMap) hLocal)
+
+/-- **The gap under a fiberwise conjugacy.** Let an isometric coordinate change `U` turn `G` into
+the extension of a positive operator `H` over the spectator fibers `S`. If every eigenvalue of
+`H` other than `0` is at least `κ > 0`, then so is every eigenvalue of `G` other than `0`. -/
+theorem forall_hasEigenvalue_of_conj_rightFiberwiseMap
+    (U : E ≃ₗᵢ[ℂ] EuclideanSpace ℂ (I × S)) (G : E →ₗ[ℂ] E)
+    (H : EuclideanSpace ℂ I →ₗ[ℂ] EuclideanSpace ℂ I) {κ : ℝ}
+    (hκ : 0 < κ) (hPos : H.IsPositive)
+    (hConj : U.toLinearEquiv.conj G =
+      (rightFiberwiseMap (S := S) H.toContinuousLinearMap).toLinearMap)
+    (hGap : ∀ μ : ℂ, Module.End.HasEigenvalue H μ → μ = 0 ∨ (κ : ℂ) ≤ μ) :
+    ∀ μ : ℂ, Module.End.HasEigenvalue G μ → μ = 0 ∨ (κ : ℂ) ≤ μ :=
+  LinearMap.forall_hasEigenvalue_of_smul_orthogonal_ker_projection_le G
+    (smul_orthogonal_ker_projection_le_of_conj_rightFiberwiseMap U G H hConj
+      (hPos.smul_orthogonal_ker_projection_le_of_forall_hasEigenvalue hκ.le hGap))
+
+end ContinuousLinearMap

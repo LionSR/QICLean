@@ -183,6 +183,33 @@ otherwise.
     $\lVert(G\otimes\Id_S)\iota_su\rVert=\lVert Gu\rVert$.
 \end{proof}
 
+\begin{lemma}[Gaps under a fiberwise conjugacy]
+    \label{lem:perturbations_fiberwise_conjugate_gap}
+    \lean{ContinuousLinearMap.smul_orthogonal_ker_projection_le_of_conj_rightFiberwiseMap,
+        ContinuousLinearMap.forall_hasEigenvalue_of_conj_rightFiberwiseMap}
+    \leanok
+    \uses{lem:right-spectator-kernel-projection, lem:gap_isometric_conjugation,
+        lem:gap_operator_form}
+    Let $E$ be a finite-dimensional complex Hilbert space, $U:E\to\C^{I\times S}$ a
+    surjective linear isometry, $G$ an operator on $E$ and $H$ an operator on $\C^I$ with
+    $UGU^{-1}=H\otimes\Id_S$. Let $P_G$ and $P_H$ be the orthogonal projections onto
+    $(\ker G)^\perp$ and $(\ker H)^\perp$, and $\kappa\in\R$. If $\kappa P_H\le H$,
+    then $\kappa P_G\le G$. Consequently, if $H\ge0$, $\kappa>0$ and every eigenvalue
+    of $H$ other than $0$ is at least $\kappa$, then every eigenvalue of $G$ other than
+    $0$ is at least $\kappa$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    By Lemma~\ref{lem:gap_isometric_conjugation}, $U$ conjugates the projection onto
+    $\ker G$ to the projection onto $\ker(H\otimes\Id_S)$, which is the extension of
+    the projection onto $\ker H$; hence $UP_GU^{-1}=P_H\otimes\Id_S$. Extending
+    $\kappa P_H\le H$ over the fibers gives $\kappa P_H\otimes\Id_S\le H\otimes\Id_S$,
+    and conjugating back by $U$ gives $\kappa P_G\le G$. For the second claim,
+    Lemma~\ref{lem:gap_operator_form} turns the eigenvalue bound of $H$ into
+    $\kappa P_H\le H$, and the bound $\kappa P_G\le G$ back into the eigenvalue
+    bound of $G$.
+\end{proof}
+
 \begin{lemma}[Quadratic-form bound on fibers]
     \label{lem:right_spectator_quadratic_form_gap}
     \lean{ContinuousLinearMap.quadraticForm_sq_ge_rightFiberwiseMap,

@@ -122,6 +122,35 @@ $\ker H\neq0$ it is the gap at energy $0$ of Theorem~\ref{thm:hamiltonians_kerne
     some constant $K>0$, and $\delta=K^{-1}$ works.
 \end{proof}
 
+\begin{lemma}[The gap above the kernel in operator form]
+    \label{lem:gap_operator_form}
+    \lean{LinearMap.IsPositive.smul_orthogonal_ker_projection_le_of_norm_gap,
+        LinearMap.IsPositive.smul_orthogonal_ker_projection_le_of_forall_hasEigenvalue,
+        LinearMap.forall_hasEigenvalue_of_smul_orthogonal_ker_projection_le,
+        LinearMap.IsPositive.exists_pos_smul_orthogonal_ker_projection_le,
+        LinearMap.IsPositive.exists_pos_le_smul_orthogonal_ker_projection}
+    \leanok
+    \uses{lem:gap_eigenvalue_forms, lem:gap_orthogonal_kernel}
+    Let $H$ be an operator on a finite-dimensional complex Hilbert space, let $P$ be the
+    orthogonal projection onto $(\ker H)^\perp$, and let $\gamma\in\R$. If
+    $\gamma P\le H$, then every eigenvalue of $H$ other than $0$ is at least $\gamma$.
+    Conversely, if $H\ge0$ and every eigenvalue of $H$ other than $0$ is at least
+    $\gamma$, or $\gamma\ge0$ is a norm gap of $H$, then $\gamma P\le H$. For $H\ge0$
+    there are $\gamma>0$ and $C>0$ with $\gamma P\le H\le CP$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:gap_eigenvalue_forms, lem:gap_orthogonal_kernel}
+    Since $H$ annihilates $\ker H$ and, for $H\ge0$, is symmetric,
+    $\langle Hv,v\rangle=\langle HPv,Pv\rangle$ and
+    $\langle Pv,v\rangle=\lVert Pv\rVert^2$ for every $v$. Hence $\gamma P\le H$ says
+    exactly that $\gamma\lVert w\rVert^2\le\operatorname{Re}\langle Hw,w\rangle$ for
+    every $w\perp\ker H$, and Lemma~\ref{lem:gap_eigenvalue_forms} turns this into the
+    eigenvalue bound and back; the operator $H$ is symmetric when $\gamma P\le H$, since
+    $H-\gamma P$ and $\gamma P$ are. Lemma~\ref{lem:gap_orthogonal_kernel} gives a norm
+    gap $\gamma>0$, and $C=\lVert H\rVert+1$ bounds
+    $\operatorname{Re}\langle Hw,w\rangle\le\lVert H\rVert\lVert w\rVert^2$.
+\end{proof}
+
 \begin{lemma}[One constant for all indices]
     \label{lem:gap_eventual_constant}
     \lean{Nat.exists_pos_forall_of_eventually}
@@ -250,13 +279,16 @@ $\ker H\neq0$ it is the gap at energy $0$ of Theorem~\ref{thm:hamiltonians_kerne
         LinearIsometryEquiv.ker_eq_map_of_conj,
         LinearIsometryEquiv.mem_orthogonal_ker_iff_of_conj,
         LinearIsometryEquiv.norm_gap_iff_of_conj,
-        LinearIsometryEquiv.hasEigenvalue_iff_of_conj}
+        LinearIsometryEquiv.hasEigenvalue_iff_of_conj,
+        LinearIsometryEquiv.conj_starProjection_ker_of_conj}
     \leanok
     Let $U:E\to F$ be a surjective complex linear isometry of inner product spaces,
     and let $P$ on $E$ and $Q$ on $F$ satisfy $Q=UPU^{-1}$. Then $UPx=QUx$,
     $\ker Q=U(\ker P)$ and $(\ker Q)^\perp=U((\ker P)^\perp)$. For every $\delta\in\R$,
     $\delta$ is a norm gap of $P$ if and only if it is a norm gap of $Q$, and $P$ and $Q$
-    have the same eigenvalues. Neither finite dimension nor positivity is needed.
+    have the same eigenvalues. Neither finite dimension nor positivity is needed for
+    these statements. If $E$ and $F$ are finite-dimensional, then $U$ conjugates the
+    orthogonal projection onto $\ker P$ to the orthogonal projection onto $\ker Q$.
 \end{lemma}
 \begin{proof}\leanok
     Substituting $Ux$ in the conjugation gives $UPx=QUx$. Injectivity of $U$
@@ -265,7 +297,9 @@ $\ker H\neq0$ it is the gap at energy $0$ of Theorem~\ref{thm:hamiltonians_kerne
     complements, and applying the norm estimate at $x$ and at $Ux$, with
     $\lVert Ux\rVert=\lVert x\rVert$, gives the equivalence. The map $U$ carries an
     eigenvector of $P$ to an eigenvector of $Q$ with the same eigenvalue, and $U^{-1}$
-    carries them back.
+    carries them back. Finally, the orthogonal projection onto the image $U(\ker P)$ of a
+    subspace under a surjective isometry is $U$ composed with the projection onto
+    $\ker P$ and with $U^{-1}$.
 \end{proof}
 
 \begin{lemma}[Projection onto an isometric image]
