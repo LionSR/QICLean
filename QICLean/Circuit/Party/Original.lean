@@ -10,6 +10,7 @@ Authors: QICLean contributors
 
 import QICLean.Circuit.Party.Original.Approximation
 import QICLean.Circuit.Party.Original.Basic
+import QICLean.Circuit.Party.Original.Density
 import QICLean.Circuit.Party.Original.Frame
 import QICLean.Circuit.Party.Original.FromWord
 import QICLean.Circuit.Party.Original.PairGate
