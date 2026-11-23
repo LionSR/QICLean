@@ -140,22 +140,26 @@ $\ker H\neq0$ it is the gap at energy $0$ of Theorem~\ref{thm:hamiltonians_kerne
     \label{lem:gap_positive_comparison}
     \lean{LinearMap.IsPositive.ker_le_of_le,
         LinearMap.IsPositive.ker_eq_of_smul_le_of_le_smul,
-        LinearMap.IsPositive.norm_gap_of_smul_le_of_le_smul,
+        LinearMap.IsPositive.forall_hasEigenvalue_of_scaled_comparison,
         LinearMap.IsPositive.forall_hasEigenvalue_of_smul_le_of_le_smul}
     \leanok
     If $0\le P\le Q$, then $\ker Q\subseteq\ker P$. Consequently, if $P,Q\ge0$ and
     $a,b,c>0$ satisfy $aP\le bQ\le cP$, then $\ker P=\ker Q$. On a finite-dimensional
-    space, a norm gap $\gamma>0$ of $P$ then gives the norm gap $a\gamma/b$ of $Q$, and
-    a gap $\gamma>0$ of $P$ above its kernel gives the gap $a\gamma/b$ of $Q$ above its
-    kernel.
+    space, if $\kappa P\le mQ$ with $\kappa,m>0$, $P\ge0$ and $\ker P=\ker Q$, and every
+    eigenvalue of $P$ other than $0$ is at least $\gamma$, then every eigenvalue of $Q$
+    other than $0$ is at least $\kappa\gamma/m$; in particular $aP\le bQ\le cP$
+    transfers the gap $\gamma$ of $P$ above its kernel to the gap $a\gamma/b$ of $Q$
+    above its kernel.
 \end{lemma}
 \begin{proof}\leanok
+    \uses{lem:gap_eigenvalue_forms}
     The quadratic form of a positive operator vanishes only on its kernel; evaluating
-    the order relations at kernel vectors gives the inclusions. On the common
-    orthogonal complement of the kernel, the norm gap of $P$ gives
-    $\operatorname{Re}\langle Pv,v\rangle\ge\gamma\lVert v\rVert^2$, hence
-    $b\operatorname{Re}\langle Qv,v\rangle\ge a\gamma\lVert v\rVert^2$, and
-    Lemma~\ref{lem:gap_energy_to_norm} gives the norm gap of $Q$.
+    the order relations at kernel vectors gives the inclusions. The operator $Q$ is
+    positive, since $mQ\ge\kappa P\ge0$. On the common orthogonal complement of the
+    kernel, Lemma~\ref{lem:gap_eigenvalue_forms} gives
+    $\operatorname{Re}\langle v,Pv\rangle\ge\gamma\lVert v\rVert^2$, hence
+    $m\operatorname{Re}\langle v,Qv\rangle\ge\kappa\gamma\lVert v\rVert^2$, and
+    Lemma~\ref{lem:gap_eigenvalue_forms} again gives the eigenvalue bound for $Q$.
 \end{proof}
 
 \subsection{Reducing projections}

@@ -176,14 +176,11 @@ theorem forall_hasEigenvalue_of_smul_le_of_le_smul {A B : Matrix n n ℂ} (hA : 
   have h1 := toEuclideanLin_le_toEuclideanLin_iff.mpr hLower
   have h2 := toEuclideanLin_le_toEuclideanLin_iff.mpr hUpper
   rw [map_smul] at h1 h2
-  refine (forall_hasEigenvalue_iff_norm hB).mpr ?_
   simpa only [div_one] using
-    LinearMap.IsPositive.norm_gap_of_smul_le_of_le_smul
-      (isPositive_toEuclideanLin_iff.mpr hA)
+    (isPositive_toEuclideanLin_iff.mpr hA).forall_hasEigenvalue_of_smul_le_of_le_smul
       (isPositive_toEuclideanLin_iff.mpr hB) (b := 1) hκ zero_lt_one hC hγ
       (by simpa only [Complex.ofReal_one, one_smul] using h1)
-      (by simpa only [Complex.ofReal_one, one_smul] using h2)
-      ((forall_hasEigenvalue_iff_norm hA).mp hGap)
+      (by simpa only [Complex.ofReal_one, one_smul] using h2) hGap
 
 /-! ### Continuity and compactness -/
 
