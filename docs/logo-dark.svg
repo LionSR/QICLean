@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="180" viewBox="0 0 600 180" role="img" aria-label="QICLean">
+<defs>
+  <linearGradient id="g" gradientUnits="userSpaceOnUse" x1="28" y1="32" x2="154" y2="148">
+    <stop offset="0" stop-color="#5e8ff7"/>
+    <stop offset="1" stop-color="#9a74f7"/>
+  </linearGradient>
+</defs>
+<g>
+  <!-- Open external input / output quantum wires (system bottom, environment top) -->
+  <line stroke="#7e8ba8" stroke-width="2.9" stroke-linecap="round" x1="28" y1="62" x2="54" y2="62"/>
+  <line stroke="#7e8ba8" stroke-width="2.9" stroke-linecap="round" x1="28" y1="118" x2="54" y2="118"/>
+  <line stroke="#7e8ba8" stroke-width="2.9" stroke-linecap="round" x1="126" y1="118" x2="154" y2="118"/>
+  <!-- Environment trace-out wire and partial-trace ground cap -->
+  <line stroke="#7e8ba8" stroke-width="2.9" stroke-linecap="round" x1="126" y1="62" x2="146" y2="62"/>
+  <line stroke="#7e8ba8" stroke-width="2.9" stroke-linecap="round" x1="146" y1="51" x2="146" y2="73"/>
+  <line stroke="#7e8ba8" stroke-width="2.5" stroke-linecap="round" x1="152" y1="55.5" x2="152" y2="68.5"/>
+
+  <!-- Central Stinespring / Kraus quantum channel frame -->
+  <rect x="54" y="42" width="72" height="96" rx="12" fill="#17233a" stroke="url(#g)" stroke-width="4.0"/>
+
+  <!-- Internal Kraus / Choi bipartite coupling & unitary evolution lines -->
+  <line stroke="url(#g)" stroke-width="3.6" stroke-linecap="round" x1="54" y1="62" x2="90" y2="62"/>
+  <line stroke="url(#g)" stroke-width="3.6" stroke-linecap="round" x1="90" y1="62" x2="126" y2="62"/>
+  <line stroke="url(#g)" stroke-width="3.6" stroke-linecap="round" x1="54" y1="118" x2="90" y2="118"/>
+  <line stroke="url(#g)" stroke-width="3.6" stroke-linecap="round" x1="90" y1="118" x2="126" y2="118"/>
+  <line stroke="url(#g)" stroke-width="3.8" stroke-linecap="round" x1="90" y1="62" x2="90" y2="118"/>
+  <circle fill="#0f1219" stroke="url(#g)" stroke-width="3.4" cx="90" cy="90" r="13.5"/>
+  <path d="M90 82v16M82 90h16" stroke="url(#g)" stroke-width="3.0" stroke-linecap="round"/>
+
+  <!-- Boundary tensor/port nodes matching TNLean's monogram circles -->
+  <circle fill="#0f1219" stroke="url(#g)" stroke-width="3.2" cx="54" cy="62" r="4.5"/>
+  <circle fill="#0f1219" stroke="url(#g)" stroke-width="3.2" cx="54" cy="118" r="4.5"/>
+  <circle fill="#0f1219" stroke="url(#g)" stroke-width="3.2" cx="126" cy="62" r="4.5"/>
+  <circle fill="#0f1219" stroke="url(#g)" stroke-width="3.2" cx="126" cy="118" r="4.5"/>
+  <circle fill="#0f1219" stroke="url(#g)" stroke-width="3.2" cx="90" cy="62" r="4.5"/>
+  <circle fill="#0f1219" stroke="url(#g)" stroke-width="3.2" cx="90" cy="118" r="4.5"/>
+</g>
+<text x="192" y="100" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif" font-weight="700" font-size="52" fill="#eef1f7">QICLean</text>
+<text x="194" y="128" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif" font-weight="500" font-size="14.5" letter-spacing="2.1" fill="#94a3b8">QUANTUM INFORMATION · LEAN 4</text>
+</svg>
