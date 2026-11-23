@@ -185,7 +185,7 @@ theorem exists_normalized_common_ground_of_disjoint
     rw [WithLp.ofLp_smul, Matrix.mulVec_smul]
     change ‖vE‖⁻¹ • (M *ᵥ v) = 0
     rw [hMv, smul_zero]
-  exact ⟨WithLp.ofLp w, SpectralFilter.star_dotProduct_self_of_norm_eq_one hw,
+  exact ⟨WithLp.ofLp w, EuclideanSpace.star_dotProduct_self_eq_one_of_norm_eq_one hw,
     hkill _ hAv, hkill _ hBv, hkill _ hCv⟩
 
 end ManyBody
