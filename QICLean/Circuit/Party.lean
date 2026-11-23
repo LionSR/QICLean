@@ -9,4 +9,5 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Circuit.Party
 
 import QICLean.Circuit.Party.Monomial
+import QICLean.Circuit.Party.Source
 import QICLean.Circuit.Party.Syntax

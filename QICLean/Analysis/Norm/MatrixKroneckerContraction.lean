@@ -25,6 +25,9 @@ their coordinates along equivalences, used when two copies of a system are rearr
   square matrix along one equivalence.
 * `EuclideanSpace.vecKron`, `EuclideanSpace.norm_vecKron`: the product vector `x ⊗ y` and
   `‖x ⊗ y‖ = ‖x‖ ‖y‖`.
+* `EuclideanSpace.pairSwap`, `EuclideanSpace.pairMap`, `EuclideanSpace.norm_pairMap_le`: a pair
+  vector with its factors exchanged, and transformed by `A ⊗ B`; contractions do not increase
+  its norm.
 
 Moved from TNLean, `TNLean/Algebra/MatrixKroneckerContraction.lean` at commit
 `49b78ed821` (Apache-2.0).
@@ -162,5 +165,39 @@ theorem norm_vecKron_self_sub_le (x y : EuclideanSpace ℂ m) :
   refine (norm_add_le _ _).trans ?_
   rw [norm_vecKron, norm_vecKron]
   linarith [mul_comm ‖y‖ ‖x - y‖]
+
+section Pair
+
+variable {α β α' β' : Type*}
+
+/-- A pair vector with its two factors exchanged: its coefficient at `(b, a)` is the coefficient
+of `η` at `(a, b)`. -/
+noncomputable def pairSwap (η : EuclideanSpace ℂ (α × β)) : EuclideanSpace ℂ (β × α) :=
+  WithLp.toLp 2 fun x => η x.swap
+
+/-- The coefficients of a pair vector with its factors exchanged. -/
+@[simp] theorem pairSwap_apply (η : EuclideanSpace ℂ (α × β)) (b : β) (a : α) :
+    pairSwap η (b, a) = η (a, b) :=
+  rfl
+
+/-- Exchanging the two factors of a pair vector keeps its norm. -/
+@[simp] theorem norm_pairSwap [Fintype α] [Fintype β] (η : EuclideanSpace ℂ (α × β)) :
+    ‖pairSwap η‖ = ‖η‖ :=
+  norm_toLp_comp_equiv (Equiv.prodComm β α) fun x => η x
+
+/-- The pair vector `η` transformed by `A ⊗ B`, the map `A` on the first factor and `B` on the
+second. -/
+noncomputable def pairMap [Fintype α] [Fintype β] (A : Matrix α' α ℂ) (B : Matrix β' β ℂ)
+    (η : EuclideanSpace ℂ (α × β)) : EuclideanSpace ℂ (α' × β') :=
+  WithLp.toLp 2 (Matrix.mulVec (A ⊗ₖ B) fun x => η x)
+
+/-- Transforming a pair vector by two contractions does not increase its norm. -/
+theorem norm_pairMap_le [Fintype α] [Fintype β] [DecidableEq α] [DecidableEq β] [Fintype α']
+    [Fintype β'] {A : Matrix α' α ℂ} {B : Matrix β' β ℂ} (hA : ‖A‖ ≤ 1) (hB : ‖B‖ ≤ 1)
+    (η : EuclideanSpace ℂ (α × β)) : ‖pairMap A B η‖ ≤ ‖η‖ :=
+  (Matrix.l2_opNorm_mulVec (A ⊗ₖ B) η).trans
+    (mul_le_of_le_one_left (norm_nonneg _) (Matrix.l2_opNorm_kronecker_le_one hA hB))
+
+end Pair
 
 end EuclideanSpace
