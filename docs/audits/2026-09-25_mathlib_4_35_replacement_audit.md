@@ -84,7 +84,7 @@ equivalence, closed by `omega` from `3 ≤ d`.
 Mathlib commit `f86d48590e`, `feat(Topology/Separation/Hausdorff): add
 tendsto_nhds_unique_of_forall`, compares two limits of pointwise equal
 functions directly. It replaces a `tendsto_const_nhds.congr'` intermediate in
-`QICLean/Channel/Peripheral/CesaroRecurrence.lean`.
+`QICLean/Channel/Peripheral/Projection/CesaroRecurrence.lean`.
 
 Mathlib commit `cae66e9de4e`, `feat: add zero lemmas for even powers (#43161)`,
 adds `Finset.sum_sq_eq_zero_iff` for linearly ordered semirings. It replaces a

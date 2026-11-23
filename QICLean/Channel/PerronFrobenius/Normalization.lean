@@ -32,7 +32,7 @@ nonvanishing lemma
 hypothesis for irreducible CP maps (used in **Wolf Theorem 6.3** item 2).
 
 No fixed-point theorem is assumed here — that is proved in
-`TNLean.Channel.FixedPoint.BrouwerDensityMatrices` and consumed in
+`QICLean.Channel.FixedPoint.Stationary.BrouwerDensityMatrices` and consumed in
 `TNLean.Channel.PerronFrobenius.Existence`.
 
 ## References

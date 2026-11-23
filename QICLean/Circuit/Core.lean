@@ -11,6 +11,7 @@ Authors: QICLean contributors
 import QICLean.Circuit.Core.Channel
 import QICLean.Circuit.Core.Circuit
 import QICLean.Circuit.Core.Coarsen
+import QICLean.Circuit.Core.CoarsenCircuit
 import QICLean.Circuit.Core.Cost
 import QICLean.Circuit.Core.Dimension
 import QICLean.Circuit.Core.GateSum
@@ -20,11 +21,14 @@ import QICLean.Circuit.Core.LayerEntry
 import QICLean.Circuit.Core.LightCone
 import QICLean.Circuit.Core.LocalGate
 import QICLean.Circuit.Core.Map
+import QICLean.Circuit.Core.MapLayersOn
 import QICLean.Circuit.Core.Oracle
 import QICLean.Circuit.Core.Outcome
 import QICLean.Circuit.Core.Parallel
 import QICLean.Circuit.Core.Qudit
 import QICLean.Circuit.Core.Seq
+import QICLean.Circuit.Core.SingleBranch
 import QICLean.Circuit.Core.SiteControlled
 import QICLean.Circuit.Core.Substitute
 import QICLean.Circuit.Core.TensorRight
+import QICLean.Circuit.Core.Update

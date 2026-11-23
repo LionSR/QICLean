@@ -8,6 +8,9 @@ import Mathlib.LinearAlgebra.Matrix.ConjTranspose
 import Mathlib.LinearAlgebra.Matrix.Reindex
 import Mathlib.Data.Matrix.Basic
 import Mathlib.LinearAlgebra.Matrix.Trace
+import Mathlib.LinearAlgebra.Matrix.PosDef
+import Mathlib.Analysis.Complex.Order
+import Mathlib.Algebra.Module.Equiv.Basic
 
 /-!
 # Reindexing complex matrix star algebras
@@ -106,3 +109,46 @@ theorem trace_mul_self_eq_of_reindex_eq {R m n : Type*} [NonAssocSemiring R] [Fi
 end Matrix
 
 end TraceReindex
+
+section ReindexEndomorphism
+
+/-!
+# Linear endomorphisms under matrix reindexing
+
+A linear endomorphism of a complex matrix algebra is carried to the matrices
+over another index set by conjugating it with the simultaneous reindexing of
+rows and columns; positive definiteness survives the same change of indices.
+-/
+
+open scoped ComplexOrder
+
+namespace Matrix
+
+variable {α β : Type*} [Fintype α] [DecidableEq α]
+variable [Fintype β] [DecidableEq β]
+
+/-- Conjugate a matrix endomorphism by the simultaneous reindexing of its row
+and column coordinates. -/
+noncomputable def reindexEndomorphism (e : α ≃ β)
+    (T : Matrix α α ℂ →ₗ[ℂ] Matrix α α ℂ) :
+    Matrix β β ℂ →ₗ[ℂ] Matrix β β ℂ :=
+  (Matrix.reindexLinearEquiv ℂ ℂ e e).conj T
+
+omit [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] in
+@[simp]
+theorem reindexEndomorphism_apply (e : α ≃ β)
+    (T : Matrix α α ℂ →ₗ[ℂ] Matrix α α ℂ) (A : Matrix β β ℂ) :
+    reindexEndomorphism e T A =
+      Matrix.reindex e e (T (Matrix.reindex e.symm e.symm A)) := by
+  rfl
+
+omit [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] in
+/-- Positive definiteness is invariant under a simultaneous change of the
+matrix index set. -/
+theorem PosDef.reindex (e : α ≃ β) {A : Matrix α α ℂ} (hA : A.PosDef) :
+    (Matrix.reindex e e A).PosDef :=
+  hA.submatrix e.symm.injective
+
+end Matrix
+
+end ReindexEndomorphism

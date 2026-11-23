@@ -8,7 +8,7 @@ import QICLean.Channel.Semigroup.Primitivity.Helpers
 import QICLean.Channel.Semigroup.Primitivity.SpectralMapping
 import QICLean.Channel.Irreducible.Ergodicity
 import QICLean.Channel.Irreducible.FromSpectral
-import QICLean.Channel.Peripheral.IrreducibleChannel
+import QICLean.Channel.Peripheral.Irreducible.IrreducibleChannel
 import QICLean.Channel.Semigroup.Primitivity.Basic
 
 /-!

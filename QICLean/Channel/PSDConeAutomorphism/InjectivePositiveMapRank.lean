@@ -7,7 +7,7 @@ import QICLean.Channel.PSDConeAutomorphism.FaceDimension
 import QICLean.Channel.Schwarz.PositiveMapProperties
 import QICLean.Channel.KrausMap.KrausRank
 import QICLean.Channel.KrausMap.LocalizedKrausCPTP
-import QICLean.Channel.FixedPoint.DirectSumBlockRetraction
+import QICLean.Channel.FixedPoint.DirectSum.DirectSumBlockRetraction
 import QICLean.Channel.Semigroup.CPClosure
 
 /-!

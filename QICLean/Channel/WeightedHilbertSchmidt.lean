@@ -9,7 +9,7 @@ import QICLean.Algebra.Matrix.MatrixCongruence
 import QICLean.Channel.Choi.RectangularChoi
 import QICLean.Analysis.Isometry.CoisometricCompression
 import QICLean.Analysis.FunctionalCalculus.MatrixSqrt
-import QICLean.Channel.Peripheral.UnitalKraus
+import QICLean.Channel.Peripheral.Spectrum.UnitalKraus
 import QICLean.Channel.KrausMap.SingleKraus
 import QICLean.Analysis.Support.Compression
 

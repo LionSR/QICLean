@@ -6,7 +6,7 @@ Authors: TNLean contributors
 import QICLean.Channel.Semigroup.LindbladForm
 import QICLean.Channel.Semigroup.Kernel
 import QICLean.Channel.Irreducible.Basic
-import QICLean.Channel.FixedPoint.Cesaro
+import QICLean.Channel.FixedPoint.MeanErgodic.Cesaro
 import QICLean.Algebra.Hermitian.OrthogonalProjection
 
 /-!

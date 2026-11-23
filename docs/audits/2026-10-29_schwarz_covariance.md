@@ -17,7 +17,7 @@ preserved exactly.
 ## Theorem boundary
 
 The seven new public declarations in
-`QICLean/Channel/Peripheral/SchwarzCovariance.lean` are:
+`QICLean/Channel/Peripheral/Irreducible/SchwarzCovariance.lean` are:
 
 - `SchwarzMap.mem_multiplicativeDomain_of_peripheral_unitary`
 - `SchwarzMap.map_mul_peripheral_unitary`
@@ -51,7 +51,7 @@ conclusion-shaped premise, new axiom, or proof hole is introduced.
 
 ## Owned files
 
-- `QICLean/Channel/Peripheral/SchwarzCovariance.lean`
+- `QICLean/Channel/Peripheral/Irreducible/SchwarzCovariance.lean`
 - `QICLean/Channel/Peripheral.lean` — generated one-line export addition
 - `QICLeanTest/SchwarzCovariance.lean`
 - `QICLeanTest/SchwarzCovarianceNonTP.lean`
@@ -95,7 +95,7 @@ objects from prebuilt generated C.
 
 Passed checks:
 
-- Target build `lake --fail-fast build QICLean.Channel.Peripheral.SchwarzCovariance`.
+- Target build `lake --fail-fast build QICLean.Channel.Peripheral.Irreducible.SchwarzCovariance`.
 - Export integration build `lake --fail-fast build QICLean.Channel.Peripheral`
   passed (9,190 jobs, overwhelmingly cached prerequisites).
 - Repository CI strict selector against the verified dependency head:
@@ -114,7 +114,7 @@ Passed checks:
   values: **56,948 declarations**, **50 opaque definitions**, no unsafe
   declarations, and only those three standard foundations.
 - The new module's repository import closure has **85 modules**, is acyclic,
-  and has one direct import, `QICLean.Channel.Peripheral.IrreducibleSchwarz`.
+  and has one direct import, `QICLean.Channel.Peripheral.Irreducible.IrreducibleSchwarz`.
   A prohibited-proof-token source scan of all 85 modules found no violations.
 - Concrete non-TP regression using the dependency's proved map
   `T(X) = ((9/25) X₀₀ + (16/25) X₁₁) I`. The source capstone applies to this

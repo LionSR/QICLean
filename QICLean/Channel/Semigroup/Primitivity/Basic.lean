@@ -7,12 +7,12 @@ import QICLean.Channel.Semigroup.Basic
 import QICLean.Channel.Semigroup.Kernel
 import QICLean.Channel.Irreducible.Basic
 import QICLean.Channel.Irreducible.FromSpectral
-import QICLean.Channel.Peripheral.Spectrum
-import QICLean.Channel.Peripheral.IrreducibleChannel
-import QICLean.Channel.Peripheral.PeriodicityRemoval
-import QICLean.Channel.Peripheral.ClosureFixedPointKraus
-import QICLean.Channel.FixedPoint.Cesaro
-import QICLean.Channel.Peripheral.Primitive
+import QICLean.Channel.Peripheral.Spectrum.Spectrum
+import QICLean.Channel.Peripheral.Irreducible.IrreducibleChannel
+import QICLean.Channel.Peripheral.Spectrum.PeriodicityRemoval
+import QICLean.Channel.Peripheral.Irreducible.ClosureFixedPointKraus
+import QICLean.Channel.FixedPoint.MeanErgodic.Cesaro
+import QICLean.Channel.Peripheral.Spectrum.Primitive
 import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.Real.Pi.Irrational
 

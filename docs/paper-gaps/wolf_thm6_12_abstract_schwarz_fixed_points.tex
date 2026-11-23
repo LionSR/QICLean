@@ -113,14 +113,14 @@ declarations:
 \leanid{SchwarzMap.schwarz_equality_of_mem_fixedPoints},
 \leanid{SchwarzMap.mem_multiplicativeDomain_of_mem_fixedPoints}, and
 \leanid{SchwarzMap.fixedPointsStarSubalgebra} in
-\doclink{QICLean/Channel/FixedPoint/AbstractAlgebra}.}
+\doclink{QICLean/Channel/FixedPoint/Algebra/AbstractAlgebra}.}
 
 \section{Comparison with the Kraus specialization}
 
 The earlier declaration
 \leanid{Kraus.fixedPointsStarSubalgebra} assumed a Kraus representation and is
 located in
-\doclink{QICLean/Channel/FixedPoint/Algebra}. It is mathematically correct, but
+\doclink{QICLean/Channel/FixedPoint/Algebra/Algebra}. It is mathematically correct, but
 complete positivity is stronger than the Schwarz-map hypothesis of
 Theorem~6.12 in Ref.~\cite{Wolf2012Quantum}. The declaration remains a useful
 specialization of the post-reduction lemma, but it is not the literal
@@ -146,7 +146,7 @@ declarations:
 \leanid{SchwarzMap.exists_posDef_traceAdjoint_fixedPoint_of_isUnit},
 \leanid{SchwarzMap.fixedPointsStarSubalgebraOfIsUnit}, and
 \leanid{SchwarzMap.exists_unitary_conj_blockDiagonal_iff_fixedPoint_of_isUnit}
-in \doclink{QICLean/Channel/FixedPoint/FullRankFixedPointAlgebra}.} Full rank
+in \doclink{QICLean/Channel/FixedPoint/Algebra/FullRankFixedPointAlgebra}.} Full rank
 is stated as invertibility of the fixed point. Theorem~6.12 is therefore
 formalized with its source hypotheses. The downstream
 Schr{\"o}dinger-picture density-block classification, support reduction, and

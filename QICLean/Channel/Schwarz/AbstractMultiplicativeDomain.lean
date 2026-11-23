@@ -248,3 +248,40 @@ theorem mem_multiplicativeDomain_iff
     mem_leftMultiplicativeDomain_iff E hE A]
 
 end SchwarzMap
+
+namespace Matrix
+
+variable {α β : Type*} [Fintype α] [DecidableEq α]
+variable [Fintype β] [DecidableEq β]
+
+omit [DecidableEq α] [DecidableEq β] in
+/-- The Schwarz inequality is invariant under a simultaneous change of the
+matrix index set. -/
+theorem IsSchwarzMap.reindexEndomorphism
+    {T : Matrix α α ℂ →ₗ[ℂ] Matrix α α ℂ} (hT : IsSchwarzMap T)
+    (e : α ≃ β) : IsSchwarzMap (reindexEndomorphism e T) := by
+  intro A
+  let Φ := Matrix.reindexLinearEquiv ℂ ℂ e e
+  have h := hT (Φ.symm A)
+  have h' : (Φ (T ((Φ.symm A)ᴴ * Φ.symm A) -
+      T (Φ.symm A)ᴴ * T (Φ.symm A))).PosSemidef := by
+    exact h.submatrix e.symm
+  have hstar : Φ.symm Aᴴ = (Φ.symm A)ᴴ := by
+    simp only [Φ, Matrix.symm_reindexLinearEquiv,
+      Matrix.coe_reindexLinearEquiv, Matrix.conjTranspose_reindex]
+  have hmul : Φ.symm (Aᴴ * A) = (Φ.symm A)ᴴ * Φ.symm A := by
+    calc
+      Φ.symm (Aᴴ * A) = Φ.symm Aᴴ * Φ.symm A := by
+        exact (Matrix.reindexLinearEquiv_mul ℂ ℂ
+          e.symm e.symm e.symm Aᴴ A).symm
+      _ = (Φ.symm A)ᴴ * Φ.symm A := by rw [hstar]
+  change (Φ (T (Φ.symm (Aᴴ * A))) -
+    Φ (T (Φ.symm Aᴴ)) * Φ (T (Φ.symm A))).PosSemidef
+  rw [hmul, hstar]
+  have hprod : Φ (T (Φ.symm A)ᴴ * T (Φ.symm A)) =
+      Φ (T (Φ.symm A)ᴴ) * Φ (T (Φ.symm A)) := by
+    exact (Matrix.reindexLinearEquiv_mul ℂ ℂ e e e _ _).symm
+  rw [map_sub, hprod] at h'
+  exact h'
+
+end Matrix

@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Channel.Semigroup.Basic
 import QICLean.Channel.Semigroup.LindbladForm.TraceBridge
-import QICLean.Channel.Peripheral.RecurrentInverse
+import QICLean.Channel.Peripheral.Asymptotic.RecurrentInverse
 import Lean.Elab.Command
 import Lean.Util.CollectAxioms
 

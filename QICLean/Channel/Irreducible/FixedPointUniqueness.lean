@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Spectral.Eigenvalue.HermitianExtremalEigenvalues
-import QICLean.Channel.FixedPoint.Cesaro
+import QICLean.Channel.FixedPoint.MeanErgodic.Cesaro
 import QICLean.Channel.Irreducible.FixedPoint
 
 /-!

@@ -8,7 +8,7 @@ import QICLean.Kraus.PrimitiveFixedPoint.Uniqueness
 import QICLean.Kraus.CPPrimitive
 -- Needed for `IsChannel.exists_posSemidef_fixedPoint`.
 -- The fixed-point existence theorem is used explicitly below.
-import QICLean.Channel.FixedPoint.Cesaro
+import QICLean.Channel.FixedPoint.MeanErgodic.Cesaro
 
 /-!
 # Quantum Perron–Frobenius Theory for MPS Transfer Operators

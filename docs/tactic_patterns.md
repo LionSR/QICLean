@@ -1705,7 +1705,7 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
 
 - **Seen:** The primitivity proof in `Channel/WolfTheorem67.lean` extends
   convergence from density matrices to all matrices; the bounded-orbit proof
-  in `Channel/FixedPoint/MeanErgodicProjection.lean` uses the same positive-part
+  in `Channel/FixedPoint/MeanErgodic/MeanErgodicProjection.lean` uses the same positive-part
   reduction for boundedness.
 - **Reuse:** Total trace normalization handles zero-trace inputs. Apply the
   existing four-positive-semidefinite-parts decomposition to the identity
@@ -1717,8 +1717,8 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
 
 ### Peripheral phases and finite cyclicity — existing structures (2026-10-29)
 
-- **Seen:** `Peripheral/AbstractEigenvectors.lean` and
-  `Peripheral/IrreducibleSchwarz.lean` use the same unit-modulus cancellation
+- **Seen:** `Peripheral/Irreducible/AbstractEigenvectors.lean` and
+  `Peripheral/Irreducible/IrreducibleSchwarz.lean` use the same unit-modulus cancellation
   in the weighted Schwarz equality, peripheral products, and normalization.
 - **Reuse:** `Complex.conj_mul'` handles conjugate-phase cancellation;
   `SchwarzMap.mem_rightMultiplicativeDomain_iff` and its full-domain version

@@ -3,10 +3,10 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Channel.Peripheral.IrreducibleSchwarz
-import QICLean.Channel.Peripheral.JordanBlocks
-import QICLean.Channel.Peripheral.CyclicGroupKraus
-import QICLean.Channel.Peripheral.CyclicDecomposition.PeripheralUnitary
+import QICLean.Channel.Peripheral.Irreducible.IrreducibleSchwarz
+import QICLean.Channel.Peripheral.Projection.JordanBlocks
+import QICLean.Channel.Peripheral.Irreducible.CyclicGroupKraus
+import QICLean.Channel.Peripheral.Irreducible.PeripheralUnitary
 import Mathlib.Analysis.SpecialFunctions.Complex.Arg
 import Lean.Util.CollectAxioms
 

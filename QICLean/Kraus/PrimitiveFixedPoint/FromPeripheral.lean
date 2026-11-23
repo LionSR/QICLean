@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Channel.Peripheral.IrreducibleChannel
+import QICLean.Channel.Peripheral.Irreducible.IrreducibleChannel
 import QICLean.Kraus.CPPrimitive
 import QICLean.Channel.Irreducible.InvariantProjection
 import QICLean.Kraus.PrimitiveFixedPoint.Basic

@@ -8,7 +8,7 @@ import QICLean.Channel.Irreducible.AdjointFamily
 import QICLean.Channel.Irreducible.Growth.OneStep
 import QICLean.Channel.KrausMap.KrausMap
 import QICLean.Algebra.Matrix.MatrixAux
-import QICLean.Channel.FixedPoint.BrouwerDensityMatrices
+import QICLean.Channel.FixedPoint.Stationary.BrouwerDensityMatrices
 
 /-!
 # Perron–Frobenius eigenvector existence for positive maps
@@ -32,7 +32,7 @@ The Brouwer argument in this module is supplied by the present development; it
 is not attributed to the lecture notes.
 
 The required density-matrix Brouwer theorem is proved in
-`TNLean.Channel.FixedPoint.BrouwerDensityMatrices`.
+`QICLean.Channel.FixedPoint.Stationary.BrouwerDensityMatrices`.
 
 ## Main results
 
