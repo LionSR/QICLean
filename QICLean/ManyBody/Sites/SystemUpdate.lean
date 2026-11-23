@@ -6,6 +6,7 @@ Authors: QICLean contributors
 import QICLean.ManyBody.Sites.Block
 import QICLean.ManyBody.Sites.Subregion
 import QICLean.Analysis.Norm.MatrixKroneckerContraction
+import QICLean.Algebra.Combinatorics.TupleEquiv
 
 /-!
 # Systems changed on a region, and placement between two systems
@@ -210,6 +211,13 @@ theorem placeBetween_smul (hXY : ∀ v ∉ D, Y v = X v) (c : ℂ)
     placeBetween D hXY (c • K) = c • placeBetween D hXY K := by
   simp [placeBetween, smul_kronecker, submatrix_smul]
 
+/-- The placement of a difference is the difference of the placements. -/
+theorem placeBetween_sub (hXY : ∀ v ∉ D, Y v = X v)
+    (K K' : Matrix (RegionConfig Y D) (RegionConfig X D) ℂ) :
+    placeBetween D hXY K - placeBetween D hXY K' = placeBetween D hXY (K - K') := by
+  rw [sub_eq_add_neg, sub_eq_add_neg, placeBetween_add, ← neg_one_smul ℂ K', placeBetween_smul,
+    neg_one_smul]
+
 /-- Placements on a region compose: `(K' ⊗ 1)(K ⊗ 1) = K' K ⊗ 1`. -/
 theorem placeBetween_mul [∀ v, Fintype (Y v)] [∀ v, DecidableEq (Y v)]
     [Fintype (RegionConfig Y D)] (hXY : ∀ v ∉ D, Y v = X v) (hYW : ∀ v ∉ D, W v = Y v)
@@ -355,6 +363,23 @@ theorem subregionPlaceBetween_apply (hDU : D ⊆ U) (hXY : ∀ v ∉ D, Y v = X 
     rfl rfl
 
 omit [Fintype V] in
+/-- The extension of a sum is the sum of the extensions. -/
+theorem subregionPlaceBetween_add (hDU : D ⊆ U) (hXY : ∀ v ∉ D, Y v = X v)
+    (K K' : Matrix (RegionConfig Y D) (RegionConfig X D) ℂ) :
+    subregionPlaceBetween hDU hXY (K + K') =
+      subregionPlaceBetween hDU hXY K + subregionPlaceBetween hDU hXY K' := by
+  simp only [subregionPlaceBetween, ← placeBetween_add]
+  congr 1
+
+omit [Fintype V] in
+/-- The extension of a multiple is the multiple of the extension. -/
+theorem subregionPlaceBetween_smul (hDU : D ⊆ U) (hXY : ∀ v ∉ D, Y v = X v) (c : ℂ)
+    (K : Matrix (RegionConfig Y D) (RegionConfig X D) ℂ) :
+    subregionPlaceBetween hDU hXY (c • K) = c • subregionPlaceBetween hDU hXY K := by
+  simp only [subregionPlaceBetween, ← placeBetween_smul]
+  congr 1
+
+omit [Fintype V] in
 /-- The extension does not increase the operator norm. -/
 theorem norm_subregionPlaceBetween_le [∀ v, Fintype (X v)] [∀ v, Fintype (Y v)]
     (hDU : D ⊆ U) (hXY : ∀ v ∉ D, Y v = X v)
@@ -387,13 +412,6 @@ end Subregion
 /-! ### Placement between two systems read on blocks -/
 
 section Block
-
-/-- A cast between two families of functions is the family of casts of their values. -/
-private theorem cast_pi_apply {ι : Type*} {A B : ι → Type u} (hAB : A = B)
-    (h : (∀ i, A i) = ∀ i, B i) (a : ∀ i, A i) (i : ι) :
-    cast h a i = cast (congrFun hAB i) (a i) := by
-  subst hAB
-  rfl
 
 variable {V' : Type} [Fintype V'] [DecidableEq V'] {V₀ : Type} [Fintype V₀] [DecidableEq V₀]
   (f : V₀ → V') {X Y : V₀ → Type}

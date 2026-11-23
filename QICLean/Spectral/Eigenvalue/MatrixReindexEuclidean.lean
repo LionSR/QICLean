@@ -14,7 +14,8 @@ A linear equivalence `f` with `T ∘ f = f ∘ S` carries each eigenspace of `S`
 of `T` for the same eigenvalue (`Module.End.eigenspace_eq_map_of_intertwine`). Relabelling the
 basis of a square matrix along `e` is such an intertwining: the isometry `ψ ↦ ψ ∘ e.symm` of
 Euclidean spaces intertwines `H` with `reindex e e H`
-(`Matrix.toEuclideanLin_reindex_piLpCongrLeft`). Hence the isometry carries the eigenspaces, the
+(`Matrix.toEuclideanLin_reindex_piLpCongrLeft`, the square case of
+`Matrix.toEuclideanLin_reindex_piLpCongrLeft₂`). Hence the isometry carries the eigenspaces, the
 eigenvalues and the kernel of `H` to those of the reindexed matrix. No positivity or Hermiticity
 hypothesis is needed.
 
@@ -40,15 +41,24 @@ namespace Matrix
 
 variable {ι κ : Type*} [Fintype ι] [Fintype κ] [DecidableEq ι] [DecidableEq κ]
 
+/-- Reading a rectangular matrix along `e` on the rows and `f` on the columns, and a vector along
+`f`, commutes with applying the matrix: the output is read along `e`. -/
+theorem toEuclideanLin_reindex_piLpCongrLeft₂ {m n m' n' : Type*} [Fintype m] [Fintype n]
+    [Fintype m'] [Fintype n'] [DecidableEq n] [DecidableEq n'] (e : m ≃ m') (f : n ≃ n')
+    (M : Matrix m n ℂ) (x : EuclideanSpace ℂ n) :
+    toEuclideanLin (reindex e f M) (LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ f x) =
+      LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ e (toEuclideanLin M x) := by
+  ext i
+  simp only [Matrix.ofLp_toLpLin, LinearIsometryEquiv.piLpCongrLeft_apply,
+    Equiv.piCongrLeft'_apply, reindex_apply]
+  exact Fintype.sum_equiv f.symm _ _ fun j ↦ by simp
+
 /-- The isometry `ψ ↦ ψ ∘ e.symm` induced by `e` intertwines `H` and `reindex e e H`. -/
 theorem toEuclideanLin_reindex_piLpCongrLeft (e : ι ≃ κ) (H : Matrix ι ι ℂ)
     (v : EuclideanSpace ℂ ι) :
     toEuclideanLin (reindex e e H) (LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ e v) =
-      LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ e (toEuclideanLin H v) := by
-  apply WithLp.ofLp_injective 2
-  ext i
-  simp [toLpLin_apply, reindex_apply, submatrix_mulVec_equiv, Equiv.piCongrLeft'_apply,
-    Function.comp_def]
+      LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ e (toEuclideanLin H v) :=
+  toEuclideanLin_reindex_piLpCongrLeft₂ e e H v
 
 /-- The eigenspaces of a relabelled matrix are the images of the eigenspaces. -/
 theorem eigenspace_toEuclideanLin_reindex (e : ι ≃ κ) (H : Matrix ι ι ℂ) (μ : ℂ) :

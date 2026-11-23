@@ -31,6 +31,7 @@ the counts.
   `QuantumCircuit.Party.PartyCircuit.gates_relabel` — relabellings.
 * `QuantumCircuit.Party.PartyCircuit.op_mapGates`,
   `QuantumCircuit.Party.PartyCircuit.gates_mapGates`,
+  `QuantumCircuit.Party.PartyCircuit.mapGatesLocationsEquiv`,
   `QuantumCircuit.Party.PartyCircuit.IsAllowed.mapGates` — replacing the gates.
 -/
 
@@ -194,6 +195,30 @@ omit [Fintype P] in
   | _, _, localOps _ => rfl
   | _, _, comp c c' => by rw [mapGates, participation, participation,
       participation_mapGates p c, participation_mapGates p c']
+
+omit [Fintype P] [DecidableEq P] in
+/-- Replacing the gates keeps the gate occurrences: the occurrences of `c.mapGates φ` are those
+of `c`, constructor by constructor. -/
+def mapGatesLocationsEquiv : {X Y : P → Type} → (c : PartyCircuit G X Y) →
+    c.gateLocations ≃ (c.mapGates φ).gateLocations
+  | _, _, done _ => Equiv.refl _
+  | _, _, gate _ _ _ => Equiv.refl _
+  | _, _, localOp _ _ _ => Equiv.refl _
+  | _, _, localOps _ => Equiv.refl _
+  | _, _, comp c c' => Equiv.sumCongr (mapGatesLocationsEquiv c) (mapGatesLocationsEquiv c')
+
+omit [Fintype P] [DecidableEq P] in
+/-- Replacing the gates keeps the cell of every occurrence. -/
+theorem participants_mapGatesLocationsEquiv : {X Y : P → Type} → (c : PartyCircuit G X Y) →
+    (g : c.gateLocations) → (c.mapGates φ).participants (mapGatesLocationsEquiv φ c g) =
+      c.participants g
+  | _, _, done _, g => g.elim
+  | _, _, gate _ _ _, _ => rfl
+  | _, _, localOp _ _ _, g => g.elim
+  | _, _, localOps _, g => g.elim
+  | _, _, comp c c', g => by
+    rcases g with g | g
+    exacts [participants_mapGatesLocationsEquiv c g, participants_mapGatesLocationsEquiv c' g]
 
 omit [Fintype P] in
 /-- Along a compatible morphism, an allowed circuit stays allowed when the condition on gates

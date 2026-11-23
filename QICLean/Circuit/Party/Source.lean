@@ -10,6 +10,7 @@ Authors: QICLean contributors
 
 import QICLean.Circuit.Party.Source.Combination
 import QICLean.Circuit.Party.Source.Common
+import QICLean.Circuit.Party.Source.GroupedElimination
 import QICLean.Circuit.Party.Source.Inventory
 import QICLean.Circuit.Party.Source.InventoryExpansion
 import QICLean.Circuit.Party.Source.Locations

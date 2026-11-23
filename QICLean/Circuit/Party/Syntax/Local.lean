@@ -287,13 +287,16 @@ theorem usesOnly_iff_parties_subset [Fintype P] {R : Set P} : {X Y : P → Type}
     (w : Word X Y) → w.UsesOnly R ↔ (↑(PartyCircuit.parties w) : Set P) ⊆ R
   | _, _, PartyCircuit.done _ => iff_of_true trivial (by simp [PartyCircuit.parties])
   | _, _, PartyCircuit.gate _ _ _ => Iff.rfl
-  | _, _, PartyCircuit.localOp _ _ _ => by simp [UsesOnly, PartyCircuit.parties]
+  | _, _, PartyCircuit.localOp _ _ _ => by
+    simp [UsesOnly, PartyCircuit.UsesOnly, PartyCircuit.parties]
   | _, _, PartyCircuit.localOps _ => by
-    simp only [UsesOnly, PartyCircuit.parties, Finset.coe_filter, Finset.mem_univ, true_and]
+    simp only [UsesOnly, PartyCircuit.UsesOnly, PartyCircuit.parties, Finset.coe_filter,
+      Finset.mem_univ, true_and]
     exact ⟨fun h p hp ↦ by_contra fun hR ↦ hp (h p hR), fun h p hR ↦ by_contra fun hp ↦ hR (h hp)⟩
   | _, _, PartyCircuit.comp w w' => by
-    rw [UsesOnly, usesOnly_iff_parties_subset w, usesOnly_iff_parties_subset w',
-      PartyCircuit.parties, Finset.coe_union, Set.union_subset_iff]
+    rw [PartyCircuit.parties, Finset.coe_union, Set.union_subset_iff,
+      ← usesOnly_iff_parties_subset w, ← usesOnly_iff_parties_subset w']
+    rfl
 
 /-- A word uses only its own parties. -/
 theorem usesOnly_parties [Fintype P] (w : Word X Y) :
