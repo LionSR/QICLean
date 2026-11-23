@@ -30,6 +30,7 @@ import QICLean.Analysis.Norm.NeumannInverse
 import QICLean.Analysis.Norm.NormedRingTelescoping
 import QICLean.Analysis.Norm.OperatorNormConvergence
 import QICLean.Analysis.Norm.OrderedIdempotentTracePerturbation
+import QICLean.Analysis.Norm.PiKroneckerNorm
 import QICLean.Analysis.Norm.PrincipalSubmatrixNorm
 import QICLean.Analysis.Norm.ReindexMulVec
 import QICLean.Analysis.Norm.RootChannel

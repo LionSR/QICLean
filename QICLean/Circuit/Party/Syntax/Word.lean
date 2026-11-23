@@ -49,6 +49,8 @@ The sources of the monomials of a gate (`Monomial.sources`) and their pair effec
 * `QuantumCircuit.Party.Word.UsesOnly.mem_sources` — a word using a set of parties has its
   sources there.
 * `QuantumCircuit.Party.Word.op_toChain` — a word read as a monomial.
+* `QuantumCircuit.Party.Monomial.effects_comp`,
+  `QuantumCircuit.Party.Monomial.norm_vector_of_mem_effects` — pair effects of monomials.
 * `QuantumCircuit.Party.Word.op_sourceAt_mul_piKronecker` — a fresh source commutes with local
   operations on the old factors.
 
@@ -468,6 +470,28 @@ theorem sourceCount_comp {Z : D → Type} [∀ s, Fintype (Y s)] [∀ s, Decidab
   rw [sourceCount, sources, PartyCircuit.gates, List.filterMap_append, List.reverse_append,
     List.length_append, Nat.add_comm]
   rfl
+
+/-- The pair effects of a composition: those of the first part first. -/
+theorem effects_comp {Z : D → Type} [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)]
+    (M : Monomial D X Y) (M' : Monomial D Y Z) :
+    Monomial.effects (PartyCircuit.comp M M') = M.effects ++ M'.effects :=
+  List.filterMap_append
+
+/-- The pair effects of an allowed monomial are normalized. -/
+theorem norm_vector_of_mem_effects : {X Y : D → Type} → [∀ s, Fintype (X s)] →
+    [∀ s, DecidableEq (X s)] → {M : Monomial D X Y} →
+      M.IsAllowed chainEv ChainGate.IsAllowed → ∀ e ∈ M.effects, ‖e.vector‖ = 1
+  | _, _, _, _, .done _, _ => fun _ h ↦ absurd h List.not_mem_nil
+  | _, _, _, _, @PartyCircuit.gate _ _ _ _ _ _ _ _ (.inl _), _ => fun _ h ↦
+    absurd h List.not_mem_nil
+  | _, _, _, _, @PartyCircuit.gate _ _ _ _ _ _ _ _ (.inr _), hM => fun _ h ↦
+    (List.mem_singleton.mp h) ▸ hM.2
+  | _, _, _, _, @PartyCircuit.localOp _ _ _ _ _ _ _ _ _, _ => fun _ h ↦
+    absurd h List.not_mem_nil
+  | _, _, _, _, @PartyCircuit.localOps _ _ _ _ _ _ _, _ => fun _ h ↦ absurd h List.not_mem_nil
+  | _, _, _, _, @PartyCircuit.comp _ _ _ _ _ _ _ c c', hM => fun e h ↦ by
+    rw [Monomial.effects, PartyCircuit.gates, List.filterMap_append, List.mem_append] at h
+    exact h.elim (norm_vector_of_mem_effects hM.1 e) (norm_vector_of_mem_effects hM.2 e)
 
 /-- A word read as a monomial has no pair effect. -/
 theorem effects_toChain (w : Word (P := ↥D) X Y) : Monomial.effects w.toChain = [] := by
