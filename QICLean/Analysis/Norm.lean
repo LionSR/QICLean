@@ -8,6 +8,7 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Analysis.Norm
 
+import QICLean.Analysis.Norm.ApproximateContractionRescaling
 import QICLean.Analysis.Norm.BipartiteDecomposition
 import QICLean.Analysis.Norm.BlockDiagonalNorm
 import QICLean.Analysis.Norm.CStarCompletion
