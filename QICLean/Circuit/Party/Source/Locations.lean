@@ -266,16 +266,11 @@ section Frame
 variable (W : P → Type) [∀ p, Fintype (W p)] [∀ p, DecidableEq (W p)]
 
 omit [∀ p, Fintype (Y p)] [∀ p, DecidableEq (Y p)] in
-/-- The gate occurrences of a framed circuit are those of the circuit. -/
-def gateLocationsFrameEquiv : {X Y : P → Type} → [∀ p, Fintype (X p)] →
-    [∀ p, DecidableEq (X p)] → (w : SourceCircuit X Y) →
-    (w.frame W).gateLocations ≃ w.gateLocations
-  | _, _, _, _, PartyCircuit.done _ => Equiv.refl _
-  | _, _, _, _, PartyCircuit.gate _ _ _ => Equiv.refl _
-  | _, _, _, _, PartyCircuit.localOp _ _ _ => Equiv.refl _
-  | _, _, _, _, PartyCircuit.localOps _ => Equiv.refl _
-  | _, _, _, _, PartyCircuit.comp c c' =>
-    Equiv.sumCongr (gateLocationsFrameEquiv c) (gateLocationsFrameEquiv c')
+/-- The gate occurrences of a framed circuit are those of the circuit
+(`PartyCircuit.frameLocationsEquiv`, read backwards). -/
+def gateLocationsFrameEquiv [∀ p, Fintype (X p)] [∀ p, DecidableEq (X p)]
+    (w : SourceCircuit X Y) : (w.frame W).gateLocations ≃ w.gateLocations :=
+  (PartyCircuit.frameLocationsEquiv W w).symm
 
 omit [∀ p, Fintype (Y p)] [∀ p, DecidableEq (Y p)] in
 /-- Framing keeps the cell of every occurrence. -/

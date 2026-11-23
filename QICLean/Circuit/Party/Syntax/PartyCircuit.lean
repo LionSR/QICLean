@@ -63,6 +63,8 @@ count and the participations are those of the circuit (`PartyCircuit.gateCount_t
 * `QuantumCircuit.Party.PartyCircuit.gateCount_eq_numGates`,
   `QuantumCircuit.Party.PartyCircuit.participation_eq_participationCount` — when no gate is
   private, every gate is counted.
+* `QuantumCircuit.Party.PartyCircuit.natCard_participants_mem` — the gate occurrences containing
+  a party are counted by `participationCount`.
 
 ## References
 
@@ -537,6 +539,40 @@ theorem participation_eq_participationCount (p : P) : {X Y : P → Type} →
   | _, _, localOps _, _ => rfl
   | _, _, comp c c', h => congrArg₂ (· + ·) (participation_eq_participationCount p c h.1)
       (participation_eq_participationCount p c' h.2)
+
+omit [Fintype P] [DecidableEq P] [GateFamily G] in
+/-- A condition on the cells holds at every gate occurrence when it holds at every gate. -/
+theorem forall_participants_of_forallGate {Q : Finset P → Prop} : {X Y : P → Type} →
+    {c : PartyCircuit G X Y} → c.ForallGate (fun D _ _ _ ↦ Q D) →
+      ∀ g : c.gateLocations, Q (c.participants g)
+  | _, _, done _, _, g => g.elim
+  | _, _, gate _ _ _, h, _ => h
+  | _, _, localOp _ _ _, _, g => g.elim
+  | _, _, localOps _, _, g => g.elim
+  | _, _, comp _ _, h, g => by
+    rcases g with g | g
+    exacts [forall_participants_of_forallGate h.1 g, forall_participants_of_forallGate h.2 g]
+
+omit [Fintype P] [GateFamily G] in
+/-- The number of gate occurrences whose cell contains `p` is `participationCount p`, one-party
+gates included. Source: `04-compression.tex`, lines 140–142. -/
+theorem natCard_participants_mem (p : P) : {X Y : P → Type} → (c : PartyCircuit G X Y) →
+    Nat.card {g : c.gateLocations // p ∈ c.participants g} = c.participationCount p
+  | _, _, done _ => Nat.card_eq_zero.mpr (Or.inl ⟨fun g ↦ Empty.elim g.1⟩)
+  | _, _, gate D _ _ => by
+    change Nat.card {g : Unit // p ∈ D} = if p ∈ D then 1 else 0
+    by_cases hp : p ∈ D
+    · have : Unique {g : Unit // p ∈ D} := ⟨⟨⟨(), hp⟩⟩, fun _ ↦ rfl⟩
+      exact Nat.card_unique.trans (ite_eq_left hp).symm
+    · have : IsEmpty {g : Unit // p ∈ D} := ⟨fun g ↦ hp g.2⟩
+      exact Nat.card_of_isEmpty.trans (ite_eq_right hp).symm
+  | _, _, localOp _ _ _ => Nat.card_eq_zero.mpr (Or.inl ⟨fun g ↦ Empty.elim g.1⟩)
+  | _, _, localOps _ => Nat.card_eq_zero.mpr (Or.inl ⟨fun g ↦ Empty.elim g.1⟩)
+  | _, _, comp c c' =>
+    (Nat.card_congr (Equiv.subtypeSum (p := fun g : c.gateLocations ⊕ c'.gateLocations ↦
+      p ∈ Sum.elim c.participants c'.participants g))).trans
+      (Nat.card_sum.trans (congrArg₂ (· + ·) (natCard_participants_mem p c)
+        (natCard_participants_mem p c')))
 
 omit [Fintype P] [GateFamily G] in
 /-- One gate on the empty cell is counted: the empty cell costs `1`. -/
