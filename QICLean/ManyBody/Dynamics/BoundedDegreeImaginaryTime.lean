@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import Mathlib.Algebra.BigOperators.Intervals
 import Mathlib.Data.Fintype.Sigma
-import QICLean.Algebra.Combinatorics.IncidenceCount
+import QICLean.Algebra.Combinatorics.GateIncidence
 import QICLean.Analysis.Exponential.ExpConjugation
 import QICLean.Spectral.Eigenvalue.VariationalBound
 import QICLean.ManyBody.Dynamics.Interaction

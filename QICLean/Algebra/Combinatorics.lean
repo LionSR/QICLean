@@ -22,11 +22,11 @@ import QICLean.Algebra.Combinatorics.FinSumPermutation
 import QICLean.Algebra.Combinatorics.FiniteCauchySchwarz
 import QICLean.Algebra.Combinatorics.FiniteCycleCoboundary
 import QICLean.Algebra.Combinatorics.FinsetEnumeration
+import QICLean.Algebra.Combinatorics.GateIncidence
 import QICLean.Algebra.Combinatorics.GeneralizeDecide
 import QICLean.Algebra.Combinatorics.GraphDistanceTransport
 import QICLean.Algebra.Combinatorics.GreedyColoring
 import QICLean.Algebra.Combinatorics.HypercubePhasePotential
-import QICLean.Algebra.Combinatorics.IncidenceCount
 import QICLean.Algebra.Combinatorics.IndexInduction
 import QICLean.Algebra.Combinatorics.IntegerHasseGraph
 import QICLean.Algebra.Combinatorics.NatPolynomialBound

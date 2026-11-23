@@ -23,6 +23,12 @@ Source: Schuch, Wolf, Verstraete and Cirac, *Entropy Scaling and Simulability
 by Matrix Product States*, arXiv:0705.0292v2, lines 139 and 160–173.
 The printed trigonometric formula concerns angles between zero and π/4;
 the minimum over all coefficients also includes the saturated branch.
+For a possibly subnormalized density `ρ` within `η` of a pure density and an approximation `σ`
+of `ρ` with absolute trace-norm error `κ`, the error of `σ` against the pure density is at most
+`κ + η` and the trace of `ρ` is within `η` of one
+(`Matrix.rectangularTraceNorm_sub_pure_le_of_retained_density`; OpenAI, *Polynomial PEPS
+approximation of gapped square-grid ground states* (September 24, 2026), Remark 5.3,
+`04-compression.tex:600–611`).
 -/
 
 open scoped Matrix ComplexOrder MatrixOrder InnerProductSpace
@@ -213,7 +219,8 @@ private theorem rectangularTraceNorm_sub_re_smul_le [DecidableEq n]
   simpa only [hid] using rectangularTraceNorm_hermitianPart_le (P - z • Q)
 
 open scoped Matrix.Norms.L2Operator in
-private theorem norm_trace_le_rectangularTraceNorm [DecidableEq n] (A : Matrix n n ℂ) :
+/-- The modulus of the trace of a square matrix is at most its trace norm. -/
+theorem norm_trace_le_rectangularTraceNorm [DecidableEq n] (A : Matrix n n ℂ) :
     ‖A.trace‖ ≤ rectangularTraceNorm A := by
   have h1 : ‖(1 : Matrix n n ℂ)‖ ≤ 1 := l2_opNorm_unitary_le_one (by simp)
   simpa only [mul_one, trace_conjTranspose, norm_star] using
@@ -227,12 +234,6 @@ theorem rectangularTraceNorm_euclideanOuterProduct_self [DecidableEq n]
     rectangularTraceNorm (euclideanOuterProduct ψ ψ) = ‖ψ‖ ^ 2 := by
   simp only [rectangularTraceNorm_eq_re_trace_abs, euclideanOuterProduct,
     re_trace_abs_pure_density_self]
-
-private theorem trace_euclideanOuterProduct_self (ψ : EuclideanSpace ℂ n) :
-    (euclideanOuterProduct ψ ψ).trace = ((‖ψ‖ ^ 2 : ℝ) : ℂ) := by
-  rw [euclideanOuterProduct, trace_vecMulVec, ← EuclideanSpace.inner_eq_star_dotProduct,
-    inner_self_eq_norm_sq_to_K]
-  exact (RCLike.ofReal_pow (K := ℂ) ‖ψ‖ 2).symm
 
 /-- Optimizing the full relative trace-norm error over complex density
 coefficients gives the scalar error of the normalized squared overlap.
@@ -256,7 +257,8 @@ theorem isLeast_optimizedPureTraceError [DecidableEq n]
     by_cases hz : z.re < 0
     · have htrace : (euclideanOuterProduct ψ ψ - z • euclideanOuterProduct φ φ).trace =
           ((‖ψ‖ ^ 2 : ℝ) : ℂ) - z * ((‖φ‖ ^ 2 : ℝ) : ℂ) := by
-        simp only [trace_sub, trace_smul, trace_euclideanOuterProduct_self, smul_eq_mul]
+        simp only [trace_sub, trace_smul, trace_euclideanOuterProduct_self, smul_eq_mul,
+          Complex.ofReal_pow]
       have hre : (euclideanOuterProduct ψ ψ - z • euclideanOuterProduct φ φ).trace.re =
           ‖ψ‖ ^ 2 - z.re * ‖φ‖ ^ 2 := by
         simp only [htrace, Complex.sub_re, Complex.mul_re, Complex.ofReal_re,
@@ -284,5 +286,28 @@ theorem isLeast_optimizedPureTraceError [DecidableEq n]
   case attained =>
     obtain ⟨s, hs, heq⟩ := hreal.1
     exact ⟨(s : ℂ), by simpa only [Complex.coe_smul] using heq⟩
+
+/-- **Absolute error and retained norm.** Let `ρ` be a possibly subnormalized density and
+`Ω` a unit vector. If `σ` approximates `ρ` with absolute trace-norm error `κ`, and `ρ` lies
+within `η` of `|Ω⟩⟨Ω|`, then `‖σ - |Ω⟩⟨Ω|‖₁ ≤ κ + η` and `|Tr ρ - 1| ≤ η`. Neither `ρ` nor `σ`
+is renormalized, and `σ` need be neither positive nor Hermitian.
+
+OpenAI, *Polynomial PEPS approximation of gapped square-grid ground states* (September 24,
+2026), Remark 5.3 (`rem:compression-retained-norm`), `04-compression.tex:600–611`. -/
+theorem rectangularTraceNorm_sub_pure_le_of_retained_density [DecidableEq n]
+    (σ ρ : Matrix n n ℂ) (Ω : EuclideanSpace ℂ n) (hΩ : ‖Ω‖ = 1) {κ η : ℝ}
+    (hcompression : rectangularTraceNorm (σ - ρ) ≤ κ)
+    (hpure : rectangularTraceNorm (ρ - euclideanOuterProduct Ω Ω) ≤ η) :
+    rectangularTraceNorm (σ - euclideanOuterProduct Ω Ω) ≤ κ + η ∧ ‖ρ.trace - 1‖ ≤ η := by
+  refine ⟨?_, ?_⟩
+  · rw [← sub_add_sub_cancel σ ρ]
+    exact (rectangularTraceNorm_add_le _ _).trans (add_le_add hcompression hpure)
+  · have htrace : (euclideanOuterProduct Ω Ω).trace = 1 := by
+      rw [trace_euclideanOuterProduct_self, hΩ]
+      norm_num
+    calc
+      ‖ρ.trace - 1‖ = ‖(ρ - euclideanOuterProduct Ω Ω).trace‖ := by
+        rw [trace_sub, htrace]
+      _ ≤ η := (norm_trace_le_rectangularTraceNorm _).trans hpure
 
 end Matrix

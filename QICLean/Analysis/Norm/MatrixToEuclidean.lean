@@ -22,7 +22,8 @@ the first only over the reals (`Matrix.inner_toEuclideanCLM`).
 
 * `Matrix.inner_toEuclideanCLM_eq_dotProduct`: `⟪x, A y⟫ = star x ⬝ᵥ (A *ᵥ y)`.
 * `Matrix.norm_toEuclideanCLM_le_of_norm_le_one`: `‖A‖ ≤ 1` gives `‖A x‖ ≤ ‖x‖`.
-* `Matrix.toEuclideanLin_one_apply`, `Matrix.toEuclideanLin_mul_apply`.
+* `Matrix.toEuclideanLin_one_apply`, `Matrix.toEuclideanLin_mul_apply`,
+  `Matrix.toEuclideanLin_single_one_apply`.
 * `Matrix.toEuclideanLin_symm_apply`, `Matrix.l2_opNorm_toEuclideanLin_symm`: the entries and
   the operator norm of the matrix of a linear map of Euclidean spaces.
 * `Matrix.toEuclideanLin_le_toEuclideanLin_iff`, `Matrix.toEuclideanCLM_le_toEuclideanCLM_iff`:
@@ -60,6 +61,12 @@ theorem toEuclideanLin_mul_apply {m : Type*} [Fintype m] [DecidableEq m] (A B : 
     toEuclideanLin (A * B) x = toEuclideanLin A (toEuclideanLin B x) := by
   ext i
   simp [toLpLin_apply, mulVec_mulVec]
+
+/-- The column of a matrix at the basis vector `|z⟩` has the entries `σ x z`. -/
+theorem toEuclideanLin_single_one_apply {l m : Type*} [Fintype m] [DecidableEq m]
+    (σ : Matrix l m ℂ) (z : m) (x : l) :
+    toEuclideanLin σ (EuclideanSpace.single z 1) x = σ x z := by
+  simp [toLpLin_apply]
 
 /-- The entry `(i, j)` of the matrix of a linear map of Euclidean spaces is the coordinate `i`
 of the image of the basis vector `j`. -/

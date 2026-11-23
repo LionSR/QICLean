@@ -89,15 +89,6 @@ theorem euclideanOuterProduct_tensorVector (v : EuclideanSpace ℂ m)
     euclideanTensorVector_apply, kroneckerMap_apply, star_mul]
   ring
 
-/-- The trace of the actual pure density is the squared Euclidean norm. -/
-theorem trace_euclideanOuterProduct_self [Fintype n] (w : EuclideanSpace ℂ n) :
-    (euclideanOuterProduct w w).trace = (‖w‖ : ℂ) ^ 2 := by
-  calc
-    _ = ⟪w, w⟫_ℂ := by
-      simp only [euclideanOuterProduct, trace, diag, vecMulVec_apply, Pi.star_apply,
-        EuclideanSpace.inner_eq_star_dotProduct, dotProduct]
-    _ = _ := inner_self_eq_norm_sq_to_K w
-
 /-- Discarding a fresh normalized pure register preserves the exact density,
 also for zero or subnormalized working vectors. -/
 theorem partialTraceRight_tensorVector [Fintype n] (v : EuclideanSpace ℂ m)

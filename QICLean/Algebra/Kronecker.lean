@@ -16,5 +16,6 @@ import QICLean.Algebra.Kronecker.MatrixRealignment
 import QICLean.Algebra.Kronecker.OverlappingLiftAlgebra
 import QICLean.Algebra.Kronecker.PiKronecker
 import QICLean.Algebra.Kronecker.PiKroneckerProducts
+import QICLean.Algebra.Kronecker.PiKroneckerRange
 import QICLean.Algebra.Kronecker.PiTensorProductPhase
 import QICLean.Algebra.Kronecker.TensorMap
