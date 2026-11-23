@@ -38,6 +38,7 @@ equivalence `complCast hXY`.
 * `ManyBody.placeBetween_eq_place` — on one system it is the placement.
 * `ManyBody.placeBetween_mul` — placements on a region compose.
 * `ManyBody.placeBetween_conjTranspose` — the adjoint of a placement.
+* `ManyBody.placeBetween_reindex_one_kronecker` — a placement beside spectator factors.
 * `ManyBody.reindex_blockConfigEquiv_placeBetween` — a placement on a region of blocks is, on the
   sites, the placement on the preimage of the region.
 -/
@@ -225,6 +226,46 @@ theorem placeBetween_conjTranspose [∀ v, DecidableEq (Y v)] (hXY : ∀ v ∉ D
       Option.some.injEq, apply_ite star, star_one, star_zero]
     exact if_congr ((Equiv.symm_apply_eq _).trans eq_comm) rfl rfl
   simp only [placeBetween, reindex_apply, conjTranspose_submatrix, conjTranspose_kronecker, hC]
+
+/-- A cast of a pair along an equality of second factors is the pair of the first component
+and the cast of the second. -/
+private theorem cast_prod_eq_iff {W A B : Type u} (h' : A = B) (h : (W × A) = (W × B))
+    (z : W × A) (z' : W × B) : cast h z = z' ↔ z.1 = z'.1 ∧ cast h' z.2 = z'.2 := by
+  subst h'
+  simp [Prod.ext_iff]
+
+/-- **A placement beside spectator factors.** Placing `1 ⊗ K`, with the spectator factor `W v`
+in front of the basis of every site of `D`, is placing `K` and tensoring with the identity on
+the spectators of all sites. -/
+theorem placeBetween_reindex_one_kronecker {W : V → Type} [∀ v, DecidableEq (W v)]
+    {X Y : V → Type} [∀ v, DecidableEq (X v)]
+    (hXY : ∀ v ∉ D, Y v = X v) (hWXY : ∀ v ∉ D, (W v × Y v) = (W v × X v))
+    (K : Matrix (RegionConfig Y D) (RegionConfig X D) ℂ) :
+    placeBetween D hWXY
+        (reindex (Equiv.arrowProdEquivProdArrow {v // v ∈ D} (fun v ↦ W v) (fun v ↦ Y v)).symm
+          (Equiv.arrowProdEquivProdArrow {v // v ∈ D} (fun v ↦ W v) (fun v ↦ X v)).symm
+          ((1 : Matrix (RegionConfig W D) (RegionConfig W D) ℂ) ⊗ₖ K)) =
+      reindex (Equiv.arrowProdEquivProdArrow V W Y).symm (Equiv.arrowProdEquivProdArrow V W X).symm
+        ((1 : Matrix (Config W) (Config W) ℂ) ⊗ₖ placeBetween D hXY K) := by
+  ext y x
+  have key : ∀ v (hv : v ∉ D), cast (hWXY v hv) (y v) = x v ↔
+      (y v).1 = (x v).1 ∧ cast (hXY v hv) (y v).2 = (x v).2 :=
+    fun v hv ↦ cast_prod_eq_iff (hXY v hv) _ _ _
+  rw [placeBetween_apply]
+  simp only [reindex_apply, submatrix_apply, Equiv.symm_symm,
+    Equiv.arrowProdEquivProdArrow_apply, kroneckerMap_apply, one_apply, placeBetween_apply]
+  by_cases hW : (fun v ↦ (y v).1) = fun v ↦ (x v).1
+  · have hWD : (fun v : {v // v ∈ D} ↦ (y v.1).1) = fun v : {v // v ∈ D} ↦ (x v.1).1 :=
+      funext fun v ↦ congrFun hW v.1
+    rw [ite_eq_left hW, ite_eq_left hWD, one_mul, one_mul]
+    exact if_congr ⟨fun h v hv ↦ ((key v hv).mp (h v hv)).2,
+      fun h v hv ↦ (key v hv).mpr ⟨congrFun hW v, h v hv⟩⟩ rfl rfl
+  · rw [ite_eq_right hW, zero_mul]
+    split_ifs with h₁ h₂
+    · exact absurd (funext fun v ↦ if hv : v ∈ D then congrFun h₂ ⟨v, hv⟩
+        else ((key v hv).mp (h₁ v hv)).1) hW
+    · rw [zero_mul]
+    · rfl
 
 /-! ### Placement between two systems read on blocks -/
 

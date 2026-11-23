@@ -10,6 +10,7 @@ Authors: QICLean contributors
 
 import QICLean.Circuit.Party.Syntax.AddPair
 import QICLean.Circuit.Party.Syntax.EffectCircuit
+import QICLean.Circuit.Party.Syntax.Frame
 import QICLean.Circuit.Party.Syntax.Gates
 import QICLean.Circuit.Party.Syntax.PartyCircuit
 import QICLean.Circuit.Party.Syntax.Relabel
