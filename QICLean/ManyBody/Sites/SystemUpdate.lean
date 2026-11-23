@@ -4,6 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Sites.Block
+import QICLean.ManyBody.Sites.Subregion
+import QICLean.Analysis.Norm.MatrixKroneckerContraction
 
 /-!
 # Systems changed on a region, and placement between two systems
@@ -28,6 +30,7 @@ equivalence `complCast hXY`.
 
 * `ManyBody.updateOn` — the system `X` with the basis types `Z` on a region.
 * `ManyBody.updateOnConfigEquiv` — its configurations, as pairs.
+* `ManyBody.pairConfigEquiv` — the configurations of a region of two sites, as pairs.
 * `ManyBody.complCast` — configurations outside a region of two systems that agree there.
 * `ManyBody.placeBetween` — the placement `K ⊗ 1` of a matrix between two systems.
 
@@ -37,12 +40,18 @@ equivalence `complCast hXY`.
 * `ManyBody.placeBetween_eq_place` — on one system it is the placement.
 * `ManyBody.placeBetween_mul` — placements on a region compose.
 * `ManyBody.placeBetween_conjTranspose` — the adjoint of a placement.
+* `ManyBody.placeBetween_reindex_one_kronecker` — a placement beside spectator factors.
+* `ManyBody.norm_placeBetween_le`, `ManyBody.norm_submatrix_singleton_le` — norm bounds.
+* `ManyBody.placeBetween_piKronecker` — a placed product operator.
+* `ManyBody.subregionPlaceBetween`, `ManyBody.placeBetween_subregionPlaceBetween` — a matrix on
+  a region extended to a larger region; placing the extension is placing the matrix.
+* `ManyBody.reindex_blockConfigEquiv_placeBetween_singleton` — a matrix of one block.
 * `ManyBody.reindex_blockConfigEquiv_placeBetween` — a placement on a region of blocks is, on the
   sites, the placement on the preimage of the region.
 -/
 
 open Matrix
-open scoped Kronecker
+open scoped Kronecker Matrix.Norms.L2Operator
 
 universe u
 
@@ -94,6 +103,30 @@ def updateOnConfigEquiv : Config (updateOn X D Z) ≃ Config Z × ComplConfig X 
 @[simp] theorem updateOnConfigEquiv_apply_snd (σ : Config (updateOn X D Z))
     (v : {v // v ∉ D}) :
     (updateOnConfigEquiv X D Z σ).2 v = cast (updateOn_of_notMem v.2) (σ v) :=
+  rfl
+
+variable (X) in
+/-- The configurations of a region `D` of two distinct sites `a` and `b` are pairs of basis
+vectors, the first at `a`. -/
+def pairConfigEquiv {a b : V} (hab : a ≠ b) (hD : D = {a, b}) : RegionConfig X D ≃ X a × X b where
+  toFun σ := (σ ⟨a, by simp [hD]⟩, σ ⟨b, by simp [hD]⟩)
+  invFun x v :=
+    if hv : v.1 = a then cast (congrArg X hv.symm) x.1
+    else cast (congrArg X (by simpa [hD, hv] using v.2 : v.1 = b).symm) x.2
+  left_inv σ := by
+    funext ⟨v, hv⟩
+    have hv' := hv
+    rw [hD, Finset.mem_insert, Finset.mem_singleton] at hv'
+    rcases hv' with rfl | rfl
+    · simp
+    · simp [hab.symm]
+  right_inv x := by
+    simp [hab.symm]
+
+/-- The two entries of a configuration of a region of two sites. -/
+@[simp] theorem pairConfigEquiv_apply {a b : V} (hab : a ≠ b) (hD : D = {a, b})
+    (σ : RegionConfig X D) :
+    pairConfigEquiv X hab hD σ = (σ ⟨a, by simp [hD]⟩, σ ⟨b, by simp [hD]⟩) :=
   rfl
 
 end Update
@@ -201,6 +234,156 @@ theorem placeBetween_conjTranspose [∀ v, DecidableEq (Y v)] (hXY : ∀ v ∉ D
     exact if_congr ((Equiv.symm_apply_eq _).trans eq_comm) rfl rfl
   simp only [placeBetween, reindex_apply, conjTranspose_submatrix, conjTranspose_kronecker, hC]
 
+/-- A cast of a pair along an equality of second factors is the pair of the first component
+and the cast of the second. -/
+private theorem cast_prod_eq_iff {W A B : Type u} (h' : A = B) (h : (W × A) = (W × B))
+    (z : W × A) (z' : W × B) : cast h z = z' ↔ z.1 = z'.1 ∧ cast h' z.2 = z'.2 := by
+  subst h'
+  simp [Prod.ext_iff]
+
+/-- **A placement beside spectator factors.** Placing `1 ⊗ K`, with the spectator factor `W v`
+in front of the basis of every site of `D`, is placing `K` and tensoring with the identity on
+the spectators of all sites. -/
+theorem placeBetween_reindex_one_kronecker {W : V → Type} [∀ v, DecidableEq (W v)]
+    {X Y : V → Type} [∀ v, DecidableEq (X v)]
+    (hXY : ∀ v ∉ D, Y v = X v) (hWXY : ∀ v ∉ D, (W v × Y v) = (W v × X v))
+    (K : Matrix (RegionConfig Y D) (RegionConfig X D) ℂ) :
+    placeBetween D hWXY
+        (reindex (Equiv.arrowProdEquivProdArrow {v // v ∈ D} (fun v ↦ W v) (fun v ↦ Y v)).symm
+          (Equiv.arrowProdEquivProdArrow {v // v ∈ D} (fun v ↦ W v) (fun v ↦ X v)).symm
+          ((1 : Matrix (RegionConfig W D) (RegionConfig W D) ℂ) ⊗ₖ K)) =
+      reindex (Equiv.arrowProdEquivProdArrow V W Y).symm (Equiv.arrowProdEquivProdArrow V W X).symm
+        ((1 : Matrix (Config W) (Config W) ℂ) ⊗ₖ placeBetween D hXY K) := by
+  ext y x
+  have key : ∀ v (hv : v ∉ D), cast (hWXY v hv) (y v) = x v ↔
+      (y v).1 = (x v).1 ∧ cast (hXY v hv) (y v).2 = (x v).2 :=
+    fun v hv ↦ cast_prod_eq_iff (hXY v hv) _ _ _
+  rw [placeBetween_apply]
+  simp only [reindex_apply, submatrix_apply, Equiv.symm_symm,
+    Equiv.arrowProdEquivProdArrow_apply, kroneckerMap_apply, one_apply, placeBetween_apply]
+  by_cases hW : (fun v ↦ (y v).1) = fun v ↦ (x v).1
+  · have hWD : (fun v : {v // v ∈ D} ↦ (y v.1).1) = fun v : {v // v ∈ D} ↦ (x v.1).1 :=
+      funext fun v ↦ congrFun hW v.1
+    rw [ite_eq_left hW, ite_eq_left hWD, one_mul, one_mul]
+    exact if_congr ⟨fun h v hv ↦ ((key v hv).mp (h v hv)).2,
+      fun h v hv ↦ (key v hv).mpr ⟨congrFun hW v, h v hv⟩⟩ rfl rfl
+  · rw [ite_eq_right hW, zero_mul]
+    split_ifs with h₁ h₂
+    · exact absurd (funext fun v ↦ if hv : v ∈ D then congrFun h₂ ⟨v, hv⟩
+        else ((key v hv).mp (h₁ v hv)).1) hW
+    · rw [zero_mul]
+    · rfl
+
+/-- A placement between two systems does not increase the operator norm. -/
+theorem norm_placeBetween_le [∀ v, Fintype (X v)] [∀ v, Fintype (Y v)]
+    (hXY : ∀ v ∉ D, Y v = X v) (K : Matrix (RegionConfig Y D) (RegionConfig X D) ℂ) :
+    ‖placeBetween D hXY K‖ ≤ ‖K‖ := by
+  classical
+  refine (l2_opNorm_reindex_le _ _ _).trans ((l2_opNorm_kronecker_le _ _).trans ?_)
+  exact (mul_le_of_le_one_right (norm_nonneg K) (l2_opNorm_toMatrix_toPEquiv_le _))
+
+omit [Fintype V] [∀ v, DecidableEq (X v)] in
+/-- A matrix read through the evaluation at the one site of a one-site region does not change its
+operator norm bound. -/
+theorem norm_submatrix_singleton_le [∀ v, Fintype (X v)] [∀ v, Fintype (Y v)]
+    [∀ v, DecidableEq (X v)] (v₀ : V) (A : Matrix (Y v₀) (X v₀) ℂ) :
+    ‖A.submatrix (fun y : RegionConfig Y {v₀} ↦ y ⟨v₀, Finset.mem_singleton_self v₀⟩)
+      (fun x : RegionConfig X {v₀} ↦ x ⟨v₀, Finset.mem_singleton_self v₀⟩)‖ ≤ ‖A‖ := by
+  have hb : ∀ T : V → Type u, Function.Bijective
+      (fun y : RegionConfig T {v₀} ↦ y ⟨v₀, Finset.mem_singleton_self v₀⟩) := fun T ↦
+    ⟨fun y y' h ↦ funext fun v ↦ by
+      obtain rfl : v = ⟨v₀, Finset.mem_singleton_self v₀⟩ :=
+        Subtype.ext (Finset.mem_singleton.mp v.2)
+      exact h,
+    fun a ↦ ⟨fun v ↦ cast (congrArg T (Finset.mem_singleton.mp v.2).symm) a, rfl⟩⟩
+  exact l2_opNorm_reindex_le (Equiv.ofBijective _ (hb Y)).symm (Equiv.ofBijective _ (hb X)).symm A
+
+/-- **A placed product operator is a product operator**: placing `⊗_{w ∈ D} K w` between two
+systems is the product of the `K w` on `D` and of the identifications of the equal bases outside
+`D`. -/
+theorem placeBetween_piKronecker (hXY : ∀ v ∉ D, Y v = X v)
+    (K : ∀ w : {v // v ∈ D}, Matrix (Y w) (X w) ℂ) :
+    placeBetween D hXY (piKronecker K) =
+      piKronecker fun v ↦
+        if h : v ∈ D then K ⟨v, h⟩ else (Equiv.cast (hXY v h)).toPEquiv.toMatrix := by
+  ext y x
+  rw [placeBetween_apply]
+  simp only [piKronecker_apply]
+  have key : ∀ k, (if h : k ∈ D then K ⟨k, h⟩ else (Equiv.cast (hXY k h)).toPEquiv.toMatrix)
+      (y k) (x k) = if h : k ∈ D then K ⟨k, h⟩ (y k) (x k) else
+        if cast (hXY k h) (y k) = x k then 1 else 0 := fun k ↦ by
+    by_cases h : k ∈ D <;> simp [h, PEquiv.toMatrix_apply, eq_comm]
+  rw [Finset.prod_congr rfl fun k _ ↦ key k, Fintype.prod_dite]
+  simp only [Finset.prod_boole, Finset.mem_univ, true_imp_iff]
+  split_ifs with ha hb hb
+  · rw [mul_one]
+    exact Finset.prod_congr (congrArg (@Finset.univ {v // v ∈ D}) (Subsingleton.elim _ _))
+      fun _ _ ↦ rfl
+  · exact absurd (fun (w : {a // a ∉ D}) ↦ ha w.1 w.2) hb
+  · exact absurd (fun v hv ↦ hb ⟨v, hv⟩) ha
+  · rw [mul_zero]
+
+/-! ### Placement between two systems inside a larger region -/
+
+section Subregion
+
+variable {U : Finset V}
+
+/-- The extension of a matrix `K` from the configurations of `D ⊆ U` in `X` to those in a system
+`Y` agreeing with `X` outside `D`, to the configurations of `U`, by the identification of the
+equal bases on the sites of `U` outside `D`: the placement of `K` in the system of the sites of
+`U`. -/
+noncomputable def subregionPlaceBetween (hDU : D ⊆ U) (hXY : ∀ v ∉ D, Y v = X v)
+    (K : Matrix (RegionConfig Y D) (RegionConfig X D) ℂ) :
+    Matrix (RegionConfig Y U) (RegionConfig X U) ℂ :=
+  placeBetween (X := fun w : {v // v ∈ U} ↦ X w.1) (Y := fun w : {v // v ∈ U} ↦ Y w.1)
+    (D.subtype (· ∈ U)) (fun w hw ↦ hXY w.1 (by simpa using hw))
+    (reindex (subregionConfigEquiv hDU) (subregionConfigEquiv hDU) K)
+
+omit [Fintype V] in
+/-- Entries of the extension: the entry of `K` at the parts on `D` when the two configurations
+agree on the sites of `U` outside `D`, and zero otherwise. -/
+theorem subregionPlaceBetween_apply (hDU : D ⊆ U) (hXY : ∀ v ∉ D, Y v = X v)
+    (K : Matrix (RegionConfig Y D) (RegionConfig X D) ℂ) (y : RegionConfig Y U)
+    (x : RegionConfig X U) :
+    subregionPlaceBetween hDU hXY K y x =
+      if ∀ (w : {v // v ∈ U}) (hw : w.1 ∉ D), cast (hXY w.1 hw) (y w) = x w then
+        K (fun w ↦ y ⟨w.1, hDU w.2⟩) (fun w ↦ x ⟨w.1, hDU w.2⟩)
+      else 0 := by
+  rw [subregionPlaceBetween, placeBetween_apply]
+  exact if_congr ⟨fun h w hw ↦ h w (by simpa using hw), fun h w hw ↦ h w (by simpa using hw)⟩
+    rfl rfl
+
+omit [Fintype V] in
+/-- The extension does not increase the operator norm. -/
+theorem norm_subregionPlaceBetween_le [∀ v, Fintype (X v)] [∀ v, Fintype (Y v)]
+    (hDU : D ⊆ U) (hXY : ∀ v ∉ D, Y v = X v)
+    (K : Matrix (RegionConfig Y D) (RegionConfig X D) ℂ) :
+    ‖subregionPlaceBetween hDU hXY K‖ ≤ ‖K‖ := by
+  classical
+  exact (norm_placeBetween_le _ _).trans (l2_opNorm_reindex_le _ _ K)
+
+/-- **Nested placement between two systems.** Placing the extension of `K` from `D` to `U`
+gives the placement of `K`. -/
+theorem placeBetween_subregionPlaceBetween (hDU : D ⊆ U) (hXY : ∀ v ∉ D, Y v = X v)
+    (hU : ∀ v ∉ U, Y v = X v) (K : Matrix (RegionConfig Y D) (RegionConfig X D) ℂ) :
+    placeBetween U hU (subregionPlaceBetween hDU hXY K) = placeBetween D hXY K := by
+  ext σ τ
+  rw [placeBetween_apply, placeBetween_apply, subregionPlaceBetween_apply]
+  split_ifs with hUc hUD hD hD hD
+  · rfl
+  · push Not at hD
+    obtain ⟨v, hvD, hne⟩ := hD
+    by_cases hvU : v ∈ U
+    · exact absurd (hUD ⟨v, hvU⟩ hvD) hne
+    · exact absurd (hUc v hvU) hne
+  · exact absurd (fun (w : {v // v ∈ U}) hw ↦ hD w.1 hw) hUD
+  · rfl
+  · exact absurd (fun v hvU ↦ hD v fun hvD ↦ hvU (hDU hvD)) hUc
+  · rfl
+
+end Subregion
+
 /-! ### Placement between two systems read on blocks -/
 
 section Block
@@ -258,6 +441,19 @@ theorem reindex_blockConfigEquiv_placeBetween [∀ v, DecidableEq (X v)] (D' : F
   · exact absurd (key.mp h₁) h₂
   · exact absurd (key.mpr h₂) h₁
   · rfl
+
+/-- A matrix of one block, placed at that block of the blocked systems, is, read on the sites,
+the same matrix placed on the block. -/
+theorem reindex_blockConfigEquiv_placeBetween_singleton [∀ v, DecidableEq (X v)] (b : V')
+    (hY : ∀ v ∉ blockPreimage f {b}, Y v = X v)
+    (K : Matrix (blockSystem f Y b) (blockSystem f X b) ℂ) :
+    reindex (blockConfigEquiv f Y) (blockConfigEquiv f X)
+        (placeBetween {b} (blockSystem_eq_of_notMem f hY)
+          (K.submatrix (fun y ↦ y ⟨b, Finset.mem_singleton_self b⟩)
+            (fun x ↦ x ⟨b, Finset.mem_singleton_self b⟩))) =
+      placeBetween (blockPreimage f {b}) hY K := by
+  rw [reindex_blockConfigEquiv_placeBetween f {b} hY]
+  congr 1
 
 end Block
 

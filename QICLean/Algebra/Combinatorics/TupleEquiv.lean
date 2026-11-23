@@ -17,7 +17,8 @@ types.  It includes right-associated coordinates in lengths three and four,
 and equivalences separating the first one or two coordinates from a tuple of
 arbitrary remaining length.  It also records the vector-notation expansion of functions on
 two, three or four indices, the entrywise transpositions of a vector of length three, and the
-equivalence between a function valued in dependent sums and a dependent sum of functions.
+equivalence between a function valued in dependent sums and a dependent sum of functions, and
+the exchange of the first two coordinates of a right-associated triple.
 
 Moved from TNLean, `TNLean/Algebra/FinTupleEquiv.lean`, `TNLean/Algebra/FinVecEta.lean` and
 `TNLean/Algebra/PiSigmaEquiv.lean` at commit `49b78ed821` (Apache-2.0). Changes: the three files
@@ -32,6 +33,7 @@ are merged.
 * `finSuccArrowEquiv`: separates the first coordinate from a finite tuple.
 * `finAddTwoArrowEquiv`: separates the first two coordinates.
 * `Equiv.piSigmaEquiv`: distributes a dependent sum pointwise over a function space.
+* `Equiv.prodLeftComm`: exchanges the first two coordinates of a right-associated triple.
 
 ## Main statements
 
@@ -255,6 +257,24 @@ def piSigmaEquiv
     {ι : Type*} {α : ι → Type*} {β : (i : ι) → α i → Type*}
     (x : Σ a : (i : ι) → α i, (i : ι) → β i (a i)) (i : ι) :
     (piSigmaEquiv.symm x) i = ⟨x.1 i, x.2 i⟩ :=
+  rfl
+
+/-- The exchange `(a, (b, c)) ↦ (b, (a, c))` of the first two coordinates of a right-associated
+triple. -/
+def prodLeftComm (α β γ : Type*) : α × (β × γ) ≃ β × (α × γ) where
+  toFun x := (x.2.1, (x.1, x.2.2))
+  invFun x := (x.2.1, (x.1, x.2.2))
+  left_inv _ := rfl
+  right_inv _ := rfl
+
+/-- The exchange of the first two coordinates of a triple. -/
+@[simp] theorem prodLeftComm_apply (α β γ : Type*) (x : α × (β × γ)) :
+    prodLeftComm α β γ x = (x.2.1, (x.1, x.2.2)) :=
+  rfl
+
+/-- The inverse exchange of the first two coordinates of a triple. -/
+@[simp] theorem prodLeftComm_symm_apply (α β γ : Type*) (x : β × (α × γ)) :
+    (prodLeftComm α β γ).symm x = (x.2.1, (x.1, x.2.2)) :=
   rfl
 
 end Equiv

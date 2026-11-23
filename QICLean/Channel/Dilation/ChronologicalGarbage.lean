@@ -7,6 +7,7 @@ import QICLean.Analysis.Norm.ContractionChain
 import QICLean.Analysis.TraceNorm.SubnormalizedPureStateError
 import QICLean.Analysis.Isometry.FramePerturbation
 import QICLean.Analysis.Norm.RootChannel
+import QICLean.Analysis.Norm.VectorPreparation
 
 /-!
 # Chronological accumulation of idle garbage registers
@@ -116,10 +117,6 @@ def idleGarbageLift (A : Matrix (m × b) n ℂ) :
     Matrix (m × (c × b)) (n × c) ℂ :=
   fun y x ↦ A (y.1, y.2.2) x.1 * if y.2.1 = x.2 then 1 else 0
 
-/-- Append the specified pure vector after an actual working-memory gate. -/
-def appendGarbageGate (G : Matrix m n ℂ) (γ : EuclideanSpace ℂ b) :
-    Matrix (m × b) n ℂ := fun y x ↦ G y.1 x * γ y.2
-
 /-- The idle coefficient lift acts only on the working memory and fresh
 register, without altering any earlier inventory coordinate. -/
 theorem idleGarbageLift_mulVec (A : Matrix (m × b) n ℂ)
@@ -131,16 +128,18 @@ theorem idleGarbageLift_mulVec (A : Matrix (m × b) n ℂ)
     mul_ite, ite_mul]
 
 /-- One chronological ideal stage preserves the tensor factorization. -/
-theorem idleGarbageLift_append_mulVec [DecidableEq n] (G : Matrix m n ℂ)
+theorem idleGarbageLift_append_mulVec [Fintype m] [DecidableEq m] [DecidableEq n]
+    (G : Matrix m n ℂ)
     (γ : EuclideanSpace ℂ b) (v : EuclideanSpace ℂ n) (w : EuclideanSpace ℂ c) :
-    toEuclideanLin (idleGarbageLift (appendGarbageGate G γ))
+    toEuclideanLin (idleGarbageLift (prepMatrix (Equiv.prodComm m b) γ * G))
       (euclideanTensorVector v w) =
         euclideanTensorVector (toEuclideanLin G v) (euclideanTensorVector w γ) := by
   ext ⟨y, k, e⟩
-  change (idleGarbageLift (appendGarbageGate G γ) *ᵥ
+  change (idleGarbageLift (prepMatrix (Equiv.prodComm m b) γ * G) *ᵥ
     WithLp.ofLp (euclideanTensorVector v w)) (y, (k, e)) = _
   rw [idleGarbageLift_mulVec]
-  change (∑ i, (G y i * γ e) * (v i * w k)) = (∑ i, G y i * v i) * (w k * γ e)
+  simp only [mulVec, dotProduct, prepMatrix_prodComm_mul_apply]
+  change (∑ i, (γ e * G y i) * (v i * w k)) = (∑ i, G y i * v i) * (w k * γ e)
   rw [Finset.sum_mul]
   exact Finset.sum_congr rfl fun i _ ↦ by ring
 
@@ -194,31 +193,24 @@ theorem norm_idleGarbageLift_sub_le [Fintype m] [Fintype b] [DecidableEq n]
   exact norm_idleGarbageLift_le _
 
 omit [Fintype c] [DecidableEq c] in
-/-- Appending a pure register acts on every actual input by a coordinate
-tensor product, without requiring unit norm. -/
-theorem appendGarbageGate_mulVec [DecidableEq n] (G : Matrix m n ℂ)
+/-- A working-memory gate followed by appending a pure register acts on every actual input by a
+coordinate tensor product, without requiring unit norm. -/
+theorem prepMatrix_prodComm_mul_mulVec [Fintype m] [DecidableEq m] [DecidableEq n]
+    (G : Matrix m n ℂ)
     (γ : EuclideanSpace ℂ b) (v : EuclideanSpace ℂ n) :
-    toEuclideanLin (appendGarbageGate G γ) v =
+    toEuclideanLin (prepMatrix (Equiv.prodComm m b) γ * G) v =
       euclideanTensorVector (toEuclideanLin G v) γ := by
-  ext ⟨y, e⟩
-  change (∑ i, (G y i * γ e) * v i) = (∑ i, G y i * v i) * γ e
-  rw [Finset.sum_mul]
-  exact Finset.sum_congr rfl fun i _ ↦ by ring
+  rw [toLpLin_mul_same, LinearMap.comp_apply, toEuclideanLin_prepMatrix_prodComm]
+  rfl
 
 omit [Fintype c] [DecidableEq c] in
 /-- The norm cost of appending an arbitrary pure register is its vector
 norm, rather than its dimension. -/
-theorem norm_appendGarbageGate_le [Fintype m] [Fintype b] [DecidableEq n]
+theorem norm_prepMatrix_prodComm_mul_le [Fintype m] [DecidableEq m] [Fintype b] [DecidableEq n]
     (G : Matrix m n ℂ) (γ : EuclideanSpace ℂ b) :
-    ‖appendGarbageGate G γ‖ ≤ ‖G‖ * ‖γ‖ := by
-  rw [l2_opNorm_def]
-  apply ContinuousLinearMap.opNorm_le_bound _
-    (mul_nonneg (norm_nonneg G) (norm_nonneg γ))
-  intro ξ
-  change ‖toEuclideanLin (appendGarbageGate G γ) ξ‖ ≤ (‖G‖ * ‖γ‖) * ‖ξ‖
-  rw [appendGarbageGate_mulVec, norm_euclideanTensorVector]
-  exact (mul_le_mul_of_nonneg_right (G.l2_opNorm_mulVec ξ) (norm_nonneg γ)).trans_eq
-    (by ring)
+    ‖prepMatrix (Equiv.prodComm m b) γ * G‖ ≤ ‖G‖ * ‖γ‖ :=
+  (l2_opNorm_mul _ _).trans ((mul_le_mul_of_nonneg_right (norm_prepMatrix_le _ _)
+    (norm_nonneg G)).trans_eq (mul_comm _ _))
 
 /-- The final identity amplification leaves the entire inventory unchanged. -/
 theorem kronecker_one_tensorVector [DecidableEq n] (K : Matrix m n ℂ)
@@ -251,7 +243,7 @@ def chronologicalGarbageChain
     (γ : (t : ℕ) → EuclideanSpace ℂ (B t)) (t : ℕ) :
     Matrix (D (t + 1) × garbageInventory B (t + 1))
       (D t × garbageInventory B t) ℂ :=
-  idleGarbageLift (appendGarbageGate (G t) (γ t))
+  idleGarbageLift ((prepMatrix (Equiv.prodComm _ _) (γ t) * G t))
 
 /-- Actual replacement stages lifted into the same chronological inventory.
 The supplied maps may create correlations with their fresh output registers. -/
@@ -267,7 +259,7 @@ theorem chronologicalReplacementChain_sub_norm_le
     (G : (t : ℕ) → Matrix (D (t + 1)) (D t) ℂ)
     (γ : (t : ℕ) → EuclideanSpace ℂ (B t)) (t : ℕ) :
     ‖chronologicalReplacementChain A t - chronologicalGarbageChain G γ t‖ ≤
-      ‖A t - appendGarbageGate (G t) (γ t)‖ := norm_idleGarbageLift_sub_le _ _
+      ‖A t - (prepMatrix (Equiv.prodComm _ _) (γ t) * G t)‖ := norm_idleGarbageLift_sub_le _ _
 
 /-- Contractive replacement gates remain contractive after all earlier
 inventories are kept idle. -/
@@ -330,7 +322,7 @@ theorem chronologicalGarbageChain_norm_le_one
     (hG : ∀ t, ‖G t‖ ≤ 1) (hγ : ∀ t, ‖γ t‖ = 1) (t : ℕ) :
     ‖chronologicalGarbageChain G γ t‖ ≤ 1 := by
   exact (norm_idleGarbageLift_le _).trans
-    ((norm_appendGarbageGate_le (G t) (γ t)).trans (by simpa [hγ t] using hG t))
+    ((norm_prepMatrix_prodComm_mul_le (G t) (γ t)).trans (by simpa [hγ t] using hG t))
 
 variable {P E : Type*} [Fintype E]
 

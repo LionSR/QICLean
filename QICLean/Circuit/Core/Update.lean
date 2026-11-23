@@ -19,10 +19,17 @@ system it is the layer `Layer.single`.
 Likewise `Layer.onsiteOpAt s₀ hY A` applies the matrix `A` at the site `s₀`, from `X s₀` to
 `Y s₀`, and the identity at every other site; it uses no cell, so it costs nothing.
 
+A layer is *one step* (`Layer.IsStep`) when it has no cell, or one cell and the identity at
+every other site, as the layers `gateAt`, `onsiteOpAt` and `ofOnsite` are; a circuit is
+*sequential* when every layer along every branch is one step. The condition reads the identity with
+classical decidability, so that it needs no instances on the basis types.
+
 ## Main definitions
 
 * `QuantumCircuit.Layer.gateAt` — one gate, changing the system on its cell.
 * `QuantumCircuit.Layer.onsiteOpAt` — one matrix at one site, changing the basis type there.
+* `QuantumCircuit.Layer.IsIdentityAt`, `QuantumCircuit.Layer.IsStep`,
+  `QuantumCircuit.Circuit.IsSequential` — one operation per step.
 
 ## Main results
 
@@ -34,6 +41,8 @@ Likewise `Layer.onsiteOpAt s₀ hY A` applies the matrix `A` at the site `s₀`,
 * `QuantumCircuit.Layer.gateCount_gateAt`, `QuantumCircuit.Layer.meets_gateAt`,
   `QuantumCircuit.Layer.gateCount_onsiteOpAt`, `QuantumCircuit.Layer.meets_onsiteOpAt` — their
   costs.
+* `QuantumCircuit.Layer.isStep_gateAt`, `QuantumCircuit.Layer.isStep_onsiteOpAt`,
+  `QuantumCircuit.Circuit.IsSequential.comp` — one operation per step.
 -/
 
 open Matrix ManyBody
@@ -225,6 +234,83 @@ theorem meets_onsiteOpAt [∀ s, DecidableEq (X s)] (s₀ : S) (hY : ∀ s ≠ s
   rw [meets, cellCost]
   exact Fintype.sum_eq_zero _ fun b ↦ absurd b.2 (Finset.notMem_empty _)
 
+/-! ### One operation per step -/
+
+open Classical in
+/-- The layer acts as the identity at the site `s`, which no cell meets: the basis type is
+unchanged there and every member of the onsite family is the identity matrix. The identity is
+read with classical decidability, so that the condition needs no instances. -/
+def IsIdentityAt (L : Layer Γ G X Y) (s : L.Free) : Prop :=
+  ∃ h : Y s.1 = X s.1, ∀ i y x, (L.onsite s).op i y x = if cast h y = x then 1 else 0
+
+omit [Fintype S] [GateFamily G] in
+/-- An onsite family of identity matrices between equal basis types acts as the identity. -/
+theorem isIdentityAt_of_op_eq {L : Layer Γ G X Y} (s : L.Free) [DecidableEq (X s.1)]
+    (h : Y s.1 = X s.1) (hop : ∀ i, (L.onsite s).op i = (Equiv.cast h).toPEquiv.toMatrix) :
+    L.IsIdentityAt s :=
+  ⟨h, fun i y x ↦ by
+    rw [hop, PEquiv.toMatrix_apply]
+    by_cases hx : cast h y = x <;> simp [Option.mem_def, hx]⟩
+
+/-- One operation per step: the layer has no cell, or it has one cell and acts as the identity
+at every other site. -/
+def IsStep (L : Layer Γ G X Y) : Prop :=
+  L.cells = ∅ ∨ ∃ b, L.cells = {b} ∧ ∀ s, L.IsIdentityAt s
+
+omit [Fintype S] [GateFamily G] in
+/-- The layer of one gate changing the system is one step. -/
+theorem isStep_gateAt [∀ s, DecidableEq (X s)] (b : Γ.Cell) (hY : ∀ s ∉ Γ.cell b, Y s = X s)
+    (g : G (Γ.cell b) X Y) : (gateAt b hY g).IsStep :=
+  Or.inr ⟨b, rfl, fun s ↦ isIdentityAt_of_op_eq s _ fun _ ↦ rfl⟩
+
+omit [Fintype S] [GateFamily G] in
+/-- An onsite layer is one step. -/
+theorem isStep_ofOnsite (o : (s : S) → KrausFamily (X s) (Y s)) :
+    (ofOnsite (Γ := Γ) (G := G) o).IsStep :=
+  Or.inl rfl
+
+omit [Fintype S] [GateFamily G] in
+/-- The layer of one matrix at one site is one step. -/
+theorem isStep_onsiteOpAt [∀ s, DecidableEq (X s)] (s₀ : S) (hY : ∀ s ≠ s₀, Y s = X s)
+    (A : Matrix (Y s₀) (X s₀) ℂ) : (onsiteOpAt (Γ := Γ) (G := G) s₀ hY A).IsStep :=
+  Or.inl rfl
+
 end Layer
+
+namespace Circuit
+
+variable {S : Type} [Fintype S] [DecidableEq S] {Γ : Geometry S}
+  {G : Finset S → (S → Type) → (S → Type) → Type 1} [GateFamily G] {X Y Z : S → Type}
+
+/-! ### Circuits of one operation per step -/
+
+/-- Every layer along every branch is one step (`Layer.IsStep`): it has no cell, or one cell
+and the identity at every other site. -/
+def IsSequential : {X Z : S → Type} → Circuit Γ G X Z → Prop
+  | _, _, done _ => True
+  | _, _, step L next => L.IsStep ∧ ∀ i, (next i).IsSequential
+
+omit [Fintype S] in
+/-- Being sequential passes to `c.append k` from `c` and every continuation. -/
+theorem IsSequential.append : {X Y : S → Type} → {c : Circuit Γ G X Y} →
+    {k : c.Index → Circuit Γ G Y Z} → c.IsSequential → (∀ p, (k p).IsSequential) →
+      (c.append k).IsSequential
+  | _, _, done _, _, _, hk => hk ()
+  | _, _, step _ next, _, hc, hk =>
+    ⟨hc.1, fun i ↦ IsSequential.append (c := next i) (hc.2 i) fun j ↦ hk ⟨i, j⟩⟩
+
+omit [Fintype S] in
+/-- A composition of sequential circuits is sequential. -/
+theorem IsSequential.comp {c : Circuit Γ G X Y} {c' : Circuit Γ G Y Z} (hc : c.IsSequential)
+    (hc' : c'.IsSequential) : (c.comp c').IsSequential :=
+  hc.append fun _ ↦ hc'
+
+omit [Fintype S] in
+/-- The circuit of one step is sequential. -/
+theorem isSequential_ofLayer [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)] {L : Layer Γ G X Y}
+    (hL : L.IsStep) : (ofLayer L).IsSequential :=
+  ⟨hL, fun _ ↦ trivial⟩
+
+end Circuit
 
 end QuantumCircuit

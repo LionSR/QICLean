@@ -32,7 +32,11 @@ and the expectations are written `star ψ ⬝ᵥ (A *ᵥ ψ)` (TNLean's `Quantum
 * `QuantumCircuit.piKronecker_mulVec_productVector` : `(⊗_v m_v) (⊗_v |φ_v⟩) = ⊗_v m_v|φ_v⟩`.
 * `QuantumCircuit.star_productVector_dotProduct_piKronecker_mulVec` : the expectation of a product
   operator in a product vector is `∏_v ⟨φ_v|m_v|φ_v⟩`.
+* `QuantumCircuit.norm_toLp_productVector` : the norm of a product vector is the product of the
+  norms.
 * `QuantumCircuit.productVector_single` : computational-basis vectors are product vectors.
+* `QuantumCircuit.productVector_cutEquiv_symm` : a product vector across a region and its
+  complement.
 * `QuantumCircuit.mul_apply_eq_mul_of_mem_supportedOperators` : diagonal entries of products of
   operators supported on disjoint regions factorize.
 
@@ -54,6 +58,21 @@ coefficient on the configuration $\sigma$ is $\prod_v\phi^v_{\sigma(v)}$. For th
 `Fin N` this is $\lvert\phi^1\rangle\otimes\cdots\otimes\lvert\phi^N\rangle$. -/
 def productVector (φ : (v : V) → X v → ℂ) : Config X → ℂ :=
   fun σ ↦ ∏ v, φ v (σ v)
+
+/-- A product vector read across a region `D` and its complement is the product of the two
+product vectors. -/
+theorem productVector_cutEquiv_symm [DecidableEq V] (φ : (v : V) → X v → ℂ) (D : Finset V)
+    (a : RegionConfig X D) (b : ComplConfig X D) :
+    productVector φ ((cutEquiv X D).symm (a, b)) =
+      productVector (fun v : {v // v ∈ D} ↦ φ v) a *
+        productVector (fun v : {v // v ∉ D} ↦ φ v) b := by
+  simp only [productVector]
+  rw [← Finset.prod_mul_prod_compl D,
+    Finset.prod_subtype (F := inferInstance) D (fun _ ↦ Iff.rfl),
+    Finset.prod_subtype (F := inferInstance) Dᶜ (fun _ ↦ Finset.mem_compl)]
+  congr 1
+  · exact Finset.prod_congr rfl fun w _ ↦ by rw [cutEquiv_symm_apply_mem a b w.2]
+  · exact Finset.prod_congr rfl fun w _ ↦ by rw [cutEquiv_symm_apply_not_mem a b w.2]
 
 /-- A scalar multiple of a product vector is a product vector: the scalar is absorbed into
 the vector of one site. -/
@@ -94,6 +113,17 @@ theorem star_productVector_dotProduct_piKronecker_mulVec [DecidableEq V] [∀ v,
   simp only [dotProduct, productVector, Pi.star_apply, star_prod, ← Finset.prod_mul_distrib]
   exact (Finset.prod_univ_sum (t := fun _ ↦ Finset.univ)
     (f := fun v (a : X v) ↦ star (φ v a) * (m v *ᵥ φ v) a)).symm
+
+/-- The norm of a product vector is the product of the norms of its factors; a product of unit
+vectors is a unit vector. -/
+theorem norm_toLp_productVector [DecidableEq V] [∀ v, Fintype (X v)]
+    (φ : (v : V) → EuclideanSpace ℂ (X v)) :
+    ‖(WithLp.toLp 2 (productVector fun v x ↦ φ v x) : EuclideanSpace ℂ (Config X))‖ =
+      ∏ v, ‖φ v‖ := by
+  refine (sq_eq_sq₀ (norm_nonneg _) (Finset.prod_nonneg fun _ _ ↦ norm_nonneg _)).mp ?_
+  simp only [EuclideanSpace.norm_sq_eq, productVector, norm_prod, ← Finset.prod_pow]
+  rw [Finset.prod_univ_sum]
+  simp
 
 /-- The tensor product of computational-basis vectors is the corresponding basis vector. -/
 @[simp]
