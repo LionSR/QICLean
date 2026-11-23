@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.ManyBody.Sites.Placement
+import QICLean.ManyBody.Sites.Block
 
 /-!
 # Systems changed on a region, and placement between two systems
@@ -37,6 +37,8 @@ equivalence `complCast hXY`.
 * `ManyBody.placeBetween_eq_place` — on one system it is the placement.
 * `ManyBody.placeBetween_mul` — placements on a region compose.
 * `ManyBody.placeBetween_conjTranspose` — the adjoint of a placement.
+* `ManyBody.reindex_blockConfigEquiv_placeBetween` — a placement on a region of blocks is, on the
+  sites, the placement on the preimage of the region.
 -/
 
 open Matrix
@@ -198,5 +200,65 @@ theorem placeBetween_conjTranspose [∀ v, DecidableEq (Y v)] (hXY : ∀ v ∉ D
       Option.some.injEq, apply_ite star, star_one, star_zero]
     exact if_congr ((Equiv.symm_apply_eq _).trans eq_comm) rfl rfl
   simp only [placeBetween, reindex_apply, conjTranspose_submatrix, conjTranspose_kronecker, hC]
+
+/-! ### Placement between two systems read on blocks -/
+
+section Block
+
+/-- A cast between two families of functions is the family of casts of their values. -/
+private theorem cast_pi_apply {ι : Type*} {A B : ι → Type u} (hAB : A = B)
+    (h : (∀ i, A i) = ∀ i, B i) (a : ∀ i, A i) (i : ι) :
+    cast h a i = cast (congrFun hAB i) (a i) := by
+  subst hAB
+  rfl
+
+variable {V' : Type} [Fintype V'] [DecidableEq V'] {V₀ : Type} [Fintype V₀] [DecidableEq V₀]
+  (f : V₀ → V') {X Y : V₀ → Type}
+
+omit [Fintype V'] [DecidableEq V₀] in
+/-- A site of a block outside a region of blocks lies outside the preimage of the region. -/
+private theorem notMem_blockPreimage {D' : Finset V'} {b : V'} (hb : b ∉ D')
+    (w : {w // w ∈ blockPreimage f {b}}) : w.1 ∉ blockPreimage f D' := by
+  have hw := w.2
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton] at hw
+  simpa [hw] using hb
+
+omit [Fintype V'] [DecidableEq V₀] in
+/-- Two systems that agree outside the preimage of a region of blocks agree on the blocks outside
+the region. -/
+theorem blockSystem_eq_of_notMem {D' : Finset V'} (hY : ∀ v ∉ blockPreimage f D', Y v = X v) :
+    ∀ b ∉ D', blockSystem f Y b = blockSystem f X b :=
+  fun _ hb ↦ congrArg (fun T : {w // w ∈ blockPreimage f {_}} → Type ↦ (w : _) → T w)
+    (funext fun w ↦ hY w.1 (notMem_blockPreimage f hb w))
+
+/-- Blocking commutes with placement between two systems: a matrix placed on the region `D'` of
+the blocked systems is, read on the sites, the same matrix placed on the preimage of `D'`. -/
+theorem reindex_blockConfigEquiv_placeBetween [∀ v, DecidableEq (X v)] (D' : Finset V')
+    (hY : ∀ v ∉ blockPreimage f D', Y v = X v)
+    (K : Matrix (RegionConfig (blockSystem f Y) D') (RegionConfig (blockSystem f X) D') ℂ) :
+    reindex (blockConfigEquiv f Y) (blockConfigEquiv f X)
+        (placeBetween D' (blockSystem_eq_of_notMem f hY) K) =
+      placeBetween (blockPreimage f D') hY
+        (reindex (blockRegionConfigEquiv f Y D') (blockRegionConfigEquiv f X D') K) := by
+  ext σ τ
+  have hAB : ∀ {b} (hb : b ∉ D'), (fun w : {w // w ∈ blockPreimage f {b}} ↦ Y w) =
+      fun w : {w // w ∈ blockPreimage f {b}} ↦ X w :=
+    fun hb ↦ funext fun w ↦ hY w.1 (notMem_blockPreimage f hb w)
+  have key : (∀ b (hb : b ∉ D'), cast (blockSystem_eq_of_notMem f hY b hb)
+        ((blockConfigEquiv f Y).symm σ b) = (blockConfigEquiv f X).symm τ b) ↔
+      ∀ v (hv : v ∉ blockPreimage f D'), cast (hY v hv) (σ v) = τ v := by
+    refine ⟨fun h v hv ↦ ?_, fun h b hb ↦ funext fun w ↦
+      (cast_pi_apply (hAB hb) _ _ w).trans (h w.1 (notMem_blockPreimage f hb w))⟩
+    have hb : f v ∉ D' := by simpa using hv
+    have hv' : v ∈ blockPreimage f {f v} := by simp
+    exact (cast_pi_apply (hAB hb) _ _ ⟨v, hv'⟩).symm.trans (congrFun (h (f v) hb) ⟨v, hv'⟩)
+  rw [reindex_apply, submatrix_apply, placeBetween_apply, placeBetween_apply]
+  split_ifs with h₁ h₂ h₂
+  · rfl
+  · exact absurd (key.mp h₁) h₂
+  · exact absurd (key.mpr h₂) h₁
+  · rfl
+
+end Block
 
 end ManyBody
