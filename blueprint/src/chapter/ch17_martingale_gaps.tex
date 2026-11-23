@@ -74,6 +74,34 @@ $\ker H\neq0$ it is the gap at energy $0$ of Theorem~\ref{thm:hamiltonians_kerne
     $\lVert Hv\rVert^2=\sum_k\lvert c_k\rvert^2\lambda_k^2\ge\gamma^2\lVert v\rVert^2$.
 \end{proof}
 
+\begin{theorem}[Martingale criterion for a finite family of projections]
+    \label{thm:gap_martingale_projections}
+    \lean{FrustrationFree.spectralGap_of_martingale_anticommutator_rowCol_of_finiteDimensional}
+    \leanok
+    \uses{lem:gap_quadratic_form_to_norm}
+    Let $P_i$ be a finite family of symmetric projections on a finite-dimensional
+    complex Hilbert space, let $H=\sum_iP_i$, and let $0<\gamma\le1$. Suppose that a
+    real matrix $(c_{ij})$ has row and column sums at most one away from the diagonal,
+    and that, for $i\ne j$ and every $v$,
+    \begin{align*}
+        \operatorname{Re}\langle P_iv,P_jv\rangle+\operatorname{Re}\langle P_jv,P_iv\rangle
+        \ge-(1-\gamma)c_{ij}
+        \bigl(\operatorname{Re}\langle P_iv,v\rangle+\operatorname{Re}\langle P_jv,v\rangle\bigr).
+    \end{align*}
+    Then $\gamma\operatorname{Re}\langle Hv,v\rangle\le\operatorname{Re}\langle Hv,Hv\rangle$
+    for every $v$, and every eigenvalue of $H$ other than $0$ is at least $\gamma$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:gap_quadratic_form_to_norm}
+    Expand $\langle Hv,Hv\rangle=\sum_i\langle P_iv,v\rangle+\sum_{i\ne j}
+        \langle P_iv,P_jv\rangle$, using $P_i^2=P_i$. Pairing the terms $(i,j)$ and $(j,i)$
+    and summing the hypothesis, the bounds on the row and column sums give
+    $\operatorname{Re}\langle Hv,Hv\rangle\ge\operatorname{Re}\langle Hv,v\rangle
+        -(1-\gamma)\operatorname{Re}\langle Hv,v\rangle=\gamma\operatorname{Re}\langle Hv,v\rangle$.
+    The operator $H$ is positive as a sum of projections, and
+    Lemma~\ref{lem:gap_quadratic_form_to_norm} gives the eigenvalue bound.
+\end{proof}
+
 \begin{lemma}[A gap above the kernel gives the quadratic-form inequality]
     \label{lem:gap_norm_to_quadratic_form}
     \lean{LinearMap.IsPositive.quadraticForm_sq_ge_of_forall_hasEigenvalue}
@@ -987,6 +1015,84 @@ treats the argument for an abstract decreasing family of projections.
     $\kappa(1-c)\lVert v\rVert^2\le\langle Hv,v\rangle\le\lVert Hv\rVert\lVert v\rVert$.
     Since $L\ge0$ and $\kappa\ge0$, also $H\ge\kappa L\ge0$, and
     Lemma~\ref{lem:gap_eigenvalue_forms} turns the norm gap into the gap above the kernel.
+\end{proof}
+
+\begin{lemma}[Ground-space subtraction in the commutator gap estimate]
+    \label{lem:martingale_ground_projection_commutator_gap}
+    \lean{FrustrationFree.energy_gap_sub_ground_projection,
+        FrustrationFree.commutator_ground_expectation,
+        FrustrationFree.commutator_ground_gap,
+        FrustrationFree.commutator_ground_gap_of_ker_eq_span}
+    \leanok
+    \uses{lem:gap_operator_form}
+    Let $H\geq0$ act on a finite-dimensional complex Hilbert space, let $K=\ker H$,
+    and suppose $\gamma\geq0$ and that every eigenvalue of $H$ other than $0$ is at
+    least $\gamma$. Then
+    $\operatorname{Re}\langle Hv,v\rangle\geq\gamma(\lVert v\rVert^2-\lVert P_Kv\rVert^2)$
+    for every $v$. For every $\psi\in K$ and every operator $X$,
+    \begin{align}
+        \langle X^*[H,X]\psi,\psi\rangle
+         & =\langle HX\psi,X\psi\rangle,
+         &
+        \operatorname{Re}\langle X^*[H,X]\psi,\psi\rangle
+         & \geq\gamma\bigl(\lVert X\psi\rVert^2-\lVert P_KX\psi\rVert^2\bigr).
+        \label{eq:martingale_ground_commutator}
+    \end{align}
+    If $K=\C\psi$ and $\lVert\psi\rVert=1$, the subtracted term is
+    $\lvert\langle\psi,X\psi\rangle\rvert^2$. This is the finite-volume estimate
+    of the limiting argument in~\cite[Section~6]{Nachtergaele1996Spectral}.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:gap_operator_form}
+    By Lemma~\ref{lem:gap_operator_form}, $H\geq\gamma P_{K^\perp}$, and Pythagoras
+    gives $\lVert P_{K^\perp}v\rVert^2=\lVert v\rVert^2-\lVert P_Kv\rVert^2$. Since
+    $H\psi=0$, the adjoint identity gives
+    $\langle X^*[H,X]\psi,\psi\rangle=\langle HX\psi,X\psi\rangle$; apply the
+    first estimate to $v=X\psi$. For a one-dimensional ground space,
+    $P_Kv=\langle\psi,v\rangle\psi$.
+\end{proof}
+
+\begin{theorem}[Limiting gap from decay of the ground projection]
+    \label{thm:martingale_commutator_gap_projection_limit}
+    \lean{FrustrationFree.commutator_gap_of_tendsto_ground_projection_zero}
+    \leanok
+    \uses{lem:martingale_ground_projection_commutator_gap}
+    Let $H_n,X_n$ act on finite-dimensional complex Hilbert spaces which may depend on
+    $n$. Suppose that, for all sufficiently large $n$, $H_n\geq0$, $\psi_n\in\ker H_n$,
+    and every eigenvalue of $H_n$ other than $0$ is at least the same constant
+    $\gamma\geq0$. Let $a,e\in\R$. If $\lVert X_n\psi_n\rVert^2\to a$,
+    $\lVert P_{\ker H_n}X_n\psi_n\rVert^2\to0$ and
+    $\operatorname{Re}\langle X_n^*[H_n,X_n]\psi_n,\psi_n\rangle\to e$, then
+    $\gamma a\leq e$. This is an intermediate step of the infinite-volume gap
+    of~\cite[Theorem~1.2]{Nachtergaele1996Spectral}: the decay of the full ground
+    projection is a hypothesis here, see
+    \cite{gap:nachtergaele96_infinite_volume_ground_projection}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:martingale_ground_projection_commutator_gap}
+    For all sufficiently large $n$, (\ref{eq:martingale_ground_commutator}) gives the
+    inequality before taking limits. Its left side tends to $\gamma(a-0)=\gamma a$ and
+    its right side to $e$, and the order of $\R$ is closed.
+\end{proof}
+
+\begin{corollary}[Limiting gap for one-dimensional ground spaces]
+    \label{cor:martingale_commutator_gap_rank_one_limit}
+    \lean{FrustrationFree.commutator_gap_of_tendsto_mean_zero_of_ker_eq_span}
+    \leanok
+    \uses{lem:martingale_ground_projection_commutator_gap}
+    Let $H_n,X_n$ act on finite-dimensional complex Hilbert spaces which may depend on
+    $n$. Suppose that, for all sufficiently large $n$, $H_n\geq0$,
+    $\lVert\psi_n\rVert=1$, $\ker H_n=\C\psi_n$, and every eigenvalue of $H_n$ other
+    than $0$ is at least the same constant $\gamma\geq0$. If
+    $\lVert X_n\psi_n\rVert^2\to a$, $\langle\psi_n,X_n\psi_n\rangle\to0$ and
+    $\operatorname{Re}\langle X_n^*[H_n,X_n]\psi_n,\psi_n\rangle\to e$, then
+    $\gamma a\leq e$.
+\end{corollary}
+\begin{proof}\leanok
+    \uses{lem:martingale_ground_projection_commutator_gap}
+    The rank-one projection formula makes the subtracted term the squared absolute
+    value of the mean, which tends to zero, so the finite-volume estimate passes to the
+    limit.
 \end{proof}
 
 \section{Sweeps of projections}
