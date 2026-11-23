@@ -14,3 +14,4 @@ import QICLean.Circuit.Geometry.Graph
 import QICLean.Circuit.Geometry.Hom
 import QICLean.Circuit.Geometry.Port
 import QICLean.Circuit.Geometry.Ring
+import QICLean.Circuit.Geometry.Subsets
