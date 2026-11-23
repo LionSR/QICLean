@@ -88,7 +88,8 @@ example (G : (t : ℕ) → Matrix (Fin (t + 2)) (Fin (t + 1)) ℂ)
 example : rectangularTraceNorm
     (chronologicalGarbageDensity (D := fun _ ↦ Fin 1)
       (markedChronologicalGarbageChain (D := fun _ ↦ Fin 1) (fun _ ↦ 1)
-        (fun t ↦ (prepMatrix (Equiv.prodComm _ _) (phaseGarbage t) * 1)) phaseGarbage {1} (1 / 8))
+        (fun t ↦ prepMatrix (Equiv.prodComm (Fin 1) (Fin (t + 1))) (phaseGarbage t))
+        phaseGarbage {1} (1 / 8))
       phaseGarbage (EuclideanSpace.single (0 : Fin 1) (1 / 2 : ℂ)) 3
       (basisRegisterInjection (0 : Fin 1)) -
       sourceOnlyReadoutDensity (D := fun _ ↦ Fin 1) (fun _ ↦ 1)
@@ -96,10 +97,11 @@ example : rectangularTraceNorm
         (basisRegisterInjection (0 : Fin 1))) ≤ 1 / 2 := by
   simpa using rectangularTraceNorm_chronologicalGarbageDensity_marked_sub_le_half
     (D := fun _ ↦ Fin 1) (fun _ ↦ 1)
-    (fun t ↦ (prepMatrix (Equiv.prodComm _ _) (phaseGarbage t) * 1))
+    (fun t ↦ prepMatrix (Equiv.prodComm (Fin 1) (Fin (t + 1))) (phaseGarbage t))
     phaseGarbage phaseGarbage_norm (EuclideanSpace.single (0 : Fin 1) (1 / 2 : ℂ)) 3
     (basisRegisterInjection (0 : Fin 1)) {1} 1 (by norm_num) (by simp)
-    (fun _ ↦ l2_opNorm_one_le) (by intro t _; simp) (by norm_num)
+    (fun _ ↦ l2_opNorm_one_le)
+    (fun _ _ ↦ by rw [Matrix.mul_one, sub_self, norm_zero]; norm_num) (by norm_num)
     (l2_opNorm_le_one_of_conjTranspose_mul_self_eq_one
       (basisRegisterInjection_conjTranspose_mul_self (0 : Fin 1)))
 
@@ -134,9 +136,8 @@ example : rectangularTraceNorm
     (by intro t; simp)
     (by
       intro t _
-      have hz : prepMatrix (Equiv.prodComm _ _) (phaseGarbage t) *
-          (0 : Matrix (Fin 0) (Fin 0) ℂ) = 0 := by
-        exact Matrix.mul_zero _
+      have hz : prepMatrix (Equiv.prodComm (Fin 0) (Fin (t + 1))) (phaseGarbage t) *
+          (0 : Matrix (Fin 0) (Fin 0) ℂ) = 0 := Matrix.mul_zero _
       rw [hz]
       norm_num)
     (by simp) (by simp)

@@ -162,7 +162,8 @@ private theorem cast_pi_apply {ι : Type} {A B : ι → Type} (hAB : A = B)
 
 omit [DecidableEq P] in
 /-- The value at a site of a configuration of the blocked system depends only on the site. -/
-private theorem block_apply_congr {f : P → Q} {T : P → Type} (z : Config (blockSystem f T)) {b b' : Q}
+private theorem block_apply_congr {f : P → Q} {T : P → Type} (z : Config (blockSystem f T))
+    {b b' : Q}
     {v : P} (hb : b' = b) {h : v ∈ blockPreimage f {b}} {h' : v ∈ blockPreimage f {b'}} :
     z b' ⟨v, h'⟩ = z b ⟨v, h⟩ := by
   subst hb
