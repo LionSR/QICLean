@@ -458,6 +458,61 @@ theorem traceAdjointMap_comp
   rw [trace_traceAdjointMap_mul, trace_traceAdjointMap_mul,
     trace_traceAdjointMap_mul, LinearMap.comp_apply]
 
+section ReindexEndomorphism
+
+variable {α β : Type*} [Fintype α] [DecidableEq α]
+variable [Fintype β] [DecidableEq β]
+
+omit [DecidableEq α] [DecidableEq β] in
+private theorem trace_reindex_mul (e : α ≃ β) (A : Matrix α α ℂ)
+    (B : Matrix β β ℂ) :
+    (Matrix.reindex e e A * B).trace =
+      (A * Matrix.reindex e.symm e.symm B).trace := by
+  have hB : B = Matrix.reindex e e (Matrix.reindex e.symm e.symm B) := by
+    simpa only [Matrix.coe_reindexLinearEquiv,
+      Matrix.symm_reindexLinearEquiv] using
+      (Matrix.reindexLinearEquiv ℂ ℂ e e).apply_symm_apply B |>.symm
+  have hmul : Matrix.reindex e e A *
+      Matrix.reindex e e (Matrix.reindex e.symm e.symm B) =
+      Matrix.reindex e e (A * Matrix.reindex e.symm e.symm B) := by
+    exact Matrix.reindexLinearEquiv_mul ℂ ℂ e e e A _
+  calc
+    (Matrix.reindex e e A * B).trace =
+        (Matrix.reindex e e A *
+          Matrix.reindex e e (Matrix.reindex e.symm e.symm B)).trace := by
+      exact congrArg Matrix.trace (congrArg (Matrix.reindex e e A * ·) hB)
+    _ = (Matrix.reindex e e
+          (A * Matrix.reindex e.symm e.symm B)).trace := by rw [hmul]
+    _ = (A * Matrix.reindex e.symm e.symm B).trace := Matrix.trace_reindex e _
+
+omit [DecidableEq α] [DecidableEq β] in
+/-- The trace adjoint commutes with simultaneous reindexing of matrix
+coordinates. -/
+theorem traceAdjointMap_reindexEndomorphism (e : α ≃ β)
+    (T : Matrix α α ℂ →ₗ[ℂ] Matrix α α ℂ) :
+    Matrix.traceAdjointMap (reindexEndomorphism e T) =
+      reindexEndomorphism e (Matrix.traceAdjointMap T) := by
+  apply LinearMap.ext
+  intro A
+  apply Matrix.ext_iff_trace_mul_right.mpr
+  intro B
+  calc
+    (Matrix.traceAdjointMap (reindexEndomorphism e T) A * B).trace =
+        (A * reindexEndomorphism e T B).trace :=
+      Matrix.trace_traceAdjointMap_mul _ _ _
+    _ = (Matrix.reindex e.symm e.symm A *
+          T (Matrix.reindex e.symm e.symm B)).trace := by
+      rw [reindexEndomorphism_apply]
+      rw [Matrix.trace_mul_comm, trace_reindex_mul, Matrix.trace_mul_comm]
+    _ = (Matrix.traceAdjointMap T (Matrix.reindex e.symm e.symm A) *
+          Matrix.reindex e.symm e.symm B).trace :=
+      (Matrix.trace_traceAdjointMap_mul _ _ _).symm
+    _ = (reindexEndomorphism e (Matrix.traceAdjointMap T) A * B).trace := by
+      rw [reindexEndomorphism_apply]
+      rw [trace_reindex_mul]
+
+end ReindexEndomorphism
+
 end Matrix
 
 section PureStateExpectation

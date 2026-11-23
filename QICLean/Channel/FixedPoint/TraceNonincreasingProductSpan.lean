@@ -5,7 +5,6 @@ Authors: TNLean contributors
 -/
 import QICLean.Channel.FixedPoint.MaximalSupportBasic
 import QICLean.Channel.FixedPoint.MeanErgodicAdjoint
-import QICLean.Channel.FixedPoint.DirectSumBlockRetraction
 
 /-!
 # Trace preservation from fixed product generators
