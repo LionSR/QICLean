@@ -21,6 +21,7 @@ import QICLean.Circuit.Core.LayerEntry
 import QICLean.Circuit.Core.LightCone
 import QICLean.Circuit.Core.LocalGate
 import QICLean.Circuit.Core.Map
+import QICLean.Circuit.Core.MapLayersOn
 import QICLean.Circuit.Core.Oracle
 import QICLean.Circuit.Core.Outcome
 import QICLean.Circuit.Core.Parallel
