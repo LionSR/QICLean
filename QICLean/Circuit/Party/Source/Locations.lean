@@ -14,7 +14,9 @@ composition), and a *source position* is a gate occurrence together with one of 
 slots (`SourceCircuit.sourceLocations`), with no branch label. The endpoints of a source position
 are two distinct parties of the cell of its gate. The number of slots, the endpoints, the branch
 labels and the branch coefficients are structural recursions on the party circuit, so that their
-values at a gate and at the two sides of a composition hold by `rfl`.
+values at a gate and at the two sides of a composition hold by `rfl`. So are the basis types of the
+two fresh factors at a source position (`SourceCircuit.leftBasis`, `SourceCircuit.rightBasis`,
+the slot bases of its gate), with their dimensions `SourceCircuit.sourceDims`.
 
 ## Main definitions
 
@@ -24,6 +26,9 @@ values at a gate and at the two sides of a composition hold by `rfl`.
 * `QuantumCircuit.Party.SourceCircuit.branchLabels`,
   `QuantumCircuit.Party.SourceCircuit.branchCoefficient` — the branches at a gate occurrence.
 * `QuantumCircuit.Party.SourceCircuit.IsTouched` — gate occurrences meeting affected parties.
+* `QuantumCircuit.Party.SourceCircuit.leftBasis`, `QuantumCircuit.Party.SourceCircuit.rightBasis`,
+  `QuantumCircuit.Party.SourceCircuit.sourceDims` — the bases of the fresh factors at a source
+  position and their dimensions.
 
 ## Main results
 
@@ -343,6 +348,193 @@ theorem branchCoefficient_frame : {X Y : P → Type} → [∀ p, Fintype (X p)] 
   | _, _, _, _, PartyCircuit.comp c c', g, ξ => match g, ξ with
     | Sum.inl g, ξ => branchCoefficient_frame c g ξ
     | Sum.inr g, ξ => branchCoefficient_frame c' g ξ
+
+end Frame
+
+end SourceCircuit
+
+/-! ### The bases of the fresh factors at a source position -/
+
+namespace SourceCircuit
+
+variable {X Y Z : P → Type}
+
+/-- The basis of the fresh factor at the first endpoint of a source position: the slot basis of
+its gate. Source: Theorem 5.2, `04-compression.tex`, lines 253–267 and 342–355. -/
+def leftBasis : {X Y : P → Type} → (w : SourceCircuit X Y) → w.sourceLocations → Type
+  | _, _, PartyCircuit.done _ => fun e ↦ Empty.elim e.1
+  | _, _, PartyCircuit.gate _ _ g => fun e ↦ g.gate.bases.left e.2
+  | _, _, PartyCircuit.localOp _ _ _ => fun e ↦ Empty.elim e.1
+  | _, _, PartyCircuit.localOps _ => fun e ↦ Empty.elim e.1
+  | _, _, PartyCircuit.comp c c' => fun
+    | ⟨Sum.inl g, i⟩ => leftBasis c ⟨g, i⟩
+    | ⟨Sum.inr g, i⟩ => leftBasis c' ⟨g, i⟩
+
+/-- The basis of the fresh factor at the second endpoint of a source position: the slot basis of
+its gate. Source: Theorem 5.2, `04-compression.tex`, lines 253–267 and 342–355. -/
+def rightBasis : {X Y : P → Type} → (w : SourceCircuit X Y) → w.sourceLocations → Type
+  | _, _, PartyCircuit.done _ => fun e ↦ Empty.elim e.1
+  | _, _, PartyCircuit.gate _ _ g => fun e ↦ g.gate.bases.right e.2
+  | _, _, PartyCircuit.localOp _ _ _ => fun e ↦ Empty.elim e.1
+  | _, _, PartyCircuit.localOps _ => fun e ↦ Empty.elim e.1
+  | _, _, PartyCircuit.comp c c' => fun
+    | ⟨Sum.inl g, i⟩ => rightBasis c ⟨g, i⟩
+    | ⟨Sum.inr g, i⟩ => rightBasis c' ⟨g, i⟩
+
+/-- The basis at the first endpoint of a source position is finite. -/
+instance instFintypeLeftBasis : {X Y : P → Type} → (w : SourceCircuit X Y) →
+    (e : w.sourceLocations) → Fintype (w.leftBasis e)
+  | _, _, PartyCircuit.done _ => fun e ↦ Empty.elim e.1
+  | _, _, PartyCircuit.gate _ _ g => fun e ↦ g.gate.bases.leftFintype e.2
+  | _, _, PartyCircuit.localOp _ _ _ => fun e ↦ Empty.elim e.1
+  | _, _, PartyCircuit.localOps _ => fun e ↦ Empty.elim e.1
+  | _, _, PartyCircuit.comp c c' => fun
+    | ⟨Sum.inl g, i⟩ => instFintypeLeftBasis c ⟨g, i⟩
+    | ⟨Sum.inr g, i⟩ => instFintypeLeftBasis c' ⟨g, i⟩
+
+/-- The basis at the first endpoint of a source position has decidable equality. -/
+instance instDecidableEqLeftBasis : {X Y : P → Type} → (w : SourceCircuit X Y) →
+    (e : w.sourceLocations) → DecidableEq (w.leftBasis e)
+  | _, _, PartyCircuit.done _ => fun e ↦ Empty.elim e.1
+  | _, _, PartyCircuit.gate _ _ g => fun e ↦ g.gate.bases.leftDecEq e.2
+  | _, _, PartyCircuit.localOp _ _ _ => fun e ↦ Empty.elim e.1
+  | _, _, PartyCircuit.localOps _ => fun e ↦ Empty.elim e.1
+  | _, _, PartyCircuit.comp c c' => fun
+    | ⟨Sum.inl g, i⟩ => instDecidableEqLeftBasis c ⟨g, i⟩
+    | ⟨Sum.inr g, i⟩ => instDecidableEqLeftBasis c' ⟨g, i⟩
+
+/-- The basis at the second endpoint of a source position is finite. -/
+instance instFintypeRightBasis : {X Y : P → Type} → (w : SourceCircuit X Y) →
+    (e : w.sourceLocations) → Fintype (w.rightBasis e)
+  | _, _, PartyCircuit.done _ => fun e ↦ Empty.elim e.1
+  | _, _, PartyCircuit.gate _ _ g => fun e ↦ g.gate.bases.rightFintype e.2
+  | _, _, PartyCircuit.localOp _ _ _ => fun e ↦ Empty.elim e.1
+  | _, _, PartyCircuit.localOps _ => fun e ↦ Empty.elim e.1
+  | _, _, PartyCircuit.comp c c' => fun
+    | ⟨Sum.inl g, i⟩ => instFintypeRightBasis c ⟨g, i⟩
+    | ⟨Sum.inr g, i⟩ => instFintypeRightBasis c' ⟨g, i⟩
+
+/-- The basis at the second endpoint of a source position has decidable equality. -/
+instance instDecidableEqRightBasis : {X Y : P → Type} → (w : SourceCircuit X Y) →
+    (e : w.sourceLocations) → DecidableEq (w.rightBasis e)
+  | _, _, PartyCircuit.done _ => fun e ↦ Empty.elim e.1
+  | _, _, PartyCircuit.gate _ _ g => fun e ↦ g.gate.bases.rightDecEq e.2
+  | _, _, PartyCircuit.localOp _ _ _ => fun e ↦ Empty.elim e.1
+  | _, _, PartyCircuit.localOps _ => fun e ↦ Empty.elim e.1
+  | _, _, PartyCircuit.comp c c' => fun
+    | ⟨Sum.inl g, i⟩ => instDecidableEqRightBasis c ⟨g, i⟩
+    | ⟨Sum.inr g, i⟩ => instDecidableEqRightBasis c' ⟨g, i⟩
+
+/-- The dimensions of the two fresh factors at a source position: the numbers of elements of
+its two slot bases. Source: Theorem 5.2, `04-compression.tex`, lines 253–267 and 342–355. -/
+def sourceDims (w : SourceCircuit X Y) (e : w.sourceLocations) : ℕ × ℕ :=
+  (Fintype.card (w.leftBasis e), Fintype.card (w.rightBasis e))
+
+/-! #### Computation rules of the bases -/
+
+variable [∀ p, Fintype (Y p)] [∀ p, DecidableEq (Y p)]
+
+/-- The basis at the first endpoint of a source position of one gate is its slot basis. -/
+theorem leftBasis_gate (D : Finset P) (hY : ∀ s ∉ D, Y s = X s) (g : PreparedGate D X Y)
+    (e : sourceLocations (PartyCircuit.gate D hY g : SourceCircuit X Y)) :
+    leftBasis (PartyCircuit.gate D hY g : SourceCircuit X Y) e = g.gate.bases.left e.2 :=
+  rfl
+
+/-- The basis at the second endpoint of a source position of one gate is its slot basis. -/
+theorem rightBasis_gate (D : Finset P) (hY : ∀ s ∉ D, Y s = X s) (g : PreparedGate D X Y)
+    (e : sourceLocations (PartyCircuit.gate D hY g : SourceCircuit X Y)) :
+    rightBasis (PartyCircuit.gate D hY g : SourceCircuit X Y) e = g.gate.bases.right e.2 :=
+  rfl
+
+/-- A source position of the first part of a composition keeps its first basis. -/
+@[simp] theorem leftBasis_comp_inl (w : SourceCircuit X Y) (w' : SourceCircuit Y Z)
+    (g : w.gateLocations) (i : Fin (w.slotCount g)) :
+    leftBasis (PartyCircuit.comp w w') ⟨Sum.inl g, i⟩ = w.leftBasis ⟨g, i⟩ :=
+  rfl
+
+/-- A source position of the second part of a composition keeps its first basis. -/
+@[simp] theorem leftBasis_comp_inr (w : SourceCircuit X Y) (w' : SourceCircuit Y Z)
+    (g : w'.gateLocations) (i : Fin (w'.slotCount g)) :
+    leftBasis (PartyCircuit.comp w w') ⟨Sum.inr g, i⟩ = w'.leftBasis ⟨g, i⟩ :=
+  rfl
+
+/-- A source position of the first part of a composition keeps its second basis. -/
+@[simp] theorem rightBasis_comp_inl (w : SourceCircuit X Y) (w' : SourceCircuit Y Z)
+    (g : w.gateLocations) (i : Fin (w.slotCount g)) :
+    rightBasis (PartyCircuit.comp w w') ⟨Sum.inl g, i⟩ = w.rightBasis ⟨g, i⟩ :=
+  rfl
+
+/-- A source position of the second part of a composition keeps its second basis. -/
+@[simp] theorem rightBasis_comp_inr (w : SourceCircuit X Y) (w' : SourceCircuit Y Z)
+    (g : w'.gateLocations) (i : Fin (w'.slotCount g)) :
+    rightBasis (PartyCircuit.comp w w') ⟨Sum.inr g, i⟩ = w'.rightBasis ⟨g, i⟩ :=
+  rfl
+
+/-- The dimensions at a source position of one gate are those of its slot bases. -/
+theorem sourceDims_gate (D : Finset P) (hY : ∀ s ∉ D, Y s = X s) (g : PreparedGate D X Y)
+    (i : Fin g.gate.slots.length) :
+    sourceDims (PartyCircuit.gate D hY g : SourceCircuit X Y) ⟨(), i⟩ =
+      (Fintype.card (g.gate.bases.left i), Fintype.card (g.gate.bases.right i)) :=
+  rfl
+
+/-- A source position of the first part of a composition keeps its dimensions. -/
+@[simp] theorem sourceDims_comp_inl (w : SourceCircuit X Y) (w' : SourceCircuit Y Z)
+    (g : w.gateLocations) (i : Fin (w.slotCount g)) :
+    sourceDims (PartyCircuit.comp w w') ⟨Sum.inl g, i⟩ = w.sourceDims ⟨g, i⟩ :=
+  rfl
+
+/-- A source position of the second part of a composition keeps its dimensions. -/
+@[simp] theorem sourceDims_comp_inr (w : SourceCircuit X Y) (w' : SourceCircuit Y Z)
+    (g : w'.gateLocations) (i : Fin (w'.slotCount g)) :
+    sourceDims (PartyCircuit.comp w w') ⟨Sum.inr g, i⟩ = w'.sourceDims ⟨g, i⟩ :=
+  rfl
+
+/-! #### Framing -/
+
+section Frame
+
+variable (W : P → Type) [∀ p, Fintype (W p)] [∀ p, DecidableEq (W p)]
+
+omit [∀ p, Fintype (Y p)] [∀ p, DecidableEq (Y p)] in
+/-- Framing keeps the basis at the first endpoint of every source position. -/
+theorem leftBasis_frame : {X Y : P → Type} → [∀ p, Fintype (X p)] →
+    [∀ p, DecidableEq (X p)] → (w : SourceCircuit X Y) →
+    (g : (w.frame W).gateLocations) → (i : Fin ((w.frame W).slotCount g)) →
+      (w.frame W).leftBasis ⟨g, i⟩ =
+        w.leftBasis ⟨gateLocationsFrameEquiv W w g, Fin.cast (slotCount_frame W w g) i⟩
+  | _, _, _, _, PartyCircuit.done _, g, _ => Empty.elim g
+  | _, _, _, _, PartyCircuit.gate _ _ _, _, _ => rfl
+  | _, _, _, _, PartyCircuit.localOp _ _ _, g, _ => Empty.elim g
+  | _, _, _, _, PartyCircuit.localOps _, g, _ => Empty.elim g
+  | _, _, _, _, PartyCircuit.comp c c', g, i => match g, i with
+    | Sum.inl g, i => leftBasis_frame c g i
+    | Sum.inr g, i => leftBasis_frame c' g i
+
+omit [∀ p, Fintype (Y p)] [∀ p, DecidableEq (Y p)] in
+/-- Framing keeps the basis at the second endpoint of every source position. -/
+theorem rightBasis_frame : {X Y : P → Type} → [∀ p, Fintype (X p)] →
+    [∀ p, DecidableEq (X p)] → (w : SourceCircuit X Y) →
+    (g : (w.frame W).gateLocations) → (i : Fin ((w.frame W).slotCount g)) →
+      (w.frame W).rightBasis ⟨g, i⟩ =
+        w.rightBasis ⟨gateLocationsFrameEquiv W w g, Fin.cast (slotCount_frame W w g) i⟩
+  | _, _, _, _, PartyCircuit.done _, g, _ => Empty.elim g
+  | _, _, _, _, PartyCircuit.gate _ _ _, _, _ => rfl
+  | _, _, _, _, PartyCircuit.localOp _ _ _, g, _ => Empty.elim g
+  | _, _, _, _, PartyCircuit.localOps _, g, _ => Empty.elim g
+  | _, _, _, _, PartyCircuit.comp c c', g, i => match g, i with
+    | Sum.inl g, i => rightBasis_frame c g i
+    | Sum.inr g, i => rightBasis_frame c' g i
+
+omit [∀ p, Fintype (Y p)] [∀ p, DecidableEq (Y p)] in
+/-- Framing keeps the dimensions at every source position. -/
+theorem sourceDims_frame [∀ p, Fintype (X p)] [∀ p, DecidableEq (X p)] (w : SourceCircuit X Y)
+    (g : (w.frame W).gateLocations) (i : Fin ((w.frame W).slotCount g)) :
+    (w.frame W).sourceDims ⟨g, i⟩ =
+      w.sourceDims ⟨gateLocationsFrameEquiv W w g, Fin.cast (slotCount_frame W w g) i⟩ :=
+  Prod.ext (@Fintype.card_congr' _ _ (instFintypeLeftBasis _ _) (instFintypeLeftBasis _ _)
+      (leftBasis_frame W w g i))
+    (@Fintype.card_congr' _ _ (instFintypeRightBasis _ _) (instFintypeRightBasis _ _)
+      (rightBasis_frame W w g i))
 
 end Frame
 
