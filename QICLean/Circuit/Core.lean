@@ -28,3 +28,4 @@ import QICLean.Circuit.Core.Seq
 import QICLean.Circuit.Core.SiteControlled
 import QICLean.Circuit.Core.Substitute
 import QICLean.Circuit.Core.TensorRight
+import QICLean.Circuit.Core.Update
