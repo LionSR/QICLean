@@ -30,9 +30,12 @@ blocks of the product operators of the blocks (`reindex_blockConfigEquiv_symm_pi
   operator placed on its preimage.
 * `ManyBody.reindex_blockConfigEquiv_symm_piKronecker` — a product operator on the sites is, on the
   blocks, the product over the blocks of the product operators of the blocks.
+* `ManyBody.reindex_blockConfigEquiv_one_kronecker` — blocking commutes with a spectator factor
+  (`ManyBody.blockConfigProdEquiv`).
 -/
 
 open Matrix
+open scoped Kronecker
 
 namespace ManyBody
 
@@ -118,5 +121,31 @@ theorem reindex_blockConfigEquiv_symm_piKronecker {X Y : V → Type}
       fun _ ↦ rfl, fun ⟨b, v, hv⟩ ↦ ?_⟩ _ _ fun _ ↦ rfl
   obtain rfl : f v = b := by simpa using hv
   rfl
+
+/-- The configurations of a product system `W × X` on the blocks are the pairs of configurations
+of the two blocked systems. -/
+def blockConfigProdEquiv (W X : V → Type) :
+    Config (blockSystem f fun v ↦ W v × X v) ≃
+      Config (blockSystem f W) × Config (blockSystem f X) :=
+  (blockConfigEquiv f _).trans ((Equiv.arrowProdEquivProdArrow V W X).trans
+    ((blockConfigEquiv f W).symm.prodCongr (blockConfigEquiv f X).symm))
+
+omit [DecidableEq V] in
+/-- Blocking commutes with a spectator factor: `1 ⊗ M` on the product systems, read on the
+blocks, is `1 ⊗` the matrix `M` read on the blocks. -/
+theorem reindex_blockConfigEquiv_one_kronecker {W X Y : V → Type} [∀ v, DecidableEq (W v)]
+    (M : Matrix (Config Y) (Config X) ℂ) :
+    reindex (blockConfigEquiv f fun v ↦ W v × Y v).symm
+        (blockConfigEquiv f fun v ↦ W v × X v).symm
+        (reindex (Equiv.arrowProdEquivProdArrow V W Y).symm
+          (Equiv.arrowProdEquivProdArrow V W X).symm
+          ((1 : Matrix (Config W) (Config W) ℂ) ⊗ₖ M)) =
+      reindex (blockConfigProdEquiv f W Y).symm (blockConfigProdEquiv f W X).symm
+        ((1 : Matrix (Config (blockSystem f W)) (Config (blockSystem f W)) ℂ) ⊗ₖ
+          reindex (blockConfigEquiv f Y).symm (blockConfigEquiv f X).symm M) := by
+  ext y x
+  simp only [reindex_apply, submatrix_apply, Equiv.symm_symm, blockConfigProdEquiv,
+    Equiv.trans_apply, Equiv.prodCongr_apply, Prod.map_fst, Prod.map_snd, kroneckerMap_apply,
+    one_apply, Equiv.apply_symm_apply, EmbeddingLike.apply_eq_iff_eq]
 
 end ManyBody
