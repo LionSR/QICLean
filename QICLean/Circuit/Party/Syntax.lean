@@ -19,4 +19,5 @@ import QICLean.Circuit.Party.Syntax.OwnerMap
 import QICLean.Circuit.Party.Syntax.PartyCircuit
 import QICLean.Circuit.Party.Syntax.Relabel
 import QICLean.Circuit.Party.Syntax.Restrict
+import QICLean.Circuit.Party.Syntax.UsesOnly
 import QICLean.Circuit.Party.Syntax.Word

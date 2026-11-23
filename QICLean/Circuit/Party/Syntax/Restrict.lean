@@ -12,9 +12,9 @@ A word all of whose steps lie in a set `S` of parties (`Word.UsesOnly S`: its pa
 parties of `S`, its local operations act at parties of `S`, and its local operations at every
 party are the identity outside `S`) restricts to a word on the parties of `S`, the system read on
 the sites `↥S` (`Word.restrict`, by recursion on the syntax). Such a word changes no basis outside
-`S` (`Word.UsesOnly.eq_of_notMem`), and its operator is the operator of the restricted word placed
-on `S` (`Word.op_eq_placeBetween_restrict`): the registers outside `S` are untouched. The
-restriction keeps allowedness and the sources.
+`S` (`PartyCircuit.UsesOnly.eq_of_notMem`), and its operator is the operator of the restricted
+word placed on `S` (`Word.op_eq_placeBetween_restrict`): the registers outside `S` are untouched.
+The restriction keeps allowedness and the sources.
 
 ## Main definitions
 
@@ -22,7 +22,6 @@ restriction keeps allowedness and the sources.
 
 ## Main results
 
-* `QuantumCircuit.Party.Word.UsesOnly.eq_of_notMem`.
 * `QuantumCircuit.Party.Word.op_eq_placeBetween_restrict` — the factorization.
 * `QuantumCircuit.Party.Word.isAllowed_restrict`, `QuantumCircuit.Party.Word.sources_restrict`,
   `QuantumCircuit.Party.Word.numGates_restrict`.
@@ -73,16 +72,6 @@ end SourceGate
 namespace Word
 
 variable {X Y : P → Type}
-
-/-- A word using only the parties of `R` changes no basis outside `R`. -/
-theorem UsesOnly.eq_of_notMem {R : Set P} : {X Y : P → Type} → {w : Word X Y} →
-    w.UsesOnly R → ∀ s ∉ R, Y s = X s
-  | _, _, .done _, _ => fun _ _ ↦ rfl
-  | _, _, @PartyCircuit.gate _ _ _ _ _ _ _ hY _, h => fun s hs ↦ hY s fun hD ↦ hs (h hD)
-  | _, _, @PartyCircuit.localOp _ _ _ _ _ _ _ hY _, h => fun s hs ↦ hY s fun e ↦ hs (e ▸ h)
-  | _, _, @PartyCircuit.localOps _ _ _ _ _ _ _, h => fun s hs ↦ (h s hs).1
-  | _, _, @PartyCircuit.comp _ _ _ _ _ _ _ _ _, h => fun s hs ↦
-    (h.2.eq_of_notMem s hs).trans (h.1.eq_of_notMem s hs)
 
 /-- The word, all of whose steps lie in `S`, read on the parties of `S`. -/
 def restrict : {X Y : P → Type} → (w : Word X Y) → w.UsesOnly ↑S →
