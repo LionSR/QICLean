@@ -19,10 +19,10 @@ with any basis `X v` at the site `v` in place of one local dimension `Fin d`.
 
 ## Main results
 
-* `ManyBody.linearMap_ext_rectKronecker` — linear maps agreeing on the product operators are
+* `ManyBody.linearMap_ext_piKronecker` — linear maps agreeing on the product operators are
   equal.
-* `ManyBody.trace_rectKronecker_mul_mul` — product operators factorize traces of products of
-  operators supported on disjoint regions.
+* `ManyBody.trace_piKronecker_mul_mul_mul_trace` — product operators factorize traces of
+  products of operators supported on disjoint regions.
 
 ## References
 
@@ -38,7 +38,7 @@ variable {V : Type*} [Fintype V] {X : V → Type*}
 
 /-- Two linear maps on the operators of a system of sites agree once they agree on the product
 operators `⊗_v m_v`. -/
-theorem linearMap_ext_rectKronecker [∀ v, Finite (X v)] {M : Type*} [AddCommMonoid M]
+theorem linearMap_ext_piKronecker [∀ v, Finite (X v)] {M : Type*} [AddCommMonoid M]
     [Module ℂ M] (Φ Ψ : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] M)
     (h : ∀ m : (v : V) → Matrix (X v) (X v) ℂ, Φ (piKronecker m) = Ψ (piKronecker m)) :
     Φ = Ψ := by
@@ -56,7 +56,7 @@ variable [DecidableEq V] [∀ v, Fintype (X v)] [∀ v, DecidableEq (X v)]
 
 /-- Product operators factorize traces of products of operators supported on disjoint regions:
 `tr(σ A B) tr σ = tr(σ A) tr(σ B)` for `σ = ⊗_v σ_v`. -/
-theorem trace_rectKronecker_mul_mul {S S' : Finset V} (hSS' : Disjoint S S')
+theorem trace_piKronecker_mul_mul_mul_trace {S S' : Finset V} (hSS' : Disjoint S S')
     (σ : (v : V) → Matrix (X v) (X v) ℂ) {A B : Matrix (Config X) (Config X) ℂ}
     (hA : A ∈ supportedOperators X S) (hB : B ∈ supportedOperators X S') :
     trace (piKronecker σ * (A * B)) * trace (piKronecker σ) =

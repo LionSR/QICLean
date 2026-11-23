@@ -92,7 +92,7 @@ theorem trace_mul_ne_zero_of_disjoint {S T : Finset V} (hST : Disjoint S T)
     (hA : A ∈ supportedOperators X S) (hB : B ∈ supportedOperators X T)
     (htrA : Matrix.trace A ≠ 0) (htrB : Matrix.trace B ≠ 0) :
     Matrix.trace (A * B) ≠ 0 := by
-  have hfactor := trace_rectKronecker_mul_mul hST
+  have hfactor := trace_piKronecker_mul_mul_mul_trace hST
     (fun v : V => (1 : Matrix (X v) (X v) ℂ)) hA hB
   rw [piKronecker_one, Matrix.one_mul, Matrix.one_mul, Matrix.one_mul] at hfactor
   intro hzero

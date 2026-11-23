@@ -216,14 +216,16 @@ $\mathcal H_X=0$ and the statements below hold trivially.
 
 \begin{corollary}[Induction over product operators]
     \label{cor:sites_product_induction}
-    \lean{ManyBody.supportedOperators_induction, ManyBody.eq_of_mem_supportedOperators₂}
+    \lean{ManyBody.supportedOperators_induction, ManyBody.eq_of_mem_supportedOperators₂,
+        ManyBody.linearMap_ext_piKronecker}
     \leanok
     \uses{thm:sites_product_span}
     A property of the operators of $\mathcal A_D$ that holds for the product
     operators $\bigotimes_vm_v$ with $m_v=1$ outside $D$ and is closed under sums and
     scalar multiples holds for all of $\mathcal A_D$. In particular, two bilinear maps
     that agree on pairs of such product operators, for $D$ and $D'$, agree on
-    $\mathcal A_D\times\mathcal A_{D'}$.
+    $\mathcal A_D\times\mathcal A_{D'}$, and two linear maps on all operators that
+    agree on every product operator $\bigotimes_vm_v$ are equal.
 \end{corollary}
 \begin{proof}\leanok
     By Theorem~\ref{thm:sites_product_span}, $\mathcal A_D$ is the span of the product
@@ -232,7 +234,7 @@ $\mathcal H_X=0$ and the statements below hold trivially.
 
 \begin{lemma}[Product states factorize over disjoint regions]
     \label{lem:sites_product_state_factorization}
-    \lean{ManyBody.trace_piKronecker_mul_mul}
+    \lean{ManyBody.trace_piKronecker_mul_mul, ManyBody.trace_piKronecker_mul_mul_mul_trace}
     \leanok
     \uses{cor:sites_product_induction}
     Let $\sigma_v$ be matrices on $\C^{X_v}$ with $\operatorname{tr}\sigma_v=1$, and let
@@ -243,13 +245,17 @@ $\mathcal H_X=0$ and the statements below hold trivially.
         \operatorname{tr}\Bigl(\bigl(\textstyle\bigotimes_v\sigma_v\bigr)B\Bigr).
         \notag
     \end{align}
+    Without the normalization of the $\sigma_v$, the left side multiplied by
+    $\operatorname{tr}\bigotimes_v\sigma_v$ equals the right side.
 \end{lemma}
 \begin{proof}\leanok
     Both sides are bilinear in $(A,B)$, so by Corollary~\ref{cor:sites_product_induction}
     it is enough to take product operators $A=\bigotimes_vm_v$ and
     $B=\bigotimes_vm'_v$ with $m_v=1$ outside $D$ and $m'_v=1$ outside $D'$. Then both
     sides are $\prod_v\operatorname{tr}(\sigma_vm_vm'_v)$, since at every site $m_v=1$
-    or $m'_v=1$ and $\operatorname{tr}\sigma_v=1$.
+    or $m'_v=1$ and $\operatorname{tr}\sigma_v=1$. Without the normalization, the same
+    computation gives $\prod_v\operatorname{tr}\sigma_v\operatorname{tr}(\sigma_vm_vm'_v)
+        =\prod_v\operatorname{tr}(\sigma_vm_v)\operatorname{tr}(\sigma_vm'_v)$.
 \end{proof}
 
 \begin{lemma}[Product operators across a cut and intertwined placements]
