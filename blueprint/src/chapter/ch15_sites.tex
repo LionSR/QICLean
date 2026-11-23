@@ -258,6 +258,23 @@ $\mathcal H_X=0$ and the statements below hold trivially.
         =\prod_v\operatorname{tr}(\sigma_vm_v)\operatorname{tr}(\sigma_vm'_v)$.
 \end{proof}
 
+\begin{lemma}[A nonzero functional at a product of Hermitian matrices]
+    \label{lem:sites_hermitian_product_functional}
+    \lean{ManyBody.exists_isHermitian_piKronecker_ne_zero}
+    \leanok
+    \uses{def:elementary_finite_tensor_product}
+    Let $f$ be a linear functional on the operators of $n$ sites of dimension $d$ with
+    $f\neq0$. Then $f\bigl(\bigotimes_ip_i\bigr)\neq0$ for some Hermitian matrices
+    $p_1,\dots,p_n$ on $\C^d$.
+\end{lemma}
+\begin{proof}\leanok
+    The matrix units span all operators, so $f(E_{\sigma\tau})\neq0$ for some
+    configurations $\sigma,\tau$, and $E_{\sigma\tau}=\bigotimes_iE_{\sigma_i\tau_i}$.
+    The map $(p_i)_i\mapsto f(\bigotimes_ip_i)$ is multilinear. Replace the factors one
+    site at a time: writing $p_i=H+\mathrm iK$ with $H$ and $K$ Hermitian, the value is
+    $f(\dots H\dots)+\mathrm if(\dots K\dots)\neq0$, so one of the two terms is nonzero.
+\end{proof}
+
 \begin{lemma}[Product operators across a cut and intertwined placements]
     \label{lem:sites_product_intertwine}
     \lean{ManyBody.reindex_cutEquiv_piKronecker, ManyBody.piKronecker_mul_place,
