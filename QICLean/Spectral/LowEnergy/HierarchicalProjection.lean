@@ -102,17 +102,13 @@ variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 section Projection
 
-/-- For an orthogonal projection `P`, `re ⟨ψ, P ψ⟩ = ‖P ψ‖²`. This is
-`re_inner_toEuclideanCLM_eq_norm_sq` for the linear-map wrapper `toEuclideanLin`. -/
-theorem re_inner_toEuclideanLin_eq_norm_sq {P : Matrix ι ι ℂ} (hP : IsStarProjection P)
-    (ψ : EuclideanSpace ℂ ι) : (⟪ψ, toEuclideanLin P ψ⟫_ℂ).re = ‖toEuclideanLin P ψ‖ ^ 2 :=
-  re_inner_toEuclideanCLM_eq_norm_sq hP ψ
-
 /-- Pythagoras for an orthogonal projection: `‖P ψ‖² + ‖ψ - P ψ‖² = ‖ψ‖²`. -/
 theorem norm_toEuclideanLin_sq_add_norm_sub_sq {P : Matrix ι ι ℂ} (hP : IsStarProjection P)
     (ψ : EuclideanSpace ℂ ι) :
     ‖toEuclideanLin P ψ‖ ^ 2 + ‖ψ - toEuclideanLin P ψ‖ ^ 2 = ‖ψ‖ ^ 2 := by
-  rw [norm_sub_sq (𝕜 := ℂ), RCLike.re_to_complex, re_inner_toEuclideanLin_eq_norm_sq hP]
+  rw [norm_sub_sq (𝕜 := ℂ), RCLike.re_to_complex,
+    show (⟪ψ, toEuclideanLin P ψ⟫_ℂ).re = ‖toEuclideanLin P ψ‖ ^ 2 from
+        re_inner_toEuclideanCLM_eq_norm_sq hP ψ]
   ring
 
 /-- For an orthogonal projection `P` and a unit vector `ψ`, the expectation of `P` is one minus
@@ -122,7 +118,8 @@ theorem re_inner_eq_one_sub_norm_sub_sq {P : Matrix ι ι ℂ} (hP : IsStarProje
     (⟪ψ, toEuclideanLin P ψ⟫_ℂ).re = 1 - ‖ψ - toEuclideanLin P ψ‖ ^ 2 := by
   have h := norm_toEuclideanLin_sq_add_norm_sub_sq hP ψ
   rw [hψ] at h
-  rw [re_inner_toEuclideanLin_eq_norm_sq hP]
+  rw [show (⟪ψ, toEuclideanLin P ψ⟫_ℂ).re = ‖toEuclideanLin P ψ‖ ^ 2 from
+      re_inner_toEuclideanCLM_eq_norm_sq hP ψ]
   linarith
 
 /-- **Deficiency in norm gives the expectation bound.** If an orthogonal projection `P` moves a
@@ -134,7 +131,8 @@ theorem one_sub_le_re_inner_of_norm_sub_le {P : Matrix ι ι ℂ} (hP : IsStarPr
     (h : ‖ψ - toEuclideanLin P ψ‖ ≤ δ) : 1 - δ ≤ (⟪ψ, toEuclideanLin P ψ⟫_ℂ).re := by
   have e := re_inner_eq_one_sub_norm_sub_sq hP hψ
   have hnn : 0 ≤ (⟪ψ, toEuclideanLin P ψ⟫_ℂ).re := by
-    rw [re_inner_toEuclideanLin_eq_norm_sq hP]
+    rw [show (⟪ψ, toEuclideanLin P ψ⟫_ℂ).re = ‖toEuclideanLin P ψ‖ ^ 2 from
+        re_inner_toEuclideanCLM_eq_norm_sq hP ψ]
     positivity
   have hd := norm_nonneg (ψ - toEuclideanLin P ψ)
   nlinarith
@@ -186,7 +184,8 @@ theorem norm_inv_norm_smul_toEuclideanLin_sub_sq_le {Q : Matrix ι ι ℂ}
     ‖((‖toEuclideanLin Q ψ‖⁻¹ : ℝ) : ℂ) • toEuclideanLin Q ψ - ψ‖ ^ 2 ≤
       2 * ‖ψ - toEuclideanLin Q ψ‖ ^ 2 := by
   have hsplit := norm_toEuclideanLin_sq_add_norm_sub_sq hQ ψ
-  have hre := re_inner_toEuclideanLin_eq_norm_sq hQ ψ
+  have hre : (⟪ψ, toEuclideanLin Q ψ⟫_ℂ).re = ‖toEuclideanLin Q ψ‖ ^ 2 :=
+    re_inner_toEuclideanCLM_eq_norm_sq hQ ψ
   set v := toEuclideanLin Q ψ
   rw [hψ] at hsplit
   have ht0 : 0 ≤ ‖v‖ := norm_nonneg _
