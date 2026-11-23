@@ -8,6 +8,8 @@ import QICLean.Probability.Gaussian.SchmidtSource
 /-! Boundary regressions for actual Schmidt frames and unbiased Gaussian source replacement. -/
 
 open MeasureTheory Matrix QICLean.ComplexGaussian
+open ProductSource
+open EuclideanSpace (complexCoordinate complexCoordinate_apply)
 open scoped BigOperators ComplexConjugate Matrix.Norms.Elementwise
 
 noncomputable section
@@ -31,10 +33,10 @@ example : ∃ (lam : ZeroSupport → ℝ)
     (E : Matrix Bool ZeroSupport ℂ)
     (F : Matrix (Option (Fin 2)) ZeroSupport ℂ),
     (∀ a, lam a = 0) ∧ E.conjTranspose * E = 1 ∧ F.conjTranspose * F = 1 ∧
-      ambientSchmidtVector lam E F = 0 := by
+      Matrix.schmidtFrameVector lam E F = 0 := by
   classical
   obtain ⟨lam, E, F, hnonneg, hE, hF, hrepr, hmass⟩ :=
-    exists_schmidtSourceFrames (0 : EuclideanSpace ℂ (Bool × Option (Fin 2)))
+    Matrix.exists_schmidtFrames (0 : EuclideanSpace ℂ (Bool × Option (Fin 2)))
   have hzero : ∑ a, lam a = 0 := by simpa using hmass
   have hall : ∀ a, lam a = 0 := by
     exact fun a ↦ (Finset.sum_eq_zero_iff_of_nonneg (fun i _ ↦ hnonneg i)).mp
@@ -48,9 +50,9 @@ example : ∃ (lam : EmptySupport → ℝ)
     (∀ a, 0 ≤ lam a) ∧
       (E.conjTranspose * E : Matrix EmptySupport EmptySupport ℂ) = 1 ∧
       F.conjTranspose * F = 1 ∧
-      ambientSchmidtVector lam E F = 0 ∧ ∑ a, lam a = 0 := by
+      Matrix.schmidtFrameVector lam E F = 0 ∧ ∑ a, lam a = 0 := by
   simpa only [WithLp.ofLp_zero, norm_zero, zero_pow (by decide : 2 ≠ 0)] using
-    exists_schmidtSourceFrames (0 : EuclideanSpace ℂ (Fin 0 × Bool))
+    Matrix.exists_schmidtFrames (0 : EuclideanSpace ℂ (Fin 0 × Bool))
 
 -- The phase-bearing product vector has rank one although its support capacity is two.
 example : Matrix.schmidtRank phaseKet.ofLp ≤ 1 := by
@@ -72,8 +74,8 @@ example : ∃ (lam : KetSupport → ℝ)
     (E : Matrix Bool KetSupport ℂ)
     (F : Matrix (Fin 3) KetSupport ℂ),
     (∀ a, 0 ≤ lam a) ∧ ∑ a, lam a = 1 ∧ E.conjTranspose * E = 1 ∧
-      F.conjTranspose * F = 1 ∧ ambientSchmidtVector lam E F = phaseKet.ofLp := by
-  apply exists_probability_schmidtSourceFrames phaseKet
+      F.conjTranspose * F = 1 ∧ Matrix.schmidtFrameVector lam E F = phaseKet.ofLp := by
+  apply Matrix.exists_schmidtFrames_of_norm_eq_one phaseKet
   simp only [phaseKet, EuclideanSpace.single, PiLp.norm_single, Complex.norm_I]
 
 -- A subnormalized actual vector has its true squared mass, rather than an artificial mass one.
@@ -81,9 +83,9 @@ example : ∃ (lam : KetSupport → ℝ)
     (E : Matrix Bool KetSupport ℂ)
     (F : Matrix (Fin 3) KetSupport ℂ),
     (∀ a, 0 ≤ lam a) ∧ E.conjTranspose * E = 1 ∧ F.conjTranspose * F = 1 ∧
-      ambientSchmidtVector lam E F =
+      Matrix.schmidtFrameVector lam E F =
         (EuclideanSpace.single (false, 1) (1 / 2 : ℂ)).ofLp ∧ ∑ a, lam a = 1 / 4 := by
-  obtain ⟨lam, E, F, hnonneg, hE, hF, hrepr, hmass⟩ := exists_schmidtSourceFrames
+  obtain ⟨lam, E, F, hnonneg, hE, hF, hrepr, hmass⟩ := Matrix.exists_schmidtFrames
     (EuclideanSpace.single (false, 1) (1 / 2 : ℂ) : EuclideanSpace ℂ (Bool × Fin 3))
   refine ⟨lam, E, F, hnonneg, hE, hF, hrepr, ?_⟩
   simpa only [EuclideanSpace.single, PiLp.norm_single, norm_div, norm_one,

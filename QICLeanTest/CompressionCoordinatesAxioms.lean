@@ -34,7 +34,7 @@ run_cmd do
       ``OrthonormalBasis.rectangularTraceNorm_partialTrace_sum_rankOne_basis_eq,
       ``ProbabilityTheory.integrable_rectangularTraceNorm_sum,
       ``ProbabilityTheory.integrable_rectangularTraceNorm_sum_of_memLp_two,
-      ``QICLean.ComplexGaussian.sourceTransport_eq_sum_rankOne] do
+      ``Matrix.kroneckerSandwich_eq_sum_vecMulVec] do
     unless env.contains decl do
       throwError "Missing declaration {decl}"
     let axioms ← Lean.collectAxioms decl

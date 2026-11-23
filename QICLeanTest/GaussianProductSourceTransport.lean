@@ -8,6 +8,8 @@ import QICLean.Probability.Gaussian.ProductSourceTransport
 /-! Edge-case regressions for GaussianProductSourceTransport in the compression proof. -/
 
 open MeasureTheory Matrix QICLean.ComplexGaussian
+open ProductSource
+open EuclideanSpace (complexCoordinate complexCoordinate_apply)
 open scoped BigOperators ComplexConjugate Kronecker Matrix.Norms.Elementwise
 
 noncomputable section
@@ -36,9 +38,9 @@ example : braL.conjTranspose * braL = 1 := by
     Fin.sum_univ_succ, Complex.I_mul_I]
 
 -- Conjugating the bra Schmidt vector is essential: the correct outer-product entry is -1.
-example : ambientSchmidtSource (fun _ : Fin 1 ↦ (1 : ℝ))
+example : Matrix.schmidtFrameOuterProduct (fun _ : Fin 1 ↦ (1 : ℝ))
     (fun _ : Fin 1 ↦ (1 : ℝ)) ketL ketR braL braR (1, 2) (3, 4) = -1 := by
-  norm_num [ambientSchmidtSource, ambientSchmidtVector, ketL, ketR, braL, braR,
+  norm_num [Matrix.schmidtFrameOuterProduct, Matrix.schmidtFrameVector, ketL, ketR, braL, braR,
     Matrix.vecMulVec_apply, Matrix.single_apply, Fin.sum_univ_succ, Complex.I_mul_I]
 
 -- The actual Gaussian sample average has that phase-sensitive ambient expectation.
@@ -46,7 +48,7 @@ example : (∫ x, ambientSampledSource 3 (fun _ : Fin 1 ↦ (1 : ℝ))
     (fun _ : Fin 1 ↦ (1 : ℝ)) ketL ketR braL braR x (1, 2) (3, 4)
       ∂law (Fin 3 × (Fin 1 × Fin 1))) = -1 := by
   rw [integral_ambientSampledSource_entry 3 (by decide) _ _ (by simp) (by simp)]
-  norm_num [ambientSchmidtSource, ambientSchmidtVector, ketL, ketR, braL, braR,
+  norm_num [Matrix.schmidtFrameOuterProduct, Matrix.schmidtFrameVector, ketL, ketR, braL, braR,
     Matrix.vecMulVec_apply, Matrix.single_apply, Fin.sum_univ_succ, Complex.I_mul_I]
 
 -- Four different ambient endpoint dimensions and different ket/bra support sizes are allowed.
@@ -55,7 +57,7 @@ example (E : Matrix (Fin 4) (Fin 2) ℂ) (F : Matrix (Fin 5) (Fin 2) ℂ)
     (x : Sample (Fin 2 × (Fin 2 × Fin 3))) (j : Fin 2) :
     ambientSourceU 2 (fun _ : Fin 2 ↦ (1 : ℝ)) (fun _ : Fin 3 ↦ (1 : ℝ)) E Et j x ⊗ₖ
       ambientSourceV 2 (fun _ : Fin 2 ↦ (1 : ℝ)) (fun _ : Fin 3 ↦ (1 : ℝ)) F Ft j x =
-        sourceTransport E F Et Ft (sourceU 2 (fun _ : Fin 2 ↦ (1 : ℝ))
+        Matrix.kroneckerSandwich E F Et Ft (sourceU 2 (fun _ : Fin 2 ↦ (1 : ℝ))
           (fun _ : Fin 3 ↦ (1 : ℝ)) j x ⊗ₖ sourceV 2 (fun _ : Fin 2 ↦ (1 : ℝ))
             (fun _ : Fin 3 ↦ (1 : ℝ)) j x) :=
   ambientSourceU_kronecker_ambientSourceV _ _ _ _ _ _ _ _ _
@@ -82,7 +84,7 @@ example : (∫ x, ambientSampledSource 2 (fun _ : Fin 1 ↦ (0 : ℝ))
       ∂law (Fin 2 × (Fin 1 × Fin 1))) = 0 := by
   rw [integral_ambientSampledSource 2 (by decide) _ _ (by simp) (by simp)]
   ext p q
-  simp [ambientSchmidtSource, Matrix.vecMulVec_apply, ambientSchmidtVector]
+  simp [Matrix.schmidtFrameOuterProduct, Matrix.vecMulVec_apply, Matrix.schmidtFrameVector]
 
 -- Empty ket Schmidt support, with a nonempty bra support, requires no nonempty premise.
 example (E : Matrix (Fin 2) (Fin 0) ℂ) (F : Matrix (Fin 3) (Fin 0) ℂ)
@@ -91,14 +93,14 @@ example (E : Matrix (Fin 2) (Fin 0) ℂ) (F : Matrix (Fin 3) (Fin 0) ℂ)
       (fun _ : Fin 1 ↦ (1 : ℝ)) E F Et Ft x ∂law (Fin 1 × (Fin 0 × Fin 1))) = 0 := by
   rw [integral_ambientSampledSource 1 (by decide) _ _ (by simp) (by simp)]
   ext p q
-  simp [ambientSchmidtSource, Matrix.vecMulVec_apply, ambientSchmidtVector]
+  simp [Matrix.schmidtFrameOuterProduct, Matrix.vecMulVec_apply, Matrix.schmidtFrameVector]
 
 -- The paper's common ambient half-spaces allow unequal Schmidt ranks with normalized weights.
 example (E : Matrix (Fin 4) (Fin 2) ℂ) (F : Matrix (Fin 5) (Fin 2) ℂ)
     (Et : Matrix (Fin 4) (Fin 3) ℂ) (Ft : Matrix (Fin 5) (Fin 3) ℂ) :
     (∫ x, ambientSampledSource 2 (fun _ : Fin 2 ↦ (1 / 2 : ℝ))
       (fun _ : Fin 3 ↦ (1 / 3 : ℝ)) E F Et Ft x ∂law (Fin 2 × (Fin 2 × Fin 3))) =
-        ambientSchmidtSource (fun _ : Fin 2 ↦ (1 / 2 : ℝ))
+        Matrix.schmidtFrameOuterProduct (fun _ : Fin 2 ↦ (1 / 2 : ℝ))
           (fun _ : Fin 3 ↦ (1 / 3 : ℝ)) E F Et Ft :=
   integral_ambientSampledSource 2 (by decide) _ _ (by norm_num) (by norm_num) _ _ _ _
 
@@ -106,8 +108,8 @@ example (E : Matrix (Fin 4) (Fin 2) ℂ) (F : Matrix (Fin 5) (Fin 2) ℂ)
 example (x : Sample (Fin 2 × (Fin 1 × Fin 1))) :
     ambientSourceCorrection 2 (fun _ : Fin 1 ↦ (1 : ℝ))
       (fun _ : Fin 1 ↦ (1 : ℝ)) ketL ketR braL braR x =
-        sourceTransport ketL ketR braL braR (sourceCorrection 2
+        Matrix.kroneckerSandwich ketL ketR braL braR (sourceCorrection 2
           (fun _ : Fin 1 ↦ (1 : ℝ)) (fun _ : Fin 1 ↦ (1 : ℝ)) x) :=
-  ambientSourceCorrection_eq_transport _ _ _ _ _ _ _ _
+  ProductSource.ambientSourceCorrection_eq_kroneckerSandwich _ _ _ _ _ _ _ _
 
 end

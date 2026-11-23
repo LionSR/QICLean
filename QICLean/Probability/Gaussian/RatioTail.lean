@@ -45,6 +45,7 @@ and the resulting exponent is at most `-s / 16` by a polynomial inequality valid
 -/
 
 open MeasureTheory ProbabilityTheory Real
+open EuclideanSpace (complexCoordinate complexCoordinate_apply)
 open scoped ENNReal NNReal BigOperators
 
 namespace QICLean.ComplexGaussian
@@ -93,14 +94,15 @@ variable {ι : Type*} [Fintype ι]
 /-- The squared modulus of a circular complex coordinate is half the sum of the squares of its
 two real coordinates. -/
 theorem norm_coordinate_sq (i : ι) (x : Sample ι) :
-    ‖coordinate i x‖ ^ 2 = (x (i, 0) ^ 2 + x (i, 1) ^ 2) / 2 := by
-  rw [coordinate_apply, norm_div, Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg _),
-    div_pow, Real.sq_sqrt zero_le_two, ← Complex.normSq_eq_norm_sq]
+    ‖complexCoordinate i x‖ ^ 2 = (x (i, 0) ^ 2 + x (i, 1) ^ 2) / 2 := by
+  rw [complexCoordinate_apply, norm_div, Complex.norm_real,
+    Real.norm_of_nonneg (Real.sqrt_nonneg _), div_pow, Real.sq_sqrt zero_le_two,
+    ← Complex.normSq_eq_norm_sq]
   simp [Complex.normSq_apply, pow_two]
 
 /-- The integrand of the moment generating function, written on the real coordinates. -/
 private theorem exp_sum_mul_norm_coordinate_sq (c : ι → ℝ) (y : ι × Fin 2 → ℝ) :
-    rexp (∑ i, c i * ‖coordinate i (WithLp.toLp 2 y)‖ ^ 2) =
+    rexp (∑ i, c i * ‖complexCoordinate i (WithLp.toLp 2 y)‖ ^ 2) =
       ∏ p : ι × Fin 2, rexp (c p.1 / 2 * y p ^ 2) := by
   rw [← Real.exp_sum, Fintype.sum_prod_type]
   congr 1
@@ -109,13 +111,13 @@ private theorem exp_sum_mul_norm_coordinate_sq (c : ι → ℝ) (y : ι × Fin 2
   ring
 
 private theorem measurable_exp_sum_mul_norm_coordinate_sq (c : ι → ℝ) :
-    Measurable fun x : Sample ι ↦ rexp (∑ i, c i * ‖coordinate i x‖ ^ 2) := by
+    Measurable fun x : Sample ι ↦ rexp (∑ i, c i * ‖complexCoordinate i x‖ ^ 2) := by
   simp_rw [norm_coordinate_sq]
   fun_prop
 
 /-- The exponential moments of the squared moduli are integrable below the threshold. -/
 theorem integrable_exp_sum_mul_norm_coordinate_sq (c : ι → ℝ) (hc : ∀ i, c i < 1) :
-    Integrable (fun x ↦ rexp (∑ i, c i * ‖coordinate i x‖ ^ 2)) (law ι) := by
+    Integrable (fun x ↦ rexp (∑ i, c i * ‖complexCoordinate i x‖ ^ 2)) (law ι) := by
   rw [law, ← map_pi_eq_stdGaussian, integrable_map_measure
     (measurable_exp_sum_mul_norm_coordinate_sq c).aestronglyMeasurable (by fun_prop)]
   simp only [Function.comp_def, exp_sum_mul_norm_coordinate_sq]
@@ -125,7 +127,7 @@ theorem integrable_exp_sum_mul_norm_coordinate_sq (c : ι → ℝ) (hc : ∀ i, 
 /-- The joint moment generating function of the squared moduli of independent standard circular
 complex Gaussians: `E exp (∑_i c_i |g_i|²) = ∏_i (1 - c_i)⁻¹` for weights `c_i < 1`. -/
 theorem integral_exp_sum_mul_norm_coordinate_sq (c : ι → ℝ) (hc : ∀ i, c i < 1) :
-    (∫ x, rexp (∑ i, c i * ‖coordinate i x‖ ^ 2) ∂law ι) = ∏ i, (1 - c i)⁻¹ := by
+    (∫ x, rexp (∑ i, c i * ‖complexCoordinate i x‖ ^ 2) ∂law ι) = ∏ i, (1 - c i)⁻¹ := by
   rw [law, ← map_pi_eq_stdGaussian, integral_map (by fun_prop)
     (measurable_exp_sum_mul_norm_coordinate_sq c).aestronglyMeasurable]
   simp only [exp_sum_mul_norm_coordinate_sq]
@@ -140,14 +142,14 @@ theorem integral_exp_sum_mul_norm_coordinate_sq (c : ι → ℝ) (hc : ∀ i, c 
 /-- The moment generating function of the squared modulus of a standard circular complex
 Gaussian: `E exp (c |g_i|²) = (1 - c)⁻¹` for `c < 1`. -/
 theorem integral_exp_mul_norm_coordinate_sq (i : ι) {c : ℝ} (hc : c < 1) :
-    (∫ x, rexp (c * ‖coordinate i x‖ ^ 2) ∂law ι) = (1 - c)⁻¹ := by
+    (∫ x, rexp (c * ‖complexCoordinate i x‖ ^ 2) ∂law ι) = (1 - c)⁻¹ := by
   classical
   have h := integral_exp_sum_mul_norm_coordinate_sq (Pi.single i c : ι → ℝ) fun j ↦ by
     by_cases hj : j = i
     · subst hj; simpa using hc
     · simp [hj]
-  have hs (x : Sample ι) : ∑ j, (Pi.single i c : ι → ℝ) j * ‖coordinate j x‖ ^ 2 =
-      c * ‖coordinate i x‖ ^ 2 := by
+  have hs (x : Sample ι) : ∑ j, (Pi.single i c : ι → ℝ) j * ‖complexCoordinate j x‖ ^ 2 =
+      c * ‖complexCoordinate i x‖ ^ 2 := by
     rw [Finset.sum_eq_single i (fun j _ hj ↦ by simp [hj]) (by simp)]
     simp
   simp_rw [hs] at h
@@ -184,8 +186,8 @@ complex Gaussians `g_i` indexed by a set of size `q` and a subset `A` of size `s
 This is the concentration step of Arad–Landau–Vazirani–Vidick, arXiv:1602.08828v2, Lemma `l:rs`
 (`local_alg_arxiv_v2.tex`, lines 531–547), citing Dasgupta–Gupta, Theorem 2.1. -/
 theorem measureReal_sum_norm_coordinate_sq_le_le (A : Finset ι) :
-    (law ι).real {x | ∑ i ∈ A, ‖coordinate i x‖ ^ 2 ≤
-      (A.card / (2 * Fintype.card ι)) * ∑ i, ‖coordinate i x‖ ^ 2} ≤
+    (law ι).real {x | ∑ i ∈ A, ‖complexCoordinate i x‖ ^ 2 ≤
+      (A.card / (2 * Fintype.card ι)) * ∑ i, ‖complexCoordinate i x‖ ^ 2} ≤
       rexp (-(A.card / 16)) := by
   classical
   set s : ℝ := (A.card : ℝ)
@@ -202,8 +204,8 @@ theorem measureReal_sum_norm_coordinate_sq_le_le (A : Finset ι) :
     · rw [div_le_iff₀ (by linarith)]
       linarith
   let w : ι → ℝ := fun i ↦ (if i ∈ A then 1 else 0) - a
-  let Z : Sample ι → ℝ := fun x ↦ ∑ i, w i * ‖coordinate i x‖ ^ 2
-  have hset : {x | ∑ i ∈ A, ‖coordinate i x‖ ^ 2 ≤ a * ∑ i, ‖coordinate i x‖ ^ 2} =
+  let Z : Sample ι → ℝ := fun x ↦ ∑ i, w i * ‖complexCoordinate i x‖ ^ 2
+  have hset : {x | ∑ i ∈ A, ‖complexCoordinate i x‖ ^ 2 ≤ a * ∑ i, ‖complexCoordinate i x‖ ^ 2} =
       {x | Z x ≤ 0} := by
     ext x
     simp only [Set.mem_ofPred_eq, Z, w, sub_mul, Finset.sum_sub_distrib, ite_mul, one_mul,
@@ -211,7 +213,7 @@ theorem measureReal_sum_norm_coordinate_sq_le_le (A : Finset ι) :
   have hc : ∀ i, -1 / 2 * w i < 1 := fun i ↦ by
     simp only [w]
     split_ifs <;> linarith
-  have hZ (x : Sample ι) : -1 / 2 * Z x = ∑ i, -1 / 2 * w i * ‖coordinate i x‖ ^ 2 := by
+  have hZ (x : Sample ι) : -1 / 2 * Z x = ∑ i, -1 / 2 * w i * ‖complexCoordinate i x‖ ^ 2 := by
     simp only [Z, Finset.mul_sum, mul_assoc]
   have hint : Integrable (fun x ↦ rexp (-1 / 2 * Z x)) (law ι) := by
     simp_rw [hZ]
@@ -221,7 +223,8 @@ theorem measureReal_sum_norm_coordinate_sq_le_le (A : Finset ι) :
     simp_rw [hZ]
     exact integral_exp_sum_mul_norm_coordinate_sq _ hc
   have hpos : ∀ i, 0 < 1 - -1 / 2 * w i := fun i ↦ by linarith [hc i]
-  calc (law ι).real {x | ∑ i ∈ A, ‖coordinate i x‖ ^ 2 ≤ a * ∑ i, ‖coordinate i x‖ ^ 2}
+  calc (law ι).real
+        {x | ∑ i ∈ A, ‖complexCoordinate i x‖ ^ 2 ≤ a * ∑ i, ‖complexCoordinate i x‖ ^ 2}
       = (law ι).real {x | Z x ≤ 0} := by rw [hset]
     _ ≤ rexp (-(-1 / 2) * 0) * mgf Z (law ι) (-1 / 2) :=
       measure_le_le_exp_mul_mgf 0 (by norm_num) hint
@@ -243,8 +246,8 @@ theorem measureReal_sum_norm_coordinate_sq_le_le (A : Finset ι) :
 
 /-- The lower-tail bound `measureReal_sum_norm_coordinate_sq_le_le` stated for the measure. -/
 theorem measure_sum_norm_coordinate_sq_le_le (A : Finset ι) :
-    law ι {x | ∑ i ∈ A, ‖coordinate i x‖ ^ 2 ≤
-      (A.card / (2 * Fintype.card ι)) * ∑ i, ‖coordinate i x‖ ^ 2} ≤
+    law ι {x | ∑ i ∈ A, ‖complexCoordinate i x‖ ^ 2 ≤
+      (A.card / (2 * Fintype.card ι)) * ∑ i, ‖complexCoordinate i x‖ ^ 2} ≤
       ENNReal.ofReal (rexp (-(A.card / 16))) := by
   rw [← ofReal_measureReal]
   exact ENNReal.ofReal_le_ofReal (measureReal_sum_norm_coordinate_sq_le_le A)

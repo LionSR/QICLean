@@ -38,6 +38,8 @@ open scoped BigOperators Matrix.Norms.Elementwise
 
 namespace QICLean.ComplexGaussian
 
+open ProductSource
+
 variable {P : Type*} [Fintype P] [DecidableEq P] {B : P → Type*} [∀ p, Fintype (B p)]
     {A C : (p : P) → B p → Type*}
     [∀ p b, Fintype (A p b)] [∀ p b, Fintype (C p b)]
@@ -62,7 +64,7 @@ def correctedGaussianSourceContraction (k : ℕ) (σ : (p : P) → B p)
     (ω : (p : P) → (b : B p) → Sample (Fin k × (A p b × C p b))) : Matrix m n ℂ :=
   Matrix.sourceContraction coeff (S.piecewise
     (fun p ↦ sourceCorrection k (lam p) (mu p) (ω p (σ p)))
-    (fun p ↦ schmidtSource (lam p) (mu p)))
+    (fun p ↦ Matrix.schmidtOuterProduct (lam p) (mu p)))
 
 omit [∀ p, Fintype (B p)] in
 /-- Actual correction-entry products use exactly the selected-position Gaussian coefficients.
@@ -74,24 +76,24 @@ theorem corrected_source_entry_product (k : ℕ) (hk : 0 < k) (σ : (p : P) → 
     (ω : (p : P) → (b : B p) → Sample (Fin k × (A p b × C p b))) :
     (∏ p, (S.piecewise
       (fun p ↦ sourceCorrection k (lam p) (mu p) (ω p (σ p)))
-      (fun p ↦ schmidtSource (lam p) (mu p)) p) (x p).1 (x p).2) =
-      (∏ p ∈ Finset.univ \ S, schmidtSource (lam p) (mu p) (x p).1 (x p).2) *
+      (fun p ↦ Matrix.schmidtOuterProduct (lam p) (mu p)) p) (x p).1 (x p).2) =
+      (∏ p ∈ Finset.univ \ S, Matrix.schmidtOuterProduct (lam p) (mu p) (x p).1 (x p).2) *
         selectedBranchDensityCoefficient k S (fun p ↦ σ p)
           (fun p ↦ lam p) (fun p ↦ mu p) (fun p ↦ (x p).1) (fun p ↦ (x p).2) ω := by
   have hentry (p : P) :
       (S.piecewise (fun p ↦ sourceCorrection k (lam p) (mu p) (ω p (σ p)))
-        (fun p ↦ schmidtSource (lam p) (mu p)) p) (x p).1 (x p).2 =
+        (fun p ↦ Matrix.schmidtOuterProduct (lam p) (mu p)) p) (x p).1 (x p).2 =
       S.piecewise (fun p ↦ densityCoefficient k (lam p) (mu p) (x p) (ω p (σ p)))
-        (fun p ↦ schmidtSource (lam p) (mu p) (x p).1 (x p).2) p := by
+        (fun p ↦ Matrix.schmidtOuterProduct (lam p) (mu p) (x p).1 (x p).2) p := by
     by_cases hp : p ∈ S
     · simp only [Finset.piecewise, hp, ite_true]
       exact sourceCorrection_apply k hk (lam p) (mu p) (hlam p) (hmu p) _ _ _
     · simp only [Finset.piecewise, hp, ite_false]
   let f : P → ℂ := fun p ↦ densityCoefficient k (lam p) (mu p) (x p) (ω p (σ p))
-  let g : P → ℂ := fun p ↦ schmidtSource (lam p) (mu p) (x p).1 (x p).2
+  let g : P → ℂ := fun p ↦ Matrix.schmidtOuterProduct (lam p) (mu p) (x p).1 (x p).2
   have hprod : (∏ p, (S.piecewise
       (fun p ↦ sourceCorrection k (lam p) (mu p) (ω p (σ p)))
-      (fun p ↦ schmidtSource (lam p) (mu p)) p) (x p).1 (x p).2) =
+      (fun p ↦ Matrix.schmidtOuterProduct (lam p) (mu p)) p) (x p).1 (x p).2) =
       ∏ p, S.piecewise f g p := Finset.prod_congr rfl (fun p _ ↦ hentry p)
   have hcoef : selectedBranchDensityCoefficient k S (fun p ↦ σ p)
       (fun p ↦ lam p) (fun p ↦ mu p) (fun p ↦ (x p).1) (fun p ↦ (x p).2) ω =
@@ -113,7 +115,7 @@ theorem correctedGaussianSourceContraction_eq_sum (k : ℕ) (hk : 0 < k)
       Matrix m n ℂ) (S : Finset P)
     (ω : (p : P) → (b : B p) → Sample (Fin k × (A p b × C p b))) :
     correctedGaussianSourceContraction k σ lam mu coeff S ω =
-      ∑ x, ((∏ p ∈ Finset.univ \ S, schmidtSource (lam p) (mu p) (x p).1 (x p).2) *
+      ∑ x, ((∏ p ∈ Finset.univ \ S, Matrix.schmidtOuterProduct (lam p) (mu p) (x p).1 (x p).2) *
         selectedBranchDensityCoefficient k S (fun p ↦ σ p)
           (fun p ↦ lam p) (fun p ↦ mu p) (fun p ↦ (x p).1) (fun p ↦ (x p).2) ω) • coeff x := by
   rw [correctedGaussianSourceContraction, Matrix.sourceContraction_apply]
@@ -128,23 +130,23 @@ theorem gaussianSourceContraction_sub (k : ℕ) (σ : (p : P) → B p)
       Matrix m n ℂ)
     (ω : (p : P) → (b : B p) → Sample (Fin k × (A p b × C p b))) :
     gaussianSourceContraction k σ lam mu coeff ω -
-        Matrix.sourceContraction coeff (fun p ↦ schmidtSource (lam p) (mu p)) =
+        Matrix.sourceContraction coeff (fun p ↦ Matrix.schmidtOuterProduct (lam p) (mu p)) =
       ∑ S ∈ (Finset.univ : Finset (Finset P)).erase ∅,
         correctedGaussianSourceContraction k σ lam mu coeff S ω := by
   have hadd : (fun p ↦ sampledSource k (lam p) (mu p) (ω p (σ p))) =
       (fun p ↦ sourceCorrection k (lam p) (mu p) (ω p (σ p))) +
-        (fun p ↦ schmidtSource (lam p) (mu p)) := by
+        (fun p ↦ Matrix.schmidtOuterProduct (lam p) (mu p)) := by
     funext p
     exact (sub_add_cancel _ _).symm
   simpa only [gaussianSourceContraction, hadd, correctedGaussianSourceContraction] using
-    Matrix.sourceContraction_sub coeff (fun p ↦ schmidtSource (lam p) (mu p))
+    Matrix.sourceContraction_sub coeff (fun p ↦ Matrix.schmidtOuterProduct (lam p) (mu p))
       (fun p ↦ sourceCorrection k (lam p) (mu p) (ω p (σ p)))
 
 private theorem integrable_factored_corrected_entry (k : ℕ) (σ : (p : P) → B p)
     (lam : (p : P) → A p (σ p) → ℝ) (mu : (p : P) → C p (σ p) → ℝ) (S : Finset P)
     (x : (p : P) → (A p (σ p) × A p (σ p)) × (C p (σ p) × C p (σ p))) :
     Integrable (fun ω ↦
-      (∏ p ∈ Finset.univ \ S, schmidtSource (lam p) (mu p) (x p).1 (x p).2) *
+      (∏ p ∈ Finset.univ \ S, Matrix.schmidtOuterProduct (lam p) (mu p) (x p).1 (x p).2) *
         selectedBranchDensityCoefficient k S (fun p ↦ σ p)
           (fun p ↦ lam p) (fun p ↦ mu p) (fun p ↦ (x p).1) (fun p ↦ (x p).2) ω)
       (globalBranchLaw k A C) :=
@@ -213,7 +215,7 @@ theorem integral_correctedGaussianSourceContraction_eq_zero (k : ℕ) (hk : 0 < 
     eval_integral (integrable_corrected_entry k hk σ lam mu hlam hmu coeff S a)]
   change (∫ ω, Matrix.sourceContraction coeff (S.piecewise
     (fun p ↦ sourceCorrection k (lam p) (mu p) (ω p (σ p)))
-    (fun p ↦ schmidtSource (lam p) (mu p))) a b ∂globalBranchLaw k A C) = 0
+    (fun p ↦ Matrix.schmidtOuterProduct (lam p) (mu p))) a b ∂globalBranchLaw k A C) = 0
   simp_rw [Matrix.sourceContraction_apply_apply,
     corrected_source_entry_product k hk σ lam mu hlam hmu S]
   rw [integral_finsetSum _ (fun x _ ↦
@@ -260,7 +262,7 @@ theorem integral_gaussianSourceContraction (k : ℕ) (hk : 0 < k) (σ : (p : P) 
     (coeff : ((p : P) → (A p (σ p) × A p (σ p)) × (C p (σ p) × C p (σ p))) →
       Matrix m n ℂ) :
     (∫ ω, gaussianSourceContraction k σ lam mu coeff ω ∂globalBranchLaw k A C) =
-      Matrix.sourceContraction coeff (fun p ↦ schmidtSource (lam p) (mu p)) := by
+      Matrix.sourceContraction coeff (fun p ↦ Matrix.schmidtOuterProduct (lam p) (mu p)) := by
   ext a b
   change (∫ ω, (fun a b ↦ gaussianSourceContraction k σ lam mu coeff ω a b)
     ∂globalBranchLaw k A C) a b = _

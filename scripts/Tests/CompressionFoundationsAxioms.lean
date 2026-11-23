@@ -16,25 +16,24 @@ import QICLean.Probability.Concentration.MatrixSecondMoment
 /-! Kernel dependency reports for every named public declaration in the first
 compression-foundations packet. No project-specific axioms are permitted. -/
 
-#print axioms CompressionSampling.binomial_error_le_exp
-#print axioms CompressionSampling.binomial_error_le_quarter
-#print axioms CompressionSampling.error_le_quarter_of_sample_count
-#print axioms CompressionSampling.error_le_quarter_sampleCount
-#print axioms CompressionSampling.exists_error_le_half_sampleCount
-#print axioms CompressionSampling.exists_valid_error_le_half_sampleCount
-#print axioms CompressionSampling.exists_valid_norm_sum_le_half_sampleCount
-#print axioms CompressionSampling.exp_eighth_sub_one_le_quarter
+#print axioms Real.one_add_pow_sub_one_le_exp_sub_one
+#print axioms Real.one_add_pow_sub_one_le_div_four
+#print axioms Real.one_add_div_sqrt_pow_sub_one_le_div_four
+#print axioms one_add_div_sqrt_binomialSampleCount_pow_sub_one_le
+#print axioms CompressionSampling.exists_error_le_half_binomialSampleCount
+#print axioms CompressionSampling.exists_valid_error_le_half_binomialSampleCount
+#print axioms CompressionSampling.exists_valid_norm_sum_le_half_binomialSampleCount
+#print axioms Real.exp_div_eight_sub_one_le_div_four
 #print axioms CompressionSampling.integral_error_le_binomial
 #print axioms CompressionSampling.integral_norm_sum_le_binomial
 #print axioms CompressionSampling.integral_norm_sum_le_sampling_error
-#print axioms CompressionSampling.inverse_half_power
-#print axioms CompressionSampling.ratio_le_of_sample_count
-#print axioms CompressionSampling.sampleCount
-#print axioms CompressionSampling.sampleCount_bounds
-#print axioms CompressionSampling.sum_nonempty_subsets_pow
-#print axioms CompressionSampling.sum_nonempty_subsets_rpow
-#print axioms CompressionSampling.sum_nonempty_subsets_weight
-#print axioms CompressionSampling.zero_slots_error
+#print axioms Real.rpow_neg_natCast_div_two
+#print axioms Real.div_sqrt_le_of_sq_le
+#print axioms binomialSampleCount
+#print axioms binomialSampleCount_bounds
+#print axioms Finset.sum_powerset_erase_empty_pow_card
+#print axioms Finset.sum_powerset_erase_empty_pow_mul_rpow
+#print axioms Finset.sum_powerset_erase_empty_pow_div_sqrt_pow
 #print axioms IndependentCovariance.integrable_product_mul_conj
 #print axioms IndependentCovariance.integrable_tensorCoefficient_mul_conj
 #print axioms IndependentCovariance.integral_product_mul_conj
@@ -95,10 +94,10 @@ compression-foundations packet. No project-specific axioms are permitted. -/
 #print axioms QICLean.ComplexGaussian.coefficientWeight_eq_product_quarter
 #print axioms QICLean.ComplexGaussian.conj_coordinate
 #print axioms QICLean.ComplexGaussian.conj_delta
-#print axioms QICLean.ComplexGaussian.coordinate
+#print axioms EuclideanSpace.complexCoordinate
 #print axioms QICLean.ComplexGaussian.coordinateCoefficients
 #print axioms QICLean.ComplexGaussian.coordinateVectors
-#print axioms QICLean.ComplexGaussian.coordinate_apply
+#print axioms EuclideanSpace.complexCoordinate_apply
 #print axioms QICLean.ComplexGaussian.delta
 #print axioms QICLean.ComplexGaussian.delta_comm
 #print axioms QICLean.ComplexGaussian.densityCoefficient

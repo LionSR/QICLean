@@ -80,10 +80,10 @@ theorem integrable_rectangularTraceNorm_gaussianSourceError (k : ℕ)
     (htau : ∀ t, 0 ≤ tau t) (htau' : ∀ u, 0 ≤ tau' u)
     (htausum : ∑ t, tau t = 1) (htau'sum : ∑ u, tau' u = 1) :
     Integrable (fun ω ↦ Matrix.rectangularTraceNorm
-      (ProbabilityTheory.weightedSourceError tau tau' O
+      (Matrix.halfWeightedBlockCombination tau tau' O
         (fun b ↦ independentDensityCoefficient k lam mu b.1 b.2 ω)))
       (independentDensityLaw k A C) := by
-  exact ProbabilityTheory.integrable_rectangularTraceNorm_weightedSourceError tau tau' O
+  exact ProbabilityTheory.integrable_rectangularTraceNorm_halfWeightedBlockCombination tau tau' O
     (fun b ω ↦ independentDensityCoefficient k lam mu b.1 b.2 ω)
     (integrable_source_coefficient_pair k lam mu) htau htau' htausum htau'sum
 
@@ -97,15 +97,15 @@ theorem integral_frobeniusNormSq_gaussianSourceQuarter_eq (k : ℕ) (hk : 0 < k)
     (tau : T → ℝ) (tau' : U → ℝ)
     (O : Matrix ((((s : S) → C s × C s) × U)) ((((s : S) → A s × A s) × T)) ℂ) :
     (∫ ω, Matrix.frobeniusNormSq
-      (ProbabilityTheory.weightedSourceQuarter tau tau' O
+      (Matrix.quarterWeightedBlockCombination tau tau' O
         (fun b ↦ independentDensityCoefficient k lam mu b.1 b.2 ω))
       ∂independentDensityLaw k A C) =
       (k : ℝ) ^ (-(Fintype.card S : ℝ)) *
         ∑ b : ((s : S) → A s × A s) × ((s : S) → C s × C s),
           Real.sqrt (pairedProductProbability lam b.1 * pairedProductProbability mu b.2) *
             Matrix.frobeniusNormSq (Matrix.quarterWeighted tau' tau
-              (ProbabilityTheory.sourceBlock O b.2 b.1)) := by
-  exact ProbabilityTheory.integral_frobeniusNormSq_weightedSourceQuarter_eq
+              ((Matrix.comp _ _ _ _ ℂ).symm O b.2 b.1)) := by
+  exact ProbabilityTheory.integral_frobeniusNormSq_quarterWeightedBlockCombination_eq
     (pairedProductProbability lam) (pairedProductProbability mu) tau tau' O
     (fun b ω ↦ independentDensityCoefficient k lam mu b.1 b.2 ω) _
     (integrable_source_coefficient_pair k lam mu)
@@ -126,10 +126,10 @@ theorem integral_rectangularTraceNorm_gaussianSourceError_le (k : ℕ) (hk : 0 <
     (htau : ∀ t, 0 ≤ tau t) (htau' : ∀ u, 0 ≤ tau' u)
     (htausum : ∑ t, tau t = 1) (htau'sum : ∑ u, tau' u = 1) (hO : ‖O‖ ≤ 1) :
     (∫ ω, Matrix.rectangularTraceNorm
-      (ProbabilityTheory.weightedSourceError tau tau' O
+      (Matrix.halfWeightedBlockCombination tau tau' O
         (fun b ↦ independentDensityCoefficient k lam mu b.1 b.2 ω))
       ∂independentDensityLaw k A C) ≤ (k : ℝ) ^ (-(Fintype.card S : ℝ) / 2) := by
-  have h := ProbabilityTheory.integral_rectangularTraceNorm_weightedSourceError_le
+  have h := ProbabilityTheory.integral_rectangularTraceNorm_halfWeightedBlockCombination_le
     (pairedProductProbability lam) (pairedProductProbability mu) tau tau' O
     (fun b ω ↦ independentDensityCoefficient k lam mu b.1 b.2 ω)
     ((k : ℝ) ^ (-(Fintype.card S : ℝ)))

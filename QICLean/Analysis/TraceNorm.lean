@@ -23,4 +23,5 @@ import QICLean.Analysis.TraceNorm.SubnormalizedPureStateError
 import QICLean.Analysis.TraceNorm.TraceDistance
 import QICLean.Analysis.TraceNorm.TraceNormAbs
 import QICLean.Analysis.TraceNorm.Variational
+import QICLean.Analysis.TraceNorm.WeightedBlockCombination
 import QICLean.Analysis.TraceNorm.WeightedPureStateTraceNorm

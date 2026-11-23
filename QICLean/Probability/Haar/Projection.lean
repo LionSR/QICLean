@@ -104,10 +104,10 @@ def sampleEquiv : ComplexGaussian.Sample ι ≃ₗᵢ[ℝ] EuclideanSpace ℂ ι
 
 /-- The circular complex coordinates are the complexified sample divided by `√2`. -/
 theorem coordinate_eq (g : ComplexGaussian.Sample ι) :
-    (fun i ↦ ComplexGaussian.coordinate i g) =
+    (fun i ↦ EuclideanSpace.complexCoordinate i g) =
       ((Real.sqrt 2 : ℂ)⁻¹) • (sampleEquiv g).ofLp := by
   ext i
-  simp [ComplexGaussian.coordinate_apply, sampleEquiv, div_eq_inv_mul, mul_comm Complex.I]
+  simp [EuclideanSpace.complexCoordinate_apply, sampleEquiv, div_eq_inv_mul, mul_comm Complex.I]
 
 /-- The law of the complexified Gaussian sample is the standard Gaussian on `ℂ^ι`. -/
 theorem law_map_sampleEquiv :
@@ -235,8 +235,8 @@ weight of `Uᴴ x` on a fixed set of coordinates `A`, with `U` Haar distributed,
 theorem unitaryHaar_sum_norm_sq_le (A : Finset ι) (c : ℝ) {x : EuclideanSpace ℂ ι}
     (hx : ‖x‖ = 1) :
     unitaryHaar ι {U | ∑ i ∈ A, ‖(star (U : Matrix ι ι ℂ) *ᵥ x.ofLp) i‖ ^ 2 ≤ c} =
-      ComplexGaussian.law ι {g | ∑ i ∈ A, ‖ComplexGaussian.coordinate i g‖ ^ 2 ≤
-        c * ∑ i, ‖ComplexGaussian.coordinate i g‖ ^ 2} := by
+      ComplexGaussian.law ι {g | ∑ i ∈ A, ‖EuclideanSpace.complexCoordinate i g‖ ^ 2 ≤
+        c * ∑ i, ‖EuclideanSpace.complexCoordinate i g‖ ^ 2} := by
   have hL : {U : unitaryGroup ι ℂ |
       ∑ i ∈ A, ‖(star (U : Matrix ι ι ℂ) *ᵥ x.ofLp) i‖ ^ 2 ≤ c} =
       {U : unitaryGroup ι ℂ | star (U : Matrix ι ι ℂ) *ᵥ x.ofLp ∈ weightCone A c} := by
@@ -246,11 +246,11 @@ theorem unitaryHaar_sum_norm_sq_le (A : Finset ι) (c : ℝ) {x : EuclideanSpace
       rw [(starAction U).norm_map, hx, one_pow] at h
       exact h.symm
     simp [weightCone, hn]
-  have hR : {g : ComplexGaussian.Sample ι | ∑ i ∈ A, ‖ComplexGaussian.coordinate i g‖ ^ 2 ≤
-      c * ∑ i, ‖ComplexGaussian.coordinate i g‖ ^ 2} =
+  have hR : {g : ComplexGaussian.Sample ι | ∑ i ∈ A, ‖EuclideanSpace.complexCoordinate i g‖ ^ 2 ≤
+      c * ∑ i, ‖EuclideanSpace.complexCoordinate i g‖ ^ 2} =
       sampleEquiv ⁻¹' {y | y.ofLp ∈ weightCone A c} := by
     ext g
-    change (fun i ↦ ComplexGaussian.coordinate i g) ∈ weightCone A c ↔ _
+    change (fun i ↦ EuclideanSpace.complexCoordinate i g) ∈ weightCone A c ↔ _
     rw [coordinate_eq, smul_mem_weightCone_iff _ _ (by simp)]
     rfl
   have hK : MeasurableSet {y : EuclideanSpace ℂ ι | y.ofLp ∈ weightCone A c} :=
@@ -310,8 +310,8 @@ theorem unitaryHaar_norm_sq_starProjection_le (A : Finset ι) (c : ℝ) {x : Euc
     (hx : ‖x‖ = 1) :
     unitaryHaar ι {U | ‖((coordinateSubspace A).map
         (unitaryAction U).toLinearEquiv.toLinearMap).starProjection x‖ ^ 2 ≤ c} =
-      ComplexGaussian.law ι {g | ∑ i ∈ A, ‖ComplexGaussian.coordinate i g‖ ^ 2 ≤
-        c * ∑ i, ‖ComplexGaussian.coordinate i g‖ ^ 2} := by
+      ComplexGaussian.law ι {g | ∑ i ∈ A, ‖EuclideanSpace.complexCoordinate i g‖ ^ 2 ≤
+        c * ∑ i, ‖EuclideanSpace.complexCoordinate i g‖ ^ 2} := by
   simp_rw [norm_sq_starProjection_map_coordinateSubspace]
   exact unitaryHaar_sum_norm_sq_le A c hx
 

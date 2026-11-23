@@ -8,6 +8,8 @@ import QICLean.Probability.Gaussian.ProductSource
 /-! Edge-case regressions for GaussianProductSource in the compression proof. -/
 
 open MeasureTheory QICLean.ComplexGaussian
+open ProductSource
+open EuclideanSpace (complexCoordinate complexCoordinate_apply)
 open scoped ComplexConjugate Matrix.Norms.Elementwise Kronecker
 
 -- The rectangular operators have different ket and bra dimensions and share coordinates.
@@ -17,16 +19,16 @@ example (x : Sample (Fin 2 × (Fin 2 × Fin 3))) (j : Fin 2) (a : Fin 2) (c : Fi
   simp [sourceU, sourceV, Matrix.of_apply]
 
 -- A diagonal coordinate of the exact ket/bra outer product is nonzero.
-example : schmidtSource (fun _ : Fin 2 ↦ (1 : ℝ)) (fun _ : Fin 3 ↦ (1 : ℝ))
+example : Matrix.schmidtOuterProduct (fun _ : Fin 2 ↦ (1 : ℝ)) (fun _ : Fin 3 ↦ (1 : ℝ))
     (0, 0) (2, 2) = 1 := by
-  simp [schmidtSource_apply]
+  simp [Matrix.schmidtOuterProduct_apply]
 
 -- An offdiagonal Schmidt row vanishes in the target and in expectation.
 example : (∫ x, sampledSource 2 (fun _ : Fin 2 ↦ (1 : ℝ))
     (fun _ : Fin 3 ↦ (1 : ℝ)) x (0, 1) (2, 2)
       ∂law (Fin 2 × (Fin 2 × Fin 3))) = 0 := by
   rw [integral_sampledSource_entry 2 (by decide) _ _ (by simp) (by simp)]
-  simp [schmidtSource_apply]
+  simp [Matrix.schmidtOuterProduct_apply]
 
 -- Coincident matrix entries have variance 1/k, with all Gaussian indices coincident.
 example : (∫ x, sourceCorrection 2 (fun _ : Fin 2 ↦ (1 : ℝ))
@@ -58,14 +60,14 @@ example (x : Sample (Fin 2 × (Fin 2 × Fin 3))) :
 -- The average is a matrix-valued Bochner integral, not merely entrywise notation.
 example : (∫ x, sampledSource 2 (fun _ : Fin 2 ↦ (1 : ℝ))
     (fun _ : Fin 3 ↦ (1 : ℝ)) x ∂law (Fin 2 × (Fin 2 × Fin 3))) =
-      schmidtSource (fun _ : Fin 2 ↦ (1 : ℝ)) (fun _ : Fin 3 ↦ (1 : ℝ)) :=
+      Matrix.schmidtOuterProduct (fun _ : Fin 2 ↦ (1 : ℝ)) (fun _ : Fin 3 ↦ (1 : ℝ)) :=
   integral_sampledSource 2 (by decide) _ _ (by simp) (by simp)
 
 -- Empty Schmidt supports require no nonempty hypothesis.
 example (mu : Fin 3 → ℝ) (hmu : ∀ c, 0 ≤ mu c) :
     (∫ x, sampledSource 1 (fun _ : Fin 0 ↦ (0 : ℝ)) mu x
       ∂law (Fin 1 × (Fin 0 × Fin 3))) =
-        schmidtSource (fun _ : Fin 0 ↦ (0 : ℝ)) mu :=
+        Matrix.schmidtOuterProduct (fun _ : Fin 0 ↦ (0 : ℝ)) mu :=
   integral_sampledSource 1 (by decide) _ _ (by simp) hmu
 
 -- Zero samples are defined, but unbiasedness correctly requires k > 0.

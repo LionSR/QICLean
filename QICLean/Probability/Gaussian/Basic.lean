@@ -19,6 +19,7 @@ import Mathlib.Probability.Distributions.Gaussian.Multivariate
 import Mathlib.Probability.Distributions.Gaussian.Fernique
 import Mathlib.Analysis.SpecialFunctions.Pow.Deriv
 import Mathlib.Tactic
+import QICLean.Analysis.TensorProduct.ProductSource
 
 /-!
 # Circular complex Gaussian coordinates
@@ -35,6 +36,7 @@ complex-coordinate construction are new.
 -/
 
 open MeasureTheory ProbabilityTheory
+open EuclideanSpace (complexCoordinate complexCoordinate_apply)
 open scoped RealInnerProductSpace ENNReal ComplexConjugate BigOperators
 
 namespace QICLean.ComplexGaussian
@@ -309,29 +311,29 @@ def coordinateVectors (i : ι) (j : Fin 2) : Sample ι :=
 def coordinateCoefficients (j : Fin 2) : ℂ :=
   if j = 0 then (Real.sqrt 2 : ℂ)⁻¹ else Complex.I * (Real.sqrt 2 : ℂ)⁻¹
 
-/-- A standard circular complex Gaussian coordinate, normalized by `E |g|² = 1`.
-Source: `04-compression.tex:291–297`. -/
-def coordinate (i : ι) : Sample ι → ℂ :=
-  linearField (coordinateVectors i) coordinateCoefficients
-
-theorem coordinate_apply (i : ι) (x : Sample ι) :
-    coordinate i x = ((x (i, 0) : ℂ) + Complex.I * (x (i, 1) : ℂ)) /
-      (Real.sqrt 2 : ℂ) := by
-  simp [coordinate, linearField, Fin.sum_univ_two, coordinateVectors,
+/-- The circular complex Gaussian coordinate `EuclideanSpace.complexCoordinate i` is the
+linear field of the two real coordinate vectors of `i`. -/
+theorem complexCoordinate_eq_linearField (i : ι) (x : Sample ι) :
+    complexCoordinate i x = linearField (coordinateVectors i) coordinateCoefficients x := by
+  simp [complexCoordinate, linearField, Fin.sum_univ_two, coordinateVectors,
     realField, coordinateCoefficients, div_eq_mul_inv]
   ring
 
 /-- All finite moments of the canonical circular complex coordinates exist. -/
 theorem memLp_coordinate (i : ι) (p : ℝ≥0∞) (hp : p ≠ ∞) :
-    MemLp (coordinate i) p (law ι) := memLp_linearField _ _ p hp
+    MemLp (complexCoordinate i) p (law ι) := by
+  rw [show (complexCoordinate i : Sample ι → ℂ) =
+    linearField (coordinateVectors i) coordinateCoefficients from
+      funext (complexCoordinate_eq_linearField i)]
+  exact memLp_linearField _ _ p hp
 
 theorem conj_coordinate (i : ι) (x : Sample ι) :
-    conj (coordinate i x) =
+    conj (complexCoordinate i x) =
       linearField (coordinateVectors i) (fun j ↦ conj (coordinateCoefficients j)) x := by
-  simp [coordinate, linearField, map_mul]
+  simp [complexCoordinate_eq_linearField, linearField, map_mul]
 
 theorem memLp_conj_coordinate (i : ι) (p : ℝ≥0∞) (hp : p ≠ ∞) :
-    MemLp (fun x ↦ conj (coordinate i x)) p (law ι) := by
+    MemLp (fun x ↦ conj (complexCoordinate i x)) p (law ι) := by
   simp_rw [conj_coordinate]
   exact memLp_linearField _ _ p hp
 

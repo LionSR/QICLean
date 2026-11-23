@@ -18,19 +18,19 @@ These calculations give the source and error estimates used in
 
 \begin{definition}[Transport through four endpoint maps]
     \label{def:reduction_ambient_transport}
-    \lean{QICLean.ComplexGaussian.ambientSchmidtVector}
-    \lean{QICLean.ComplexGaussian.ambientSchmidtSource}
-    \lean{QICLean.ComplexGaussian.sourceTransport}
-    \lean{QICLean.ComplexGaussian.ambientSourceU}
-    \lean{QICLean.ComplexGaussian.ambientSourceV}
-    \lean{QICLean.ComplexGaussian.ambientSampledSource}
-    \lean{QICLean.ComplexGaussian.ambientSourceCorrection}
-    \lean{QICLean.ComplexGaussian.ambientSchmidtVector_eq_mulVec}
-    \lean{QICLean.ComplexGaussian.sourceTransport_kronecker}
-    \lean{QICLean.ComplexGaussian.ambientSourceU_kronecker_ambientSourceV}
-    \lean{QICLean.ComplexGaussian.ambientSampledSource_eq_transport}
-    \lean{QICLean.ComplexGaussian.sourceTransport_schmidtSource}
-    \lean{QICLean.ComplexGaussian.ambientSourceCorrection_eq_transport}
+    \lean{Matrix.schmidtFrameVector}
+    \lean{Matrix.schmidtFrameOuterProduct}
+    \lean{Matrix.kroneckerSandwich}
+    \lean{ProductSource.ambientSourceU}
+    \lean{ProductSource.ambientSourceV}
+    \lean{ProductSource.ambientSampledSource}
+    \lean{ProductSource.ambientSourceCorrection}
+    \lean{Matrix.schmidtFrameVector_eq_mulVec}
+    \lean{Matrix.kroneckerSandwich_kronecker}
+    \lean{ProductSource.ambientSourceU_kronecker_ambientSourceV}
+    \lean{ProductSource.ambientSampledSource_eq_kroneckerSandwich}
+    \lean{Matrix.kroneckerSandwich_schmidtOuterProduct}
+    \lean{ProductSource.ambientSourceCorrection_eq_kroneckerSandwich}
     \leanok
     \uses{def:source_product}
     Let $A,C,W,X,Y,Z$ be finite index sets. Choose arbitrary fixed endpoint
@@ -76,7 +76,7 @@ These calculations give the source and error estimates used in
 
 \begin{theorem}[Rank-one expansion of transported sources]
     \label{thm:reduction_transport_rank_one}
-    \lean{QICLean.ComplexGaussian.sourceTransport_eq_sum_rankOne}
+    \lean{Matrix.kroneckerSandwich_eq_sum_vecMulVec}
     \leanok
     \uses{def:reduction_ambient_transport}
     Let $A,C$ be finite index sets and let $W,X,Y,Z$ be arbitrary index sets.

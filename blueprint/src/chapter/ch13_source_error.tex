@@ -19,13 +19,13 @@ These are the source calculations in
 \subsection{An unbiased product-operator source}
 
 \begin{definition}[Sampled Schmidt-source operators]\label{def:source_product}
-    \lean{QICLean.ComplexGaussian.schmidtVector}
-    \lean{QICLean.ComplexGaussian.schmidtSource}
-    \lean{QICLean.ComplexGaussian.sourceU}
-    \lean{QICLean.ComplexGaussian.sourceV}
-    \lean{QICLean.ComplexGaussian.sampledSource}
-    \lean{QICLean.ComplexGaussian.sourceCorrection}
-    \lean{QICLean.ComplexGaussian.schmidtSource_apply}
+    \lean{Matrix.schmidtVector}
+    \lean{Matrix.schmidtOuterProduct}
+    \lean{ProductSource.sourceU}
+    \lean{ProductSource.sourceV}
+    \lean{ProductSource.sampledSource}
+    \lean{ProductSource.sourceCorrection}
+    \lean{Matrix.schmidtOuterProduct_apply}
     \lean{QICLean.ComplexGaussian.sampledSource_apply}
     \leanok
     Let $A,C$ be finite sets with nonnegative weights $\lambda_a,\mu_c$,
@@ -61,7 +61,7 @@ These are the source calculations in
 
 \begin{theorem}[Unbiasedness and actual correction-entry covariance]
     \label{thm:source_unbiased}
-    \lean{QICLean.ComplexGaussian.weighted_delta_eq_schmidtSource}
+    \lean{QICLean.ComplexGaussian.weighted_delta_eq_schmidtOuterProduct}
     \lean{QICLean.ComplexGaussian.sampleAverage_eq_average_sub_delta}
     \lean{QICLean.ComplexGaussian.sourceCorrection_apply}
     \lean{QICLean.ComplexGaussian.integrable_sourceCorrection_entry}
@@ -207,21 +207,20 @@ These are the source calculations in
 
 \begin{theorem}[Expected trace error from diagonal covariance]
     \label{thm:source_covariance_error}
-    \lean{ProbabilityTheory.sourceBlock}
-    \lean{ProbabilityTheory.weightedSourceError}
-    \lean{ProbabilityTheory.weightedSourceQuarter}
-    \lean{ProbabilityTheory.weightedSourceError_eq_halfWeighted}
-    \lean{ProbabilityTheory.quarterWeighted_source_sum_eq_transpose}
-    \lean{ProbabilityTheory.rectangularTraceNorm_weightedSourceError_le}
-    \lean{ProbabilityTheory.sourceProductProbability}
-    \lean{ProbabilityTheory.sum_sourceProductProbability}
-    \lean{ProbabilityTheory.weighted_source_block_aggregation}
-    \lean{ProbabilityTheory.weighted_source_block_sum_le_one}
+    \lean{Matrix.halfWeightedBlockCombination}
+    \lean{Matrix.quarterWeightedBlockCombination}
+    \lean{Matrix.halfWeightedBlockCombination_eq_halfWeighted}
+    \lean{Matrix.quarterWeighted_sum_eq_transpose_quarterWeightedBlockCombination}
+    \lean{Matrix.rectangularTraceNorm_halfWeightedBlockCombination_le}
+    \lean{Matrix.productWeight}
+    \lean{Matrix.sum_productWeight}
+    \lean{Matrix.sum_sqrt_mul_frobeniusNormSq_quarterWeighted_block}
+    \lean{Matrix.sum_sqrt_mul_frobeniusNormSq_quarterWeighted_block_le_one}
     \lean{ProbabilityTheory.aestronglyMeasurable_rectangularTraceNorm_sum}
-    \lean{ProbabilityTheory.integrable_weightedSourceQuarter_norm}
-    \lean{ProbabilityTheory.integrable_rectangularTraceNorm_weightedSourceError}
-    \lean{ProbabilityTheory.integral_frobeniusNormSq_weightedSourceQuarter_eq}
-    \lean{ProbabilityTheory.integral_rectangularTraceNorm_weightedSourceError_le}
+    \lean{ProbabilityTheory.integrable_norm_quarterWeightedBlockCombination}
+    \lean{ProbabilityTheory.integrable_rectangularTraceNorm_halfWeightedBlockCombination}
+    \lean{ProbabilityTheory.integral_frobeniusNormSq_quarterWeightedBlockCombination_eq}
+    \lean{ProbabilityTheory.integral_rectangularTraceNorm_halfWeightedBlockCombination_le}
     \leanok
     Let $I,L,T,U$ be finite index sets, let $p_i,\widetilde p_l$ be
     nonnegative probability lists, and let $\tau,\widetilde\tau$ be
