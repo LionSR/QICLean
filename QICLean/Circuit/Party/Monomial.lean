@@ -14,3 +14,4 @@ import QICLean.Circuit.Party.Monomial.EffectChain
 import QICLean.Circuit.Party.Monomial.EffectStacks
 import QICLean.Circuit.Party.Monomial.Elimination
 import QICLean.Circuit.Party.Monomial.Stack
+import QICLean.Circuit.Party.Monomial.WeightedGate
