@@ -380,6 +380,21 @@
       "Weighted": [
         "DirectSum"
       ]
+    },
+    "QICLean.Channel.Peripheral": {
+      "Spectrum": [],
+      "Projection": [
+        "Spectrum"
+      ],
+      "Asymptotic": [
+        "Projection"
+      ],
+      "Irreducible": [
+        "Asymptotic"
+      ],
+      "Cycles": [
+        "Irreducible"
+      ]
     }
   }
 }

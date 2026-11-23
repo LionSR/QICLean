@@ -5,7 +5,7 @@ Authors: TNLean contributors
 -/
 import QICLean.Analysis.Norm.FrobeniusHilbert
 import QICLean.Channel.Choi.RectangularChoi
-import QICLean.Channel.Peripheral.Primitive
+import QICLean.Channel.Peripheral.Spectrum.Primitive
 
 /-!
 # The limiting Gram metric

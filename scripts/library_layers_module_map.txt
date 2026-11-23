@@ -1987,3 +1987,56 @@ QICLean.Channel.FixedPoint.AbstractCornerFixedPoints QICLean.Channel.FixedPoint.
 QICLean.Channel.FixedPoint.AbstractWeightedFixedPoints QICLean.Channel.FixedPoint.Weighted.AbstractWeightedFixedPoints
 QICLean.Channel.FixedPoint.MaximalSupport QICLean.Channel.FixedPoint.Weighted.MaximalSupport
 QICLean.Channel.FixedPoint.MaximalRank QICLean.Channel.FixedPoint.Weighted.MaximalRank
+
+# Channel/Peripheral into subdirectories, in the order Spectrum < Projection < Asymptotic
+# < Irreducible < Cycles: 45 moves and 2 moves of tests. The import-only module
+# Channel.Peripheral.CyclicDecomposition is deleted; its modules are those of the
+# aggregator Channel.Peripheral.Irreducible.
+QICLean.Channel.Peripheral.Primitive QICLean.Channel.Peripheral.Spectrum.Primitive
+QICLean.Channel.Peripheral.Spectrum QICLean.Channel.Peripheral.Spectrum.Spectrum
+QICLean.Channel.Peripheral.Conjugation QICLean.Channel.Peripheral.Spectrum.Conjugation
+QICLean.Channel.Peripheral.AntilinearConjugation QICLean.Channel.Peripheral.Spectrum.AntilinearConjugation
+QICLean.Channel.Peripheral.AdjointSpectrum QICLean.Channel.Peripheral.Spectrum.AdjointSpectrum
+QICLean.Channel.Peripheral.CyclicGroup QICLean.Channel.Peripheral.Spectrum.CyclicGroup
+QICLean.Channel.Peripheral.PeriodicityRemoval QICLean.Channel.Peripheral.Spectrum.PeriodicityRemoval
+QICLean.Channel.Peripheral.Powers QICLean.Channel.Peripheral.Spectrum.Powers
+QICLean.Channel.Peripheral.TransferMatrix QICLean.Channel.Peripheral.Spectrum.TransferMatrix
+QICLean.Channel.Peripheral.SpectralRadius QICLean.Channel.Peripheral.Spectrum.SpectralRadius
+QICLean.Channel.Peripheral.UnitalKraus QICLean.Channel.Peripheral.Spectrum.UnitalKraus
+QICLean.Channel.Peripheral.RankOnePositiveProjection QICLean.Channel.Peripheral.Spectrum.RankOnePositiveProjection
+QICLean.Channel.Peripheral.JordanBlocks QICLean.Channel.Peripheral.Projection.JordanBlocks
+QICLean.Channel.Peripheral.SpectralProjection QICLean.Channel.Peripheral.Projection.SpectralProjection
+QICLean.Channel.Peripheral.CesaroRecurrence QICLean.Channel.Peripheral.Projection.CesaroRecurrence
+QICLean.Channel.Peripheral.WeightedCesaro QICLean.Channel.Peripheral.Projection.WeightedCesaro
+QICLean.Channel.Peripheral.AsymptoticImage QICLean.Channel.Peripheral.Asymptotic.AsymptoticImage
+QICLean.Channel.Peripheral.AsymptoticStateConvergence QICLean.Channel.Peripheral.Asymptotic.AsymptoticStateConvergence
+QICLean.Channel.Peripheral.AsymptoticStateConverse QICLean.Channel.Peripheral.Asymptotic.AsymptoticStateConverse
+QICLean.Channel.Peripheral.SchurAsymptoticConvergence QICLean.Channel.Peripheral.Asymptotic.SchurAsymptoticConvergence
+QICLean.Channel.Peripheral.RecurrentInverse QICLean.Channel.Peripheral.Asymptotic.RecurrentInverse
+QICLean.Channel.Peripheral.PrimitivePositiveMap QICLean.Channel.Peripheral.Asymptotic.PrimitivePositiveMap
+QICLean.Channel.Peripheral.AbstractEigenvectors QICLean.Channel.Peripheral.Irreducible.AbstractEigenvectors
+QICLean.Channel.Peripheral.IrreducibleSchwarz QICLean.Channel.Peripheral.Irreducible.IrreducibleSchwarz
+QICLean.Channel.Peripheral.SchwarzCovariance QICLean.Channel.Peripheral.Irreducible.SchwarzCovariance
+QICLean.Channel.Peripheral.ClosureFixedPointKraus QICLean.Channel.Peripheral.Irreducible.ClosureFixedPointKraus
+QICLean.Channel.Peripheral.CyclicGroupKraus QICLean.Channel.Peripheral.Irreducible.CyclicGroupKraus
+QICLean.Channel.Peripheral.IrreducibleChannel QICLean.Channel.Peripheral.Irreducible.IrreducibleChannel
+QICLean.Channel.Peripheral.GroupStructure QICLean.Channel.Peripheral.Irreducible.GroupStructure
+QICLean.Channel.Peripheral.CyclicDecomposition.Basic QICLean.Channel.Peripheral.Irreducible.CornerRestriction
+QICLean.Channel.Peripheral.CyclicDecomposition.CyclicProjections QICLean.Channel.Peripheral.Irreducible.CyclicProjections
+QICLean.Channel.Peripheral.CyclicDecomposition.Decomposition QICLean.Channel.Peripheral.Irreducible.CyclicDecomposition
+QICLean.Channel.Peripheral.CyclicDecomposition.LetterShift QICLean.Channel.Peripheral.Irreducible.LetterShift
+QICLean.Channel.Peripheral.CyclicDecomposition.PeripheralUnitary QICLean.Channel.Peripheral.Irreducible.PeripheralUnitary
+QICLean.Channel.Peripheral.CyclicDecomposition.Primitivity QICLean.Channel.Peripheral.Irreducible.SectorPrimitivity
+QICLean.Channel.Peripheral.PureStateFace QICLean.Channel.Peripheral.Cycles.PureStateFace
+QICLean.Channel.Peripheral.DirectSumFacePermutation QICLean.Channel.Peripheral.Cycles.DirectSumFacePermutation
+QICLean.Channel.Peripheral.MatchedBlockEndomorphism QICLean.Channel.Peripheral.Cycles.MatchedBlockEndomorphism
+QICLean.Channel.Peripheral.DensityBlockCoordinates QICLean.Channel.Peripheral.Cycles.DensityBlockCoordinates
+QICLean.Channel.Peripheral.DensityBlockDynamics QICLean.Channel.Peripheral.Cycles.DensityBlockDynamics
+QICLean.Channel.Peripheral.DensityBlockFacePermutation QICLean.Channel.Peripheral.Cycles.DensityBlockFacePermutation
+QICLean.Channel.Peripheral.DensityBlockSchwarz QICLean.Channel.Peripheral.Cycles.DensityBlockSchwarz
+QICLean.Channel.Peripheral.StructureOfCycles QICLean.Channel.Peripheral.Cycles.StructureOfCycles
+QICLean.Channel.Peripheral.Cycles QICLean.Channel.Peripheral.Cycles.Cycles
+QICLean.Channel.Peripheral.MultiCycleDecomposition QICLean.Channel.Peripheral.Cycles.MultiCycleDecomposition
+QICLeanTest.Channel.Peripheral.PrimitivePositiveMap QICLeanTest.Channel.Peripheral.Asymptotic.PrimitivePositiveMap
+QICLeanTest.Channel.Peripheral.PrimitivePositiveMapAxioms QICLeanTest.Channel.Peripheral.Asymptotic.PrimitivePositiveMapAxioms
+QICLean.Channel.Peripheral.CyclicDecomposition QICLean.Channel.Peripheral.Irreducible

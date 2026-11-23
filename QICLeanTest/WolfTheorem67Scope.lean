@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Channel.Choi.Jamiolkowski
-import QICLean.Channel.Peripheral.PrimitivePositiveMap
+import QICLean.Channel.Peripheral.Asymptotic.PrimitivePositiveMap
 import QICLean.Kraus.Wielandt.PrimitiveCriterion
 
 /-! Independent scope and boundary regressions for primitive positive maps. -/

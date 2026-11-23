@@ -189,11 +189,16 @@ Counts are modules with declarations; aggregators are generated.
 | `Channel/OperatorMean` | 20 | derivatives of operator means, which are n-positive maps, and transport along mean trees |
 | `Channel/OperatorSystem` | 4 | operator systems and their extensions |
 | `Channel/PartialTrace` | 13 | marginals: supports, ranks and contractions under the partial trace |
+| `Channel/Peripheral/Spectrum` | 12 | the peripheral spectrum: eigenvalues of modulus one, spectral radius, powers, conjugations, primitivity |
+| `Channel/Peripheral/Projection` | 4 | Jordan blocks, the peripheral spectral projection, Cesàro recurrence |
+| `Channel/Peripheral/Asymptotic` | 6 | the asymptotic image and the convergence of states |
+| `Channel/Peripheral/Irreducible` | 13 | irreducible Schwarz maps: their peripheral group, cyclic projections and cyclic decomposition |
+| `Channel/Peripheral/Cycles` | 10 | permutations of density blocks and the structure of cycles (Wolf Theorem 6.16) |
 | `Channel/Positive` | 13 | positive and k-positive maps, decomposability, examples |
 | `Channel/Recovery` | 2 | Petz recovery maps |
 | `Channel/Schmidt` | 21 | Schmidt decomposition, rank and number of bipartite vectors |
 | `Channel/Twirl` | 2 | Weyl twirls |
-| `Channel/…` | | `ChoiTypeMap`, `Determinant`, `Irreducible`, `KoashiImoto`, `LorentzNormalForm`, `Peripheral`, `PerronFrobenius`, `POVM`, `PSDConeAutomorphism`, `Schwarz`, `Semigroup`, `Wigner` as before |
+| `Channel/…` | | `ChoiTypeMap`, `Determinant`, `Irreducible`, `KoashiImoto`, `LorentzNormalForm`, `PerronFrobenius`, `POVM`, `PSDConeAutomorphism`, `Schwarz`, `Semigroup`, `Wigner` as before |
 | `Kraus` | 63 | 14 top-level modules: words, word spans, transfer maps, blocking, injectivity |
 | `Kraus/MixedMap` | 7 | mixed transfer maps of two families and their gaps |
 | `Kraus/PrimitiveFixedPoint` | 7 | fixed points of primitive families |
@@ -260,8 +265,10 @@ The downstream mode rewrites every reference in the tracked text files of the
 dependent repository and then lists each `import QICLean.…` that names no module
 of this checkout.
 
-Later sections of the map divide `Channel/FixedPoint` into subdirectories by object (43
-moves). The import ratchet reads the recorded entries of its base revision under the moves of
+Later sections of the map divide `Channel/FixedPoint` (43 moves) and `Channel/Peripheral` (45
+moves and two test files) into subdirectories by object. The import-only module
+`Channel.Peripheral.CyclicDecomposition` was deleted; its six modules are now in
+`Channel/Peripheral/Irreducible`, whose aggregator replaces it. The import ratchet reads the recorded entries of its base revision under the moves of
 the map, so that moving a module renames its entries instead of adding new ones.
 
 ## How the modules were placed
@@ -364,6 +371,7 @@ and an import against them would be an entry of `SUBLAYER_DEBT`.
 | Subdirectory | Order | Imports against the order |
 |---|---|---|
 | `Channel/FixedPoint` | MeanErgodic < Stationary < Algebra < DensityBlock < DirectSum < Weighted | 0 |
+| `Channel/Peripheral` | Spectrum < Projection < Asymptotic < Irreducible < Cycles | 0 |
 
 In `Channel/FixedPoint` one import went against the order when it was divided:
 `Stationary/TraceNonincreasingProductSpan` imported `DirectSum/DirectSumBlockRetraction` for the

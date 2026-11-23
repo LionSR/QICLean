@@ -1129,7 +1129,7 @@ Perron–Frobenius theorem, are indexed separately in
   positive trace-preserving map lies in the closed unit disk, in
   `QICLean.Channel.Determinant.Bound`.
 * `IsPositiveMap.eigenvalue_one_exists_of_tracePreserving` — eigenvalue $1$ exists
-  (nonzero PSD fixed point), in `QICLean.Channel.Peripheral.SpectralRadius`.
+  (nonzero PSD fixed point), in `QICLean.Channel.Peripheral.Spectrum.SpectralRadius`.
 * `IsPositiveMap.spectralRadius_eq_one_of_tracePreserving` — a positive
   trace-preserving map has spectral radius exactly $1$, by combining the two
   preceding results.
@@ -1241,17 +1241,17 @@ relation to Wolf's printed `A ⊗ conj(A)` ordering explicitly.
 * `IsPositiveMap.no_rank_two_genEigenvector_of_tracePreserving` and
   `IsPositiveMap.no_rank_two_genEigenvector_of_unital` — rank-2
   generalized eigenvectors do not exist at peripheral eigenvalues, in
-  `QICLean.Channel.Peripheral.JordanBlocks`.
+  `QICLean.Channel.Peripheral.Projection.JordanBlocks`.
 * `IsPositiveMap.peripheral_Jordan_trivial_of_tracePreserving` and
   `IsPositiveMap.peripheral_Jordan_trivial_of_unital` —
   $\ker(T-\lambda)^k = \ker(T-\lambda)$ for all $k$ when $|\lambda| = 1$, in
-  `QICLean.Channel.Peripheral.JordanBlocks`.
+  `QICLean.Channel.Peripheral.Projection.JordanBlocks`.
 * `IsPositiveMap.pow_apply_rank_two_genEig` — binomial expansion:
   $T^n X = \lambda^n X + n \lambda^{n-1} (T-\lambda)X$ when $(T-\lambda)^2 X = 0$.
 * `IsPositiveMap.hasBoundedOrbits_of_unital` — a positive unital map has
   bounded forward orbits, the unital counterpart of
   `IsPositiveMap.hasBoundedOrbits_of_tracePreserving`, in
-  `QICLean.Channel.Peripheral.JordanBlocks`.
+  `QICLean.Channel.Peripheral.Projection.JordanBlocks`.
 
 Both cases follow Wolf's proof directly (not by duality): the uniform bound
 $\operatorname{tr}[A\,T(B)] \le \|A\|_\infty \|B\|_\infty \operatorname{tr}[1\,T(1)]
@@ -1301,7 +1301,7 @@ the peripheral projection $T_\phi$ and the phase-weighted map $T_\varphi$:
   `IsChannel.peripheralWeightedProjection` — both maps are channels in the
   completely positive case.
 
-These results are in `QICLean.Channel.Peripheral.CesaroRecurrence`.  Thus the
+These results are in `QICLean.Channel.Peripheral.Projection.CesaroRecurrence`.  Thus the
 basic hypothesis is positivity together with trace preservation, exactly as in
 Wolf's statement; complete positivity gives the corresponding stronger
 conclusions.  The boundedness needed to form $T_\infty$ follows from
@@ -1531,7 +1531,7 @@ Uses Brouwer's fixed-point theorem on density matrices (proved in
 #### Wolf Theorem 6.6 (Peripheral spectrum of irreducible Schwarz maps) — FORMALIZED
 
 * `SchwarzMap.wolf_theorem_6_6` —
-  `QICLean.Channel.Peripheral.IrreducibleSchwarz`: all four source clauses for
+  `QICLean.Channel.Peripheral.Irreducible.IrreducibleSchwarz`: all four source clauses for
   a positive unital irreducible Schwarz map, including `1 ≤ m ≤ D²`, the
   canonical phase `exp (2πi/m)`, one-dimensional peripheral eigenspaces,
   all unitary power identities, and mutually orthogonal cyclic spectral
@@ -1552,7 +1552,7 @@ nondegeneracy, without an unsupported inference about algebraic multiplicity.
 #### Wolf Proposition 6.7 (Covariance and eigensystem) — FORMALIZED
 
 * `SchwarzMap.wolf_proposition_6_7` —
-  `QICLean/Channel/Peripheral/SchwarzCovariance.lean`.
+  `QICLean/Channel/Peripheral/Irreducible/SchwarzCovariance.lean`.
 
 The source-shaped statement derives the canonical phase `γ = exp(2πi/m)`,
 `1 ≤ m ≤ D²`, and a normalized peripheral unitary from Theorem 6.6. It proves
@@ -1570,7 +1570,7 @@ Source: `Notes/WolfNoteTexSource/ch06_spectral_properties.tex`, lines 803–817.
 #### Wolf Theorem 6.7 (Primitive maps, 4 equivalent conditions) — FORMALIZED
 
 `WolfTheorem67.wolf_theorem_6_7_tfae` in
-`QICLean.Channel.Peripheral.PrimitivePositiveMap` proves all four source conditions for an
+`QICLean.Channel.Peripheral.Asymptotic.PrimitivePositiveMap` proves all four source conditions for an
 arbitrary positive trace-preserving map on `M_D(ℂ)`, `D ≥ 1`:
 
 * one power is strictly positive on every density matrix;
@@ -2065,7 +2065,7 @@ Formalized in the tensor-network layer; indexed in
 
 For a positive trace-preserving `T` on `M_D(ℂ)`, write `X_T` for the span of
 the peripheral eigenvectors and `T_φ` for the peripheral spectral projection.
-All three clauses live in `QICLean.Channel.Peripheral.AsymptoticImage`:
+All three clauses live in `QICLean.Channel.Peripheral.Asymptotic.AsymptoticImage`:
 
 * `IsPositiveMap.range_peripheralProjection_eq_iSup_eigenspace` —
   clause 1, `T_φ (M_D(ℂ)) = X_T`.
@@ -2166,8 +2166,8 @@ is false under the single printed hypothesis.
     assuming complete positivity.
 
 * Reusable formalization for the permutation-of-blocks direction lives in
-  `QICLean.Channel.Peripheral.CyclicDecomposition` and
-  `QICLean.Channel.Peripheral.Cycles`:
+  `QICLean.Channel.Peripheral.Irreducible.SectorPrimitivity` and
+  `QICLean.Channel.Peripheral.Cycles.Cycles`:
   - `preserves_corner_pow_orderOf_of_perm_decomp` — permutation-of-blocks
     iterate preserves each corner after `orderOf σ` steps.
   - `CycleStructure T` — bundled block-permutation data: a finite family of
@@ -2182,7 +2182,7 @@ is false under the single printed hypothesis.
   - `CycleStructure.ofPermDecomp` — constructor from explicit permutation data.
 
 * Multi-cycle block-permutation data (disjoint union of cycles with possibly
-  distinct periods) is formulated in `QICLean.Channel.Peripheral.MultiCycleDecomposition`:
+  distinct periods) is formulated in `QICLean.Channel.Peripheral.Cycles.MultiCycleDecomposition`:
   - `MultiCycleDecomposition T` — bundled data: a finite cycle index `ι`, a
     per-cycle period `period : ι → ℕ` (each nonzero), a projection family
     `P : (c : ι) → Fin (period c) → M_D(ℂ)`, the per-cycle cyclic action
@@ -2212,8 +2212,8 @@ is false under the single printed hypothesis.
 * The density-block coordinate transport assembled from the recurrent-inverse
   setup at source lines 1637--1640, and used by the subsequent
   1641--1659 argument, is formalized in
-  `QICLean.Channel.Peripheral.DensityBlockCoordinates` and
-  `QICLean.Channel.Peripheral.DensityBlockDynamics`:
+  `QICLean.Channel.Peripheral.Cycles.DensityBlockCoordinates` and
+  `QICLean.Channel.Peripheral.Cycles.DensityBlockDynamics`:
   - `Matrix.densityBlockWithZeroEmbedding` and
     `Matrix.densityBlockWithZeroCompression` are the maps `E` and `R` for the
     exact zero-extended witnesses of
@@ -2253,8 +2253,8 @@ is false under the single printed hypothesis.
 
 * The scalar/multiplicity comparison and ordinary block-Schwarz transport at
   source lines 1660--1663 are formalized in
-  `QICLean.Channel.Peripheral.DensityBlockSchwarz` and
-  `QICLean.Channel.Peripheral.MatchedBlockEndomorphism`:
+  `QICLean.Channel.Peripheral.Cycles.DensityBlockSchwarz` and
+  `QICLean.Channel.Peripheral.Cycles.MatchedBlockEndomorphism`:
   - `IsPositiveMap.map_one_and_peripheralProjection_one_of_tracePreserving_of_isSchwarzMap`
     proves that both `T` and its recurrent projection fix the identity;
   - `Matrix.exists_densityBlockIdentityCoordinates` eliminates the zero
@@ -2295,7 +2295,7 @@ is false under the single printed hypothesis.
   calculation supplies the missing equality of `m_k`.
 
 * The final source-facing assembly lives in
-  `QICLean.Channel.Peripheral.StructureOfCycles`:
+  `QICLean.Channel.Peripheral.Cycles.StructureOfCycles`:
   - `Matrix.DirectSumFacePermutation.exists_reindexedUnitaryBlockAction`
     applies the positive-invertible Schwarz classification to each matched
     endomorphism, sets Wolf's output-to-input permutation to
@@ -2773,7 +2773,7 @@ mathematical obligations of #298 without closing or changing the GitHub issue.
 
 ### Theorem 8.24, “Asymptotic convergence II” (Equation 8.111) — CORRECTED FORM FORMALIZED
 
-In `QICLean.Channel.Peripheral.SchurAsymptoticConvergence`:
+In `QICLean.Channel.Peripheral.Asymptotic.SchurAsymptoticConvergence`:
 
 * `Module.End.pow_sub_peripheralWeightedProjection_pow` and
   `transferMatrix_pow_sub_peripheralWeightedProjection_pow` prove, for
@@ -2813,7 +2813,7 @@ qualification, the containing Theorem 8.24 has a corrected-source disposition.
 `Matrix.traceNormAsymptoticDistance_pow_le_hilbertSchmidtOperatorNorm`, and
 `Matrix.traceNormAsymptoticDistance_pow_le_transferMatrix_l2_opNorm` prove the
 upper bound in Equation (8.112) and its transfer-matrix estimates for positive
-powers. In `QICLean.Channel.Peripheral.AsymptoticStateConverse`,
+powers. In `QICLean.Channel.Peripheral.Asymptotic.AsymptoticStateConverse`,
 `Matrix.exists_four_posSemidef_frobenius_norm_le` and
 `Matrix.hilbertSchmidtOperatorNorm_le_four_mul_of_posSemidef` prove the
 four-positive-parts estimate of Equation (8.117), and

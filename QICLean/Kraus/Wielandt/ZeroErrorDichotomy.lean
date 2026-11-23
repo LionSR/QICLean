@@ -7,7 +7,7 @@ import QICLean.Kraus.Wielandt.QuantumWielandt
 import QICLean.Channel.FixedPoint.MeanErgodic.Cesaro
 import QICLean.Channel.FixedPoint.Algebra.FullRankFixedPointAlgebra
 import QICLean.Channel.Irreducible.FromSpectral
-import QICLean.Channel.Peripheral.IrreducibleChannel
+import QICLean.Channel.Peripheral.Irreducible.IrreducibleChannel
 import QICLean.Kraus.Wielandt.Primitivity.VectorSpreadPositivity
 
 /-!

@@ -7,7 +7,7 @@ import QICLean.Algebra.Matrix.MatrixCongruence
 import QICLean.Channel.Irreducible.CollatzWielandt
 import QICLean.Channel.Irreducible.Similarity
 import QICLean.Algebra.Hermitian.MaximallyMixed
-import QICLean.Channel.Peripheral.SpectralRadius
+import QICLean.Channel.Peripheral.Spectrum.SpectralRadius
 import QICLean.Channel.PerronFrobenius.Existence
 import QICLean.Channel.SupportCompletion
 
