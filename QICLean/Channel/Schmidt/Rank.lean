@@ -40,6 +40,9 @@ bounded Schmidt rank.
   Schmidt rank is equivalent to vanishing of the corresponding singular value.
 * `Matrix.exists_mul_eq_of_rank_le`: a matrix of rank at most `k` factors
   through a `k`-dimensional coordinate space.
+* `Matrix.schmidtCoeffMatrix_kronecker_one_mulVec`,
+  `Matrix.schmidtCoeffMatrix_one_kronecker_mulVec`: operators on one factor act on the
+  coefficient matrix by left multiplication and by right multiplication with the transpose.
 
 ## References
 
@@ -229,5 +232,17 @@ theorem schmidtCoeffMatrix_kronecker_one_mulVec {A B C : Type*} [Fintype A] [Fin
   ext c b
   simp [schmidtCoeffMatrix_apply, mulVec, dotProduct, Fintype.sum_prod_type, one_apply,
     Matrix.mul_apply]
+
+open scoped Kronecker in
+/-- An operator `V` on the right factor acts on the coefficient matrix of a
+bipartite vector by right multiplication with its transpose:
+the coefficient matrix of $(\mathbf 1\otimes V)\psi$ is $C_\psi V^{\mathsf T}$. -/
+theorem schmidtCoeffMatrix_one_kronecker_mulVec
+    {A R S : Type*} [Fintype A] [DecidableEq A] [Fintype R]
+    (V : Matrix S R ℂ) (ψ : A × R → ℂ) :
+    schmidtCoeffMatrix (((1 : Matrix A A ℂ) ⊗ₖ V) *ᵥ ψ) = schmidtCoeffMatrix ψ * Vᵀ := by
+  ext a s
+  simp [schmidtCoeffMatrix_apply, mulVec, dotProduct, Fintype.sum_prod_type, one_apply,
+    Matrix.mul_apply, mul_comm]
 
 end Matrix

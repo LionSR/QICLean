@@ -32,8 +32,6 @@ of the trace norm by a unitary, `Matrix.exists_mem_unitaryGroup_trace_eq_rootFid
 * `Matrix.exists_isIsometry_mul_eq_of_conjTranspose_mul_eq` — equal Gram matrices
   $B^\dagger B=A^\dagger A$ give $B=TA$ for an isometry `T`, when the target of `T`
   is at least as large as its source.
-* `Matrix.schmidtCoeffMatrix_one_kronecker_mulVec` — an operator on the purifying
-  factor acts on the coefficient matrix by right multiplication with its transpose.
 * `Matrix.exists_isIsometry_star_dotProduct_eq_rootFidelity` — Uhlmann's isometry
   for prescribed purifications, under the room conditions on `S`.
 * `Matrix.exists_isIsometry_star_dotProduct_padPurification_eq_rootFidelity` — the
@@ -87,17 +85,6 @@ theorem exists_isIsometry_eq_mul_conjTranspose_of_mul_conjTranspose_eq
     (by rw [conjTranspose_conjTranspose, conjTranspose_conjTranspose, hGram]) hcard
   refine ⟨T, hT, ?_⟩
   rw [← conjTranspose_conjTranspose X, hXT, conjTranspose_mul, conjTranspose_conjTranspose]
-
-/-- An operator `V` on the purifying factor acts on the coefficient matrix of a
-bipartite vector by right multiplication with its transpose:
-the coefficient matrix of $(\mathbf 1\otimes V)\psi$ is $C_\psi V^{\mathsf T}$. -/
-theorem schmidtCoeffMatrix_one_kronecker_mulVec
-    {A R S : Type*} [Fintype A] [DecidableEq A] [Fintype R]
-    (V : Matrix S R ℂ) (ψ : A × R → ℂ) :
-    schmidtCoeffMatrix (((1 : Matrix A A ℂ) ⊗ₖ V) *ᵥ ψ) = schmidtCoeffMatrix ψ * Vᵀ := by
-  ext a s
-  simp [schmidtCoeffMatrix_apply, mulVec, dotProduct, Fintype.sum_prod_type, one_apply,
-    Matrix.mul_apply, mul_comm]
 
 /-- The entrywise complex conjugate of an isometry is an isometry. -/
 private theorem isIsometry_map_star {S R : Type*} [Fintype S] [DecidableEq R]
