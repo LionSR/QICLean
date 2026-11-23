@@ -1,5 +1,5 @@
 {
-  "comment": "Order of the subdirectories inside each layer (docs/library_layers.md, 'Order inside each layer'): each subdirectory lists the subdirectories it may import directly; the relation is closed transitively. '(top)' stands for the modules directly below the layer.",
+  "comment": "Order of the subdirectories inside each layer (docs/library_layers.md, 'Order inside each layer'): each subdirectory lists the subdirectories it may import directly; the relation is closed transitively. '(top)' stands for the modules directly below the layer. The tables under 'inside' order the subdirectories of one subdirectory of a layer in the same way; they apply between two modules of that subdirectory, in addition to the order of the layer.",
   "layers": {
     "QICLean.Algebra": {
       "Combinatorics": [],
@@ -359,6 +359,26 @@
       ],
       "(top)": [
         "Bell"
+      ]
+    }
+  },
+  "inside": {
+    "QICLean.Channel.FixedPoint": {
+      "MeanErgodic": [],
+      "Stationary": [
+        "MeanErgodic"
+      ],
+      "Algebra": [
+        "Stationary"
+      ],
+      "DensityBlock": [
+        "Algebra"
+      ],
+      "DirectSum": [
+        "DensityBlock"
+      ],
+      "Weighted": [
+        "DirectSum"
       ]
     }
   }

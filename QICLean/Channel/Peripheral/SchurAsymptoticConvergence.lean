@@ -9,7 +9,7 @@ import QICLean.Spectral.Eigenvalue.HermitianExtremalEigenvalues
 import QICLean.Analysis.Norm.TraceNormContractivity
 import QICLean.Analysis.TraceNorm.Frobenius
 import QICLean.Channel.Determinant.Bound
-import QICLean.Channel.FixedPoint.StationaryStates
+import QICLean.Channel.FixedPoint.Stationary.StationaryStates
 import QICLean.Channel.Peripheral.CesaroRecurrence
 import QICLean.Channel.Peripheral.SpectralProjection
 import QICLean.Channel.TransferMatrix

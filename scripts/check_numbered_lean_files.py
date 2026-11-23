@@ -31,11 +31,7 @@ NUMBERED_DEBT_ALLOWLIST: frozenset[str] = frozenset()
 # These suffixes identify mathematical objects or source labels, not the order
 # in which a proof was split.  Each exception is exact and reviewable.
 #
-SEMANTIC_EXCEPTIONS: dict[str, str] = {
-    "QICLean/Channel/FixedPoint/WolfTheorem614.lean": (
-        "Named for Wolf Theorem 6.14, the result the module proves."
-    ),
-}
+SEMANTIC_EXCEPTIONS: dict[str, str] = {}
 
 # This guidance is intentionally naming-specific.  The size checker gives
 # complementary advice about decomposing a large mathematical development.

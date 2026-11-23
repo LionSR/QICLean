@@ -34,13 +34,13 @@ incompatible.
 The bounded-orbit result is formalized under both alternatives in
 Proposition~6.2 of Ref.~\cite{Wolf2012Quantum}.\footnote{Formal declarations:
     \leanid{IsPositiveMap.hasBoundedOrbits_of_tracePreserving} in
-    \doclink{QICLean/Channel/FixedPoint/MeanErgodicProjection}, and
+    \doclink{QICLean/Channel/FixedPoint/MeanErgodic/MeanErgodicProjection}, and
     \leanid{IsPositiveMap.hasBoundedOrbits_of_unital} in
     \doclink{QICLean/Channel/Peripheral/JordanBlocks}.}
 Both proofs reduce an arbitrary matrix to the positive-semidefinite case using
 the same lemma.\footnote{Formal declaration:
     \leanid{IsPositiveMap.hasBoundedOrbits_of_posSemidef_orbit_bounded} in
-    \doclink{QICLean/Channel/FixedPoint/MeanErgodicProjection}.}
+    \doclink{QICLean/Channel/FixedPoint/MeanErgodic/MeanErgodicProjection}.}
 
 For a positive semidefinite input, trace preservation fixes the trace of every
 iterate. Unitality instead bounds each iterate in the Loewner order by a scalar

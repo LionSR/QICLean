@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Spectral.Radius.PowerDecay
-import QICLean.Channel.FixedPoint.Cesaro
+import QICLean.Channel.FixedPoint.MeanErgodic.Cesaro
 import QICLean.Channel.Irreducible.FixedPointUniqueness
 import QICLean.Kraus.MixedMap.GaugeRigidity
 import QICLean.Kraus.MixedMap.SpectralRadius

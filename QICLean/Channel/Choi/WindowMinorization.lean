@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Channel.Choi.Residual
 import QICLean.Channel.OrderedRectangular
-import QICLean.Channel.FixedPoint.Cesaro
+import QICLean.Channel.FixedPoint.MeanErgodic.Cesaro
 
 /-!
 # Fixed-window minorization on changing matrix spaces

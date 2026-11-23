@@ -85,7 +85,7 @@ Proposition~1.5 of Ref.~\cite{Wolf2012Quantum} gives the weighted
 partial-trace block form of the projection.\footnote{Formal declaration:
 \leanid{IsPositiveMap.exists_block_densities_of_adjoint_meanErgodicProjection}
 in
-\doclink{QICLean/Channel/FixedPoint/FullSupportBlockRetraction}.}
+\doclink{QICLean/Channel/FixedPoint/DensityBlock/FullSupportBlockRetraction}.}
 This formalizes the conditional-expectation step at local source
 lines~1483--1492.
 
@@ -114,7 +114,7 @@ and therefore equals $\operatorname{Fix}(T)$ under the full-support
 hypothesis.\footnote{Formal declaration:
 \leanid{IsPositiveMap.exists_block_densities_of_meanErgodicProjection}
 in
-\doclink{QICLean/Channel/FixedPoint/TraceAdjointDensityBlocks}.}
+\doclink{QICLean/Channel/FixedPoint/DensityBlock/TraceAdjointDensityBlocks}.}
 
 \section{Maximal stationary support}
 
@@ -127,7 +127,7 @@ For every positive trace-preserving map, define
 The matrix $\rho_0$ is positive semidefinite, and its support contains both the
 support and the range of every fixed point.\footnote{Formal declaration:
 \leanid{IsPositiveMap.exists_maximalSupport_fixedPoint} in
-\doclink{QICLean/Channel/FixedPoint/MaximalSupportBasic}.}
+\doclink{QICLean/Channel/FixedPoint/Stationary/MaximalSupportBasic}.}
 This supplies the maximal-support witness in the full generality of the source.
 
 Let $\rho\succeq0$ be any fixed point and let $Q$ be its support projection.
@@ -176,7 +176,7 @@ declarations:
 \leanid{IsPositiveMap.map_supported_on_fixedPoint_support} and
 \leanid{IsPositiveMap.exists_maximalSupportCompression}
 in
-\doclink{QICLean/Channel/FixedPoint/StationarySupportRestriction}.}
+\doclink{QICLean/Channel/FixedPoint/Stationary/StationarySupportRestriction}.}
 
 \section{Schwarz compression and positive-definite blocks}
 
@@ -224,7 +224,7 @@ summand.\footnote{Formal declarations:
 \leanid{IsSchwarzMap.traceAdjointMap_stationarySupportCompression}, and
 \leanid{IsPositiveMap.exists_block_densities_of_maximalSupportCompression}
 in
-\doclink{QICLean/Channel/FixedPoint/SupportCompressedDensityBlocks}. The
+\doclink{QICLean/Channel/FixedPoint/DensityBlock/SupportCompressedDensityBlocks}. The
 positive-definite partial-trace results are
 \leanid{Matrix.PosDef.partialTraceRight},
 \leanid{Matrix.PosDef.partialTraceLeft}, and
@@ -268,7 +268,7 @@ definite.\footnote{Formal declarations:
 \leanid{Matrix.exists_unitary_zero_extension_eq} in
 \doclink{QICLean/Algebra/Unitary/MatrixGramUnitary}, and
 \leanid{IsPositiveMap.exists_fixedPoints_densityBlocks_with_zero} in
-\doclink{QICLean/Channel/FixedPoint/WolfTheorem614}.}
+\doclink{QICLean/Channel/FixedPoint/DensityBlock/FixedPointDensityBlocks}.}
 
 \section{Conclusion}
 

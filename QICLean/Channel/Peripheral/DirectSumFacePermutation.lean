@@ -3,8 +3,8 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Channel.FixedPoint.ExtremeDensityStates
-import QICLean.Channel.FixedPoint.TraceNonincreasingDirectSum
+import QICLean.Channel.FixedPoint.DirectSum.ExtremeDensityStates
+import QICLean.Channel.FixedPoint.DirectSum.TraceNonincreasingDirectSum
 import QICLean.Channel.Peripheral.PureStateFace
 import QICLean.Channel.Wigner.ProjectivePureState
 

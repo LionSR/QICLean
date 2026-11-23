@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Spectral.Eigenvalue.EigenspaceMap
-import QICLean.Channel.FixedPoint.StationarySpan
+import QICLean.Channel.FixedPoint.Stationary.StationarySpan
 import QICLean.Channel.Peripheral.CesaroRecurrence
 
 /-!

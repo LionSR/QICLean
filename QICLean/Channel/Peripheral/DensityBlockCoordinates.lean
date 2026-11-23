@@ -4,8 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Algebra.Matrix.MatrixReindex
-import QICLean.Channel.FixedPoint.ExtremeDensityStates
-import QICLean.Channel.FixedPoint.WolfTheorem614
+import QICLean.Channel.FixedPoint.DirectSum.ExtremeDensityStates
+import QICLean.Channel.FixedPoint.DensityBlock.FixedPointDensityBlocks
 
 /-!
 # Density-block coordinates on the peripheral image

@@ -7,7 +7,7 @@ import QICLean.Spectral.Radius.PowerDecay
 import QICLean.Channel.Peripheral.Spectrum
 import QICLean.Channel.Peripheral.AdjointSpectrum
 import QICLean.Channel.Peripheral.ClosureFixedPointKraus
-import QICLean.Channel.FixedPoint.Cesaro
+import QICLean.Channel.FixedPoint.MeanErgodic.Cesaro
 import QICLean.Channel.Irreducible.AdjointFamily
 import QICLean.Channel.Irreducible.PerronFrobenius
 import QICLean.Channel.Schwarz.KadisonSchwarz

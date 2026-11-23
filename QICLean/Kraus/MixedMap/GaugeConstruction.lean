@@ -5,7 +5,7 @@ Authors: TNLean contributors
 -/
 import QICLean.Analysis.Order.ComplexPhasePositivity
 import QICLean.Algebra.Matrix.MatrixKernelRigidity
-import QICLean.Channel.FixedPoint.CanonicalGauge
+import QICLean.Channel.FixedPoint.Weighted.CanonicalGauge
 import QICLean.Channel.Schwarz.Basic
 import QICLean.Kraus.Injectivity
 import QICLean.Kraus.MixedMap.Gap

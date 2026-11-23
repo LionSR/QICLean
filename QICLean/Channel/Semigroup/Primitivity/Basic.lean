@@ -11,7 +11,7 @@ import QICLean.Channel.Peripheral.Spectrum
 import QICLean.Channel.Peripheral.IrreducibleChannel
 import QICLean.Channel.Peripheral.PeriodicityRemoval
 import QICLean.Channel.Peripheral.ClosureFixedPointKraus
-import QICLean.Channel.FixedPoint.Cesaro
+import QICLean.Channel.FixedPoint.MeanErgodic.Cesaro
 import QICLean.Channel.Peripheral.Primitive
 import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.Real.Pi.Irrational

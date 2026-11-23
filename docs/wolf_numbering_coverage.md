@@ -1286,7 +1286,7 @@ For the positive and trace-preserving conclusions concerning $T_\infty$:
 * `IsCPMap.meanErgodicProjection_isCPMap` — complete positivity;
 * `IsChannel.meanErgodicProjection` — the resulting channel.
 
-These results are in `QICLean.Channel.FixedPoint.MeanErgodicProjection`.  For
+These results are in `QICLean.Channel.FixedPoint.MeanErgodic.MeanErgodicProjection`.  For
 the peripheral projection $T_\phi$ and the phase-weighted map $T_\varphi$:
 
 * `IsPositiveMap.peripheralProjection_isPositiveMap` and
@@ -1468,7 +1468,7 @@ The source-general declarations are in
 
 The positive trace-preserving invariant-corner input is
 `IsPositiveMap.exists_fixed_density_of_preserves_compression` in
-`QICLean.Channel.FixedPoint.Cesaro`; it assumes no Kraus representation or
+`QICLean.Channel.FixedPoint.MeanErgodic.Cesaro`; it assumes no Kraus representation or
 complete positivity.  The channel theorem with the former name is retained as
 a direct specialization.  Likewise,
 `isIrreducibleMap_of_positive_tracePreserving_posDef_fixedPoint_unique` in
@@ -1515,7 +1515,7 @@ the central correction index
 * Resolved paper-gap: `docs/paper-gaps/wolf_ch6_spectral_radius_eigenvalue.tex`
 
 Uses Brouwer's fixed-point theorem on density matrices (proved in
-`QICLean.Channel.FixedPoint.BrouwerDensityMatrices`).
+`QICLean.Channel.FixedPoint.Stationary.BrouwerDensityMatrices`).
 
 #### Wolf Proposition 6.6 (Similarity preserving irreducibility) — FORMALIZED
 
@@ -1658,13 +1658,13 @@ a one-step span gives the peripheral eigenvalue `-1`, and
 
 #### Wolf Section 6 stationary-support state (Propositions 6.9--6.11, Lemma 6.5)
 
-In `QICLean.Channel.FixedPoint.MaximalSupportBasic`:
+In `QICLean.Channel.FixedPoint.Stationary.MaximalSupportBasic`:
 
 * `IsPositiveMap.exists_maximalSupport_fixedPoint` — Wolf Proposition 6.9:
   the support of the fixed point $T_\infty(\mathbf 1)$ contains the support
   and range of every fixed point.
 
-In `QICLean.Channel.FixedPoint.StationarySupportRestriction`:
+In `QICLean.Channel.FixedPoint.Stationary.StationarySupportRestriction`:
 
 * `IsPositiveMap.trace_one_sub_stationaryProj_mul_map_stationaryProj_eq_zero`
   and `IsPositiveMap.map_density_le_stationaryProj` — the displayed trace and
@@ -1673,13 +1673,13 @@ In `QICLean.Channel.FixedPoint.StationarySupportRestriction`:
   Proposition 6.11: density operators below a Hermitian projection $Q$ are
   preserved below $Q$ exactly when $T^*(Q)\succeq Q$.
 
-In `QICLean.Channel.FixedPoint.SupportCompressedDensityBlocks`:
+In `QICLean.Channel.FixedPoint.DensityBlock.SupportCompressedDensityBlocks`:
 
 * `Matrix.traceAdjointMap_stationarySupportCompression_fixed` — Wolf
   Equation (6.53): an adjoint fixed point compresses to an adjoint fixed point
   of the stationary-support restriction.
 
-In `QICLean.Channel.FixedPoint.StationarySupport`:
+In `QICLean.Channel.FixedPoint.Stationary.StationarySupport`:
 
 * `Channel.support_proj_fixed` — support projection of a PSD fixed point is
   invariant under the compressed channel action.
@@ -1691,7 +1691,7 @@ In `QICLean.Channel.FixedPoint.StationarySupport`:
 
 #### Wolf Theorem 6.12 (Fixed points form a *-algebra) — FORMALIZED
 
-In `QICLean.Channel.FixedPoint.FullRankFixedPointAlgebra`:
+In `QICLean.Channel.FixedPoint.Algebra.FullRankFixedPointAlgebra`:
 
 * `SchwarzMap.exists_posDef_traceAdjoint_fixedPoint_of_isUnit` — the source
   reduction: if the trace adjoint of a positive unital map has a full-rank
@@ -1703,7 +1703,7 @@ In `QICLean.Channel.FixedPoint.FullRankFixedPointAlgebra`:
 * `SchwarzMap.exists_unitary_conj_blockDiagonal_iff_fixedPoint_of_isUnit` —
   the block realization of Equation (1.39), without the zero block.
 
-In `QICLean.Channel.FixedPoint.AbstractAlgebra`:
+In `QICLean.Channel.FixedPoint.Algebra.AbstractAlgebra`:
 
 * `SchwarzMap.fixedPointsStarSubalgebra` — the algebra step after the
   faithful invariant weight has been chosen: for a positive unital Schwarz map
@@ -1712,9 +1712,9 @@ In `QICLean.Channel.FixedPoint.AbstractAlgebra`:
 
 The downstream Schrödinger-picture density-block classification and its
 complementary zero summand are completed in
-`QICLean.Channel.FixedPoint.WolfTheorem614`.
+`QICLean.Channel.FixedPoint.DensityBlock.FixedPointDensityBlocks`.
 
-In `QICLean.Channel.FixedPoint.Algebra`:
+In `QICLean.Channel.FixedPoint.Algebra.Algebra`:
 
 * `Kraus.fixedPointsStarSubalgebra` — Kraus specialization in the
   Schrödinger picture:
@@ -1731,7 +1731,7 @@ In `QICLean.Channel.FixedPoint.Algebra`:
 
 #### Wolf Theorem 6.13 (Fixed points and Kraus commutant) — FORMALIZED
 
-In `QICLean.Channel.FixedPoint.Algebra`:
+In `QICLean.Channel.FixedPoint.Algebra.Algebra`:
 
 * `Kraus.fixedPoint_commutes_kraus` — if `X` and `Xᴴ * X` are both fixed by
   the Heisenberg-picture map `adjointMap K`, then `X` commutes with every
@@ -1754,7 +1754,7 @@ In `QICLean.Channel.FixedPoint.Algebra`:
   real inner-product spaces.
 * `CompactConvex.metricProjection_lipschitzWith` — the reusable metric-projection
   step: projection onto a nonempty compact convex set is 1-Lipschitz.
-* `brouwer_fixedPoint_densityMatrices` — `QICLean.Channel.FixedPoint.BrouwerDensityMatrices`
+* `brouwer_fixedPoint_densityMatrices` — `QICLean.Channel.FixedPoint.Stationary.BrouwerDensityMatrices`
   (density-matrix specialization; kernel-checked).
 * `Brouwer (vendored Gametheory library)` — exact import citation: Brouwer for the
   standard simplex (LionSR/Brouwer library).
@@ -1771,7 +1771,7 @@ The theorem is formalized for continuous (not necessarily linear) maps, exactly
 matching Wolf's statement ("continuous, trace-preserving, positive (not
 necessarily linear)").  The linear specializations are also provided.
 
-In `QICLean.Channel.FixedPoint.StationaryStates`:
+In `QICLean.Channel.FixedPoint.Stationary.StationaryStates`:
 
 * `IsStationaryMap.IsPositive` — positivity predicate for arbitrary (nonlinear) maps.
 * `IsStationaryMap.IsTracePreserving` — trace-preservation predicate for arbitrary maps.
@@ -1788,7 +1788,7 @@ In `QICLean.Channel.FixedPoint.StationaryStates`:
 Additionally:
 
 * Via Cesàro: `IsChannel.exists_posSemidef_fixedPoint` —
-  `QICLean.Channel.FixedPoint.Cesaro`.
+  `QICLean.Channel.FixedPoint.MeanErgodic.Cesaro`.
 * Via Brouwer (linear): `exists_posSemidef_eigenvector` —
   `QICLean.Channel.PerronFrobenius.Existence`.
 
@@ -1796,7 +1796,7 @@ Additionally:
 
 * `IsPositiveMap.posPart_negPart_fixed_of_fixedPoint` — the source-faithful positive
   trace-preserving statement for the four canonical positive parts in
-  `QICLean.Channel.FixedPoint.Cesaro`.
+  `QICLean.Channel.FixedPoint.MeanErgodic.Cesaro`.
 * `IsPositiveMap.exists_posSemidef_fixedPoints_decomposition` — the existential form.
 * `IsPositiveMap.posPart_negPart_fixed_of_hermitian_fixedPoint` and
   `IsPositiveMap.posSemidef_parts_of_hermitian_fixedPoint` — Hermitian intermediate
@@ -1808,7 +1808,7 @@ Additionally:
 
 #### Wolf Corollary 6.5 (Linearly independent stationary states) — FORMALIZED
 
-In `QICLean.Channel.FixedPoint.StationarySpan`:
+In `QICLean.Channel.FixedPoint.Stationary.StationarySpan`:
 
 * `IsStationaryDensity` — predicate for a stationary density matrix (PSD,
   trace 1, fixed by the map).
@@ -1826,7 +1826,7 @@ In `QICLean.Channel.FixedPoint.StationarySpan`:
 
 #### Wolf Corollary 6.6 (projected support corner) — FORMALIZED
 
-In `QICLean.Channel.FixedPoint.AbstractCornerFixedPoints`:
+In `QICLean.Channel.FixedPoint.Weighted.AbstractCornerFixedPoints`:
 
 * `IsPositiveMap.stationaryCornerAdjointFixedPointsStarSubalgebra` — for a
   positive trace-preserving map `T` whose trace adjoint is Schwarz, and a PSD
@@ -1843,7 +1843,7 @@ positivity is assumed. Wolf chooses a maximum-rank fixed point, while the Lean
 theorem proves the same conclusion for every PSD fixed point. The proof uses
 the source support-compression route and the abstract Wolf Theorem 6.12 fixed
 point algebra. The earlier declarations in
-`QICLean.Channel.FixedPoint.CornerFixedPoints` remain available as finite-Kraus
+`QICLean.Channel.FixedPoint.Weighted.CornerFixedPoints` remain available as finite-Kraus
 specializations.
 
 #### Wolf Theorem 6.14 (density-block form of fixed points) — FORMALIZED
@@ -1868,7 +1868,7 @@ the full-support star-algebra description, restricting to maximal stationary
 support, and adjoining the complementary zero summand gives the full statement
 of Theorem 6.14 and Equation (6.63).
 
-In `QICLean.Channel.FixedPoint.StationarySupportRestriction`:
+In `QICLean.Channel.FixedPoint.Stationary.StationarySupportRestriction`:
 
 * `IsPositiveMap.map_posSemidef_supported_on_fixedPoint_support` — the order
   argument of Wolf Proposition 6.10 for a positive matrix supported on the
@@ -1895,7 +1895,7 @@ In `QICLean.Channel.FixedPoint.StationarySupportRestriction`:
   trace preservation, a positive-definite compressed fixed point,
   Equation (6.52), and the complementary zero summand of Equation (6.51).
 
-In `QICLean.Channel.FixedPoint.FullSupportBlockRetraction`:
+In `QICLean.Channel.FixedPoint.DensityBlock.FullSupportBlockRetraction`:
 
 * `IsPositiveMap.exists_block_densities_of_adjoint_meanErgodicProjection` —
   when the positive trace-preserving map has a positive definite fixed point
@@ -1904,7 +1904,7 @@ In `QICLean.Channel.FixedPoint.FullSupportBlockRetraction`:
   fixed-point star-algebra and has the weighted partial-trace block form of
   Wolf Equation (1.40).
 
-In `QICLean.Channel.FixedPoint.TraceAdjointDensityBlocks`:
+In `QICLean.Channel.FixedPoint.DensityBlock.TraceAdjointDensityBlocks`:
 
 * `IsPositiveMap.exists_block_densities_of_meanErgodicProjection` — under the
   same full-support hypotheses, the mean-ergodic projection has the
@@ -1912,7 +1912,7 @@ In `QICLean.Channel.FixedPoint.TraceAdjointDensityBlocks`:
   `U (⊕_k σ_k ⊗ tr_{m_k}((U† B U)_{kk})) U†`, and the fixed-point space is
   `U (⊕_k σ_k ⊗ M_{d_k}(ℂ)) U†`.
 
-In `QICLean.Channel.FixedPoint.SupportCompressedDensityBlocks`:
+In `QICLean.Channel.FixedPoint.DensityBlock.SupportCompressedDensityBlocks`:
 
 * `Matrix.traceAdjointMap_stationarySupportCompression_fixed` — Wolf
   Equation (6.53), transporting trace-adjoint fixed points through the
@@ -1928,7 +1928,7 @@ In `QICLean.Algebra.Unitary.MatrixGramUnitary`:
   to an ambient unitary that identifies every compressed matrix with one
   complementary zero block followed by that matrix.
 
-In `QICLean.Channel.FixedPoint.WolfTheorem614`:
+In `QICLean.Channel.FixedPoint.DensityBlock.FixedPointDensityBlocks`:
 
 * `IsPositiveMap.exists_fixedPoints_densityBlocks_with_zero` — for every
   positive trace-preserving matrix endomorphism whose trace adjoint satisfies
@@ -1936,12 +1936,12 @@ In `QICLean.Channel.FixedPoint.WolfTheorem614`:
   one complementary zero summand followed by positive-definite trace-one
   density blocks, exactly as in Wolf Equation (6.63).
 
-In `QICLean.Channel.FixedPoint.DirectSumBlockRetraction`:
+In `QICLean.Channel.FixedPoint.DirectSum.DirectSumBlockRetraction`:
 
 * `Matrix.IsPositiveDirectSumMap.exists_block_densities_of_fixedPoints` — the
   full-support consequence for a finite direct sum of full matrix algebras.
 
-In `QICLean.Channel.FixedPoint.WedderburnDecomp`:
+In `QICLean.Channel.FixedPoint.Algebra.WedderburnDecomp`:
 
 * `Kraus.starSubalgebra_isSemisimpleRing` — every finite-dimensional
   `*`-subalgebra of `M_D(ℂ)` is semisimple.
@@ -1957,7 +1957,7 @@ In `QICLean.Channel.FixedPoint.WedderburnDecomp`:
 * `Kraus.adjointFixedPoints_wedderburnDecomp` — existence of this
   decomposition data for the adjoint-fixed-point algebra.
 
-In `QICLean.Channel.FixedPoint.BlockForm` (unital case, positive definite fixed
+In `QICLean.Channel.FixedPoint.Algebra.BlockForm` (unital case, positive definite fixed
 point of the pre-dual, no zero block):
 
 * `Kraus.adjointFixedPoints_blockDiagonal_iff` — the unitary realization
@@ -1965,7 +1965,7 @@ point of the pre-dual, no zero block):
 * `Kraus.fixedPoints_blockDiagonal_iff` — the companion for the fixed points
   of a unital Kraus map.
 
-In `QICLean.Channel.FixedPoint.CornerBlockForm` (corner-restricted case, any
+In `QICLean.Channel.FixedPoint.Weighted.CornerBlockForm` (corner-restricted case, any
 positive semidefinite fixed point):
 
 * `Kraus.cornerFixedPoints_blockDiagonal_iff` — the corner-restricted
@@ -1984,7 +1984,7 @@ whole direct-sum algebras.  This remaining boundary is recorded in
 
 #### Wolf Corollary 6.7 (weighted fixed-point star-algebra) — FORMALIZED
 
-In `QICLean.Channel.FixedPoint.AbstractMaximalRank`:
+In `QICLean.Channel.FixedPoint.Stationary.AbstractMaximalRank`:
 
 * `IsPositiveMap.maximalSupport_of_maximalRank` — for a positive
   trace-preserving map and every positive semidefinite fixed point `ρ` whose
@@ -1993,7 +1993,7 @@ In `QICLean.Channel.FixedPoint.AbstractMaximalRank`:
   quantifier is Wolf's arbitrary maximum-rank stationary density, not one
   chosen canonical witness.
 
-In `QICLean.Channel.FixedPoint.AbstractWeightedFixedPoints`:
+In `QICLean.Channel.FixedPoint.Weighted.AbstractWeightedFixedPoints`:
 
 * `IsPositiveMap.weightedFixed_mul_of_posDef` — multiplication closure in the
   full-support case, proved through Wolf Theorem 6.14 density blocks:
@@ -2015,7 +2015,7 @@ In `QICLean.Channel.FixedPoint.AbstractWeightedFixedPoints`:
   and `ρ` is an arbitrary maximum-rank stationary density matrix.  It returns
   the star-algebra together with the exact carrier equality above.
 
-The earlier declarations in `QICLean.Channel.FixedPoint.Corollaries`,
+The earlier declarations in `QICLean.Channel.FixedPoint.Weighted.WeightedFixedPoints`,
 `WeightedCornerFixedPoints`, `MaximalSupport`, and `MaximalRank` remain
 finite-Kraus compatibility specializations.  In particular,
 `Kraus.maximalSupport_of_maximalRank` and
@@ -2026,7 +2026,7 @@ The former scope restriction is resolved in
 
 #### Conditional expectation used in Wolf Theorem 6.14 — FORMALIZED
 
-In `QICLean.Channel.FixedPoint.ConditionalExpectation`:
+In `QICLean.Channel.FixedPoint.Algebra.ConditionalExpectation`:
 
 * `Kraus.IsConditionalExpectation` — a positive, idempotent, unital matrix
   map whose range is contained in a star-subalgebra and which fixes that
@@ -2050,7 +2050,7 @@ projection, which is positive, idempotent, unital, and fixes exactly the fixed
 points of `T*`; the star-algebra structure follows from Theorem 6.12. This is
 the conditional-expectation step in the proof of Theorem 6.14. The theorem's
 explicit density-block formula is developed in
-`QICLean.Channel.FixedPoint.FullSupportBlockRetraction`.
+`QICLean.Channel.FixedPoint.DensityBlock.FullSupportBlockRetraction`.
 
 #### Wolf Theorem 6.15 (Unique fixed point from full Kraus-word span) — FORMALIZED
 

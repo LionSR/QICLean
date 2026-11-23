@@ -6,7 +6,7 @@ Authors: TNLean contributors
 import QICLean.Spectral.Eigenvalue.EigenspaceMap
 import QICLean.Analysis.Real.Dirichlet
 import QICLean.Analysis.Norm.OperatorNormConvergence
-import QICLean.Channel.FixedPoint.MeanErgodicProjection
+import QICLean.Channel.FixedPoint.MeanErgodic.MeanErgodicProjection
 import QICLean.Channel.Peripheral.SpectralProjection
 import QICLean.Channel.Semigroup.CPClosure
 import Mathlib.Data.Nat.Choose.Bounds

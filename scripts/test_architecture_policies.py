@@ -580,6 +580,40 @@ class SublayerOrderTests(unittest.TestCase):
         self.assertEqual(len(layers.check_sublayers(sources, tables, frozenset(), None)), 1)
         self.assertEqual(len(layers.check_sublayers({}, tables, frozenset({entry}), None)), 1)
 
+    def test_orders_inside_a_subdirectory_add_to_the_order_of_the_layer(self) -> None:
+        inner = layers.close_sublayers(
+            {"QICLean.Analysis.Norm": {"Low": [], "High": ["Low"]}})
+        sources = {
+            "QICLean.Analysis.Norm.Low.A": "import QICLean.Analysis.Norm.High.B\ndef a := 0\n",
+            "QICLean.Analysis.Norm.High.B": "import QICLean.Analysis.Norm.Low.C\ndef b := 0\n",
+            "QICLean.Analysis.Norm.Low.C": "import QICLean.Analysis.TraceNorm.D\ndef c := 0\n",
+            "QICLean.Analysis.TraceNorm.D": "def d := 0\n",
+        }
+        across = "QICLean.Analysis.Norm.Low.C -> QICLean.Analysis.TraceNorm.D"
+        self.assertEqual(layers.sublayer_violations(sources, self.tables(), inner), {
+            "QICLean.Analysis.Norm.Low.A -> QICLean.Analysis.Norm.High.B", across})
+        self.assertEqual(layers.sublayer_violations(sources, self.tables()), {across})
+
+    def test_moved_modules_keep_their_recorded_entries(self) -> None:
+        renames = {"QICLean.Analysis.Real.B": "QICLean.Analysis.Real.Sub.B"}
+        self.assertEqual(
+            layers.rename_entry("QICLean.Analysis.Real.B -> QICLean.Analysis.Norm.C", renames),
+            "QICLean.Analysis.Real.Sub.B -> QICLean.Analysis.Norm.C")
+        self.assertEqual(layers.rename_entry("QICLean.Analysis <-> QICLean.Channel", renames),
+                         "QICLean.Analysis <-> QICLean.Channel")
+        renamed = layers.module_renames()
+        self.assertTrue(renamed)
+        self.assertFalse(set(renamed.values()) & set(renamed))
+
+    def test_repository_inner_orders_refine_a_listed_subdirectory(self) -> None:
+        tables = layers.load_sublayers()
+        for prefix in layers.load_inner_orders():
+            with self.subTest(prefix=prefix):
+                owner = layers.sublayer_of(prefix + ".M", tables)
+                self.assertIsNotNone(owner)
+                self.assertIn(owner[1], tables[owner[0]])
+                self.assertEqual(prefix, f"{owner[0]}.{owner[1]}")
+
     def test_repository_table_is_an_order_of_existing_layers(self) -> None:
         tables = layers.load_sublayers()
         owned = {prefix for _, prefixes in layers.LAYERS for prefix in prefixes}
@@ -590,7 +624,8 @@ class SublayerOrderTests(unittest.TestCase):
     def test_recorded_sublayer_debt_matches_the_tree(self) -> None:
         root = Path(__file__).resolve().parent.parent
         self.assertEqual(
-            layers.sublayer_violations(layers.tracked_sources(root), layers.load_sublayers()),
+            layers.sublayer_violations(layers.tracked_sources(root), layers.load_sublayers(),
+                                       layers.load_inner_orders()),
             layers.SUBLAYER_DEBT)
 
 
