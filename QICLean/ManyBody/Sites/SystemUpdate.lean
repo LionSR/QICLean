@@ -39,6 +39,7 @@ equivalence `complCast hXY`.
 
 * `ManyBody.placeBetween_apply`, `ManyBody.placeBetween_apply_cutEquiv_symm` — its entries.
 * `ManyBody.placeBetween_eq_place` — on one system it is the placement.
+* `ManyBody.placeBetween_sum` — the placement of a finite sum.
 * `ManyBody.placeBetween_mul` — placements on a region compose.
 * `ManyBody.placeBetween_conjTranspose` — the adjoint of a placement.
 * `ManyBody.placeBetween_reindex_one_kronecker` — a placement beside spectator factors.
@@ -217,6 +218,15 @@ theorem placeBetween_sub (hXY : ∀ v ∉ D, Y v = X v)
     placeBetween D hXY K - placeBetween D hXY K' = placeBetween D hXY (K - K') := by
   rw [sub_eq_add_neg, sub_eq_add_neg, placeBetween_add, ← neg_one_smul ℂ K', placeBetween_smul,
     neg_one_smul]
+
+/-- The placement of a finite sum is the sum of the placements. -/
+theorem placeBetween_sum (hXY : ∀ v ∉ D, Y v = X v) {ι : Type*} (s : Finset ι)
+    (K : ι → Matrix (RegionConfig Y D) (RegionConfig X D) ℂ) :
+    placeBetween D hXY (∑ i ∈ s, K i) = ∑ i ∈ s, placeBetween D hXY (K i) := by
+  classical
+  induction s using Finset.induction_on with
+  | empty => simp
+  | insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, placeBetween_add, ih]
 
 /-- Placements on a region compose: `(K' ⊗ 1)(K ⊗ 1) = K' K ⊗ 1`. -/
 theorem placeBetween_mul [∀ v, Fintype (Y v)] [∀ v, DecidableEq (Y v)]
