@@ -41,7 +41,8 @@ count and the participations are those of the circuit (`PartyCircuit.gateCount_t
 * `QuantumCircuit.Party.PartyCircuit.toCircuit`, `QuantumCircuit.Party.PartyCircuit.op` — the
   circuit and the operator.
 * `QuantumCircuit.Party.PartyCircuit.IsAllowed` — contractive operations and gates satisfying a
-  condition.
+  condition; `QuantumCircuit.Party.PartyCircuit.IsLocalContractive` — contractive local
+  operations.
 * `QuantumCircuit.Party.PartyCircuit.gateLocations`, `participants`, `gates`, `gateCells`,
   `numGates`, `gateCount`, `participation`, `participationCount`, `ForallGate` — the gates and
   their counts.
@@ -279,6 +280,31 @@ theorem norm_op_le_one [∀ p, Fintype (X p)] [∀ p, DecidableEq (X p)] [∀ p,
 end Allowed
 
 end Unique
+
+/-! ### Contractive local operations -/
+
+/-- The local operations of the party circuit are contractions; gates are not constrained.
+Source: `04-compression.tex`, line 28 ("arbitrary private contractions"). -/
+def IsLocalContractive : {X Y : P → Type} → [∀ s, Fintype (X s)] → [∀ s, DecidableEq (X s)] →
+    PartyCircuit G X Y → Prop
+  | _, _, _, _, done _ => True
+  | _, _, _, _, gate _ _ _ => True
+  | _, _, _, _, localOp _ _ U => ‖U‖ ≤ 1
+  | _, _, _, _, localOps U => ∀ p, ‖U p‖ ≤ 1
+  | _, _, _, _, comp c c' => c.IsLocalContractive ∧ c'.IsLocalContractive
+
+omit [Fintype P] in
+/-- An allowed party circuit has contractive local operations. -/
+theorem IsAllowed.isLocalContractive [GateFamily.UniqueOutcome G] {ev : Interpretation G}
+    {A : ∀ ⦃D : Finset P⦄ ⦃X Y : P → Type⦄ [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
+      [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)], G D X Y → Prop} :
+    {X Y : P → Type} → [∀ s, Fintype (X s)] → [∀ s, DecidableEq (X s)] →
+      {c : PartyCircuit G X Y} → c.IsAllowed ev A → c.IsLocalContractive
+  | _, _, _, _, done _, _ => trivial
+  | _, _, _, _, gate _ _ _, _ => trivial
+  | _, _, _, _, localOp _ _ _, h => h
+  | _, _, _, _, localOps _, h => h
+  | _, _, _, _, comp _ _, h => ⟨IsAllowed.isLocalContractive h.1, IsAllowed.isLocalContractive h.2⟩
 
 /-! ### Gates along the circuit and their counts -/
 
