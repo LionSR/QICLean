@@ -11,3 +11,4 @@ Authors: QICLean contributors
 import QICLean.Circuit.Party.Effect.Error
 import QICLean.Circuit.Party.Effect.GateReplacement
 import QICLean.Circuit.Party.Effect.Replacement
+import QICLean.Circuit.Party.Effect.Resources
