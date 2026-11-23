@@ -13,15 +13,18 @@ import Mathlib.Analysis.Matrix.Order
 Coordinate facts about the linear and continuous linear maps of a complex matrix on Euclidean
 space: the inner product `⟪x, A y⟫` is the dot product `star x ⬝ᵥ A y` of coordinate vectors,
 a matrix of operator norm at most one does not increase the norm of a vector, the identity
-matrix acts as the identity, a product acts as the composition, and the maps of two matrices
-are in Loewner order exactly when the matrices are. Mathlib states the first
-only over the reals (`Matrix.inner_toEuclideanCLM`).
+matrix acts as the identity, a product acts as the composition, the matrix of a linear map has
+the coordinates of the images of the basis vectors as columns and the operator norm of the map,
+and the maps of two matrices are in Loewner order exactly when the matrices are. Mathlib states
+the first only over the reals (`Matrix.inner_toEuclideanCLM`).
 
 ## Main results
 
 * `Matrix.inner_toEuclideanCLM_eq_dotProduct`: `⟪x, A y⟫ = star x ⬝ᵥ (A *ᵥ y)`.
 * `Matrix.norm_toEuclideanCLM_le_of_norm_le_one`: `‖A‖ ≤ 1` gives `‖A x‖ ≤ ‖x‖`.
 * `Matrix.toEuclideanLin_one_apply`, `Matrix.toEuclideanLin_mul_apply`.
+* `Matrix.toEuclideanLin_symm_apply`, `Matrix.l2_opNorm_toEuclideanLin_symm`: the entries and
+  the operator norm of the matrix of a linear map of Euclidean spaces.
 * `Matrix.toEuclideanLin_le_toEuclideanLin_iff`, `Matrix.toEuclideanCLM_le_toEuclideanCLM_iff`:
   the maps on Euclidean space are in Loewner order exactly when the matrices are.
 
@@ -57,6 +60,22 @@ theorem toEuclideanLin_mul_apply {m : Type*} [Fintype m] [DecidableEq m] (A B : 
     toEuclideanLin (A * B) x = toEuclideanLin A (toEuclideanLin B x) := by
   ext i
   simp [toLpLin_apply, mulVec_mulVec]
+
+/-- The entry `(i, j)` of the matrix of a linear map of Euclidean spaces is the coordinate `i`
+of the image of the basis vector `j`. -/
+theorem toEuclideanLin_symm_apply {l m : Type*} [Fintype m] [DecidableEq m]
+    (T : EuclideanSpace ℂ m →ₗ[ℂ] EuclideanSpace ℂ l) (i : l) (j : m) :
+    (toEuclideanLin (𝕜 := ℂ)).symm T i j = T (EuclideanSpace.single j 1) i := by
+  simp [toLpLin]
+
+/-- The matrix of a continuous linear map of Euclidean spaces has the same operator norm. -/
+theorem l2_opNorm_toEuclideanLin_symm {l m : Type*} [Fintype l] [Fintype m] [DecidableEq m]
+    (T : EuclideanSpace ℂ m →L[ℂ] EuclideanSpace ℂ l) :
+    ‖(toEuclideanLin (𝕜 := ℂ)).symm T.toLinearMap‖ = ‖T‖ := by
+  rw [l2_opNorm_def]
+  congr 1
+  ext1 x
+  simp
 
 open scoped MatrixOrder ComplexOrder
 
