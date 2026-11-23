@@ -60,6 +60,9 @@ of these interactions together with the hypotheses that were its fields.
 
 ## Main results
 
+* `ManyBody.ChainInteraction.sum_norm_terms_containing_le`,
+  `ManyBody.DomainInteraction.sum_norm_terms_containing_le` — the norms of the terms containing
+  a site sum to at most `2^{2R+1} J`.
 * `ManyBody.BondInteraction.hamiltonian_padded` — the Hamiltonian of the padding is the
   Hamiltonian of `Φ` on the first `L` sites plus the matrices at the added sites other than
   the site `0`.
@@ -85,6 +88,8 @@ of these interactions together with the hypotheses that were its fields.
   Theorem 1.1, `eq:hamiltonian`, and `eq:model`.
 * OpenAI, *Polynomial PEPS approximation of gapped square-grid ground states*,
   September 24, 2026, `eq:model`.
+* M. B. Hastings, *An area law for one-dimensional quantum systems*, arXiv:0705.2024v4,
+  `law16.tex`, lines 82–91.
 * Z. Landau, U. Vazirani, T. Vidick, *A polynomial-time algorithm for the ground state of 1D
   gapped local Hamiltonians*, arXiv:1307.5143v1, `algo53.tex`, lines 209–211 and 283.
 * N. Schuch, D. Pérez-García, J. I. Cirac, *Classifying quantum phases using matrix product
@@ -123,6 +128,66 @@ abbrev RectangleInteraction (width height q : ℕ) :=
 /-- The site-and-edge interactions on the `L × L` square. Polynomial-PEPS, `eq:model`. -/
 abbrev SquareInteraction (L q : ℕ) :=
   RectangleInteraction L L q
+
+/-! ### Norms of the terms containing a site -/
+
+section SiteBudget
+
+open scoped Matrix.Norms.L2Operator
+
+variable {L q R : ℕ} {Λ : Finset ℤ} {J : ℝ}
+
+/-- A bound `J` on the norms of the terms of a chain interaction is nonnegative when the chain
+has a site: the singleton support at that site has a term. -/
+theorem ChainInteraction.norm_bound_nonneg (h : ChainInteraction L q R)
+    (hhJ : ∀ X, ‖h.term X‖ ≤ J) (x : Fin L) : 0 ≤ J := by
+  classical
+  let X : ChainSupport L R := ⟨{x}, by simp [IsChainSupport]⟩
+  exact (norm_nonneg (h.term X)).trans (hhJ X)
+
+/-- The norms of the terms of a chain interaction containing a site sum to at most
+`2^{2R+1} J`, independently of the length of the chain and of the local dimension.
+Hastings, arXiv:0705.2024v4, `law16.tex`, lines 88–91 (finite range). -/
+theorem ChainInteraction.sum_norm_terms_containing_le (h : ChainInteraction L q R)
+    (hhJ : ∀ X, ‖h.term X‖ ≤ J) (x : Fin L) :
+    (∑ X ∈ Finset.univ.filter (fun X : ChainSupport L R ↦ x ∈ X.1),
+      ‖h.term X‖) ≤ ((2 ^ (2 * R + 1) : ℕ) : ℝ) * J := by
+  classical
+  have hJ : 0 ≤ J := h.norm_bound_nonneg hhJ x
+  have hcard := ChainSupport.card_filter_mem_le (R := R) x
+  have hsum := Finset.sum_le_card_nsmul
+    (Finset.univ.filter fun X : ChainSupport L R ↦ x ∈ X.1)
+    (fun X ↦ ‖h.term X‖) J (fun X _ ↦ hhJ X)
+  rw [nsmul_eq_mul] at hsum
+  exact hsum.trans (mul_le_mul_of_nonneg_right (by exact_mod_cast hcard) hJ)
+
+/-- A bound `J` on the norms of the terms of a domain interaction is nonnegative when the domain
+has a site. -/
+theorem DomainInteraction.norm_bound_nonneg (h : DomainInteraction Λ q R)
+    (hhJ : ∀ X, ‖h.term X‖ ≤ J) (x : Fin Λ.card) : 0 ≤ J :=
+  (norm_nonneg (h.term ⟨{x}, IsDomainSupport.singleton x⟩)).trans (hhJ _)
+
+/-- The norms of the terms of a domain interaction containing a site sum to at most
+`2^{2R+1} J`, as on the chain of `|Λ|` sites. -/
+theorem DomainInteraction.sum_norm_terms_containing_le (h : DomainInteraction Λ q R)
+    (hhJ : ∀ X, ‖h.term X‖ ≤ J) (x : Fin Λ.card) :
+    (∑ X ∈ Finset.univ.filter (fun X : DomainSupport Λ R ↦ x ∈ X.1),
+      ‖h.term X‖) ≤ ((2 ^ (2 * R + 1) : ℕ) : ℝ) * J := by
+  let hc : ChainInteraction Λ.card q R :=
+    h.extend DomainSupport.toChainSupport DomainSupport.toChainSupport_injective (fun Y ↦ Y.1)
+      fun _ ↦ subset_rfl
+  refine (Finset.sum_le_sum_of_injOn
+    (g := fun Y : ChainSupport Λ.card R ↦ ‖hc.term Y‖)
+    DomainSupport.toChainSupport DomainSupport.toChainSupport_injective.injOn
+    ?_ ?_ (fun _ _ _ ↦ norm_nonneg _)).trans
+      (hc.sum_norm_terms_containing_le
+        (Interaction.norm_extend_term_le (h.norm_bound_nonneg hhJ x) hhJ) x)
+  · exact fun Y hY ↦ (Finset.mem_image.mp hY).elim fun X hX ↦
+      hX.2 ▸ Finset.mem_filter.mpr ⟨Finset.mem_univ _, (Finset.mem_filter.mp hX.1).2⟩
+  · exact fun X _ ↦
+      le_of_eq (congrArg norm (Interaction.extend_term_apply (Φ := h) X).symm)
+
+end SiteBudget
 
 /-! ### Bond interactions on the chain -/
 

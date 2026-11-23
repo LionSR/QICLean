@@ -8,6 +8,7 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.ManyBody.Hamiltonian
 
+import QICLean.ManyBody.Hamiltonian.Chain
 import QICLean.ManyBody.Hamiltonian.ClusterExpansion
 import QICLean.ManyBody.Hamiltonian.CommutingParentHamiltonian
 import QICLean.ManyBody.Hamiltonian.DisjointRegionalGround
