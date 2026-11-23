@@ -380,7 +380,7 @@ theorem chainStep_zero :
 theorem chainStep_succ_of_lt {t : ℕ} (h : t < n) :
     chainStep c₀ c e (t + 1) =
       (c t).castSystems (chainSystem_succ_of_le h.le).symm (chainSystem_succ_of_le h).symm := by
-  rw [chainStep, dif_pos h]
+  rw [chainStep, dite_eq_left h]
 
 /-- The stage after the middle circuits is the last circuit, its systems identified. -/
 theorem chainStep_succ_self :
@@ -495,7 +495,7 @@ omit [∀ p, DecidableEq (A p)] [∀ t p, DecidableEq (B t p)] [∀ p, Decidable
 /-- Up to the last circuit, the vector after stage `t` is `y t`. -/
 theorem chainVec_succ_of_le {t : ℕ} (h : t ≤ n) :
     chainVec x₀ y z (t + 1) = castVector (chainSystem_succ_of_le h).symm (y t) := by
-  rw [chainVec, dif_pos h]
+  rw [chainVec, dite_eq_left h]
 
 omit [∀ p, DecidableEq (A p)] [∀ t p, DecidableEq (B t p)] [∀ p, DecidableEq (Z p)] in
 /-- After the last circuit, the vector is `z`. -/
