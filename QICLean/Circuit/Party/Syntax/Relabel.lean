@@ -27,7 +27,8 @@ the counts.
 
 * `QuantumCircuit.Party.PartyCircuit.op_relabel`,
   `QuantumCircuit.Party.PartyCircuit.op_relabel_mul`,
-  `QuantumCircuit.Party.PartyCircuit.isAllowed_relabel` — relabellings.
+  `QuantumCircuit.Party.PartyCircuit.isAllowed_relabel`,
+  `QuantumCircuit.Party.PartyCircuit.gates_relabel` — relabellings.
 * `QuantumCircuit.Party.PartyCircuit.op_mapGates`,
   `QuantumCircuit.Party.PartyCircuit.gates_mapGates`,
   `QuantumCircuit.Party.PartyCircuit.IsAllowed.mapGates` — replacing the gates.
@@ -55,6 +56,26 @@ from the basis `Y s` to the basis `X s`, read from `ℂ^{X s}` to `ℂ^{Y s}`; i
 configuration `e ∘ y` to `y`. -/
 def relabel (e : ∀ s, Y s ≃ X s) : PartyCircuit G X Y :=
   localOps fun s ↦ (e s).toPEquiv.toMatrix
+
+omit [Fintype P] [DecidableEq P] [GateFamily G] in
+/-- A relabelling has no gate. -/
+@[simp] theorem gates_relabel (e : ∀ s, Y s ≃ X s) : (relabel (G := G) e).gates = [] :=
+  rfl
+
+omit [Fintype P] [DecidableEq P] [GateFamily G] in
+/-- A relabelling has no cell. -/
+@[simp] theorem gateCells_relabel (e : ∀ s, Y s ≃ X s) : (relabel (G := G) e).gateCells = [] :=
+  rfl
+
+omit [Fintype P] [DecidableEq P] [GateFamily G] in
+/-- A relabelling has no gate. -/
+@[simp] theorem numGates_relabel (e : ∀ s, Y s ≃ X s) : (relabel (G := G) e).numGates = 0 :=
+  rfl
+
+omit [Fintype P] [GateFamily G] in
+/-- A relabelling costs nothing. -/
+@[simp] theorem gateCount_relabel (e : ∀ s, Y s ≃ X s) : (relabel (G := G) e).gateCount = 0 :=
+  rfl
 
 variable [GateFamily.UniqueOutcome G] [∀ p, Fintype (X p)] (ev : Interpretation G)
 

@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Sites.Config
 import QICLean.Analysis.Norm.VectorPreparation
+import QICLean.Algebra.Kronecker.PiKronecker
 
 /-!
 # Fresh factors in front of the bases of two parties
@@ -20,14 +21,20 @@ its configurations are pairs of a configuration of the fresh factors and a confi
 
 * `QuantumCircuit.Party.addPair`, `QuantumCircuit.Party.addPairLeft`,
   `QuantumCircuit.Party.addPairRight`, `QuantumCircuit.Party.addPairConfigEquiv`.
-* `QuantumCircuit.Party.pairFactor`, `QuantumCircuit.Party.addPairSiteEquiv` — the fresh factors
-  alone, and the basis of one party.
+* `QuantumCircuit.Party.addPairMatrix` — party operations run beside the fresh factors.
+* `QuantumCircuit.Party.pairFactor`, `QuantumCircuit.Party.addPairSiteEquiv`,
+  `QuantumCircuit.Party.pairFactorConfigEquiv` — the fresh factors alone, the basis of one party,
+  and the configurations of the fresh factors.
 
 ## Main results
 
 * `QuantumCircuit.Party.addPairConfigEquiv_apply_fst`,
   `QuantumCircuit.Party.addPairConfigEquiv_symm_apply_left` and their companions — the two
   directions of `addPairConfigEquiv`.
+* `QuantumCircuit.Party.addPairConfigEquiv_eq_siteEquiv` — `addPairConfigEquiv` read party by
+  party.
+* `QuantumCircuit.Party.norm_addPairMatrix_le`, `QuantumCircuit.Party.piKronecker_addPairMatrix` —
+  party operations beside the fresh factors.
 
 ## References
 
@@ -36,7 +43,7 @@ its configurations are pairs of a configuration of the fresh factors and a confi
 -/
 
 open Matrix ManyBody
-open scoped Matrix.Norms.L2Operator
+open scoped Kronecker Matrix.Norms.L2Operator
 
 namespace QuantumCircuit.Party
 
@@ -189,6 +196,86 @@ def addPairSiteEquiv (X : P → Type) (s : P) :
       ((Equiv.punitProd (X s)).symm.trans
         ((Equiv.cast (show PUnit = pairFactor hpq A B s by simp [pairFactor, hp, hq])).prodCongr
           (Equiv.refl _)))
+
+/-- The configurations of the fresh factors alone: a pair. -/
+def pairFactorConfigEquiv : Config (pairFactor hpq A B) ≃ A × B where
+  toFun z := (cast (by simp [pairFactor]) (z p), cast (by simp [pairFactor, hpq.symm]) (z q))
+  invFun a s :=
+    if hp : s = p then cast (by subst hp; simp [pairFactor]) a.1
+    else if hq : s = q then cast (by subst hq; simp [pairFactor, hp]) a.2
+    else cast (by simp [pairFactor, hp, hq]) ()
+  left_inv z := by
+    funext s
+    by_cases hp : s = p
+    · subst hp; simp
+    · by_cases hq : s = q
+      · subst hq; simp [hp]
+      · simp only [hp, hq, dite_false]
+        have : Subsingleton (pairFactor hpq A B s) := by
+          rw [show pairFactor hpq A B s = Unit by simp [pairFactor, hp, hq]]; infer_instance
+        exact Subsingleton.elim _ _
+  right_inv a := by
+    obtain ⟨a, b⟩ := a
+    simp [hpq.symm]
+
+/-- **`addPairConfigEquiv` party by party**: a configuration of `addPair` is read at every
+party through `addPairSiteEquiv`, then as a pair of configurations, the fresh part through
+`pairFactorConfigEquiv`. -/
+theorem addPairConfigEquiv_eq_siteEquiv (X : P → Type) :
+    addPairConfigEquiv (X := X) hpq A B =
+      ((Equiv.piCongrRight (addPairSiteEquiv hpq A B X)).trans
+        (Equiv.arrowProdEquivProdArrow P (pairFactor hpq A B) X)).trans
+        ((pairFactorConfigEquiv hpq A B).prodCongr (Equiv.refl _)) := by
+  ext z : 1
+  refine Prod.ext (Prod.ext ?_ ?_) (funext fun s ↦ ?_)
+  · simp [addPairConfigEquiv, pairFactorConfigEquiv, addPairSiteEquiv, addPairLeft]
+  · simp [addPairConfigEquiv, pairFactorConfigEquiv, addPairSiteEquiv, addPairRight, hpq.symm]
+  · by_cases hp : s = p
+    · subst hp
+      simp [addPairConfigEquiv, addPairSiteEquiv, addPairLeft]
+    by_cases hq : s = q
+    · subst hq
+      simp [addPairConfigEquiv, addPairSiteEquiv, addPairRight, hp]
+    simp [addPairConfigEquiv, addPairSiteEquiv, hp, hq]
+
+/-! ### Local operations beside the fresh factors -/
+
+section Matrix
+
+variable {Y Y' : P → Type} [DecidableEq A] [DecidableEq B]
+
+/-- The family `C` of party operations run beside the fresh factors of `addPair`: `1 ⊗ C s` at
+every party, read through `addPairSiteEquiv`. -/
+def addPairMatrix [Fintype A] [Fintype B] (C : ∀ s, Matrix (Y' s) (Y s) ℂ) (s : P) :
+    Matrix (addPair Y' hpq A B s) (addPair Y hpq A B s) ℂ :=
+  reindex (addPairSiteEquiv hpq A B Y' s).symm (addPairSiteEquiv hpq A B Y s).symm
+    ((1 : Matrix (pairFactor hpq A B s) (pairFactor hpq A B s) ℂ) ⊗ₖ C s)
+
+/-- Running beside fresh factors keeps contractions. -/
+theorem norm_addPairMatrix_le [Fintype A] [Fintype B] [∀ s, Fintype (Y s)]
+    [∀ s, DecidableEq (Y s)] [∀ s, Fintype (Y' s)] (C : ∀ s, Matrix (Y' s) (Y s) ℂ) (s : P) :
+    ‖addPairMatrix hpq A B C s‖ ≤ ‖C s‖ :=
+  (l2_opNorm_reindex_le _ _ _).trans (l2_opNorm_one_kronecker_le (C s))
+
+/-- **The product of the party operations beside the fresh factors** is `1 ⊗ ⊗_s C s`, read
+along `addPairConfigEquiv`. -/
+theorem piKronecker_addPairMatrix [Fintype P] [Fintype A] [Fintype B]
+    (C : ∀ s, Matrix (Y' s) (Y s) ℂ) :
+    piKronecker (addPairMatrix hpq A B C) =
+      reindex (addPairConfigEquiv (X := Y') hpq A B).symm
+        (addPairConfigEquiv (X := Y) hpq A B).symm
+        ((1 : Matrix (A × B) (A × B) ℂ) ⊗ₖ piKronecker C) := by
+  ext y z
+  rw [addPairConfigEquiv_eq_siteEquiv, addPairConfigEquiv_eq_siteEquiv]
+  simp only [piKronecker_apply, addPairMatrix, reindex_apply, submatrix_apply, Equiv.symm_symm,
+    kroneckerMap_apply, Equiv.trans_apply, Equiv.prodCongr_apply, Prod.map, Equiv.refl_apply,
+    Equiv.piCongrRight_apply, Equiv.arrowProdEquivProdArrow_apply, Finset.prod_mul_distrib,
+    one_apply, Finset.prod_boole, Finset.mem_univ, forall_const,
+    (pairFactorConfigEquiv hpq A B).injective.eq_iff]
+  congr 1
+  exact if_congr ⟨fun h ↦ funext h, fun h s ↦ congrFun h s⟩ rfl rfl
+
+end Matrix
 
 end addPair
 

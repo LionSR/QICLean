@@ -49,6 +49,8 @@ The sources of the monomials of a gate (`Monomial.sources`) and their pair effec
 * `QuantumCircuit.Party.Word.UsesOnly.mem_sources` — a word using a set of parties has its
   sources there.
 * `QuantumCircuit.Party.Word.op_toChain` — a word read as a monomial.
+* `QuantumCircuit.Party.Word.op_sourceAt_mul_piKronecker` — a fresh source commutes with local
+  operations on the old factors.
 
 ## References
 
@@ -185,6 +187,36 @@ theorem op_source_eq_op_relabel_mul [Fintype P] [∀ p, Fintype (X p)] [∀ p, D
   rw [PartyCircuit.op_relabel_mul, op_sourceAt, op_source]
   rfl
 
+/-- A relabelling is an allowed word. -/
+theorem isAllowed_relabel [∀ p, Fintype (X p)] [∀ p, DecidableEq (X p)] [∀ p, Fintype (Y p)]
+    [∀ p, DecidableEq (Y p)] (e : ∀ s, Y s ≃ X s) :
+    Word.IsAllowed (PartyCircuit.relabel (G := SourceGate) e) :=
+  fun s ↦ l2_opNorm_toMatrix_toPEquiv_le (e s)
+
+/-- The canonical pair source with a normalized vector is allowed. -/
+theorem isAllowed_sourceAt {p q : P} (hpq : p ≠ q) (α β : Type) [Fintype α] [DecidableEq α]
+    [Fintype β] [DecidableEq β] {η : EuclideanSpace ℂ (α × β)} (hη : ‖η‖ = 1) (X : P → Type)
+    [∀ p, Fintype (X p)] [∀ p, DecidableEq (X p)] : (sourceAt hpq α β η X).IsAllowed :=
+  isAllowed_source _ hη
+
+/-- **A fresh source commutes with local operations on the old factors**: local operations
+followed by a source are the source followed by the same operations beside the fresh factors.
+Source: Theorem 5.2, `eq:compression-source-gate`, `04-compression.tex`, lines 246–248. -/
+theorem op_sourceAt_mul_piKronecker [Fintype P] {Y Y' : P → Type} [∀ p, Fintype (Y p)]
+    [∀ p, DecidableEq (Y p)] [∀ p, Fintype (Y' p)] [∀ p, DecidableEq (Y' p)] {p q : P}
+    (hpq : p ≠ q) (α β : Type) [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
+    (η : EuclideanSpace ℂ (α × β)) (A : ∀ p, Matrix (Y' p) (Y p) ℂ) :
+    (sourceAt hpq α β η Y').op * piKronecker A =
+      piKronecker (addPairMatrix hpq α β A) * (sourceAt hpq α β η Y).op := by
+  rw [op_sourceAt, op_sourceAt, piKronecker_addPairMatrix]
+  ext y x
+  rw [prepMatrix_mul_apply, mul_apply, ← (addPairConfigEquiv hpq α β).symm.sum_comp,
+    Fintype.sum_prod_type]
+  simp only [reindex_apply, submatrix_apply, Equiv.symm_symm, Equiv.apply_symm_apply,
+    kroneckerMap_apply, prepMatrix_apply, mul_ite, mul_zero, Finset.sum_ite_eq',
+    Finset.mem_univ, ite_true, one_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq]
+  exact mul_comm _ _
+
 /-! ### Source lists -/
 
 /-- The pair sources of a word, those of the later part first. Source: `04-compression.tex`,
@@ -202,6 +234,12 @@ abbrev sourceCount (w : Word X Y) : ℕ := w.sources.length
 /-- The sources of a composition: those of the later word first. -/
 @[simp] theorem sources_comp [∀ p, Fintype (Y p)] [∀ p, DecidableEq (Y p)] (w : Word X Y)
     (w' : Word Y Z) : Word.sources (PartyCircuit.comp w w') = w'.sources ++ w.sources :=
+  rfl
+
+/-- A relabelling has no source. -/
+@[simp] theorem sources_relabel [∀ p, DecidableEq (X p)] [∀ p, Fintype (Y p)]
+    [∀ p, DecidableEq (Y p)] (e : ∀ s, Y s ≃ X s) :
+    Word.sources (PartyCircuit.relabel (G := SourceGate) e) = [] :=
   rfl
 
 /-- The source list of one pair source. -/
@@ -271,6 +309,17 @@ theorem UsesOnly.mono {R R' : Set P} (h : R ⊆ R') : {X Y : P → Type} → {w 
   | _, _, PartyCircuit.localOp _ _ _, hw => h hw
   | _, _, PartyCircuit.localOps _, hw => fun p hp ↦ hw p fun hR ↦ hp (h hR)
   | _, _, PartyCircuit.comp _ _, hw => ⟨UsesOnly.mono h hw.1, UsesOnly.mono h hw.2⟩
+
+/-- A relabelling that is the identification of equal bases outside `R` uses only the parties
+of `R`. -/
+theorem usesOnly_relabel [∀ p, DecidableEq (X p)] [∀ p, Fintype (Y p)] [∀ p, DecidableEq (Y p)]
+    (e : ∀ s, Y s ≃ X s) {R : Set P} (he : ∀ s ∉ R, ∃ h : Y s = X s, ∀ y, e s y = cast h y) :
+    Word.UsesOnly R (PartyCircuit.relabel (G := SourceGate) e) := by
+  intro s hs
+  obtain ⟨h, hy⟩ := he s hs
+  refine ⟨h, fun y x ↦ ?_⟩
+  simp only [PEquiv.toMatrix_apply, Equiv.toPEquiv_apply, Option.mem_def, Option.some.injEq, hy]
+  split_ifs <;> rfl
 
 /-- Every source of a word using only the parties of `R` joins two parties of `R`. -/
 theorem UsesOnly.mem_sources {R : Set P} : {X Y : P → Type} → {w : Word X Y} →

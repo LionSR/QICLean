@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Analysis.TensorProduct.CyclicInsertion
 import QICLean.Analysis.Norm.MatrixToEuclidean
+import QICLean.Analysis.Norm.VectorPreparation
 
 /-!
 # Matrices of the cyclic insertion maps
@@ -28,6 +29,8 @@ and `‖T_m - |η^{⊗ m}⟩⟨η|‖ ≤ m^{-1/2}`.
 
 * `CyclicInsertion.insertAtMatrix_apply`, `CyclicInsertion.idealInsertionMatrix_apply` : the
   entries.
+* `CyclicInsertion.insertAtMatrix_eq_insertNth` : an insertion is a preparation of `η^{⊗ n}`
+  followed by a relabelling.
 * `CyclicInsertion.cyclicInsertionMatrix_eq_sum` : `T_m` is the average of the `m` insertions.
 * `CyclicInsertion.norm_cyclicInsertionMatrix_sub_ideal_le` : the one-effect estimate.
 
@@ -62,6 +65,26 @@ theorem insertAtMatrix_apply (η : EuclideanSpace ℂ ι) (k : κ) (f : κ → �
   · simp [PiLp.single_apply]
   · exact Finset.prod_congr rfl fun j hj => by
       rw [Function.update_of_ne (Finset.ne_of_mem_erase hj)]
+
+/-- **The insertion at `k` is a preparation followed by a relabelling**: it appends the tensor
+power `η^{⊗ n}` behind the input and reads the configuration `(i, f)` as `Fin.insertNth k i f`.
+Source: `04-compression.tex`, lines 75–79 and 96–98 (each insertion term is a normalized source
+preparation followed by a permutation of the pair registers). -/
+theorem insertAtMatrix_eq_insertNth (η : EuclideanSpace ℂ ι) {n : ℕ} (k : Fin (n + 1)) :
+    insertAtMatrix η k =
+      reindex (Fin.insertNthEquiv (fun _ ↦ ι) k) (Equiv.refl ι)
+        (prepMatrix (Equiv.prodComm ι (Fin n → ι)) (tensorPower (Fin n) η)) := by
+  ext f i
+  rw [insertAtMatrix_apply, reindex_apply, submatrix_apply, prepMatrix_apply]
+  have hp : ∏ j ∈ Finset.univ.erase k, η (f j) = ∏ j : Fin n, η (f (k.succAbove j)) := by
+    calc ∏ j ∈ Finset.univ.erase k, η (f j)
+        = ∏ j ∈ Finset.univ.erase k, (if j = k then 1 else η (f j)) :=
+          Finset.prod_congr rfl fun j hj ↦ by simp [Finset.ne_of_mem_erase hj]
+      _ = ∏ j, (if j = k then 1 else η (f j)) := Finset.prod_erase _ (by simp)
+      _ = _ := by simp [Fin.prod_univ_succAbove _ k, Fin.succAbove_ne]
+  simp only [Equiv.prodComm_apply, Prod.fst_swap, Prod.snd_swap, Equiv.refl_symm,
+    Equiv.refl_apply, tensorPower, piTensor_apply, hp, ite_mul, one_mul, zero_mul]
+  rfl
 
 /-- The matrix of the cyclic insertion `T_m : ℂ^ι → (ℂ^ι)^{⊗ m}`. -/
 def cyclicInsertionMatrix (η : EuclideanSpace ℂ ι) (m : ℕ) : Matrix (Fin m → ι) ι ℂ :=
