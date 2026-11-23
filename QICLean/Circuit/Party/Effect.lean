@@ -9,3 +9,4 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Circuit.Party.Effect
 
 import QICLean.Circuit.Party.Effect.GateReplacement
+import QICLean.Circuit.Party.Effect.Replacement
