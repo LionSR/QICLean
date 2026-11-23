@@ -14,6 +14,7 @@ import QICLean.Circuit.Party.Source.GroupedElimination
 import QICLean.Circuit.Party.Source.Inventory
 import QICLean.Circuit.Party.Source.InventoryExpansion
 import QICLean.Circuit.Party.Source.LocalPart
+import QICLean.Circuit.Party.Source.LocalPartCoarsen
 import QICLean.Circuit.Party.Source.Locations
 import QICLean.Circuit.Party.Source.PartyMaps
 import QICLean.Circuit.Party.Source.Preparation
