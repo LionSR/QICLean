@@ -10,3 +10,4 @@ Authors: QICLean contributors
 
 import QICLean.Circuit.Party.Monomial.EffectChain
 import QICLean.Circuit.Party.Monomial.Elimination
+import QICLean.Circuit.Party.Monomial.Stack
