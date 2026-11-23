@@ -171,3 +171,22 @@ theorem rescale_approximation (G A : E) (δ : ℝ) (hδ : 0 ≤ δ)
       _ = 2 * δ := by ring
 
 end NormedSpace
+
+namespace Matrix
+
+/-- Two products of contractions differ by at most the sum of the differences of the factors:
+`‖B A - D C‖ ≤ ‖A - C‖ + ‖B - D‖` when `‖B‖ ≤ 1` and `‖C‖ ≤ 1`. -/
+theorem norm_mul_sub_mul_le {l m n : Type*} [Fintype l] [Fintype m] [Fintype n]
+    [DecidableEq m] [DecidableEq n] (A C : Matrix m n ℂ) (B D : Matrix l m ℂ)
+    (hB : ‖B‖ ≤ 1) (hC : ‖C‖ ≤ 1) : ‖B * A - D * C‖ ≤ ‖A - C‖ + ‖B - D‖ := by
+  have he : B * A - D * C = B * (A - C) + (B - D) * C := by
+    rw [Matrix.mul_sub, Matrix.sub_mul]
+    abel
+  rw [he]
+  refine (norm_add_le _ _).trans (add_le_add ?_ ?_)
+  · exact (l2_opNorm_mul _ _).trans
+      ((mul_le_mul_of_nonneg_right hB (norm_nonneg _)).trans_eq (one_mul _))
+  · exact (l2_opNorm_mul _ _).trans
+      ((mul_le_mul_of_nonneg_left hC (norm_nonneg _)).trans_eq (mul_one _))
+
+end Matrix
