@@ -290,6 +290,58 @@ omit [DecidableEq P] in
   | _, _, _, _, @PartyCircuit.comp _ _ _ _ _ _ _ c c' =>
     congrArg₂ (· + ·) (participationCount_frame p c) (participationCount_frame p c')
 
+omit [DecidableEq P] in
+/-- Framing keeps the local operations contractive. -/
+theorem IsLocalContractive.frame : {X Y : P → Type} → [∀ p, Fintype (X p)] →
+    [∀ p, DecidableEq (X p)] → {c : PartyCircuit G X Y} → c.IsLocalContractive →
+      (c.frame W).IsLocalContractive
+  | _, _, _, _, done _, _ => trivial
+  | _, _, _, _, gate _ _ _, _ => trivial
+  | _, _, _, _, localOp _ _ _, h => (l2_opNorm_one_kronecker_le _).trans h
+  | _, _, _, _, localOps _, h => fun p ↦ (l2_opNorm_one_kronecker_le _).trans (h p)
+  | _, _, _, _, comp _ _, h => ⟨IsLocalContractive.frame h.1, IsLocalContractive.frame h.2⟩
+
+/-- Framing keeps the gate occurrences. -/
+def frameLocationsEquiv : {X Y : P → Type} → [∀ p, Fintype (X p)] →
+    [∀ p, DecidableEq (X p)] → (c : PartyCircuit G X Y) →
+      c.gateLocations ≃ (c.frame W).gateLocations
+  | _, _, _, _, done _ => Equiv.refl _
+  | _, _, _, _, gate _ _ _ => Equiv.refl _
+  | _, _, _, _, localOp _ _ _ => Equiv.refl _
+  | _, _, _, _, localOps _ => Equiv.refl _
+  | _, _, _, _, comp c c' => Equiv.sumCongr (frameLocationsEquiv c) (frameLocationsEquiv c')
+
+omit [DecidableEq P] in
+/-- Framing keeps the cell of every gate occurrence. -/
+theorem participants_frameLocationsEquiv : {X Y : P → Type} →
+    [∀ p, Fintype (X p)] → [∀ p, DecidableEq (X p)] → (c : PartyCircuit G X Y) →
+      (g : c.gateLocations) →
+        (c.frame W).participants (frameLocationsEquiv W c g) = c.participants g
+  | _, _, _, _, done _, g => g.elim
+  | _, _, _, _, gate _ _ _, _ => rfl
+  | _, _, _, _, localOp _ _ _, g => g.elim
+  | _, _, _, _, localOps _, g => g.elim
+  | _, _, _, _, comp c c', g => by
+    rcases g with g | g
+    exacts [participants_frameLocationsEquiv c g, participants_frameLocationsEquiv c' g]
+
+omit [DecidableEq P] in
+/-- Framing commutes with a morphism of gate families that commutes with framing gates. -/
+theorem mapGates_frame {G₂ : Finset P → (P → Type) → (P → Type) → Type 1} [GateFamily G₂]
+    [GateFrame G₂] (φ : GateMorphism G G₂)
+    (hφ : ∀ ⦃D : Finset P⦄ ⦃X Y : P → Type⦄ [∀ p, Fintype (X p)] [∀ p, DecidableEq (X p)]
+      [∀ p, Fintype (Y p)] [∀ p, DecidableEq (Y p)] (g : G D X Y),
+        φ.map (GateFrame.frame W g) = GateFrame.frame W (φ.map g)) :
+    {X Y : P → Type} → [∀ p, Fintype (X p)] → [∀ p, DecidableEq (X p)] →
+      (c : PartyCircuit G X Y) → (c.frame W).mapGates φ = (c.mapGates φ).frame W
+  | _, _, _, _, done _ => rfl
+  | _, _, _, _, gate D hY g => congrArg (gate D _) (hφ g)
+  | _, _, _, _, localOp _ _ _ => rfl
+  | _, _, _, _, localOps _ => rfl
+  | _, _, _, _, comp c c' => by
+    rw [frame, mapGates, mapGates_frame φ hφ c, mapGates_frame φ hφ c']
+    rfl
+
 section Op
 
 variable [Fintype P] [GateFamily.UniqueOutcome G] (ev : Interpretation G)
@@ -402,6 +454,64 @@ theorem op_frame [Fintype P] {X Y : P → Type} [∀ p, Fintype (X p)] [∀ p, D
   PartyCircuit.op_frame W _ SourceGate.isCompatible_frame w
 
 end Word
+
+/-! ### Pair effects and sources of framed monomials -/
+
+namespace Monomial
+
+variable {D : Finset P} (W : ↥D → Type) [∀ p, Fintype (W p)] [∀ p, DecidableEq (W p)]
+
+/-- Framing keeps the pair data of the pair sources along a monomial. -/
+theorem filterMap_chainSource?_gates_frame : {X Y : ↥D → Type} → [∀ p, Fintype (X p)] →
+    [∀ p, DecidableEq (X p)] → (M : Monomial D X Y) →
+      (M.frame W).gates.filterMap chainSource? = M.gates.filterMap chainSource?
+  | _, _, _, _, .done _ => rfl
+  | _, _, _, _, @PartyCircuit.gate _ _ _ _ _ _ _ _ (.inl _) => rfl
+  | _, _, _, _, @PartyCircuit.gate _ _ _ _ _ _ _ _ (.inr _) => rfl
+  | _, _, _, _, @PartyCircuit.localOp _ _ _ _ _ _ _ _ _ => rfl
+  | _, _, _, _, @PartyCircuit.localOps _ _ _ _ _ _ _ => rfl
+  | _, _, _, _, @PartyCircuit.comp _ _ _ _ _ _ _ c c' => by
+    change ((c.frame W).gates ++ (c'.frame W).gates).filterMap chainSource? =
+      (c.gates ++ c'.gates).filterMap chainSource?
+    rw [List.filterMap_append, List.filterMap_append, filterMap_chainSource?_gates_frame c,
+      filterMap_chainSource?_gates_frame c']
+
+/-- Framing keeps the pair data of the pair effects along a monomial. -/
+theorem filterMap_chainEffect?_gates_frame : {X Y : ↥D → Type} → [∀ p, Fintype (X p)] →
+    [∀ p, DecidableEq (X p)] → (M : Monomial D X Y) →
+      (M.frame W).gates.filterMap chainEffect? = M.gates.filterMap chainEffect?
+  | _, _, _, _, .done _ => rfl
+  | _, _, _, _, @PartyCircuit.gate _ _ _ _ _ _ _ _ (.inl _) => rfl
+  | _, _, _, _, @PartyCircuit.gate _ _ _ _ _ _ _ _ (.inr _) => rfl
+  | _, _, _, _, @PartyCircuit.localOp _ _ _ _ _ _ _ _ _ => rfl
+  | _, _, _, _, @PartyCircuit.localOps _ _ _ _ _ _ _ => rfl
+  | _, _, _, _, @PartyCircuit.comp _ _ _ _ _ _ _ c c' => by
+    change ((c.frame W).gates ++ (c'.frame W).gates).filterMap chainEffect? =
+      (c.gates ++ c'.gates).filterMap chainEffect?
+    rw [List.filterMap_append, List.filterMap_append, filterMap_chainEffect?_gates_frame c,
+      filterMap_chainEffect?_gates_frame c']
+
+variable {X Y : ↥D → Type} [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
+
+/-- Framing keeps the pair sources of a monomial. -/
+@[simp] theorem sources_frame (M : Monomial D X Y) : Monomial.sources (M.frame W) = M.sources :=
+  congrArg List.reverse (filterMap_chainSource?_gates_frame W M)
+
+/-- Framing keeps the pair effects of a monomial. -/
+@[simp] theorem effects_frame (M : Monomial D X Y) : Monomial.effects (M.frame W) = M.effects :=
+  filterMap_chainEffect?_gates_frame W M
+
+/-- Framing keeps the number of pair effects of a monomial. -/
+@[simp] theorem effectCount_frame (M : Monomial D X Y) :
+    Monomial.effectCount (M.frame W) = M.effectCount :=
+  congrArg List.length (effects_frame W M)
+
+/-- Framing keeps the number of pair sources of a monomial. -/
+@[simp] theorem sourceCount_frame (M : Monomial D X Y) :
+    Monomial.sourceCount (M.frame W) = M.sourceCount :=
+  congrArg List.length (sources_frame W M)
+
+end Monomial
 
 /-! ### Weighted gates beside spectator factors -/
 

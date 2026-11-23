@@ -32,7 +32,9 @@ The effect circuit of an original circuit forgets the conditions (`toEffectCircu
 
 ## Main definitions
 
-* `QuantumCircuit.Party.OriginalGate`, `QuantumCircuit.Party.OriginalGate.ev`.
+* `QuantumCircuit.Party.OriginalGate`, `QuantumCircuit.Party.OriginalGate.ev`,
+  `QuantumCircuit.Party.OriginalGate.ofWeightedGate` — an original gate from a gate expansion
+  with allowed monomials that is a contraction.
 * `QuantumCircuit.Party.OriginalCircuit`, its constructors `done`, `gate`, `localOp`,
   `localOps`, `comp`, `QuantumCircuit.Party.OriginalCircuit.op`,
   `QuantumCircuit.Party.OriginalCircuit.toEffectCircuit`.
@@ -137,6 +139,36 @@ theorem OriginalGate.isCompatible_toWeightedGateMorphism :
     (OriginalGate.toWeightedGateMorphism (P := P)).IsCompatible OriginalGate.ev
       WeightedGate.ev :=
   fun _ _ _ _ _ _ _ _ _ ↦ rfl
+
+/-- An original gate from a gate expansion on a cell of a number of parties other than one, with
+allowed monomials and a contraction, both conditions proved for the given finiteness and
+decidability structures of the systems (any two such structures agree). -/
+def OriginalGate.ofWeightedGate {D : Finset P} {X Y : P → Type} [iFX : ∀ p, Fintype (X p)]
+    [iDX : ∀ p, DecidableEq (X p)] [iFY : ∀ p, Fintype (Y p)] [iDY : ∀ p, DecidableEq (Y p)]
+    (g : WeightedGate D X Y) (hD : D.card ≠ 1) (hA : WeightedGate.IsAllowed g)
+    (hN : ‖WeightedGate.ev g ()‖ ≤ 1) : OriginalGate D X Y where
+  toWeightedGate := g
+  card_ne_one := hD
+  monomials_allowed := @fun i1 i2 i3 i4 ↦ by
+    obtain rfl : i1 = iFX := Subsingleton.elim _ _
+    obtain rfl : i2 = iDX := Subsingleton.elim _ _
+    obtain rfl : i3 = iFY := Subsingleton.elim _ _
+    obtain rfl : i4 = iDY := Subsingleton.elim _ _
+    exact hA
+  norm_ev_le_one := @fun i1 i2 i3 i4 ↦ by
+    obtain rfl : i1 = iFX := Subsingleton.elim _ _
+    obtain rfl : i2 = iDX := Subsingleton.elim _ _
+    obtain rfl : i3 = iFY := Subsingleton.elim _ _
+    obtain rfl : i4 = iDY := Subsingleton.elim _ _
+    exact hN
+
+/-- The gate expansion of an original gate built from a weighted gate is that weighted gate. -/
+@[simp] theorem OriginalGate.toWeightedGate_ofWeightedGate {D : Finset P} {X Y : P → Type}
+    [∀ p, Fintype (X p)] [∀ p, DecidableEq (X p)] [∀ p, Fintype (Y p)] [∀ p, DecidableEq (Y p)]
+    (g : WeightedGate D X Y) (hD : D.card ≠ 1) (hA : WeightedGate.IsAllowed g)
+    (hN : ‖WeightedGate.ev g ()‖ ≤ 1) :
+    (OriginalGate.ofWeightedGate g hD hA hN).toWeightedGate = g :=
+  rfl
 
 /-! ### Circuits of original gates -/
 

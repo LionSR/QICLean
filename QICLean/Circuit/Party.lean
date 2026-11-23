@@ -8,6 +8,8 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Circuit.Party
 
+import QICLean.Circuit.Party.Effect
 import QICLean.Circuit.Party.Monomial
+import QICLean.Circuit.Party.Original
 import QICLean.Circuit.Party.Source
 import QICLean.Circuit.Party.Syntax

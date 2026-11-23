@@ -359,3 +359,64 @@ theorem chronologicalGarbageReadout_discard_density
     partialTraceRight_tensorVector _ _ (norm_cumulativeGarbageVector γ hγ t)]
 
 end Matrix
+
+/-! ### A normalized auxiliary vector grouped into the environment -/
+
+namespace Matrix
+
+variable {Phys Env Aux : Type*} [Fintype Env] [Fintype Aux]
+
+/-- The vector `v` with the auxiliary vector `γ` appended and grouped into the environment.
+Source: `04-compression.tex`, lines 212–215. -/
+def appendAuxiliaryVector (v : EuclideanSpace ℂ (Phys × Env)) (γ : EuclideanSpace ℂ Aux) :
+    EuclideanSpace ℂ (Phys × (Env × Aux)) :=
+  WithLp.toLp 2 (fun p ↦ v (p.1, p.2.1) * γ p.2.2)
+
+/-- The physical density is unchanged on discarding a normalized auxiliary vector. Source:
+`04-compression.tex`, lines 213–215. -/
+theorem partialTraceRight_appendAuxiliaryVector (v : EuclideanSpace ℂ (Phys × Env))
+    (γ : EuclideanSpace ℂ Aux) (hγ : ‖γ‖ = 1) :
+    partialTraceRight (euclideanOuterProduct (appendAuxiliaryVector v γ)
+      (appendAuxiliaryVector v γ)) = partialTraceRight (euclideanOuterProduct v v) := by
+  have hγ1 : ∑ a, γ a * star (γ a) = 1 := by
+    have h := EuclideanSpace.norm_sq_eq γ
+    rw [hγ, one_pow] at h
+    have h' : ((∑ a, ‖γ a‖ ^ 2 : ℝ) : ℂ) = 1 := by rw [← h]; simp
+    rw [← h']
+    push_cast
+    refine Finset.sum_congr rfl fun a _ ↦ ?_
+    rw [RCLike.star_def, RCLike.mul_conj]
+    norm_cast
+  ext i j
+  simp only [partialTraceRight_apply, euclideanOuterProduct, vecMulVec_apply,
+    appendAuxiliaryVector, Pi.star_apply, Fintype.sum_prod_type, star_mul']
+  refine Finset.sum_congr rfl fun e _ ↦ ?_
+  calc ∑ a, v (i, e) * γ a * (star (v (j, e)) * star (γ a))
+      = v (i, e) * star (v (j, e)) * ∑ a, γ a * star (γ a) := by
+        rw [Finset.mul_sum]; exact Finset.sum_congr rfl fun a _ ↦ by ring
+    _ = _ := by rw [hγ1, mul_one]
+
+/-- The norm of a vector with an appended auxiliary vector. -/
+theorem norm_appendAuxiliaryVector [Fintype Phys] (v : EuclideanSpace ℂ (Phys × Env))
+    (γ : EuclideanSpace ℂ Aux) : ‖appendAuxiliaryVector v γ‖ = ‖v‖ * ‖γ‖ := by
+  apply (sq_eq_sq₀ (norm_nonneg _) (mul_nonneg (norm_nonneg _) (norm_nonneg _))).mp
+  simp only [EuclideanSpace.norm_sq_eq, appendAuxiliaryVector, Fintype.sum_prod_type, norm_mul,
+    mul_pow]
+  simp only [← Finset.mul_sum, ← Finset.sum_mul]
+
+/-- **Absolute physical density error for an approximate extended vector**, without division by
+the norm of the original vector.
+Source: `eq:compression-effect-circuit-error`, `04-compression.tex`, lines 218–229. -/
+theorem rectangularTraceNorm_appendAuxiliaryVector_error_le_two [Fintype Phys] [DecidableEq Phys]
+    (v : EuclideanSpace ℂ (Phys × Env)) (γ : EuclideanSpace ℂ Aux)
+    (w' : EuclideanSpace ℂ (Phys × (Env × Aux))) (hγ : ‖γ‖ = 1) (hv : ‖v‖ ≤ 1)
+    (hw' : ‖w'‖ ≤ 1) :
+    rectangularTraceNorm
+      (partialTraceRight (euclideanOuterProduct w' w') -
+        partialTraceRight (euclideanOuterProduct v v)) ≤
+      2 * ‖w' - appendAuxiliaryVector v γ‖ := by
+  rw [← partialTraceRight_appendAuxiliaryVector v γ hγ]
+  apply rectangularTraceNorm_partialTraceRight_pure_density_sub_le_two _ _ hw'
+  simpa only [norm_appendAuxiliaryVector, hγ, mul_one] using hv
+
+end Matrix

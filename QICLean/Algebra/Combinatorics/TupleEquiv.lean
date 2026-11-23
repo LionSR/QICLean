@@ -50,6 +50,8 @@ are merged.
 * `finFourArrowEquiv_symm_apply`: gives the ordered coordinates of the inverse map.
 * `Matrix.eq_vecCons_fin_two`, `Matrix.eq_vecCons_fin_three`, `Matrix.eq_vecCons_fin_four`:
   a function on two, three or four indices is the vector of its values.
+* `cast_pi_apply`, `cast_pi_eq_iff`: a cast between two families of functions, read value by
+  value.
 * `Equiv.piSigmaEquiv_apply`, `Equiv.piSigmaEquiv_symm_apply`: the two directions of
   `Equiv.piSigmaEquiv`.
 
@@ -278,3 +280,26 @@ def prodLeftComm (α β γ : Type*) : α × (β × γ) ≃ β × (α × γ) wher
   rfl
 
 end Equiv
+
+/-! ### Casts between families of functions -/
+
+section Cast
+
+universe u v
+
+/-- A cast between two families of functions is the family of casts of their values. -/
+theorem cast_pi_apply {ι : Sort u} {A B : ι → Sort v} (hAB : A = B)
+    (h : (∀ i, A i) = ∀ i, B i) (a : ∀ i, A i) (i : ι) :
+    cast h a i = cast (congrFun hAB i) (a i) := by
+  subst hAB
+  rfl
+
+/-- A cast between two families of functions hits `b` exactly when every value is cast to the
+value of `b`. -/
+theorem cast_pi_eq_iff {ι : Sort u} {A B : ι → Sort v} (hAB : ∀ i, A i = B i)
+    (h : (∀ i, A i) = ∀ i, B i) (a : ∀ i, A i) (b : ∀ i, B i) :
+    cast h a = b ↔ ∀ i, cast (hAB i) (a i) = b i := by
+  obtain rfl : A = B := funext hAB
+  simp [funext_iff]
+
+end Cast

@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Circuit.Party.Syntax.Gates
 import QICLean.Circuit.Party.Syntax.Relabel
+import QICLean.Circuit.Party.Syntax.UsesOnly
 import QICLean.ManyBody.Sites.ProductVector
 
 /-!
@@ -291,26 +292,12 @@ theorem isNormalized_sources : {X Y : P → Type} → [∀ p, Fintype (X p)] →
 
 /-! ### Words using a set of parties -/
 
-open Classical in
 /-- A word uses only the parties of `R`: its sources join parties of `R`, its local operations
-act at parties of `R`, and its local operations at every party are the identity outside `R`.
-Source: `04-compression.tex`, lines 32–35. -/
-def UsesOnly (R : Set P) : {X Y : P → Type} → Word X Y → Prop
-  | _, _, PartyCircuit.done _ => True
-  | _, _, PartyCircuit.gate D _ _ => (D : Set P) ⊆ R
-  | _, _, PartyCircuit.localOp p _ _ => p ∈ R
-  | X, Y, PartyCircuit.localOps A =>
-    ∀ p ∉ R, ∃ h : Y p = X p, ∀ y x, A p y x = if cast h y = x then 1 else 0
-  | _, _, PartyCircuit.comp w w' => UsesOnly R w ∧ UsesOnly R w'
-
-/-- A word using only the parties of `R` uses only those of a larger set. -/
-theorem UsesOnly.mono {R R' : Set P} (h : R ⊆ R') : {X Y : P → Type} → {w : Word X Y} →
-    w.UsesOnly R → w.UsesOnly R'
-  | _, _, PartyCircuit.done _, _ => trivial
-  | _, _, PartyCircuit.gate _ _ _, hw => hw.trans h
-  | _, _, PartyCircuit.localOp _ _ _, hw => h hw
-  | _, _, PartyCircuit.localOps _, hw => fun p hp ↦ hw p fun hR ↦ hp (h hR)
-  | _, _, PartyCircuit.comp _ _, hw => ⟨UsesOnly.mono h hw.1, UsesOnly.mono h hw.2⟩
+act at parties of `R`, and its local operations at every party are the identity outside `R`
+(`PartyCircuit.UsesOnly` for the gate family of pair sources). Source: `04-compression.tex`,
+lines 32–35. -/
+abbrev UsesOnly (R : Set P) {X Y : P → Type} (w : Word X Y) : Prop :=
+  PartyCircuit.UsesOnly (G := SourceGate) R w
 
 /-- A relabelling that is the identification of equal bases outside `R` uses only the parties
 of `R`. -/

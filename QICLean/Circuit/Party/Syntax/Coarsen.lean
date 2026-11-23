@@ -153,13 +153,6 @@ def coarse (f : P → Q) (g : SourceGate D X Y) (h : f g.left ≠ f g.right) :
       ⟨f g.left, f g.right, h, g.leftBasis, g.rightBasis, g.vector⟩ :=
   rfl
 
-/-- A cast between two families of functions is the family of casts of their values. -/
-private theorem cast_pi_apply {ι : Type} {A B : ι → Type} (hAB : A = B)
-    (hc : (∀ i, A i) = ∀ i, B i) (a : ∀ i, A i) (i : ι) :
-    cast hc a i = cast (congrFun hAB i) (a i) := by
-  subst hAB
-  rfl
-
 omit [DecidableEq P] in
 /-- The value at a site of a configuration of the blocked system depends only on the site. -/
 private theorem block_apply_congr {f : P → Q} {T : P → Type} (z : Config (blockSystem f T))
