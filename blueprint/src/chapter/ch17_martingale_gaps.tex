@@ -315,22 +315,6 @@ $\ker H\neq0$ it is the gap at energy $0$ of Theorem~\ref{thm:hamiltonians_kerne
     $\langle w,Uv\rangle=\langle U^*w,v\rangle=0$.
 \end{proof}
 
-\begin{theorem}[A norm gap survives compression to a reducing image]
-    \label{thm:gap_compression}
-    \lean{LinearIsometry.norm_gap_compression_of_commute}
-    \leanok
-    \uses{def:gap_compression}
-    Suppose that $UU^*H=HUU^*$ and that $\delta\in\R$ is a norm gap of $H$. Then
-    $\delta$ is a norm gap of $U^*HU$. Either space may be zero. This is the
-    restriction step of~\cite[Section~5, lines 1695--1777]{GarreRubio2023MPOSym}.
-\end{theorem}
-\begin{proof}\leanok
-    \uses{lem:gap_compression_intertwines}
-    Let $K=U^*HU$ and $v\perp\ker K$. By
-    Lemma~\ref{lem:gap_compression_intertwines}, $Uv\perp\ker H$ and $HUv=UKv$, so
-    $\delta\lVert v\rVert=\delta\lVert Uv\rVert\le\lVert HUv\rVert=\lVert Kv\rVert$.
-\end{proof}
-
 \begin{lemma}[Nested subspaces]
     \label{lem:gap_supported_projection}
     \lean{Submodule.starProjection_comp_starProjection_eq_right_of_le,
@@ -364,8 +348,7 @@ $\ker H\neq0$ it is the gap at energy $0$ of Theorem~\ref{thm:hamiltonians_kerne
         LinearIsometry.compression_starProjection_of_le_range,
         LinearIsometry.compression_one_sub_starProjection_of_le_range,
         LinearIsometry.compression_one_sub_starProjection_eq_orthogonal_of_le_range,
-        LinearIsometry.ker_compression_one_sub_starProjection_of_le_range,
-        LinearIsometry.norm_gap_compression_one_sub_starProjection_of_le_range}
+        LinearIsometry.ker_compression_one_sub_starProjection_of_le_range}
     \leanok
     \uses{def:gap_compression}
     Let $U:E\to F$ be an isometry between finite-dimensional complex Hilbert spaces,
@@ -376,19 +359,16 @@ $\ker H\neq0$ it is the gap at energy $0$ of Theorem~\ref{thm:hamiltonians_kerne
         U^*(1-P_S)U                 & =1-P_{U^*S}=P_{(U^*S)^\perp}, \\
         \ker\bigl(U^*(1-P_S)U\bigr) & =U^*S.
     \end{align*}
-    Every norm gap of $1-P_S$ is a norm gap of $U^*(1-P_S)U$.
 \end{theorem}
 \begin{proof}\leanok
-    \uses{lem:gap_supported_projection, lem:gap_isometric_image_projection,
-        thm:gap_compression}
+    \uses{lem:gap_supported_projection, lem:gap_isometric_image_projection}
     Lemma~\ref{lem:gap_isometric_image_projection} with $G=E$ gives
     $P_{\operatorname{ran}U}=UU^*$, and Lemma~\ref{lem:gap_supported_projection} with
     $F=\operatorname{ran}U$ gives the commutation. The identities $U^*U=1$ and
     $S\subseteq\operatorname{ran}U$ give $U(U^*S)=S$. By
     Lemma~\ref{lem:gap_isometric_image_projection}, $P_S=P_{U(U^*S)}=UP_{U^*S}U^*$;
     multiplying by $U^*$ on the left and $U$ on the right gives $U^*P_SU=P_{U^*S}$,
-    and its complement and kernel follow. Theorem~\ref{thm:gap_compression} carries
-    the gap through the compression.
+    and its complement and kernel follow.
 \end{proof}
 
 Let $U:E\to F$ be an isometry of finite-dimensional complex inner product spaces, $K$ an
@@ -437,22 +417,6 @@ Write $q_H(y)=\operatorname{Re}\langle Hy,y\rangle$, and likewise $q_K$.
     \end{align*}
 \end{proof}
 
-\begin{theorem}[A norm gap through an isometric inclusion]
-    \label{thm:gap_inclusion_norm}
-    \lean{LinearIsometry.norm_gap_of_intertwines}
-    \leanok
-    Suppose $H,K\ge0$, $HU=UK$, $\delta\ge0$ is a norm gap of $K$, and
-    $c\lVert y\rVert^2\le q_H(y)$ whenever $U^*y=0$. Then $\min\{\delta,c\}$ is a norm
-    gap of $H$. No sign of $c$ is assumed.
-\end{theorem}
-\begin{proof}\leanok
-    \uses{lem:gap_inclusion_quadratic, lem:gap_energy_to_norm}
-    For the positive operator $K$, the norm gap $\delta\ge0$ gives
-    $q_K(x)\ge\delta\lVert x\rVert^2$ on $(\ker K)^\perp$.
-    Lemma~\ref{lem:gap_inclusion_quadratic} and Lemma~\ref{lem:gap_energy_to_norm}
-    give the claim.
-\end{proof}
-
 \subsection{Bounded congruences}
 \label{sec:martingale_gaps_congruence}
 
@@ -472,14 +436,12 @@ Write $q_H(y)=\operatorname{Re}\langle Hy,y\rangle$, and likewise $q_K$.
 
 \begin{theorem}[A gap under a bounded congruence]
     \label{thm:gap_bounded_congruence}
-    \lean{LinearMap.IsPositive.norm_gap_adjoint_congruence_of_inverse_bound,
-        LinearMap.IsPositive.bounded_congruence_gap}
+    \lean{LinearMap.IsPositive.norm_gap_adjoint_congruence_of_inverse_bound}
     \leanok
     \uses{lem:gap_congruence_kernel}
     Let $P\ge0$ on $F$ have norm gap $\delta\ge0$, and let $e:E\to F$ be invertible with
     $\lVert e^{-1}w\rVert\le C\lVert w\rVert$ for every $w$, where $C>0$. Then
-    $\delta/C^2$ is a norm gap of $Q=e^*Pe$. If $\delta>0$, then in addition
-    $\delta/C^2>0$, $Q\ge0$ and $\ker Q=e^{-1}(\ker P)$.
+    $\delta/C^2$ is a norm gap of $Q=e^*Pe$.
 \end{theorem}
 \begin{proof}\leanok
     \uses{lem:gap_congruence_kernel}

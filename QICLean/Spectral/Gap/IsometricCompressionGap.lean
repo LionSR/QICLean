@@ -6,13 +6,12 @@ Authors: QICLean contributors
 import Mathlib.Analysis.InnerProductSpace.Adjoint
 
 /-!
-# Restricting a gap to a reducing isometric image
+# Compression to a reducing isometric image
 
 If the range projection of a rectangular isometry commutes with an operator,
 compression intertwines with that operator in both directions. The adjoint
 therefore maps the original kernel into the compressed kernel, and the
 isometry maps its orthogonal complement into the original kernel complement.
-Every norm-gap bound restricts with exactly the same constant.
 
 This is the restriction to the coordinates of a reducing subspace used in
 GLM23, arXiv:2203.12563v3, Section 5, lines 1695–1777. It does not require
@@ -104,17 +103,5 @@ theorem map_mem_orthogonal_ker_compression_of_commute
   change ⟪w, U.toLinearMap v⟫_ℂ = 0
   rw [← LinearMap.adjoint_inner_left U.toLinearMap]
   exact ((LinearMap.ker (U.compression H)).mem_orthogonal v).mp hv _ hadj
-
-/-- Compression to a reducing isometric image preserves every norm-gap
-lower bound, with no loss and no ambient-surjectivity assumption.
-Source: GLM23, arXiv:2203.12563v3, Section 5, lines 1695–1777. -/
-theorem norm_gap_compression_of_commute (U : E →ₗᵢ[ℂ] F) (H : F →ₗ[ℂ] F)
-    (hComm : Commute (U.toLinearMap ∘ₗ U.toLinearMap.adjoint) H) {δ : ℝ}
-    (hGap : ∀ w ∈ (LinearMap.ker H)ᗮ, δ * ‖w‖ ≤ ‖H w‖) :
-    ∀ v ∈ (LinearMap.ker (U.compression H))ᗮ,
-      δ * ‖v‖ ≤ ‖U.compression H v‖ := by
-  intro v hv
-  have h := hGap (U v) (U.map_mem_orthogonal_ker_compression_of_commute H hComm hv)
-  simpa only [← U.apply_compression_of_commute H hComm, U.norm_map] using h
 
 end LinearIsometry

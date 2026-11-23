@@ -1001,16 +1001,14 @@ of~\cite[lines 652--678]{Landau2013PolynomialTime}.
 
 \begin{theorem}[The gap above the zero space]
     \label{thm:hamiltonians_frustration_free_gap}
-    \lean{ManyBody.Interaction.isGapped_hamiltonian_zero_iff_inner,
-        ManyBody.Interaction.isGapped_hamiltonian_zero_iff_norm}
+    \lean{ManyBody.Interaction.isGapped_hamiltonian_zero_iff_inner}
     \leanok
     \uses{thm:hamiltonians_frustration_free_positive, thm:hamiltonians_kernel_gap}
     Let the index set be finite, every term be positive semidefinite, and
     $\Delta\in\R$. The Hamiltonian $H$ is gapped at $0$ with gap $\Delta$ exactly
     when $\mathcal Z(\Phi)\neq0$ and
     $\Delta\lVert v\rVert^2\le\operatorname{Re}\langle v,Hv\rangle$ for every
-    $v\perp\mathcal Z(\Phi)$, and exactly when $\mathcal Z(\Phi)\neq0$ and
-    $\Delta\lVert v\rVert\le\lVert Hv\rVert$ for every $v\perp\mathcal Z(\Phi)$.
+    $v\perp\mathcal Z(\Phi)$.
 \end{theorem}
 \begin{proof}\leanok
     \uses{thm:hamiltonians_frustration_free_positive, thm:hamiltonians_kernel_gap}

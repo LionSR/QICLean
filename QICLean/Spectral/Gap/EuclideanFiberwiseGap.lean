@@ -11,9 +11,8 @@ import QICLean.Spectral.Gap.EigenvalueGap
 
 Extending an operator independently over a finite spectator space preserves every nonnegative
 lower norm bound `δ ‖x‖ ≤ ‖G x‖` on the orthogonal complement of its kernel, and over a nonempty
-spectator space the extension has exactly the same such bounds as the operator. Replacing one
-nonempty finite spectator space by another therefore preserves the bound, whatever their
-dimensions. No positivity or symmetry of the operator is needed. The quadratic-form inequality
+spectator space the extension has exactly the same such bounds as the operator. No positivity
+or symmetry of the operator is needed. The quadratic-form inequality
 `γ ⟨G x, x⟩ ≤ ⟨G x, G x⟩` also passes to the extension.
 
 Moved from TNLean (Apache-2.0) at commit `49b78ed821`: the gap statements of
@@ -36,7 +35,7 @@ open scoped BigOperators InnerProductSpace ComplexOrder
 
 namespace ContinuousLinearMap
 
-variable {I J S T : Type*} [Fintype I] [Fintype J] [Fintype S] [Fintype T]
+variable {I J S : Type*} [Fintype I] [Fintype J] [Fintype S]
 
 /-- A single-fiber vector is orthogonal to the kernel of the extension exactly when its fiber
 is orthogonal to the kernel of the operator. -/
@@ -94,17 +93,6 @@ theorem norm_gap_rightFiberwiseMap_iff [Nonempty S]
     simpa only [rightFiberwiseMap_singleRightFiber, norm_singleRightFiber] using
       hGap (singleRightFiber s x) hSingle
   · exact norm_gap_rightFiberwiseMap G hδ
-
-/-- Replacing a nonempty finite spectator space by any other nonempty finite spectator space
-preserves a lower norm bound on the orthogonal complement of the kernel exactly. -/
-theorem norm_gap_rightFiberwiseMap_iff_rightFiberwiseMap [Nonempty S] [Nonempty T]
-    (G : EuclideanSpace ℂ I →L[ℂ] EuclideanSpace ℂ J) {δ : ℝ} (hδ : 0 ≤ δ) :
-    (∀ x ∈ (LinearMap.ker (rightFiberwiseMap (S := S) G).toLinearMap)ᗮ,
-      δ * ‖x‖ ≤ ‖rightFiberwiseMap (S := S) G x‖) ↔
-      ∀ x ∈ (LinearMap.ker (rightFiberwiseMap (S := T) G).toLinearMap)ᗮ,
-        δ * ‖x‖ ≤ ‖rightFiberwiseMap (S := T) G x‖ :=
-  (norm_gap_rightFiberwiseMap_iff (S := S) G hδ).trans
-    (norm_gap_rightFiberwiseMap_iff (S := T) G hδ).symm
 
 /-- The inequality `G² ≥ γ G` is preserved when `G` is applied independently on every fiber. -/
 theorem quadraticForm_sq_ge_rightFiberwiseMap
