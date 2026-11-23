@@ -491,15 +491,15 @@ exterior operator.
 \begin{definition}[Appending a register while earlier registers remain idle]
     \label{def:construction_idle_gates}
     \lean{Matrix.idleGarbageLift}
-    \lean{Matrix.appendGarbageGate}
+    \lean{Matrix.prepMatrix}
     \lean{Matrix.idleGarbageLift_mulVec}
     \lean{Matrix.idleGarbageLift_append_mulVec}
     \lean{Matrix.idleGarbageLift_eq_kronecker_submatrix}
     \lean{Matrix.norm_idleGarbageLift_le}
     \lean{Matrix.idleGarbageLift_sub}
     \lean{Matrix.norm_idleGarbageLift_sub_le}
-    \lean{Matrix.appendGarbageGate_mulVec}
-    \lean{Matrix.norm_appendGarbageGate_le}
+    \lean{Matrix.prepMatrix_prodComm_mul_mulVec}
+    \lean{Matrix.norm_prepMatrix_prodComm_mul_le}
     \lean{Matrix.kronecker_one_tensorVector}
     \lean{Matrix.l2_opNorm_kronecker_one_le}
     \leanok
