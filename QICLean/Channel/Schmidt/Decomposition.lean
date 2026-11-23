@@ -29,9 +29,16 @@ The proof applies the spectral theorem to the positive semidefinite matrix
 `C * Cᴴ` (and to the transposed coefficient matrix when `dB < dA`), whose
 eigenvector basis supplies one Schmidt basis; the normalized images of the
 eigenvectors under `Cᴴ`, conjugated and completed to an orthonormal basis,
-supply the other.  This is the SVD step of `TNLean.Channel.NormalForm`
-(`Matrix.svd_of_posSemidef`) carried out for a rectangular, possibly singular
-coefficient matrix, which is the generality of Wolf's Proposition 1.1.
+supply the other.  This is the singular value decomposition carried out for a
+rectangular, possibly singular coefficient matrix, which is the generality of Wolf's
+Proposition 1.1.
+
+For a Schmidt decomposition `Ψ = ∑ α, a α ψ_L(α) ⊗ ψ_R(α)` with orthonormal families
+`ψ_L` and `ψ_R` and any function `O`, the operators
+`B_L = ∑ α, O α |ψ_L(α)⟩⟨ψ_L(α)| ⊗ 1` and `B_R = 1 ⊗ ∑ α, O α |ψ_R(α)⟩⟨ψ_R(α)|`
+satisfy `B_L Ψ = B_R Ψ`; Hastings uses this identity in the proof of Lemma 3 of
+*An area law for one-dimensional quantum systems*, arXiv:0705.2024v4, `law16.tex`,
+lines 627–692 (at line 672).
 
 ## Main definitions
 
@@ -47,6 +54,10 @@ coefficient matrix, which is the generality of Wolf's Proposition 1.1.
   (Schmidt decomposition), lines 195–203.
 * `Matrix.IsSchmidtDecomposition.schmidtRank_eq_card_ne_zero`: the number of
   nonzero Schmidt coefficients is the Schmidt rank (line 204).
+* `Matrix.sum_smul_vecMulVec_mulVec_of_orthonormal`: an operator diagonal in an orthonormal
+  family acts on it by its eigenvalues.
+* `Matrix.kronecker_one_mulVec_schmidt_eq_one_kronecker_mulVec`: Schmidt-diagonal operators
+  act equally on both sides of the cut.
 
 ## References
 
@@ -391,5 +402,55 @@ theorem IsSchmidtDecomposition.schmidtRank_eq_card_ne_zero {dA dB : ℕ}
     _ = (Matrix.diagonal fun j ↦ (lam j : ℂ)).rank := le_antisymm hle1 hle2
     _ = Fintype.card {j // (lam j : ℂ) ≠ 0} := Matrix.rank_diagonal _
     _ = Fintype.card {j // lam j ≠ 0} := hcard
+
+section SchmidtDiagonal
+
+open scoped Kronecker
+
+variable {l r κ : Type*} [Fintype l] [Fintype r] [Fintype κ]
+
+/-- An operator diagonal in an orthonormal family `ψ`, with eigenvalue `O β` on `ψ β`,
+maps `ψ α` to `O α • ψ α`. -/
+theorem sum_smul_vecMulVec_mulVec_of_orthonormal [DecidableEq κ] {n : Type*} [Fintype n]
+    (O : κ → ℂ) (ψ : κ → n → ℂ)
+    (hψ : ∀ α β, star (ψ α) ⬝ᵥ ψ β = if α = β then 1 else 0) (α : κ) :
+    (∑ β, O β • vecMulVec (ψ β) (star (ψ β))) *ᵥ ψ α = O α • ψ α := by
+  simp [sum_mulVec, smul_mulVec, vecMulVec_mulVec, hψ]
+
+/-- Hastings, arXiv:0705.2024v4, Lemma 3, `law16.tex` lines 627–692, the identity used at
+line 672: for a Schmidt
+decomposition `Ψ = ∑ α, a α ψL α ⊗ ψR α` with orthonormal families `ψL` and `ψR`,
+the operator `∑ α, O α |ψL α⟩⟨ψL α| ⊗ 1` and the operator
+`1 ⊗ ∑ α, O α |ψR α⟩⟨ψR α|` agree on `Ψ`, both giving `∑ α, a α O α ψL α ⊗ ψR α`. -/
+theorem kronecker_one_mulVec_schmidt_eq_one_kronecker_mulVec
+    [DecidableEq l] [DecidableEq r] [DecidableEq κ]
+    (a O : κ → ℂ) (ψL : κ → l → ℂ) (ψR : κ → r → ℂ)
+    (hL : ∀ α β, star (ψL α) ⬝ᵥ ψL β = if α = β then 1 else 0)
+    (hR : ∀ α β, star (ψR α) ⬝ᵥ ψR β = if α = β then 1 else 0) :
+    ((∑ α, O α • vecMulVec (ψL α) (star (ψL α))) ⊗ₖ (1 : Matrix r r ℂ)) *ᵥ
+        (fun p => ∑ α, a α * (ψL α p.1 * ψR α p.2)) =
+      ((1 : Matrix l l ℂ) ⊗ₖ (∑ α, O α • vecMulVec (ψR α) (star (ψR α)))) *ᵥ
+        (fun p => ∑ α, a α * (ψL α p.1 * ψR α p.2)) := by
+  ext ⟨i, k⟩
+  have hLC := congrFun (congrFun (schmidtCoeffMatrix_kronecker_one_mulVec
+    (∑ α, O α • vecMulVec (ψL α) (star (ψL α)))
+    (fun p : l × r => ∑ α, a α * (ψL α p.1 * ψR α p.2))) i) k
+  have hRC := congrFun (congrFun (schmidtCoeffMatrix_one_kronecker_mulVec
+    (∑ α, O α • vecMulVec (ψR α) (star (ψR α)))
+    (fun p : l × r => ∑ α, a α * (ψL α p.1 * ψR α p.2))) i) k
+  rw [schmidtCoeffMatrix_apply] at hLC hRC
+  rw [hLC, hRC]
+  have hC : schmidtCoeffMatrix (fun p : l × r => ∑ α, a α * (ψL α p.1 * ψR α p.2)) =
+      ∑ α, a α • vecMulVec (ψL α) (ψR α) := by
+    ext x y
+    simp [vecMulVec_apply, Matrix.sum_apply]
+  rw [hC, Matrix.mul_sum, Matrix.sum_mul]
+  simp only [Matrix.mul_smul, Matrix.smul_mul, mul_vecMulVec, vecMulVec_mul, vecMul_transpose,
+    sum_smul_vecMulVec_mulVec_of_orthonormal O ψL hL,
+    sum_smul_vecMulVec_mulVec_of_orthonormal O ψR hR]
+  simp only [Matrix.sum_apply, Matrix.smul_apply, vecMulVec_apply, Pi.smul_apply, smul_eq_mul]
+  exact Finset.sum_congr rfl fun α _ => by ring
+
+end SchmidtDiagonal
 
 end Matrix

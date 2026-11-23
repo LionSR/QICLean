@@ -13,3 +13,4 @@ import QICLean.Entropy.Classical.ProbabilityEntropy
 import QICLean.Entropy.Classical.ProbabilityEntropyConcentration
 import QICLean.Entropy.Classical.ProbabilityEntropyRankTails
 import QICLean.Entropy.Classical.SurprisalProductMoment
+import QICLean.Entropy.Classical.TailEntropy

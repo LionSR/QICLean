@@ -8,6 +8,7 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Analysis.Norm
 
+import QICLean.Analysis.Norm.ApproximateProjector
 import QICLean.Analysis.Norm.BipartiteDecomposition
 import QICLean.Analysis.Norm.BlockDiagonalNorm
 import QICLean.Analysis.Norm.CStarCompletion
@@ -25,6 +26,7 @@ import QICLean.Analysis.Norm.MatrixKroneckerContraction
 import QICLean.Analysis.Norm.MatrixL2Contraction
 import QICLean.Analysis.Norm.MatrixOperatorSpace
 import QICLean.Analysis.Norm.MatrixToEuclidean
+import QICLean.Analysis.Norm.MatrixToEuclideanRankOne
 import QICLean.Analysis.Norm.NeumannInverse
 import QICLean.Analysis.Norm.NormedRingTelescoping
 import QICLean.Analysis.Norm.OperatorNormConvergence

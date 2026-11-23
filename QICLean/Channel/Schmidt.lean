@@ -15,6 +15,7 @@ import QICLean.Channel.Schmidt.FilterConjugation
 import QICLean.Channel.Schmidt.FilterNormalization
 import QICLean.Channel.Schmidt.MaximalOverlap
 import QICLean.Channel.Schmidt.NPositivitySpectralCriterion
+import QICLean.Channel.Schmidt.NormalizedApproximation
 import QICLean.Channel.Schmidt.ProductOverlapBootstrap
 import QICLean.Channel.Schmidt.ProductOverlapPurity
 import QICLean.Channel.Schmidt.PureApproximationSpectralTail

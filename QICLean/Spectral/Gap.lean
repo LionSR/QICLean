@@ -9,6 +9,7 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Spectral.Gap
 
 import QICLean.Spectral.Gap.BoundedCongruenceGap
+import QICLean.Spectral.Gap.CodimensionOneGap
 import QICLean.Spectral.Gap.CompactKernelGap
 import QICLean.Spectral.Gap.ContractionWordDecay
 import QICLean.Spectral.Gap.ContractionWordDecaySpectator

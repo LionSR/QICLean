@@ -8,9 +8,11 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Spectral.Filter.Gaussian
 
+import QICLean.Spectral.Filter.Gaussian.ApproximateEnergy
 import QICLean.Spectral.Filter.Gaussian.CommutatorSeries
 import QICLean.Spectral.Filter.Gaussian.GroundEstimate
 import QICLean.Spectral.Filter.Gaussian.MatrixIntegral
+import QICLean.Spectral.Filter.Gaussian.Quadrature
 import QICLean.Spectral.Filter.Gaussian.Reindex
 import QICLean.Spectral.Filter.Gaussian.SpectralGap
 import QICLean.Spectral.Filter.Gaussian.UniformGroundEstimate

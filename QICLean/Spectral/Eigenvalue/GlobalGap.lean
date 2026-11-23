@@ -6,6 +6,7 @@ Authors: QICLean contributors
 import Mathlib.Analysis.InnerProductSpace.Positive
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import QICLean.Analysis.Projection.PhaseError
+import QICLean.Analysis.Norm.MatrixToEuclideanRankOne
 
 /-!
 # Global spectral gaps and phase-minimized vector error
@@ -102,12 +103,6 @@ end Core
 namespace Matrix
 
 variable {n : Type*} [Fintype n] [DecidableEq n]
-
-/-- The rank-one matrix `|Ω⟩⟨Ω|` acts by `ψ ↦ ⟨Ω, ψ⟩ Ω`. -/
-theorem toEuclideanLin_vecMulVec_star_self_apply (Ω ψ : EuclideanSpace ℂ n) :
-    toEuclideanLin (vecMulVec (WithLp.ofLp Ω) (star (WithLp.ofLp Ω))) ψ = ⟪Ω, ψ⟫_ℂ • Ω := by
-  rw [← InnerProductSpace.symm_toEuclideanLin_rankOne, LinearEquiv.apply_symm_apply]
-  exact InnerProductSpace.rankOne_apply Ω Ω ψ
 
 /-- The quadratic form of the gap defect `H - E₀ I - Δ (I - |Ω⟩⟨Ω|)`. -/
 theorem re_inner_toEuclideanLin_gap (H : Matrix n n ℂ) (E₀ Δ : ℝ)

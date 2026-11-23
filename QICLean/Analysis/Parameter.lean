@@ -25,6 +25,7 @@ import QICLean.Analysis.Parameter.ParameterChoice
 import QICLean.Analysis.Parameter.PolynomialFilterCeil
 import QICLean.Analysis.Parameter.PolynomialFilterCounts
 import QICLean.Analysis.Parameter.PolynomialFilterLogCount
+import QICLean.Analysis.Parameter.PolynomialFilterParameters
 import QICLean.Analysis.Parameter.QuantitativeFilterIteration
 import QICLean.Analysis.Parameter.ReferencePolynomialBound
 import QICLean.Analysis.Parameter.RefinementOutputPolynomialBound

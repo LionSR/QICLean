@@ -11,10 +11,15 @@ import Mathlib.Tactic.Linarith
 /-!
 # Distance after normalization near a unit vector
 
-The existing generic normed-space estimate is moved unchanged from
-`TNLean/MPS/AreaLaw/MPSApproximation.lean`. It requires no Hamiltonian or
-matrix product state hypothesis. This permits sequential approximations
-to reuse the elementary normalization bound without importing an area law.
+Normalizing a vector at most doubles its distance to a unit vector:
+`‖v / ‖v‖ - ψ‖ ≤ 2 ‖v - ψ‖`, since `|1 - ‖v‖| ≤ ‖v - ψ‖`.
+
+## Main results
+
+* `norm_inv_norm_smul_sub_le_two_mul`: the bound for a nonzero vector, with the scalar
+  `(‖Φ‖ : ℂ)⁻¹`.
+* `norm_inv_norm_smul_sub_le`: the bound for every vector, with the scalar `((‖v‖⁻¹ : ℝ) : ℂ)`;
+  for `v = 0` the normalized vector is zero.
 -/
 
 /-- Normalizing a nonzero vector at most doubles its distance to a unit vector:
@@ -37,3 +42,26 @@ theorem norm_inv_norm_smul_sub_le_two_mul {E : Type*} [NormedAddCommGroup E] [No
   calc ‖(‖Φ‖ : ℂ)⁻¹ • Φ - ψ‖ ≤ ‖(‖Φ‖ : ℂ)⁻¹ • Φ - Φ‖ + ‖Φ - ψ‖ :=
         norm_sub_le_norm_sub_add_norm_sub _ _ _
     _ ≤ 2 * ‖Φ - ψ‖ := by rw [hdiff]; linarith
+
+/-- **Normalization at most doubles the distance.** For any vector `v` and unit vector `ψ`,
+`‖v / ‖v‖ - ψ‖ ≤ 2 ‖v - ψ‖`, since `|1 - ‖v‖| ≤ ‖v - ψ‖`. For `v = 0` the left side is
+`‖ψ‖ = 1`. -/
+theorem norm_inv_norm_smul_sub_le {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
+    {v ψ : E} (hψ : ‖ψ‖ = 1) : ‖((‖v‖⁻¹ : ℝ) : ℂ) • v - ψ‖ ≤ 2 * ‖v - ψ‖ := by
+  by_cases hv : v = 0
+  · subst hv
+    simp [hψ]
+  have hn : ‖v‖ ≠ 0 := norm_ne_zero_iff.mpr hv
+  have h1 : ‖((‖v‖⁻¹ : ℝ) : ℂ) • v - v‖ = |1 - ‖v‖| := by
+    have e : ((‖v‖⁻¹ : ℝ) : ℂ) • v - v = (((‖v‖⁻¹ - 1 : ℝ)) : ℂ) • v := by
+      rw [Complex.ofReal_sub, Complex.ofReal_one, sub_smul, one_smul]
+    rw [e, norm_smul, Complex.norm_real, Real.norm_eq_abs, ← abs_norm v, ← abs_mul, abs_norm,
+      sub_mul, inv_mul_cancel₀ hn, one_mul]
+  have h2 : |1 - ‖v‖| ≤ ‖v - ψ‖ := by
+    rw [← hψ, norm_sub_rev v]
+    exact abs_norm_sub_norm_le ψ v
+  calc ‖((‖v‖⁻¹ : ℝ) : ℂ) • v - ψ‖ = ‖(((‖v‖⁻¹ : ℝ) : ℂ) • v - v) + (v - ψ)‖ := by
+        congr 1
+        abel
+    _ ≤ ‖((‖v‖⁻¹ : ℝ) : ℂ) • v - v‖ + ‖v - ψ‖ := norm_add_le _ _
+    _ ≤ 2 * ‖v - ψ‖ := by rw [h1]; linarith
