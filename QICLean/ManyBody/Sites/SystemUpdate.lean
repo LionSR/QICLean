@@ -28,6 +28,7 @@ equivalence `complCast hXY`.
 
 * `ManyBody.updateOn` — the system `X` with the basis types `Z` on a region.
 * `ManyBody.updateOnConfigEquiv` — its configurations, as pairs.
+* `ManyBody.pairConfigEquiv` — the configurations of a region of two sites, as pairs.
 * `ManyBody.complCast` — configurations outside a region of two systems that agree there.
 * `ManyBody.placeBetween` — the placement `K ⊗ 1` of a matrix between two systems.
 
@@ -94,6 +95,30 @@ def updateOnConfigEquiv : Config (updateOn X D Z) ≃ Config Z × ComplConfig X 
 @[simp] theorem updateOnConfigEquiv_apply_snd (σ : Config (updateOn X D Z))
     (v : {v // v ∉ D}) :
     (updateOnConfigEquiv X D Z σ).2 v = cast (updateOn_of_notMem v.2) (σ v) :=
+  rfl
+
+variable (X) in
+/-- The configurations of a region `D` of two distinct sites `a` and `b` are pairs of basis
+vectors, the first at `a`. -/
+def pairConfigEquiv {a b : V} (hab : a ≠ b) (hD : D = {a, b}) : RegionConfig X D ≃ X a × X b where
+  toFun σ := (σ ⟨a, by simp [hD]⟩, σ ⟨b, by simp [hD]⟩)
+  invFun x v :=
+    if hv : v.1 = a then cast (congrArg X hv.symm) x.1
+    else cast (congrArg X (by simpa [hD, hv] using v.2 : v.1 = b).symm) x.2
+  left_inv σ := by
+    funext ⟨v, hv⟩
+    have hv' := hv
+    rw [hD, Finset.mem_insert, Finset.mem_singleton] at hv'
+    rcases hv' with rfl | rfl
+    · simp
+    · simp [hab.symm]
+  right_inv x := by
+    simp [hab.symm]
+
+/-- The two entries of a configuration of a region of two sites. -/
+@[simp] theorem pairConfigEquiv_apply {a b : V} (hab : a ≠ b) (hD : D = {a, b})
+    (σ : RegionConfig X D) :
+    pairConfigEquiv X hab hD σ = (σ ⟨a, by simp [hD]⟩, σ ⟨b, by simp [hD]⟩) :=
   rfl
 
 end Update

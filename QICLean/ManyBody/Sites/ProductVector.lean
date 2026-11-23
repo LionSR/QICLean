@@ -32,6 +32,8 @@ and the expectations are written `star ψ ⬝ᵥ (A *ᵥ ψ)` (TNLean's `Quantum
 * `QuantumCircuit.piKronecker_mulVec_productVector` : `(⊗_v m_v) (⊗_v |φ_v⟩) = ⊗_v m_v|φ_v⟩`.
 * `QuantumCircuit.star_productVector_dotProduct_piKronecker_mulVec` : the expectation of a product
   operator in a product vector is `∏_v ⟨φ_v|m_v|φ_v⟩`.
+* `QuantumCircuit.norm_toLp_productVector` : the norm of a product vector is the product of the
+  norms.
 * `QuantumCircuit.productVector_single` : computational-basis vectors are product vectors.
 * `QuantumCircuit.mul_apply_eq_mul_of_mem_supportedOperators` : diagonal entries of products of
   operators supported on disjoint regions factorize.
@@ -94,6 +96,17 @@ theorem star_productVector_dotProduct_piKronecker_mulVec [DecidableEq V] [∀ v,
   simp only [dotProduct, productVector, Pi.star_apply, star_prod, ← Finset.prod_mul_distrib]
   exact (Finset.prod_univ_sum (t := fun _ ↦ Finset.univ)
     (f := fun v (a : X v) ↦ star (φ v a) * (m v *ᵥ φ v) a)).symm
+
+/-- The norm of a product vector is the product of the norms of its factors; a product of unit
+vectors is a unit vector. -/
+theorem norm_toLp_productVector [DecidableEq V] [∀ v, Fintype (X v)]
+    (φ : (v : V) → EuclideanSpace ℂ (X v)) :
+    ‖(WithLp.toLp 2 (productVector fun v x ↦ φ v x) : EuclideanSpace ℂ (Config X))‖ =
+      ∏ v, ‖φ v‖ := by
+  refine (sq_eq_sq₀ (norm_nonneg _) (Finset.prod_nonneg fun _ _ ↦ norm_nonneg _)).mp ?_
+  simp only [EuclideanSpace.norm_sq_eq, productVector, norm_prod, ← Finset.prod_pow]
+  rw [Finset.prod_univ_sum]
+  simp
 
 /-- The tensor product of computational-basis vectors is the corresponding basis vector. -/
 @[simp]
