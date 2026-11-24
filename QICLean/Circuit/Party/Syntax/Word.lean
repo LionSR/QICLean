@@ -25,6 +25,11 @@ relabelling of the output (`Word.op_source_eq_op_relabel_mul`). The product vect
 prepared from the system with one basis vector at every party by one local operation at every
 party (`Word.prepareProduct`). A word is a monomial with no pair effect (`Word.toChain`).
 
+When the basis of one party is read as a factor `α` times a remaining basis
+(`ManyBody.factorConfigEquiv`), the local preparation of a vector on that factor is the
+preparation of the vector along this splitting (`Word.op_localPrepare_eq_prepMatrix`), and the
+local bra of a vector (`Word.localDiscard`) is its effect (`Word.op_localDiscard`).
+
 The sources of the monomials of a gate (`Monomial.sources`) and their pair effects
 (`Monomial.effects`) are read off their gates in the same way.
 
@@ -33,7 +38,8 @@ The sources of the monomials of a gate (`Monomial.sources`) and their pair effec
 * `QuantumCircuit.Party.Word`, `QuantumCircuit.Party.Word.IsAllowed`,
   `QuantumCircuit.Party.IsSourceOnly`.
 * `QuantumCircuit.Party.Word.source`, `QuantumCircuit.Party.Word.sourceAt`,
-  `QuantumCircuit.Party.Word.localPrepare`, `QuantumCircuit.Party.Word.prepareProduct`.
+  `QuantumCircuit.Party.Word.localPrepare`, `QuantumCircuit.Party.Word.localDiscard`,
+  `QuantumCircuit.Party.Word.prepareProduct`.
 * `QuantumCircuit.Party.Word.sources`, `QuantumCircuit.Party.Word.sourceCount`,
   `QuantumCircuit.Party.Word.UsesOnly`, `QuantumCircuit.Party.Word.toChain`.
 * `QuantumCircuit.Party.Monomial.sources`, `QuantumCircuit.Party.Monomial.effects`,
@@ -44,6 +50,8 @@ The sources of the monomials of a gate (`Monomial.sources`) and their pair effec
 
 * `QuantumCircuit.Party.Word.op_source`, `QuantumCircuit.Party.Word.op_sourceAt`,
   `QuantumCircuit.Party.Word.op_localPrepare`,
+  `QuantumCircuit.Party.Word.op_localPrepare_eq_prepMatrix`,
+  `QuantumCircuit.Party.Word.op_localDiscard`,
   `QuantumCircuit.Party.Word.op_prepareProduct_mulVec` — operators.
 * `QuantumCircuit.Party.Word.gateCount_eq_sourceCount`,
   `QuantumCircuit.Party.Word.isNormalized_sources` — source lists.
@@ -171,6 +179,76 @@ theorem isAllowed_localPrepare {α : Type} [Fintype α] (p : P) (hY : ∀ s ≠ 
   (norm_prepMatrix_le e x).trans hx.le
 
 end Constructors
+
+/-! ### Local bras, and local operations along a split factor -/
+
+section LocalFactor
+
+/-- The local bra `⟨x|` on the factor `α` of the basis of `p`, read through `e`; the identity at
+the other parties. Source: `04-compression.tex`, lines 32–42. -/
+def localDiscard [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)] {α : Type} (p : P)
+    (hY : ∀ s ≠ p, Y s = X s) (x : EuclideanSpace ℂ α) (e : X p ≃ α × Y p) : Word X Y :=
+  PartyCircuit.localOp p hY (prepMatrix e x)ᴴ
+
+/-- A local bra of a unit vector is allowed. -/
+theorem isAllowed_localDiscard [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
+    [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)] {α : Type} [Fintype α] (p : P)
+    (hY : ∀ s ≠ p, Y s = X s) (x : EuclideanSpace ℂ α) (e : X p ≃ α × Y p) (hx : ‖x‖ = 1) :
+    (localDiscard p hY x e).IsAllowed := by
+  change ‖(prepMatrix e x)ᴴ‖ ≤ 1
+  rw [l2_opNorm_conjTranspose]
+  exact (norm_prepMatrix_le e x).trans hx.le
+
+variable [Fintype P] in
+/-- The local preparation is the preparation of its vector along the splitting of the factor. -/
+theorem op_localPrepare_eq_prepMatrix [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
+    [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)] {α : Type} (p : P) (hY : ∀ s ≠ p, Y s = X s)
+    (x : EuclideanSpace ℂ α) (e : Y p ≃ α × X p) :
+    (localPrepare p hY x e).op = prepMatrix (factorConfigEquiv p hY e) x := by
+  ext y z
+  have hF := factorConfigEquiv_apply_snd_eq_iff p hY e y z
+  rw [op_localPrepare, placeBetween_apply, prepMatrix_apply, factorConfigEquiv_apply_fst]
+  simp only [submatrix_apply, prepMatrix_apply]
+  by_cases hA : ∀ v (hv : v ∉ ({p} : Finset P)),
+      cast (hY v (Finset.notMem_singleton.mp hv)) (y v) = z v
+  · have hA' : ∀ s (hs : s ≠ p), cast (hY s hs) (y s) = z s :=
+      fun s hs ↦ hA s (Finset.notMem_singleton.mpr hs)
+    rw [ite_eq_left hA]
+    by_cases hB : (e (y p)).2 = z p
+    · rw [ite_eq_left hB, ite_eq_left (hF.mpr ⟨hB, hA'⟩)]
+    · rw [ite_eq_right hB, ite_eq_right fun h ↦ hB (hF.mp h).1]
+  · rw [ite_eq_right hA,
+      ite_eq_right fun h ↦ hA fun v hv ↦ (hF.mp h).2 v (Finset.notMem_singleton.mp hv)]
+
+variable [Fintype P] in
+/-- The local bra is the effect of its vector along the splitting of the factor. -/
+theorem op_localDiscard [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] [∀ s, Fintype (Y s)]
+    [∀ s, DecidableEq (Y s)] {α : Type} (p : P) (hY : ∀ s ≠ p, Y s = X s)
+    (x : EuclideanSpace ℂ α) (e : X p ≃ α × Y p) :
+    (localDiscard p hY x e).op =
+      (effectMatrix x (Config Y)).submatrix id
+        (factorConfigEquiv p (fun s hs ↦ (hY s hs).symm) e) := by
+  ext y z
+  have hF := factorConfigEquiv_apply_snd_eq_iff p (fun s hs ↦ (hY s hs).symm) e z y
+  rw [show (localDiscard p hY x e).op = _ from PartyCircuit.op_localOp _ p hY _,
+    placeBetween_apply, submatrix_apply, submatrix_apply, effectMatrix_apply,
+    factorConfigEquiv_apply_fst]
+  simp only [conjTranspose_apply, prepMatrix_apply, id]
+  have hiff : (∀ v (hv : v ∉ ({p} : Finset P)),
+      cast (hY v (Finset.notMem_singleton.mp hv)) (y v) = z v) ↔
+      ∀ s (hs : s ≠ p), cast (hY s hs).symm (z s) = y s :=
+    ⟨fun h s hs ↦ cast_eq_iff_heq.mpr
+        (cast_eq_iff_heq.mp (h s (Finset.notMem_singleton.mpr hs))).symm,
+      fun h v hv ↦ cast_eq_iff_heq.mpr
+        (cast_eq_iff_heq.mp (h v (Finset.notMem_singleton.mp hv))).symm⟩
+  by_cases hA : ∀ s (hs : s ≠ p), cast (hY s hs).symm (z s) = y s
+  · rw [ite_eq_left (hiff.mpr hA)]
+    by_cases hB : (e (z p)).2 = y p
+    · rw [ite_eq_left hB, ite_eq_left (hF.mpr ⟨hB, hA⟩).symm]
+    · rw [ite_eq_right hB, ite_eq_right fun h ↦ hB (hF.mp h.symm).1, star_zero]
+  · rw [ite_eq_right (mt hiff.mp hA), ite_eq_right fun h ↦ hA (hF.mp h.symm).2]
+
+end LocalFactor
 
 /-- The canonical pair source prepares `η` in front of every configuration: read through
 `addPairConfigEquiv`, its operator maps `|x⟩` to `η ⊗ |x⟩`. -/
