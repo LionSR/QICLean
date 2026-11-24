@@ -23,8 +23,10 @@ namespace QuantumCircuit.Party.SourceInventory
 
 variable {P : Type} [DecidableEq P]
 
+/-- The indices selected by a mask. -/
 private abbrev FreeIndex {n : ℕ} (f : Fin n → Bool) := {i : Fin n // f i = true}
 
+/-- When the first index is not selected, the selected indices are those of the tail. -/
 private def freeIndex_of_head_false {n : ℕ} (f : Fin (n + 1) → Bool) (h : f 0 = false) :
     FreeIndex (fun i ↦ f i.succ) ≃ FreeIndex f where
   toFun i := ⟨i.val.succ, i.property⟩
@@ -38,6 +40,8 @@ private def freeIndex_of_head_false {n : ℕ} (f : Fin (n + 1) → Bool) (h : f 
     | zero => exact (Bool.false_ne_true (h.symm.trans hi)).elim
     | succ i => rfl
 
+/-- When the first index is selected, the selected indices are the first one and those of the
+tail. -/
 private def freeIndex_of_head_true {n : ℕ} (f : Fin (n + 1) → Bool) (h : f 0 = true) :
     Unit ⊕ FreeIndex (fun i ↦ f i.succ) ≃ FreeIndex f where
   toFun := Sum.elim (fun _ ↦ ⟨0, h⟩) (fun i ↦ ⟨i.val.succ, i.property⟩)
@@ -48,11 +52,14 @@ private def freeIndex_of_head_true {n : ℕ} (f : Fin (n + 1) → Bool) (h : f 0
     obtain ⟨i, hi⟩ := i
     induction i using Fin.cases <;> rfl
 
+/-- Coordinates at the selected indices when the first index is not selected. -/
 private def freeCoords_of_head_false {n : ℕ} (f : Fin (n + 1) → Bool)
     (A : Fin (n + 1) → Type) (h : f 0 = false) :
     (∀ i : FreeIndex (fun i ↦ f i.succ), A i.val.succ) ≃ (∀ i : FreeIndex f, A i.val) :=
   Equiv.piCongrLeft (fun i : FreeIndex f ↦ A i.val) (freeIndex_of_head_false f h)
 
+/-- Coordinates at the selected indices when the first index is selected: the first coordinate
+and those of the tail. -/
 private def freeCoords_of_head_true {n : ℕ} (f : Fin (n + 1) → Bool)
     (A : Fin (n + 1) → Type) (h : f 0 = true) :
     (A 0 × (∀ i : FreeIndex (fun i ↦ f i.succ), A i.val.succ)) ≃ (∀ i : FreeIndex f, A i.val) :=
@@ -92,6 +99,8 @@ def freeSlotColumnEquiv : (R : SourceInventory P) → (B : SlotBases R.length) �
               ((freeCoords_of_head_true f (fun i ↦ B.left i × B.right i) h).prodCongr
                 (Equiv.refl _)))))
 
+/-- A product over the selected indices when the first index is not selected is the product over
+those of the tail. -/
 private theorem prod_freeCoords_of_head_false {n : ℕ} (f : Fin (n + 1) → Bool)
     (A : Fin (n + 1) → Type) (h : f 0 = false)
     (g : ∀ i, A i → ℂ) (x : ∀ i : FreeIndex (fun i ↦ f i.succ), A i.val.succ) :
@@ -104,6 +113,8 @@ private theorem prod_freeCoords_of_head_false {n : ℕ} (f : Fin (n + 1) → Boo
   refine congrArg (g (e i)) ?_
   exact (congrFun ((freeCoords_of_head_false f A h).symm_apply_apply x) i).symm
 
+/-- A product over the selected indices when the first index is selected is the first factor times
+the product over those of the tail. -/
 private theorem prod_freeCoords_of_head_true {n : ℕ} (f : Fin (n + 1) → Bool)
     (A : Fin (n + 1) → Type) (h : f 0 = true)
     (g : ∀ i, A i → ℂ) (y : A 0) (x : ∀ i : FreeIndex (fun i ↦ f i.succ), A i.val.succ) :

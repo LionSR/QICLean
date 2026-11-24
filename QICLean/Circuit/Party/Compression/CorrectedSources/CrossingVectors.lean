@@ -29,7 +29,8 @@ namespace QuantumCircuit.Party.SourceCircuit
 
 variable {P : Type} [DecidableEq P] {X Y : P → Type}
 
-/-- The retained slots whose endpoints belong to opposite sides of the affected set. -/
+/-- The retained slots whose endpoints belong to opposite sides of the affected set: the exact
+crossing sources. Source: Theorem 5.2, `04-compression.tex`, lines 409–416. -/
 noncomputable def crossingSlots (w : SourceCircuit X Y) (S : Finset w.sourceLocations) :
     Finset (Fin (partialSlots (correctedMask w S) w).length) :=
   Finset.univ.filter fun i ↦
@@ -62,13 +63,15 @@ theorem disjoint_selectedPartialSlots_crossingSlots (w : SourceCircuit X Y)
     exact ⟨e, he, Or.inr rfl⟩
   exact (Finset.mem_filter.mp hc).2 (hleft.trans hright.symm)
 
-/-- The basis on the indicated side of one crossing slot. -/
+/-- The basis on the indicated side of one crossing slot; the side `true` is the affected side.
+Source: `04-compression.tex`, lines 409–420. -/
 noncomputable def crossingSlotBasis (w : SourceCircuit X Y) (S : Finset w.sourceLocations)
     (i : w.crossingSlots S) (side : Bool) : Type :=
   if correctedMask w S (w.endpoints (partialSlotEquiv (correctedMask w S) w i).1).1 = side then
     (partialSlotBases (correctedMask w S) w).left i
   else (partialSlotBases (correctedMask w S) w).right i
 
+/-- The basis on either side of a crossing slot is finite. -/
 noncomputable instance (w : SourceCircuit X Y) (S : Finset w.sourceLocations)
     (i : w.crossingSlots S) (side : Bool) : Fintype (w.crossingSlotBasis S i side) := by
   unfold crossingSlotBasis
@@ -88,7 +91,8 @@ noncomputable def crossingSlotEquiv (w : SourceCircuit X Y) (S : Finset w.source
       Equiv.refl ((partialSlotBases (correctedMask w S) w).left i ×
         (partialSlotBases (correctedMask w S) w).right i)
 
-/-- The product of exact crossing sources in the two groups of configuration coordinates. -/
+/-- The product of exact crossing sources in the two groups of configuration coordinates, the
+affected side first. Source: `04-compression.tex`, lines 409–420. -/
 noncomputable def sourceCrossingVector (w : SourceCircuit X Y) (S : Finset w.sourceLocations)
     (ξ : Choices (correctedMask w S) w) :
     EuclideanSpace ℂ ((∀ i : w.crossingSlots S, w.crossingSlotBasis S i true) ×
@@ -110,7 +114,10 @@ theorem norm_sourceCrossingVector (w : SourceCircuit X Y) (S : Finset w.sourceLo
     (fun i ↦ norm_partialSlotVector (correctedMask w S) w ξ i)
 
 /-- The exact crossing sources have a probability Schmidt expansion in the actual
-affected and exterior product bases. -/
+affected and exterior product bases. The weights are the `τ` of the source and the columns of the
+two frames its affected-side Schmidt basis `t` and the exterior one, in configuration
+coordinates; both frames are isometries. Source: Theorem 5.2, `04-compression.tex`,
+lines 409–425. -/
 theorem exists_sourceCrossing_schmidt (w : SourceCircuit X Y) (S : Finset w.sourceLocations)
     (ξ : Choices (correctedMask w S) w) :
     let L := ∀ i : w.crossingSlots S, w.crossingSlotBasis S i true

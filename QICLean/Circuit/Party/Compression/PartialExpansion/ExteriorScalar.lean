@@ -61,21 +61,26 @@ variable {P : Type} [DecidableEq P]
 /-- Every entry of a matrix is `c`. -/
 private def ConstEntries {α β : Type} (M : Matrix α β ℂ) (c : ℂ) : Prop := ∀ a b, M a b = c
 
+/-- A product of matrices with constant entries through a one-point index has constant entries. -/
 private theorem ConstEntries.mul {α β γ : Type} [Fintype β] [Subsingleton β] [Nonempty β]
     {M : Matrix α β ℂ} {N : Matrix β γ ℂ} {c d : ℂ} (hM : ConstEntries M c)
     (hN : ConstEntries N d) : ConstEntries (M * N) (c * d) := fun a b ↦ by
   obtain ⟨m⟩ := ‹Nonempty β›
   rw [mul_apply, Fintype.sum_subsingleton _ m, hM, hN]
 
+/-- The matrix of an equivalence onto a one-point type has all entries `1`. -/
 private theorem ConstEntries.toMatrix {α β : Type} [DecidableEq β] [Subsingleton β] (e : α ≃ β) :
     ConstEntries (e.toPEquiv.toMatrix : Matrix α β ℂ) 1 := fun a b ↦ by
   rw [PEquiv.toMatrix_apply, Equiv.toPEquiv_apply,
     ite_eq_left (by rw [Subsingleton.elim (e a) b]; rfl)]
 
+/-- Reindexing keeps constant entries. -/
 private theorem ConstEntries.submatrix {α β α' β' : Type} {M : Matrix α β ℂ} {c : ℂ}
     (hM : ConstEntries M c) (f : α' → α) (g : β' → β) : ConstEntries (M.submatrix f g) c :=
   fun a b ↦ hM (f a) (g b)
 
+/-- The identity on a one-point type tensored with a matrix of constant entries has constant
+entries. -/
 private theorem ConstEntries.one_kronecker {W α β : Type} [DecidableEq W] [Subsingleton W]
     {M : Matrix α β ℂ} {c : ℂ} (hM : ConstEntries M c) :
     ConstEntries ((1 : Matrix W W ℂ) ⊗ₖ M) c := fun a b ↦ by
@@ -85,6 +90,7 @@ private theorem ConstEntries.one_kronecker {W α β : Type} [DecidableEq W] [Sub
 private theorem subsingleton_of_eq {α β : Type} (h : α = β) [Subsingleton β] : Subsingleton α :=
   (Equiv.cast h).subsingleton
 
+/-- A type equal to a nonempty type is nonempty. -/
 private theorem nonempty_of_eq {α β : Type} (h : α = β) [Nonempty β] : Nonempty α :=
   (Equiv.cast h).nonempty
 

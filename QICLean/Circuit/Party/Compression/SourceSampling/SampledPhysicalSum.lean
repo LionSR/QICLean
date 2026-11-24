@@ -32,6 +32,7 @@ local notation "R" => partialSlots A w
 local notation "B" => partialSlotBases A w
 local notation "Z" => blockSystem (affectedOwner A) (fun _ ↦ Unit)
 
+/-- A constant product weight leaves the sum and contributes its `n`-th power. -/
 private theorem endpointAverage_constWeight {n : ℕ} {J V : Type} [Fintype J]
     [AddCommMonoid V] [Module ℂ V] (c : ℂ) (f : (Fin n → J) → V) :
     (∑ a : Fin n → J, (∏ _i : Fin n, c) • f a) = c ^ n • ∑ a, f a := by
@@ -40,7 +41,8 @@ private theorem endpointAverage_constWeight {n : ℕ} {J V : Type} [Fintype J]
 set_option maxHeartbeats 500000 in
 -- Matching the sampled factors with the dependent slot bases takes additional elaboration.
 /-- The sampled column contraction with product readout and local partial
-traces, at one ket and one bra branch, in the bases of the affected parties. -/
+traces, at one ket and one bra branch, in the bases of the affected parties. Source:
+Theorem 5.2, `04-compression.tex`, lines 565–588. -/
 theorem partialTraceRight_mixed_sampledSourceMatrix
     {Phys Env : Parties → Type} [∀ p, Fintype (Env p)]
     (K : ∀ p, Matrix (Phys p × Env p) (blockSystem (affectedOwner A) Y p) ℂ)

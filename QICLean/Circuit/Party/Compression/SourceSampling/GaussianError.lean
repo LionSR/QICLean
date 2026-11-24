@@ -84,7 +84,7 @@ namespace Word
 /-- **Diagonal covariance bounds the expected exterior error of separated words** by `√κ`; the
 contraction bounds come from allowedness and the norms of the readouts and frames, and no input,
 private or discarded dimension enters. Source: Theorem 5.2, `eq:compression-exterior-input` and
-`eq:compression-one-choice`, `04-compression.tex`, lines 454–520. -/
+`eq:compression-one-choice`, `04-compression.tex`, lines 454–538. -/
 theorem integral_rectangularTraceNorm_weightedPhysicalSource_le [DecidableEq I] [DecidableEq L]
     (K : Matrix (Phys × Env) (Config Y) ℂ) (x y : Phys) (v : Word X Y) (w : Word X' Y)
     (F : Matrix (Config X) (I × T) ℂ) (F' : Matrix (Config X') (L × U) ℂ)
@@ -131,8 +131,11 @@ variable {P₀ : Type} [DecidableEq P₀] {X₀ Y₀ : P₀ → Type}
 
 open Classical in
 /-- **The expected exterior error of separated sampled sources is at most `k ^ (-|S|/2)`**, for
-the products of correction entries over a set `S` of positions at fixed labels. Source:
-Theorem 5.2, `eq:compression-one-choice`, `04-compression.tex`, lines 454–520. -/
+the products of correction entries over a set `S` of positions at fixed labels. The frames `F`,
+`F'` carry the free affected inputs `𝓘 ⊗ 𝓣` of the ket and bra calculations (lines 420–425), `G`,
+`G'` the exterior Schmidt supports; they are contractions, and an isometric frame (`Fᴴ * F = 1`)
+is one by `Matrix.l2_opNorm_le_one_of_conjTranspose_mul_self_eq_one`. Source:
+Theorem 5.2, `eq:compression-one-choice`, `04-compression.tex`, lines 454–538. -/
 theorem integral_rectangularTraceNorm_gaussianPhysicalSource_le (circuit : SourceCircuit X₀ Y₀)
     (k : ℕ) (hk : 0 < k) (S : Finset circuit.sourceLocations)
     (ξ ζ : ∀ e : S, circuit.branchLabels e.1.1)
@@ -191,8 +194,9 @@ theorem integral_rectangularTraceNorm_gaussianPhysicalSource_le (circuit : Sourc
 
 open Classical in
 /-- **The separated physical density of sampled sources has integrable trace norm with mean at
-most `d² k ^ (-|S|/2)`**, `d` the number of affected physical indices. Source: Theorem 5.2,
-`eq:compression-one-choice`, `04-compression.tex`, lines 454–520. -/
+most `d² k ^ (-|S|/2)`**, `d` the number of affected physical indices. The frames are as in
+`integral_rectangularTraceNorm_gaussianPhysicalSource_le`. Source: Theorem 5.2,
+`eq:compression-one-choice`, `04-compression.tex`, lines 454–538. -/
 theorem integrable_gaussianSeparatedPhysicalDensity_and_integral_le
     (circuit : SourceCircuit X₀ Y₀) (k : ℕ) (hk : 0 < k) (S : Finset circuit.sourceLocations)
     (ξ ζ : ∀ e : S, circuit.branchLabels e.1.1)

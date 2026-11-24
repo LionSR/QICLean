@@ -30,6 +30,7 @@ local notation "R" => partialSlots A w
 local notation "B" => partialSlotBases A w
 local notation "Z" => blockSystem (affectedOwner A) (fun _ ↦ Unit)
 
+/-- A sandwich of reindexed factors is the reindexing of the sandwich. -/
 private theorem submatrix_sandwich {C C' D H H' : Type} [Fintype C] [Fintype C'] [Fintype D]
     (e : H' ≃ H) (b : C' ≃ C) (K : Matrix H C ℂ) (L N : Matrix C D ℂ) (M : Matrix D D ℂ) :
     K.submatrix e b * L.submatrix b id * M * (K.submatrix e b * N.submatrix b id)ᴴ =

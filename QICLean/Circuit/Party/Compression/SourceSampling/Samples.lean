@@ -203,7 +203,8 @@ theorem physical_sampledSourceMatrix_sub_eq_sum (K : Matrix (Phys × Env) (Confi
 open Classical in
 /-- **For every sample, the physical trace-norm error is at most the sum of the trace norms of
 the nonempty physical corrected terms**, with no factor depending on the discarded factor.
-Source: Theorem 5.2, `eq:compression-total-error`, `04-compression.tex`, lines 338–383. -/
+Source: Theorem 5.2, `eq:compression-total-error`, `04-compression.tex`, lines 338–383 and
+540–551. -/
 theorem rectangularTraceNorm_physical_sampledSourceMatrix_sub_le [Fintype Phys] [DecidableEq Phys]
     (K : Matrix (Phys × Env) (Config Y) ℂ) (ρ : Matrix (Config X) (Config X) ℂ)
     (ω : SourceGaussianSamples w k) :

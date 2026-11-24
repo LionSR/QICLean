@@ -35,8 +35,8 @@ coefficients are products over the occurrences with a nonempty cell.
 Adapted from TNLean, `TNLean/Lattice/Compression/SourceChoiceCost.lean`,
 `TNLean/Lattice/Compression/SourceCircuitChoiceProduct.lean` and
 `TNLean/Lattice/Compression/PointwiseChoiceCoefficient.lean` at commit `a05f5d6d0a`
-(Apache-2.0). Changes: the frame and swap cases are gone; a case for local operations at every
-party is added.
+(Apache-2.0). Changes: the frame case is stated on `PartyCircuit.frame`; the swap case is gone;
+a case for local operations at every party is added.
 -/
 
 open scoped ComplexConjugate

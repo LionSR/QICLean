@@ -28,6 +28,8 @@ namespace QuantumCircuit.Party
 
 variable {P : Type} [Fintype P] [DecidableEq P]
 
+/-- The party factors of the two endpoint operators of a pair: `L` at the left endpoint, `R` at the
+right endpoint and the identity elsewhere. -/
 private def endpointFactors {p q : P} (hpq : p ≠ q) {A B : Type}
     (L : Matrix A A ℂ) (R : Matrix B B ℂ) (r : P) :
     Matrix (pairFactor hpq A B r) (pairFactor hpq A B r) ℂ :=
@@ -39,6 +41,7 @@ private def endpointFactors {p q : P} (hpq : p ≠ q) {A B : Type}
         (cast (by subst r; simp [pairFactor, hpq.symm]) y)
     else 1
 
+/-- The tensor product of the endpoint factors is `L ⊗ R` in the coordinates of the pair. -/
 private theorem piKronecker_endpointFactors {p q : P} (hpq : p ≠ q) {A B : Type}
     (L : Matrix A A ℂ) (R : Matrix B B ℂ) :
     piKronecker (endpointFactors hpq L R) =
@@ -59,6 +62,7 @@ private theorem piKronecker_endpointFactors {p q : P} (hpq : p ≠ q) {A B : Typ
   rw [hrest]
   simp [endpointFactors, pairFactorConfigEquiv, hpq.symm]
 
+/-- The word applying `L` and `R` at the two endpoints of one pair, beside the system `Z`. -/
 private noncomputable def endpointPairWord {p q : P} (hpq : p ≠ q) {A B : Type}
     [Fintype A] [DecidableEq A] [Fintype B] [DecidableEq B] (Z : P → Type)
     [∀ r, Fintype (Z r)] [∀ r, DecidableEq (Z r)]
@@ -68,6 +72,7 @@ private noncomputable def endpointPairWord {p q : P} (hpq : p ≠ q) {A B : Type
     reindex (addPairSiteEquiv hpq A B Z r).symm (addPairSiteEquiv hpq A B Z r).symm
       (endpointFactors hpq L R r ⊗ₖ (1 : Matrix (Z r) (Z r) ℂ))
 
+/-- The operator of the endpoint word of one pair. -/
 private theorem op_endpointPairWord {p q : P} (hpq : p ≠ q) {A B : Type}
     [Fintype A] [DecidableEq A] [Fintype B] [DecidableEq B] (Z : P → Type)
     [∀ r, Fintype (Z r)] [∀ r, DecidableEq (Z r)]
@@ -120,6 +125,8 @@ theorem sources_endpointWord (Z : P → Type) [∀ p, Fintype (Z p)] [∀ p, Dec
     rfl
 
 omit [Fintype P] in
+/-- Lifting a word whose operation at a party is the identity beside a fresh pair keeps the
+identity at that party. -/
 private theorem partyOp_liftPair_eq_one
     {a b : P} (hab : a ≠ b) (A B : Type)
     [Fintype A] [DecidableEq A] [Fintype B] [DecidableEq B]
@@ -134,7 +141,7 @@ private theorem partyOp_liftPair_eq_one
 
 omit [Fintype P] in
 /-- The endpoint word acts as the identity at a party for which all its
-endpoint matrices are identities. -/
+endpoint matrices are identities. Source: Theorem 5.2, `04-compression.tex`, lines 565–579. -/
 theorem partyOp_endpointWord_eq_one (Z : P → Type) [∀ p, Fintype (Z p)]
     [∀ p, DecidableEq (Z p)] (R : SourceInventory P) (B : SlotBases R.length)
     (L : ∀ i, Matrix (B.left i) (B.left i) ℂ)
@@ -164,7 +171,8 @@ theorem partyOp_endpointWord_eq_one (Z : P → Type) [∀ p, Fintype (Z p)]
     simp [endpointPairWord, hhead]
 
 /-- The entries of the endpoint word are the product of the endpoint entries, times the
-identity on the underlying configuration. -/
+identity on the underlying configuration. Source: Theorem 5.2, `04-compression.tex`,
+lines 565–579. -/
 theorem op_endpointWord (Z : P → Type) [∀ p, Fintype (Z p)] [∀ p, DecidableEq (Z p)]
     (R : SourceInventory P) (B : SlotBases R.length) (L : ∀ i, Matrix (B.left i) (B.left i) ℂ)
     (M : ∀ i, Matrix (B.right i) (B.right i) ℂ) :
@@ -198,10 +206,10 @@ theorem op_endpointWord (Z : P → Type) [∀ p, Fintype (Z p)] [∀ p, Decidabl
     simp only [mul_assoc]
     rfl
 
-
 /-- Taking a weighted sum of endpoint matrices independently at every slot is the
 corresponding weighted sum of endpoint words. Each summand chooses one term in
-each slot, with coefficient the product of the coefficients of those choices. -/
+each slot, with coefficient the product of the coefficients of those choices. Source: Theorem 5.2,
+`04-compression.tex`, lines 279–340 and 565–579. -/
 theorem sum_op_endpointWord (Z : P → Type) [∀ p, Fintype (Z p)] [∀ p, DecidableEq (Z p)]
     (R : SourceInventory P) (B : SlotBases R.length)
     {J : Fin R.length → Type} [∀ i, Fintype (J i)] (c : ∀ i, J i → ℂ)

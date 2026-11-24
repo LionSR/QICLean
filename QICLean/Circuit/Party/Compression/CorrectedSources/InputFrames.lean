@@ -36,7 +36,10 @@ variable
     Matrix (w.rightBasis e) (Fin (min (w.sourceDims e).1 (w.sourceDims e).2)) ℂ)
 
 /-- The tensor product of the left and right Schmidt matrices at all selected
-slots of a branch, indexed by the slot pairs. -/
+slots of a branch, indexed by the slot pairs. The columns of `E e ξ` and `F e ξ` (rows
+`w.leftBasis e`, `w.rightBasis e`) are the Schmidt vectors `u_a` and `v_a` of the source at `e`
+for the branch `ξ`, read in configuration coordinates. Source: Theorem 5.2,
+`04-compression.tex`, lines 281–290 and 409–425. -/
 noncomputable def correctedSourceFrame (ξ : Choices mask w) :
     Matrix (∀ i : slots, (bases).left i × (bases).right i)
       (PartialSchmidtCoordinates mask w S) ℂ :=
@@ -45,7 +48,8 @@ noncomputable def correctedSourceFrame (ξ : Choices mask w) :
       F (partialSlotEquiv mask w i).1 (partialSlotChoice mask w ξ i)
 
 /-- The corrected source frame is an isometry when the endpoint frames have
-orthonormal columns. -/
+orthonormal columns, as the Schmidt vectors of the source do. Source: `04-compression.tex`,
+lines 281–290. -/
 theorem conjTranspose_correctedSourceFrame_mul_self
     (hE : ∀ e ξ, (E e ξ)ᴴ * E e ξ = 1) (hF : ∀ e ξ, (F e ξ)ᴴ * F e ξ = 1)
     (ξ : Choices mask w) :
@@ -75,7 +79,11 @@ theorem correctedSourceFrame_apply
 
 /-- The product of corrected frame columns and the exact crossing vectors,
 ordered by the affected and exterior sides, has a single Schmidt expansion
-with the same orthonormal input frames for all corrected columns. -/
+with the same orthonormal input frames for all corrected columns. The frames `E`, `F` hold the
+Schmidt vectors `u_a`, `v_a` of the sources as columns (`correctedSourceFrame`); `lam` and the
+columns of `V` are the weights `τ` and the exterior Schmidt vectors of the crossing sources, and
+`U` is the isometric input frame of `𝓘 ⊗ 𝓣` on the affected side. Source: Theorem 5.2,
+`04-compression.tex`, lines 409–434. -/
 theorem exists_correctedInputFrames
     (hE : ∀ e ξ, (E e ξ)ᴴ * E e ξ = 1) (hF : ∀ e ξ, (F e ξ)ᴴ * F e ξ = 1)
     (ξ : Choices mask w) :

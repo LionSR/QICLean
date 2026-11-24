@@ -34,6 +34,8 @@ local notation "Z" => blockSystem (affectedOwner (fun _ : P ↦ true)) (fun _ �
 
 omit [∀ p, Fintype (X p)] [∀ p, DecidableEq (X p)]
   [∀ p, Fintype (Y p)] [∀ p, DecidableEq (Y p)] in
+/-- The slot coordinates of an all-source column are its slot pairs and the unique exterior
+coordinate. -/
 private theorem slotColumnEquiv_allSourceColumnEquiv (a : ∀ i, (B).left i × (B).right i) :
     SourceInventory.slotColumnEquiv R B Z (allSourceColumnEquiv w a) =
       (a, default) := by
@@ -42,6 +44,7 @@ private theorem slotColumnEquiv_allSourceColumnEquiv (a : ∀ i, (B).left i × (
   rw [Equiv.apply_symm_apply]
   rfl
 
+/-- Multiplying a weighted sum of matrices on both sides multiplies each term. -/
 private theorem weightedSum_contraction {I U V W : Type} [Fintype I] [Fintype U] [Fintype V]
     (c : I → ℂ) (L : Matrix W U ℂ) (A : I → Matrix U V ℂ) (N : Matrix V W ℂ) :
     L * (∑ a, c a • A a) * N = ∑ a, c a • (L * A a * N) := by
@@ -49,7 +52,8 @@ private theorem weightedSum_contraction {I U V W : Type} [Fintype I] [Fintype U]
 
 /-- The contraction of the ket and bra columns against independent averages at the slots
 is a weighted sum of products of the local ket, endpoint, and bra matrices.
-The weights and the sample labels may depend on the slot. -/
+The weights and the sample labels may depend on the slot. Source:
+Theorem 5.2, `04-compression.tex`, lines 565–588. -/
 theorem partialSourceGlobalMatrix_mixed_endpointAverage
     (φ : ∀ p, EuclideanSpace ℂ (X p)) (ξ ζ : Choices (fun _ ↦ true) w)
     {J : Fin (R).length → Type} [∀ i, Fintype (J i)] (c : ∀ i, J i → ℂ)

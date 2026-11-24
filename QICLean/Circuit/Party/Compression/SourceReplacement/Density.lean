@@ -203,7 +203,8 @@ variable {Phys Env : Type} [Fintype Env]
 
 /-- The physical density of a source circuit on the input matrix `ρ`: its output read through
 `K` into a physical and a discarded factor, the discarded factor traced. For a circuit satisfying
-the source's conditions and a normalized pure input, it is the density of its physical output.
+the source's conditions, a normalized pure input and an isometric readout `K` (`Kᴴ * K = 1`), it
+is the density of its physical output.
 Source: Theorem 5.2, `04-compression.tex`, lines 4–19 and 23–30. -/
 noncomputable def physicalDensity (w : SourceCircuit X Y) (K : Matrix (Phys × Env) (Config Y) ℂ)
     (ρ : Matrix (Config X) (Config X) ℂ) : Matrix Phys Phys ℂ :=
@@ -275,7 +276,7 @@ theorem rectangularTraceNorm_physicalSourceReplacedDensity_sub_le [Fintype Phys]
   exact rectangularTraceNorm_sum_le _ _
 
 /-- **The physical density of a pure input** is the partial trace of the outer product of its
-read output vector. No normalization is needed. Source: `04-compression.tex`, lines 218–227 and
+read output vector. No normalization is needed. Source: `04-compression.tex`, lines 4–30 and
 338–355. -/
 theorem physicalDensity_pure_input (w : SourceCircuit X Y) (K : Matrix (Phys × Env) (Config Y) ℂ)
     (ψ : EuclideanSpace ℂ (Config X)) :

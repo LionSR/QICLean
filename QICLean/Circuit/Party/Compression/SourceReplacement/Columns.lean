@@ -374,8 +374,9 @@ theorem physicalSourceReplacedDensity_pure_eq_sum_actualColumnTraces {Phys Env :
 /-- **Changing the physical and discarded coordinates of the mixed column products**: reading the
 output through `(U ⊗ V) * K` for a matrix `U` of the physical factor and an isometry `V` of the
 discarded factor (possibly onto a larger index type) conjugates the physical partial trace by
-`U`, for every middle matrix `M`; for a unitary or permutation `U` this is the independence of
-the reduced mixed column operator from the coordinates of both factors. Source: Theorem 5.2,
+`U`, for every middle matrix `M`: the reduced mixed column operator does not depend on the
+coordinates of the discarded factor and changes with those of the physical factor by
+conjugation. Source: Theorem 5.2,
 `04-compression.tex`, lines 279–355, 409–434 and 565–588. -/
 theorem partialTraceRight_kronecker_mul_actualColumns {Phys Env Phys' Env' : Type}
     [Fintype Phys] [Fintype Env] [DecidableEq Env] [Fintype Env'] (w : SourceCircuit X Y)

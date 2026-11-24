@@ -101,5 +101,4 @@ theorem prepareFreeSlots_partialSchmidt_mulVec [Fintype P]
   simp only [Matrix.mulVec, dotProduct, prepMatrix_apply, ite_mul, zero_mul, Fintype.sum_ite_eq]
   exact congrArg (· * ψ t.2) (w.product_partialSchmidtSourceVectors S E F ξ u t.1)
 
-
 end QuantumCircuit.Party.SourceCircuit

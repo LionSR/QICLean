@@ -100,6 +100,7 @@ private def SameShape (s t : PairSource Q) : Prop :=
   ∃ v : EuclideanSpace ℂ (s.leftBasis × s.rightBasis), t = { s with vector := v }
 
 omit [DecidableEq Q] in
+/-- Every pair source has its own shape. -/
 private theorem sameShape_refl (s : PairSource Q) : SameShape s s := ⟨s.vector, rfl⟩
 
 /-- Inventories of the same shape prepare the same system. -/
