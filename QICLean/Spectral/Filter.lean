@@ -11,12 +11,14 @@ Authors: QICLean contributors
 import QICLean.Spectral.Filter.ChebyshevGroundFilter
 import QICLean.Spectral.Filter.ChebyshevSpectralFilter
 import QICLean.Spectral.Filter.ChebyshevSpectralProjector
+import QICLean.Spectral.Filter.DensityPowerIteration
 import QICLean.Spectral.Filter.EnergyTruncation
 import QICLean.Spectral.Filter.EnergyWeightedPowerOrder
 import QICLean.Spectral.Filter.ExponentialWeights
 import QICLean.Spectral.Filter.FilterLocality
 import QICLean.Spectral.Filter.Gaussian
 import QICLean.Spectral.Filter.GroundSpaceAffineFilter
+import QICLean.Spectral.Filter.PhaseNormalization
 import QICLean.Spectral.Filter.PhysicalPowerFilter
 import QICLean.Spectral.Filter.PhysicalPowerFilterLowerGap
 import QICLean.Spectral.Filter.PositiveReplacement
