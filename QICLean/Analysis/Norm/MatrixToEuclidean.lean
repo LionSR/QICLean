@@ -250,3 +250,31 @@ theorem star_dotProduct_self_eq_one_of_norm_eq_one {v : EuclideanSpace ℂ ι} (
   simpa using h
 
 end EuclideanSpace
+
+/-!
+Moved from TNLean at commit `2417e0a2e4d8a1dc2db0a14e0c9cae4ca735829e`.
+`TNLean/MPS/AreaLaw/Spectral/SupersiteHierarchy.lean`. The statements and proofs are retained.
+-/
+
+section
+
+open Matrix
+
+variable {ι : Type*} [Fintype ι] [DecidableEq ι]
+
+/-- **The residual of a sum.** For operators `Mᵢ` and reals `cᵢ`,
+`‖(∑ Mᵢ - ∑ cᵢ) ψ‖ ≤ ∑ ‖(Mᵢ - cᵢ) ψ‖`. With `Mᵢ` the operators `M_i` acting on two
+neighbouring supersites and `cᵢ = ⟨Ψ_a, M_i Ψ_a⟩`, this bounds the residual of `M_{k,k+1}` by
+eq. `low` for its summands, Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`,
+lines 628–639. -/
+theorem norm_toEuclideanLin_sum_sub_le {α : Type*} (s : Finset α) (Mi : α → Matrix ι ι ℂ)
+    (ci : α → ℝ) (ψ : EuclideanSpace ℂ ι) :
+    ‖toEuclideanLin (∑ a ∈ s, Mi a - ((∑ a ∈ s, ci a : ℝ) : ℂ) • 1) ψ‖ ≤
+      ∑ a ∈ s, ‖toEuclideanLin (Mi a - (ci a : ℂ) • 1) ψ‖ := by
+  have e : ∑ a ∈ s, Mi a - ((∑ a ∈ s, ci a : ℝ) : ℂ) • (1 : Matrix ι ι ℂ) =
+      ∑ a ∈ s, (Mi a - (ci a : ℂ) • 1) := by
+    rw [Finset.sum_sub_distrib, Complex.ofReal_sum, Finset.sum_smul]
+  rw [e, map_sum, LinearMap.sum_apply]
+  exact norm_sum_le _ _
+
+end

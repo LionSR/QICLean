@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Analysis.Exponential.MatrixFilter
 import QICLean.Analysis.Calculus.Kernel
+import QICLean.Analysis.Exponential.UnitaryEvolution
 
 /-!
 # Gaussian filtering between two Hermitian matrices
@@ -305,3 +306,77 @@ theorem inner_gaussianIntertwiner (h : ℝ≥0) {H' H : Matrix n n ℂ}
     dotProduct_gaussianIntertwiner_mulVec h hH' hH W hv hw
 
 end GaussianFilter
+
+/-!
+Moved from TNLean at commit `2417e0a2e4d8a1dc2db0a14e0c9cae4ca735829e`.
+`TNLean/MPS/AreaLaw/ProjectorFactorization/GaussianTimeAverage.lean`.
+The variance is the nonnegative part of `q / ΔE²`.
+-/
+
+section
+
+open scoped ComplexOrder
+
+namespace GaussianFilter
+
+variable {n : Type*} [Fintype n] [DecidableEq n]
+
+/-- The Gaussian time average `P_q(H) = (ΔE/√(2πq)) ∫ e^{iHt} e^{-(tΔE)²/2q} dt` of
+Hastings, arXiv:0705.2024v4, `law16.tex`, lines 843–847 (for `q > 0` and `ΔE > 0`), written
+as the two-generator Gaussian filter with left generator `H`, right generator `0` and input
+`1`. (With `H` on both sides the filter of `1` would be `1` itself.) -/
+noncomputable def gaussianTimeAverage (q ΔE : ℝ) (H : Matrix n n ℂ) : Matrix n n ℂ :=
+  GaussianFilter.gaussianIntertwiner ((q / ΔE ^ 2).toNNReal) H 0 1
+
+/-- The Gaussian time average is the Gaussian integral of the unitary path `e^{iHt}`. -/
+theorem gaussianTimeAverage_eq_integral (q ΔE : ℝ) (H : Matrix n n ℂ) :
+    gaussianTimeAverage q ΔE H =
+      ∫ t : ℝ, hermitianUnitaryPath H t ∂gaussianReal 0 ((q / ΔE ^ 2).toNNReal) := by
+  simp [gaussianTimeAverage, GaussianFilter.gaussianIntertwiner, hermitianUnitaryPath]
+
+/-- The Gaussian variance times `ΔE²` dominates `q`. -/
+theorem le_toNNReal_div_sq_mul_sq (q : ℝ) {ΔE : ℝ} (hΔ : ΔE ≠ 0) :
+    q ≤ ((q / ΔE ^ 2).toNNReal : ℝ) * ΔE ^ 2 := by
+  have hsq : 0 < ΔE ^ 2 := by positivity
+  rw [Real.coe_toNNReal']
+  exact (div_le_iff₀ hsq).mp (le_max_left _ _)
+
+/-- The square root of the Gaussian variance is `√q / ΔE` for `ΔE > 0`. -/
+theorem sqrt_toNNReal_div_sq (q : ℝ) {ΔE : ℝ} (hΔ : 0 < ΔE) :
+    Real.sqrt ((q / ΔE ^ 2).toNNReal) = Real.sqrt q / ΔE := by
+  rw [Real.coe_toNNReal']
+  rcases le_total q 0 with hq | hq
+  · rw [max_eq_right (div_nonpos_of_nonpos_of_nonneg hq (sq_nonneg _)), Real.sqrt_zero,
+      Real.sqrt_eq_zero'.mpr hq, zero_div]
+  · rw [max_eq_left (by positivity), Real.sqrt_div' _ (sq_nonneg _), Real.sqrt_sq hΔ.le]
+
+/-- **Perturbation stability.** For Hermitian `M` and `H` and `ΔE > 0`,
+`‖P_q(M) - P_q(H)‖ ≤ √q / ΔE · ‖M - H‖`. The constant bounds the first absolute moment
+`(ΔE/√(2πq)) ∫ |t| e^{-(tΔE)²/2q} dt = √(2/π) √q / ΔE` of the Gaussian weight.
+Hastings, arXiv:0705.2024v4, `law16.tex`, lines 849–864. -/
+theorem norm_gaussianTimeAverage_sub_le {M H : Matrix n n ℂ} (hM : M.IsHermitian)
+    (hH : H.IsHermitian) (q : ℝ) {ΔE : ℝ} (hΔ : 0 < ΔE) :
+    ‖gaussianTimeAverage q ΔE M - gaussianTimeAverage q ΔE H‖ ≤
+      Real.sqrt q / ΔE * ‖M - H‖ := by
+  set h := (q / ΔE ^ 2).toNNReal
+  have hint (A : Matrix n n ℂ) (hA : A.IsHermitian) :
+      Integrable (hermitianUnitaryPath A) (gaussianReal 0 h) := by
+    refine (GaussianFilter.integrable_intertwinerIntegrand h hA isHermitian_zero 1).congr
+      (Filter.Eventually.of_forall fun t => ?_)
+    simp [hermitianUnitaryPath]
+  have habs : Integrable (fun t : ℝ => ‖M - H‖ * |t|) (gaussianReal 0 h) :=
+    ((memLp_id_gaussianReal (μ := 0) (v := h) 1).integrable le_rfl).abs.const_mul _
+  rw [gaussianTimeAverage_eq_integral, gaussianTimeAverage_eq_integral,
+    ← integral_sub (hint M hM) (hint H hH)]
+  calc
+    _ ≤ ∫ t, ‖M - H‖ * |t| ∂gaussianReal 0 h :=
+      norm_integral_le_of_norm_le habs
+        (Filter.Eventually.of_forall (Matrix.norm_hermitianUnitaryPath_sub_le hM hH))
+    _ = ‖M - H‖ * ∫ t, |t| ∂gaussianReal 0 h := integral_const_mul _ _
+    _ ≤ ‖M - H‖ * Real.sqrt h :=
+      mul_le_mul_of_nonneg_left (GaussianFilter.integral_abs_gaussianReal_le h) (norm_nonneg _)
+    _ = _ := by rw [sqrt_toNNReal_div_sq q hΔ, mul_comm]
+
+end GaussianFilter
+
+end

@@ -16,6 +16,7 @@ import QICLean.ManyBody.Sites.Cut
 import QICLean.ManyBody.Sites.CutMatrix
 import QICLean.ManyBody.Sites.GraphBall
 import QICLean.ManyBody.Sites.GraphBoundary
+import QICLean.ManyBody.Sites.Hierarchy
 import QICLean.ManyBody.Sites.Lattice
 import QICLean.ManyBody.Sites.OneMagnon
 import QICLean.ManyBody.Sites.OperatorSchmidtPartition
