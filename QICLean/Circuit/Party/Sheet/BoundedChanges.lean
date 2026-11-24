@@ -192,23 +192,38 @@ theorem exchangeOp_eq
     Finset.sdiff_sdiff_self_left, Finset.inter_comm]
   rfl
 
-omit [Fintype ι] [DecidableEq P] [Fintype P] in
-/-- A site of `Y` carries, on the first sheet after the exchange, its owner on the second. -/
-theorem swapIn_owner_of_mem {x : ι} (hx : x ∈ Y) : (swapIn S₁ S₂ Y).owner x = S₂.owner x :=
-  ite_eq_left hx
+section SwapIn
 
-omit [Fintype ι] [DecidableEq P] [Fintype P] in
-/-- A site outside `Y` keeps its owner on the first sheet. -/
-theorem swapIn_owner_of_notMem {x : ι} (hx : x ∉ Y) :
-    (swapIn S₁ S₂ Y).owner x = S₁.owner x :=
-  ite_eq_right hx
+omit [Fintype P]
 
-omit [DecidableEq ι] [Fintype P] in
-/-- A site of a block of a party, carried by another sheet with the same owner. -/
-private theorem mem_blockPreimage_of_owner_eq_owner {S S' : Sheet ι P} {p : P} {v : ι}
-    (hv : v ∈ blockPreimage S.owner {p}) (h : S'.owner v = S.owner v) :
-    v ∈ blockPreimage S'.owner {p} :=
-  (mem_blockPreimage_singleton _).mpr (h.trans ((mem_blockPreimage_singleton _).mp hv))
+variable {S S' : Sheet ι P} {p : P} {v : ι}
+
+/-- A site of `Y` in the block of `p` of `S'` lies in the block of `p` of `swapIn S S' Y`. -/
+private theorem mem_blockPreimage_swapIn_of_mem (hv : v ∈ blockPreimage S'.owner {p})
+    (hY : v ∈ Y) : v ∈ blockPreimage (swapIn S S' Y).owner {p} := by
+  have h := (mem_blockPreimage_singleton S'.owner).mp hv
+  exact (mem_blockPreimage_singleton (swapIn S S' Y).owner).mpr ((ite_eq_left hY).trans h)
+
+/-- A site outside `Y` in the block of `p` of `S` lies in the block of `p` of `swapIn S S' Y`. -/
+private theorem mem_blockPreimage_swapIn_of_notMem (hv : v ∈ blockPreimage S.owner {p})
+    (hY : v ∉ Y) : v ∈ blockPreimage (swapIn S S' Y).owner {p} := by
+  have h := (mem_blockPreimage_singleton S.owner).mp hv
+  exact (mem_blockPreimage_singleton (swapIn S S' Y).owner).mpr ((ite_eq_right hY).trans h)
+
+/-- A site of `Y` in the block of `p` of `swapIn S S' Y` lies in the block of `p` of `S'`. -/
+private theorem mem_blockPreimage_of_mem_swapIn (hv : v ∈ blockPreimage (swapIn S S' Y).owner {p})
+    (hY : v ∈ Y) : v ∈ blockPreimage S'.owner {p} := by
+  have h := (mem_blockPreimage_singleton (swapIn S S' Y).owner).mp hv
+  exact (mem_blockPreimage_singleton S'.owner).mpr ((ite_eq_left hY).symm.trans h)
+
+/-- A site outside `Y` in the block of `p` of `swapIn S S' Y` lies in the block of `p` of `S`. -/
+private theorem mem_blockPreimage_of_mem_swapIn_of_notMem
+    (hv : v ∈ blockPreimage (swapIn S S' Y).owner {p}) (hY : v ∉ Y) :
+    v ∈ blockPreimage S.owner {p} := by
+  have h := (mem_blockPreimage_singleton (swapIn S S' Y).owner).mp hv
+  exact (mem_blockPreimage_singleton S.owner).mpr ((ite_eq_right hY).symm.trans h)
+
+end SwapIn
 
 omit [Fintype P] in
 /-- **The renaming of an exchange at one party.** The basis of `p` on the two sheets after the
@@ -218,19 +233,17 @@ def swapInEquiv (p : P) :
     (swapIn S₁ S₂ Y).system q p × (swapIn S₂ S₁ Y).system q p ≃
       S₁.system q p × S₂.system q p where
   toFun b := (fun v ↦ if hv : (v : ι) ∈ Y then
-        b.2 ⟨v, mem_blockPreimage_of_owner_eq_owner v.2 (swapIn_owner_of_mem S₂ S₁ Y hv)⟩
-      else b.1 ⟨v, mem_blockPreimage_of_owner_eq_owner v.2 (swapIn_owner_of_notMem S₁ S₂ Y hv)⟩,
+        b.2 ⟨v, mem_blockPreimage_swapIn_of_mem Y v.2 hv⟩
+      else b.1 ⟨v, mem_blockPreimage_swapIn_of_notMem Y v.2 hv⟩,
     fun v ↦ if hv : (v : ι) ∈ Y then
-        b.1 ⟨v, mem_blockPreimage_of_owner_eq_owner v.2 (swapIn_owner_of_mem S₁ S₂ Y hv)⟩
-      else b.2 ⟨v, mem_blockPreimage_of_owner_eq_owner v.2 (swapIn_owner_of_notMem S₂ S₁ Y hv)⟩)
+        b.1 ⟨v, mem_blockPreimage_swapIn_of_mem Y v.2 hv⟩
+      else b.2 ⟨v, mem_blockPreimage_swapIn_of_notMem Y v.2 hv⟩)
   invFun a := (fun v ↦ if hv : (v : ι) ∈ Y then
-        a.2 ⟨v, mem_blockPreimage_of_owner_eq_owner v.2 (swapIn_owner_of_mem S₁ S₂ Y hv).symm⟩
-      else a.1 ⟨v, mem_blockPreimage_of_owner_eq_owner v.2
-        (swapIn_owner_of_notMem S₁ S₂ Y hv).symm⟩,
+        a.2 ⟨v, mem_blockPreimage_of_mem_swapIn Y v.2 hv⟩
+      else a.1 ⟨v, mem_blockPreimage_of_mem_swapIn_of_notMem Y v.2 hv⟩,
     fun v ↦ if hv : (v : ι) ∈ Y then
-        a.1 ⟨v, mem_blockPreimage_of_owner_eq_owner v.2 (swapIn_owner_of_mem S₂ S₁ Y hv).symm⟩
-      else a.2 ⟨v, mem_blockPreimage_of_owner_eq_owner v.2
-        (swapIn_owner_of_notMem S₂ S₁ Y hv).symm⟩)
+        a.1 ⟨v, mem_blockPreimage_of_mem_swapIn Y v.2 hv⟩
+      else a.2 ⟨v, mem_blockPreimage_of_mem_swapIn_of_notMem Y v.2 hv⟩)
   left_inv b := by
     refine Prod.ext (funext fun v ↦ ?_) (funext fun v ↦ ?_) <;>
       by_cases hv : (v : ι) ∈ Y <;> simp [hv]
@@ -260,15 +273,19 @@ private theorem twoConfigEquiv_symm_permCongr_pairSwap
   · have hv := (mem_blockPreimage_singleton _).mp v.2
     by_cases hY : (v : ι) ∈ Y
     · exact (ite_eq_left hY).trans ((twoConfigEquiv_snd_eq _ _ y
-        ((swapIn_owner_of_mem S₂ S₁ Y hY).trans hv)).trans (by simp [swapInEquiv, hY]))
+        (show (swapIn S₂ S₁ Y).owner v = p from
+          (ite_eq_left hY).trans hv)).trans (by simp [swapInEquiv, hY]))
     · exact (ite_eq_right hY).trans ((twoConfigEquiv_fst_eq _ _ y
-        ((swapIn_owner_of_notMem S₁ S₂ Y hY).trans hv)).trans (by simp [swapInEquiv, hY]))
+        (show (swapIn S₁ S₂ Y).owner v = p from
+          (ite_eq_right hY).trans hv)).trans (by simp [swapInEquiv, hY]))
   · have hv := (mem_blockPreimage_singleton _).mp v.2
     by_cases hY : (v : ι) ∈ Y
     · exact (ite_eq_left hY).trans ((twoConfigEquiv_fst_eq _ _ y
-        ((swapIn_owner_of_mem S₁ S₂ Y hY).trans hv)).trans (by simp [swapInEquiv, hY]))
+        (show (swapIn S₁ S₂ Y).owner v = p from
+          (ite_eq_left hY).trans hv)).trans (by simp [swapInEquiv, hY]))
     · exact (ite_eq_right hY).trans ((twoConfigEquiv_snd_eq _ _ y
-        ((swapIn_owner_of_notMem S₂ S₁ Y hY).trans hv)).trans (by simp [swapInEquiv, hY]))
+        (show (swapIn S₂ S₁ Y).owner v = p from
+          (ite_eq_right hY).trans hv)).trans (by simp [swapInEquiv, hY]))
 
 /-- **The renaming in canonical coordinates** is the swap `F_Y` of the two sheets on `Y`.
 Source: `05-frames.tex`, lines 490–494; one-dimensional note, `part2b_mps_protocol.tex`,
