@@ -8,6 +8,8 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Circuit.Party.Compression.CorrectedSources
 
+import QICLean.Circuit.Party.Compression.CorrectedSources.CrossingVectors
+import QICLean.Circuit.Party.Compression.CorrectedSources.InputFrames
 import QICLean.Circuit.Party.Compression.CorrectedSources.Partition
 import QICLean.Circuit.Party.Compression.CorrectedSources.SchmidtOutput
 import QICLean.Circuit.Party.Compression.CorrectedSources.SelectivePreparation

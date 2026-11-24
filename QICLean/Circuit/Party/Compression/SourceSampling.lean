@@ -8,8 +8,13 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Circuit.Party.Compression.SourceSampling
 
+import QICLean.Circuit.Party.Compression.SourceSampling.EndpointWord
 import QICLean.Circuit.Party.Compression.SourceSampling.GaussianError
 import QICLean.Circuit.Party.Compression.SourceSampling.Integrability
 import QICLean.Circuit.Party.Compression.SourceSampling.Law
+import QICLean.Circuit.Party.Compression.SourceSampling.PhysicalDensity
+import QICLean.Circuit.Party.Compression.SourceSampling.PhysicalSum
+import QICLean.Circuit.Party.Compression.SourceSampling.SampledContraction
+import QICLean.Circuit.Party.Compression.SourceSampling.SampledPhysicalSum
 import QICLean.Circuit.Party.Compression.SourceSampling.Samples
 import QICLean.Circuit.Party.Compression.SourceSampling.SchmidtCoordinates
