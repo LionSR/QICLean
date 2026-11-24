@@ -47,6 +47,8 @@ relabelling (`CyclicInsertion.insertAtMatrix_eq_insertNth`).
 * `QuantumCircuit.Party.Word.op_prepWord` — the prepared stack is `η^{⊗ n}`.
 * `QuantumCircuit.Party.Word.op_insWord` — the insertion word is the insertion `I_k`.
 * `QuantumCircuit.Party.Word.op_framePairs` — a stack passes words on the other registers.
+* `QuantumCircuit.Party.Word.op_liftPair_mul_op_sourceAt` — a fresh pair source passes a word
+  run beside its factors.
 
 ## References
 
@@ -509,6 +511,30 @@ theorem op_framePairs (n : ℕ) (w : Word S T) :
   rw [PartyCircuit.op_liftPair hpq _ _ SourceGate.ev SourceGate.isCompatible_frame]
   ext y x
   simp [stackConfigEquiv, kroneckerMap_apply, one_apply]
+
+/-- **A fresh pair source commutes with a word beside the fresh factors**: the word `c` followed
+by the source of `η` is the source followed by `c` run beside the fresh factors. Source:
+`04-compression.tex`, lines 245–251. -/
+theorem op_liftPair_mul_op_sourceAt {p q : P} (hpq : p ≠ q) (α β : Type) [Fintype α]
+    [DecidableEq α] [Fintype β] [DecidableEq β] (η : EuclideanSpace ℂ (α × β)) {S T : P → Type}
+    [∀ s, Fintype (S s)] [∀ s, DecidableEq (S s)] [∀ s, Fintype (T s)] [∀ s, DecidableEq (T s)]
+    (c : Word S T) :
+    Word.op (PartyCircuit.liftPair hpq α β c) * (sourceAt hpq α β η S).op =
+      (sourceAt hpq α β η T).op * c.op := by
+  unfold Word.op
+  rw [PartyCircuit.op_liftPair hpq α β _ SourceGate.isCompatible_frame]
+  change _ * Word.op (sourceAt hpq α β η S) = Word.op (sourceAt hpq α β η T) * _
+  rw [op_sourceAt, op_sourceAt]
+  ext y x
+  rw [prepMatrix_mul_apply]
+  simp only [reindex_apply, Equiv.symm_symm, Matrix.mul_apply, submatrix_apply,
+    kroneckerMap_apply, prepMatrix_apply, mul_ite, mul_zero, one_apply, ite_mul, one_mul,
+    zero_mul]
+  rw [← (addPairConfigEquiv hpq α β (X := S)).symm.sum_comp]
+  simp only [Equiv.apply_symm_apply]
+  rw [Fintype.sum_prod_type]
+  simp only [Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, ite_true]
+  exact mul_comm _ _
 
 end Frame
 
