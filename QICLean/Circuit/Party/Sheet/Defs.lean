@@ -27,16 +27,17 @@ exchange inside a region, with the sets of sites of the two lemmas.
   `QuantumCircuit.Party.Sheet.refVec`, `QuantumCircuit.Party.Sheet.twoConfigEquiv`.
 * `QuantumCircuit.Party.Sheet.changeOwner`, `QuantumCircuit.Party.Sheet.birthEnv`: the sheet
   after handing a set `T` of sites to another party, and the set `E` of sites not owned by `P∘`.
-* `QuantumCircuit.Party.Sheet.swapIn`, `QuantumCircuit.Party.Sheet.exchangeEnv`,
-  `QuantumCircuit.Party.Sheet.tSet`, `QuantumCircuit.Party.Sheet.eSet`,
-  `QuantumCircuit.Party.Sheet.aSet`: the two-sheet exchange inside a region `Y`, the sets `Z`,
-  `T = Z ∩ Y`, `E = Z ∖ Y` and `A = Y ∖ Z`.
+* `QuantumCircuit.Party.Sheet.swapIn`, `QuantumCircuit.Party.Sheet.exchangeEnv`: the two-sheet
+  exchange inside a region `Y`, and the set `Z` of sites whose two owners are not both `P∘`.
+  The exchange is stated for any set `Z` containing it, with `T = Z ∩ Y`, `E = Z ∖ Y` and
+  `A = Y ∖ Z`.
 
 ## Main results
 
 * `QuantumCircuit.Party.Sheet.prodVec_refVec`, `QuantumCircuit.Party.Sheet.norm_refVec`.
 * `QuantumCircuit.Party.Sheet.changeOwner_birth_owners`,
-  `QuantumCircuit.Party.Sheet.swapIn_owner_eq_of_mem_compl`.
+  `QuantumCircuit.Party.Sheet.owner_eq_of_notMem_exchangeEnv`,
+  `QuantumCircuit.Party.Sheet.swapIn_owner_eq_of_notMem`.
 
 ## References
 
@@ -152,6 +153,16 @@ theorem disjoint_birthEnv (hTP : ∀ x ∈ T, S.owner x = P₀) : Disjoint T (S.
   intro x hxT hxE
   exact (S.mem_birthEnv).mp hxE (hTP x hxT)
 
+omit [Fintype ι] [DecidableEq P] in
+/-- Handing to `P∘` sites that `P∘` already owns leaves the sheet unchanged. -/
+theorem changeOwner_eq_self (hTP : ∀ x ∈ T, S.owner x = P₀) : S.changeOwner T P₀ = S := by
+  cases S
+  simp only [changeOwner, Sheet.mk.injEq]
+  funext v
+  by_cases h : v ∈ T
+  · simpa only [h, ite_true] using (hTP v h).symm
+  · simp only [h, ite_false]
+
 /-- The ownership facts of a birth: when `T` is owned by `P∘`, the sites outside `T ∪ E` are owned
 by `P∘` before and after `T` is handed to `Q∘`, the sites of `T` are owned by `Q∘` afterwards,
 and the owners on `E` are unchanged. -/
@@ -179,21 +190,12 @@ end Birth
 def swapIn (S₁ S₂ : Sheet ι P) (Y : Finset ι) : Sheet ι P :=
   ⟨fun x ↦ if x ∈ Y then S₂.owner x else S₁.owner x⟩
 
-/-- The set `Z = {x : the two owners of x are not both P∘}` of Lemma `lem:exchange`; on sheets
-the hole parts `H⁺(F₁) ∪ H⁺(F₂)` of Lemma 6.6 are empty. Source: `05-frames.tex`,
+/-- The set `{x : the two owners of x are not both P∘}` of Lemma `lem:exchange`. The set `Z` of
+Lemma 6.6 adds to it the hole parts `H⁺(F₁) ∪ H⁺(F₂)`, which are empty on sheets; the exchange
+is therefore stated for every set `Z` containing this one. Source: `05-frames.tex`,
 lines 466–470; one-dimensional note, `part2b_mps_protocol.tex`, line 118. -/
 def exchangeEnv (S₁ S₂ : Sheet ι P) (P₀ : P) : Finset ι :=
   Finset.univ.filter fun x ↦ ¬(S₁.owner x = P₀ ∧ S₂.owner x = P₀)
-
-/-- `T = Z ∩ Y`. Source: `05-frames.tex`, line 471. -/
-def tSet (S₁ S₂ : Sheet ι P) (Y : Finset ι) (P₀ : P) : Finset ι := exchangeEnv S₁ S₂ P₀ ∩ Y
-
-/-- `E = Z ∖ Y`. Source: `05-frames.tex`, line 471. -/
-def eSet (S₁ S₂ : Sheet ι P) (Y : Finset ι) (P₀ : P) : Finset ι := exchangeEnv S₁ S₂ P₀ \ Y
-
-/-- `A = Y ∖ Z = Y ∩ U`, where the private swap `F_A` acts. Source: `05-frames.tex`,
-line 512. -/
-def aSet (S₁ S₂ : Sheet ι P) (Y : Finset ι) (P₀ : P) : Finset ι := Y \ exchangeEnv S₁ S₂ P₀
 
 variable (S₁ S₂ : Sheet ι P) (Y : Finset ι) (P₀ : P)
 
@@ -203,41 +205,30 @@ theorem mem_exchangeEnv {x : ι} :
     x ∈ exchangeEnv S₁ S₂ P₀ ↔ ¬(S₁.owner x = P₀ ∧ S₂.owner x = P₀) := by
   simp [exchangeEnv]
 
-/-- `T = Z ∩ Y` and `E = Z ∖ Y` are disjoint. -/
-theorem disjoint_tSet_eSet :
-    Disjoint (tSet S₁ S₂ Y P₀) (eSet S₁ S₂ Y P₀) := by
-  rw [Finset.disjoint_left]
-  intro x hx hx'
-  simp only [tSet, eSet, Finset.mem_inter, Finset.mem_sdiff] at hx hx'
-  exact hx'.2 hx.2
+omit [DecidableEq ι] in
+/-- Both owners of a site outside `exchangeEnv S₁ S₂ P₀` are `P∘`. -/
+theorem owner_eq_of_notMem_exchangeEnv {x : ι} (hx : x ∉ exchangeEnv S₁ S₂ P₀) :
+    S₁.owner x = P₀ ∧ S₂.owner x = P₀ :=
+  not_not.mp ((mem_exchangeEnv S₁ S₂ P₀).not.mp hx)
 
-/-- `T ∪ E = Z`. -/
-theorem tSet_union_eSet : tSet S₁ S₂ Y P₀ ∪ eSet S₁ S₂ Y P₀ = exchangeEnv S₁ S₂ P₀ := by
-  ext x
-  simp only [tSet, eSet, Finset.mem_union, Finset.mem_inter, Finset.mem_sdiff]
-  tauto
-
-/-- A site of `Y` lies in `T` exactly when it is not in `A = Y ∖ Z`. -/
-theorem mem_tSet_iff (x : ι) : x ∈ tSet S₁ S₂ Y P₀ ↔ x ∈ Y ∧ x ∉ aSet S₁ S₂ Y P₀ := by
-  simp only [tSet, aSet, Finset.mem_inter, Finset.mem_sdiff]
-  tauto
-
-/-- `A ⊆ Y`. -/
-theorem aSet_subset_region : aSet S₁ S₂ Y P₀ ⊆ Y := Finset.sdiff_subset
-
-/-- `A` lies in `U = Λ ∖ Z`. -/
-theorem aSet_subset_compl : aSet S₁ S₂ Y P₀ ⊆ (tSet S₁ S₂ Y P₀ ∪ eSet S₁ S₂ Y P₀)ᶜ := by
+/-- `A = Y ∖ Z` lies in the complement of `T ∪ E = (Z ∩ Y) ∪ (Z ∖ Y)`. -/
+theorem sdiff_subset_compl_inter_union_sdiff (Z : Finset ι) : Y \ Z ⊆ (Z ∩ Y ∪ Z \ Y)ᶜ := by
   intro x hx
-  rw [tSet_union_eSet, Finset.mem_compl]
-  exact (Finset.mem_sdiff.mp hx).2
+  simp only [Finset.mem_compl, Finset.mem_union, Finset.mem_inter, Finset.mem_sdiff] at hx ⊢
+  tauto
 
-/-- Every register of `U = Λ ∖ Z` is held by `P∘` on both sheets after the exchange. Source:
+omit [Fintype ι] [DecidableEq P] in
+/-- Let `Z` contain every site whose two owners are not both `P∘`. Every register outside
+`T ∪ E = (Z ∩ Y) ∪ (Z ∖ Y)` is held by `P∘` on both sheets after the exchange. Source:
 `05-frames.tex`, lines 500–501; one-dimensional note, `part2b_mps_protocol.tex`,
 lines 131–132. -/
-theorem swapIn_owner_eq_of_mem_compl {x : ι} (hx : x ∈ (tSet S₁ S₂ Y P₀ ∪ eSet S₁ S₂ Y P₀)ᶜ) :
+theorem swapIn_owner_eq_of_notMem {Z : Finset ι}
+    (hZ : ∀ x ∉ Z, S₁.owner x = P₀ ∧ S₂.owner x = P₀) {x : ι} (hx : x ∉ Z ∩ Y ∪ Z \ Y) :
     (swapIn S₁ S₂ Y).owner x = P₀ ∧ (swapIn S₂ S₁ Y).owner x = P₀ := by
-  rw [tSet_union_eSet, Finset.mem_compl, mem_exchangeEnv, not_not] at hx
-  obtain ⟨h₁, h₂⟩ := hx
+  have hxZ : x ∉ Z := by
+    simp only [Finset.mem_union, Finset.mem_inter, Finset.mem_sdiff] at hx
+    tauto
+  obtain ⟨h₁, h₂⟩ := hZ x hxZ
   simp only [swapIn]
   split_ifs <;> exact ⟨by assumption, by assumption⟩
 

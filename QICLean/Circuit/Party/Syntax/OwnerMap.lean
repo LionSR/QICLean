@@ -28,6 +28,8 @@ no party and has one configuration (`uniqueBlockSystemNone`).
 * `QuantumCircuit.Party.SourceInventory.mem_mapOwner_affectedOwner`,
   `QuantumCircuit.Party.SourceInventory.map_partyPair_affectedOwner`,
   `QuantumCircuit.Party.SourceInventory.mapOwner_affectedOwner_eq_nil_iff`.
+* `QuantumCircuit.Party.isSome_affectedOwner` — the owner is a party exactly when the party is
+  affected.
 * `QuantumCircuit.Party.affectedOwner_true_ne_none`,
   `QuantumCircuit.Party.uniqueBlockSystemNone` — the exterior block when every party is affected.
 
@@ -144,6 +146,12 @@ def affectedOwner (A : P → Bool) (p : P) : Option {p // A p = true} :=
 Source: Theorem 5.2, `04-compression.tex`, lines 409–417. -/
 @[simp] theorem affectedOwner_eq_none (A : P → Bool) (p : P) :
     affectedOwner A p = none ↔ A p = false := by
+  cases h : A p <;> simp [affectedOwner, h]
+
+/-- The side of the owner of a party is whether the party is affected. Source: Theorem 5.2,
+`04-compression.tex`, lines 357–358 and 409–417. -/
+@[simp] theorem isSome_affectedOwner (A : P → Bool) (p : P) :
+    (affectedOwner A p).isSome = A p := by
   cases h : A p <;> simp [affectedOwner, h]
 
 /-- Two parties acquire the same owner exactly when they were equal or both
