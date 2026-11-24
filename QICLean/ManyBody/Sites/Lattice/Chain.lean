@@ -6,7 +6,9 @@ Authors: QICLean contributors
 import QICLean.Algebra.Combinatorics.OverlapGraph
 import QICLean.Algebra.Combinatorics.PathGraphConnected
 import QICLean.ManyBody.Sites.Lattice.PathGraph
+import QICLean.ManyBody.Sites.GraphBall
 import QICLean.ManyBody.Sites.GraphBoundary
+import Mathlib.Algebra.Order.Floor.Semiring
 import Mathlib.Data.Finset.Max
 import Mathlib.Data.Finset.SymmDiff
 import Mathlib.Data.Nat.Dist
@@ -116,6 +118,37 @@ theorem interval_zero_eq_univ {b : ℕ} (hb : L ≤ b) : interval L 0 b = Finset
   simp only [mem_interval, Finset.mem_univ, iff_true]
   exact ⟨Nat.zero_le _, lt_of_lt_of_le i.2 hb⟩
 
+/-- The exact closed neighborhood of radius `⌊ρ⌋` of a clipped interval in the path graph.
+For `ρ ≥ 0` this is the closed real-radius neighborhood. A negative radius is treated as zero.
+Source: TNLean note, Lemma `lem:logsep`, `part2a_mps_information.tex:482–483`. -/
+theorem graphNeighborhood_pathGraph_interval_eq {L : ℕ} (a z : ℕ) (ρ : ℝ) :
+    graphNeighborhood (SimpleGraph.pathGraph L) (interval L a z) ⌊ρ⌋₊ =
+      if (interval L a z).Nonempty then
+        interval L (a - Nat.floor ρ) (z + Nat.floor ρ)
+      else ∅ := by
+  classical
+  split_ifs with hI
+  · ext y
+    simp only [mem_graphNeighborhood, SimpleGraph.pathGraph_edist,
+      ENat.natCast_le_natCast, mem_interval]
+    constructor
+    · rintro ⟨x, hx, hdist⟩
+      simp only [Nat.dist] at hdist
+      omega
+    · rintro ⟨hylo, hyhi⟩
+      obtain ⟨x₀, hx₀⟩ := hI
+      rw [mem_interval] at hx₀
+      by_cases hay : y.val < a
+      · refine ⟨⟨a, by omega⟩, ?_⟩
+        simp only [Nat.dist]
+        omega
+      · by_cases hyz : y.val < z
+        · exact ⟨y, ⟨Nat.le_of_not_gt hay, hyz⟩, by simp⟩
+        · refine ⟨⟨z - 1, by omega⟩, ?_⟩
+          simp only [Nat.dist]
+          omega
+  · simp [Finset.not_nonempty_iff_eq_empty.mp hI]
+
 /-- An interval `[a, b)` has at most `b - a` sites. -/
 theorem card_interval_le (a b : ℕ) : (interval L a b).card ≤ b - a := by
   have h := Finset.card_le_card_of_injOn (fun i : Fin L ↦ i.val)
@@ -148,6 +181,22 @@ theorem card_interval_symmDiff_le_dist (a b c d : ℕ) :
     _ ≤ (max a c - min a c) + (max b d - min b d) :=
       Nat.add_le_add (card_interval_le _ _) (card_interval_le _ _)
     _ = Nat.dist a c + Nat.dist b d := by rw [Nat.dist_eq_max_sub_min, Nat.dist_eq_max_sub_min]
+
+open scoped symmDiff in
+/-- A clipped coordinate interval enlarged by radius `v` adds at most `2 * v` sites.
+The left subtraction is truncated, with no restriction on the endpoint order.
+Source: the one-dimensional note, Section 5, `eq:final`. -/
+theorem card_interval_enlargement_sdiff_le (L l r v : ℕ) :
+    (interval L (l - v) (r + v) \ interval L l r).card ≤ 2 * v := by
+  calc
+    _ ≤ ((interval L (l - v) (r + v)) ∆ interval L l r).card :=
+      Finset.card_le_card Finset.symmDiff_subset_sdiff
+    _ ≤ Nat.dist (l - v) l + Nat.dist (r + v) r :=
+      card_interval_symmDiff_le_dist _ _ _ _
+    _ ≤ 2 * v := by
+      rw [Nat.dist_eq_sub_of_le (Nat.sub_le l v),
+        Nat.dist_eq_sub_of_le_right (Nat.le_add_right r v)]
+      omega
 
 open scoped symmDiff in
 /-- Cuts chosen in windows of `2ℓ` positions after `a` and after `b` give an interval within
