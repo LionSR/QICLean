@@ -59,7 +59,12 @@ two systems, as in the TNLean architecture); `ManyBody/Subspace` adds
 `Probability`, `ManyBody/Replica` adds `Probability` and `Representation`.
 Subspaces and replicas are siblings. The circuit layers are unchanged: they may
 import the matrix layers (`Algebra`, `Analysis`, `Spectral`), the channel
-layers (`Channel`, `Kraus`) and `ManyBody/Sites`.
+layers (`Channel`, `Kraus`) and `ManyBody/Sites`. One exception: the party layer
+`Circuit/Party` may import `Probability` only in modules of
+`Circuit/Party/Compression/SourceSampling` that take laws, integrals or samples
+(the layer `party_probability` of `scripts/check_import_layers.py`); every other
+party module, including the deterministic sampling modules, stays below
+`Probability`.
 
 | Layer | Objects its statements mention | May import |
 |---|---|---|
