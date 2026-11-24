@@ -16,3 +16,4 @@ import QICLean.Circuit.Party.Sheet.Placement
 import QICLean.Circuit.Party.Sheet.PrivateBirthDeath
 import QICLean.Circuit.Party.Sheet.Stack
 import QICLean.Circuit.Party.Sheet.StackChange
+import QICLean.Circuit.Party.Sheet.TaggedExchange
