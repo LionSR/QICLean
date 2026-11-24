@@ -22,5 +22,7 @@ import QICLean.ManyBody.Sites.Lattice.RectangleColumns
 import QICLean.ManyBody.Sites.Lattice.Ring
 import QICLean.ManyBody.Sites.Lattice.RingBlocks
 import QICLean.ManyBody.Sites.Lattice.RingDistance
+import QICLean.ManyBody.Sites.Lattice.SnakeOrder
 import QICLean.ManyBody.Sites.Lattice.Square
+import QICLean.ManyBody.Sites.Lattice.SupDistance
 import QICLean.ManyBody.Sites.Lattice.SupportCounting

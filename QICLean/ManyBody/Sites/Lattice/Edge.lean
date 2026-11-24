@@ -159,4 +159,16 @@ theorem isRegionBoundaryEdge_congr {S R : Finset V} (h : S = R) (e : Edge G) :
   rw [h]
 
 
+
+
+
+/-- An edge with an endpoint in the region `R`, but not both endpoints in `R`, crosses the
+boundary of `R`. -/
+theorem IsRegionIncidentEdge.isRegionBoundaryEdge {R : Finset V} {e : Edge G}
+    (he : IsRegionIncidentEdge R e) (hn : ¬ (e.1.1 ∈ R ∧ e.1.2 ∈ R)) :
+    IsRegionBoundaryEdge R e := by
+  rcases he with h | h
+  · exact Or.inl ⟨h, fun h' ↦ hn ⟨h, h'⟩⟩
+  · exact Or.inr ⟨fun h' ↦ hn ⟨h', h⟩, h⟩
+
 end ManyBody
