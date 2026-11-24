@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Circuit.Party.Original.Basic
+import QICLean.Circuit.Party.Original.Frame
 import QICLean.Circuit.Party.Syntax.Local
 import QICLean.Spectral.Eigenvalue.MatrixReindexEuclidean
 
@@ -39,6 +39,8 @@ Original circuits beside spectator factors are in `Original/Frame`.
 
 * `QuantumCircuit.Party.OriginalCircuit.op_sequence_succ`, `nonprivateCount_sequence`,
   `participation_sequence`, `isExpansionBounded_sequence`, `isMonomialBounded_sequence`.
+* `QuantumCircuit.Party.OriginalCircuit.toEuclideanLin_op_relabel`,
+  `toEuclideanLin_op_relabel_prodComm_prodVec` — relabellings on vectors.
 * `QuantumCircuit.Party.OriginalCircuit.op_castSystems`, `numGates_castSystems`,
   `gateCount_castSystems`, `nonprivateCount_castSystems`, `participation_castSystems`,
   `participationCount_castSystems`, `gates_castSystems`, `participants_castSystemsLocationsEquiv`
@@ -105,6 +107,24 @@ def relabel (e : ∀ s, Y s ≃ X s) : OriginalCircuit X Y :=
 theorem op_relabel [Fintype P] (e : ∀ s, Y s ≃ X s) :
     (relabel e).op = (Equiv.piCongrRight e).toPEquiv.toMatrix :=
   PartyCircuit.op_relabel _ e
+
+/-- A relabelling maps a vector `v` to `v` read along the relabelling of the configurations. -/
+theorem toEuclideanLin_op_relabel [Fintype P] (e : ∀ s, Y s ≃ X s)
+    (v : EuclideanSpace ℂ (Config X)) :
+    toEuclideanLin (relabel e).op v =
+      LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (Equiv.piCongrRight e).symm v := by
+  ext y
+  simp [op_relabel, LinearIsometryEquiv.piLpCongrLeft_apply, Equiv.piCongrLeft'_apply,
+    Matrix.toLpLin_apply, PEquiv.toMatrix_toPEquiv_mulVec]
+
+/-- A relabelling exchanging the two factors of a product system maps `x ⊗ y` to `y ⊗ x`. -/
+theorem toEuclideanLin_op_relabel_prodComm_prodVec [Fintype P] (x : EuclideanSpace ℂ (Config X))
+    (y : EuclideanSpace ℂ (Config Y)) :
+    toEuclideanLin (relabel fun p ↦ Equiv.prodComm (Y p) (X p)).op (prodVec x y) =
+      prodVec y x := by
+  ext z
+  rw [toEuclideanLin_op_relabel]
+  simp [LinearIsometryEquiv.piLpCongrLeft_apply, Equiv.piCongrLeft'_apply, mul_comm]
 
 /-- A relabelling has no nonprivate gate. -/
 @[simp] theorem nonprivateCount_relabel (e : ∀ s, Y s ≃ X s) : (relabel e).nonprivateCount = 0 :=

@@ -42,6 +42,7 @@ splitting data commutes with every operator supported in `B \ A`.
 * `ManyBody.norm_birthOp_le_one`, `ManyBody.birthOp_isHermitian`,
   `ManyBody.norm_toEuclideanLin_birthOp_sub_le`.
 * `ManyBody.birthOp_eq_submatrix`, `ManyBody.commute_birthOp`: `𝐁 = 1_E ⊗ Kᴴ K`.
+* `ManyBody.norm_birthKernel_le_one`: the kernel `K` is a contraction.
 * `ManyBody.norm_toEuclideanLin_configBirthOp_sub_le`, `ManyBody.commute_configBirthOp`.
 
 ## References
@@ -251,6 +252,21 @@ theorem birthOp_eq_submatrix (V : Matrix (BT × BE) U ℂ) (s : T × BT → ℂ)
   rw [birthOp, birthEffect_eq_submatrix, conjTranspose_submatrix,
     ← submatrix_mul _ _ _ _ _ Function.bijective_id, conjTranspose_kronecker, conjTranspose_one,
     ← mul_kronecker_mul, Matrix.one_mul]
+
+omit [DecidableEq BT] [DecidableEq BE] in
+/-- The kernel `K = ⟨s| (1_T ⊗ V)` of a birth is a contraction.
+
+Polynomial-PEPS manuscript, proof of Lemma 6.5, `05-frames.tex`, lines 416–418. -/
+theorem norm_birthKernel_le_one {V : Matrix (BT × BE) U ℂ} (hV : V.IsIsometry)
+    {s : T × BT → ℂ} (hs : star s ⬝ᵥ s = 1) : ‖birthKernel V s‖ ≤ 1 := by
+  classical
+  have h : birthKernel V s = reindex (Equiv.punitProd BE)
+      ((Equiv.prodPUnit T).prodCongr (Equiv.refl U)) (birthEffect (E := Unit) V s) := by
+    ext b ⟨t, u⟩
+    rw [birthEffect_eq_submatrix]
+    simp [teuShuffle]
+  rw [h]
+  exact (l2_opNorm_reindex_le _ _ _).trans (norm_birthEffect_le_one hV hs)
 
 omit [Fintype T] [Fintype E] [DecidableEq E] [Fintype U] in
 /-- An operator acting on `E` alone, `(1_T ⊗ R) ⊗ 1_U`, in the coordinates `(e, (t, u))`. -/
