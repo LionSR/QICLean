@@ -72,6 +72,13 @@ def blockConfigEquiv (X : V → Type) : Config (blockSystem f X) ≃ Config X :=
     blockConfigEquiv f X z v = z (f v) ⟨v, by simp⟩ :=
   rfl
 
+/-- The configuration of a site is read at its block, for the block given by an equation. -/
+theorem blockConfigEquiv_apply_of_eq {X : V → Type} (z : Config (blockSystem f X)) {v : V}
+    {b : V'} (h : f v = b) :
+    blockConfigEquiv f X z v = z b ⟨v, (mem_blockPreimage_singleton f).mpr h⟩ := by
+  subst h
+  rfl
+
 @[simp] theorem blockConfigEquiv_symm_apply {X : V → Type} (σ : Config X) (b : V')
     (v : {v // v ∈ blockPreimage f {b}}) : (blockConfigEquiv f X).symm σ b v = σ v :=
   rfl
