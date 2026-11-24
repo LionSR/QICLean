@@ -32,6 +32,8 @@ equivalence `complCast hXY`.
 * `ManyBody.updateOn` — the system `X` with the basis types `Z` on a region.
 * `ManyBody.updateOnConfigEquiv` — its configurations, as pairs.
 * `ManyBody.pairConfigEquiv` — the configurations of a region of two sites, as pairs.
+* `ManyBody.factorConfigEquiv` — the configurations of a system with a factor split off at one
+  site, as pairs.
 * `ManyBody.complCast` — configurations outside a region of two systems that agree there.
 * `ManyBody.placeBetween` — the placement `K ⊗ 1` of a matrix between two systems.
 
@@ -132,6 +134,42 @@ def pairConfigEquiv {a b : V} (hab : a ≠ b) (hD : D = {a, b}) : RegionConfig X
   rfl
 
 end Update
+
+/-! ### Splitting off a factor at one site -/
+
+section Factor
+
+variable [DecidableEq V] {W Z : V → Type u} {α : Type u} (p : V) (h : ∀ s ≠ p, W s = Z s)
+  (e : W p ≃ α × Z p)
+
+/-- The configurations of a system `W` whose basis at `p` is read as `α × Z p` through `e`, and
+which agrees with `Z` at the other sites: pairs of a configuration of the factor `α` and a
+configuration of `Z`. -/
+def factorConfigEquiv : Config W ≃ α × Config Z :=
+  (Equiv.piSplitAt p W).trans <|
+    (e.prodCongr (Equiv.piCongrRight fun s : {s // s ≠ p} ↦ Equiv.cast (h s s.2))).trans <|
+      (Equiv.prodAssoc _ _ _).trans ((Equiv.refl α).prodCongr (Equiv.piSplitAt p Z).symm)
+
+/-- The factor of a configuration is read at `p`. -/
+@[simp] theorem factorConfigEquiv_apply_fst (w : Config W) :
+    (factorConfigEquiv p h e w).1 = (e (w p)).1 :=
+  rfl
+
+/-- The remaining configuration is the rest of `w` at `p` and `w` elsewhere. -/
+theorem factorConfigEquiv_apply_snd_eq_iff (w : Config W) (z : Config Z) :
+    (factorConfigEquiv p h e w).2 = z ↔
+      (e (w p)).2 = z p ∧ ∀ s (hs : s ≠ p), cast (h s hs) (w s) = z s := by
+  change (Equiv.piSplitAt p Z).symm ((e (w p)).2, fun s ↦ cast (h s s.2) (w s)) = z ↔ _
+  rw [Equiv.symm_apply_eq, Equiv.piSplitAt_apply, Prod.mk.injEq, funext_iff, Subtype.forall]
+
+/-- A configuration is determined by its factor and its remaining configuration. -/
+theorem factorConfigEquiv_eq_iff (w : Config W) (a : α) (z : Config Z) :
+    factorConfigEquiv p h e w = (a, z) ↔
+      e (w p) = (a, z p) ∧ ∀ s (hs : s ≠ p), cast (h s hs) (w s) = z s := by
+  rw [Prod.ext_iff, factorConfigEquiv_apply_fst, factorConfigEquiv_apply_snd_eq_iff,
+    Prod.ext_iff, and_assoc]
+
+end Factor
 
 /-! ### Placement between two systems -/
 
