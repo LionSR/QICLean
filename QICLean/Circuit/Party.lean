@@ -11,5 +11,6 @@ Authors: QICLean contributors
 import QICLean.Circuit.Party.Effect
 import QICLean.Circuit.Party.Monomial
 import QICLean.Circuit.Party.Original
+import QICLean.Circuit.Party.Sheet
 import QICLean.Circuit.Party.Source
 import QICLean.Circuit.Party.Syntax
