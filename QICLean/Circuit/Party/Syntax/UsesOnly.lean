@@ -22,7 +22,8 @@ constructors hold by `rfl`. Such a circuit changes no basis outside `R`
 ## Main results
 
 * `QuantumCircuit.Party.PartyCircuit.UsesOnly.mono`,
-  `QuantumCircuit.Party.PartyCircuit.UsesOnly.eq_of_notMem`.
+  `QuantumCircuit.Party.PartyCircuit.UsesOnly.eq_of_notMem`,
+  `QuantumCircuit.Party.PartyCircuit.UsesOnly.forallGate_subset`.
 
 ## References
 
@@ -67,6 +68,15 @@ theorem UsesOnly.eq_of_notMem {R : Set P} : {X Y : P → Type} → {c : PartyCir
   | _, _, @localOps _ _ _ _ _ _ _, h => fun s hs ↦ (h s hs).1
   | _, _, @comp _ _ _ _ _ _ _ _ _, h => fun s hs ↦
     (h.2.eq_of_notMem s hs).trans (h.1.eq_of_notMem s hs)
+
+/-- The gates of a circuit using only the parties of `R` act on cells inside `R`. -/
+theorem UsesOnly.forallGate_subset {R : Set P} : {X Y : P → Type} → {c : PartyCircuit G X Y} →
+    c.UsesOnly R → c.ForallGate fun D _ _ _ ↦ (↑D : Set P) ⊆ R
+  | _, _, done _, _ => trivial
+  | _, _, gate _ _ _, h => h
+  | _, _, localOp _ _ _, _ => trivial
+  | _, _, localOps _, _ => trivial
+  | _, _, comp _ _, h => ⟨forallGate_subset h.1, forallGate_subset h.2⟩
 
 end PartyCircuit
 
