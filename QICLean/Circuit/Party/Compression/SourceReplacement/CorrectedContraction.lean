@@ -3,6 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
+import QICLean.Algebra.Matrix.ReindexSandwich
 import QICLean.Circuit.Party.Compression.SourceReplacement.CorrectedTerm
 import QICLean.Circuit.Party.Compression.SourceReplacement.Contraction
 import QICLean.Circuit.Party.Compression.PartialExpansion.SubstitutionResidual
@@ -75,18 +76,6 @@ private theorem sum_labelBasis_density {I m n : Type} [Fintype I] [DecidableEq I
         split_ifs <;> simp
       simp only [Fintype.sum_prod_type, h, smul_ite, smul_zero]
       simp
-
-/-- A product of conjugations along configuration equivalences. -/
-private theorem reindex_mul_mul_conjTranspose {m m' n n' : Type} [Fintype n] [Fintype n']
-    (e : m ≃ m') (f : n ≃ n') (M N : Matrix m n ℂ) (ρ : Matrix n' n' ℂ) :
-    reindex e f M * ρ * (reindex e f N)ᴴ =
-      reindex e e (M * reindex f.symm f.symm ρ * Nᴴ) := by
-  ext i j
-  simp only [reindex_apply, submatrix_apply, Equiv.symm_symm, mul_apply, conjTranspose_apply]
-  rw [← f.sum_comp]
-  refine Finset.sum_congr rfl fun k _ ↦ ?_
-  rw [← f.sum_comp]
-  simp
 
 variable {P : Type} [DecidableEq P] [Fintype P]
 

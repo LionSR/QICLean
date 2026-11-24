@@ -383,12 +383,6 @@ namespace QuantumCircuit.Party
 
 variable {P : Type} [DecidableEq P]
 
-/-- Three casts in a row are one cast. -/
-private theorem cast_cast_cast_eq {A B C D : Type} (h₁ : A = B) (h₂ : B = C) (h₃ : C = D)
-    (h₄ : A = D) (a : A) : cast h₃ (cast h₂ (cast h₁ a)) = cast h₄ a := by
-  subst h₁ h₂ h₃
-  rfl
-
 /-- Two successive coordinate identifications are heterogeneously equal to the input. -/
 private theorem equiv_cast_cast_heq {A B C : Type} (h : A = B) (h' : B = C) (a : A) :
     HEq (Equiv.cast h' (Equiv.cast h a)) a :=
@@ -429,9 +423,11 @@ theorem frameSystemEquiv_apply_of_forall_ne : {X Y : P → Type} → [∀ p, Fin
         (Word.sources c') (Word.sources c) Z) p))).symm (frameSystemEquiv W c'
           (frameSystemEquiv W c F) p (cast _ z)) = _
     rw [e', e]
-    exact Prod.ext (congrArg (fun u ↦ (F p u).1) (cast_cast_cast_eq _ _ _ _ z))
-      ((cast_cast_cast_eq _ _ _ _ _).trans
-        (congrArg (cast _) (congrArg (fun u ↦ (F p u).2) (cast_cast_cast_eq _ _ _ _ z))))
+    have hcast : ∀ {A B C D : Type} (h₁ : A = B) (h₂ : B = C) (h₃ : C = D) (h₄ : A = D) (a : A),
+        cast h₃ (cast h₂ (cast h₁ a)) = cast h₄ a := fun _ _ _ _ _ ↦ by simp only [cast_cast]
+    exact Prod.ext (congrArg (fun u ↦ (F p u).1) (hcast _ _ _ _ z))
+      ((hcast _ _ _ _ _).trans
+        (congrArg (cast _) (congrArg (fun u ↦ (F p u).2) (hcast _ _ _ _ z))))
 
 end Word
 

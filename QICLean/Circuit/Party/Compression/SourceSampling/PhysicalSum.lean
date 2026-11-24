@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Algebra.PartialTrace
+import QICLean.Channel.PartialTrace.TensorPowerPartialTrace
 import QICLean.Circuit.Party.Compression.SourceSampling.SampledContraction
 
 /-!
@@ -21,18 +22,8 @@ open scoped Kronecker ComplexConjugate
 
 namespace QuantumCircuit.Party
 
-private theorem partialTraceRight_reindex_piKronecker {P : Type} [Fintype P] [DecidableEq P]
-    {Phys Env : P → Type} [∀ p, Fintype (Env p)]
-    (A : ∀ p, Matrix (Phys p × Env p) (Phys p × Env p) ℂ) :
-    partialTraceRight
-      (reindex (Equiv.arrowProdEquivProdArrow P Phys Env)
-        (Equiv.arrowProdEquivProdArrow P Phys Env) (piKronecker A)) =
-      piKronecker (fun p ↦ partialTraceRight (A p)) := by
-  ext a b
-  simp only [partialTraceRight_apply, reindex_apply, submatrix_apply, piKronecker_apply]
-  rw [Finset.prod_univ_sum]
-  rfl
-
+/-- The partial trace of a product readout of a weighted sum of product matrices is the weighted
+sum of the products of the local partial traces. -/
 private theorem partialTraceRight_weighted_readout
     {J P : Type} [Fintype J] [Fintype P] [DecidableEq P]
     {Phys Env X : P → Type} [∀ p, Fintype (Env p)] [∀ p, Fintype (X p)]
@@ -48,7 +39,7 @@ private theorem partialTraceRight_weighted_readout
   simp only [Matrix.mul_sum, Matrix.sum_mul, Matrix.mul_smul, Matrix.smul_mul, map_sum, map_smul]
   refine Finset.sum_congr rfl fun j _ ↦ congrArg (c j • ·) ?_
   simp only [conjTranspose_piKronecker, piKronecker_mul]
-  exact partialTraceRight_reindex_piKronecker _
+  exact partialTraceRight_piKronecker_submatrix _
 
 namespace SourceCircuit
 
@@ -63,7 +54,8 @@ local notation "Z" => blockSystem (affectedOwner (fun _ : P ↦ true)) (fun _ �
 
 /-- The physical partial trace after contracting finite endpoint averages and
 applying a product readout. Each summand is the product of the physical
-partial traces at the individual parties. -/
+partial traces at the individual parties. Source:
+Theorem 5.2, `04-compression.tex`, lines 565–588. -/
 theorem partialTraceRight_mixed_endpointAverage
     {Phys Env : Parties → Type} [∀ p, Fintype (Env p)]
     (K : ∀ p, Matrix (Phys p × Env p) (blockSystem (affectedOwner (fun _ ↦ true)) Y p) ℂ)

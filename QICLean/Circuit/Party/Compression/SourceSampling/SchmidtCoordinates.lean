@@ -57,18 +57,6 @@ configuration vectors and the mixed pure input is `euclideanOuterProduct ψ φ`.
 open Matrix ManyBody ProductSource
 open scoped ComplexConjugate
 
-/-- A product of conjugations along configuration equivalences. -/
-private theorem reindex_mul_mul_conjTranspose' {m m' n n' : Type} [Fintype n] [Fintype n']
-    (e : m ≃ m') (f : n ≃ n') (M N : Matrix m n ℂ) (ρ : Matrix n' n' ℂ) :
-    reindex e e (M * reindex f.symm f.symm ρ * Nᴴ) =
-      reindex e f M * ρ * (reindex e f N)ᴴ := by
-  ext i j
-  simp only [reindex_apply, submatrix_apply, Equiv.symm_symm, mul_apply, conjTranspose_apply]
-  rw [← f.sum_comp]
-  refine Finset.sum_congr rfl fun k _ ↦ ?_
-  rw [← f.sum_comp]
-  simp
-
 namespace QuantumCircuit.Party
 
 namespace SourceCircuit
@@ -187,7 +175,7 @@ theorem correctedSourceTerm_gaussian_eq_sum
   refine Finset.sum_congr rfl fun u _ ↦ ?_
   rw [map_sum]
   refine Finset.sum_congr rfl fun v _ ↦ ?_
-  rw [LinearEquiv.map_smul, Matrix.coe_reindexLinearEquiv, reindex_mul_mul_conjTranspose']
+  rw [LinearEquiv.map_smul, Matrix.coe_reindexLinearEquiv, ← reindex_mul_mul_conjTranspose]
   rfl
 
 /-- **On a mixed pure input, the corrected term of the sampled corrections is a sum of mixed

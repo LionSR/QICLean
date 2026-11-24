@@ -443,12 +443,6 @@ namespace QuantumCircuit.Party
 
 variable {P Q : Type} [DecidableEq P] [DecidableEq Q]
 
-/-- Three casts in a row are one cast. -/
-private theorem cast_cast_cast_eq {A B C D : Type} (h₁ : A = B) (h₂ : B = C) (h₃ : C = D)
-    (h₄ : A = D) (a : A) : cast h₃ (cast h₂ (cast h₁ a)) = cast h₄ a := by
-  subst h₁ h₂ h₃
-  rfl
-
 namespace Word
 
 variable [Fintype P] (f : P → Q) {b : Q} {p : P} (hf : ∀ r, f r = b ↔ r = p)
@@ -497,8 +491,10 @@ theorem coarsenFiberEquiv_apply_of_forall_ne : {X Y : P → Type} → [∀ p, Fi
         (Word.sources c) Z) p)).symm (coarsenFiberEquiv f hf c'
           (coarsenFiberEquiv f hf c e) (cast _ z)) = _
     rw [ec', ec]
-    exact (cast_cast_cast_eq _ _ _ _ _).trans
-      (congrArg (fun u ↦ cast _ (e u)) (cast_cast_cast_eq _ _ _ _ z))
+    have hcast : ∀ {A B C D : Type} (h₁ : A = B) (h₂ : B = C) (h₃ : C = D) (h₄ : A = D) (a : A),
+        cast h₃ (cast h₂ (cast h₁ a)) = cast h₄ a := fun _ _ _ _ _ ↦ by simp only [cast_cast]
+    exact (hcast _ _ _ _ _).trans
+      (congrArg (fun u ↦ cast _ (e u)) (hcast _ _ _ _ z))
 
 end Word
 
