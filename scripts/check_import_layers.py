@@ -61,6 +61,8 @@ LAYERS: tuple[tuple[str, tuple[str, ...]], ...] = (
         "QICLean.Circuit.Party.Compression.SourceSampling.Law",
         "QICLean.Circuit.Party.Compression.SourceSampling.Integrability",
         "QICLean.Circuit.Party.Compression.SourceSampling.GaussianError",
+        "QICLean.Circuit.Party.Compression.SourceSampling.BranchEstimate",
+        "QICLean.Circuit.Party.Compression.SourceSampling.CorrectedTermBound",
         "QICLean.Circuit.Party.Compression.SourceSampling.Approximation",
     )),
     ("party", ("QICLean.Circuit.Party",)),

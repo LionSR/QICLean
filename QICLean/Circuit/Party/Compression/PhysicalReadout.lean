@@ -9,5 +9,6 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Circuit.Party.Compression.PhysicalReadout
 
 import QICLean.Circuit.Party.Compression.PhysicalReadout.Components
+import QICLean.Circuit.Party.Compression.PhysicalReadout.PartySplit
 import QICLean.Circuit.Party.Compression.PhysicalReadout.Separated
 import QICLean.Circuit.Party.Compression.PhysicalReadout.Sides
