@@ -78,8 +78,11 @@ abbrev SourceGaussianSamples (w : SourceCircuit X Y) (k : ℕ) :=
 
 /-- **Schmidt weights and frames of the source vectors**, chosen for every position and every
 label of its gate before any affected set or partial expansion: probability weights `lam`,
-isometric frames `E`, `F` on the two slot bases, representing the source vector; the same choice
-represents every partial slot vector and its mixed outer products, for every affected set.
+isometric frames `E`, `F` representing the source vector. The rows are indexed by
+the bases of the two slot registers and the columns by the common Schmidt index.
+Thus the orthonormal vectors in the two registers in the proof of Theorem 5.2 are exactly
+the columns, and orthonormality is expressed by `Eᴴ * E = 1` and `Fᴴ * F = 1`.
+The same choice represents every partial slot vector and its mixed outer products.
 Source: Theorem 5.2, `04-compression.tex`, lines 279–309 and 342–417. -/
 theorem exists_local_schmidt_source_frames (w : SourceCircuit X Y) :
     ∃ lam : ∀ e : w.sourceLocations, w.branchLabels e.1 →

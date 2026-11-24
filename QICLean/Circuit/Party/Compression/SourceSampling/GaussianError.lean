@@ -43,7 +43,10 @@ Adapted from TNLean, `TNLean/Lattice/Compression/WeightedPhysicalSource.lean` (t
 theorem), `GaussianPhysicalSource.lean` and `GaussianSeparatedPhysicalDensity.lean`
 (Apache-2.0). Changes: the isometric identifications `J`, `J'` of the outputs become readout
 matrices `K`, `K'` with `‖K‖ ≤ 1`, `‖K'‖ ≤ 1`, the isometric frames become matrices with norm at
-most one (the source uses only contractivity, `04-compression.tex`, lines 454–470).
+most one. The estimate therefore applies to arbitrary contractions. For each isometric frame
+`F`, the hypothesis `‖F‖ ≤ 1` follows by applying
+`Matrix.l2_opNorm_le_one_of_conjTranspose_mul_self_eq_one` to `Fᴴ * F = 1`.
+See `04-compression.tex`, lines 454–470.
 -/
 
 open MeasureTheory Matrix ManyBody ProductSource QICLean.ComplexGaussian
