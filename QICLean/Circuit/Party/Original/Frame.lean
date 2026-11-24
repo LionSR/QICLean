@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Circuit.Party.Original.Basic
 import QICLean.Circuit.Party.Syntax.Frame
+import QICLean.Spectral.Eigenvalue.MatrixReindexEuclidean
 
 /-!
 # Original circuits beside spectator factors
@@ -13,18 +14,22 @@ import QICLean.Circuit.Party.Syntax.Frame
 `W p` in front of the basis of every party `p`: every gate framed
 (`OriginalGate.frame`), every private contraction `A` replaced by `1 ⊗ A`. Its effect circuit is
 the framed effect circuit, its operator `1 ⊗ op`, and its gates, cells, counts and expansion
-bounds are those of `w`. Framing a monomial keeps its pair sources and pair effects
+bounds are those of `w`. On a product vector `x ⊗ y` of the framed system (`prodVec`) it acts as
+`x ⊗ op y`. Framing a monomial keeps its pair sources and pair effects
 (`Monomial.sources_frame`, `Monomial.effects_frame`).
 
 ## Main definitions
 
 * `QuantumCircuit.Party.OriginalGate.frame`, `QuantumCircuit.Party.OriginalCircuit.frame`.
+* `QuantumCircuit.Party.prodVec`: the product vector `x ⊗ y` on the framed system.
 * `QuantumCircuit.Party.PartyCircuit.frameLocationsEquiv`.
 
 ## Main results
 
 * `QuantumCircuit.Party.OriginalCircuit.op_frame`, `nonprivateCount_frame`, `participation_frame`,
   `isExpansionBounded_frame`, `isMonomialBounded_frame`, `isSourceBounded_frame`.
+* `QuantumCircuit.Party.OriginalCircuit.toEuclideanLin_op_frame_prodVec`,
+  `norm_op_frame_prodVec_sub_le`: a framed circuit on product vectors.
 * `QuantumCircuit.Party.Monomial.sources_frame`, `effects_frame`, `effectCount_frame`,
   `sourceCount_frame`.
 
@@ -125,6 +130,43 @@ theorem isSourceBounded_frame {r : ℕ} : {X Y : P → Type} → [∀ p, Fintype
 
 end EffectCircuit
 
+/-! ### Product vectors on a framed system -/
+
+section ProdVec
+
+variable [Fintype P] {X Y : P → Type} [∀ p, Fintype (X p)] [∀ p, Fintype (Y p)]
+
+/-- The product vector `x ⊗ y` on the product system `p ↦ X p × Y p`, read along the pairing of
+configurations. -/
+noncomputable def prodVec (x : EuclideanSpace ℂ (Config X)) (y : EuclideanSpace ℂ (Config Y)) :
+    EuclideanSpace ℂ (Config fun p ↦ X p × Y p) :=
+  LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (Equiv.arrowProdEquivProdArrow P X Y).symm
+    (EuclideanSpace.vecKron x y)
+
+/-- The coordinates of a product vector are the products of the coordinates. -/
+@[simp] theorem prodVec_apply (x : EuclideanSpace ℂ (Config X))
+    (y : EuclideanSpace ℂ (Config Y)) (z : Config fun p ↦ X p × Y p) :
+    prodVec x y z = x (fun p ↦ (z p).1) * y (fun p ↦ (z p).2) := by
+  simp [prodVec, LinearIsometryEquiv.piLpCongrLeft_apply, Equiv.piCongrLeft'_apply,
+    EuclideanSpace.vecKron]
+
+/-- `‖x ⊗ y‖ = ‖x‖ ‖y‖`. -/
+theorem norm_prodVec (x : EuclideanSpace ℂ (Config X)) (y : EuclideanSpace ℂ (Config Y)) :
+    ‖prodVec x y‖ = ‖x‖ * ‖y‖ := by
+  rw [prodVec, LinearIsometryEquiv.norm_map, EuclideanSpace.norm_vecKron]
+
+/-- `x ⊗ y - x' ⊗ y = (x - x') ⊗ y`. -/
+theorem prodVec_sub_left (x x' : EuclideanSpace ℂ (Config X)) (y : EuclideanSpace ℂ (Config Y)) :
+    prodVec x y - prodVec x' y = prodVec (x - x') y := by
+  rw [prodVec, prodVec, prodVec, ← map_sub, EuclideanSpace.vecKron_sub_left]
+
+/-- `x ⊗ y - x ⊗ y' = x ⊗ (y - y')`. -/
+theorem prodVec_sub_right (x : EuclideanSpace ℂ (Config X)) (y y' : EuclideanSpace ℂ (Config Y)) :
+    prodVec x y - prodVec x y' = prodVec x (y - y') := by
+  rw [prodVec, prodVec, prodVec, ← map_sub, EuclideanSpace.vecKron_sub_right]
+
+end ProdVec
+
 namespace OriginalCircuit
 
 section Frame
@@ -194,6 +236,29 @@ theorem isSourceBounded_frame (w : OriginalCircuit X Y) {r : ℕ}
     (h : w.IsSourceBounded r) : (w.frame W).IsSourceBounded r := by
   rw [IsSourceBounded, toEffectCircuit_frame]
   exact EffectCircuit.isSourceBounded_frame W h
+
+/-- A framed circuit acts on a product vector `x ⊗ y` as `x ⊗ (op y)`. -/
+theorem toEuclideanLin_op_frame_prodVec [Fintype P] [∀ p, Fintype (Y p)]
+    (w : OriginalCircuit X Y) (x : EuclideanSpace ℂ (Config W))
+    (y : EuclideanSpace ℂ (Config X)) :
+    toEuclideanLin (w.frame W).op (prodVec x y) = prodVec x (toEuclideanLin w.op y) := by
+  rw [op_frame, prodVec, prodVec, Matrix.toEuclideanLin_reindex_piLpCongrLeft₂]
+  congr 1
+  ext ⟨a, b⟩
+  simp only [Matrix.toLpLin_apply, PiLp.toLp_apply, EuclideanSpace.vecKron, mulVec, dotProduct,
+    Fintype.sum_prod_type, kroneckerMap_apply]
+  rw [Fintype.sum_eq_single a fun a' h ↦ by simp [one_apply_ne' h]]
+  simp [Finset.mul_sum, mul_left_comm]
+
+/-- A framed circuit moves a product vector `x ⊗ v` by at most what it moves `v`, when
+`‖x‖ ≤ 1`. -/
+theorem norm_op_frame_prodVec_sub_le [Fintype P] [∀ p, Fintype (Y p)] (w : OriginalCircuit X Y)
+    {x : EuclideanSpace ℂ (Config W)} (hx : ‖x‖ ≤ 1) (v : EuclideanSpace ℂ (Config X))
+    (v' : EuclideanSpace ℂ (Config Y)) :
+    ‖toEuclideanLin (w.frame W).op (prodVec x v) - prodVec x v'‖ ≤
+      ‖toEuclideanLin w.op v - v'‖ := by
+  rw [toEuclideanLin_op_frame_prodVec, prodVec_sub_right, norm_prodVec]
+  exact mul_le_of_le_one_left (norm_nonneg _) hx
 
 end Frame
 
