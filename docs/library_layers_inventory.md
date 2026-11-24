@@ -603,7 +603,7 @@ would push the target past 1000 lines.
 | `ManyBody.Replica.Metric.SymmetricBandLabelPreservation` | one theorem; merge into QICLean.ManyBody.Replica.Metric.SymmetricMeanTreeProduct (same band product in fixed symmetric coordinates) |
 | `ManyBody.Replica.Metric.SymmetricMeanTreeProduct` | one theorem; merge into QICLean.ManyBody.Replica.Metric.SymmetricBandCommute (same coordinates and mean-tree roots) |
 | `ManyBody.Replica.Metric.WholeInverse` | one inverse-square bound on replicaMetric for P Y F; merge into a common bounds module with ReplicaMetricCutoffNorm,ReplicaPinnedMetricUpper (all after QICLean.ManyBody.Replica.Metric.Similarity) |
-| `ManyBody.Replica.RegionalResetEntropy` | merge into QICLean.ManyBody.Replica.Swap: one mutual-information comparison for the replica-swapped vector |
+| `ManyBody.Entropy.RegionalResetEntropy` | merge into QICLean.ManyBody.Entropy.ReplicaSwap: one mutual-information comparison for the replica-swapped vector |
 | `ManyBody.Subspace.ReferenceFilterTrimming` | merge into QICLean.ManyBody.Subspace.Trimming: one filter-then-trim closeness step |
 | `ManyBody.Subspace.RegionalTensorMergeMeasurable` | one measurability lemma about regionTensorMerge (regions+measurable subspace families); merge beside QICLean.ManyBody.Subspace.RegionalTensorMerge in a ManyBody probability sublayer |
 | `ManyBody.Subspace.Sampling.CanonicalHalfSamplingParentProbability` | merge into QICLean.ManyBody.Subspace.Sampling.CanonicalHalfSamplingParentProperties (or Parent): one probability theorem for canonicalHalfSamplingParent; sites+probability |

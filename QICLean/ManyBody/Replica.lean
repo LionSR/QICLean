@@ -21,11 +21,8 @@ import QICLean.ManyBody.Replica.EtaForms
 import QICLean.ManyBody.Replica.Label
 import QICLean.ManyBody.Replica.LowDefect
 import QICLean.ManyBody.Replica.Metric
-import QICLean.ManyBody.Replica.RegionalReset
-import QICLean.ManyBody.Replica.RegionalResetEntropy
 import QICLean.ManyBody.Replica.RelativePin
 import QICLean.ManyBody.Replica.RelativePinCommute
 import QICLean.ManyBody.Replica.RelativePinCompensator
 import QICLean.ManyBody.Replica.SiteOp
-import QICLean.ManyBody.Replica.Swap
 import QICLean.ManyBody.Replica.Symbol
