@@ -27,7 +27,7 @@ does not depend on a geometry of the sites.
 
 ## Main definitions
 
-* `ManyBody.tSwap`, `ManyBody.tSwapW`, `ManyBody.bufferSwap`, `ManyBody.tbSwap`: the exchanges
+* `ManyBody.tSwap`, `ManyBody.tSwapW`, `ManyBody.tbSwap`: the exchanges
   of components of two copies.
 * `ManyBody.bufferCorrection`: `D_U` for abstract finite systems.
 * `ManyBody.configBufferCorrection`: `D_U` of splitting data on two copies of the system.
@@ -84,9 +84,6 @@ def tSwapW (T E U : Type*) : Equiv.Perm (((T × E) × U) × ((T × E) × U)) whe
   left_inv _ := rfl
   right_inv _ := rfl
 
-/-- The bijection of two copies of `B_T × B_E` exchanging their `B_T`-components. -/
-def bufferSwap (BT BE : Type*) : Equiv.Perm ((BT × BE) × (BT × BE)) := tSwap BT BE
-
 /-- The bijection of two copies of `(T × E) × (B_T × B_E)` exchanging their `T`- and
 `B_T`-components: the exchange `F_{T B_T}`. -/
 def tbSwap (T E BT BE : Type*) :
@@ -107,7 +104,7 @@ Polynomial-PEPS manuscript, proof of Lemma 6.6, `05-frames.tex`, lines 503–510
 def bufferCorrection (V : Matrix (BT × BE) U ℂ) :
     Matrix (((T × E) × U) × ((T × E) × U)) (((T × E) × U) × ((T × E) × U)) ℂ :=
   ((1 : Matrix ((T × E) × (T × E)) ((T × E) × (T × E)) ℂ) ⊗ₖ
-      ((V ⊗ₖ V)ᴴ * ((bufferSwap BT BE).toPEquiv.toMatrix : Matrix _ _ ℂ) * (V ⊗ₖ V))).submatrix
+      ((V ⊗ₖ V)ᴴ * ((tSwap BT BE).toPEquiv.toMatrix : Matrix _ _ ℂ) * (V ⊗ₖ V))).submatrix
     (Equiv.prodProdProdComm (T × E) U (T × E) U) (Equiv.prodProdProdComm (T × E) U (T × E) U)
 
 omit [Fintype T] [Fintype E] [Fintype U] [Fintype BT] [DecidableEq BT] [Fintype BE]
@@ -128,7 +125,7 @@ omit [Fintype T] [Fintype E] [Fintype U] [DecidableEq U] [Fintype BT] [Fintype B
 theorem tbSwap_toMatrix :
     ((tbSwap T E BT BE).toPEquiv.toMatrix : Matrix _ _ ℂ) =
       (((tSwap T E).toPEquiv.toMatrix : Matrix _ _ ℂ) ⊗ₖ
-          ((bufferSwap BT BE).toPEquiv.toMatrix : Matrix _ _ ℂ)).submatrix
+          ((tSwap BT BE).toPEquiv.toMatrix : Matrix _ _ ℂ)).submatrix
         (Equiv.prodProdProdComm (T × E) (BT × BE) (T × E) (BT × BE))
         (Equiv.prodProdProdComm (T × E) (BT × BE) (T × E) (BT × BE)) := by
   rw [← toMatrix_toPEquiv_prodCongr, toMatrix_toPEquiv_submatrix]
@@ -144,7 +141,7 @@ theorem bufferCorrection_mul_tSwap (V : Matrix (BT × BE) U ℂ) :
         ((tbSwap T E BT BE).toPEquiv.toMatrix : Matrix _ _ ℂ) *
         (((1 : Matrix (T × E) (T × E) ℂ) ⊗ₖ V) ⊗ₖ ((1 : Matrix (T × E) (T × E) ℂ) ⊗ₖ V)) := by
   set F₀ : Matrix ((BT × BE) × (BT × BE)) ((BT × BE) × (BT × BE)) ℂ :=
-    (bufferSwap BT BE).toPEquiv.toMatrix
+    (tSwap BT BE).toPEquiv.toMatrix
   set G : Matrix ((T × E) × (T × E)) ((T × E) × (T × E)) ℂ := (tSwap T E).toPEquiv.toMatrix
   have hin : ((1 : Matrix ((T × E) × (T × E)) ((T × E) × (T × E)) ℂ) ⊗ₖ
         ((V ⊗ₖ V)ᴴ * F₀ * (V ⊗ₖ V))) * (G ⊗ₖ (1 : Matrix (U × U) (U × U) ℂ)) =
@@ -374,7 +371,7 @@ Polynomial-PEPS manuscript, proof of Lemma 6.6, `05-frames.tex`, lines 503–515
 def correctionMatrix (σ : SplittingData X A B) (R : Finset V) :
     Matrix (ComplConfig X B × ComplConfig X B) (ComplConfig X B × ComplConfig X B) ℂ :=
   (σ.V ⊗ₖ σ.V)ᴴ *
-      ((bufferSwap (RegionConfig X A)
+      ((tSwap (RegionConfig X A)
         (RegionConfig X (B \ A) ⊕ ComplConfig X B)).toPEquiv.toMatrix : Matrix _ _ ℂ) *
       (σ.V ⊗ₖ σ.V) *
     ((partSwap X B R).toPEquiv.toMatrix : Matrix _ _ ℂ)
