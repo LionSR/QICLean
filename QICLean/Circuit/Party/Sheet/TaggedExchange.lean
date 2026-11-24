@@ -87,4 +87,46 @@ theorem op_taggedRenameWord [Fintype P] :
   rw [if_congr h rfl rfl]
   split_ifs <;> simp_all
 
+local notation "Tin" => fun p ↦ (O₁ p × I₁ p) × (O₂ p × I₂ p)
+local notation "Tout" => fun p ↦ (O₁ p × I₂ p) × (O₂ p × I₁ p)
+local notation "Xin" => fun p ↦ S₁.system q p × S₂.system q p
+local notation "Xout" => fun p ↦ system q (swapIn S₁ S₂ Y) p × system q (swapIn S₂ S₁ Y) p
+
+/-- Exchange the sites and the inside tags, then apply the private correction
+beside the resulting tag factors. Source: polynomial-PEPS, Lemma 6.6,
+`05-frames.tex`, lines 485–527. -/
+noncomputable def taggedExchangeWord (P₀ : P)
+    (σ : SplittingData (fun _ : ι ↦ Fin q) (tSet S₁ S₂ Y P₀)
+      (tSet S₁ S₂ Y P₀ ∪ eSet S₁ S₂ Y P₀)) :
+    Word (fun p ↦ (Tin) p × (Xin) p) (fun p ↦ (Tout) p × (Xout) p) :=
+  (taggedRenameWord (q := q) S₁ S₂ Y O₁ I₁ O₂ I₂).comp
+    ((correctionWord S₁ S₂ Y P₀ σ).frame (Tout))
+
+/-- The tagged exchange is allowed and uses no pair source. -/
+theorem isAllowed_taggedExchangeWord (P₀ : P)
+    (σ : SplittingData (fun _ : ι ↦ Fin q) (tSet S₁ S₂ Y P₀)
+      (tSet S₁ S₂ Y P₀ ∪ eSet S₁ S₂ Y P₀)) :
+    (taggedExchangeWord S₁ S₂ Y O₁ I₁ O₂ I₂ P₀ σ).IsAllowed ∧
+      (taggedExchangeWord S₁ S₂ Y O₁ I₁ O₂ I₂ P₀ σ).sourceCount = 0 := by
+  refine ⟨Word.IsAllowed.comp (isAllowed_taggedRenameWord S₁ S₂ Y O₁ I₁ O₂ I₂)
+    (Word.isAllowed_frame (Tout) (isAllowed_correctionWord S₁ S₂ Y P₀ σ)), ?_⟩
+  simp [taggedExchangeWord, Word.sourceCount, Word.sources_frame,
+    show (correctionWord S₁ S₂ Y P₀ σ).sources = [] from rfl,
+    show (taggedRenameWord (q := q) S₁ S₂ Y O₁ I₁ O₂ I₂).sources = [] from rfl]
+
+/-- The tagged exchange is the product of the inside-tag permutation and the
+canonical two-sheet exchange. -/
+theorem op_taggedExchangeWord [Fintype P] (P₀ : P)
+    (σ : SplittingData (fun _ : ι ↦ Fin q) (tSet S₁ S₂ Y P₀)
+      (tSet S₁ S₂ Y P₀ ∪ eSet S₁ S₂ Y P₀)) :
+    (taggedExchangeWord S₁ S₂ Y O₁ I₁ O₂ I₂ P₀ σ).op =
+      reindex (Equiv.arrowProdEquivProdArrow P (Tout) (Xout)).symm
+        (Equiv.arrowProdEquivProdArrow P (Tin) (Xin)).symm
+        ((Equiv.piCongrRight fun p ↦ swapInsideTags (O₁ p) (I₁ p) (O₂ p) (I₂ p)).toPEquiv.toMatrix
+          ⊗ₖ reindex (twoConfigEquiv q (swapIn S₁ S₂ Y) (swapIn S₂ S₁ Y)).symm
+            (twoConfigEquiv q S₁ S₂).symm (exchangeOp S₁ S₂ Y P₀ σ)) := by
+  rw [taggedExchangeWord, Word.op_comp, Word.op_frame, op_taggedRenameWord,
+    reindex_apply, reindex_apply, reindex_apply, submatrix_mul_equiv, ← mul_kronecker_mul,
+    Matrix.one_mul, ← Word.op_comp, op_comp_renameWord_correctionWord]
+
 end QuantumCircuit.Party.Sheet
