@@ -507,4 +507,25 @@ theorem exists_condEntropy_le_initialBuffer (q R : ℕ) (hq : 1 ≤ q) {J Δ : �
         fun _ hD₀ _ h hh hhJ _ _ hΩ hgap hspan _ _ hsafe _ hr _ hQ₀ hpad ↦
       condEntropy_le_initialBufferConst q R hq hJ hΔ hD₀ h hh hhJ hΩ hgap hspan hsafe hr hQ₀ hpad⟩
 
+/-- The width coefficient of the strip logarithmic cut budget. -/
+noncomputable def stripBudgetConst (q R : ℕ) : ℝ :=
+  1 + ManyBody.stripCrossConst R *
+    Real.log (Real.exp 1 * (q : ℝ) ^ (1 + 2 * R * (R + 1))) ^ 2
+
+/-- The cut budget coefficient is at least one. -/
+theorem one_le_stripBudgetConst (q R : ℕ) : 1 ≤ stripBudgetConst q R := by
+  unfold stripBudgetConst
+  exact le_add_of_nonneg_right (by positivity)
+
+/-- Uniform linear-width budget for every column interval. -/
+theorem cutLogBudget_stripInterval_le_mul {q w : ℕ} (hq : 1 ≤ q) (hw : 1 ≤ w)
+    (L R a b : ℕ) :
+    ManyBody.cutLogBudget (fun X : AdmissibleSupport (rectangularDomain L w) R ↦ X.1) (fun _ ↦ q)
+        (ManyBody.stripInterval L w a b) ≤
+      stripBudgetConst q R * w := by
+  have hw' : (1 : ℝ) ≤ w := by exact_mod_cast hw
+  refine (ManyBody.cutLogBudget_stripInterval_le hq L w R a b).trans ?_
+  simp only [stripBudgetConst, Nat.cast_mul]
+  nlinarith
+
 end ManyBody
