@@ -525,3 +525,27 @@ theorem abs_mem_supportedOperators {D : Finset V} {A : Matrix (Config X) (Config
 end Average
 
 end ManyBody
+
+/-!
+Moved from TNLean at commit `2417e0a2e4d8a1dc2db0a14e0c9cae4ca735829e`.
+`TNLean/MPS/AreaLaw/Spectral/SupportedSpectralCutoff.lean`.
+The placement identity for spectral cutoffs applies to every real scalar function.
+-/
+
+namespace ManyBody
+
+
+variable {V : Type*} [Fintype V] [DecidableEq V] {X : V → Type*}
+  [∀ v, Fintype (X v)] [∀ v, DecidableEq (X v)]
+
+/-- Real functional calculus commutes with placement of a self-adjoint regional matrix. -/
+theorem cfc_place (D : Finset V) (f : ℝ → ℝ)
+    {K : Matrix (RegionConfig X D) (RegionConfig X D) ℂ} (hK : IsSelfAdjoint K) :
+    cfc f (place D K) = place D (cfc f K) := by
+  exact ((placeHom D).map_cfc f K
+    (hf := K.finite_real_spectrum.continuousOn _)
+    (hφ := LinearMap.continuous_of_finiteDimensional (placeHom D).toLinearMap)
+    (ha := hK) (hφa := hK.map (placeHom D))).symm
+
+
+end ManyBody

@@ -479,3 +479,28 @@ theorem smul_sum_sum_pi_eq_smul_sum_pi_prod {β : Type*} [AddCommMonoid β] [Mod
 end Fintype
 
 end PairChoice
+
+/-!
+Moved from TNLean at commit `2417e0a2e4d8a1dc2db0a14e0c9cae4ca735829e`.
+`TNLean/MPS/AreaLaw/Spectral/TwoBlockTruncation.lean`. The bound is stated in the `Fin` namespace.
+-/
+
+namespace Fin
+
+/-- At most two original neighbouring-site bonds cross two prescribed cuts, with a
+coincident crossing counted once. Auxiliary to ALVV, arXiv:1602.08828v2,
+`def:hard-trunc`, lines 873–886. -/
+theorem card_filter_two_cut_crossing_le (L l r : ℕ) :
+    ((Finset.univ : Finset (Fin (L - 1))).filter
+      (fun i ↦ i.val + 1 ∈ ({l, r} : Finset ℕ))).card ≤ 2 := by
+  have hcard := Finset.card_le_card_of_injOn (fun i : Fin (L - 1) ↦ i.val + 1)
+    (s := Finset.univ.filter (fun i ↦ i.val + 1 ∈ ({l, r} : Finset ℕ)))
+    (t := {l, r}) (fun _ hi ↦ (Finset.mem_filter.mp hi).2)
+    (by
+      intro i _ j _ hij
+      apply Fin.ext
+      change i.val + 1 = j.val + 1 at hij
+      omega)
+  exact hcard.trans (by simpa using Finset.card_insert_le l ({r} : Finset ℕ))
+
+end Fin

@@ -15,6 +15,7 @@ import QICLean.Algebra.Combinatorics.ConnectedSetCount
 import QICLean.Algebra.Combinatorics.DependentProducts
 import QICLean.Algebra.Combinatorics.DependentSequence
 import QICLean.Algebra.Combinatorics.DirectedWalkCoboundary
+import QICLean.Algebra.Combinatorics.DyadicBlock
 import QICLean.Algebra.Combinatorics.EventuallyConstantCycleWeights
 import QICLean.Algebra.Combinatorics.FinStepOrbit
 import QICLean.Algebra.Combinatorics.FinSum

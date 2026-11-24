@@ -363,3 +363,77 @@ theorem hasSum_gaussianFilteredTerm_commutator {q : ℝ} (hq : 0 ≤ q) (ΔE : �
 end CommutatorSeries
 
 end ManyBody
+
+/-!
+Moved from TNLean at commit `2417e0a2e4d8a1dc2db0a14e0c9cae4ca735829e`.
+`TNLean/MPS/AreaLaw/ProjectorFactorization/GaussianTimeAverage.lean`.
+The variance is the nonnegative part of `q / ΔE²`.
+-/
+
+section
+
+open scoped ComplexOrder
+
+namespace ManyBody
+
+variable {n : Type*} [Fintype n] [DecidableEq n]
+
+/-- **Gap bound.** If `Ω` is a gapped ground vector of the Hermitian matrix `H`, with energy
+`0` and gap `ΔE > 0`, then `‖P_q(H) - |Ω⟩⟨Ω|‖ ≤ exp(-q/2)`. Hastings, arXiv:0705.2024v4,
+`law16.tex`, line 848 ("Using the spectral gap we have `‖P_q - P_0‖ ≤ O(exp[-l/3ξ])`"),
+for the unique gapped ground state of lines 126–127 with the ground energy normalized to
+zero as on lines 766–767. The bound is stated for every real `q`. -/
+theorem norm_gaussianTimeAverage_sub_groundProjector_le {H : Matrix n n ℂ}
+    (hH : H.IsHermitian) {ΔE : ℝ} {Ω : EuclideanSpace ℂ n}
+    (hΩ : ‖Ω‖ = 1) (hgap : IsGapped H 0 ΔE)
+    (hspan : groundSpace H 0 = Submodule.span ℂ {Ω}) (hΔ : 0 < ΔE) (q : ℝ) :
+    ‖gaussianTimeAverage q ΔE H - vecMulVec (WithLp.ofLp Ω) (star (WithLp.ofLp Ω))‖ ≤
+      Real.exp (-q / 2) := by
+  have hHΩ := ManyBody.mulVec_eq_of_groundSpace_eq_span hspan
+  replace hgap := hgap.posSemidef_sub_smul_one hH hΩ hspan
+  set h := (q / ΔE ^ 2).toNNReal
+  have hexp : Real.exp (-(h : ℝ) * ΔE ^ 2 / 2) ≤ Real.exp (-q / 2) := by
+    apply Real.exp_le_exp.mpr
+    have := le_toNNReal_div_sq_mul_sq q hΔ.ne'
+    linarith
+  rw [cstar_norm_def]
+  refine ContinuousLinearMap.opNorm_le_bound _ (Real.exp_pos _).le fun x => ?_
+  have hcoeff (k : n) :
+      ⟪hH.eigenvectorBasis k, toEuclideanLin (gaussianTimeAverage q ΔE H) x⟫_ℂ =
+        (Real.exp (-(h : ℝ) * (hH.eigenvalues k - 0) ^ 2 / 2) : ℂ) *
+          ⟪hH.eigenvectorBasis k, x⟫_ℂ := by
+    rw [gaussianTimeAverage, GaussianFilter.inner_gaussianIntertwiner h hH isHermitian_zero 1
+      (SpectralFilter.mulVec_eigenvectorBasis_complex hH k) (E' := 0) (by simp)]
+    simp only [toLpLin_one, LinearMap.id_apply, sub_zero, Complex.ofReal_exp]
+    congr 2
+    push_cast
+    ring
+  have hmain := GaussianFilter.norm_sub_ground_le_of_coefficients hH hΩ hHΩ hgap hΔ h.property
+    hcoeff
+  have happly : toEuclideanCLM (n := n) (𝕜 := ℂ)
+      (gaussianTimeAverage q ΔE H - vecMulVec (WithLp.ofLp Ω) (star (WithLp.ofLp Ω))) x =
+      toEuclideanLin (gaussianTimeAverage q ΔE H) x - ⟪Ω, x⟫_ℂ • Ω := by
+    rw [map_sub, _root_.sub_apply, ← toEuclideanLin_vecMulVec_star_self_apply]
+    rfl
+  rw [happly]
+  exact hmain.trans (mul_le_mul_of_nonneg_right hexp (norm_nonneg x))
+
+/-- **Gap bound under perturbation.** If `Ω` is a gapped ground vector of the Hermitian
+matrix `H`, with energy `0` and gap `ΔE > 0`, and `M` is Hermitian, then
+`‖P_q(M) - |Ω⟩⟨Ω|‖ ≤ exp(-q/2) + √q / ΔE · ‖M - H‖`. This is the estimate of the first
+display after line 848 of Hastings, arXiv:0705.2024v4, `law16.tex`, lines 849–864, for
+`M = M_L + M_B + M_R`, before its integrand is rewritten in the interaction picture. -/
+theorem norm_gaussianTimeAverage_sub_groundProjector_le_add {M H : Matrix n n ℂ}
+    (hM : M.IsHermitian) (hH : H.IsHermitian) {ΔE : ℝ} {Ω : EuclideanSpace ℂ n}
+    (hΩ : ‖Ω‖ = 1) (hgap : IsGapped H 0 ΔE)
+    (hspan : groundSpace H 0 = Submodule.span ℂ {Ω}) (hΔ : 0 < ΔE) (q : ℝ) :
+    ‖gaussianTimeAverage q ΔE M - vecMulVec (WithLp.ofLp Ω) (star (WithLp.ofLp Ω))‖ ≤
+      Real.exp (-q / 2) + Real.sqrt q / ΔE * ‖M - H‖ := by
+  exact ((norm_sub_le_norm_sub_add_norm_sub _ (gaussianTimeAverage q ΔE H) _).trans
+    (add_le_add (norm_gaussianTimeAverage_sub_le hM hH q hΔ)
+      (norm_gaussianTimeAverage_sub_groundProjector_le hH hΩ hgap hspan hΔ q))).trans_eq
+        (add_comm _ _)
+
+end ManyBody
+
+end
