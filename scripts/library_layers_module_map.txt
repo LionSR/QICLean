@@ -1138,9 +1138,9 @@ QICLean.Analysis.ReplicaTwoMergeMoment QICLean.ManyBody.Replica.Configuration.Tw
 QICLean.Entropy.CompressedPhysicalMatchedCutoffs QICLean.ManyBody.Replica.CompressedPhysicalMatchedCutoffs
 QICLean.Entropy.CompressedTypicalCommonBellVector QICLean.ManyBody.Replica.CompressedTypicalCommonBellVector
 QICLean.Entropy.CompressedTypicalCommonRetainedMass QICLean.ManyBody.Replica.CompressedTypicalCommonRetainedMass
-QICLean.Entropy.RegionalReset QICLean.ManyBody.Replica.RegionalReset
-QICLean.Entropy.RegionalResetEntropy QICLean.ManyBody.Replica.RegionalResetEntropy
-QICLean.Entropy.ReplicaSwap QICLean.ManyBody.Replica.Swap
+QICLean.Entropy.RegionalReset QICLean.ManyBody.Entropy.RegionalReset
+QICLean.Entropy.RegionalResetEntropy QICLean.ManyBody.Entropy.RegionalResetEntropy
+QICLean.Entropy.ReplicaSwap QICLean.ManyBody.Entropy.ReplicaSwap
 QICLean.Entropy.ViableSampling.ReplicaGoodCopyFactorization QICLean.ManyBody.Replica.Configuration.GoodCopyFactorization
 QICLean.Representation.AddedSiteSpace QICLean.ManyBody.Replica.AddedSiteSpace
 QICLean.Representation.AddedSiteTensorInsertion QICLean.ManyBody.Replica.AddedSite.TensorInsertion

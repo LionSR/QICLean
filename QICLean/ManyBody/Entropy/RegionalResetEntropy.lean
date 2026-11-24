@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Entropy.MutualInformationPerturbation
-import QICLean.ManyBody.Replica.Swap
+import QICLean.ManyBody.Entropy.ReplicaSwap
 
 /-!
 # The entropy comparison of the information reset

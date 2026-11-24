@@ -522,4 +522,81 @@ theorem norm_heisenberg_sub_regionExpectation_pathGraph_le
     hHerm R (fun k ↦ ChainSupport.edist_le (X k)) (fun k ↦ (X k).2.card_le)
     (SimpleGraph.pathGraph_card_sphere_le_two L) b₀ hBudget S hA ℓ t
 
+section Graph
+
+variable {ι : Type*} [Fintype ι] [DecidableEq ι] {q R : ℕ} {κ : Type*} [Fintype κ]
+  {T : κ → Finset ι}
+
+/-- Localization of the Heisenberg evolution of a finite sum of local perturbations, on a
+finite graph whose spheres have at most two sites. Each perturbation `P c`, `c ∈ C`, is
+supported on a set `U c ⊆ Z` of at most `R + 1` sites and has norm at most `ε`; the
+evolving interaction has supports of graph diameter at most `R` and at most `R + 1` sites,
+and per-site norm budget `b₀`. Each evolved perturbation is localized onto the balls of
+radius `⌊ℓ⌋` about its own support, which lie in those about `Z`. This is the term-by-term
+localization of TNLean note, `part2a_mps_information.tex`, lines 380–400. -/
+theorem norm_heisenberg_sum_sub_regionExpectation_graphNeighborhood_le
+    (G : SimpleGraph ι)
+    (hSphere : ∀ x : ι, ∀ d : ℕ, (Finset.univ.filter fun y ↦ G.edist x y = d).card ≤ 2)
+    (Φ : ManyBody.Interaction (fun _ : ι ↦ Fin q) T)
+    (hDiam : ∀ k, ∀ x ∈ T k, ∀ z ∈ T k, G.edist x z ≤ R)
+    (hCard : ∀ k, (T k).card ≤ R + 1)
+    (hHerm : ∀ k, (Φ.term k).IsHermitian) (b₀ : ℝ)
+    (hBudget : ∀ x : ι, ∑ k ∈ Finset.univ.filter (fun k ↦ x ∈ T k), ‖Φ.term k‖ ≤ b₀)
+    {γ : Type*} (C : Finset γ) (U : γ → Finset ι) (Z : Finset ι)
+    (hUZ : ∀ c ∈ C, U c ⊆ Z) (hU : ∀ c ∈ C, (U c).card ≤ R + 1)
+    (P : γ → Matrix (ι → Fin q) (ι → Fin q) ℂ)
+    (hP : ∀ c ∈ C, ManyBody.IsSupportedOn (X := fun _ ↦ Fin q) (P c) (U c))
+    (ε : ℝ) (hPε : ∀ c ∈ C, ‖P c‖ ≤ ε) (ℓ t : ℝ) :
+    let B := ManyBody.graphNeighborhood G Z ⌊ℓ⌋₊
+    let E := ManyBody.heisenbergEvolution Φ.hamiltonian t (∑ c ∈ C, P c)
+    let a : ℝ := 2 * (2 + 4 * |b₀| * Real.exp (2 * R)) * Real.exp 1 /
+      (1 - Real.exp (-(1 / 2)))
+    let v : ℝ := 2 * (R + 1) * |b₀| * Real.exp (2 * R) + 1
+    ‖E - ManyBody.regionExpectation B E‖ ≤
+      (C.card : ℝ) * (2 * (a * (R + 1 : ℝ) ^ 2 * ε * Real.exp (v * |t| - ℓ / 2))) := by
+  classical
+  intro B E a v
+  have ha : 0 ≤ a := by
+    have hden : 0 < 1 - Real.exp (-(1 / 2 : ℝ)) :=
+      sub_pos.mpr (Real.exp_lt_one_iff.mpr (by norm_num))
+    exact (div_pos (by positivity) hden).le
+  -- one evolved perturbation, localized onto the balls about its own support
+  have hterm (c : γ) (hc : c ∈ C) :
+      ‖ManyBody.heisenbergEvolution Φ.hamiltonian t (P c) - ManyBody.regionExpectation B
+        (ManyBody.heisenbergEvolution Φ.hamiltonian t (P c))‖ ≤
+          2 * (a * (R + 1 : ℝ) ^ 2 * ε * Real.exp (v * |t| - ℓ / 2)) := by
+    let N := ManyBody.graphNeighborhood G (U c) ⌊ℓ⌋₊
+    have hNB : N ⊆ B := ManyBody.graphNeighborhood_mono_left (hUZ c hc)
+    have hloc :=
+      ManyBody.norm_heisenberg_sub_regionExpectation_graphNeighborhood_le_of_sphere_le_two
+        G Φ hHerm R hDiam hCard hSphere b₀ hBudget (U c) (hP c hc) ℓ t
+    have hcard : ((U c).card : ℝ) ≤ (R + 1 : ℝ) := by exact_mod_cast hU c hc
+    refine (ManyBody.norm_sub_regionExpectation_le_two_mul_norm_sub B _
+        (ManyBody.regionExpectation N
+        (ManyBody.heisenbergEvolution Φ.hamiltonian t (P
+            c))) (ManyBody.supportedOperators_mono (Finset.coe_subset.mpr hNB)
+        (ManyBody.regionExpectation_mem_supportedOperators N _))).trans
+      (mul_le_mul_of_nonneg_left (hloc.trans ?_) (by norm_num))
+    apply mul_le_mul_of_nonneg_right _ (Real.exp_pos _).le
+    exact mul_le_mul
+      (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (Nat.cast_nonneg _) hcard 2) ha)
+      (hPε c hc) (norm_nonneg _) (mul_nonneg ha (sq_nonneg _))
+  -- the evolution and the error are linear in the observable
+  let δ := (LinearMap.id - ManyBody.regionExpectationLM B).comp
+    (LinearMap.mulLeftRight ℂ (NormedSpace.exp (t • (Complex.I • Φ.hamiltonian)),
+      NormedSpace.exp ((-t) • (Complex.I • Φ.hamiltonian))))
+  have hδ (A : Matrix (ι → Fin q) (ι → Fin q) ℂ) :
+      δ A = ManyBody.heisenbergEvolution Φ.hamiltonian t A -
+        ManyBody.regionExpectation B (ManyBody.heisenbergEvolution Φ.hamiltonian t A) :=
+    rfl
+  change ‖δ (∑ c ∈ C, P c)‖ ≤ _
+  rw [map_sum]
+  calc
+    _ ≤ ∑ c ∈ C, ‖δ (P c)‖ := norm_sum_le _ _
+    _ ≤ ∑ _c ∈ C, 2 * (a * (R + 1 : ℝ) ^ 2 * ε * Real.exp (v * |t| - ℓ / 2)) :=
+      Finset.sum_le_sum fun c hc ↦ (hδ (P c)).symm ▸ hterm c hc
+    _ = _ := by rw [Finset.sum_const, nsmul_eq_mul]
+
+end Graph
+
 end ManyBody

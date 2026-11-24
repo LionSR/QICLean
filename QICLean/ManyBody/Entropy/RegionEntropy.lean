@@ -3,6 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
+import QICLean.Entropy.VonNeumann.VonNeumannEntropySpectralTail
 import QICLean.ManyBody.Entropy.Filter.SchmidtPinning
 import QICLean.Entropy.Conditional.ConditionalEntropy
 import QICLean.Entropy.VonNeumann.Bipartite
@@ -187,6 +188,25 @@ theorem regionMutualInformation_nonneg (ψ : EuclideanSpace ℂ ((v : V) → β 
     (hψ : ‖ψ‖ = 1) (R T : Finset V) (h : Disjoint R T) :
     0 ≤ regionMutualInformation ψ R T := by
   exact sub_nonneg.mpr (regionEntropy_union_le β ψ hψ R T h)
+
+/-- A supplied spectral-tail mass bounds the entropy of a region of a finite system
+with local dimension `q`. This is an auxiliary concentration estimate for the entropy obstruction in
+SWVC08, arXiv:0705.0292v2, lines 278–305. It does not infer the tail mass from a
+matrix approximation error. -/
+theorem regionEntropy_le_log_rank_add_spectral_tail {ι : Type*} [Fintype ι] [DecidableEq ι]
+    {q D : ℕ}
+    (ψ : EuclideanSpace ℂ (ι → Fin q))
+    (hψ : ‖ψ‖ = 1) (R : Finset ι) {ε : ℝ}
+    (htail : ∑ i ∈ Finset.Ico D (Fintype.card (ManyBody.RegionConfig (fun _ ↦ Fin q) R)),
+      (ManyBody.regionState_posSemidef (X := fun _ ↦ Fin q) R ψ).isHermitian.descEigenvalue i
+        ≤ ε) :
+    ManyBody.regionEntropy (X := fun _ ↦ Fin q) ψ R ≤
+      Real.log D + ε * (R.card : ℝ) * Real.log q + Real.log 2 := by
+  have hρ := ManyBody.regionState_posSemidef (X := fun _ ↦ Fin q) R ψ
+  have hb := hρ.vonNeumannEntropy_le_log_rank_add_tail
+    (by simp [ManyBody.trace_regionState, hψ]) htail
+  simpa [ManyBody.regionEntropy, ManyBody.RegionConfig, Fintype.card_pi,
+    Real.log_pow, mul_assoc] using hb
 
 end ManyBody
 
