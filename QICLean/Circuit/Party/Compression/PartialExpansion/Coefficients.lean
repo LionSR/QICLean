@@ -15,7 +15,7 @@ is the product of the branch coefficients at the touched gate occurrences
 sums of their gates (`SourceCircuit.sum_norm_coefficient_eq_prod`): a touched gate contributes
 its absolute coefficient sum, an untouched gate the factor one, and a composition the product.
 A bound on every touched gate gives one factor of the bound per touched occurrence, and two
-factors for the ket–bra coefficients `c_ξ c̄_ζ`. For the expansion along all parties, the
+factors for the ket–bra coefficients `c_ξ conj c_ζ`. For the expansion along all parties, the
 coefficients are products over the occurrences with a nonempty cell.
 
 ## Main results
@@ -161,7 +161,7 @@ theorem sum_norm_coefficient_le_pow_card (w : SourceCircuit X Y) (B : ℝ)
         fun g hg ↦ hB g (Finset.mem_filter.mp hg).2
     _ = _ := Finset.prod_const B
 
-/-- The ket–bra coefficients `c_ξ c̄_ζ` have total absolute value the square of the product of
+/-- The ket–bra coefficients `c_ξ conj c_ζ` have total absolute value the square of the product of
 the absolute coefficient sums of the touched gates. Source: Theorem 5.2,
 `eq:compression-choice-cost`, `04-compression.tex`, lines 351–381. -/
 theorem sum_norm_coefficient_mul_conj_eq_prod_sq (w : SourceCircuit X Y) :
@@ -232,7 +232,7 @@ theorem coefficient_all_eq_prod_nonemptyGateLocations (w : SourceCircuit X Y)
       Finset.prod_subtype _ (fun _ ↦ by simp) F
     _ = _ := Finset.prod_congr rfl fun g _ ↦ dite_eq_left ((isTouched_all_iff w g.1).mpr g.2)
 
-/-- The mixed coefficient `c_ξ c̄_ζ` of two choices along all parties is the product of the
+/-- The mixed coefficient `c_ξ conj c_ζ` of two choices along all parties is the product of the
 mixed branch coefficients at the occurrences with a nonempty cell. Source: Theorem 5.2,
 `04-compression.tex`, lines 351–381 and 565–573. -/
 theorem coefficient_all_mul_conj_eq_prod_nonemptyGateLocations (w : SourceCircuit X Y)

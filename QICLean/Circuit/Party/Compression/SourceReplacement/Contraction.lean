@@ -263,9 +263,9 @@ sandwiched between the coordinate matrices of the frames `uU i, uV i` (ket) and 
 (bra) gives the sum of its entries times the prepared densities with the frame vectors at the
 selected slots and the slot vectors elsewhere. No orthonormality or spanning condition is
 needed. For the Schmidt decompositions of the source, the columns of `uU i`, `uV i` are the
-vectors `u_a`, `v_a` of the ket branch and those of `uU' i`, `uV' i` the vectors `ũ_c`, `ṽ_c` of
-the bra branch (lines 281–290). Source: Theorem 5.2, `04-compression.tex`, lines 279–338 and
-409–434. -/
+vectors `u_a`, `v_a` of the ket branch and those of `uU' i`, `uV' i` the vectors `u_c`, `v_c`
+of the bra branch, written with tildes in the source (lines 281–290). Source: Theorem 5.2,
+`04-compression.tex`, lines 279–338 and 409–434. -/
 theorem sourceContraction_preparedDensityCoefficient_selected_frames
     {K K' : Fin R.length → Type} [∀ i, Fintype (K i)] [∀ i, Fintype (K' i)]
     (uU : ∀ i, K i → EuclideanSpace ℂ (B.left i)) (uV : ∀ i, K i → EuclideanSpace ℂ (B.right i))
