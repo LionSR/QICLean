@@ -20,7 +20,11 @@ recursions on the party circuit: a choice of a composition is a pair of choices,
 touched gate is a label of the gate, and there is one choice elsewhere. Their computation rules
 on `done`, `gate`, `localOp`, `localOps` and `comp` hold by `rfl`. A framed source circuit has
 the choices and coefficients of the circuit, and its branches are `1 ⊗` the branches
-(`SourceCircuit.op_partialWord_frame`).
+(`SourceCircuit.op_partialWord_frame`). The branches weighted by their coefficients sum to the
+operator of the circuit read on the blocks (`SourceCircuit.sum_coefficient_smul_op_partialWord`):
+at a touched gate the sum over the labels is the weighted sum of the branches of the prepared
+gate, at an untouched gate there is one branch, the whole gate, and a composition multiplies the
+two sums.
 
 ## Main definitions
 
@@ -36,6 +40,8 @@ the choices and coefficients of the circuit, and its branches are `1 ⊗` the br
 * `QuantumCircuit.Party.SourceCircuit.op_partialWord_gate_of_isTouched`,
   `QuantumCircuit.Party.SourceCircuit.op_partialWord_gate_of_not_isTouched` — the branch at a
   gate.
+* `QuantumCircuit.Party.SourceCircuit.sum_coefficient_smul_op_partialWord` — the partial expansion
+  sums to the circuit.
 * `QuantumCircuit.Party.SourceCircuit.op_frame`,
   `QuantumCircuit.Party.SourceCircuit.coefficient_frame`,
   `QuantumCircuit.Party.SourceCircuit.op_partialWord_frame` — framing.
@@ -426,6 +432,74 @@ theorem op_partialWord_frame [Fintype P] : {X Y : P → Type} → [∀ p, Fintyp
     rfl
 
 end Frame
+
+end SourceCircuit
+
+/-! ### The sum of a partial expansion -/
+
+namespace SourceCircuit
+
+/-- **The partial expansion sums to the circuit.** The weighted sum, over the choices of branch
+labels at the gates meeting the affected parties `A`, of the branches of the partial expansion is
+the operator of the source circuit, read on the affected parties and the exterior party along
+`blockConfigEquiv`. Source: Theorem 5.2, `04-compression.tex`, lines 353–361 and 415–417. -/
+theorem sum_coefficient_smul_op_partialWord [Fintype P] (A : P → Bool) :
+    {X Y : P → Type} → [∀ s, Fintype (X s)] → [∀ s, DecidableEq (X s)] →
+    (w : SourceCircuit X Y) →
+      ∑ ξ, coefficient A w ξ • Word.op (partialWord A w ξ) =
+        reindex (blockConfigEquiv (affectedOwner A) Y).symm
+          (blockConfigEquiv (affectedOwner A) X).symm w.op
+  | _, _, _, _, PartyCircuit.done X => by
+    change ∑ _ξ : Unit, (1 : ℂ) • Word.op (PartyCircuit.done _) = _
+    rw [Fintype.sum_unique, one_smul, Word.op, PartyCircuit.op_done, SourceCircuit.op,
+      PartyCircuit.op_done]
+    ext
+    simp [one_apply]
+  | _, _, _, _, PartyCircuit.gate D hY g => by
+    rw [SourceCircuit.op_gate]
+    by_cases h : PreparedGate.IsTouched A D
+    · let e : Choices A (PartyCircuit.gate D hY g : SourceCircuit _ _) ≃ g.ι :=
+        Equiv.cast (ite_eq_left h)
+      simp only [coefficient_gate, dite_eq_left h, op_partialWord_gate_of_isTouched A D hY g h]
+      refine (Fintype.sum_equiv e _
+        (fun i ↦ g.coeff i • reindex (blockConfigEquiv (affectedOwner A) _).symm
+          (blockConfigEquiv (affectedOwner A) _).symm
+          (placeBetween D hY (g.gate.branchWord i).op)) fun _ ↦ rfl).trans ?_
+      rw [show g.gate.eval = ∑ i, g.coeff i • (g.gate.branchWord i).op from rfl,
+        placeBetween_sum]
+      simp only [placeBetween_smul, reindex_apply, submatrix_sum, submatrix_smul, Pi.smul_apply]
+    · let e : Choices A (PartyCircuit.gate D hY g : SourceCircuit _ _) ≃ Unit :=
+        Equiv.cast (ite_eq_right h)
+      refine (Fintype.sum_equiv e _
+        (fun _ ↦ reindex (blockConfigEquiv (affectedOwner A) _).symm
+          (blockConfigEquiv (affectedOwner A) _).symm (placeBetween D hY g.gate.eval))
+        fun ξ ↦ by
+          rw [coefficient_gate, dite_eq_right h, one_smul,
+            op_partialWord_gate_of_not_isTouched A D hY g h]).trans ?_
+      exact Fintype.sum_unique _
+  | _, _, _, _, PartyCircuit.localOp p hY U => by
+    change ∑ _ξ : Unit, (1 : ℂ) • Word.op (Word.coarsen (affectedOwner A)
+      (PartyCircuit.localOp p hY U : Word _ _)) = _
+    rw [Fintype.sum_unique, one_smul, Word.op_coarsen, Word.op, PartyCircuit.op_localOp,
+      SourceCircuit.op, PartyCircuit.op_localOp]
+  | _, _, _, _, PartyCircuit.localOps U => by
+    change ∑ _ξ : Unit, (1 : ℂ) • Word.op (Word.coarsen (affectedOwner A)
+      (PartyCircuit.localOps U : Word _ _)) = _
+    rw [Fintype.sum_unique, one_smul, Word.op_coarsen, Word.op, PartyCircuit.op_localOps,
+      SourceCircuit.op, PartyCircuit.op_localOps]
+  | _, _, _, _, PartyCircuit.comp c c' => by
+    have key : ∑ ξ, coefficient A (PartyCircuit.comp c c') ξ •
+          Word.op (partialWord A (PartyCircuit.comp c c') ξ) =
+        (∑ ξ', coefficient A c' ξ' • Word.op (partialWord A c' ξ')) *
+          ∑ ξ, coefficient A c ξ • Word.op (partialWord A c ξ) := by
+      simp only [Matrix.sum_mul, Matrix.mul_sum, Matrix.smul_mul, Matrix.mul_smul,
+        Finset.smul_sum, smul_smul]
+      refine (Fintype.sum_prod_type _).trans
+        (Finset.sum_congr rfl fun ξ _ ↦ Finset.sum_congr rfl fun ξ' _ ↦ ?_)
+      exact congrArg ((coefficient A c ξ * coefficient A c' ξ') • ·) (Word.op_comp _ _)
+    rw [key, sum_coefficient_smul_op_partialWord A c, sum_coefficient_smul_op_partialWord A c',
+      reindex_apply, reindex_apply, submatrix_mul_equiv, reindex_apply]
+    simp only [SourceCircuit.op, PartyCircuit.op_comp]
 
 end SourceCircuit
 

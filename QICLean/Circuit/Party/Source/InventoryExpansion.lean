@@ -28,6 +28,8 @@ the fresh factors are finite basis types `α`, `β` and the source vectors lie i
   `QuantumCircuit.Party.PairSource.unit` — reversed, combined and scalar sources.
 * `QuantumCircuit.Party.SourceInventory.system`, `QuantumCircuit.Party.SourceInventory.prepare`
   — the preparation of an inventory.
+* `QuantumCircuit.Party.SourceInventory.systemEquivOfEqNil` — the system prepared by an empty
+  inventory.
 * `QuantumCircuit.Party.SourceInventory.liftOps` — party operations beside the fresh factors.
 * `QuantumCircuit.Party.SourceInventory.Expands` — expansion of one inventory into another.
 
@@ -35,6 +37,9 @@ the fresh factors are finite basis types `α`, `β` and the source vectors lie i
 
 * `QuantumCircuit.Party.SourceInventory.op_prepare_mul_piKronecker` — a preparation commutes
   with party operations on the existing factors.
+* `QuantumCircuit.Party.SourceInventory.liftOps_append`,
+  `QuantumCircuit.Party.SourceInventory.liftOps_eq_cast` — party operations beside the fresh
+  factors of a concatenation, and beside the fresh factors of an identification of equal bases.
 * `QuantumCircuit.Party.SourceInventory.isAllowed_prepare_iff` — a preparation is allowed
   exactly when its vectors are normalized.
 * `QuantumCircuit.Party.SourceInventory.Expands.cons`, `Expands.reverse`, `Expands.combine`,
@@ -154,6 +159,18 @@ theorem system_append (S T : SourceInventory P) (X : P → Type) :
   | nil => rfl
   | cons s S ih => simp only [List.cons_append, system_cons, ih]
 
+/-- The system prepared by an empty inventory is the system itself; by cases on the inventory,
+so that the identification is the identity on the empty list by `rfl`. -/
+def systemEquivOfEqNil : (S : SourceInventory P) → S = [] → (X : P → Type) → ∀ p,
+    S.system X p ≃ X p
+  | [], _, _, _ => Equiv.refl _
+  | _ :: _, h, _, _ => (List.cons_ne_nil _ _ h).elim
+
+/-- On the empty inventory the identification of the prepared system is the identity. -/
+@[simp] theorem systemEquivOfEqNil_nil (h : ([] : SourceInventory P) = []) (X : P → Type)
+    (p : P) : systemEquivOfEqNil [] h X p = Equiv.refl (X p) :=
+  rfl
+
 /-- The finiteness of the bases of a prepared system. -/
 @[instance_reducible] def systemFintype : (S : SourceInventory P) → (X : P → Type) →
     (∀ p, Fintype (X p)) → ∀ p, Fintype (system S X p)
@@ -239,6 +256,94 @@ theorem norm_liftOps_le {X' : P → Type} [∀ p, Fintype (X' p)]
   induction S with
   | nil => exact le_rfl
   | cons s S ih => exact (norm_addPairMatrix_le _ _ _ _ p).trans ih
+
+section addPair
+
+variable {p q : P} (hpq : p ≠ q) (α β : Type)
+
+/-- A cast of a pair whose first factor is fixed casts the second component. -/
+private theorem cast_cast_prod {A T T' U U' : Type} (h : T' = T) (hU' : U' = (A × T'))
+    (hU : U = (A × T)) (h' : U' = U) (y : U') :
+    cast hU (cast h' y) = ((cast hU' y).1, cast h (cast hU' y).2) := by
+  subst hU' hU h
+  rfl
+
+/-- The basis of `addPair` at a party, read through an identification of the old bases. -/
+private theorem addPairSiteEquiv_cast {Y Y' : P → Type} {s : P} (h : Y' s = Y s)
+    (h' : addPair Y' hpq α β s = addPair Y hpq α β s) (y : addPair Y' hpq α β s) :
+    addPairSiteEquiv hpq α β Y s (cast h' y) =
+      ((addPairSiteEquiv hpq α β Y' s y).1, cast h (addPairSiteEquiv hpq α β Y' s y).2) := by
+  unfold addPairSiteEquiv
+  split_ifs with hp hq
+  · simp only [Equiv.trans_apply, Equiv.cast_apply, Equiv.prodCongr_apply, Prod.map,
+      Equiv.refl_apply]
+    rw [cast_cast_prod h (by simp [addPair, hp])]
+  · simp only [Equiv.trans_apply, Equiv.cast_apply, Equiv.prodCongr_apply, Prod.map,
+      Equiv.refl_apply]
+    rw [cast_cast_prod h (by simp [addPair, hq, hpq.symm])]
+  · simp only [Equiv.trans_apply, Equiv.cast_apply, Equiv.prodCongr_apply, Prod.map,
+      Equiv.refl_apply, Equiv.punitProd_symm_apply, cast_cast]
+
+/-- Running the identification of equal bases beside the fresh factors gives the identification
+of the equal bases of `addPair`. -/
+private theorem addPairMatrix_eq_cast [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
+    {Y Y' : P → Type} [∀ s, DecidableEq (Y s)]
+    (C : ∀ s, Matrix (Y' s) (Y s) ℂ) {s : P} (h : Y' s = Y s)
+    (hC : C s = (Equiv.cast h).toPEquiv.toMatrix) :
+    ∃ h' : addPair Y' hpq α β s = addPair Y hpq α β s,
+      addPairMatrix hpq α β C s = (Equiv.cast h').toPEquiv.toMatrix := by
+  have h' : addPair Y' hpq α β s = addPair Y hpq α β s := by simp only [addPair, h]
+  refine ⟨h', ?_⟩
+  rw [addPairMatrix, hC, ← PEquiv.toMatrix_refl, ← Equiv.toPEquiv_refl,
+    ← toMatrix_toPEquiv_prodCongr, reindex_apply, Equiv.symm_symm, Equiv.symm_symm,
+    toMatrix_toPEquiv_submatrix]
+  refine congrArg (fun e ↦ (Equiv.toPEquiv e).toMatrix) (Equiv.ext fun y ↦ ?_)
+  rw [Equiv.trans_apply, Equiv.trans_apply, Equiv.symm_apply_eq, Equiv.cast_apply,
+    addPairSiteEquiv_cast hpq α β h h']
+  rfl
+
+/-- Party operations read through identifications of equal families, run beside fresh factors. -/
+private theorem addPairMatrix_submatrix_cast [Fintype α] [DecidableEq α] [Fintype β]
+    [DecidableEq β] {U U' V V' : P → Type} (hU : U = V) (hU' : U' = V')
+    (C : ∀ s, Matrix (V' s) (V s) ℂ) (s : P) :
+    addPairMatrix hpq α β (fun t ↦ (C t).submatrix (Equiv.cast (congrFun hU' t))
+        (Equiv.cast (congrFun hU t))) s =
+      (addPairMatrix hpq α β C s).submatrix
+        (Equiv.cast (congrArg (fun T ↦ addPair T hpq α β s) hU'))
+        (Equiv.cast (congrArg (fun T ↦ addPair T hpq α β s) hU)) := by
+  subst hU hU'
+  rfl
+
+end addPair
+
+/-- Running the identification of equal bases of one party beside the fresh factors of an
+inventory gives the identification of the equal prepared bases. -/
+theorem liftOps_eq_cast {X X' : P → Type} [∀ s, DecidableEq (X s)] (S : SourceInventory P)
+    (A : ∀ s, Matrix (X' s) (X s) ℂ) {p : P} (h : X' p = X p)
+    (hA : A p = (Equiv.cast h).toPEquiv.toMatrix) :
+    ∃ h' : S.system X' p = S.system X p, S.liftOps A p = (Equiv.cast h').toPEquiv.toMatrix := by
+  induction S with
+  | nil => exact ⟨h, hA⟩
+  | cons s S ih =>
+    obtain ⟨h₁, e₁⟩ := ih
+    exact addPairMatrix_eq_cast s.distinct s.leftBasis s.rightBasis (liftOps S A) h₁ e₁
+
+/-- Running party operations beside the fresh factors of a concatenation is running them beside
+the fresh factors of the second list and then of the first, read through `system_append`. -/
+theorem liftOps_append {X X' : P → Type} (S T : SourceInventory P)
+    (A : ∀ s, Matrix (X' s) (X s) ℂ) (p : P) :
+    liftOps (S ++ T) A p =
+      (liftOps S (liftOps T A) p).submatrix (Equiv.cast (congrFun (system_append S T X') p))
+        (Equiv.cast (congrFun (system_append S T X) p)) := by
+  induction S generalizing p with
+  | nil => rfl
+  | cons s S ih =>
+    change addPairMatrix s.distinct s.leftBasis s.rightBasis (liftOps (S ++ T) A) p = _
+    rw [show liftOps (S ++ T) A = fun t ↦ (liftOps S (liftOps T A) t).submatrix
+      (Equiv.cast (congrFun (system_append S T X') t))
+      (Equiv.cast (congrFun (system_append S T X) t)) from funext ih]
+    exact addPairMatrix_submatrix_cast s.distinct s.leftBasis s.rightBasis
+      (system_append S T X) (system_append S T X') _ p
 
 variable [Fintype P]
 

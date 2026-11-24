@@ -217,11 +217,6 @@ namespace Word
 
 variable [Fintype P] {Q : Type} [DecidableEq Q] (f : P → Q)
 
-omit [DecidableEq P] in
-/-- A site of the block `b` has its block equal to `b`. -/
-private theorem eq_of_mem_block {v : P} {b : Q} (h : v ∈ blockPreimage f {b}) : f v = b :=
-  Finset.mem_singleton.mp (Finset.mem_filter.mp h).2
-
 /-- **A coarsened local word is local.** -/
 theorem isLocal_coarsen : {X Y : P → Type} → [∀ p, Fintype (X p)] → [∀ p, DecidableEq (X p)] →
     {w : Word X Y} → PartyCircuit.IsLocal w → PartyCircuit.IsLocal (coarsen f w)
@@ -276,7 +271,7 @@ theorem partyOp_coarsen : {X Y : P → Type} → [∀ p, Fintype (X p)] → [∀
         PartyCircuit.localOpFamily_self p hY A
       rw [hrest, mul_ite, mul_one, mul_zero, h0]
     · have hne : ∀ v : {v // v ∈ blockPreimage f {b}}, v.1 ≠ p := fun v e ↦
-        hb (e ▸ eq_of_mem_block f v.2).symm
+        hb (e ▸ (mem_blockPreimage_singleton f).mp v.2).symm
       rw [PartyCircuit.localOpFamily_of_ne _ _ _ hb]
       simp only [PartyCircuit.localOpFamily_of_ne p hY A (hne _)]
       exact (piKronecker_cast _ _).symm
@@ -298,7 +293,7 @@ theorem partyOp_coarsen_of_fiber {X Y : P → Type} [∀ p, Fintype (X p)] [∀ 
   rw [PartyCircuit.regionOp, piKronecker_apply, submatrix_apply]
   have hp : p ∈ blockPreimage f {b} := by simpa using (hf p).mpr rfl
   rw [Fintype.prod_eq_single (⟨p, hp⟩ : {v // v ∈ blockPreimage f {b}}) fun v hv ↦
-    absurd (Subtype.ext ((hf v.1).mp (eq_of_mem_block f v.2))) hv]
+    absurd (Subtype.ext ((hf v.1).mp ((mem_blockPreimage_singleton f).mp v.2))) hv]
 
 /-- **At a block containing no party**, every entry of the party operation of a coarsened local
 word is `1`: the block has one configuration. -/
@@ -307,7 +302,7 @@ theorem partyOp_coarsen_apply_of_forall_ne {X Y : P → Type} [∀ p, Fintype (X
     (hb : ∀ p, f p ≠ b) (y : blockSystem f Y b) (x : blockSystem f X b) :
     (coarsen f w).partyOp b y x = 1 := by
   rw [partyOp_coarsen f w hw, PartyCircuit.regionOp, piKronecker_apply]
-  exact Finset.prod_eq_one fun v _ ↦ (hb v.1 (eq_of_mem_block f v.2)).elim
+  exact Finset.prod_eq_one fun v _ ↦ (hb v.1 ((mem_blockPreimage_singleton f).mp v.2)).elim
 
 /-- **The region operation of a coarsened local word on a region of blocks is the region
 operation of the word on its preimage**, read along `blockRegionConfigEquiv`. -/
@@ -320,10 +315,10 @@ theorem regionOp_coarsen {X Y : P → Type} [∀ p, Fintype (X p)] [∀ p, Decid
     { toFun := fun v ↦ ⟨⟨f v.1, (Finset.mem_filter.mp v.2).2⟩, v.1,
         Finset.mem_filter.mpr ⟨Finset.mem_univ _, Finset.mem_singleton_self _⟩⟩
       invFun := fun s ↦ ⟨s.2.1, Finset.mem_filter.mpr ⟨Finset.mem_univ _, by
-        simp [eq_of_mem_block f s.2.2]⟩⟩
+        simp [(mem_blockPreimage_singleton f).mp s.2.2]⟩⟩
       left_inv := fun _ ↦ rfl
       right_inv := fun ⟨⟨b, hb⟩, v, hv⟩ ↦ by
-        obtain rfl : f v = b := eq_of_mem_block f hv
+        obtain rfl : f v = b := (mem_blockPreimage_singleton f).mp hv
         rfl }
   ext z z'
   simp only [reindex_apply, submatrix_apply, Equiv.symm_symm, PartyCircuit.regionOp,
@@ -354,7 +349,7 @@ theorem parties_coarsen_subset [Fintype Q] : {X Y : P → Type} → [∀ p, Fint
       true_and] at hb
     refine Finset.mem_image.mpr (by_contra fun hbi ↦ hb ?_)
     have hv (v : {v // v ∈ blockPreimage f {b}}) := fun hmem ↦
-      hbi ⟨v.1, hmem, eq_of_mem_block f v.2⟩
+      hbi ⟨v.1, hmem, (mem_blockPreimage_singleton f).mp v.2⟩
     simp only [PartyCircuit.parties, Finset.mem_filter, Finset.mem_univ, true_and, imp_false,
       not_not] at hv
     choose h hA using hv
@@ -411,11 +406,12 @@ theorem partyOp_onCell (D : Finset P) {X Y : P → Type} [∀ p, Fintype (X p)]
   · have hk : (⟨p, hp⟩ : ↥D) ∈ blockPreimage (Subtype.val : ↥D → P) {p} := by simp
     rw [dite_eq_left hp, ite_eq_left (funext fun h ↦ (h hp).elim), one_mul,
       Fintype.prod_eq_single (⟨⟨p, hp⟩, hk⟩ : {k // k ∈ blockPreimage (Subtype.val : ↥D → P) {p}})
-        fun k hk' ↦ absurd (Subtype.ext (Subtype.ext (eq_of_mem_block Subtype.val k.2))) hk']
+        fun k hk' ↦ absurd (Subtype.ext (Subtype.ext
+          ((mem_blockPreimage_singleton Subtype.val).mp k.2))) hk']
     rfl
   · rw [dite_eq_right hp, Finset.prod_eq_one
       fun (k : {k // k ∈ blockPreimage (Subtype.val : ↥D → P) {p}}) _ ↦
-        (hp (eq_of_mem_block Subtype.val k.2 ▸ k.1.2)).elim, mul_one]
+        (hp ((mem_blockPreimage_singleton Subtype.val).mp k.2 ▸ k.1.2)).elim, mul_one]
     simp [cellEquiv, PEquiv.toMatrix_apply, funext_iff, hp, eq_comm]
 end Word
 

@@ -14,7 +14,8 @@ preimage `blockPreimage f {b}`. A system `X` on `V` is then a system `blockSyste
 whose basis at `b` is the configurations of the block. The configurations of the two systems are
 the same (`blockConfigEquiv`, the partition of the sites into the blocks, `complPartitionEquiv`),
 and so are the configurations of a region `D'` of blocks and of its preimage
-(`blockRegionConfigEquiv`). Placement commutes with blocking
+(`blockRegionConfigEquiv`); a block that consists of one site `v` has the configurations of `v`
+(`blockFiberEquiv`). Placement commutes with blocking
 (`reindex_blockConfigEquiv_place`), and a product operator of the sites is the product over the
 blocks of the product operators of the blocks (`reindex_blockConfigEquiv_symm_piKronecker`).
 
@@ -23,6 +24,7 @@ blocks of the product operators of the blocks (`reindex_blockConfigEquiv_symm_pi
 * `ManyBody.blockPreimage` — the sites of a region of blocks.
 * `ManyBody.blockSystem` — the blocked system.
 * `ManyBody.blockConfigEquiv`, `ManyBody.blockRegionConfigEquiv` — its configurations.
+* `ManyBody.blockFiberEquiv` — the configurations of a block that consists of one site.
 
 ## Main results
 
@@ -45,7 +47,8 @@ variable {V V' : Type} [Fintype V] [DecidableEq V'] (f : V → V')
 abbrev blockPreimage (D' : Finset V') : Finset V :=
   Finset.univ.filter (f · ∈ D')
 
-private theorem mem_blockPreimage_singleton {v : V} {b : V'} :
+/-- A site lies in the block `b` exactly when its block is `b`. -/
+theorem mem_blockPreimage_singleton {v : V} {b : V'} :
     v ∈ blockPreimage f {b} ↔ f v = b := by
   simp
 
@@ -86,6 +89,39 @@ def blockRegionConfigEquiv (X : V → Type) (D' : Finset V') :
       rintro _ rfl _ _; rfl
     exact key _ ((mem_blockPreimage_singleton f).mp hv) _ _
   right_inv _ := rfl
+
+/-! ### A block of one site -/
+
+section Fiber
+
+variable {b : V'} {v : V} (hf : ∀ u, f u = b ↔ u = v)
+include hf
+
+/-- The site `v` lies in the block `b` that consists of `v` alone. -/
+theorem mem_blockPreimage_of_fiber : v ∈ blockPreimage f {b} :=
+  (mem_blockPreimage_singleton f).mpr ((hf v).mpr rfl)
+
+/-- The only site of the block `b` that consists of `v` alone is `v`. -/
+theorem eq_of_mem_blockPreimage_of_fiber {u : V} (hu : u ∈ blockPreimage f {b}) : u = v :=
+  (hf u).mp ((mem_blockPreimage_singleton f).mp hu)
+
+/-- The configurations of a block that consists of the single site `v` are the configurations
+of `v`: a configuration of the block is read by its value at `v`. -/
+def blockFiberEquiv (X : V → Type) : blockSystem f X b ≃ X v where
+  toFun z := z ⟨v, mem_blockPreimage_of_fiber f hf⟩
+  invFun x u := cast (congrArg X (eq_of_mem_blockPreimage_of_fiber f hf u.2).symm) x
+  left_inv z := funext fun ⟨u, hu⟩ ↦ by
+    obtain rfl := eq_of_mem_blockPreimage_of_fiber f hf hu
+    rfl
+  right_inv _ := rfl
+
+/-- The identification of the configurations of a block of one site is the value at the
+site. -/
+@[simp] theorem blockFiberEquiv_apply (X : V → Type) (z : blockSystem f X b) :
+    blockFiberEquiv f hf X z = z ⟨v, mem_blockPreimage_of_fiber f hf⟩ :=
+  rfl
+
+end Fiber
 
 variable [DecidableEq V] [Fintype V']
 
