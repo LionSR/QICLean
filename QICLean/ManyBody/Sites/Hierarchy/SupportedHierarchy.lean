@@ -14,7 +14,8 @@ Each projection in the hierarchy acts on its own block. The projections on sibli
 blocks therefore commute.
 
 Moved from TNLean at commit `2417e0a2e4d8a1dc2db0a14e0c9cae4ca735829e`.
-`TNLean/MPS/AreaLaw/Spectral/SupersiteHierarchy.lean`. The hierarchy is described using `Finset.dyadicBlock`.
+`TNLean/MPS/AreaLaw/Spectral/SupersiteHierarchy.lean`. The hierarchy is described using
+`Finset.dyadicBlock`.
 -/
 
 open Matrix Finset

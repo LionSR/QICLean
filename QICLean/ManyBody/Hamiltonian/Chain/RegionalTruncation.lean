@@ -23,7 +23,8 @@ centering an interaction term at half the identity. See
 
 Moved from TNLean at commit `2417e0a2e4d8a1dc2db0a14e0c9cae4ca735829e`.
 Sources in `TNLean/MPS/AreaLaw/Spectral/`: `SpectralTail.lean`, `GroundStateTail.lean`,
-`RegionalTruncationResidual.lean` and `TwoBlockTruncation.lean`. The lemmas are collected under `ManyBody.BondInteraction` and named by their content.
+`RegionalTruncationResidual.lean` and `TwoBlockTruncation.lean`. The lemmas are collected under
+`ManyBody.BondInteraction`.
 -/
 
 open Matrix

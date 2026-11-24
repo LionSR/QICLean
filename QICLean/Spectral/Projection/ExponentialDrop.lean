@@ -133,7 +133,8 @@ end
 
 /-!
 Moved from TNLean at commit `2417e0a2e4d8a1dc2db0a14e0c9cae4ca735829e`.
-`TNLean/MPS/AreaLaw/Spectral/SpectralTail.lean` and `GroundStateTail.lean`. The statements and proofs are retained.
+`TNLean/MPS/AreaLaw/Spectral/SpectralTail.lean` and `GroundStateTail.lean`. The statements and
+proofs are retained.
 -/
 
 section
