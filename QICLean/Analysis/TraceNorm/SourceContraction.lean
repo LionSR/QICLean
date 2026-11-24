@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import Mathlib.LinearAlgebra.Multilinear.Basic
 import QICLean.Analysis.TraceNorm.RectangularTraceNormAlgebra
+import QICLean.Algebra.Kronecker.PiKronecker
 
 /-!
 # Corrected-position expansion of a finite source contraction
@@ -111,5 +112,28 @@ theorem rectangularTraceNorm_sourceContraction_sub_le
         rectangularTraceNorm (sourceContraction coeff (S.piecewise E X)) := by
   rw [sourceContraction_sub]
   exact rectangularTraceNorm_sum_le _ _
+
+end Matrix
+
+open scoped ComplexConjugate
+
+namespace Matrix
+
+/-- **Contracting outer products of ket and bra columns is multiplication by the Kronecker
+product of the source matrices.** Source: `04-compression.tex`, lines 279–355 and 409–434. -/
+theorem sourceContraction_vecMulVec_eq_mul_piKronecker {I : Type} [Fintype I]
+    [DecidableEq I] {K : I → Type} [∀ i, Fintype (K i)] {m n : Type}
+    (L : Matrix m (∀ i, K i) ℂ) (M : Matrix n (∀ i, K i) ℂ) (T : ∀ i, Matrix (K i) (K i) ℂ) :
+    sourceContraction (fun x ↦ vecMulVec (fun r ↦ L r fun i ↦ (x i).1)
+        (fun s ↦ conj (M s fun i ↦ (x i).2))) T =
+      L * piKronecker T * Mᴴ := by
+  ext r s
+  rw [sourceContraction_apply_apply,
+    ← (Equiv.arrowProdEquivProdArrow I K K).symm.sum_comp, Fintype.sum_prod_type]
+  simp only [mul_apply, piKronecker_apply, conjTranspose_apply, Finset.sum_mul, vecMulVec_apply]
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun a _ ↦ Finset.sum_congr rfl fun b _ ↦ ?_
+  simp only [Equiv.arrowProdEquivProdArrow, Equiv.coe_fn_symm_mk, starRingEnd_apply]
+  exact mul_right_comm _ _ _
 
 end Matrix

@@ -10,4 +10,6 @@ Authors: QICLean contributors
 
 import QICLean.Circuit.Party.Compression.Construction
 import QICLean.Circuit.Party.Compression.GateExpansion
+import QICLean.Circuit.Party.Compression.PartialExpansion
 import QICLean.Circuit.Party.Compression.PhysicalReadout
+import QICLean.Circuit.Party.Compression.SourceReplacement
