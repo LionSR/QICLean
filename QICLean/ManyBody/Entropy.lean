@@ -15,6 +15,7 @@ import QICLean.ManyBody.Entropy.ConditionalMovementRegional
 import QICLean.ManyBody.Entropy.ConditionalTwoFamilies
 import QICLean.ManyBody.Entropy.Cut
 import QICLean.ManyBody.Entropy.Filter
+import QICLean.ManyBody.Entropy.InformationReset
 import QICLean.ManyBody.Entropy.MovementEtaRegional
 import QICLean.ManyBody.Entropy.MutualInformationPerturbation
 import QICLean.ManyBody.Entropy.QuditRegionEntropy

@@ -14,4 +14,5 @@ import QICLean.ManyBody.Hamiltonian.Chain.Doubled
 import QICLean.ManyBody.Hamiltonian.Chain.GapUpperBound
 import QICLean.ManyBody.Hamiltonian.Chain.RangeOne
 import QICLean.ManyBody.Hamiltonian.Chain.RegionalTruncation
+import QICLean.ManyBody.Hamiltonian.Chain.RelativeGenerator
 import QICLean.ManyBody.Hamiltonian.Chain.ThreeWaySplitting
