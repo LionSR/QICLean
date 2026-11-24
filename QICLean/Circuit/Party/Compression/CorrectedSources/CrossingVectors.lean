@@ -77,19 +77,45 @@ noncomputable instance (w : SourceCircuit X Y) (S : Finset w.sourceLocations)
   unfold crossingSlotBasis
   split_ifs <;> infer_instance
 
-/-- The two endpoint bases in the order affected, exterior. -/
+/-- The two endpoint bases in the order affected, exterior: the identity when the left
+endpoint is affected, the exchange of the two factors otherwise. -/
 noncomputable def crossingSlotEquiv (w : SourceCircuit X Y) (S : Finset w.sourceLocations)
     (i : w.crossingSlots S) :
     ((partialSlotBases (correctedMask w S) w).left i ×
       (partialSlotBases (correctedMask w S) w).right i) ≃
-        w.crossingSlotBasis S i true × w.crossingSlotBasis S i false := by
-  cases h : correctedMask w S (w.endpoints (partialSlotEquiv (correctedMask w S) w i).1).1
-  · simpa [crossingSlotBasis, h] using
-      Equiv.prodComm ((partialSlotBases (correctedMask w S) w).left i)
-        ((partialSlotBases (correctedMask w S) w).right i)
-  · simpa [crossingSlotBasis, h] using
-      Equiv.refl ((partialSlotBases (correctedMask w S) w).left i ×
-        (partialSlotBases (correctedMask w S) w).right i)
+        w.crossingSlotBasis S i true × w.crossingSlotBasis S i false :=
+  if h : correctedMask w S (w.endpoints (partialSlotEquiv (correctedMask w S) w i).1).1 = true
+  then
+    (Equiv.cast (by simp [crossingSlotBasis, h])).prodCongr
+      (Equiv.cast (by simp [crossingSlotBasis, h]))
+  else
+    (Equiv.prodComm _ _).trans
+      ((Equiv.cast (by simp [crossingSlotBasis, h])).prodCongr
+        (Equiv.cast (by simp [crossingSlotBasis, h])))
+
+/-- When the left endpoint of a crossing slot is affected, its affected coordinate is the left
+one and its exterior coordinate the right one. -/
+theorem crossingSlotEquiv_apply_of_left (w : SourceCircuit X Y) (S : Finset w.sourceLocations)
+    (i : w.crossingSlots S)
+    (h : correctedMask w S (w.endpoints (partialSlotEquiv (correctedMask w S) w i).1).1 = true)
+    (x : (partialSlotBases (correctedMask w S) w).left i ×
+      (partialSlotBases (correctedMask w S) w).right i) :
+    w.crossingSlotEquiv S i x =
+      (cast (by simp [crossingSlotBasis, h]) x.1, cast (by simp [crossingSlotBasis, h]) x.2) := by
+  simp only [crossingSlotEquiv, h, ↓reduceDIte]
+  rfl
+
+/-- When the left endpoint of a crossing slot is not affected, its affected coordinate is the
+right one and its exterior coordinate the left one. -/
+theorem crossingSlotEquiv_apply_of_right (w : SourceCircuit X Y) (S : Finset w.sourceLocations)
+    (i : w.crossingSlots S)
+    (h : ¬correctedMask w S (w.endpoints (partialSlotEquiv (correctedMask w S) w i).1).1 = true)
+    (x : (partialSlotBases (correctedMask w S) w).left i ×
+      (partialSlotBases (correctedMask w S) w).right i) :
+    w.crossingSlotEquiv S i x =
+      (cast (by simp [crossingSlotBasis, h]) x.2, cast (by simp [crossingSlotBasis, h]) x.1) := by
+  simp only [crossingSlotEquiv, h]
+  rfl
 
 /-- The product of exact crossing sources in the two groups of configuration coordinates, the
 affected side first. Source: `04-compression.tex`, lines 409–420. -/

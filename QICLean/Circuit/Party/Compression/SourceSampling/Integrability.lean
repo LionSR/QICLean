@@ -163,7 +163,8 @@ theorem integrable_rectangularTraceNorm_map_correctedSourceTerm_gaussian {r s : 
   simp_rw [he]
   exact ProbabilityTheory.integrable_rectangularTraceNorm_sum_of_memLp_two z hz M
 
-variable [∀ p, Fintype (Y p)] {Phys Env : Type} [Fintype Phys] [DecidableEq Phys] [Fintype Env]
+variable [∀ p, Fintype (Y p)] [∀ p, DecidableEq (Y p)] {Phys Env : Type} [Fintype Phys]
+  [DecidableEq Phys] [Fintype Env]
 
 /-- The physical readout `M ↦ Tr_Env (K M Kᴴ)` as a linear map. -/
 private noncomputable def physicalReadoutLinearMap (K : Matrix (Phys × Env) (Config Y) ℂ) :
@@ -172,6 +173,7 @@ private noncomputable def physicalReadoutLinearMap (K : Matrix (Phys × Env) (Co
   map_add' M N := by simp only [Matrix.mul_add, Matrix.add_mul, map_add]
   map_smul' c M := by simp [Matrix.mul_smul, Matrix.smul_mul]
 
+omit [∀ p, DecidableEq (Y p)] in
 open Classical in
 /-- **Every physical corrected term of the sampled corrections has integrable trace norm**, for
 every readout and every input matrix. Source: Theorem 5.2, `04-compression.tex`,
@@ -266,8 +268,6 @@ theorem exists_sampledSourceMatrix_error_le_of_integral_bound (w : SourceCircuit
       simpa only [Finset.powerset_univ, Finset.card_univ] using
         Finset.sum_powerset_erase_empty_binomialSampleCount_le
           (Finset.univ : Finset w.sourceLocations) Q ε hQ hε hεone
-
-variable [∀ p, DecidableEq (Y p)]
 
 open Classical in
 /-- Every fixed linear image of the sampled density of a pair of branches has integrable trace
