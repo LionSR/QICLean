@@ -18,6 +18,11 @@ Moved from TNLean, `TNLean/PEPS/Defs.lean` (`Edge`, `instFintypeEdge`, `Edge.ofA
 at commit `71c1185e9352a3b5237b37a6840640751da6ca2d`. Changes: namespace `ManyBody` in place of
 `TNLean.PEPS`; no other change.
 
+The region boundary and incidence predicates were moved from TNLean,
+`TNLean/PEPS/Tensor/Region/RegionBlock.lean`,
+ at commit `2417e0a2e4d8a1dc2db0a14e0c9cae4ca735829e`.
+The predicates are in the same namespace as the edges.
+
 ## Main definitions
 
 * `ManyBody.Edge` — the edges of `G`, as ordered endpoint pairs `(u, v)` with `u < v`.
@@ -105,5 +110,53 @@ theorem Edge.ofAdj_eq_ofAdj {G : SimpleGraph V} {u v u' v' : V} (h1 : G.Adj u v)
     Edge.ofAdj h1 = Edge.ofAdj h2 := by
   rw [Edge.ofAdj_eq_of_endpoints h1 (Edge.ofAdj h2)]
   rcases Edge.ofAdj_endpoints h2 with ⟨o1, o2⟩ | ⟨o1, o2⟩ <;> rw [o1, o2] <;> tauto
+
+end ManyBody
+
+namespace ManyBody
+
+variable {V : Type*} [LinearOrder V] {G : SimpleGraph V}
+
+/-- An edge crosses the boundary of the region `R` when exactly one of its
+endpoints lies in `R`. -/
+def IsRegionBoundaryEdge (R : Finset V) (f : Edge G) : Prop :=
+  (f.1.1 ∈ R ∧ f.1.2 ∉ R) ∨ (f.1.1 ∉ R ∧ f.1.2 ∈ R)
+
+instance (R : Finset V) (f : Edge G) : Decidable (IsRegionBoundaryEdge (G := G) R f) := by
+  unfold IsRegionBoundaryEdge
+  infer_instance
+
+/-- An edge is incident to the region `R` when at least one endpoint lies in `R`. -/
+def IsRegionIncidentEdge (R : Finset V) (e : Edge G) : Prop :=
+  e.1.1 ∈ R ∨ e.1.2 ∈ R
+
+instance (R : Finset V) (e : Edge G) : Decidable (IsRegionIncidentEdge (G := G) R e) := by
+  unfold IsRegionIncidentEdge
+  infer_instance
+
+/-- An edge incident to each of two disjoint regions crosses the boundary of the second. -/
+theorem isRegionBoundaryEdge_of_disjoint_incident (S T : Finset V)
+    (hST : Disjoint S T) {e : Edge G}
+    (hS : IsRegionIncidentEdge (G := G) S e)
+    (hT : IsRegionIncidentEdge (G := G) T e) : IsRegionBoundaryEdge (G := G) T e := by
+  have hdis := Finset.disjoint_left.mp hST
+  rcases hS with hS1 | hS2 <;> rcases hT with hT1 | hT2
+  · exact (hdis hS1 hT1).elim
+  · exact Or.inr ⟨fun h => hdis hS1 h, hT2⟩
+  · exact Or.inl ⟨hT1, fun h => hdis hS2 h⟩
+  · exact (hdis hS2 hT2).elim
+
+/-- A boundary edge of `R` has at least one endpoint in `R`. -/
+theorem isRegionBoundaryEdge_touches (R : Finset V) {f : Edge G}
+    (hf : IsRegionBoundaryEdge (G := G) R f) : IsRegionIncidentEdge (G := G) R f := by
+  rcases hf with ⟨h1, _⟩ | ⟨_, h2⟩
+  · exact Or.inl h1
+  · exact Or.inr h2
+
+/-- Equal regions have the same boundary-edge predicate. -/
+theorem isRegionBoundaryEdge_congr {S R : Finset V} (h : S = R) (e : Edge G) :
+    IsRegionBoundaryEdge (G := G) S e ↔ IsRegionBoundaryEdge (G := G) R e := by
+  rw [h]
+
 
 end ManyBody

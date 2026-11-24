@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Sites.Lattice.Plane
 import QICLean.ManyBody.Sites.Lattice.Square
+import QICLean.ManyBody.Sites.Lattice.SupportCounting
 
 /-!
 # The rectangle as a finite domain of the plane
@@ -130,5 +131,120 @@ theorem rectangleSupport_injective (width height : ℕ) :
     Function.Injective (rectangleSupport (width := width) (height := height)) := fun _ _ h ↦
   squareLatticeSiteOrEdgeSupport_injective width height
     (Finset.map_injective _ (congrArg Subtype.val h))
+
+end ManyBody
+
+/-!
+### Boundary cardinalities
+
+Moved from TNLean, `TNLean/PEPS/AreaLaw/RectangularBoundary.lean`, at commit
+`2417e0a2e4d8a1dc2db0a14e0c9cae4ca735829e`. The statements use the boundary predicate of
+`ManyBody.Edge` in the same namespace.
+-/
+
+namespace ManyBody
+
+/-- The original crossing edges of a cut correspond bijectively to the crossing
+edges of the transported cut in the integer rectangle. Source: polynomial-PEPS
+`01-preliminaries.tex`, lines 47–50, definition of `∂_Λ A`, and area-law
+Section 1. -/
+theorem card_edgeBoundary_rectangular {width height : ℕ}
+    (A : Finset (SquareLatticeVertex width height)) :
+    (edgeBoundary (planeDomainGraph (rectangularDomain width height))
+        (A.map (rectangleSiteEquiv width height).toEmbedding)).card =
+      Fintype.card {e : Edge (squareLatticeGraph width height) // IsRegionBoundaryEdge A e} := by
+  classical
+  let σ := rectangleSiteEquiv width height
+  have hadj : ∀ a b : SquareLatticeVertex width height,
+      (planeDomainGraph (rectangularDomain width height)).Adj (σ a) (σ b) ↔
+        (squareLatticeGraph width height).Adj a b :=
+    fun a b ↦ (rectangleGraphIso width height).map_rel_iff
+  have hmem : ∀ a : SquareLatticeVertex width height,
+      σ a ∈ A.map σ.toEmbedding ↔ a ∈ A := fun a ↦ by simp [σ]
+  rw [Fintype.card_subtype]
+  symm
+  refine Finset.card_bij (fun e _ ↦ s(σ e.1.1, σ e.1.2)) ?_ ?_ ?_
+  · intro e he
+    rw [Finset.mem_filter] at he
+    rw [ManyBody.mk_mem_edgeBoundary_iff, hadj, hmem, hmem]
+    refine ⟨e.2.2, ?_⟩
+    rcases he.2 with h | h
+    · exact Or.inl h
+    · exact Or.inr ⟨h.2, h.1⟩
+  · intro e _ f _ hef
+    rcases Sym2.eq_iff.mp hef with ⟨h₁, h₂⟩ | ⟨h₁, h₂⟩
+    · exact Subtype.ext (Prod.ext (σ.injective h₁) (σ.injective h₂))
+    · have h₁ := σ.injective h₁
+      have h₂ := σ.injective h₂
+      have he := e.2.1
+      have hf := f.2.1
+      rw [h₁, h₂] at he
+      exact (@lt_asymm (SquareLatticeVertex width height)
+        instDistribLatticeOfLinearOrder.toSemilatticeInf.toPartialOrder.toPreorder _ _
+        he hf).elim
+  · intro z hz
+    induction z using Sym2.ind with
+    | h x y =>
+      rw [ManyBody.mk_mem_edgeBoundary_iff] at hz
+      obtain ⟨hxy, hcut⟩ := hz
+      obtain ⟨a, rfl⟩ := σ.surjective x
+      obtain ⟨b, rfl⟩ := σ.surjective y
+      rw [hadj] at hxy
+      rw [hmem, hmem] at hcut
+      refine ⟨ManyBody.Edge.ofAdj hxy, ?_, ?_⟩
+      · rw [Finset.mem_filter]
+        refine ⟨Finset.mem_univ _, ?_⟩
+        unfold IsRegionBoundaryEdge ManyBody.Edge.ofAdj
+        split_ifs <;> tauto
+      · unfold ManyBody.Edge.ofAdj
+        split_ifs
+        · rfl
+        · exact Sym2.eq_swap
+
+/-- The exact native inner-boundary cardinality: the integer-domain identification carries the
+native inner boundary onto the domain inner boundary. Source: Corollary 1.2. -/
+theorem card_innerBoundary_rectangular {width height : ℕ}
+    (A : Finset (SquareLatticeVertex width height)) :
+    (innerBoundary (planeDomainGraph (rectangularDomain width height))
+      (A.map (rectangleSiteEquiv width height).toEmbedding)).card =
+        (innerBoundary (squareLatticeGraph width height) A).card := by
+  have h := congrArg Finset.card (ManyBody.innerBoundary_map (rectangleGraphIso width height) A)
+  rw [Finset.card_map] at h
+  exact h
+
+/-- The exact native endpoint-boundary cardinality: the integer-domain identification carries
+the native endpoint boundary onto the domain endpoint boundary. Source: Corollary 1.2. -/
+theorem card_endpointBoundary_rectangular {width height : ℕ}
+    (A : Finset (SquareLatticeVertex width height)) :
+    (endpointBoundary (planeDomainGraph (rectangularDomain width height))
+      (A.map (rectangleSiteEquiv width height).toEmbedding)).card =
+        (endpointBoundary (squareLatticeGraph width height) A).card := by
+  have h :=
+    congrArg Finset.card (ManyBody.endpointBoundary_map (rectangleGraphIso width height) A)
+  rw [Finset.card_map] at h
+  exact h
+
+/-- Each native inner-boundary vertex accounts for at most four edges.
+Source: Corollary 1.2. -/
+theorem rectangleEdgeBoundary_card_le_four_mul_innerBoundary_card {width height : ℕ}
+    (A : Finset (SquareLatticeVertex width height)) :
+    Fintype.card {e : Edge (squareLatticeGraph width height) // IsRegionBoundaryEdge A e} ≤
+      4 * (innerBoundary (squareLatticeGraph width height) A).card := by
+  have h := ManyBody.card_edgeBoundary_le_mul_card_innerBoundary
+    (A := A.map (rectangleSiteEquiv width height).toEmbedding)
+    (ManyBody.planeDomainGraph_degree_le_four (rectangularDomain width height))
+  rwa [card_edgeBoundary_rectangular, card_innerBoundary_rectangular] at h
+
+/-- Counting both native endpoints gives the factor two.
+Source: Corollary 1.2. -/
+theorem rectangleEdgeBoundary_card_le_two_mul_endpointBoundary_card {width height : ℕ}
+    (A : Finset (SquareLatticeVertex width height)) :
+    Fintype.card {e : Edge (squareLatticeGraph width height) // IsRegionBoundaryEdge A e} ≤
+      2 * (endpointBoundary (squareLatticeGraph width height) A).card := by
+  have h := ManyBody.two_mul_card_edgeBoundary_le_mul_card_endpointBoundary
+    (A := A.map (rectangleSiteEquiv width height).toEmbedding)
+    (ManyBody.planeDomainGraph_degree_le_four (rectangularDomain width height))
+  rw [card_edgeBoundary_rectangular, card_endpointBoundary_rectangular] at h
+  omega
 
 end ManyBody
