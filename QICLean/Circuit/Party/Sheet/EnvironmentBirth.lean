@@ -34,6 +34,8 @@ variable (hTE : Disjoint T E) (hTP : ∀ x ∈ T, S.owner x = P₀)
 
 local notation "Z" => addPair (S.system q) hQP A A
 
+/-- The basis of `P∘` with a fresh pair, read on the environment, the two copies of the born
+region and the rest. -/
 private def environmentBirthInputEquiv :
     Z P₀ ≃ VEnv × (A × (A × U)) :=
   (addPairRight hQP A A).trans
@@ -41,6 +43,7 @@ private def environmentBirthInputEquiv :
     ((Equiv.prodAssoc A VEnv (A × U)).symm.trans (teuShuffle A VEnv (A × U)))
 
 include hTP in
+/-- At a party other than `P∘` and `Q∘` the basis after the birth is that before it. -/
 private theorem environmentBirth_eq_outside {r : P} (hrQ : r ≠ Q) (hrP : r ≠ P₀) :
     (S').system q r = Z r :=
   (system_eq_of_owner_iff S (S.changeOwner_owner_eq_iff_of_ne hTP hrQ hrP)).trans
@@ -109,6 +112,7 @@ theorem sourceCount_environmentBirthWord
   rfl
 
 include hTE hTP hU hQP in
+/-- The entries of the canonical birth map read on the environment coordinates. -/
 private theorem configBirthOp_apply_environment
     (σ : SplittingData (fun _ : ι ↦ Fin q) T (T ∪ E))
     (y : Config ((S').system q)) (x : Config (S.system q)) :

@@ -26,6 +26,8 @@ variable {ι P : Type} [Fintype ι] [DecidableEq ι] [DecidableEq P]
   {q : ℕ} {S : Sheet ι P} {T E : Finset ι} {P₀ Q : P}
 
 omit [Fintype ι] [DecidableEq P] in
+/-- A site is owned by `P∘` exactly when it is a site of `E` owned by `P∘`, a site of `T`, or a
+site outside `T ∪ E`. -/
 private theorem owner_eq_iff_environment (hTP : ∀ x ∈ T, S.owner x = P₀)
     (hU : ∀ x ∉ T ∪ E, S.owner x = P₀) (x : ι) :
     S.owner x = P₀ ↔ (x ∈ E ∧ S.owner x = P₀) ∨ (x ∈ T ∨ x ∉ T ∪ E) :=
@@ -65,6 +67,8 @@ def birthEnvironmentEquivAfter (hTE : Disjoint T E) (hQP : Q ≠ P₀)
         · simpa [changeOwner, hT, hE] using hU x (by simp [hT, hE]))
     fun _ hE hU' ↦ hU' (Finset.mem_union_right T hE.1)
 
+/-- A private birth with a prescribed environment has a local matrix at `P∘` of norm at most one
+whose operator is the canonical map of the splitting data. -/
 private theorem exists_privateBirthMatrix_of_environment [Fintype P]
     (hTP : ∀ x ∈ T, S.owner x = P₀) (hU : ∀ x ∉ T ∪ E, S.owner x = P₀)
     (σ : SplittingData (fun _ : ι ↦ Fin q) T (T ∪ E)) :
