@@ -3,6 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
+import QICLean.ManyBody.Sites.Lattice.SupDistance
 import QICLean.ManyBody.Sites.Lattice.SupportCounting
 import QICLean.ManyBody.Sites.Cut
 
@@ -27,11 +28,13 @@ Moved from TNLean, `TNLean/Lattice/BufferedRectangles.lean`. Changes: namespace 
 place of `TNLean.PEPS.AreaLaw`; the sites of a domain are written `↥Λ`, without the
 abbreviation `Site Λ`.
 
+The sup-norm distance `ManyBody.supDist` is defined in
+`QICLean/ManyBody/Sites/Lattice/SupDistance.lean`.
+
 ## Main definitions
 
 * `ManyBody.IntRect`, `ManyBody.IntRect.size`, `ManyBody.IntRect.dilate` — integer rectangles,
   their size and `Q^{+d}`.
-* `ManyBody.supDist` — the sup-norm distance of two lattice points.
 * `ManyBody.IsSafe` — the safety condition of a rectangle for a cut.
 * `ManyBody.rectRegion` — the region `A ∩ Q`.
 
@@ -51,31 +54,6 @@ abbreviation `Site Λ`.
 -/
 
 namespace ManyBody
-
-/-! ### Ambient distances -/
-
-/-- The sup-norm distance of two lattice points. Source: `02-initial.tex`, line 225,
-`dist_∞`. -/
-def supDist (a b : ℤ × ℤ) : ℕ := max (a.1 - b.1).natAbs (a.2 - b.2).natAbs
-
-/-- The real value of the lattice sup-norm distance is the maximum of the
-absolute coordinate differences. Source: `02-initial.tex`, line 225, `dist_∞`. -/
-theorem cast_supDist (p z : ℤ × ℤ) :
-    (supDist p z : ℝ) = max |(p.1 : ℝ) - z.1| |(p.2 : ℝ) - z.2| := by
-  simp only [supDist, Nat.cast_max, Nat.cast_natAbs, Int.cast_abs, Int.cast_sub]
-
-/-- The sup-norm distance is bounded by the lattice path distance. -/
-theorem supDist_le_latticeL1Distance (a b : ℤ × ℤ) : supDist a b ≤ latticeL1Distance a b := by
-  simp only [supDist, latticeL1Distance]
-  omega
-
-/-- A walk of length at most `R` in an induced domain moves its endpoints by sup-norm distance
-at most `R`. -/
-theorem supDist_le_of_walk {Λ : Finset (ℤ × ℤ)} {x y : ↥Λ} {R : ℕ}
-    (p : (planeDomainGraph Λ).Walk x y) (hp : p.length ≤ R) : supDist x.1 y.1 ≤ R :=
-  (supDist_le_latticeL1Distance _ _).trans
-    ((latticeL1Distance_le_walk_length Subtype.val
-      (fun _ _ ↦ latticeL1Distance_le_one_of_planeDomainGraph_adj) p).trans hp)
 
 /-! ### Integer rectangles -/
 
