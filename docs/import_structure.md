@@ -17,11 +17,16 @@ of a theorem, determines its intended layer.
 | `Circuit/Gate` | matrix foundations |
 | `Circuit` | matrix foundations, channels, Sites, Gates |
 | `Circuit/Party` | matrix foundations, channels, Sites, Gates, Circuits |
+| Gaussian laws and integrals in `Circuit/Party/Compression/SourceSampling` | the party-circuit layer and Probability, together with the layers allowed by party circuits |
 | `Circuit/Algorithm` | matrix foundations, channels, Sites, Gates, Circuits |
 | `Circuit/Model` | matrix foundations, channels, Sites, Gates, Circuits |
 | `Circuit/Compile` | matrix foundations, channels, Sites, Gates, Circuits, Model |
 | `Circuit/Protocol` | matrix foundations, channels, Sites, Gates, Circuits, Model, Compile |
 | `Circuit/Simulation` | matrix foundations, channels, Sites, Gates, Circuits, Dynamics, Hamiltonians |
+
+The source-sampling law, integrability, Gaussian error and approximation modules may import
+Probability. The sample coordinates, Schmidt frames and endpoint operators belong to the
+deterministic party-circuit layer. They can be used without importing measures or integrals.
 
 `Circuit/Simulation` owns statements comparing circuit simulation with many-body
 Hamiltonian evolution. This is a separate upper integration layer, as specified

@@ -354,6 +354,38 @@ def configBirthOp (σ : SplittingData X A B) : Matrix (Config X) (Config X) ℂ 
   (birthOp (E := RegionConfig X (B \ A)) σ.V σ.s).submatrix (threeCutEquiv X hAB)
     (threeCutEquiv X hAB)
 
+/-- The canonical map of splitting data is supported outside the middle region.
+In the coordinates `(e, (t, u))` it acts as the identity on `e`.
+Source: polynomial-PEPS, proof of Lemma 6.5, `05-frames.tex`, lines 434–437. -/
+theorem isSupportedOn_configBirthOp (σ : SplittingData X A B) :
+    IsSupportedOn (configBirthOp hAB σ) (B \ A)ᶜ := by
+  classical
+  constructor
+  · intro x y h
+    obtain ⟨v, hv, hxy⟩ := h
+    have hm : v ∈ B \ A := by simpa using hv
+    have hne : (threeCutEquiv X hAB x).1.2 ≠ (threeCutEquiv X hAB y).1.2 :=
+      fun he ↦ hxy (congrFun he ⟨v, hm⟩)
+    simp only [configBirthOp, birthOp_eq_submatrix, submatrix_apply, kroneckerMap_apply]
+    change (1 : Matrix (RegionConfig X (B \ A)) (RegionConfig X (B \ A)) ℂ)
+      (threeCutEquiv X hAB x).1.2 (threeCutEquiv X hAB y).1.2 * _ = 0
+    rw [one_apply_ne hne, zero_mul]
+  · intro x y x' y' hx hy hxy hxy'
+    have hmid {a b : Config X} (h : ∀ v ∉ (B \ A)ᶜ, a v = b v) :
+        (threeCutEquiv X hAB a).1.2 = (threeCutEquiv X hAB b).1.2 :=
+      funext fun v ↦ h v (fun hv ↦ (Finset.mem_compl.mp hv) v.2)
+    have hout {a b : Config X} (h : ∀ v ∈ (B \ A)ᶜ, a v = b v) :
+        (teuShuffle _ _ _ (threeCutEquiv X hAB a)).2 =
+          (teuShuffle _ _ _ (threeCutEquiv X hAB b)).2 :=
+      Prod.ext (funext fun v ↦ h v (by simp [v.2]))
+        (funext fun v ↦ h v (by simp [v.2]))
+    simp only [configBirthOp, birthOp_eq_submatrix, submatrix_apply, kroneckerMap_apply]
+    rw [show (teuShuffle _ _ _ (threeCutEquiv X hAB x)).1 =
+        (teuShuffle _ _ _ (threeCutEquiv X hAB y)).1 from hmid hxy,
+      show (teuShuffle _ _ _ (threeCutEquiv X hAB x')).1 =
+        (teuShuffle _ _ _ (threeCutEquiv X hAB y')).1 from hmid hxy',
+      one_apply_eq, one_apply_eq, one_mul, one_mul, hout hx, hout hy]
+
 /-- The canonical map of splitting data is Hermitian. -/
 theorem configBirthOp_isHermitian (σ : SplittingData X A B) :
     (configBirthOp hAB σ).IsHermitian :=

@@ -367,3 +367,159 @@ end Frame
 end Word
 
 end QuantumCircuit.Party
+
+/-! ### The local part of a word run on its cell, at a party outside the cell
+
+At a party `p` outside the cell `D`, the local part of `Word.onCell D hY w` is the identification
+of the two equal bases `Y p` and the prepared basis (`Word.localPartOp_onCell_of_notMem`). The
+proof evaluates, at a party that is no endpoint of any source, the identification
+`Word.frameSystemEquiv` of prepared systems (`Word.frameSystemEquiv_apply_of_forall_ne`) and the
+party operations run beside fresh factors (`SourceInventory.liftOps_apply_of_forall_ne`); both are
+read through identifications of equal bases there. Source: `04-compression.tex`, lines 21–36 and
+233–267.
+-/
+
+namespace QuantumCircuit.Party
+
+variable {P : Type} [DecidableEq P]
+
+/-- Three casts in a row are one cast. -/
+private theorem cast_cast_cast_eq {A B C D : Type} (h₁ : A = B) (h₂ : B = C) (h₃ : C = D)
+    (h₄ : A = D) (a : A) : cast h₃ (cast h₂ (cast h₁ a)) = cast h₄ a := by
+  subst h₁ h₂ h₃
+  rfl
+
+/-- Two successive coordinate identifications are heterogeneously equal to the input. -/
+private theorem equiv_cast_cast_heq {A B C : Type} (h : A = B) (h' : B = C) (a : A) :
+    HEq (Equiv.cast h' (Equiv.cast h a)) a :=
+  (cast_heq h' _).trans (cast_heq h a)
+
+namespace Word
+
+variable (W : P → Type) [∀ p, Fintype (W p)] [∀ p, DecidableEq (W p)]
+
+/-- **At a party that is no endpoint of the sources of a word**, the identification
+`frameSystemEquiv` of the prepared systems is the given identification `F` of the systems on
+which the sources are prepared, read through identifications of equal bases. -/
+theorem frameSystemEquiv_apply_of_forall_ne : {X Y : P → Type} → [∀ p, Fintype (X p)] →
+    [∀ p, DecidableEq (X p)] → (w : Word X Y) → {Z Z' : P → Type} →
+    (F : ∀ q, Z' q ≃ W q × Z q) → {p : P} → (∀ s ∈ w.sources, s.left ≠ p ∧ s.right ≠ p) →
+      ∃ (h₁ : SourceInventory.system (Word.sources (w.frame W)) Z' p = Z' p)
+        (h₂ : Z p = SourceInventory.system (Word.sources w) Z p),
+        ∀ z, frameSystemEquiv W w F p z = ((F p (cast h₁ z)).1, cast h₂ (F p (cast h₁ z)).2)
+  | _, _, _, _, .done _, _, _, _, _, _ => ⟨rfl, rfl, fun _ ↦ rfl⟩
+  | _, _, _, _, @PartyCircuit.gate _ _ _ _ _ _ _ _ g, _, _, F, _, hp => by
+    have hl := (hp g.toPairSource List.mem_cons_self).1.symm
+    have hr := (hp g.toPairSource List.mem_cons_self).2.symm
+    exact ⟨addPair_of_ne g.distinct g.leftBasis g.rightBasis hl hr,
+      (addPair_of_ne g.distinct g.leftBasis g.rightBasis hl hr).symm,
+      addPairFrameEquiv_apply_of_ne g.distinct g.leftBasis g.rightBasis F hl hr⟩
+  | _, _, _, _, @PartyCircuit.localOp _ _ _ _ _ _ _ _ _, _, _, _, _, _ => ⟨rfl, rfl, fun _ ↦ rfl⟩
+  | _, _, _, _, @PartyCircuit.localOps _ _ _ _ _ _ _, _, _, _, _, _ => ⟨rfl, rfl, fun _ ↦ rfl⟩
+  | _, _, _, _, @PartyCircuit.comp _ _ _ _ _ _ _ c c', Z, Z', F, p, hp => by
+    obtain ⟨h₁, h₂, e⟩ := frameSystemEquiv_apply_of_forall_ne c F fun s hs ↦
+      hp s (List.mem_append_right _ hs)
+    obtain ⟨h₁', h₂', e'⟩ := frameSystemEquiv_apply_of_forall_ne c'
+      (frameSystemEquiv W c F) fun s hs ↦ hp s (List.mem_append_left _ hs)
+    refine ⟨(congrFun (SourceInventory.system_append (Word.sources (c'.frame W))
+      (Word.sources (c.frame W)) Z') p).trans (h₁'.trans h₁), h₂.trans (h₂'.trans
+        (congrFun (SourceInventory.system_append (Word.sources c') (Word.sources c) Z) p).symm),
+      fun z ↦ ?_⟩
+    change ((Equiv.refl _).prodCongr (Equiv.cast (congrFun (SourceInventory.system_append
+        (Word.sources c') (Word.sources c) Z) p))).symm (frameSystemEquiv W c'
+          (frameSystemEquiv W c F) p (cast _ z)) = _
+    rw [e', e]
+    exact Prod.ext (congrArg (fun u ↦ (F p u).1) (cast_cast_cast_eq _ _ _ _ z))
+      ((cast_cast_cast_eq _ _ _ _ _).trans
+        (congrArg (cast _) (congrArg (fun u ↦ (F p u).2) (cast_cast_cast_eq _ _ _ _ z))))
+
+end Word
+
+/-- A permutation matrix with its columns read through an equivalence is the matrix of the
+composite equivalence. -/
+private theorem toMatrix_submatrix_id {A B D : Type} [DecidableEq B] [DecidableEq D]
+    (g : A ≃ B) (c : D ≃ B) :
+    (g.toPEquiv.toMatrix : Matrix A B ℂ).submatrix id c = (g.trans c.symm).toPEquiv.toMatrix :=
+  toMatrix_toPEquiv_submatrix g (Equiv.refl A) c
+
+/-- A permutation matrix read through equivalences is the identification of two equal bases when
+the equivalences intertwine it with the identification. -/
+private theorem toMatrix_submatrix_eq_cast {A B C D E : Type} [DecidableEq B] [DecidableEq E]
+    (g : A ≃ B) (c₂ : D ≃ B) (r : C ≃ A) (c₁ : E ≃ D) (h : C = E)
+    (H : ∀ y, c₂ (c₁ (cast h y)) = g (r y)) :
+    (((g.toPEquiv.toMatrix : Matrix A B ℂ).submatrix id c₂).submatrix r id).submatrix id c₁ =
+      (Equiv.cast h).toPEquiv.toMatrix := by
+  ext y x
+  simp only [submatrix_apply, id, PEquiv.toMatrix_apply, Equiv.toPEquiv_apply, Option.mem_def,
+    Option.some.injEq, Equiv.cast_apply, ← H y, c₂.apply_eq_iff_eq, c₁.apply_eq_iff_eq, eq_comm]
+
+namespace Word
+
+/-- **The local part of a word run on its cell, at a party outside the cell, is the
+identification of two equal bases.** The relabellings by `cellEquiv` at the two ends of
+`Word.onCell` are not identifications of equal bases at such a party (so the party is in
+general named by the word, and `Word.localPartOp_of_notMem_parties` does not apply), but their
+composite with the local part of the framed coarse word is. Source: `04-compression.tex`,
+lines 21–36 (an operation on the parties of a cell acts as the identity outside it). -/
+theorem localPartOp_onCell_of_notMem [Finite P] (D : Finset P) {X Y : P → Type}
+    [∀ p, Fintype (X p)] [∀ p, DecidableEq (X p)] [∀ p, Fintype (Y p)] [∀ p, DecidableEq (Y p)]
+    (hY : ∀ s ∉ D, Y s = X s) (w : Word (fun s : ↥D ↦ X s) (fun s : ↥D ↦ Y s)) {p : P}
+    (hp : p ∉ D) :
+    ∃ h : Y p = SourceInventory.system (onCell D hY w).sources X p,
+      (onCell D hY w).localPartOp p = (Equiv.cast h).toPEquiv.toMatrix := by
+  have := Fintype.ofFinite P
+  have hS : ∀ s ∈ Word.sources (coarsen (Subtype.val : ↥D → P) w),
+      s.left ≠ p ∧ s.right ≠ p := by
+    intro s hs
+    rw [sources_coarsen] at hs
+    obtain ⟨t, -, -, rfl⟩ := (SourceInventory.mem_mapOwner _ _ _).mp hs
+    exact ⟨fun e ↦ hp (e ▸ t.left.2), fun e ↦ hp (e ▸ t.right.2)⟩
+  have hSF : ∀ s ∈ Word.sources ((coarsen (Subtype.val : ↥D → P) w).frame
+      fun q ↦ q ∉ D → X q), s.left ≠ p ∧ s.right ≠ p := by
+    rw [sources_frame]
+    exact hS
+  have hcc : p ∉ PartyCircuit.parties (coarsen (Subtype.val : ↥D → P) w) := fun h ↦ by
+    obtain ⟨q, -, hq⟩ := Finset.mem_image.mp (parties_coarsen_subset _ w h)
+    exact hp (hq ▸ q.2)
+  obtain ⟨h₀, e₀⟩ := localPartOp_of_notMem_parties (coarsen (Subtype.val : ↥D → P) w) p hcc
+  obtain ⟨h₁, h₂, eF⟩ := frameSystemEquiv_apply_of_forall_ne (fun q ↦ q ∉ D → X q)
+    (coarsen (Subtype.val : ↥D → P) w)
+    (Z := blockSystem Subtype.val fun s : ↥D ↦ X s) (fun s ↦ Equiv.refl _) hS
+  obtain ⟨k₁, k₂, eL⟩ := SourceInventory.liftOps_apply_of_forall_ne
+    (fun s ↦ ((cellEquiv D X X (fun _ _ ↦ rfl) s).symm).toPEquiv.toMatrix) _ hSF
+  have key : localPartOp (onCell D hY w) p = ((cellEquiv D X Y hY p).toPEquiv.toMatrix *
+      (localPartOp ((coarsen (Subtype.val : ↥D → P) w).frame fun q ↦ q ∉ D → X q) p *
+        SourceInventory.liftOps (Word.sources ((coarsen (Subtype.val : ↥D → P) w).frame
+          fun q ↦ q ∉ D → X q))
+          (fun s ↦ ((cellEquiv D X X (fun _ _ ↦ rfl) s).symm).toPEquiv.toMatrix) p).submatrix id
+        (Equiv.cast (congrFun (SourceInventory.system_append (Word.sources
+          ((coarsen (Subtype.val : ↥D → P) w).frame fun q ↦ q ∉ D → X q)) [] X) p))).submatrix id
+      (Equiv.cast (congrFun (SourceInventory.system_append [] (Word.sources
+        ((coarsen (Subtype.val : ↥D → P) w).frame fun q ↦ q ∉ D → X q) ++ []) X) p)) := rfl
+  refine ⟨(hY p hp).trans (k₂.symm.trans (congrFun (SourceInventory.system_append
+    (Word.sources ((coarsen (Subtype.val : ↥D → P) w).frame fun q ↦ q ∉ D → X q)) [] X) p).symm),
+    ?_⟩
+  rw [key, localPartOp_frame, e₀, eL, toMatrix_toPEquiv_submatrix, PEquiv.mul_toMatrix_toPEquiv,
+    PEquiv.toMatrix_toPEquiv_mul]
+  rw [one_kronecker_toMatrix_submatrix, toMatrix_submatrix_id]
+  refine toMatrix_submatrix_eq_cast _ _ _ _ _ fun y ↦ ?_
+  have hz := eF ((frameSystemEquiv (fun q ↦ q ∉ D → X q) (coarsen (Subtype.val : ↥D → P) w)
+    (fun s ↦ Equiv.refl _) p).symm ((cellEquiv D X Y hY p y).1, cast h₀ (cellEquiv D X Y hY p y).2))
+  rw [Equiv.apply_symm_apply] at hz
+  change _ = cast k₂.symm ((cellEquiv D X X (fun _ _ ↦ rfl) p).symm (cast h₁
+    ((frameSystemEquiv (fun q ↦ q ∉ D → X q) (coarsen (Subtype.val : ↥D → P) w)
+      (fun s ↦ Equiv.refl _) p).symm ((cellEquiv D X Y hY p y).1,
+        cast h₀ (cellEquiv D X Y hY p y).2))))
+  have ha : (cast h₁ ((frameSystemEquiv (fun q ↦ q ∉ D → X q)
+      (coarsen (Subtype.val : ↥D → P) w) (fun s ↦ Equiv.refl _) p).symm
+        ((cellEquiv D X Y hY p y).1, cast h₀ (cellEquiv D X Y hY p y).2))).1 =
+      (cellEquiv D X Y hY p y).1 := (congrArg Prod.fst hz).symm
+  rw [cellEquiv_symm_apply_of_notMem D X X (fun _ _ ↦ rfl) hp, ha]
+  apply eq_of_heq
+  have hv : HEq ((cellEquiv D X Y hY p y).1 hp) y := cast_heq (hY p hp) y
+  exact ((equiv_cast_cast_heq _ _ _).trans (cast_heq _ _)).trans
+    ((cast_heq _ _).trans ((cast_heq _ _).trans hv)).symm
+
+end Word
+
+end QuantumCircuit.Party

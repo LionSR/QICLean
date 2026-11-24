@@ -3,6 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
+import QICLean.Circuit.Party.Sheet.EnvironmentDeath
 import QICLean.Circuit.Party.Sheet.PrivateBirthDeath
 import QICLean.Spectral.Eigenvalue.MatrixReindexEuclidean
 
@@ -74,6 +75,92 @@ section Birth
 
 variable (S : Sheet ι P) {T : Finset ι} {P₀ Q : P}
 
+omit [Fintype ι] [Fintype P] [DecidableEq P] in
+private theorem changeOwner_eq_self_of_owned (hTP : ∀ x ∈ T, S.owner x = P₀) :
+    S.changeOwner T P₀ = S := by
+  cases S
+  simp only [changeOwner, Sheet.mk.injEq]
+  funext v
+  by_cases h : v ∈ T
+  · simpa only [h, ite_true] using (hTP v h).symm
+  · simp only [h, ite_false]
+
+/-- A birth with a prescribed environment is an allowed word using only the
+two parties of the birth and at most one pair source. Sites of the central
+party can lie in the environment. Its operator is the canonical map of the
+splitting data and its error is bounded by the splitting error.
+Source: polynomial-PEPS, Lemma 6.5, `05-frames.tex`, lines 396–437. -/
+theorem exists_birthWord_of_environment {E : Finset ι}
+    (hTE : Disjoint T E) (hTP : ∀ x ∈ T, S.owner x = P₀)
+    (hU : ∀ x ∉ T ∪ E, S.owner x = P₀)
+    (σ : SplittingData (fun _ : ι ↦ Fin q) T (T ∪ E))
+    (Ω : EuclideanSpace ℂ (ι → Fin q)) :
+    ∃ w : Word (S.system q) ((S.changeOwner T Q).system q),
+      w.IsAllowed ∧ w.UsesOnly {P₀, Q} ∧ w.sourceCount ≤ 1 ∧
+      w.op = reindex (blockConfigEquiv (S.changeOwner T Q).owner fun _ ↦ Fin q).symm
+        (blockConfigEquiv S.owner fun _ ↦ Fin q).symm
+        (configBirthOp Finset.subset_union_left σ) ∧
+      ‖toEuclideanLin w.op (S.refVec Ω) - (S.changeOwner T Q).refVec Ω‖ ≤
+        σ.error Finset.subset_union_left Ω := by
+  have herr : ∀ w : Word (S.system q) ((S.changeOwner T Q).system q),
+      w.op = reindex (blockConfigEquiv (S.changeOwner T Q).owner fun _ ↦ Fin q).symm
+        (blockConfigEquiv S.owner fun _ ↦ Fin q).symm
+        (configBirthOp Finset.subset_union_left σ) →
+      ‖toEuclideanLin w.op (S.refVec Ω) - (S.changeOwner T Q).refVec Ω‖ ≤
+        σ.error Finset.subset_union_left Ω := fun w hw ↦ by
+    rw [hw, refVec, refVec, norm_toEuclideanLin_reindex_sub]
+    exact norm_toEuclideanLin_configBirthOp_sub_le _ σ Ω
+  by_cases hQP : Q = P₀
+  · subst Q
+    have hS := changeOwner_eq_self_of_owned S hTP
+    rw [hS] at herr ⊢
+    obtain ⟨w, hA, hR, hn, hop⟩ := exists_privateBirthWord_of_environment hTP hU σ
+    exact ⟨w, hA, hR.mono (by simp), hn.trans_le zero_le_one, hop, herr w hop⟩
+  · let w := environmentBirthWord hTE hTP hU hQP σ
+    have hop := op_environmentBirthWord hTE hTP hU hQP σ
+    exact ⟨w, isAllowed_environmentBirthWord hTE hTP hU hQP σ,
+      usesOnly_environmentBirthWord hTE hTP hU hQP σ,
+      (sourceCount_environmentBirthWord hTE hTP hU hQP σ).le, hop, herr w hop⟩
+
+/-- A death with a prescribed environment is an allowed circuit using only
+the two parties of the death, with at most one pair effect and no pair
+sources. Its operator and reference-vector error are those of the birth in
+the reverse sheet bases. Source: polynomial-PEPS, Lemma 6.5,
+`05-frames.tex`, lines 439–446. -/
+theorem exists_deathChain_of_environment {E : Finset ι}
+    (hTE : Disjoint T E) (hTP : ∀ x ∈ T, S.owner x = P₀)
+    (hU : ∀ x ∉ T ∪ E, S.owner x = P₀)
+    (σ : SplittingData (fun _ : ι ↦ Fin q) T (T ∪ E))
+    (Ω : EuclideanSpace ℂ (ι → Fin q)) :
+    ∃ M : PartyCircuit (ChainGate (P := P)) ((S.changeOwner T Q).system q) (S.system q),
+      M.IsAllowed chainEv ChainGate.IsAllowed ∧ M.UsesOnly {P₀, Q} ∧
+      M.ForallGate (fun _ _ _ g ↦ Sum.isRight g) ∧ M.numGates ≤ 1 ∧
+      M.op chainEv = reindex (blockConfigEquiv S.owner fun _ ↦ Fin q).symm
+        (blockConfigEquiv (S.changeOwner T Q).owner fun _ ↦ Fin q).symm
+        (configBirthOp Finset.subset_union_left σ) ∧
+      ‖toEuclideanLin (M.op chainEv) ((S.changeOwner T Q).refVec Ω) - S.refVec Ω‖ ≤
+        σ.error Finset.subset_union_left Ω := by
+  have herr : ∀ M : PartyCircuit (ChainGate (P := P)) ((S.changeOwner T Q).system q)
+      (S.system q), M.op chainEv = reindex (blockConfigEquiv S.owner fun _ ↦ Fin q).symm
+        (blockConfigEquiv (S.changeOwner T Q).owner fun _ ↦ Fin q).symm
+        (configBirthOp Finset.subset_union_left σ) →
+      ‖toEuclideanLin (M.op chainEv) ((S.changeOwner T Q).refVec Ω) - S.refVec Ω‖ ≤
+        σ.error Finset.subset_union_left Ω := fun M hM ↦ by
+    rw [hM, refVec, refVec, norm_toEuclideanLin_reindex_sub]
+    exact norm_toEuclideanLin_configBirthOp_sub_le _ σ Ω
+  by_cases hQP : Q = P₀
+  · subst Q
+    have hS := changeOwner_eq_self_of_owned S hTP
+    rw [hS] at herr ⊢
+    obtain ⟨M, hA, hR, hG, hn, hop⟩ := exists_privateDeathChain_of_environment hTP hU σ
+    exact ⟨M, hA, hR.mono (by simp), hG, hn.trans_le zero_le_one, hop, herr M hop⟩
+  · let M := environmentDeathChain hTE hTP hU hQP σ
+    have hop := op_environmentDeathChain hTE hTP hU hQP σ
+    exact ⟨M, isAllowed_environmentDeathChain hTE hTP hU hQP σ,
+      usesOnly_environmentDeathChain hTE hTP hU hQP σ,
+      forallGate_isRight_environmentDeathChain hTE hTP hU hQP σ,
+      (numGates_environmentDeathChain hTE hTP hU hQP σ).le, hop, herr M hop⟩
+
 /-- **Lemma `lem:birth` (birth) for given splitting data: the birth is a bounded change
 involving only `P∘` and `Q∘`.** In a sheet `S`, let `T` be a set of sites owned by `P∘`, `E`
 the set of sites not owned by `P∘`, and `σ` splitting data for the cut `T`, `E`,
@@ -98,24 +185,9 @@ theorem exists_birthWord_of_splittingData (hTP : ∀ x ∈ T, S.owner x = P₀)
         (blockConfigEquiv S.owner fun _ ↦ Fin q).symm
         (configBirthOp Finset.subset_union_left σ) ∧
       ‖toEuclideanLin w.op (S.refVec Ω) - (S.changeOwner T Q).refVec Ω‖ ≤
-        σ.error Finset.subset_union_left Ω := by
-  have herr : ∀ w : Word (S.system q) ((S.changeOwner T Q).system q),
-      w.op = reindex (blockConfigEquiv (S.changeOwner T Q).owner fun _ ↦ Fin q).symm
-        (blockConfigEquiv S.owner fun _ ↦ Fin q).symm
-        (configBirthOp Finset.subset_union_left σ) →
-      ‖toEuclideanLin w.op (S.refVec Ω) - (S.changeOwner T Q).refVec Ω‖ ≤
-        σ.error Finset.subset_union_left Ω := fun w hw ↦ by
-    rw [hw, refVec, refVec, norm_toEuclideanLin_reindex_sub]
-    exact norm_toEuclideanLin_configBirthOp_sub_le _ σ Ω
-  by_cases hQP : Q = P₀
-  · subst hQP
-    exact ⟨privateBirthWord hTP σ, isAllowed_privateBirthWord hTP σ,
-      (usesOnly_privateBirthWord hTP σ).mono (by simp),
-      (sourceCount_privateBirthWord hTP σ).trans_le zero_le_one, op_privateBirthWord hTP σ,
-      herr _ (op_privateBirthWord hTP σ)⟩
-  · exact ⟨birthWord hTP hQP σ, isAllowed_birthWord hTP hQP σ, usesOnly_birthWord hTP hQP σ,
-      (sourceCount_birthWord hTP hQP σ).le, op_birthWord hTP hQP σ,
-      herr _ (op_birthWord hTP hQP σ)⟩
+        σ.error Finset.subset_union_left Ω :=
+  S.exists_birthWord_of_environment (S.disjoint_birthEnv hTP) hTP
+    (fun x hx ↦ ((S.changeOwner_birth_owners (Q := Q) hTP).1 x (Finset.mem_compl.mpr hx))) σ Ω
 
 /-- **Lemma `lem:birth` (death) for given splitting data: the death is a bounded change
 involving only `P∘` and `Q∘`.** Let `S` be the sheet *after* the death, in which `T` is owned
@@ -137,25 +209,9 @@ theorem exists_deathChain_of_splittingData (hTP : ∀ x ∈ T, S.owner x = P₀)
         (blockConfigEquiv (S.changeOwner T Q).owner fun _ ↦ Fin q).symm
         (configBirthOp Finset.subset_union_left σ) ∧
       ‖toEuclideanLin (M.op chainEv) ((S.changeOwner T Q).refVec Ω) - S.refVec Ω‖ ≤
-        σ.error Finset.subset_union_left Ω := by
-  have herr : ∀ M : PartyCircuit (ChainGate (P := P)) ((S.changeOwner T Q).system q)
-      (S.system q), M.op chainEv = reindex (blockConfigEquiv S.owner fun _ ↦ Fin q).symm
-        (blockConfigEquiv (S.changeOwner T Q).owner fun _ ↦ Fin q).symm
-        (configBirthOp Finset.subset_union_left σ) →
-      ‖toEuclideanLin (M.op chainEv) ((S.changeOwner T Q).refVec Ω) - S.refVec Ω‖ ≤
-        σ.error Finset.subset_union_left Ω := fun M hM ↦ by
-    rw [hM, refVec, refVec, norm_toEuclideanLin_reindex_sub]
-    exact norm_toEuclideanLin_configBirthOp_sub_le _ σ Ω
-  by_cases hQP : Q = P₀
-  · subst hQP
-    exact ⟨privateDeathChain hTP σ, isAllowed_privateDeathChain hTP σ,
-      (usesOnly_privateDeathChain hTP σ).mono (by simp), trivial,
-      (numGates_privateDeathChain hTP σ).trans_le zero_le_one, op_privateDeathChain hTP σ,
-      herr _ (op_privateDeathChain hTP σ)⟩
-  · exact ⟨deathChain hTP hQP σ, isAllowed_deathChain hTP hQP σ, usesOnly_deathChain hTP hQP σ,
-      forallGate_isRight_deathChain hTP hQP σ, (numGates_deathChain hTP hQP σ).le,
-      op_deathChain hTP hQP σ, herr _ (op_deathChain hTP hQP σ)⟩
-
+        σ.error Finset.subset_union_left Ω :=
+  S.exists_deathChain_of_environment (S.disjoint_birthEnv hTP) hTP
+    (fun x hx ↦ ((S.changeOwner_birth_owners (Q := Q) hTP).1 x (Finset.mem_compl.mpr hx))) σ Ω
 end Birth
 
 /-! ### Two-sheet exchange -/

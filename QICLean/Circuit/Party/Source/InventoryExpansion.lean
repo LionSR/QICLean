@@ -481,3 +481,38 @@ end Expands
 end SourceInventory
 
 end QuantumCircuit.Party
+
+/-! ### Party operations beside fresh factors, at a party outside every source -/
+
+namespace QuantumCircuit.Party
+
+namespace SourceInventory
+
+variable {P : Type} [DecidableEq P]
+
+/-- **At a party that is no endpoint of the sources of an inventory**, party operations run
+beside their fresh factors are the operations, read through identifications of equal bases. -/
+theorem liftOps_apply_of_forall_ne {X X' : P → Type} (A : ∀ s, Matrix (X' s) (X s) ℂ) {p : P} :
+    (S : SourceInventory P) → (∀ s ∈ S, s.left ≠ p ∧ s.right ≠ p) →
+      ∃ (h₁ : S.system X' p = X' p) (h₂ : S.system X p = X p),
+        S.liftOps A p = (A p).submatrix (Equiv.cast h₁) (Equiv.cast h₂)
+  | [], _ => ⟨rfl, rfl, rfl⟩
+  | s :: S, hS => by
+    obtain ⟨h₁, h₂, e⟩ := liftOps_apply_of_forall_ne A S fun t ht ↦ hS t (List.mem_cons_of_mem _ ht)
+    have hl := (hS s List.mem_cons_self).1.symm
+    have hr := (hS s List.mem_cons_self).2.symm
+    refine ⟨(addPair_of_ne s.distinct s.leftBasis s.rightBasis hl hr).trans h₁,
+      (addPair_of_ne s.distinct s.leftBasis s.rightBasis hl hr).trans h₂, ?_⟩
+    have hA : addPairMatrix s.distinct s.leftBasis s.rightBasis (liftOps S A) p =
+        (liftOps S A p).submatrix (Equiv.cast (addPair_of_ne s.distinct _ _ hl hr))
+          (Equiv.cast (addPair_of_ne s.distinct _ _ hl hr)) := by
+      ext y x
+      simp [addPairMatrix, addPairSiteEquiv, hl, hr, kroneckerMap_apply]
+    change addPairMatrix s.distinct s.leftBasis s.rightBasis (liftOps S A) p = _
+    rw [hA, e]
+    ext y x
+    exact congrArg₂ (A p) (cast_cast _ _ y) (cast_cast _ _ x)
+
+end SourceInventory
+
+end QuantumCircuit.Party

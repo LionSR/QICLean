@@ -430,3 +430,76 @@ theorem localPartOp_coarsen_of_fiber : {X Y : P → Type} → [∀ p, Fintype (X
 end Word
 
 end QuantumCircuit.Party
+
+/-! ### The identification `coarsenFiberEquiv` at a party outside every source
+
+When the block `b` of `f` is the single party `p` and `p` is no endpoint of any source of the
+word, the identification `Word.coarsenFiberEquiv f hf w e` of the prepared systems is `e` read
+through identifications of equal bases (`Word.coarsenFiberEquiv_apply_of_forall_ne`).
+Source: Theorem 5.2, `04-compression.tex`, lines 383–434.
+-/
+
+namespace QuantumCircuit.Party
+
+variable {P Q : Type} [DecidableEq P] [DecidableEq Q]
+
+/-- Three casts in a row are one cast. -/
+private theorem cast_cast_cast_eq {A B C D : Type} (h₁ : A = B) (h₂ : B = C) (h₃ : C = D)
+    (h₄ : A = D) (a : A) : cast h₃ (cast h₂ (cast h₁ a)) = cast h₄ a := by
+  subst h₁ h₂ h₃
+  rfl
+
+namespace Word
+
+variable [Fintype P] (f : P → Q) {b : Q} {p : P} (hf : ∀ r, f r = b ↔ r = p)
+include hf
+
+/-- **At a party that is no endpoint of the sources of a word**, the identification
+`coarsenFiberEquiv` at its one-party block is the given identification `e`, read through
+identifications of equal bases. -/
+theorem coarsenFiberEquiv_apply_of_forall_ne : {X Y : P → Type} → [∀ p, Fintype (X p)] →
+    [∀ p, DecidableEq (X p)] → (w : Word X Y) → {Z : P → Type} → {Z' : Q → Type} →
+    (e : Z' b ≃ Z p) → (∀ s ∈ w.sources, s.left ≠ p ∧ s.right ≠ p) →
+      ∃ (h₁ : SourceInventory.system (Word.sources (coarsen f w)) Z' b = Z' b)
+        (h₂ : Z p = SourceInventory.system (Word.sources w) Z p),
+        ∀ z, coarsenFiberEquiv f hf w e z = cast h₂ (e (cast h₁ z))
+  | _, _, _, _, .done _, _, _, _, _ => ⟨rfl, rfl, fun _ ↦ rfl⟩
+  | _, _, _, _, @PartyCircuit.gate _ _ _ _ _ _ D hY g, _, Z', e, hp => by
+    have hl := (hp g.toPairSource List.mem_cons_self).1.symm
+    have hr := (hp g.toPairSource List.mem_cons_self).2.symm
+    by_cases h : f g.left = f g.right
+    · refine ⟨congrArg (fun w ↦ SourceInventory.system (Word.sources w) Z' b)
+        (dite_eq_left h : coarsen f (PartyCircuit.gate D hY g) = _),
+        (addPair_of_ne g.distinct g.leftBasis g.rightBasis hl hr).symm, fun z ↦ ?_⟩
+      rw [coarsenFiberEquiv_gate_of_eq f hf hY g e h]
+      rfl
+    · have hbl : b ≠ f g.left := fun e ↦ hl ((hf g.left).mp e.symm).symm
+      have hbr : b ≠ f g.right := fun e ↦ hr ((hf g.right).mp e.symm).symm
+      refine ⟨(congrArg (fun w ↦ SourceInventory.system (Word.sources w) Z' b)
+        (dite_eq_right h : coarsen f (PartyCircuit.gate D hY g) = _)).trans
+          (addPair_of_ne h g.leftBasis g.rightBasis hbl hbr),
+        (addPair_of_ne g.distinct g.leftBasis g.rightBasis hl hr).symm, fun z ↦ ?_⟩
+      rw [coarsenFiberEquiv_gate_of_ne f hf hY g e h]
+      exact (addPairFiberEquiv_apply_of_ne f hf g.distinct h _ _ e hbl hbr hl hr _).trans
+        (congrArg (fun u ↦ cast _ (e u)) (cast_cast _ _ z))
+  | _, _, _, _, @PartyCircuit.localOp _ _ _ _ _ _ _ _ _, _, _, _, _ => ⟨rfl, rfl, fun _ ↦ rfl⟩
+  | _, _, _, _, @PartyCircuit.localOps _ _ _ _ _ _ _, _, _, _, _ => ⟨rfl, rfl, fun _ ↦ rfl⟩
+  | _, _, _, _, @PartyCircuit.comp _ _ _ _ _ _ _ c c', Z, Z', e, hp => by
+    obtain ⟨h₁, h₂, ec⟩ := coarsenFiberEquiv_apply_of_forall_ne c e fun s hs ↦
+      hp s (List.mem_append_right _ hs)
+    obtain ⟨h₁', h₂', ec'⟩ := coarsenFiberEquiv_apply_of_forall_ne c'
+      (coarsenFiberEquiv f hf c e) fun s hs ↦ hp s (List.mem_append_left _ hs)
+    refine ⟨(congrFun (SourceInventory.system_append (Word.sources (coarsen f c'))
+      (Word.sources (coarsen f c)) Z') b).trans (h₁'.trans h₁), h₂.trans (h₂'.trans
+        (congrFun (SourceInventory.system_append (Word.sources c') (Word.sources c) Z) p).symm),
+      fun z ↦ ?_⟩
+    change (Equiv.cast (congrFun (SourceInventory.system_append (Word.sources c')
+        (Word.sources c) Z) p)).symm (coarsenFiberEquiv f hf c'
+          (coarsenFiberEquiv f hf c e) (cast _ z)) = _
+    rw [ec', ec]
+    exact (cast_cast_cast_eq _ _ _ _ _).trans
+      (congrArg (fun u ↦ cast _ (e u)) (cast_cast_cast_eq _ _ _ _ z))
+
+end Word
+
+end QuantumCircuit.Party
