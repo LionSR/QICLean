@@ -9,7 +9,9 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Circuit.Party.Compression
 
 import QICLean.Circuit.Party.Compression.Construction
+import QICLean.Circuit.Party.Compression.CorrectedSources
 import QICLean.Circuit.Party.Compression.GateExpansion
 import QICLean.Circuit.Party.Compression.PartialExpansion
 import QICLean.Circuit.Party.Compression.PhysicalReadout
 import QICLean.Circuit.Party.Compression.SourceReplacement
+import QICLean.Circuit.Party.Compression.SourceSampling
