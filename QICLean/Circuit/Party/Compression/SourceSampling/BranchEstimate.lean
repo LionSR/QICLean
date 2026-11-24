@@ -19,7 +19,8 @@ branches, the private registers traced out, has integrable trace norm with mean 
 `(∏_{p ∈ A} d p)² k ^ (-|S| / 2)`: no input, private or exterior dimension enters.
 
 The local words and the input frames of the two sides are constructed from the circuit and from
-the preparation of the input (`SourceCircuit.exists_correctedSchmidtOutput`); the estimate is
+the preparation of the input (`SourceCircuit.hasSchmidtOutput_partialSchmidtOutput`); the
+estimate is
 `SourceCircuit.integrable_gaussianSeparatedPhysicalDensity_and_integral_le`.
 
 The Schmidt frames `E e ξ`, `F e ξ` of the sources are matrices whose rows are indexed by the
@@ -128,10 +129,14 @@ theorem integrable_actualGaussianBranch_and_integral_le (w : SourceCircuit X Y)
           (k : ℝ) ^ (-(S.card : ℝ) / 2) := by
   intro A K ψ M
   classical
-  obtain ⟨c, d', hc, hd, n, tau, Fr, Gr, htau, htausum, hFr, hGr, hξ⟩ :=
-    w.exists_correctedSchmidtOutput S E F hw hE hF p₀ hp₀ hp₀s ξ
-  obtain ⟨c', d'', hc', hd', n', tau', Fr', Gr', htau', htau'sum, hFr', hGr', hζ⟩ :=
-    w.exists_correctedSchmidtOutput S E F hw hE hF p₀ hp₀ hp₀s ζ
+  obtain ⟨c, d', hc, hd, -, -, -, -, n, tau, FI, Gr, hFI, hGr, htau, htausum, hξ⟩ :=
+    w.hasSchmidtOutput_partialSchmidtOutput S E F hw hE hF p₀ hp₀ hp₀s ξ
+  obtain ⟨c', d'', hc', hd', -, -, -, -, n', tau', FI', Gr', hFI', hGr', htau', htau'sum, hζ⟩ :=
+    w.hasSchmidtOutput_partialSchmidtOutput S E F hw hE hF p₀ hp₀ hp₀s ζ
+  replace hFI := l2_opNorm_le_one_of_conjTranspose_mul_self_eq_one hFI
+  replace hFI' := l2_opNorm_le_one_of_conjTranspose_mul_self_eq_one hFI'
+  replace hGr := l2_opNorm_le_one_of_conjTranspose_mul_self_eq_one hGr
+  replace hGr' := l2_opNorm_le_one_of_conjTranspose_mul_self_eq_one hGr'
   have hS := w.correctedMask_meets S
   let eqv := partialSchmidtCoordinateEquiv (correctedMask w S) w S hS
   let KA : Matrix (RegionConfig (fun p ↦ Fin (d p)) A × RegionConfig G A)
@@ -140,10 +145,6 @@ theorem integrable_actualGaussianBranch_and_integral_le (w : SourceCircuit X Y)
   let KE : Matrix (ComplConfig (fun p ↦ Fin (d p)) A × ComplConfig G A)
       (ComplConfig (affectedSides (fun p ↦ decide (p ∈ A)) Y) {true}) ℂ :=
     (exteriorSidePartyEquiv A e).symm.toPEquiv.toMatrix
-  let FI := reindex (Equiv.refl _) (eqv.prodCongr (Equiv.refl (Fin n))) Fr
-  let FI' := reindex (Equiv.refl _) (eqv.prodCongr (Equiv.refl (Fin n'))) Fr'
-  have hFI : ‖FI‖ ≤ 1 := (l2_opNorm_reindex_le _ _ _).trans hFr
-  have hFI' : ‖FI'‖ ≤ 1 := (l2_opNorm_reindex_le _ _ _).trans hFr'
   let ξ₀ := fun s : S ↦ choiceAt (correctedMask w S) w ξ s.1.1
     (isTouched_of_source_endpoint (correctedMask w S) w s.1 (hS s.1 s.2))
   let ζ₀ := fun s : S ↦ choiceAt (correctedMask w S) w ζ s.1.1
@@ -165,12 +166,12 @@ theorem integrable_actualGaussianBranch_and_integral_le (w : SourceCircuit X Y)
       K *ᵥ (partialSchmidtOutput (correctedMask w S) w S E F ξ (eqv.symm i) ψ).ofLp =
         Word.separatedPhysicalCoordinates KA c FI tau KE d' Gr i :=
     regionalPartyReadout_mulVec_eq_separatedPhysicalCoordinates A e c d' FI Gr tau i _
-      fun y ↦ hξ (eqv.symm i) y
+      fun y ↦ congrFun (hξ i) y
   have hζcoord (i : CorrectedSchmidtCoordinates w S) :
       K *ᵥ (partialSchmidtOutput (correctedMask w S) w S E F ζ (eqv.symm i) ψ).ofLp =
         Word.separatedPhysicalCoordinates KA c' FI' tau' KE d'' Gr' i :=
     regionalPartyReadout_mulVec_eq_separatedPhysicalCoordinates A e c' d'' FI' Gr' tau' i _
-      fun y ↦ hζ (eqv.symm i) y
+      fun y ↦ congrFun (hζ i) y
   have houter : ∀ a b : EuclideanSpace ℂ (Config Y), K * euclideanOuterProduct a b * Kᴴ =
       vecMulVec (K *ᵥ a.ofLp) (star (K *ᵥ b.ofLp)) := fun a b ↦ by
     simp only [euclideanOuterProduct, mul_vecMulVec, vecMulVec_mul, star_mulVec]
