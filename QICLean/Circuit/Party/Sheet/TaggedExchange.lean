@@ -14,8 +14,10 @@ factors. The relabelling exchanges the inside factors and leaves the outside fac
 their original places. Each tag keeps its owner.
 
 This is the relabelling of Lemma 6.6 of the polynomial-PEPS manuscript (September 24,
-2026), `05-frames.tex`, lines 485–497. The tags of an encoded frame admit the required
-split when every hole lies entirely inside or entirely outside the region.
+2026), `05-frames.tex`, lines 485–497, followed by the private corrections of that lemma for a
+set `Z` containing the sites whose two owners are not both `P∘`; for a frame with holes, `Z`
+also contains the hole parts `H⁺(F₁) ∪ H⁺(F₂)`. The tags of an encoded frame admit the
+required split when every hole lies entirely inside or entirely outside the region.
 -/
 
 open Matrix ManyBody
@@ -95,36 +97,41 @@ local notation "Xout" => fun p ↦ system q (swapIn S₁ S₂ Y) p × system q (
 /-- Exchange the sites and the inside tags, then apply the private correction
 beside the resulting tag factors. Source: polynomial-PEPS, Lemma 6.6,
 `05-frames.tex`, lines 485–527. -/
-noncomputable def taggedExchangeWord (P₀ : P)
-    (σ : SplittingData (fun _ : ι ↦ Fin q) (tSet S₁ S₂ Y P₀)
-      (tSet S₁ S₂ Y P₀ ∪ eSet S₁ S₂ Y P₀)) :
+noncomputable def taggedExchangeWord (P₀ : P) (Z : Finset ι)
+    (hZ : ∀ x ∉ Z, S₁.owner x = P₀ ∧ S₂.owner x = P₀)
+    (σ : SplittingData (fun _ : ι ↦ Fin q) (Z ∩ Y) (Z ∩ Y ∪ Z \ Y)) :
     Word (fun p ↦ (Tin) p × (Xin) p) (fun p ↦ (Tout) p × (Xout) p) :=
   (taggedRenameWord (q := q) S₁ S₂ Y O₁ I₁ O₂ I₂).comp
-    ((correctionWord S₁ S₂ Y P₀ σ).frame (Tout))
+    ((correctionWord S₁ S₂ Y P₀ Z hZ σ).frame (Tout))
 
-/-- The tagged exchange is allowed and uses no pair source. -/
-theorem isAllowed_taggedExchangeWord (P₀ : P)
-    (σ : SplittingData (fun _ : ι ↦ Fin q) (tSet S₁ S₂ Y P₀)
-      (tSet S₁ S₂ Y P₀ ∪ eSet S₁ S₂ Y P₀)) :
-    (taggedExchangeWord S₁ S₂ Y O₁ I₁ O₂ I₂ P₀ σ).IsAllowed ∧
-      (taggedExchangeWord S₁ S₂ Y O₁ I₁ O₂ I₂ P₀ σ).sourceCount = 0 := by
-  refine ⟨Word.IsAllowed.comp (isAllowed_taggedRenameWord S₁ S₂ Y O₁ I₁ O₂ I₂)
-    (Word.isAllowed_frame (Tout) (isAllowed_correctionWord S₁ S₂ Y P₀ σ)), ?_⟩
+/-- The tagged exchange is allowed. -/
+theorem isAllowed_taggedExchangeWord (P₀ : P) (Z : Finset ι)
+    (hZ : ∀ x ∉ Z, S₁.owner x = P₀ ∧ S₂.owner x = P₀)
+    (σ : SplittingData (fun _ : ι ↦ Fin q) (Z ∩ Y) (Z ∩ Y ∪ Z \ Y)) :
+    (taggedExchangeWord S₁ S₂ Y O₁ I₁ O₂ I₂ P₀ Z hZ σ).IsAllowed :=
+  Word.IsAllowed.comp (isAllowed_taggedRenameWord S₁ S₂ Y O₁ I₁ O₂ I₂)
+    (Word.isAllowed_frame (Tout) (isAllowed_correctionWord S₁ S₂ Y P₀ Z hZ σ))
+
+/-- The tagged exchange uses no pair source. -/
+theorem sourceCount_taggedExchangeWord (P₀ : P) (Z : Finset ι)
+    (hZ : ∀ x ∉ Z, S₁.owner x = P₀ ∧ S₂.owner x = P₀)
+    (σ : SplittingData (fun _ : ι ↦ Fin q) (Z ∩ Y) (Z ∩ Y ∪ Z \ Y)) :
+    (taggedExchangeWord S₁ S₂ Y O₁ I₁ O₂ I₂ P₀ Z hZ σ).sourceCount = 0 := by
   simp [taggedExchangeWord, Word.sourceCount, Word.sources_frame,
-    show (correctionWord S₁ S₂ Y P₀ σ).sources = [] from rfl,
+    show (correctionWord S₁ S₂ Y P₀ Z hZ σ).sources = [] from rfl,
     show (taggedRenameWord (q := q) S₁ S₂ Y O₁ I₁ O₂ I₂).sources = [] from rfl]
 
 /-- The tagged exchange is the product of the inside-tag permutation and the
 canonical two-sheet exchange. -/
-theorem op_taggedExchangeWord [Fintype P] (P₀ : P)
-    (σ : SplittingData (fun _ : ι ↦ Fin q) (tSet S₁ S₂ Y P₀)
-      (tSet S₁ S₂ Y P₀ ∪ eSet S₁ S₂ Y P₀)) :
-    (taggedExchangeWord S₁ S₂ Y O₁ I₁ O₂ I₂ P₀ σ).op =
+theorem op_taggedExchangeWord [Fintype P] (P₀ : P) (Z : Finset ι)
+    (hZ : ∀ x ∉ Z, S₁.owner x = P₀ ∧ S₂.owner x = P₀)
+    (σ : SplittingData (fun _ : ι ↦ Fin q) (Z ∩ Y) (Z ∩ Y ∪ Z \ Y)) :
+    (taggedExchangeWord S₁ S₂ Y O₁ I₁ O₂ I₂ P₀ Z hZ σ).op =
       reindex (Equiv.arrowProdEquivProdArrow P (Tout) (Xout)).symm
         (Equiv.arrowProdEquivProdArrow P (Tin) (Xin)).symm
         ((Equiv.piCongrRight fun p ↦ swapInsideTags (O₁ p) (I₁ p) (O₂ p) (I₂ p)).toPEquiv.toMatrix
           ⊗ₖ reindex (twoConfigEquiv q (swapIn S₁ S₂ Y) (swapIn S₂ S₁ Y)).symm
-            (twoConfigEquiv q S₁ S₂).symm (exchangeOp S₁ S₂ Y P₀ σ)) := by
+            (twoConfigEquiv q S₁ S₂).symm (exchangeOp Y Z σ)) := by
   rw [taggedExchangeWord, Word.op_comp, Word.op_frame, op_taggedRenameWord,
     reindex_apply, reindex_apply, reindex_apply, submatrix_mul_equiv, ← mul_kronecker_mul,
     Matrix.one_mul, ← Word.op_comp, op_comp_renameWord_correctionWord]

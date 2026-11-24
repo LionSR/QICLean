@@ -25,7 +25,8 @@ monomial implements the canonical map of `σ` with reference-vector error at mos
 * an exchange (`Sheet.exists_exchangeWord_of_splittingData`): the renaming `ℛ`, a relabelling of
   the bases of the parties whose sites change sheet, followed by an allowed word without gates
   using only `P∘`, the corrections `D_U F_A`; its operator is `C = D_U F_A F_Y = D_U F_T`
-  (`Sheet.exchangeOp_eq`), and it moves `Ω ⊗ Ω` by at most four times the error of `σ`.
+  (`Sheet.exchangeOp_eq`), and it moves `Ω ⊗ Ω` by at most four times the error of `σ`. The set
+  `Z` is any set of sites outside of which both owners are `P∘`, as for the hole parts of a frame.
 
 The statements with the hypothesis `I_Ω(T:E) ≤ L^{-2p}` follow by composing these with the
 existence of splitting data of error at most `L^{-p}`,
@@ -38,6 +39,9 @@ existence of splitting data of error at most `L^{-p}`,
 
 ## Main results
 
+* `QuantumCircuit.Party.Sheet.exists_birthWord_of_environment`,
+  `QuantumCircuit.Party.Sheet.exists_deathChain_of_environment`: a birth and a death for any
+  environment `E` disjoint from the born region `T`, outside of which every site is held by `P∘`.
 * `QuantumCircuit.Party.Sheet.exists_birthWord_of_splittingData`,
   `QuantumCircuit.Party.Sheet.exists_deathChain_of_splittingData`,
   `QuantumCircuit.Party.Sheet.exists_exchangeWord_of_splittingData`.
@@ -75,16 +79,6 @@ section Birth
 
 variable (S : Sheet ι P) {T : Finset ι} {P₀ Q : P}
 
-omit [Fintype ι] [Fintype P] [DecidableEq P] in
-private theorem changeOwner_eq_self_of_owned (hTP : ∀ x ∈ T, S.owner x = P₀) :
-    S.changeOwner T P₀ = S := by
-  cases S
-  simp only [changeOwner, Sheet.mk.injEq]
-  funext v
-  by_cases h : v ∈ T
-  · simpa only [h, ite_true] using (hTP v h).symm
-  · simp only [h, ite_false]
-
 /-- A birth with a prescribed environment is an allowed word using only the
 two parties of the birth and at most one pair source. Sites of the central
 party can lie in the environment. Its operator is the canonical map of the
@@ -112,7 +106,7 @@ theorem exists_birthWord_of_environment {E : Finset ι}
     exact norm_toEuclideanLin_configBirthOp_sub_le _ σ Ω
   by_cases hQP : Q = P₀
   · subst Q
-    have hS := changeOwner_eq_self_of_owned S hTP
+    have hS := S.changeOwner_eq_self hTP
     rw [hS] at herr ⊢
     obtain ⟨w, hA, hR, hn, hop⟩ := exists_privateBirthWord_of_environment hTP hU σ
     exact ⟨w, hA, hR.mono (by simp), hn.trans_le zero_le_one, hop, herr w hop⟩
@@ -150,7 +144,7 @@ theorem exists_deathChain_of_environment {E : Finset ι}
     exact norm_toEuclideanLin_configBirthOp_sub_le _ σ Ω
   by_cases hQP : Q = P₀
   · subst Q
-    have hS := changeOwner_eq_self_of_owned S hTP
+    have hS := S.changeOwner_eq_self hTP
     rw [hS] at herr ⊢
     obtain ⟨M, hA, hR, hG, hn, hop⟩ := exists_privateDeathChain_of_environment hTP hU σ
     exact ⟨M, hA, hR.mono (by simp), hG, hn.trans_le zero_le_one, hop, herr M hop⟩
@@ -212,13 +206,14 @@ theorem exists_deathChain_of_splittingData (hTP : ∀ x ∈ T, S.owner x = P₀)
         σ.error Finset.subset_union_left Ω :=
   S.exists_deathChain_of_environment (S.disjoint_birthEnv hTP) hTP
     (fun x hx ↦ ((S.changeOwner_birth_owners (Q := Q) hTP).1 x (Finset.mem_compl.mpr hx))) σ Ω
+
 end Birth
 
 /-! ### Two-sheet exchange -/
 
 section Exchange
 
-variable (S₁ S₂ : Sheet ι P) (Y : Finset ι) (P₀ : P)
+variable (S₁ S₂ : Sheet ι P) (Y : Finset ι) (P₀ : P) (Z : Finset ι)
 
 /-- **The map of an exchange, `C = D_U F_A F_Y`**, on two copies of the configurations of the
 sites: the swap `F_Y` of the two sheets on `Y`, the private swap `F_A` on `A = Y ∖ Z`, and the
@@ -226,11 +221,11 @@ buffer correction `D_U` on the two copies of `U = Λ ∖ Z`, for splitting data 
 `T = Z ∩ Y`, `E = Z ∖ Y`. Source: proof of Lemma 6.6, `05-frames.tex`, lines 503–527;
 one-dimensional note, `part2b_mps_protocol.tex`, lines 128–142. -/
 noncomputable def exchangeOp
-    (σ : SplittingData (fun _ : ι ↦ Fin q) (tSet S₁ S₂ Y P₀) (tSet S₁ S₂ Y P₀ ∪ eSet S₁ S₂ Y P₀)) :
+    (σ : SplittingData (fun _ : ι ↦ Fin q) (Z ∩ Y) (Z ∩ Y ∪ Z \ Y)) :
     Matrix ((ι → Fin q) × (ι → Fin q)) ((ι → Fin q) × (ι → Fin q)) ℂ :=
   configBufferCorrection Finset.subset_union_left σ *
     reindex (Equiv.arrowProdEquivProdArrow ι _ _) (Equiv.arrowProdEquivProdArrow ι _ _)
-      (pairSwapOp (X := fun _ : ι ↦ Fin q) (aSet S₁ S₂ Y P₀)) *
+      (pairSwapOp (X := fun _ : ι ↦ Fin q) (Y \ Z)) *
     reindex (Equiv.arrowProdEquivProdArrow ι _ _) (Equiv.arrowProdEquivProdArrow ι _ _)
       (pairSwapOp (X := fun _ : ι ↦ Fin q) Y)
 
@@ -238,15 +233,14 @@ omit [Fintype P] in
 /-- **The net map of an exchange (`D_U F_A F_Y = D_U F_T`).** Source: `05-frames.tex`,
 lines 516–525; one-dimensional note, `part2b_mps_protocol.tex`, lines 136–142. -/
 theorem exchangeOp_eq
-    (σ : SplittingData (fun _ : ι ↦ Fin q) (tSet S₁ S₂ Y P₀) (tSet S₁ S₂ Y P₀ ∪ eSet S₁ S₂ Y P₀)) :
-    exchangeOp S₁ S₂ Y P₀ σ =
+    (σ : SplittingData (fun _ : ι ↦ Fin q) (Z ∩ Y) (Z ∩ Y ∪ Z \ Y)) :
+    exchangeOp Y Z σ =
       configBufferCorrection Finset.subset_union_left σ *
         reindex (Equiv.arrowProdEquivProdArrow ι _ _) (Equiv.arrowProdEquivProdArrow ι _ _)
-          (pairSwapOp (X := fun _ : ι ↦ Fin q) (tSet S₁ S₂ Y P₀)) := by
+          (pairSwapOp (X := fun _ : ι ↦ Fin q) (Z ∩ Y)) := by
   rw [exchangeOp, Matrix.mul_assoc, reindex_apply, reindex_apply, reindex_apply,
-    submatrix_mul_equiv, pairSwapOp_mul_of_subset (aSet_subset_region S₁ S₂ Y P₀), aSet,
-    Finset.sdiff_sdiff_self_left, Finset.inter_comm]
-  rfl
+    submatrix_mul_equiv, pairSwapOp_mul_of_subset Finset.sdiff_subset,
+    Finset.sdiff_sdiff_self_left, Finset.inter_comm Y Z]
 
 section SwapIn
 
@@ -370,29 +364,33 @@ omit [Fintype P] in
 theorem sourceCount_renameWord : (renameWord (q := q) S₁ S₂ Y).sourceCount = 0 :=
   rfl
 
-omit [Fintype P] in
-/-- After an exchange, every site outside `Z` is owned by `P∘` on the first sheet. -/
-theorem swapIn_owner_eq_of_notMem_union (x : ι) (hx : x ∉ tSet S₁ S₂ Y P₀ ∪ eSet S₁ S₂ Y P₀) :
-    (swapIn S₁ S₂ Y).owner x = P₀ :=
-  (swapIn_owner_eq_of_mem_compl S₁ S₂ Y P₀ (Finset.mem_compl.mpr hx)).1
+variable (hZ : ∀ x ∉ Z, S₁.owner x = P₀ ∧ S₂.owner x = P₀)
 
-omit [Fintype P] in
+include hZ in
+omit [Fintype ι] [Fintype P] [DecidableEq P] in
+/-- After an exchange, every site outside `Z` is owned by `P∘` on the first sheet. -/
+theorem swapIn_owner_eq_of_notMem_union (x : ι) (hx : x ∉ Z ∩ Y ∪ Z \ Y) :
+    (swapIn S₁ S₂ Y).owner x = P₀ :=
+  (swapIn_owner_eq_of_notMem S₁ S₂ Y P₀ hZ hx).1
+
+include hZ in
+omit [Fintype ι] [Fintype P] [DecidableEq P] in
 /-- After an exchange, every site outside `Z` is owned by `P∘` on the second sheet. -/
 theorem swapIn_owner_eq_of_notMem_union' (x : ι)
-    (hx : x ∉ tSet S₁ S₂ Y P₀ ∪ eSet S₁ S₂ Y P₀) : (swapIn S₂ S₁ Y).owner x = P₀ :=
-  (swapIn_owner_eq_of_mem_compl S₁ S₂ Y P₀ (Finset.mem_compl.mpr hx)).2
+    (hx : x ∉ Z ∩ Y ∪ Z \ Y) : (swapIn S₂ S₁ Y).owner x = P₀ :=
+  (swapIn_owner_eq_of_notMem S₁ S₂ Y P₀ hZ hx).2
 
 omit [Fintype P] in
 /-- **The basis of `P∘` on the two sheets after an exchange**, read on the sites of `Z` it owns
 on each sheet and on the two copies of `U = Λ ∖ Z`. -/
 def exchangeEquivP :
     (swapIn S₁ S₂ Y).system q P₀ × (swapIn S₂ S₁ Y).system q P₀ ≃
-      (({x // x ∈ tSet S₁ S₂ Y P₀ ∪ eSet S₁ S₂ Y P₀ ∧ (swapIn S₁ S₂ Y).owner x = P₀} → Fin q) ×
-        ({x // x ∈ tSet S₁ S₂ Y P₀ ∪ eSet S₁ S₂ Y P₀ ∧ (swapIn S₂ S₁ Y).owner x = P₀} → Fin q)) ×
-      (ComplConfig (fun _ : ι ↦ Fin q) (tSet S₁ S₂ Y P₀ ∪ eSet S₁ S₂ Y P₀) ×
-        ComplConfig (fun _ : ι ↦ Fin q) (tSet S₁ S₂ Y P₀ ∪ eSet S₁ S₂ Y P₀)) :=
-  ((complSplitEquiv q _ (swapIn_owner_eq_of_notMem_union S₁ S₂ Y P₀)).prodCongr
-      (complSplitEquiv q _ (swapIn_owner_eq_of_notMem_union' S₁ S₂ Y P₀))).trans
+      (({x // x ∈ Z ∩ Y ∪ Z \ Y ∧ (swapIn S₁ S₂ Y).owner x = P₀} → Fin q) ×
+        ({x // x ∈ Z ∩ Y ∪ Z \ Y ∧ (swapIn S₂ S₁ Y).owner x = P₀} → Fin q)) ×
+      (ComplConfig (fun _ : ι ↦ Fin q) (Z ∩ Y ∪ Z \ Y) ×
+        ComplConfig (fun _ : ι ↦ Fin q) (Z ∩ Y ∪ Z \ Y)) :=
+  ((complSplitEquiv q _ (swapIn_owner_eq_of_notMem_union S₁ S₂ Y P₀ Z hZ)).prodCongr
+      (complSplitEquiv q _ (swapIn_owner_eq_of_notMem_union' S₁ S₂ Y P₀ Z hZ))).trans
     (Equiv.prodProdProdComm _ _ _ _)
 
 omit [Fintype P] in
@@ -400,20 +398,20 @@ omit [Fintype P] in
 `ManyBody.correctionMatrix` on the two copies of `U`, the identity on the other sites of `P∘`.
 Source: proof of Lemma 6.6, `05-frames.tex`, lines 503–515. -/
 noncomputable def correctionAt
-    (σ : SplittingData (fun _ : ι ↦ Fin q) (tSet S₁ S₂ Y P₀) (tSet S₁ S₂ Y P₀ ∪ eSet S₁ S₂ Y P₀)) :
+    (σ : SplittingData (fun _ : ι ↦ Fin q) (Z ∩ Y) (Z ∩ Y ∪ Z \ Y)) :
     Matrix ((swapIn S₁ S₂ Y).system q P₀ × (swapIn S₂ S₁ Y).system q P₀)
       ((swapIn S₁ S₂ Y).system q P₀ × (swapIn S₂ S₁ Y).system q P₀) ℂ :=
-  reindex (exchangeEquivP S₁ S₂ Y P₀).symm (exchangeEquivP S₁ S₂ Y P₀).symm
-    ((1 : Matrix _ _ ℂ) ⊗ₖ correctionMatrix σ (aSet S₁ S₂ Y P₀))
+  reindex (exchangeEquivP S₁ S₂ Y P₀ Z hZ).symm (exchangeEquivP S₁ S₂ Y P₀ Z hZ).symm
+    ((1 : Matrix _ _ ℂ) ⊗ₖ correctionMatrix σ (Y \ Z))
 
 omit [Fintype P] in
 set_option synthInstance.maxSize 512 in
 /-- The corrections of an exchange at `P∘` form a contraction. -/
 theorem norm_correctionAt_le_one
-    (σ : SplittingData (fun _ : ι ↦ Fin q) (tSet S₁ S₂ Y P₀) (tSet S₁ S₂ Y P₀ ∪ eSet S₁ S₂ Y P₀)) :
-    ‖correctionAt S₁ S₂ Y P₀ σ‖ ≤ 1 :=
-  (l2_opNorm_reindex_le (exchangeEquivP S₁ S₂ Y P₀).symm (exchangeEquivP S₁ S₂ Y P₀).symm
-    ((1 : Matrix _ _ ℂ) ⊗ₖ correctionMatrix σ (aSet S₁ S₂ Y P₀))).trans
+    (σ : SplittingData (fun _ : ι ↦ Fin q) (Z ∩ Y) (Z ∩ Y ∪ Z \ Y)) :
+    ‖correctionAt S₁ S₂ Y P₀ Z hZ σ‖ ≤ 1 :=
+  (l2_opNorm_reindex_le (exchangeEquivP S₁ S₂ Y P₀ Z hZ).symm (exchangeEquivP S₁ S₂ Y P₀ Z hZ).symm
+    ((1 : Matrix _ _ ℂ) ⊗ₖ correctionMatrix σ (Y \ Z))).trans
       ((l2_opNorm_one_kronecker_le _).trans (norm_correctionMatrix_le_one σ _))
 
 omit [Fintype P] in
@@ -421,27 +419,27 @@ omit [Fintype P] in
 and the identity at the other parties. Source: proof of Lemma 6.6, `05-frames.tex`,
 lines 503–515; one-dimensional note, `part2b_mps_protocol.tex`, lines 133–137. -/
 noncomputable def correctionWord
-    (σ : SplittingData (fun _ : ι ↦ Fin q) (tSet S₁ S₂ Y P₀) (tSet S₁ S₂ Y P₀ ∪ eSet S₁ S₂ Y P₀)) :
+    (σ : SplittingData (fun _ : ι ↦ Fin q) (Z ∩ Y) (Z ∩ Y ∪ Z \ Y)) :
     Word (fun p ↦ (swapIn S₁ S₂ Y).system q p × (swapIn S₂ S₁ Y).system q p)
       (fun p ↦ (swapIn S₁ S₂ Y).system q p × (swapIn S₂ S₁ Y).system q p) :=
-  PartyCircuit.localOps (Function.update (fun _ ↦ 1) P₀ (correctionAt S₁ S₂ Y P₀ σ))
+  PartyCircuit.localOps (Function.update (fun _ ↦ 1) P₀ (correctionAt S₁ S₂ Y P₀ Z hZ σ))
 
 /-- **The corrections in canonical coordinates** are `D_U F_A`. Source: `05-frames.tex`,
 lines 504–515. -/
 theorem op_correctionWord
-    (σ : SplittingData (fun _ : ι ↦ Fin q) (tSet S₁ S₂ Y P₀) (tSet S₁ S₂ Y P₀ ∪ eSet S₁ S₂ Y P₀)) :
-    (correctionWord S₁ S₂ Y P₀ σ).op =
+    (σ : SplittingData (fun _ : ι ↦ Fin q) (Z ∩ Y) (Z ∩ Y ∪ Z \ Y)) :
+    (correctionWord S₁ S₂ Y P₀ Z hZ σ).op =
       reindex (twoConfigEquiv q (swapIn S₁ S₂ Y) (swapIn S₂ S₁ Y)).symm
         (twoConfigEquiv q (swapIn S₁ S₂ Y) (swapIn S₂ S₁ Y)).symm
         (configBufferCorrection Finset.subset_union_left σ *
           reindex (Equiv.arrowProdEquivProdArrow ι _ _) (Equiv.arrowProdEquivProdArrow ι _ _)
-            (pairSwapOp (X := fun _ : ι ↦ Fin q) (aSet S₁ S₂ Y P₀))) := by
+            (pairSwapOp (X := fun _ : ι ↦ Fin q) (Y \ Z))) := by
   set S₁' := swapIn S₁ S₂ Y
   set S₂' := swapIn S₂ S₁ Y
-  have hU₁ := swapIn_owner_eq_of_notMem_union S₁ S₂ Y P₀
-  have hU₂ := swapIn_owner_eq_of_notMem_union' S₁ S₂ Y P₀
-  have hAB : tSet S₁ S₂ Y P₀ ⊆ tSet S₁ S₂ Y P₀ ∪ eSet S₁ S₂ Y P₀ := Finset.subset_union_left
-  rw [configBufferCorrection_mul_pairSwapOp_eq _ σ (aSet_subset_compl S₁ S₂ Y P₀)]
+  have hU₁ := swapIn_owner_eq_of_notMem_union S₁ S₂ Y P₀ Z hZ
+  have hU₂ := swapIn_owner_eq_of_notMem_union' S₁ S₂ Y P₀ Z hZ
+  have hAB : Z ∩ Y ⊆ Z ∩ Y ∪ Z \ Y := Finset.subset_union_left
+  rw [configBufferCorrection_mul_pairSwapOp_eq _ σ (sdiff_subset_compl_inter_union_sdiff Y Z)]
   ext y x
   rw [correctionWord, Word.op, PartyCircuit.op_localOps, piKronecker_apply,
     ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ P₀), Function.update_self,
@@ -453,21 +451,21 @@ theorem op_correctionWord
     ite_zero_mul_ite_zero, mul_one]
   -- the parts on the two copies of `U`
   have hW : ∀ z : Config fun p ↦ S₁'.system q p × S₂'.system q p,
-      (exchangeEquivP S₁ S₂ Y P₀ (z P₀)).2 = (Equiv.prodProdProdComm _ _ _ _
+      (exchangeEquivP S₁ S₂ Y P₀ Z hZ (z P₀)).2 = (Equiv.prodProdProdComm _ _ _ _
         (threeCutEquiv₂ (X := fun _ : ι ↦ Fin q) hAB (twoConfigEquiv q S₁' S₂' z))).2 := fun z ↦
     Prod.ext (funext fun v ↦ (twoConfigEquiv_fst_eq _ _ z (hU₁ v v.2)).symm)
       (funext fun v ↦ (twoConfigEquiv_snd_eq _ _ z (hU₂ v v.2)).symm)
   -- the agreement on the sites of `Z`
-  have hZ : (Equiv.prodProdProdComm _ _ _ _
+  have hZcut : (Equiv.prodProdProdComm _ _ _ _
         (threeCutEquiv₂ (X := fun _ : ι ↦ Fin q) hAB (twoConfigEquiv q S₁' S₂' y))).1 =
       (Equiv.prodProdProdComm _ _ _ _
         (threeCutEquiv₂ (X := fun _ : ι ↦ Fin q) hAB (twoConfigEquiv q S₁' S₂' x))).1 ↔
-      ∀ v ∈ tSet S₁ S₂ Y P₀ ∪ eSet S₁ S₂ Y P₀,
+      ∀ v ∈ Z ∩ Y ∪ Z \ Y,
         (twoConfigEquiv q S₁' S₂' y).1 v = (twoConfigEquiv q S₁' S₂' x).1 v ∧
           (twoConfigEquiv q S₁' S₂' y).2 v = (twoConfigEquiv q S₁' S₂' x).2 v := by
     constructor
     · intro h v hv
-      by_cases hA : v ∈ tSet S₁ S₂ Y P₀
+      by_cases hA : v ∈ Z ∩ Y
       · exact ⟨congrFun (congrArg (fun f ↦ f.1.1) h) ⟨v, hA⟩,
           congrFun (congrArg (fun f ↦ f.2.1) h) ⟨v, hA⟩⟩
       · have hM := Finset.mem_sdiff.mpr ⟨hv, hA⟩
@@ -480,9 +478,9 @@ theorem op_correctionWord
       · exact (h w (Finset.mem_sdiff.mp w.2).1).1
       · exact (h w (Finset.mem_union_left _ w.2)).2
       · exact (h w (Finset.mem_sdiff.mp w.2).1).2
-  have hP : ((exchangeEquivP S₁ S₂ Y P₀ (y P₀)).1 = (exchangeEquivP S₁ S₂ Y P₀ (x P₀)).1 ∧
+  have hP : ((exchangeEquivP S₁ S₂ Y P₀ Z hZ (y P₀)).1 = (exchangeEquivP S₁ S₂ Y P₀ Z hZ (x P₀)).1 ∧
       ∀ r ∈ Finset.univ.erase P₀, y r = x r) ↔
-      ∀ v ∈ tSet S₁ S₂ Y P₀ ∪ eSet S₁ S₂ Y P₀,
+      ∀ v ∈ Z ∩ Y ∪ Z \ Y,
         (twoConfigEquiv q S₁' S₂' y).1 v = (twoConfigEquiv q S₁' S₂' x).1 v ∧
           (twoConfigEquiv q S₁' S₂' y).2 v = (twoConfigEquiv q S₁' S₂' x).2 v := by
     constructor
@@ -507,13 +505,13 @@ theorem op_correctionWord
       have hrP := Finset.ne_of_mem_erase hr
       refine Prod.ext (funext fun v ↦ ?_) (funext fun v ↦ ?_)
       · have hvr := (mem_blockPreimage_singleton _).mp v.2
-        have hvB : (v : ι) ∈ tSet S₁ S₂ Y P₀ ∪ eSet S₁ S₂ Y P₀ := by
+        have hvB : (v : ι) ∈ Z ∩ Y ∪ Z \ Y := by
           by_contra hvB
           exact hrP (hvr.symm.trans (hU₁ v hvB))
         have h' := (h v hvB).1
         rwa [twoConfigEquiv_fst_eq _ _ y hvr, twoConfigEquiv_fst_eq _ _ x hvr] at h'
       · have hvr := (mem_blockPreimage_singleton _).mp v.2
-        have hvB : (v : ι) ∈ tSet S₁ S₂ Y P₀ ∪ eSet S₁ S₂ Y P₀ := by
+        have hvB : (v : ι) ∈ Z ∩ Y ∪ Z \ Y := by
           by_contra hvB
           exact hrP (hvr.symm.trans (hU₂ v hvB))
         have h' := (h v hvB).2
@@ -521,28 +519,28 @@ theorem op_correctionWord
   rw [hW y, hW x]
   split_ifs with h₁ h₂ h₂
   · rfl
-  · exact absurd ((hP.trans hZ.symm).mp h₁) h₂
-  · exact absurd ((hP.trans hZ.symm).mpr h₂) h₁
+  · exact absurd ((hP.trans hZcut.symm).mp h₁) h₂
+  · exact absurd ((hP.trans hZcut.symm).mpr h₂) h₁
   · rfl
 
 omit [Fintype P] in
 /-- The corrections of an exchange are allowed. -/
 theorem isAllowed_correctionWord
-    (σ : SplittingData (fun _ : ι ↦ Fin q) (tSet S₁ S₂ Y P₀) (tSet S₁ S₂ Y P₀ ∪ eSet S₁ S₂ Y P₀)) :
-    (correctionWord S₁ S₂ Y P₀ σ).IsAllowed := by
+    (σ : SplittingData (fun _ : ι ↦ Fin q) (Z ∩ Y) (Z ∩ Y ∪ Z \ Y)) :
+    (correctionWord S₁ S₂ Y P₀ Z hZ σ).IsAllowed := by
   intro r
   by_cases hr : r = P₀
   · subst hr
     rw [Function.update_self]
-    exact norm_correctionAt_le_one S₁ S₂ Y r σ
+    exact norm_correctionAt_le_one S₁ S₂ Y r Z hZ σ
   · rw [Function.update_of_ne hr, ← PEquiv.toMatrix_refl, ← Equiv.toPEquiv_refl]
     exact l2_opNorm_toMatrix_toPEquiv_le _
 
 omit [Fintype P] in
 /-- The corrections of an exchange use only `P∘`. -/
 theorem usesOnly_correctionWord
-    (σ : SplittingData (fun _ : ι ↦ Fin q) (tSet S₁ S₂ Y P₀) (tSet S₁ S₂ Y P₀ ∪ eSet S₁ S₂ Y P₀)) :
-    (correctionWord S₁ S₂ Y P₀ σ).UsesOnly {P₀} := fun r hr ↦
+    (σ : SplittingData (fun _ : ι ↦ Fin q) (Z ∩ Y) (Z ∩ Y ∪ Z \ Y)) :
+    (correctionWord S₁ S₂ Y P₀ Z hZ σ).UsesOnly {P₀} := fun r hr ↦
   ⟨rfl, fun y x ↦ by
     rw [Function.update_of_ne hr, one_apply, cast_eq]
     split_ifs <;> rfl⟩
@@ -550,25 +548,28 @@ theorem usesOnly_correctionWord
 omit [Fintype P] in
 /-- The corrections of an exchange have no pair source. -/
 theorem sourceCount_correctionWord
-    (σ : SplittingData (fun _ : ι ↦ Fin q) (tSet S₁ S₂ Y P₀) (tSet S₁ S₂ Y P₀ ∪ eSet S₁ S₂ Y P₀)) :
-    (correctionWord S₁ S₂ Y P₀ σ).sourceCount = 0 :=
+    (σ : SplittingData (fun _ : ι ↦ Fin q) (Z ∩ Y) (Z ∩ Y ∪ Z \ Y)) :
+    (correctionWord S₁ S₂ Y P₀ Z hZ σ).sourceCount = 0 :=
   rfl
 
 /-- **The exchange in canonical coordinates**: the renaming followed by the corrections is
 `C = D_U F_A F_Y`. Source: `05-frames.tex`, lines 512–527. -/
 theorem op_comp_renameWord_correctionWord
-    (σ : SplittingData (fun _ : ι ↦ Fin q) (tSet S₁ S₂ Y P₀) (tSet S₁ S₂ Y P₀ ∪ eSet S₁ S₂ Y P₀)) :
-    Word.op (PartyCircuit.comp (renameWord S₁ S₂ Y) (correctionWord S₁ S₂ Y P₀ σ)) =
+    (σ : SplittingData (fun _ : ι ↦ Fin q) (Z ∩ Y) (Z ∩ Y ∪ Z \ Y)) :
+    Word.op (PartyCircuit.comp (renameWord S₁ S₂ Y) (correctionWord S₁ S₂ Y P₀ Z hZ σ)) =
       reindex (twoConfigEquiv q (swapIn S₁ S₂ Y) (swapIn S₂ S₁ Y)).symm
-        (twoConfigEquiv q S₁ S₂).symm (exchangeOp S₁ S₂ Y P₀ σ) := by
+        (twoConfigEquiv q S₁ S₂).symm (exchangeOp Y Z σ) := by
   rw [Word.op_comp, op_correctionWord, op_renameWord, exchangeOp]
   simp only [reindex_apply (twoConfigEquiv q (swapIn S₁ S₂ Y) (swapIn S₂ S₁ Y)).symm]
   exact submatrix_mul_equiv _ _ _ _ _
 
+include hZ in
 /-- **Lemma `lem:exchange` (two-sheet exchange) for given splitting data: the exchange is a
 relabelling followed by private corrections at `P∘`.** Consider two sheets and a region `Y`.
 Inside `Y`, exchange the two ownership assignments; outside `Y`, keep both. Let `P∘` be a party,
-`Z` the set of sites whose two owners are not both `P∘`, `T = Z ∩ Y`, `E = Z ∖ Y` and
+`Z` a set of sites containing every site whose two owners are not both `P∘` (in Lemma 6.6 the
+set of these sites together with the hole parts `H⁺(F₁) ∪ H⁺(F₂)`; on sheets,
+`exchangeEnv S₁ S₂ P∘` with `owner_eq_of_notMem_exchangeEnv`), `T = Z ∩ Y`, `E = Z ∖ Y` and
 `U = Λ ∖ Z`, and `σ` splitting data for this cut. Then `C = D_U F_T`, and there is an allowed
 word `c` using only `P∘` without pair sources such that the renaming `ℛ` (`renameWord`, a
 relabelling of the bases of the parties whose sites change sheet, no register changing party)
@@ -583,24 +584,25 @@ renamed; it has no gate, so it is a bounded change for every set of participants
 `05-frames.tex`, lines 460–479, proof lines 481–561; one-dimensional note, Lemma
 `lem:exchange`, `part2b_mps_protocol.tex`, lines 112–126, proof lines 127–155. -/
 theorem exists_exchangeWord_of_splittingData {Ω : EuclideanSpace ℂ (ι → Fin q)} (hΩ : ‖Ω‖ = 1)
-    (σ : SplittingData (fun _ : ι ↦ Fin q) (tSet S₁ S₂ Y P₀) (tSet S₁ S₂ Y P₀ ∪ eSet S₁ S₂ Y P₀)) :
-    exchangeOp S₁ S₂ Y P₀ σ =
+    (σ : SplittingData (fun _ : ι ↦ Fin q) (Z ∩ Y) (Z ∩ Y ∪ Z \ Y)) :
+    exchangeOp Y Z σ =
         configBufferCorrection Finset.subset_union_left σ *
           reindex (Equiv.arrowProdEquivProdArrow ι _ _) (Equiv.arrowProdEquivProdArrow ι _ _)
-            (pairSwapOp (X := fun _ : ι ↦ Fin q) (tSet S₁ S₂ Y P₀)) ∧
+            (pairSwapOp (X := fun _ : ι ↦ Fin q) (Z ∩ Y)) ∧
       ∃ c : Word (fun p ↦ (swapIn S₁ S₂ Y).system q p × (swapIn S₂ S₁ Y).system q p)
           (fun p ↦ (swapIn S₁ S₂ Y).system q p × (swapIn S₂ S₁ Y).system q p),
         c.IsAllowed ∧ c.UsesOnly {P₀} ∧ c.sourceCount = 0 ∧
         Word.op (PartyCircuit.comp (renameWord S₁ S₂ Y) c) =
           reindex (twoConfigEquiv q (swapIn S₁ S₂ Y) (swapIn S₂ S₁ Y)).symm
-            (twoConfigEquiv q S₁ S₂).symm (exchangeOp S₁ S₂ Y P₀ σ) ∧
+            (twoConfigEquiv q S₁ S₂).symm (exchangeOp Y Z σ) ∧
         ‖toEuclideanLin (Word.op (PartyCircuit.comp (renameWord S₁ S₂ Y) c))
             (prodVec (S₁.refVec Ω) (S₂.refVec Ω)) -
           prodVec ((swapIn S₁ S₂ Y).refVec Ω) ((swapIn S₂ S₁ Y).refVec Ω)‖ ≤
             4 * σ.error Finset.subset_union_left Ω := by
-  refine ⟨exchangeOp_eq S₁ S₂ Y P₀ σ, correctionWord S₁ S₂ Y P₀ σ,
-    isAllowed_correctionWord S₁ S₂ Y P₀ σ, usesOnly_correctionWord S₁ S₂ Y P₀ σ,
-    sourceCount_correctionWord S₁ S₂ Y P₀ σ, op_comp_renameWord_correctionWord S₁ S₂ Y P₀ σ, ?_⟩
+  refine ⟨exchangeOp_eq Y Z σ, correctionWord S₁ S₂ Y P₀ Z hZ σ,
+    isAllowed_correctionWord S₁ S₂ Y P₀ Z hZ σ, usesOnly_correctionWord S₁ S₂ Y P₀ Z hZ σ,
+    sourceCount_correctionWord S₁ S₂ Y P₀ Z hZ σ,
+    op_comp_renameWord_correctionWord S₁ S₂ Y P₀ Z hZ σ, ?_⟩
   rw [op_comp_renameWord_correctionWord, prodVec_refVec, prodVec_refVec,
     norm_toEuclideanLin_reindex_sub, exchangeOp_eq]
   exact norm_toEuclideanLin_configBufferCorrection_mul_pairSwapOp_sub_le _ σ hΩ
