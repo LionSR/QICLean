@@ -1,7 +1,7 @@
 /-
-Copyright (c) 2026 TNLean contributors. All rights reserved.
+Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: TNLean contributors
+Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Hamiltonian.Chain.RelativeGenerator
 import QICLean.ManyBody.Sites.GraphBall
@@ -45,7 +45,6 @@ distance bound.
 `part1_arealaw.tex`, lines 91–93, before the Part II argument. The sites here
 are `Fin L`, as in that argument. The finite-domain statement extends it to the domains of
 `part0_preamble.tex`, lines 191–215.
-https://sirui-lu.com/TNLean/paper-gaps/tnlean_one_dimensional_connected_domain_scope.pdf
 
 Source: TNLean one-dimensional note, Lemma `lem:reset`,
 `part2a_mps_information.tex`, lines 319–435.

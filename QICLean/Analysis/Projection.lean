@@ -18,6 +18,7 @@ import QICLean.Analysis.Projection.InvariantTensorWordPower
 import QICLean.Analysis.Projection.MatrixStarProjection
 import QICLean.Analysis.Projection.MeanErgodic
 import QICLean.Analysis.Projection.OverlapTriangle
+import QICLean.Analysis.Projection.PerpendicularShrinking
 import QICLean.Analysis.Projection.PhaseError
 import QICLean.Analysis.Projection.PosSemidefSupport
 import QICLean.Analysis.Projection.ProductOverlapReplacement
