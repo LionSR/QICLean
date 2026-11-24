@@ -9,6 +9,7 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Channel.FixedPoint.MeanErgodic
 
 import QICLean.Channel.FixedPoint.MeanErgodic.Cesaro
+import QICLean.Channel.FixedPoint.MeanErgodic.FixedPointProjection
 import QICLean.Channel.FixedPoint.MeanErgodic.LimitingGramMetric
 import QICLean.Channel.FixedPoint.MeanErgodic.MeanErgodicAdjoint
 import QICLean.Channel.FixedPoint.MeanErgodic.MeanErgodicProjection

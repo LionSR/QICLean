@@ -220,3 +220,22 @@ instance (n : Type*) [Fintype n] [DecidableEq n] :
 end TNOperatorSpace
 
 end
+
+noncomputable section
+
+section EndEquiv
+
+variable {D : ℕ}
+
+open TNLean
+
+/-- The algebra equivalence between linear and continuous linear endomorphisms.
+This uses finite-dimensionality of `Matrix (Fin D) (Fin D) ℂ`. -/
+abbrev endEquiv :
+    (Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ) ≃ₐ[ℂ]
+    MatrixCLM (Fin D) :=
+  Module.End.toContinuousLinearMap (Matrix (Fin D) (Fin D) ℂ)
+
+end EndEquiv
+
+end

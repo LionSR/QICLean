@@ -5,7 +5,7 @@ Authors: TNLean contributors
 -/
 import QICLean.Channel.Choi.Rectangular
 import QICLean.Channel.KrausMap.KrausCPTP
-import QICLean.Channel.Entanglement.PartialTranspose
+import QICLean.Algebra.Kronecker.PartialTranspose
 import QICLean.Channel.Entanglement.SchmidtNumberCompact
 import QICLean.Algebra.Hermitian.PositiveSemidefiniteNormalization
 

@@ -13,9 +13,9 @@ import QICLean.Channel.CPDecomposition
 import QICLean.Channel.Choi
 import QICLean.Channel.ChoiTypeMap
 import QICLean.Channel.CompletelyPositiveBridge
+import QICLean.Channel.CompletelyPositiveClosure
 import QICLean.Channel.ConditionNumberInterpolation
 import QICLean.Channel.ConditionalExpectation
-import QICLean.Channel.ConvexFunctionalMonotonicity
 import QICLean.Channel.Convexity
 import QICLean.Channel.DetailedBalance
 import QICLean.Channel.Determinant
@@ -51,7 +51,6 @@ import QICLean.Channel.Measurement
 import QICLean.Channel.NormalForm
 import QICLean.Channel.OperatorMean
 import QICLean.Channel.OperatorSystem
-import QICLean.Channel.OrderedCP
 import QICLean.Channel.OrderedRectangular
 import QICLean.Channel.POVM
 import QICLean.Channel.PSDConeAutomorphism
@@ -65,9 +64,11 @@ import QICLean.Channel.Schwarz
 import QICLean.Channel.SelfDual
 import QICLean.Channel.Semigroup
 import QICLean.Channel.SupportCompletion
+import QICLean.Channel.SupportedMarginalChannel
 import QICLean.Channel.TraceNormNet
 import QICLean.Channel.TransferMatrix
 import QICLean.Channel.Twirl
 import QICLean.Channel.WeightedHilbertSchmidt
+import QICLean.Channel.WhitenedChoi
 import QICLean.Channel.Wigner
 import QICLean.Channel.WolfProps

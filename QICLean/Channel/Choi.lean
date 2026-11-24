@@ -16,6 +16,3 @@ import QICLean.Channel.Choi.OperatorNormFrobenius
 import QICLean.Channel.Choi.Rectangular
 import QICLean.Channel.Choi.RectangularChoi
 import QICLean.Channel.Choi.Residual
-import QICLean.Channel.Choi.SupportedMarginalChannel
-import QICLean.Channel.Choi.WhitenedChoi
-import QICLean.Channel.Choi.WindowMinorization

@@ -6,7 +6,7 @@ Authors: TNLean contributors
 import QICLean.Spectral.Eigenvalue.MatrixSpectralDecomp
 import QICLean.Algebra.Matrix.MatrixTracePairing
 import QICLean.Algebra.PartialTrace
-import QICLean.Channel.Entanglement.MaximallyEntangled
+import QICLean.Algebra.Kronecker.MaximallyEntangled
 import QICLean.Algebra.Kronecker.TensorMap
 import QICLean.Channel.Basic
 import Mathlib.Analysis.Matrix.Order

@@ -7,7 +7,7 @@ import QICLean.Entropy.Relative.SupportCompressedEntropy
 import QICLean.Channel.PartialTrace.MarginalSupportAbsorption
 import QICLean.Analysis.FunctionalCalculus.MatrixSqrt
 import QICLean.Entropy.Renyi.SandwichedRenyiTwo
-import QICLean.Channel.Choi.WhitenedChoi
+import QICLean.Channel.WhitenedChoi
 
 /-!
 # Marginal-support whitening

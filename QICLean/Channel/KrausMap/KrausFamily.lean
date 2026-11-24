@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Channel.KrausMap.KrausCPTP
-import QICLean.Channel.Schwarz.Basic
+import QICLean.Channel.KrausMap.KrausAction
 
 /-!
 # Finite Kraus families

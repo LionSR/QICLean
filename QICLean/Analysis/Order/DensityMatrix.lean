@@ -26,6 +26,8 @@ convex. This is used for the fixed-point theorems of Wolf, Chapter 6.
 * `densityMatrices`: positive semidefinite matrices of trace one
 * `densityMatrices_isCompact`: the set of density matrices is compact
 * `densityMatrices_isConvex`: the set of density matrices is convex
+* `Matrix.pureStateProj`: the rank-one projector $|\psi\rangle\langle\psi|$ of a vector, and
+  `Matrix.IsUnitVector`, `Matrix.AreOrthogonal`: unit and orthogonal vectors
 
 ## References
 
@@ -178,3 +180,63 @@ theorem densityMatrices_nonempty (hD : 0 < D) :
     exact inv_mul_cancel₀ (Nat.cast_ne_zero.mpr hD.ne')⟩
 
 end DensityMatrices
+
+section PureStates
+
+noncomputable section
+
+namespace Matrix
+
+variable {D : ℕ}
+
+open scoped InnerProductSpace
+
+/-- The rank-one projector $|\psi\rangle\langle\psi|$. -/
+def pureStateProj (ψ : Fin D → ℂ) : Matrix (Fin D) (Fin D) ℂ :=
+  vecMulVec ψ (fun p => star (ψ p))
+
+/-- The rank-one projector depends continuously on its defining vector. -/
+theorem continuous_pureStateProj :
+    Continuous (pureStateProj (D := D)) := by
+  unfold pureStateProj
+  refine continuous_matrix fun i j => ?_
+  exact (continuous_apply i).mul (continuous_apply j).star
+
+/-- A vector has unit Euclidean norm, in the unbundled matrix-vector form. -/
+def IsUnitVector (ψ : Fin D → ℂ) : Prop :=
+  (fun p => star (ψ p)) ⬝ᵥ ψ = 1
+
+/-- Two vectors are orthogonal, in the unbundled matrix-vector form. -/
+def AreOrthogonal (ψ φ : Fin D → ℂ) : Prop :=
+  (fun p => star (ψ p)) ⬝ᵥ φ = 0
+
+/-- The trace of a pure-state projector is the squared Euclidean norm of its vector. -/
+@[simp] lemma trace_pureStateProj (ψ : Fin D → ℂ) :
+    (pureStateProj ψ).trace = ψ ⬝ᵥ (fun p => star (ψ p)) := by
+  simp [pureStateProj, trace_vecMulVec]
+
+/-- Every pure-state projector is positive semidefinite. -/
+lemma pureStateProj_posSemidef (ψ : Fin D → ℂ) :
+    (pureStateProj ψ).PosSemidef := by
+  exact posSemidef_vecMulVec_self_star ψ
+
+/-- Every column of the eigenvector unitary of a Hermitian matrix is a unit vector. -/
+lemma eigenvectorUnitary_isUnitVector {A : Matrix (Fin D) (Fin D) ℂ}
+    (hA : A.IsHermitian) (i : Fin D) :
+    IsUnitVector (fun p => hA.eigenvectorUnitary p i) := by
+  rw [IsUnitVector, dotProduct_comm]
+  have hi := orthonormal_iff_ite.mp hA.eigenvectorBasis.orthonormal i i
+  rw [ite_eq_left rfl] at hi
+  change (fun p => hA.eigenvectorBasis i p) ⬝ᵥ
+    (fun p => star (hA.eigenvectorBasis i p)) = 1
+  have hleft : (fun p => hA.eigenvectorBasis i p) = ⇑(hA.eigenvectorBasis i) := rfl
+  have hright : (fun p => star (hA.eigenvectorBasis i p)) =
+      star ⇑(hA.eigenvectorBasis i) := by ext p; rfl
+  rw [hleft, hright]
+  exact hi
+
+end Matrix
+
+end
+
+end PureStates

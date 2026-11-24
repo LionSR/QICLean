@@ -14,7 +14,7 @@ import QICLean.Channel.FixedPoint.Stationary.MaximalSupportBasic
 import QICLean.Channel.FixedPoint.Stationary.StationaryProjection
 import QICLean.Channel.FixedPoint.Stationary.StationarySpan
 import QICLean.Channel.FixedPoint.Stationary.StationaryStates
-import QICLean.Channel.FixedPoint.Stationary.StationarySupport
 import QICLean.Channel.FixedPoint.Stationary.StationarySupportRestriction
 import QICLean.Channel.FixedPoint.Stationary.SupportInvariance
 import QICLean.Channel.FixedPoint.Stationary.TraceNonincreasingProductSpan
+import QICLean.Channel.FixedPoint.Stationary.WindowMinorization

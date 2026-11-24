@@ -8,14 +8,13 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Channel.KrausMap
 
+import QICLean.Channel.KrausMap.KrausAction
 import QICLean.Channel.KrausMap.KrausCPTP
 import QICLean.Channel.KrausMap.KrausCornerCompression
 import QICLean.Channel.KrausMap.KrausFamily
 import QICLean.Channel.KrausMap.KrausFamilyAncilla
-import QICLean.Channel.KrausMap.KrausFamilyDilation
 import QICLean.Channel.KrausMap.KrausFamilyEncoding
 import QICLean.Channel.KrausMap.KrausFamilyProd
-import QICLean.Channel.KrausMap.KrausFamilyTraceNorm
 import QICLean.Channel.KrausMap.KrausFreedom
 import QICLean.Channel.KrausMap.KrausGauge
 import QICLean.Channel.KrausMap.KrausMap

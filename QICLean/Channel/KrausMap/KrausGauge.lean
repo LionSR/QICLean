@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Analysis.FunctionalCalculus.MatrixSqrt
-import QICLean.Channel.Schwarz.Basic
+import QICLean.Channel.KrausMap.KrausAction
 import Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Basic
 import Mathlib.Analysis.Matrix.Order
 import Mathlib.LinearAlgebra.Matrix.NonsingularInverse

@@ -352,13 +352,13 @@ it is repaired by moving the module or the lemma, never by changing the order to
 | `Algebra` | Combinatorics < Polynomial < Module < PerronFrobenius < Matrix < Unitary < (top) < Hermitian < Word < OperatorSchmidt < Nilpotent < MatrixAlgebra < StarSubalgebra < Kronecker < SpinCover < Cohomology | 2 |
 | `Analysis` | Complex < Calculus < Metric < Subspace < Projection < Topology < Order < FixedPoint < Real < FunctionalCalculus < Support < Logarithm < Isometry < Norm < TraceNorm < Resolvent < TensorProduct < Convexity < OperatorMean < TraceInequality < Majorization < Optimization < FilterFunction < Exponential < ClusterExpansion < CyclicInequality < Parameter < Cohomology < (top) | 30 |
 | `Spectral` | Eigenvalue < Projection < Radius < Jordan < Perturbation < Gap < Filter < LowEnergy < (top) | 5 |
-| `Channel` | Choi < KrausMap < Twirl < (top) < Dilation < PartialTrace < Convexity < Schmidt < Schwarz < Positive < Entanglement < OperatorMean < Determinant < FixedPoint < ConditionalExpectation < Irreducible < Wigner < Peripheral < Semigroup < PerronFrobenius < KoashiImoto < Recovery < POVM < Measurement < OperatorSystem < PSDConeAutomorphism < LorentzNormalForm < ChoiTypeMap < Gluing | 40 |
+| `Channel` | Choi < KrausMap < Twirl < (top) < Dilation < PartialTrace < Convexity < Schmidt < Schwarz < Positive < Entanglement < OperatorMean < Determinant < FixedPoint < ConditionalExpectation < Irreducible < Wigner < Peripheral < Semigroup < PerronFrobenius < KoashiImoto < Recovery < POVM < Measurement < OperatorSystem < PSDConeAutomorphism < LorentzNormalForm < ChoiTypeMap < Gluing | 14 |
 | `Kraus` | Tactic < (top) < MixedMap < PrimitiveFixedPoint < Wielandt | 0 |
 | `Entropy` | Classical < VonNeumann < Relative < Renyi < MutualInformation < Recovery < Markov < StrongSubadditivity < Conditional < Surprisal < Typical < (top) | 13 |
 | `Probability` | Measurable < Measure < Concentration < (top) < Gaussian < Haar < PoissonWord < Sampling | 1 |
 | `Representation` | Partition < SymmetricGroup < Permutation < TensorPower < YoungSubgroup < Character < Replica < SchurWeyl < Twirl < Coherent < Bell < (top) | 17 |
 
-108 imports are recorded. `ManyBody` and `Circuit` keep the orders of
+82 imports are recorded. `ManyBody` and `Circuit` keep the orders of
 `docs/many_body_circuit_architecture.md`, which the same script checks.
 
 ### Order inside a subdirectory

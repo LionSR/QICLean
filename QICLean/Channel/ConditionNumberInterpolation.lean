@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Analysis.Order.ProjectionQuadraticBound
-import QICLean.Channel.Positive.TraceNormContractionCoefficient
+import QICLean.Analysis.Order.DensityMatrix
 import QICLean.Channel.SupportCompletion
 import Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Order
 

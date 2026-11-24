@@ -110,15 +110,6 @@ local instance : IsNormableSpace ℂ (Matrix (Fin D) (Fin D) ℂ) :=
   ⟨⟨normSeminorm ℂ (Matrix (Fin D) (Fin D) ℂ),
     norm_withSeminorms ℂ (Matrix (Fin D) (Fin D) ℂ)⟩⟩
 
-/-! ## Abbreviations -/
-
-/-- The algebra equivalence between linear and continuous linear endomorphisms.
-This uses finite-dimensionality of `Matrix (Fin D) (Fin D) ℂ`. -/
-abbrev endEquiv :
-    (Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ) ≃ₐ[ℂ]
-    MatrixCLM (Fin D) :=
-  Module.End.toContinuousLinearMap (Matrix (Fin D) (Fin D) ℂ)
-
 /-! ## Semigroup definitions -/
 
 /-- A family of linear maps `T : ℝ → (M_D(ℂ) →ₗ[ℂ] M_D(ℂ))` is a

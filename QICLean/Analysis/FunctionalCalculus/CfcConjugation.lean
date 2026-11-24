@@ -38,6 +38,8 @@ quantum relative-entropy stack.
   under conjugation by a unitary.
 * `Matrix.rpow_conj_unitary` — covariance of real powers under unitary conjugation.
 * `Matrix.cfc_diagonal` — entrywise functional calculus for real diagonal matrices.
+* `Matrix.cfc_fromBlocks_diag` — the functional calculus of a block-diagonal Hermitian
+  matrix acts blockwise.
 -/
 
 open scoped Matrix ComplexOrder MatrixOrder Matrix.Norms.L2Operator
@@ -263,6 +265,59 @@ theorem cfc_diagonal (g : n → ℝ) (f : ℝ → ℝ)
     rfl
 
 end Diagonal
+
+section BlockDiagonal
+
+variable {n m : Type*} [Fintype n] [DecidableEq n] [Fintype m] [DecidableEq m]
+
+/-- **The functional calculus of a block-diagonal Hermitian matrix acts blockwise.** -/
+theorem cfc_fromBlocks_diag {X : Matrix n n ℂ} {Y : Matrix m m ℂ} (hX : X.IsHermitian)
+    (hY : Y.IsHermitian) (f : ℝ → ℝ) :
+    cfc f (fromBlocks X 0 0 Y) = fromBlocks (cfc f X) 0 0 (cfc f Y) := by
+  set U₁ : Matrix n n ℂ := (hX.eigenvectorUnitary : Matrix n n ℂ)
+  set U₂ : Matrix m m ℂ := (hY.eigenvectorUnitary : Matrix m m ℂ)
+  set W : Matrix (n ⊕ m) (n ⊕ m) ℂ := fromBlocks U₁ 0 0 U₂
+  have hU₁ : star U₁ * U₁ = 1 := Unitary.coe_star_mul_self _
+  have hU₂ : star U₂ * U₂ = 1 := Unitary.coe_star_mul_self _
+  have hstarW : star W = fromBlocks (star U₁) 0 0 (star U₂) := by
+    simp [W, star_eq_conjTranspose, fromBlocks_conjTranspose]
+  have hWW : star W * W = 1 := by
+    rw [hstarW, fromBlocks_multiply]; simp [hU₁, hU₂, fromBlocks_one]
+  have hWW' : W * star W = 1 := mul_eq_one_comm.mp hWW
+  let Wu : unitary (Matrix (n ⊕ m) (n ⊕ m) ℂ) := ⟨W, by
+    rw [Unitary.mem_iff]; exact ⟨hWW, hWW'⟩⟩
+  set g : n ⊕ m → ℝ := Sum.elim hX.eigenvalues hY.eigenvalues
+  have hblock : ∀ (d₁ : n → ℝ) (d₂ : m → ℝ),
+      W * diagonal (fun i ↦ ((Sum.elim d₁ d₂ i : ℝ) : ℂ)) * star W =
+        fromBlocks (U₁ * diagonal (fun i ↦ (d₁ i : ℂ)) * star U₁) 0 0
+          (U₂ * diagonal (fun i ↦ (d₂ i : ℂ)) * star U₂) := by
+    intro d₁ d₂
+    have hd : diagonal (fun i ↦ ((Sum.elim d₁ d₂ i : ℝ) : ℂ)) =
+        fromBlocks (diagonal fun i ↦ (d₁ i : ℂ)) 0 0 (diagonal fun i ↦ (d₂ i : ℂ)) := by
+      rw [fromBlocks_diagonal]; congr 1; ext i; cases i <;> rfl
+    rw [hd, hstarW, fromBlocks_multiply, fromBlocks_multiply]
+    simp
+  have hXs : X = U₁ * diagonal (fun i ↦ (hX.eigenvalues i : ℂ)) * star U₁ := by
+    conv_lhs => rw [hX.spectral_theorem]
+    rfl
+  have hYs : Y = U₂ * diagonal (fun i ↦ (hY.eigenvalues i : ℂ)) * star U₂ := by
+    conv_lhs => rw [hY.spectral_theorem]
+    rfl
+  have hbd : fromBlocks X 0 0 Y = (Wu : Matrix (n ⊕ m) (n ⊕ m) ℂ) *
+      diagonal (fun i ↦ (g i : ℂ)) * star (Wu : Matrix (n ⊕ m) (n ⊕ m) ℂ) := by
+    rw [hblock, ← hXs, ← hYs]
+  have hdh : (diagonal (fun i ↦ (g i : ℂ))).IsHermitian := by
+    rw [IsHermitian, diagonal_conjTranspose]; congr 1; ext i; simp [Complex.conj_ofReal]
+  rw [hbd, cfc_conj_unitary hdh f Wu, cfc_diagonal g f ((Set.finite_range g).continuousOn _)]
+  change W * diagonal (fun i ↦ ((f (Sum.elim hX.eigenvalues hY.eigenvalues i) : ℝ) : ℂ)) *
+    star W = _
+  have hcomp : (fun i ↦ ((f (Sum.elim hX.eigenvalues hY.eigenvalues i) : ℝ) : ℂ)) =
+      fun i ↦ ((Sum.elim (f ∘ hX.eigenvalues) (f ∘ hY.eigenvalues) i : ℝ) : ℂ) := by
+    ext i; cases i <;> rfl
+  rw [hcomp, hblock, hX.cfc_eq, hY.cfc_eq]
+  rfl
+
+end BlockDiagonal
 
 end Matrix
 

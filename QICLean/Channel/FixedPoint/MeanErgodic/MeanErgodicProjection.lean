@@ -6,7 +6,7 @@ Authors: TNLean contributors
 import QICLean.Analysis.Projection.MeanErgodic
 import QICLean.Analysis.Norm.OperatorNormConvergence
 import QICLean.Channel.Basic
-import QICLean.Channel.Semigroup.CPClosure
+import QICLean.Channel.CompletelyPositiveClosure
 import Mathlib.Analysis.Matrix.Order
 
 /-!

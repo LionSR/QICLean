@@ -1679,7 +1679,7 @@ In `QICLean.Channel.FixedPoint.DensityBlock.SupportCompressedDensityBlocks`:
   Equation (6.53): an adjoint fixed point compresses to an adjoint fixed point
   of the stationary-support restriction.
 
-In `QICLean.Channel.FixedPoint.Stationary.StationarySupport`:
+In `QICLean.Channel.Irreducible.StationarySupport`:
 
 * `Channel.support_proj_fixed` — support projection of a PSD fixed point is
   invariant under the compressed channel action.

@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Channel.Peripheral.Spectrum.Primitive
+import QICLean.Channel.FixedPoint.MeanErgodic.FixedPointProjection
 import QICLean.Channel.Schwarz.Basic
 import Mathlib.Analysis.Normed.Operator.CompleteCodomain
 
