@@ -193,7 +193,8 @@ theorem regionMutualInformation_nonneg (ψ : EuclideanSpace ℂ ((v : V) → β 
 with local dimension `q`. This is an auxiliary concentration estimate for the entropy obstruction in
 SWVC08, arXiv:0705.0292v2, lines 278–305. It does not infer the tail mass from a
 matrix approximation error. -/
-theorem regionEntropy_le_log_rank_add_spectral_tail {ι : Type*} [Fintype ι] [DecidableEq ι] {q D : ℕ}
+theorem regionEntropy_le_log_rank_add_spectral_tail {ι : Type*} [Fintype ι] [DecidableEq ι]
+    {q D : ℕ}
     (ψ : EuclideanSpace ℂ (ι → Fin q))
     (hψ : ‖ψ‖ = 1) (R : Finset ι) {ε : ℝ}
     (htail : ∑ i ∈ Finset.Ico D (Fintype.card (ManyBody.RegionConfig (fun _ ↦ Fin q) R)),
