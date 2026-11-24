@@ -35,6 +35,8 @@ families spanning proper subspaces.
   `QuantumCircuit.Party.SourceInventory.op_prepareSlots_eq_sum_single`.
 * `QuantumCircuit.Party.Word.preparedMatrix_density_sum_smul`,
   `QuantumCircuit.Party.Word.preparedMatrix_gate_density_eq_sum_single`.
+* `QuantumCircuit.Party.Word.preparedMatrix_eq_sum_unitary`: the expansion in arbitrary
+  orthonormal endpoint bases.
 * `QuantumCircuit.Party.Word.preparedMatrix_mul_euclideanOuterProduct`.
 
 ## References
@@ -258,6 +260,28 @@ theorem preparedMatrix_eq_sum_single (η : ∀ i, EuclideanSpace ℂ (B.left i �
           (EuclideanSpace.single (a i).1 1) (EuclideanSpace.single (a i).2 1)) X := by
   simp only [preparedMatrix, SourceInventory.op_prepareSlots_eq_sum_single R B η X,
     Matrix.mul_sum, Matrix.mul_smul]
+
+/-- **The prepared matrix in any endpoint basis.** For matrices `W i` with `W i * (W i)ᴴ = 1`,
+for instance unitaries whose columns form orthonormal bases of the slots, the prepared matrix is
+the sum of the preparations of the columns of the `W i`, weighted by the products of the
+coordinates `(W i)ᴴ η i` of the slot vectors. Source: Theorem 5.2, `04-compression.tex`,
+lines 279–355. -/
+theorem preparedMatrix_eq_sum_unitary {K : Fin R.length → Type} [∀ i, Fintype (K i)]
+    (W : ∀ i, Matrix (B.left i × B.right i) (K i) ℂ) (hW : ∀ i, W i * (W i)ᴴ = 1)
+    (η : ∀ i, EuclideanSpace ℂ (B.left i × B.right i))
+    (v : Word (SourceInventory.slotSystem R B X) Y) :
+    v.preparedMatrix R B η X =
+      ∑ a : ∀ i, K i, (∏ i, ((W i)ᴴ *ᵥ (η i).ofLp) (a i)) •
+        v.preparedMatrix R B (fun i ↦ WithLp.toLp 2 ((W i)ᵀ (a i))) X := by
+  rw [← preparedMatrix_sum_smul R B X (fun i a ↦ ((W i)ᴴ *ᵥ (η i).ofLp) a)
+    (fun i a ↦ WithLp.toLp 2 ((W i)ᵀ a))]
+  congr 1
+  funext i
+  ext x
+  have h := congrFun (congrArg (fun M ↦ M *ᵥ (η i).ofLp) (hW i)) x
+  simp only [Matrix.one_mulVec, ← Matrix.mulVec_mulVec] at h
+  conv_lhs => rw [← h]
+  simp [Matrix.mulVec, dotProduct, mul_comm]
 
 /-- The density coefficient obtained by preparing the endpoint vectors `uU i (a i).1 ⊗
 uV i (a i).2` in the ket word `v` and `uU' i (b i).1 ⊗ uV' i (b i).2` in the bra word `v'`. No
