@@ -41,7 +41,8 @@ The predicates are structural recursions on effect circuits (`EffectCircuit.IsEx
   circuit per nonprivate gate.
 * `QuantumCircuit.Party.OriginalCircuit.card_participants_ne_one`.
 * `QuantumCircuit.Party.OriginalCircuit.card_nonprivateLocations`,
-  `QuantumCircuit.Party.OriginalCircuit.natCard_participants_mem`.
+  `QuantumCircuit.Party.OriginalCircuit.natCard_participants_mem`,
+  `QuantumCircuit.Party.OriginalCircuit.forall_participants_of_nonprivateCount_eq_zero`.
 * `QuantumCircuit.Party.OriginalCircuit.monomialCount_toEffectCircuit_le_of_isMonomialBounded`.
 
 ## References
@@ -363,6 +364,18 @@ theorem natCard_nonprivateLocations (w : OriginalCircuit X Y) :
 theorem card_nonprivateLocations (w : OriginalCircuit X Y) :
     Fintype.card w.nonprivateLocations = w.nonprivateCount :=
   (PartyCircuit.card_gateLocations _).trans w.nonprivateCount_eq_numGates.symm
+
+/-- A circuit without nonprivate gates has no nonprivate gate occurrence. -/
+theorem isEmpty_nonprivateLocations_of_nonprivateCount_eq_zero {w : OriginalCircuit X Y}
+    (h : w.nonprivateCount = 0) : IsEmpty w.nonprivateLocations :=
+  Fintype.card_eq_zero_iff.mp (w.card_nonprivateLocations.trans h)
+
+/-- Every condition on the participants of the nonprivate gates holds for a circuit without
+nonprivate gates. -/
+theorem forall_participants_of_nonprivateCount_eq_zero {Q : Finset P → Prop}
+    {w : OriginalCircuit X Y} (h : w.nonprivateCount = 0) (g : w.nonprivateLocations) :
+    Q (w.participants g) :=
+  ((isEmpty_nonprivateLocations_of_nonprivateCount_eq_zero h).false g).elim
 
 /-- The participation of a party is the number of gates containing it (no gate is private). -/
 theorem participation_eq_participationCount (w : OriginalCircuit X Y) (p : P) :
