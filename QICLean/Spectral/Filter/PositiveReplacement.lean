@@ -6,6 +6,7 @@ Authors: QICLean contributors
 import QICLean.Analysis.Exponential.MatrixFilter
 import QICLean.Spectral.Eigenvalue.GlobalGap
 import QICLean.Analysis.Norm.RootChannel
+import QICLean.Analysis.Norm.MatrixToEuclidean
 
 /-!
 # Positive replacement of a gapped Hamiltonian
@@ -65,15 +66,6 @@ noncomputable def filterL1 (p : ℕ) (δ : ℝ) : ℝ :=
 theorem filterL1_nonneg (p : ℕ) (δ : ℝ) : 0 ≤ filterL1 p δ :=
   integral_nonneg fun _ => abs_nonneg _
 
-omit [DecidableEq n] in
-/-- A unit vector satisfies `Ω⋆ Ω = 1`. -/
-theorem star_dotProduct_self_of_norm_eq_one {Ω : EuclideanSpace ℂ n} (hΩ : ‖Ω‖ = 1) :
-    star (WithLp.ofLp Ω) ⬝ᵥ WithLp.ofLp Ω = 1 := by
-  have h : ⟪Ω, Ω⟫_ℂ = 1 := by
-    rw [inner_self_eq_norm_sq_to_K, hΩ]; simp
-  rw [EuclideanSpace.inner_eq_star_dotProduct, dotProduct_comm] at h
-  exact h
-
 /-- `|⟨Ω, A Ω⟩| ≤ ‖A‖` for a unit vector `Ω`. -/
 theorem norm_star_dotProduct_mulVec_le {Ω : EuclideanSpace ℂ n} (hΩ : ‖Ω‖ = 1)
     (A : Matrix n n ℂ) :
@@ -114,7 +106,7 @@ theorem filterIntegral_mulVec_of_posSemidef_gap {p : ℕ} (hp : 1 ≤ p) {δ Δ 
   set ω := WithLp.ofLp Ω with hω
   set c := star ω ⬝ᵥ (A *ᵥ ω) with hc
   set b := hH.eigenvectorBasis
-  have hωω : star ω ⬝ᵥ ω = 1 := star_dotProduct_self_of_norm_eq_one hΩ
+  have hωω : star ω ⬝ᵥ ω = 1 := EuclideanSpace.star_dotProduct_self_eq_one_of_norm_eq_one hΩ
   have hΔ : 0 < Δ := hδ.trans_le hδΔ
   -- It suffices to test against every eigenbasis vector.
   suffices hk : ∀ k, star (WithLp.ofLp (b k)) ⬝ᵥ
@@ -234,7 +226,7 @@ theorem sum_centeredFilter {p : ℕ} (hp : 1 ≤ p) {δ E₀ : ℝ} (hδ : 0 < �
   rw [← filterIntegral_finset_sum hp hδ hH, hsum, filterIntegral_self hp hδ, ← Finset.sum_smul]
   congr 2
   rw [← dotProduct_sum, ← Matrix.sum_mulVec, hsum, hHΩ, dotProduct_smul,
-    star_dotProduct_self_of_norm_eq_one hΩ, smul_eq_mul, mul_one]
+    EuclideanSpace.star_dotProduct_self_eq_one_of_norm_eq_one hΩ, smul_eq_mul, mul_one]
 
 /-- **`‖M‖ ≤ ‖h‖ (‖f‖₁ + 1)`** (`03-quasilocal.tex`, `eq:quasilocal-filter-sum`). -/
 theorem norm_centeredFilter_le {p : ℕ} (hp : 1 ≤ p) {δ : ℝ} (hδ : 0 < δ) {H : Matrix n n ℂ}

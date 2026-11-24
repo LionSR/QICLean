@@ -8,6 +8,8 @@ import QICLean.Probability.Gaussian.SourceError
 /-! Edge-case regressions for GaussianSourceError in the compression proof. -/
 
 open QICLean.ComplexGaussian MeasureTheory
+open ProductSource
+open EuclideanSpace (complexCoordinate complexCoordinate_apply)
 
 attribute [local instance 10000] Classical.propDecidable
 open scoped BigOperators Matrix Matrix.Norms.L2Operator
@@ -18,7 +20,7 @@ abbrev SingleIndex := Fin 1 → Fin 1 × Fin 1
 example (k : ℕ) (hk : 0 < k)
     (hO : ‖Complex.I • (1 : Matrix (SingleIndex × Fin 1) (SingleIndex × Fin 1) ℂ)‖ ≤ 1) :
     (∫ ω, Matrix.rectangularTraceNorm
-      (ProbabilityTheory.weightedSourceError (fun _ : Fin 1 ↦ (1 : ℝ))
+      (Matrix.halfWeightedBlockCombination (fun _ : Fin 1 ↦ (1 : ℝ))
         (fun _ : Fin 1 ↦ (1 : ℝ))
         (Complex.I • (1 : Matrix (SingleIndex × Fin 1) (SingleIndex × Fin 1) ℂ))
         (fun b ↦ independentDensityCoefficient k (fun (_ : Fin 1) (_ : Fin 1) ↦ (1 : ℝ))
@@ -40,7 +42,7 @@ example (k : ℕ) (hk : 0 < k)
     (O : Matrix (((Fin 0 → Fin 3 × Fin 3) × Fin 1))
       (((Fin 0 → Fin 2 × Fin 2) × Fin 1)) ℂ) (hO : ‖O‖ ≤ 1) :
     (∫ ω, Matrix.rectangularTraceNorm
-      (ProbabilityTheory.weightedSourceError (fun _ : Fin 1 ↦ (1 : ℝ))
+      (Matrix.halfWeightedBlockCombination (fun _ : Fin 1 ↦ (1 : ℝ))
         (fun _ : Fin 1 ↦ (1 : ℝ)) O
         (fun b ↦ independentDensityCoefficient k
           (fun (_ : Fin 0) (_ : Fin 2) ↦ (0 : ℝ))
@@ -58,7 +60,7 @@ example (k : ℕ) (hk : 0 < k)
 -- Rectangular private spaces and ket/bra Schmidt supports include zero probabilities.
 example (k : ℕ) :
     Integrable (fun ω ↦ Matrix.rectangularTraceNorm
-      (ProbabilityTheory.weightedSourceError
+      (Matrix.halfWeightedBlockCombination
         (fun t : Fin 2 ↦ if t = 0 then (1 : ℝ) else 0)
         (fun u : Fin 3 ↦ if u = 0 then (1 : ℝ) else 0)
         (0 : Matrix (((Fin 1 → Fin 3 × Fin 3) × Fin 3))

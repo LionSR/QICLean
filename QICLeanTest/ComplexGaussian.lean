@@ -8,6 +8,8 @@ import QICLean.Probability.Gaussian.Covariance
 /-! Circular complex Gaussian covariance regressions with coincident indices,
 zero weights, unequal supports and empty sample families. -/
 open MeasureTheory ProbabilityTheory QICLean.ComplexGaussian
+open ProductSource
+open EuclideanSpace (complexCoordinate complexCoordinate_apply)
 open scoped ComplexConjugate
 
 -- All four coordinates coincide: the centered variance is 1.
@@ -31,7 +33,7 @@ example : (∫ x, sampleAverage 2 (0 : Fin 2) 1 x *
   simpa [delta] using integral_sampleAverage_mul_conj 2 (by decide) (0 : Fin 2) 1 0 1
 
 -- Unit-variance complex normalization gives fourth moment 2.
-example : (∫ x, ‖coordinate (0 : Fin 1) x‖ ^ 4 ∂law (Fin 1)) = 2 :=
+example : (∫ x, ‖complexCoordinate (0 : Fin 1) x‖ ^ 4 ∂law (Fin 1)) = 2 :=
   integral_coordinate_norm_four 0
 
 -- Empty sample sums remain defined; the positive-k covariance theorem is separate.

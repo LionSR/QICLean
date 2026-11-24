@@ -201,7 +201,7 @@ theorem integrable_rectangularTraceNorm_selectedBranchSourceError (k : ℕ) (S :
     (htau : ∀ t, 0 ≤ tau t) (htau' : ∀ u, 0 ≤ tau' u)
     (htausum : ∑ t, tau t = 1) (htau'sum : ∑ u, tau' u = 1) :
     Integrable (fun ω ↦ Matrix.rectangularTraceNorm
-      (ProbabilityTheory.weightedSourceError tau tau' O
+      (Matrix.halfWeightedBlockCombination tau tau' O
         (fun b ↦ selectedBranchDensityCoefficient k S σ lam mu b.1 b.2 ω)))
       (globalBranchLaw k A C) :=
   (measurePreserving_selectedBranchSamples k S σ).integrable_comp_of_integrable
@@ -224,12 +224,12 @@ theorem integral_rectangularTraceNorm_selectedBranchSourceError_le (k : ℕ) (hk
     (htau : ∀ t, 0 ≤ tau t) (htau' : ∀ u, 0 ≤ tau' u)
     (htausum : ∑ t, tau t = 1) (htau'sum : ∑ u, tau' u = 1) (hO : ‖O‖ ≤ 1) :
     (∫ ω, Matrix.rectangularTraceNorm
-      (ProbabilityTheory.weightedSourceError tau tau' O
+      (Matrix.halfWeightedBlockCombination tau tau' O
         (fun b ↦ selectedBranchDensityCoefficient k S σ lam mu b.1 b.2 ω))
       ∂globalBranchLaw k A C) ≤ (k : ℝ) ^ (-(S.card : ℝ) / 2) := by
   simp only [selectedBranchDensityCoefficient]
   rw [integral_projection_of_integrable (measurePreserving_selectedBranchSamples k S σ)
-    (fun ω ↦ Matrix.rectangularTraceNorm (ProbabilityTheory.weightedSourceError tau tau' O
+    (fun ω ↦ Matrix.rectangularTraceNorm (Matrix.halfWeightedBlockCombination tau tau' O
       (fun b ↦ independentDensityCoefficient k lam mu b.1 b.2 ω)))
     (integrable_rectangularTraceNorm_gaussianSourceError k lam mu tau tau' O
       htau htau' htausum htau'sum)]

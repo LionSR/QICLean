@@ -36,6 +36,16 @@ def euclideanOuterProduct (u : EuclideanSpace ℂ m) (v : EuclideanSpace ℂ n) 
     Matrix m n ℂ := vecMulVec (WithLp.ofLp u) (star (WithLp.ofLp v))
 
 omit [DecidableEq n] in
+/-- The trace of the pure density `|w⟩⟨w|` is the squared Euclidean norm of `w`. -/
+theorem trace_euclideanOuterProduct_self (w : EuclideanSpace ℂ n) :
+    (euclideanOuterProduct w w).trace = (‖w‖ : ℂ) ^ 2 := by
+  calc
+    _ = ⟪w, w⟫_ℂ := by
+      simp only [euclideanOuterProduct, trace, diag, vecMulVec_apply, Pi.star_apply,
+        EuclideanSpace.inner_eq_star_dotProduct, dotProduct]
+    _ = _ := inner_self_eq_norm_sq_to_K w
+
+omit [DecidableEq n] in
 /-- The Hilbert--Schmidt trace pairing of an outer product is the corresponding
 vector inner product. -/
 theorem trace_euclideanOuterProduct_conjTranspose_mul

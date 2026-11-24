@@ -16,8 +16,9 @@ variable {Ω : Type*} [MeasurableSpace Ω] {mu : Measure Ω} [IsProbabilityMeasu
 example (O : Matrix (Fin 3 × Fin 1) (Fin 2 × Fin 2) ℂ) (hO : ‖O‖ ≤ 1) :
     ∑ b : Fin 2 × Fin 3, Real.sqrt (![1, 0] b.1 * ![0, 1, 0] b.2) *
       Matrix.frobeniusNormSq
-        (Matrix.quarterWeighted ![1] ![0, 1] (sourceBlock O b.2 b.1)) ≤ 1 := by
-  apply weighted_source_block_sum_le_one ![1, 0] ![0, 1, 0] ![0, 1] ![1] O
+        (Matrix.quarterWeighted ![1] ![0, 1] ((Matrix.comp _ _ _ _ ℂ).symm O b.2 b.1)) ≤ 1 := by
+  apply Matrix.sum_sqrt_mul_frobeniusNormSq_quarterWeighted_block_le_one
+    ![1, 0] ![0, 1, 0] ![0, 1] ![1] O
   · intro i; fin_cases i <;> norm_num
   · intro l; fin_cases l <;> norm_num
   · intro t; fin_cases t <;> norm_num
@@ -32,9 +33,9 @@ example (O : Matrix (Fin 3 × Fin 1) (Fin 2 × Fin 2) ℂ) (hO : ‖O‖ ≤ 1) 
 -- private dimensions and no measurability assumption on the coefficients.
 example (O : Matrix (Fin 1 × Fin 3) (Fin 1 × Fin 2) ℂ) (hO : ‖O‖ ≤ 1) :
     (∫ _w : Ω, Matrix.rectangularTraceNorm
-      (weightedSourceError ![0, 1] ![1, 0, 0] O (fun _ ↦ 0)) ∂mu) ≤ 0 := by
+      (Matrix.halfWeightedBlockCombination ![0, 1] ![1, 0, 0] O (fun _ ↦ 0)) ∂mu) ≤ 0 := by
   simpa only [Real.sqrt_zero] using
-    integral_rectangularTraceNorm_weightedSourceError_le ![1] ![1] ![0, 1] ![1, 0, 0]
+    integral_rectangularTraceNorm_halfWeightedBlockCombination_le ![1] ![1] ![0, 1] ![1, 0, 0]
       O (fun _ _ ↦ 0) 0
       (by intro i; fin_cases i; norm_num)
       (by intro l; fin_cases l; norm_num)
@@ -59,5 +60,5 @@ example (f : Ω → ℂ)
 -- The empty corrected-register sum is zero without imposing positive sizes.
 example (O : Matrix (Fin 2 × Fin 3) (Fin 0 × Fin 1) ℂ)
     (tau : Fin 1 → ℝ) (tau' : Fin 3 → ℝ) (z : Fin 0 × Fin 2 → ℂ) :
-    weightedSourceError tau tau' O z = 0 := by
-  simp [weightedSourceError]
+    Matrix.halfWeightedBlockCombination tau tau' O z = 0 := by
+  simp [Matrix.halfWeightedBlockCombination]

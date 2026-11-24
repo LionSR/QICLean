@@ -37,6 +37,7 @@ import QICLean.Analysis.Real.OptimizedPureTraceError
 import QICLean.Analysis.Real.OptimizerStability
 import QICLean.Analysis.Real.PowerExponential
 import QICLean.Analysis.Real.RenyiSlack
+import QICLean.Analysis.Real.SampleCount
 import QICLean.Analysis.Real.ScaleRecurrence
 import QICLean.Analysis.Real.SharpBellOverlapLogBound
 import QICLean.Analysis.Real.SoftTruncation

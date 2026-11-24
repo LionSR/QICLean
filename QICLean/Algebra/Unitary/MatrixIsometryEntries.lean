@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import Mathlib.Basic.Complex.Basic
 import Mathlib.LinearAlgebra.Matrix.ConjTranspose
+import Mathlib.Data.Matrix.Mul
 
 /-!
 # Entrywise identities for rectangular matrix isometries and coisometries
@@ -19,6 +20,8 @@ orthonormality equation `Vᴴ * V = 1` and the row orthonormality equation
 * `Matrix.sum_mul_star_eq_ite_of_conjTranspose_mul_eq_one`
 * `Matrix.sum_mul_star_eq_ite_of_mul_conjTranspose_eq_one`
 * `Matrix.sum_star_mul_eq_ite_of_mul_conjTranspose_eq_one`
+* `Matrix.star_mulVec_dotProduct_mulVec_of_conjTranspose_mul_eq_one`: a matrix with
+  `Kᴴ K = 1` preserves `star v ⬝ᵥ v`.
 -/
 
 open scoped Matrix BigOperators
@@ -64,5 +67,15 @@ theorem sum_star_mul_eq_ite_of_mul_conjTranspose_eq_one
     sum_mul_star_eq_ite_of_mul_conjTranspose_eq_one V hV j i
 
 end Rows
+
+section Norm
+
+/-- A matrix with `Kᴴ * K = 1` preserves `star v ⬝ᵥ v`. -/
+theorem star_mulVec_dotProduct_mulVec_of_conjTranspose_mul_eq_one {ι κ : Type*}
+    [Fintype ι] [DecidableEq ι] [Fintype κ] {K : Matrix κ ι ℂ} (hK : Kᴴ * K = 1)
+    (v : ι → ℂ) : star (K *ᵥ v) ⬝ᵥ (K *ᵥ v) = star v ⬝ᵥ v := by
+  rw [star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, hK, one_mulVec]
+
+end Norm
 
 end Matrix

@@ -404,13 +404,12 @@ Hilbert--Schmidt square.
 \subsection{Correction sums and deterministic realizations}
 
 \begin{theorem}[Binomial correction cost]\label{thm:random_binomial_cost}
-    \lean{CompressionSampling.sum_nonempty_subsets_pow}
-    \lean{CompressionSampling.sum_nonempty_subsets_weight}
-    \lean{CompressionSampling.inverse_half_power}
-    \lean{CompressionSampling.sum_nonempty_subsets_rpow}
-    \lean{CompressionSampling.zero_slots_error}
-    \lean{CompressionSampling.binomial_error_le_exp}
-    \lean{CompressionSampling.exp_eighth_sub_one_le_quarter}
+    \lean{Finset.sum_powerset_erase_empty_pow_card}
+    \lean{Finset.sum_powerset_erase_empty_pow_div_sqrt_pow}
+    \lean{Real.rpow_neg_natCast_div_two}
+    \lean{Finset.sum_powerset_erase_empty_pow_mul_rpow}
+    \lean{Real.one_add_pow_sub_one_le_exp_sub_one}
+    \lean{Real.exp_div_eight_sub_one_le_div_four}
     \leanok
     Let $T$ be a finite set of source positions, with $N=|T|$. For every real
     $a$,
@@ -441,12 +440,12 @@ Hilbert--Schmidt square.
 
 \begin{theorem}[A positive sample count with quarter accuracy]
     \label{thm:random_sample_count}
-    \lean{CompressionSampling.sampleCount}
-    \lean{CompressionSampling.sampleCount_bounds}
-    \lean{CompressionSampling.ratio_le_of_sample_count}
-    \lean{CompressionSampling.binomial_error_le_quarter}
-    \lean{CompressionSampling.error_le_quarter_of_sample_count}
-    \lean{CompressionSampling.error_le_quarter_sampleCount}
+    \lean{binomialSampleCount}
+    \lean{binomialSampleCount_bounds}
+    \lean{Real.div_sqrt_le_of_sq_le}
+    \lean{Real.one_add_pow_sub_one_le_div_four}
+    \lean{Real.one_add_div_sqrt_pow_sub_one_le_div_four}
+    \lean{one_add_div_sqrt_binomialSampleCount_pow_sub_one_le}
     \leanok
     For $N\in\N$ and real $Q,\epsilon$, put
     \begin{align}
@@ -513,9 +512,9 @@ Hilbert--Schmidt square.
 
 \begin{theorem}[A deterministic realization with half accuracy]
     \label{thm:random_realization}
-    \lean{CompressionSampling.exists_error_le_half_sampleCount}
-    \lean{CompressionSampling.exists_valid_error_le_half_sampleCount}
-    \lean{CompressionSampling.exists_valid_norm_sum_le_half_sampleCount}
+    \lean{CompressionSampling.exists_error_le_half_binomialSampleCount}
+    \lean{CompressionSampling.exists_valid_error_le_half_binomialSampleCount}
+    \lean{CompressionSampling.exists_valid_norm_sum_le_half_binomialSampleCount}
     \leanok
     Let $\mu$ be a probability measure, let $Q\geq0$ and
     $0<\epsilon\leq1$, and choose $k$ by (\ref{eq:random_sample_count}).

@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Algebra.OperatorSchmidt.OperatorRightContraction
-import QICLean.ManyBody.Entropy.Cut.ThreeWayCut
+import QICLean.ManyBody.Sites.ThreeRegion.Cut
 import QICLean.Algebra.OperatorSchmidt.Reindex
 
 /-!
@@ -49,22 +49,27 @@ theorem operatorSchmidtRank_rightContraction_subset_le (hAB : A ⊆ B)
       ((v : {v : V // v ∉ B}) → Fin (n v)) ℂ →ₗ[ℂ] ℂ) :
     operatorSchmidtRank
       ((operatorRightContraction φ (ManyBody.cutOperator B K)).reindex
-        (subsetSplitEquiv n hAB) (subsetSplitEquiv n hAB)) ≤
+        (ManyBody.subsetSplitEquiv (fun v ↦ Fin (n v)) hAB)
+        (ManyBody.subsetSplitEquiv (fun v ↦ Fin (n v)) hAB)) ≤
       operatorSchmidtRank (ManyBody.cutOperator A K) := by
   classical
   let := Fintype.ofFinite V
-  let e := threeCutEquiv n hAB
+  let e := ManyBody.threeCutEquiv (fun v ↦ Fin (n v)) hAB
   let ρ := K.reindex e e
   have hcontract : (operatorRightContraction φ (ManyBody.cutOperator B K)).reindex
-      (subsetSplitEquiv n hAB) (subsetSplitEquiv n hAB) =
+      (ManyBody.subsetSplitEquiv (fun v ↦ Fin (n v)) hAB)
+      (ManyBody.subsetSplitEquiv (fun v ↦ Fin (n v)) hAB) =
       operatorRightContraction φ ρ := by
     ext x y
     apply congrArg φ
     ext z z'
-    change K ((ManyBody.cutEquiv (fun v ↦ Fin (n v)) B).symm ((subsetSplitEquiv n hAB).symm x, z))
-      ((ManyBody.cutEquiv (fun v ↦ Fin (n v)) B).symm ((subsetSplitEquiv n hAB).symm y, z')) =
-      K ((threeCutEquiv n hAB).symm (x, z)) ((threeCutEquiv n hAB).symm (y, z'))
-    rw [threeCutEquiv_eq_trans]
+    change K ((ManyBody.cutEquiv (fun v ↦ Fin (n v)) B).symm
+        ((ManyBody.subsetSplitEquiv (fun v ↦ Fin (n v)) hAB).symm x, z))
+      ((ManyBody.cutEquiv (fun v ↦ Fin (n v)) B).symm
+        ((ManyBody.subsetSplitEquiv (fun v ↦ Fin (n v)) hAB).symm y, z')) =
+      K ((ManyBody.threeCutEquiv (fun v ↦ Fin (n v)) hAB).symm (x, z))
+        ((ManyBody.threeCutEquiv (fun v ↦ Fin (n v)) hAB).symm (y, z'))
+    rw [ManyBody.threeCutEquiv_eq_trans]
     rfl
   have hcoords : e.trans (Equiv.prodAssoc _ _ _) =
       (ManyBody.cutEquiv (fun v ↦ Fin (n v)) A).trans

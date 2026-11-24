@@ -5,6 +5,7 @@ Authors: TNLean contributors
 -/
 import QICLean.ManyBody.Entropy.RegionEntropy
 import QICLean.Entropy.MutualInformation.PurificationSplitting
+import QICLean.ManyBody.Sites.ThreeRegion.Birth
 
 /-!
 # Purification splitting for finite regions
@@ -148,5 +149,215 @@ theorem exists_isIsometry_splitTwoRegionsState_norm_sub_le_zpow
       (partialTraceRight_splitTwoRegionsState β ψ T E h)
       (jointMatrix_posSemidef β ψ T E h).isHermitian hL
       (by simpa only [regionMutualInformation_eq_matrix β ψ T E h] using hb)
+
+end ManyBody
+
+/-!
+### The splitting lemma in three-region coordinates
+
+The splitting lemma above is stated in the coordinates `splitTwoRegionsEquiv` of two disjoint
+regions. For regions `A ⊆ B`, with the three regions `A`, `B \ A` and `Bᶜ` of
+`ManyBody.threeCutEquiv`, it provides splitting data `ManyBody.SplittingData X A B` whose error
+on a unit vector `Ω` is at most `√(2 (1 - e^{-b/2})) ≤ √b` for `b = I_Ω(A : B \ A)`. The proof
+identifies the reduced state of `Ω` on `B` in the coordinates `(A, B \ A)` and its two marginals
+with the regional states, so that the relative entropy of the splitting estimate is the
+regional mutual information.
+
+For two disjoint regions `T` and `E`, take `A = T` and `B = T ∪ E`: then `B \ A = E`
+(`Finset.union_sdiff_cancel_left`), and the hypothesis on `I_Ω(T : E)` is the one of the source.
+-/
+
+open Matrix
+open scoped Kronecker Matrix.Norms.L2Operator ComplexOrder
+
+namespace ManyBody
+
+variable {V : Type*} [Fintype V] [DecidableEq V] {X : V → Type*} [∀ v, Fintype (X v)]
+  [∀ v, DecidableEq (X v)] {A B : Finset V} (hAB : A ⊆ B)
+
+omit [Fintype V] [∀ v, Fintype (X v)] [∀ v, DecidableEq (X v)] in
+/-- The configurations outside `A` are pairs of configurations on `B \ A` and outside `B`. -/
+private def complEquivOfSubset :
+    RegionConfig X (B \ A) × ComplConfig X B ≃ ComplConfig X A where
+  toFun p v := if hB : v.1 ∈ B then p.1 ⟨v, Finset.mem_sdiff.2 ⟨hB, v.2⟩⟩ else p.2 ⟨v, hB⟩
+  invFun c := (fun v ↦ c ⟨v, (Finset.mem_sdiff.1 v.2).2⟩, fun v ↦ c ⟨v, fun h ↦ v.2 (hAB h)⟩)
+  left_inv p := by
+    obtain ⟨y, z⟩ := p
+    refine Prod.ext (funext fun v ↦ ?_) (funext fun v ↦ ?_)
+    · simp [(Finset.mem_sdiff.1 v.2).1]
+    · simp [v.2]
+  right_inv c := by
+    funext v
+    by_cases hB : v.1 ∈ B <;> simp [hB]
+
+omit [Fintype V] [∀ v, Fintype (X v)] [∀ v, DecidableEq (X v)] in
+include hAB in
+/-- The configurations outside `B \ A` are pairs of configurations on `A` and outside `B`. -/
+private def complEquivOfSdiff :
+    RegionConfig X A × ComplConfig X B ≃ ComplConfig X (B \ A) where
+  toFun p v := if hA : v.1 ∈ A then p.1 ⟨v, hA⟩ else
+    p.2 ⟨v, fun hB ↦ v.2 (Finset.mem_sdiff.2 ⟨hB, hA⟩)⟩
+  invFun c := (fun v ↦ c ⟨v, fun h ↦ (Finset.mem_sdiff.1 h).2 v.2⟩,
+    fun v ↦ c ⟨v, fun h ↦ v.2 (Finset.mem_sdiff.1 h).1⟩)
+  left_inv p := by
+    obtain ⟨x, z⟩ := p
+    refine Prod.ext (funext fun v ↦ ?_) (funext fun v ↦ ?_)
+    · simp [v.2]
+    · simp [show (v : V) ∉ A from fun h ↦ v.2 (hAB h)]
+  right_inv c := by
+    funext v
+    by_cases hA : v.1 ∈ A <;> simp [hA]
+
+omit [Fintype V] [∀ v, Fintype (X v)] [∀ v, DecidableEq (X v)] in
+/-- Gluing `x` on `A` with the configuration outside `A` built from `(y, z)` is gluing
+`((x, y), z)` in three-way coordinates. -/
+private theorem cutEquiv_symm_complEquivOfSubset (x : RegionConfig X A)
+    (y : RegionConfig X (B \ A)) (z : ComplConfig X B) :
+    (cutEquiv X A).symm (x, complEquivOfSubset hAB (y, z)) =
+      (threeCutEquiv X hAB).symm ((x, y), z) := by
+  funext v
+  by_cases hA : v ∈ A
+  · rw [cutEquiv_symm_apply_mem _ _ hA, threeCutEquiv_symm_apply_of_mem hAB hA]
+  · rw [cutEquiv_symm_apply_not_mem _ _ hA]
+    by_cases hB : v ∈ B
+    · rw [threeCutEquiv_symm_apply_of_mem_sdiff hAB (Finset.mem_sdiff.2 ⟨hB, hA⟩)]
+      simp [complEquivOfSubset, hB]
+    · rw [threeCutEquiv_symm_apply_of_not_mem hAB hB]
+      simp [complEquivOfSubset, hB]
+
+omit [Fintype V] [∀ v, Fintype (X v)] [∀ v, DecidableEq (X v)] in
+/-- Gluing `y` on `B \ A` with the configuration outside `B \ A` built from `(x, z)` is gluing
+`((x, y), z)` in three-way coordinates. -/
+private theorem cutEquiv_symm_complEquivOfSdiff (x : RegionConfig X A)
+    (y : RegionConfig X (B \ A)) (z : ComplConfig X B) :
+    (cutEquiv X (B \ A)).symm (y, complEquivOfSdiff hAB (x, z)) =
+      (threeCutEquiv X hAB).symm ((x, y), z) := by
+  funext v
+  by_cases hM : v ∈ B \ A
+  · rw [cutEquiv_symm_apply_mem _ _ hM, threeCutEquiv_symm_apply_of_mem_sdiff hAB hM]
+  · rw [cutEquiv_symm_apply_not_mem _ _ hM]
+    by_cases hA : v ∈ A
+    · rw [threeCutEquiv_symm_apply_of_mem hAB hA]
+      simp [complEquivOfSdiff, hA]
+    · have hB : v ∉ B := fun hB ↦ hM (Finset.mem_sdiff.2 ⟨hB, hA⟩)
+      rw [threeCutEquiv_symm_apply_of_not_mem hAB hB]
+      simp [complEquivOfSdiff, hA]
+
+omit [∀ v, DecidableEq (X v)] in
+/-- The reduced state of `Ω` on `B`, in the coordinates `(x, y)` of `A` and `B \ A`, is the
+reduced state of the coordinate vector `splitVec hAB Ω`. -/
+theorem partialTraceRight_splitVec (Ω : EuclideanSpace ℂ (Config X)) :
+    partialTraceRight (vecMulVec (splitVec hAB Ω) (star (splitVec hAB Ω))) =
+      (regionState Ω B).submatrix (subsetSplitEquiv X hAB).symm
+        (subsetSplitEquiv X hAB).symm := by
+  ext p p'
+  simp only [partialTraceRight_apply, vecMulVec_apply, Pi.star_apply, regionState,
+    submatrix_apply, regionMatrix_apply, splitVec, threeCutEquiv_eq_trans]
+  rfl
+
+omit [∀ v, DecidableEq (X v)] in
+/-- The marginal on `A` of the reduced state of `Ω` on `B` is the reduced state on `A`. -/
+theorem partialTraceRight_partialTraceRight_splitVec (Ω : EuclideanSpace ℂ (Config X)) :
+    partialTraceRight (partialTraceRight
+      (vecMulVec (splitVec hAB Ω) (star (splitVec hAB Ω)))) = regionState Ω A := by
+  ext x x'
+  simp only [partialTraceRight_apply, vecMulVec_apply, Pi.star_apply, regionState,
+    regionMatrix_apply]
+  rw [← Fintype.sum_prod_type', ← (complEquivOfSubset (X := X) hAB).sum_comp]
+  refine Fintype.sum_congr _ _ fun p ↦ ?_
+  rcases p with ⟨y, z⟩
+  rw [cutEquiv_symm_complEquivOfSubset, cutEquiv_symm_complEquivOfSubset]
+
+omit [∀ v, DecidableEq (X v)] in
+/-- The marginal on `B \ A` of the reduced state of `Ω` on `B` is the reduced state on
+`B \ A`. -/
+theorem partialTraceLeft_partialTraceRight_splitVec (Ω : EuclideanSpace ℂ (Config X)) :
+    partialTraceLeft (partialTraceRight
+      (vecMulVec (splitVec hAB Ω) (star (splitVec hAB Ω)))) = regionState Ω (B \ A) := by
+  ext y y'
+  simp only [partialTraceLeft_apply, partialTraceRight_apply, vecMulVec_apply, Pi.star_apply,
+    regionState, regionMatrix_apply]
+  rw [← (complEquivOfSdiff (X := X) hAB).sum_comp fun c ↦
+    Ω.ofLp ((cutEquiv X (B \ A)).symm (y, c)) * star (Ω.ofLp ((cutEquiv X (B \ A)).symm (y', c)))]
+  rw [← Fintype.sum_prod_type']
+  refine Finset.sum_congr rfl fun p _ ↦ ?_
+  rcases p with ⟨x, z⟩
+  rw [cutEquiv_symm_complEquivOfSdiff, cutEquiv_symm_complEquivOfSdiff]
+
+/-- The relative entropy of the reduced state of `Ω` on `B`, in the coordinates of `A` and
+`B \ A`, with respect to the product of its marginals is the regional mutual information
+`I_Ω(A : B \ A)` (Lemma 2.2 `lem:fidelity`, `01-preliminaries.tex`, lines 92–139). -/
+theorem quantumRelativeEntropy_splitVec_eq_regionMutualInformation
+    (Ω : EuclideanSpace ℂ (Config X))
+    {ρ : Matrix (RegionConfig X A × RegionConfig X (B \ A))
+      (RegionConfig X A × RegionConfig X (B \ A)) ℂ}
+    (hρ : partialTraceRight (vecMulVec (splitVec hAB Ω) (star (splitVec hAB Ω))) = ρ) :
+    quantumRelativeEntropy ρ (partialTraceRight ρ ⊗ₖ partialTraceLeft ρ) =
+      regionMutualInformation Ω A (B \ A) := by
+  subst hρ
+  have hpsd := (posSemidef_vecMulVec_self_star (splitVec hAB Ω)).partialTraceRight
+  rw [quantumRelativeEntropy_product_marginals hpsd,
+    vonNeumannEntropy_congr (partialTraceRight_partialTraceRight_splitVec hAB Ω) _
+      (regionState_isHermitian A Ω),
+    vonNeumannEntropy_congr (partialTraceLeft_partialTraceRight_splitVec hAB Ω) _
+      (regionState_isHermitian (B \ A) Ω),
+    vonNeumannEntropy_congr (partialTraceRight_splitVec hAB Ω) _
+      ((isHermitian_submatrix_equiv _).mpr (regionState_isHermitian B Ω)),
+    vonNeumannEntropy_submatrix_equiv _ _ (regionState_isHermitian B Ω),
+    regionMutualInformation, Finset.union_sdiff_of_subset hAB]
+  rfl
+
+/-- **Splitting consequence in three-region coordinates** (Lemma 6.4 `lem:splitting`). Let
+`A ⊆ B` be regions, `U = Bᶜ`, and `b = I_Ω(A : B \ A)` for a unit vector `Ω`. There are
+splitting data with `‖(1 ⊗ V) Ω - s ⊗ s'‖ ≤ √(2(1 - e^{-b/2})) ≤ √b`. No bound on the
+dimensions is imposed.
+
+Polynomial-PEPS manuscript, Lemma 6.4 `lem:splitting`, `05-frames.tex`, lines 352–368. -/
+theorem SplittingData.exists_error_le {Ω : EuclideanSpace ℂ (Config X)} (hΩ : ‖Ω‖ = 1) :
+    ∃ σ : SplittingData X A B,
+      σ.error hAB Ω ≤
+        √(2 * (1 - Real.exp (-(regionMutualInformation Ω A (B \ A) / 2)))) ∧
+      √(2 * (1 - Real.exp (-(regionMutualInformation Ω A (B \ A) / 2)))) ≤
+        √(regionMutualInformation Ω A (B \ A)) := by
+  obtain ⟨V, s, s', hV, hs, hs', hnorm⟩ :=
+    exists_isIsometry_norm_sub_tensorPurification_le (splitVec hAB Ω)
+      (star_splitVec_dotProduct_splitVec hAB hΩ) rfl
+  refine ⟨⟨V, s, s', hV, hs, hs'⟩, ?_, Real.sqrt_two_mul_one_sub_exp_neg_half_le_sqrt _⟩
+  rw [← quantumRelativeEntropy_splitVec_eq_regionMutualInformation hAB Ω rfl]
+  exact hnorm
+
+/-- **Splitting at a polynomially small mutual information** (Lemma 6.4 `lem:splitting`, last
+sentence). If `I_Ω(A : B \ A) ≤ L^{-60}`, the splitting error is at most `L^{-30}`.
+
+Polynomial-PEPS manuscript, Lemma 6.4 `lem:splitting`, `05-frames.tex`, lines 366–367. -/
+theorem SplittingData.exists_error_le_zpow {Ω : EuclideanSpace ℂ (Config X)} (hΩ : ‖Ω‖ = 1)
+    {L : ℝ} (hI : regionMutualInformation Ω A (B \ A) ≤ L ^ (-60 : ℤ)) :
+    ∃ σ : SplittingData X A B, σ.error hAB Ω ≤ L ^ (-30 : ℤ) := by
+  obtain ⟨σ, h₁, h₂⟩ := SplittingData.exists_error_le hAB hΩ
+  refine ⟨σ, h₁.trans (h₂.trans ?_)⟩
+  have hsq : L ^ (-60 : ℤ) = (L ^ (-30 : ℤ)) ^ 2 := by
+    rw [← zpow_natCast, ← _root_.zpow_mul]; norm_num
+  rw [← Real.sqrt_sq (Even.zpow_nonneg ⟨-15, by norm_num⟩ L), ← hsq]
+  exact Real.sqrt_le_sqrt hI
+
+/-- **Splitting at a polynomially small mutual information, any exponent** (Lemma 6.4
+`lem:splitting`, last sentence, and the splitting step of Lemmas `lem:birth` and `lem:exchange` of
+the one-dimensional note, `part2b_mps_protocol.tex`, lines 70–158). For `0 ≤ L` and any real
+exponent `p`, if `I_Ω(A : B \ A) ≤ L^{-2p}`, the splitting error is at most `L^{-p}`.
+
+Polynomial-PEPS manuscript, Lemma 6.4 `lem:splitting`, `05-frames.tex`, lines 366–367, there
+with `p = 30`. -/
+theorem SplittingData.exists_error_le_rpow {Ω : EuclideanSpace ℂ (Config X)} (hΩ : ‖Ω‖ = 1)
+    {L p : ℝ} (hL : 0 ≤ L) (hI : regionMutualInformation Ω A (B \ A) ≤ L ^ (-(2 * p))) :
+    ∃ σ : SplittingData X A B, σ.error hAB Ω ≤ L ^ (-p) := by
+  obtain ⟨σ, h₁, h₂⟩ := SplittingData.exists_error_le hAB hΩ
+  refine ⟨σ, h₁.trans (h₂.trans ?_)⟩
+  have hsq : L ^ (-(2 * p)) = (L ^ (-p)) ^ 2 := by
+    rw [← Real.rpow_natCast, ← Real.rpow_mul hL]
+    congr 1
+    push_cast
+    ring
+  rw [← Real.sqrt_sq (Real.rpow_nonneg hL _), ← hsq]
+  exact Real.sqrt_le_sqrt hI
 
 end ManyBody

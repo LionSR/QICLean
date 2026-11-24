@@ -9,6 +9,8 @@ import QICLean.Probability.Gaussian.IndependentSlots
 zero Schmidt weights and heterogeneous ket and bra supports. -/
 
 open QICLean.ComplexGaussian MeasureTheory
+open ProductSource
+open EuclideanSpace (complexCoordinate complexCoordinate_apply)
 open scoped BigOperators
 
 -- Empty slots give scalar covariance one on the actual constructed law.

@@ -22,6 +22,7 @@ import QICLean.Channel.Schmidt.PureApproximationSpectralTail
 import QICLean.Channel.Schmidt.PureMarginalApproximation
 import QICLean.Channel.Schmidt.Rank
 import QICLean.Channel.Schmidt.RankAction
+import QICLean.Channel.Schmidt.SchmidtFrames
 import QICLean.Channel.Schmidt.SchmidtTilt
 import QICLean.Channel.Schmidt.SurprisalMoment
 import QICLean.Channel.Schmidt.Threshold

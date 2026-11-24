@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.Norm.WeightedRectangular
+import QICLean.Analysis.TraceNorm.WeightedBlockCombination
 import QICLean.Probability.Concentration.MatrixSecondMoment
 import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.Rpow.Measurable
 import Mathlib.Analysis.Matrix.MeasurableSpace
@@ -13,7 +13,8 @@ import Mathlib.Analysis.Matrix.MeasurableSpace
 
 For a rectangular contraction on the full free input spaces, diagonal
 coefficient covariance gives a dimension-independent expected trace error.
-The block aggregation is proved from finite entry sums. Ordinary full
+The block combinations, their aggregation and the pointwise trace-norm bound are
+`Matrix.halfWeightedBlockCombination` and its lemmas. Ordinary full
 transpose preserves the coefficient, including its complex phase.
 
 Source: *Polynomial PEPS approximation of gapped square-grid ground states*,
@@ -36,126 +37,6 @@ namespace ProbabilityTheory
 
 variable {I L T U : Type*} [Fintype I] [Fintype L] [Fintype T] [Fintype U]
   [DecidableEq I] [DecidableEq L] [DecidableEq T] [DecidableEq U]
-
-/-- The `(l,i)` block of the full free-input contraction has ket columns `T`
-and bra rows `U`. Source: `eq:compression-block-contraction`. -/
-def sourceBlock (O : Matrix (L × U) (I × T) ℂ) (l : L) (i : I) : Matrix U T ℂ :=
-  fun u t ↦ O (l, u) (i, t)
-
-/-- Exterior-input error of a fixed expanded branch. The transpose is ordinary
-full transpose, not an adjoint. Source: `eq:compression-exterior-input`. -/
-def weightedSourceError (tau : T → ℝ) (tau' : U → ℝ)
-    (O : Matrix (L × U) (I × T) ℂ) (z : I × L → ℂ) : Matrix T U ℂ :=
-  ∑ b, z b • Matrix.halfWeighted tau tau' (sourceBlock O b.2 b.1)ᵀ
-
-/-- The quarter-weighted block combination controlling the source error.
-Source: the transpose step after `eq:compression-quarter-powers`. -/
-def weightedSourceQuarter (tau : T → ℝ) (tau' : U → ℝ)
-    (O : Matrix (L × U) (I × T) ℂ) (z : I × L → ℂ) : Matrix U T ℂ :=
-  ∑ b, z b • Matrix.quarterWeighted tau' tau (sourceBlock O b.2 b.1)
-
-omit [DecidableEq I] [DecidableEq L] in
-/-- Square-root weighted source sums are linear in the free coefficient
-matrix; no complex coefficient is conjugated. -/
-theorem weightedSourceError_eq_halfWeighted
-    (tau : T → ℝ) (tau' : U → ℝ) (O : Matrix (L × U) (I × T) ℂ) (z : I × L → ℂ) :
-    weightedSourceError tau tau' O z =
-      Matrix.halfWeighted tau tau' (∑ b, z b • (sourceBlock O b.2 b.1)ᵀ) := by
-  ext t u
-  simp only [weightedSourceError, Matrix.halfWeighted, Matrix.diagonal_mul,
-    Matrix.mul_diagonal, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul]
-  rw [Finset.mul_sum, Finset.sum_mul]
-  exact Finset.sum_congr rfl fun b _ ↦ by ring
-
-omit [DecidableEq I] [DecidableEq L] in
-/-- Ordinary transpose converts the quarter-weighted source sum to the
-controlled ket-to-bra block combination, preserving every coefficient. -/
-theorem quarterWeighted_source_sum_eq_transpose
-    (tau : T → ℝ) (tau' : U → ℝ) (O : Matrix (L × U) (I × T) ℂ) (z : I × L → ℂ) :
-    Matrix.quarterWeighted tau tau' (∑ b, z b • (sourceBlock O b.2 b.1)ᵀ) =
-      (weightedSourceQuarter tau tau' O z)ᵀ := by
-  ext t u
-  simp only [weightedSourceQuarter, Matrix.quarterWeighted_apply, Matrix.transpose_apply,
-    Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul]
-  rw [Finset.mul_sum, Finset.sum_mul]
-  exact Finset.sum_congr rfl fun b _ ↦ by ring
-
-omit [DecidableEq I] [DecidableEq L] in
-/-- Pointwise dimension-independent trace/Hilbert--Schmidt comparison for the
-source error. Source: `eq:compression-quarter-powers`. -/
-theorem rectangularTraceNorm_weightedSourceError_le
-    (tau : T → ℝ) (tau' : U → ℝ) (O : Matrix (L × U) (I × T) ℂ) (z : I × L → ℂ)
-    (htau : ∀ t, 0 ≤ tau t) (htau' : ∀ u, 0 ≤ tau' u)
-    (htausum : ∑ t, tau t = 1) (htau'sum : ∑ u, tau' u = 1) :
-    Matrix.rectangularTraceNorm (weightedSourceError tau tau' O z) ≤
-      Real.sqrt (Matrix.frobeniusNormSq (weightedSourceQuarter tau tau' O z)) := by
-  rw [weightedSourceError_eq_halfWeighted]
-  have h := Matrix.rectangularTraceNorm_halfWeighted_le tau tau'
-    (∑ b, z b • (sourceBlock O b.2 b.1)ᵀ) htau htau' htausum htau'sum
-  rw [quarterWeighted_source_sum_eq_transpose] at h
-  simpa only [Matrix.frobeniusNormSq, Matrix.frobenius_norm_transpose] using h
-
-/-- Product probabilities on the complete free registers. Source: the
-definition of `R` and `Rtilde` after `eq:compression-block-second-moment`. -/
-def sourceProductProbability (p : I → ℝ) (tau : T → ℝ) : I × T → ℝ :=
-  fun b ↦ p b.1 * tau b.2
-
-omit [DecidableEq I] [DecidableEq T] in
-/-- Product probabilities remain normalized, including zero probabilities. -/
-theorem sum_sourceProductProbability
-    (p : I → ℝ) (tau : T → ℝ) (hp : ∑ i, p i = 1) (htau : ∑ t, tau t = 1) :
-    ∑ b, sourceProductProbability p tau b = 1 := by
-  simp only [sourceProductProbability, Fintype.sum_prod_type, ← Finset.mul_sum,
-    htau, mul_one, hp]
-
-/-- Exact block aggregation into the Hilbert--Schmidt square on the full free
-input spaces. Source: the equality preceding `eq:compression-dimension-free`.
-The indices at the two corrected endpoints remain independent. -/
-theorem weighted_source_block_aggregation
-    (p : I → ℝ) (p' : L → ℝ) (tau : T → ℝ) (tau' : U → ℝ)
-    (O : Matrix (L × U) (I × T) ℂ)
-    (hp : ∀ i, 0 ≤ p i) (hp' : ∀ l, 0 ≤ p' l)
-    :
-    ∑ b : I × L, Real.sqrt (p b.1 * p' b.2) *
-        Matrix.frobeniusNormSq (Matrix.quarterWeighted tau' tau (sourceBlock O b.2 b.1)) =
-      Matrix.frobeniusNormSq (Matrix.quarterWeighted
-        (sourceProductProbability p' tau') (sourceProductProbability p tau) O) := by
-  simp only [Matrix.frobeniusNormSq_quarterWeighted, sourceProductProbability,
-    sourceBlock, Fintype.sum_prod_type, Real.sqrt_mul (hp _),
-    Real.sqrt_mul (hp' _)]
-  simp_rw [Finset.mul_sum]
-  rw [Finset.sum_comm (f := fun i l ↦ _)]
-  apply Finset.sum_congr rfl
-  intro l _
-  rw [Finset.sum_comm (f := fun i u ↦ _)]
-  apply Finset.sum_congr rfl
-  intro u _
-  apply Finset.sum_congr rfl
-  intro i _
-  apply Finset.sum_congr rfl
-  intro t _
-  ring
-
-omit [DecidableEq L] in
-/-- A rectangular full-register contraction bounds the variance-weighted
-block sum with no input, private-memory, or discard dimension factor.
-Source: `eq:compression-dimension-free`. -/
-theorem weighted_source_block_sum_le_one
-    (p : I → ℝ) (p' : L → ℝ) (tau : T → ℝ) (tau' : U → ℝ)
-    (O : Matrix (L × U) (I × T) ℂ)
-    (hp : ∀ i, 0 ≤ p i) (hp' : ∀ l, 0 ≤ p' l)
-    (htau : ∀ t, 0 ≤ tau t) (htau' : ∀ u, 0 ≤ tau' u)
-    (hpsum : ∑ i, p i = 1) (hp'sum : ∑ l, p' l = 1)
-    (htausum : ∑ t, tau t = 1) (htau'sum : ∑ u, tau' u = 1) (hO : ‖O‖ ≤ 1) :
-    ∑ b : I × L, Real.sqrt (p b.1 * p' b.2) *
-      Matrix.frobeniusNormSq (Matrix.quarterWeighted tau' tau (sourceBlock O b.2 b.1)) ≤ 1 := by
-  classical
-  rw [weighted_source_block_aggregation p p' tau tau' O hp hp']
-  exact Matrix.frobeniusNormSq_quarterWeighted_le_one _ _ O
-    (fun b ↦ mul_nonneg (hp' b.1) (htau' b.2))
-    (fun b ↦ mul_nonneg (hp b.1) (htau b.2))
-    (sum_sourceProductProbability p' tau' hp'sum htau'sum)
-    (sum_sourceProductProbability p tau hpsum htausum) hO
 
 open scoped Matrix.Norms.Frobenius in
 private theorem sqrt_frobeniusNormSq {a b : Type*} [Fintype a] [Fintype b]
@@ -210,18 +91,18 @@ theorem aestronglyMeasurable_rectangularTraceNorm_sum
 omit [DecidableEq I] [DecidableEq L] in
 /-- Pairwise coefficient integrability supplies integrability of the
 Hilbert--Schmidt upper bound. Auxiliary to `eq:compression-one-choice`. -/
-theorem integrable_weightedSourceQuarter_norm [IsProbabilityMeasure mu]
+theorem integrable_norm_quarterWeightedBlockCombination [IsProbabilityMeasure mu]
     (tau : T → ℝ) (tau' : U → ℝ) (O : Matrix (L × U) (I × T) ℂ)
     (z : I × L → Ω → ℂ)
     (hz : ∀ b c, Integrable (fun w ↦ z b w * conj (z c w)) mu) :
-    Integrable (fun w ↦ Real.sqrt
-      (Matrix.frobeniusNormSq (weightedSourceQuarter tau tau' O (fun b ↦ z b w)))) mu := by
+    Integrable (fun w ↦ Real.sqrt (Matrix.frobeniusNormSq
+      (Matrix.quarterWeightedBlockCombination tau tau' O (fun b ↦ z b w)))) mu := by
   let f : Ω → ℝ := fun w ↦ Real.sqrt
-    (Matrix.frobeniusNormSq (weightedSourceQuarter tau tau' O (fun b ↦ z b w)))
+    (Matrix.frobeniusNormSq (Matrix.quarterWeightedBlockCombination tau tau' O (fun b ↦ z b w)))
   have hsquare : Integrable (fun w ↦ f w ^ 2) mu := by
-    simpa only [f, weightedSourceQuarter, sqrt_frobeniusNormSq] using
+    simpa only [f, Matrix.quarterWeightedBlockCombination, sqrt_frobeniusNormSq] using
       integrable_frobenius_norm_sq_sum z hz
-        (fun b ↦ Matrix.quarterWeighted tau' tau (sourceBlock O b.2 b.1))
+        (fun b ↦ Matrix.quarterWeighted tau' tau ((Matrix.comp _ _ _ _ ℂ).symm O b.2 b.1))
   have hmeas : AEStronglyMeasurable f mu := by
     have h := Real.continuous_sqrt.comp_aestronglyMeasurable hsquare.aestronglyMeasurable
     simpa only [Function.comp_def, f, Real.sqrt_sq_eq_abs,
@@ -233,45 +114,46 @@ omit [DecidableEq I] [DecidableEq L] in
 /-- The covariance-weighted block error has an integrable trace norm. This
 rules out reliance on the integral's default value for a nonintegrable input.
 Source: `eq:compression-one-choice`. -/
-theorem integrable_rectangularTraceNorm_weightedSourceError [IsProbabilityMeasure mu]
+theorem integrable_rectangularTraceNorm_halfWeightedBlockCombination [IsProbabilityMeasure mu]
     (tau : T → ℝ) (tau' : U → ℝ) (O : Matrix (L × U) (I × T) ℂ)
     (z : I × L → Ω → ℂ)
     (hz : ∀ b c, Integrable (fun w ↦ z b w * conj (z c w)) mu)
     (htau : ∀ t, 0 ≤ tau t) (htau' : ∀ u, 0 ≤ tau' u)
     (htausum : ∑ t, tau t = 1) (htau'sum : ∑ u, tau' u = 1) :
     Integrable (fun w ↦ Matrix.rectangularTraceNorm
-      (weightedSourceError tau tau' O (fun b ↦ z b w))) mu := by
+      (Matrix.halfWeightedBlockCombination tau tau' O (fun b ↦ z b w))) mu := by
   have hmeas := aestronglyMeasurable_rectangularTraceNorm_sum z hz
-    (fun b ↦ Matrix.halfWeighted tau tau' (sourceBlock O b.2 b.1)ᵀ)
-  refine (integrable_weightedSourceQuarter_norm tau tau' O z hz).mono' hmeas ?_
+    (fun b ↦ Matrix.halfWeighted tau tau' ((Matrix.comp _ _ _ _ ℂ).symm O b.2 b.1)ᵀ)
+  refine (integrable_norm_quarterWeightedBlockCombination tau tau' O z hz).mono' hmeas ?_
   filter_upwards [] with w
   rw [Real.norm_eq_abs, abs_of_nonneg (Matrix.rectangularTraceNorm_nonneg _)]
-  exact rectangularTraceNorm_weightedSourceError_le tau tau' O _
+  exact Matrix.rectangularTraceNorm_halfWeightedBlockCombination_le tau tau' O _
     htau htau' htausum htau'sum
 
 /-- Exact second moment of the quarter-weighted block source error.
 Source: `eq:compression-block-second-moment`. -/
-theorem integral_frobeniusNormSq_weightedSourceQuarter_eq
+theorem integral_frobeniusNormSq_quarterWeightedBlockCombination_eq
     (p : I → ℝ) (p' : L → ℝ) (tau : T → ℝ) (tau' : U → ℝ)
     (O : Matrix (L × U) (I × T) ℂ) (z : I × L → Ω → ℂ) (kappa : ℝ)
     (hz : ∀ b c, Integrable (fun w ↦ z b w * conj (z c w)) mu)
     (hcov : ∀ b c, (∫ w, z b w * conj (z c w) ∂mu) =
       if b = c then ((kappa * Real.sqrt (p b.1 * p' b.2) : ℝ) : ℂ) else 0) :
     (∫ w, Matrix.frobeniusNormSq
-      (weightedSourceQuarter tau tau' O (fun b ↦ z b w)) ∂mu) =
+      (Matrix.quarterWeightedBlockCombination tau tau' O (fun b ↦ z b w)) ∂mu) =
       kappa * ∑ b : I × L, Real.sqrt (p b.1 * p' b.2) *
-        Matrix.frobeniusNormSq (Matrix.quarterWeighted tau' tau (sourceBlock O b.2 b.1)) := by
+        Matrix.frobeniusNormSq
+          (Matrix.quarterWeighted tau' tau ((Matrix.comp _ _ _ _ ℂ).symm O b.2 b.1)) := by
   have h := integral_frobenius_norm_sq_sum_eq_sum z
     (fun b ↦ kappa * Real.sqrt (p b.1 * p' b.2)) hz hcov
-    (fun b ↦ Matrix.quarterWeighted tau' tau (sourceBlock O b.2 b.1))
-  simpa only [weightedSourceQuarter, Matrix.frobeniusNormSq, Finset.mul_sum,
+    (fun b ↦ Matrix.quarterWeighted tau' tau ((Matrix.comp _ _ _ _ ℂ).symm O b.2 b.1))
+  simpa only [Matrix.quarterWeightedBlockCombination, Matrix.frobeniusNormSq, Finset.mul_sum,
     mul_assoc] using h
 
 /-- The expected corrected-source trace error is bounded by the square root
 of its covariance scale, independently of all input and private dimensions.
 Source: Theorem 5.2, `eq:compression-one-choice`; setting `kappa = k^(-s)`
 gives the paper's `k^(-s/2)` bound after scalar exponent arithmetic. -/
-theorem integral_rectangularTraceNorm_weightedSourceError_le [IsProbabilityMeasure mu]
+theorem integral_rectangularTraceNorm_halfWeightedBlockCombination_le [IsProbabilityMeasure mu]
     (p : I → ℝ) (p' : L → ℝ) (tau : T → ℝ) (tau' : U → ℝ)
     (O : Matrix (L × U) (I × T) ℂ) (z : I × L → Ω → ℂ) (kappa : ℝ)
     (hp : ∀ i, 0 ≤ p i) (hp' : ∀ l, 0 ≤ p' l)
@@ -283,28 +165,29 @@ theorem integral_rectangularTraceNorm_weightedSourceError_le [IsProbabilityMeasu
     (hcov : ∀ b c, (∫ w, z b w * conj (z c w) ∂mu) =
       if b = c then ((kappa * Real.sqrt (p b.1 * p' b.2) : ℝ) : ℂ) else 0) :
     (∫ w, Matrix.rectangularTraceNorm
-      (weightedSourceError tau tau' O (fun b ↦ z b w)) ∂mu) ≤ Real.sqrt kappa := by
+      (Matrix.halfWeightedBlockCombination tau tau' O (fun b ↦ z b w)) ∂mu) ≤ Real.sqrt kappa := by
   have hnorm := integral_frobenius_norm_sum_le_sqrt z
     (fun b ↦ kappa * Real.sqrt (p b.1 * p' b.2)) hz hcov
-    (fun b ↦ Matrix.quarterWeighted tau' tau (sourceBlock O b.2 b.1))
-  have hsum := weighted_source_block_sum_le_one p p' tau tau' O hp hp' htau htau'
-    hpsum hp'sum htausum htau'sum hO
+    (fun b ↦ Matrix.quarterWeighted tau' tau ((Matrix.comp _ _ _ _ ℂ).symm O b.2 b.1))
+  have hsum := Matrix.sum_sqrt_mul_frobeniusNormSq_quarterWeighted_block_le_one p p' tau tau' O
+    hp hp' htau htau' hpsum hp'sum htausum htau'sum hO
   have hsecond : (∑ b : I × L, (kappa * Real.sqrt (p b.1 * p' b.2)) *
-      Matrix.frobeniusNormSq (Matrix.quarterWeighted tau' tau (sourceBlock O b.2 b.1))) ≤
+      Matrix.frobeniusNormSq
+        (Matrix.quarterWeighted tau' tau ((Matrix.comp _ _ _ _ ℂ).symm O b.2 b.1))) ≤
       kappa := by
     simpa only [Finset.mul_sum, mul_assoc, mul_one] using
       mul_le_mul_of_nonneg_left hsum hkappa
   calc
-    _ ≤ ∫ w, Real.sqrt
-        (Matrix.frobeniusNormSq (weightedSourceQuarter tau tau' O (fun b ↦ z b w))) ∂mu :=
+    _ ≤ ∫ w, Real.sqrt (Matrix.frobeniusNormSq
+        (Matrix.quarterWeightedBlockCombination tau tau' O (fun b ↦ z b w))) ∂mu :=
       integral_mono
-        (integrable_rectangularTraceNorm_weightedSourceError tau tau' O z hz
+        (integrable_rectangularTraceNorm_halfWeightedBlockCombination tau tau' O z hz
           htau htau' htausum htau'sum)
-        (integrable_weightedSourceQuarter_norm tau tau' O z hz)
-        (fun w ↦ rectangularTraceNorm_weightedSourceError_le tau tau' O _
+        (integrable_norm_quarterWeightedBlockCombination tau tau' O z hz)
+        (fun w ↦ Matrix.rectangularTraceNorm_halfWeightedBlockCombination_le tau tau' O _
           htau htau' htausum htau'sum)
     _ ≤ _ := by
       have hbound := hnorm.trans (Real.sqrt_le_sqrt hsecond)
-      simpa only [weightedSourceQuarter, sqrt_frobeniusNormSq] using hbound
+      simpa only [Matrix.quarterWeightedBlockCombination, sqrt_frobeniusNormSq] using hbound
 
 end ProbabilityTheory

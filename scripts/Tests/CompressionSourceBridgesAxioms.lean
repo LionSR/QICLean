@@ -72,8 +72,8 @@ import QICLean.Probability.Gaussian.SchmidtSource
 #print axioms QICLean.ComplexGaussian.integral_selectedBranchDensityCoefficient_eq_zero
 #print axioms QICLean.ComplexGaussian.integrable_rectangularTraceNorm_selectedBranchSourceError
 #print axioms QICLean.ComplexGaussian.integral_rectangularTraceNorm_selectedBranchSourceError_le
-#print axioms QICLean.ComplexGaussian.exists_schmidtSourceFrames
-#print axioms QICLean.ComplexGaussian.exists_probability_schmidtSourceFrames
+#print axioms Matrix.exists_schmidtFrames
+#print axioms Matrix.exists_schmidtFrames_of_norm_eq_one
 #print axioms QICLean.ComplexGaussian.exists_schmidtSourceReplacement
 #print axioms Matrix.isometricDomainExtension
 #print axioms Matrix.isometricDomainExtension_mul

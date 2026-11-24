@@ -20,6 +20,8 @@ Proposition 2.1) and for reduced states on contiguous tensor factors.
 
 * `Matrix.partialTraceRight`: trace over the second factor for a general product
   index
+* `Matrix.tensorPurification`: the product of a vector on `T × BT` and a vector on `E × BE`,
+  with coordinates regrouped as `(T × E) × (BT × BE)`.
 * `Matrix.partialTraceLeft`: trace over the first factor for a general product
   index
 * `Matrix.traceLeft` (`tr_A`): trace over the first (left) tensor factor
@@ -832,3 +834,29 @@ theorem Matrix.PosSemidef.traceRight
   simpa [Matrix.traceRight] using Matrix.PosSemidef.partialTraceRight hρ
 
 end BipartiteHermiticity
+
+namespace Matrix
+
+section TensorPurification
+
+variable {T E BT BE : Type*}
+
+/-- The product $s\otimes s'$ of a vector on `T × BT` and a vector on `E × BE`, with its
+coordinates regrouped as `(T × E) × (BT × BE)`. -/
+def tensorPurification (s : T × BT → ℂ) (s' : E × BE → ℂ) : (T × E) × (BT × BE) → ℂ :=
+  fun x => s (x.1.1, x.2.1) * s' (x.1.2, x.2.2)
+
+/-- The reduced state of $s\otimes s'$ is the tensor product of the reduced states. -/
+theorem partialTraceRight_vecMulVec_tensorPurification [Fintype BT] [Fintype BE]
+    (s : T × BT → ℂ) (s' : E × BE → ℂ) :
+    partialTraceRight (vecMulVec (tensorPurification s s') (star (tensorPurification s s'))) =
+      partialTraceRight (vecMulVec s (star s)) ⊗ₖ partialTraceRight (vecMulVec s' (star s')) := by
+  ext ⟨t, e⟩ ⟨t', e'⟩
+  simp only [partialTraceRight_apply, vecMulVec_apply, Pi.star_apply, tensorPurification,
+    kroneckerMap_apply, Fintype.sum_prod_type, Finset.sum_mul_sum, star_mul']
+  refine Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun b' _ => ?_
+  ring
+
+end TensorPurification
+
+end Matrix

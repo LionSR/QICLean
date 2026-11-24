@@ -13,6 +13,8 @@ centering, and the essential positive sample count. -/
 noncomputable section
 
 open MeasureTheory QICLean.ComplexGaussian
+open ProductSource
+open EuclideanSpace (complexCoordinate complexCoordinate_apply)
 open scoped BigOperators Matrix.Norms.Elementwise
 
 local instance : ContinuousENorm (Matrix (Fin 2) (Fin 3) ℂ) :=
@@ -64,7 +66,7 @@ example : Integrable (gaussianSourceContraction 3 selector lam mu coeff)
 
 example :
     (∫ ω, gaussianSourceContraction 3 selector lam mu coeff ω ∂globalBranchLaw 3 Ket Bra) =
-      Matrix.sourceContraction coeff (fun p ↦ schmidtSource (lam p) (mu p)) :=
+      Matrix.sourceContraction coeff (fun p ↦ Matrix.schmidtOuterProduct (lam p) (mu p)) :=
   integral_gaussianSourceContraction 3 (by norm_num) selector lam mu hlam hmu coeff
 
 -- Just the first corrected position has mean zero on the same global branch law;
@@ -83,7 +85,7 @@ example :
     (fun p (_ : Ket p (selector p)) ↦ 0) mu (by intros; norm_num) hmu coeff]
   apply (Matrix.sourceContraction coeff).map_coord_zero (0 : Fin 2)
   ext a b
-  simp [schmidtSource_apply]
+  simp [Matrix.schmidtOuterProduct_apply]
 
 end GaussianContractionRegression
 
@@ -105,7 +107,7 @@ example :
     Matrix.sourceContraction
       (fun _ : (p : Fin 1) → (Fin 1 × Fin 1) × (Fin 1 × Fin 1) ↦
         (1 : Matrix (Fin 1) (Fin 1) ℂ))
-      (fun _ ↦ schmidtSource (fun _ : Fin 1 ↦ 1) (fun _ : Fin 1 ↦ 1)) = 1 := by
+      (fun _ ↦ Matrix.schmidtOuterProduct (fun _ : Fin 1 ↦ 1) (fun _ : Fin 1 ↦ 1)) = 1 := by
   let x0 : (p : Fin 1) → (Fin 1 × Fin 1) × (Fin 1 × Fin 1) :=
     fun _ ↦ ((0, 0), (0, 0))
   let : Unique ((p : Fin 1) → (Fin 1 × Fin 1) × (Fin 1 × Fin 1)) :=
@@ -117,6 +119,6 @@ example :
   ext a b
   rw [Matrix.sourceContraction_apply_apply, Fintype.sum_unique]
   change (1 : Matrix (Fin 1) (Fin 1) ℂ) a b *
-    (∏ _ : Fin 1, schmidtSource (fun _ : Fin 1 ↦ 1) (fun _ : Fin 1 ↦ 1)
+    (∏ _ : Fin 1, Matrix.schmidtOuterProduct (fun _ : Fin 1 ↦ 1) (fun _ : Fin 1 ↦ 1)
       (0, 0) (0, 0)) = (1 : Matrix (Fin 1) (Fin 1) ℂ) a b
-  simp [schmidtSource_apply]
+  simp [Matrix.schmidtOuterProduct_apply]

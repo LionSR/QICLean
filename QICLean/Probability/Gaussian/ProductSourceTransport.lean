@@ -17,13 +17,16 @@ Four local basis matrices embed the ket and bra Schmidt supports into finite
 ambient endpoint spaces. The exact product and expectation identities hold for
 arbitrary basis matrices, and hence apply to isometric Schmidt basis embeddings.
 The resulting source is the outer product of the explicitly represented ambient
-Schmidt vectors. The ambient endpoint dimensions may all differ.
+Schmidt vectors. The ambient endpoint dimensions may all differ. The matrices themselves
+are `ProductSource.ambientSampledSource` and `ProductSource.ambientSourceCorrection`.
 -/
 
 open MeasureTheory Matrix
 open scoped BigOperators ComplexConjugate Kronecker Matrix.Norms.Elementwise
 
 namespace QICLean.ComplexGaussian
+
+open ProductSource
 
 noncomputable section
 
@@ -33,117 +36,6 @@ variable {A C W X Y Z : Type*} [Fintype A] [Fintype C]
 -- Matrix's norm is inherited from finite function spaces; expose its continuous enorm directly.
 local instance {m n : Type*} [Fintype m] [Fintype n] : ContinuousENorm (Matrix m n ℂ) :=
   SeminormedAddGroup.toESeminormedAddMonoid.toContinuousENorm
-
-/-- The ambient Schmidt vector in explicit local bases.
-Source: `04-compression.tex:281–289`. -/
-def ambientSchmidtVector (lam : A → ℝ) (E : Matrix W A ℂ) (F : Matrix X A ℂ)
-    (p : W × X) : ℂ :=
-  ∑ a, (Real.sqrt (lam a) : ℂ) * E p.1 a * F p.2 a
-
-/-- The actual ambient ket/bra outer product specified by the two Schmidt representations.
-Source: `eq:compression-random-source`, `04-compression.tex:281–305`. -/
-def ambientSchmidtSource (lam : A → ℝ) (mu : C → ℝ)
-    (E : Matrix W A ℂ) (F : Matrix X A ℂ) (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ) :
-    Matrix (W × X) (Y × Z) ℂ :=
-  Matrix.vecMulVec (ambientSchmidtVector lam E F)
-    (fun q ↦ conj (ambientSchmidtVector mu Et Ft q))
-
-/-- Transport a rectangular coordinate source through its ket and bra endpoint bases.
-Source: `eq:compression-random-source`, `04-compression.tex:294–309`. -/
-def sourceTransport (E : Matrix W A ℂ) (F : Matrix X A ℂ)
-    (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ)
-    (M : Matrix (A × A) (C × C) ℂ) : Matrix (W × X) (Y × Z) ℂ :=
-  (E ⊗ₖ F) * M * (Et ⊗ₖ Ft).conjTranspose
-
-/-- The first actual sampled source operator in its ambient endpoint bases.
-Source: `eq:compression-random-source`, `04-compression.tex:294–297`. -/
-def ambientSourceU (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
-    (E : Matrix W A ℂ) (Et : Matrix Y C ℂ) (j : Fin k)
-    (x : Sample (Fin k × (A × C))) : Matrix W Y ℂ :=
-  E * sourceU k lam mu j x * Et.conjTranspose
-
-/-- The second actual sampled source operator in its ambient endpoint bases.
-Source: `eq:compression-random-source`, `04-compression.tex:297–300`. -/
-def ambientSourceV (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
-    (F : Matrix X A ℂ) (Ft : Matrix Z C ℂ) (j : Fin k)
-    (x : Sample (Fin k × (A × C))) : Matrix X Z ℂ :=
-  F * sourceV k lam mu j x * Ft.conjTranspose
-
-/-- The sampled product-operator average acting between ambient endpoint spaces.
-Source: `eq:compression-random-source`, `04-compression.tex:300–309`. -/
-def ambientSampledSource (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
-    (E : Matrix W A ℂ) (F : Matrix X A ℂ) (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ)
-    (x : Sample (Fin k × (A × C))) : Matrix (W × X) (Y × Z) ℂ :=
-  (k : ℂ)⁻¹ • ∑ j : Fin k,
-    ambientSourceU k lam mu E Et j x ⊗ₖ ambientSourceV k lam mu F Ft j x
-
-/-- The actual centered ambient source replacement.
-Source: `eq:compression-random-source`, `04-compression.tex:302–305`. -/
-def ambientSourceCorrection (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
-    (E : Matrix W A ℂ) (F : Matrix X A ℂ) (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ)
-    (x : Sample (Fin k × (A × C))) : Matrix (W × X) (Y × Z) ℂ :=
-  ambientSampledSource k lam mu E F Et Ft x - ambientSchmidtSource lam mu E F Et Ft
-
-omit [Fintype C] [Fintype W] [Fintype X] [Fintype Y] [Fintype Z] [DecidableEq C] in
-theorem ambientSchmidtVector_eq_mulVec (lam : A → ℝ)
-    (E : Matrix W A ℂ) (F : Matrix X A ℂ) :
-    ambientSchmidtVector lam E F = (E ⊗ₖ F) *ᵥ schmidtVector lam := by
-  funext p
-  simp only [Matrix.mulVec_apply_eq_sum, Fintype.sum_prod_type,
-    Matrix.kroneckerMap_apply, schmidtVector,
-    mul_ite, mul_zero]
-  change (∑ a, (Real.sqrt (lam a) : ℂ) * E p.1 a * F p.2 a) =
-    ∑ a, ∑ b, if a = b then (E p.1 a * F p.2 b) * (Real.sqrt (lam a) : ℂ) else 0
-  simp only [Finset.sum_ite_eq, Finset.mem_univ, ite_true]
-  apply Finset.sum_congr rfl
-  intro a _
-  ring
-
-omit [Fintype W] [Fintype X] [Fintype Y] [Fintype Z] [DecidableEq A] [DecidableEq C] in
-theorem sourceTransport_kronecker (E : Matrix W A ℂ) (F : Matrix X A ℂ)
-    (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ) (U V : Matrix A C ℂ) :
-    sourceTransport E F Et Ft (U ⊗ₖ V) =
-      (E * U * Et.conjTranspose) ⊗ₖ (F * V * Ft.conjTranspose) := by
-  simp only [sourceTransport, Matrix.mul_kronecker_mul, Matrix.conjTranspose_kronecker]
-
-omit [Fintype W] [Fintype X] [Fintype Y] [Fintype Z] [DecidableEq A] [DecidableEq C] in
-theorem ambientSourceU_kronecker_ambientSourceV (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
-    (E : Matrix W A ℂ) (F : Matrix X A ℂ) (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ)
-    (j : Fin k) (x : Sample (Fin k × (A × C))) :
-    ambientSourceU k lam mu E Et j x ⊗ₖ ambientSourceV k lam mu F Ft j x =
-      sourceTransport E F Et Ft (sourceU k lam mu j x ⊗ₖ sourceV k lam mu j x) :=
-  (sourceTransport_kronecker E F Et Ft _ _).symm
-
-omit [Fintype W] [Fintype X] [Fintype Y] [Fintype Z] [DecidableEq A] [DecidableEq C] in
-theorem ambientSampledSource_eq_transport (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
-    (E : Matrix W A ℂ) (F : Matrix X A ℂ) (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ)
-    (x : Sample (Fin k × (A × C))) :
-    ambientSampledSource k lam mu E F Et Ft x =
-      sourceTransport E F Et Ft (sampledSource k lam mu x) := by
-  simp only [ambientSampledSource, ambientSourceU_kronecker_ambientSourceV,
-    sourceTransport, sampledSource, Matrix.mul_smul, Matrix.smul_mul,
-    Matrix.mul_sum, Matrix.sum_mul]
-
-omit [Fintype W] [Fintype X] [Fintype Y] [Fintype Z] in
-theorem sourceTransport_schmidtSource (lam : A → ℝ) (mu : C → ℝ)
-    (E : Matrix W A ℂ) (F : Matrix X A ℂ) (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ) :
-    sourceTransport E F Et Ft (schmidtSource lam mu) =
-      ambientSchmidtSource lam mu E F Et Ft := by
-  unfold ambientSchmidtSource
-  rw [ambientSchmidtVector_eq_mulVec, ambientSchmidtVector_eq_mulVec]
-  simp only [sourceTransport, schmidtSource, Matrix.mul_vecMulVec, Matrix.vecMulVec_mul]
-  congr 1
-  exact (Matrix.star_mulVec _ _).symm
-
-omit [Fintype W] [Fintype X] [Fintype Y] [Fintype Z] in
-theorem ambientSourceCorrection_eq_transport (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
-    (E : Matrix W A ℂ) (F : Matrix X A ℂ) (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ)
-    (x : Sample (Fin k × (A × C))) :
-    ambientSourceCorrection k lam mu E F Et Ft x =
-      sourceTransport E F Et Ft (sourceCorrection k lam mu x) := by
-  rw [ambientSourceCorrection, ambientSampledSource_eq_transport,
-    ← sourceTransport_schmidtSource]
-  simp only [sourceTransport, sourceCorrection, Matrix.mul_sub, Matrix.sub_mul]
 
 private theorem integrable_sandwich_entry {Ω m n r s : Type*} [MeasurableSpace Ω]
     [Fintype m] [Fintype n] (μ : Measure Ω)
@@ -211,7 +103,7 @@ theorem integrable_ambientSampledSource_entry (k : ℕ) (hk : 0 < k)
     (p : W × X) (q : Y × Z) :
     Integrable (fun x ↦ ambientSampledSource k lam mu E F Et Ft x p q)
       (law (Fin k × (A × C))) := by
-  simp_rw [ambientSampledSource_eq_transport]
+  simp_rw [ProductSource.ambientSampledSource_eq_kroneckerSandwich]
   exact integrable_sandwich_entry _ _ _ _
     (integrable_sampledSource_entry k hk lam mu hlam hmu) p q
 
@@ -221,15 +113,15 @@ theorem integral_ambientSampledSource_entry (k : ℕ) (hk : 0 < k)
     (E : Matrix W A ℂ) (F : Matrix X A ℂ) (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ)
     (p : W × X) (q : Y × Z) :
     (∫ x, ambientSampledSource k lam mu E F Et Ft x p q ∂law (Fin k × (A × C))) =
-      ambientSchmidtSource lam mu E F Et Ft p q := by
+      Matrix.schmidtFrameOuterProduct lam mu E F Et Ft p q := by
   classical
-  simp_rw [ambientSampledSource_eq_transport]
+  simp_rw [ProductSource.ambientSampledSource_eq_kroneckerSandwich]
   change (∫ x, ((E ⊗ₖ F) * sampledSource k lam mu x * (Et ⊗ₖ Ft).conjTranspose) p q
     ∂law (Fin k × (A × C))) = _
   rw [integral_sandwich_entry _ _ _ _
     (integrable_sampledSource_entry k hk lam mu hlam hmu)]
   simp_rw [integral_sampledSource_entry k hk lam mu hlam hmu]
-  exact congrArg (fun M ↦ M p q) (sourceTransport_schmidtSource lam mu E F Et Ft)
+  exact congrArg (fun M ↦ M p q) (Matrix.kroneckerSandwich_schmidtOuterProduct lam mu E F Et Ft)
 
 omit [DecidableEq A] [DecidableEq C] in
 theorem integrable_ambientSampledSource (k : ℕ) (hk : 0 < k)
@@ -246,7 +138,7 @@ theorem integral_ambientSampledSource (k : ℕ) (hk : 0 < k)
     (lam : A → ℝ) (mu : C → ℝ) (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c)
     (E : Matrix W A ℂ) (F : Matrix X A ℂ) (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ) :
     (∫ x, ambientSampledSource k lam mu E F Et Ft x ∂law (Fin k × (A × C))) =
-      ambientSchmidtSource lam mu E F Et Ft := by
+      Matrix.schmidtFrameOuterProduct lam mu E F Et Ft := by
   ext p q
   change (∫ x, (fun p q ↦ ambientSampledSource k lam mu E F Et Ft x p q)
     ∂law (Fin k × (A × C))) p q = _
@@ -272,7 +164,7 @@ theorem integral_ambientSourceCorrection (k : ℕ) (hk : 0 < k)
     (E : Matrix W A ℂ) (F : Matrix X A ℂ) (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ) :
     (∫ x, ambientSourceCorrection k lam mu E F Et Ft x ∂law (Fin k × (A × C))) = 0 := by
   change (∫ x, ambientSampledSource k lam mu E F Et Ft x -
-    ambientSchmidtSource lam mu E F Et Ft ∂law (Fin k × (A × C))) = 0
+    Matrix.schmidtFrameOuterProduct lam mu E F Et Ft ∂law (Fin k × (A × C))) = 0
   rw [integral_sub (integrable_ambientSampledSource k hk lam mu hlam hmu E F Et Ft)
     (integrable_const _), integral_ambientSampledSource k hk lam mu hlam hmu]
   simp
@@ -280,45 +172,3 @@ theorem integral_ambientSourceCorrection (k : ℕ) (hk : 0 < k)
 end
 
 end QICLean.ComplexGaussian
-
-section SourceTransportExpansion
-
-/-!
-# Rank-one expansion of source transport
-
-Transporting an arbitrary rectangular source matrix through four endpoint frames
-is the sum of its entries times the corresponding rank-one ambient matrices.
-The endpoint frames need not be orthonormal or span their ambient spaces.
--/
-
-noncomputable section
-open scoped Matrix ComplexConjugate Kronecker
-namespace QICLean.ComplexGaussian
-
-/-- Expand an ambient source transport in the actual endpoint frame vectors.
-Source: polynomial-PEPS Theorem 5.2, `04-compression.tex`, lines 294–338. -/
-theorem sourceTransport_eq_sum_rankOne {A C W X Y Z : Type}
-    [Fintype A] [Fintype C]
-    (E : Matrix W A ℂ) (F : Matrix X A ℂ)
-    (Et : Matrix Y C ℂ) (Ft : Matrix Z C ℂ) (M : Matrix (A × A) (C × C) ℂ) :
-    sourceTransport E F Et Ft M =
-      ∑ z : (A × A) × (C × C), M z.1 z.2 •
-        Matrix.vecMulVec (fun p ↦ E p.1 z.1.1 * F p.2 z.1.2)
-          (fun q ↦ conj (Et q.1 z.2.1 * Ft q.2 z.2.2)) := by
-  classical
-  rw [Fintype.sum_prod_type, sourceTransport, Matrix.mul_assoc]
-  ext ⟨p₁, p₂⟩ ⟨q₁, q₂⟩
-  simp only [Matrix.mul_apply, Matrix.conjTranspose_apply,
-    Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, Matrix.vecMulVec_apply,
-    Finset.mul_sum]
-  apply Finset.sum_congr rfl
-  intro i _
-  apply Finset.sum_congr rfl
-  intro j _
-  simp only [Matrix.kroneckerMap_apply, starRingEnd_apply]
-  ring
-
-end QICLean.ComplexGaussian
-end
-
-end SourceTransportExpansion

@@ -16,6 +16,7 @@ import QICLean.Analysis.TensorProduct.FamilyImage
 import QICLean.Analysis.TensorProduct.MatrixTensorCoordinates
 import QICLean.Analysis.TensorProduct.MatrixTensorDecomposition
 import QICLean.Analysis.TensorProduct.OperatorPower
+import QICLean.Analysis.TensorProduct.ProductSource
 import QICLean.Analysis.TensorProduct.TensorProductContraction
 import QICLean.Analysis.TensorProduct.TensorProductRegrouping
 import QICLean.Analysis.TensorProduct.Weights

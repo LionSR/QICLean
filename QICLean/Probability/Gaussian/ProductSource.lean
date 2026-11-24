@@ -5,6 +5,7 @@ These constructions and proofs are independently written from the manuscript
 and Mathlib; no upstream OpenAI Lean proof text is reused in this file.
 The imported real Gaussian foundation's attribution is recorded in Basic.lean.
 -/
+import QICLean.Analysis.TensorProduct.ProductSource
 import QICLean.Probability.Gaussian.Covariance
 import Mathlib.LinearAlgebra.Matrix.Kronecker
 import Mathlib.MeasureTheory.SpecificCodomains.Pi
@@ -23,14 +24,20 @@ the exact Schmidt outer product as its expectation. Its centered entries are
 the previously constructed `densityCoefficient`, so their covariance and
 integrability follow from the checked circular-complex Gaussian calculation.
 
-This module concerns basis-coordinate source operators. It imposes no sampled
+The matrices themselves (`ProductSource.sourceU`, `ProductSource.sourceV`,
+`ProductSource.sampledSource`, `ProductSource.sourceCorrection` and
+`Matrix.schmidtOuterProduct`) are functions of the sample point; this module proves their
+expectations. It concerns basis-coordinate source operators. It imposes no sampled
 operator-norm bounds, physical circuit assumptions, or private-dimension bounds.
 -/
 
 open MeasureTheory ProbabilityTheory
+open EuclideanSpace (complexCoordinate complexCoordinate_apply)
 open scoped BigOperators ComplexConjugate Kronecker Matrix.Norms.Elementwise
 
 namespace QICLean.ComplexGaussian
+
+open ProductSource
 
 noncomputable section
 
@@ -40,57 +47,13 @@ variable {A C : Type*} [Fintype A] [Fintype C] [DecidableEq A] [DecidableEq C]
 local instance : ContinuousENorm (Matrix (A × A) (C × C) ℂ) :=
   SeminormedAddGroup.toESeminormedAddMonoid.toContinuousENorm
 
-/-- A Schmidt vector in its paired basis, with amplitudes `sqrt(lam a)`.
-Source: `04-compression.tex:281–289`. -/
-def schmidtVector (lam : A → ℝ) (p : A × A) : ℂ :=
-  if p.1 = p.2 then (Real.sqrt (lam p.1) : ℂ) else 0
-
-/-- The rectangular Schmidt ket/bra outer-product target.
-Source: `eq:compression-random-source`, `04-compression.tex:281–305`. -/
-def schmidtSource (lam : A → ℝ) (mu : C → ℝ) : Matrix (A × A) (C × C) ℂ :=
-  Matrix.vecMulVec (schmidtVector lam) (fun q ↦ conj (schmidtVector mu q))
-
-/-- The first sampled rectangular source operator `U_j`.
-Source: `eq:compression-random-source`, `04-compression.tex:294–297`. -/
-def sourceU (k : ℕ) (lam : A → ℝ) (mu : C → ℝ) (j : Fin k)
-    (x : Sample (Fin k × (A × C))) : Matrix A C ℂ :=
-  Matrix.of fun a c ↦ (((lam a * mu c) ^ (1 / 4 : ℝ) : ℝ) : ℂ) *
-    coordinate (j, (a, c)) x
-
-/-- The second sampled rectangular source operator `V_j`, using the conjugate of the
-same Gaussian family as `U_j`. Source: `04-compression.tex:297–300`. -/
-def sourceV (k : ℕ) (lam : A → ℝ) (mu : C → ℝ) (j : Fin k)
-    (x : Sample (Fin k × (A × C))) : Matrix A C ℂ :=
-  Matrix.of fun b d ↦ (((lam b * mu d) ^ (1 / 4 : ℝ) : ℝ) : ℂ) *
-    conj (coordinate (j, (b, d)) x)
-
-/-- The sampled product-operator replacement `Xhat = k⁻¹ sum_j U_j ⊗ V_j`.
-Source: `eq:compression-random-source`, `04-compression.tex:300–305`. -/
-def sampledSource (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
-    (x : Sample (Fin k × (A × C))) : Matrix (A × A) (C × C) ℂ :=
-  (k : ℂ)⁻¹ • ∑ j : Fin k, sourceU k lam mu j x ⊗ₖ sourceV k lam mu j x
-
-/-- The actual centered sampled matrix, without positivity or Hermiticity assumptions.
-Source: `eq:compression-random-source`, `04-compression.tex:302–305`. -/
-def sourceCorrection (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
-    (x : Sample (Fin k × (A × C))) : Matrix (A × A) (C × C) ℂ :=
-  sampledSource k lam mu x - schmidtSource lam mu
-
-omit [Fintype A] [Fintype C] in
-theorem schmidtSource_apply (lam : A → ℝ) (mu : C → ℝ) (p : A × A) (q : C × C) :
-    schmidtSource lam mu p q =
-      if p.1 = p.2 ∧ q.1 = q.2 then
-        ((Real.sqrt (lam p.1) * Real.sqrt (mu q.1) : ℝ) : ℂ) else 0 := by
-  by_cases hp : p.1 = p.2 <;> by_cases hq : q.1 = q.2 <;>
-    simp [schmidtSource, Matrix.vecMulVec_apply, schmidtVector, hp, hq]
-
 omit [DecidableEq A] [DecidableEq C] in
 theorem sampledSource_apply (k : ℕ) (lam : A → ℝ) (mu : C → ℝ)
     (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c)
     (x : Sample (Fin k × (A × C))) (p : A × A) (q : C × C) :
     sampledSource k lam mu x p q = (coefficientWeight lam mu (p, q) : ℂ) *
-      ((k : ℂ)⁻¹ * ∑ j : Fin k, coordinate (j, (p.1, q.1)) x *
-        conj (coordinate (j, (p.2, q.2)) x)) := by
+      ((k : ℂ)⁻¹ * ∑ j : Fin k, complexCoordinate (j, (p.1, q.1)) x *
+        conj (complexCoordinate (j, (p.2, q.2)) x)) := by
   rw [coefficientWeight_eq_product_quarter lam mu hlam hmu]
   simp only [sampledSource, Matrix.smul_apply, Matrix.sum_apply, smul_eq_mul,
     Matrix.kroneckerMap_apply, sourceU, sourceV, Matrix.of_apply]
@@ -107,10 +70,10 @@ private theorem quarter_square (t : ℝ) (ht : 0 ≤ t) :
   norm_num
 
 omit [Fintype A] [Fintype C] in
-theorem weighted_delta_eq_schmidtSource (lam : A → ℝ) (mu : C → ℝ)
+theorem weighted_delta_eq_schmidtOuterProduct (lam : A → ℝ) (mu : C → ℝ)
     (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c) (p : A × A) (q : C × C) :
     (coefficientWeight lam mu (p, q) : ℂ) * delta (p.1, q.1) (p.2, q.2) =
-      schmidtSource lam mu p q := by
+      Matrix.schmidtOuterProduct lam mu p q := by
   rcases p with ⟨a, b⟩
   rcases q with ⟨c, d⟩
   by_cases hab : a = b
@@ -121,14 +84,14 @@ theorem weighted_delta_eq_schmidtSource (lam : A → ℝ) (mu : C → ℝ)
       simp only [delta, ite_true, mul_one]
       rw [quarter_square _ (mul_nonneg (hlam _) (hmu _)),
         Real.sqrt_mul (hlam _)]
-      simp [schmidtSource_apply]
-    · simp [delta, hcd, schmidtSource_apply]
-  · simp [delta, hab, schmidtSource_apply]
+      simp [Matrix.schmidtOuterProduct_apply]
+    · simp [delta, hcd, Matrix.schmidtOuterProduct_apply]
+  · simp [delta, hab, Matrix.schmidtOuterProduct_apply]
 
 theorem sampleAverage_eq_average_sub_delta {ι : Type*} [Fintype ι] [DecidableEq ι]
     (k : ℕ) (hk : 0 < k) (a b : ι) (x : Sample (Fin k × ι)) :
     sampleAverage k a b x = (k : ℂ)⁻¹ *
-      ∑ j : Fin k, coordinate (j, a) x * conj (coordinate (j, b) x) - delta a b := by
+      ∑ j : Fin k, complexCoordinate (j, a) x * conj (complexCoordinate (j, b) x) - delta a b := by
   simp only [sampleAverage, centered, delta, Prod.mk.injEq, true_and]
   rw [Finset.sum_sub_distrib]
   simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
@@ -145,7 +108,7 @@ theorem sourceCorrection_apply (k : ℕ) (hk : 0 < k)
   simp only [sourceCorrection, Matrix.sub_apply, sampledSource_apply k lam mu hlam hmu,
     densityCoefficient]
   rw [sampleAverage_eq_average_sub_delta k hk,
-    ← weighted_delta_eq_schmidtSource lam mu hlam hmu p q]
+    ← weighted_delta_eq_schmidtOuterProduct lam mu hlam hmu p q]
   ring
 
 theorem integrable_sourceCorrection_entry (k : ℕ) (hk : 0 < k)
@@ -185,7 +148,7 @@ theorem integrable_sampledSource_entry (k : ℕ) (hk : 0 < k)
     Integrable (fun x ↦ sampledSource k lam mu x p q) (law (Fin k × (A × C))) := by
   classical
   have he (x : Sample (Fin k × (A × C))) : sampledSource k lam mu x p q =
-      sourceCorrection k lam mu x p q + schmidtSource lam mu p q := by
+      sourceCorrection k lam mu x p q + Matrix.schmidtOuterProduct lam mu p q := by
     simp [sourceCorrection]
   simp_rw [he]
   exact (integrable_sourceCorrection_entry k hk lam mu hlam hmu p q).add (integrable_const _)
@@ -194,9 +157,9 @@ theorem integral_sampledSource_entry (k : ℕ) (hk : 0 < k)
     (lam : A → ℝ) (mu : C → ℝ) (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c)
     (p : A × A) (q : C × C) :
     (∫ x, sampledSource k lam mu x p q ∂law (Fin k × (A × C))) =
-      schmidtSource lam mu p q := by
+      Matrix.schmidtOuterProduct lam mu p q := by
   have he (x : Sample (Fin k × (A × C))) : sampledSource k lam mu x p q =
-      densityCoefficient k lam mu (p, q) x + schmidtSource lam mu p q := by
+      densityCoefficient k lam mu (p, q) x + Matrix.schmidtOuterProduct lam mu p q := by
     rw [← sourceCorrection_apply k hk lam mu hlam hmu]
     simp [sourceCorrection]
   simp_rw [he]
@@ -231,7 +194,7 @@ expectation, with no sample norm bound or full-support hypothesis. Source:
 `eq:compression-random-source`, `04-compression.tex:279–309`. -/
 theorem integral_sampledSource (k : ℕ) (hk : 0 < k)
     (lam : A → ℝ) (mu : C → ℝ) (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c) :
-    (∫ x, sampledSource k lam mu x ∂law (Fin k × (A × C))) = schmidtSource lam mu := by
+    (∫ x, sampledSource k lam mu x ∂law (Fin k × (A × C))) = Matrix.schmidtOuterProduct lam mu := by
   ext p q
   change (∫ x, (fun p q ↦ sampledSource k lam mu x p q) ∂law (Fin k × (A × C))) p q = _
   have hr (p : A × A) : Integrable (fun x ↦ (fun q ↦ sampledSource k lam mu x p q))
@@ -244,7 +207,7 @@ theorem integral_sampledSource (k : ℕ) (hk : 0 < k)
 theorem integral_sourceCorrection (k : ℕ) (hk : 0 < k)
     (lam : A → ℝ) (mu : C → ℝ) (hlam : ∀ a, 0 ≤ lam a) (hmu : ∀ c, 0 ≤ mu c) :
     (∫ x, sourceCorrection k lam mu x ∂law (Fin k × (A × C))) = 0 := by
-  change (∫ x, sampledSource k lam mu x - schmidtSource lam mu
+  change (∫ x, sampledSource k lam mu x - Matrix.schmidtOuterProduct lam mu
     ∂law (Fin k × (A × C))) = 0
   rw [integral_sub (integrable_sampledSource k hk lam mu hlam hmu)
     (integrable_const _), integral_sampledSource k hk lam mu hlam hmu]

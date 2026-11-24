@@ -20,6 +20,18 @@ import Mathlib.Order.Interval.Finset.Nat
 
 This file collects small finite-sum identities, among them the splitting of a sum over the
 nearest-neighbour bonds of a chain at four cuts (`Fin.sum_eq_five_internal_add_crossings`).
+
+Two choice functions `η : ∀ g, K g` and `θ : ∀ g, B g` are the same datum as one choice
+function `g ↦ (η g, θ g)` with values in the products `K g × B g`, so a double sum over `η`
+and `θ` is one sum over pair-valued choice functions (`Fintype.sum_sum_pi_eq_sum_pi_prod`).
+Weights `w g` attached to the indices go inside the product of the coefficients, with an outer
+scalar left outside (`Fintype.smul_sum_sum_pi_eq_smul_sum_pi_prod`).
+
+## References
+
+* OpenAI, *Polynomial PEPS approximation of gapped square-grid ground states*
+  (September 24, 2026), Theorem 5.2, `04-compression.tex`, lines 565–588 (the sums over pairs
+  of choice functions).
 -/
 
 open scoped BigOperators
@@ -427,3 +439,43 @@ theorem sum_eq_five_internal_add_crossings
   all_goals simp
 
 end Fin
+
+/-! ### Sums over pairs of choice functions -/
+
+section PairChoice
+
+open scoped ComplexConjugate
+
+namespace Fintype
+
+variable {G : Type*} [Fintype G] [DecidableEq G] {K B : G → Type*}
+  [∀ g, Fintype (K g)] [∀ g, Fintype (B g)]
+
+/-- A double sum over two choice functions is one sum over pair-valued choice functions.
+Theorem 5.2, `04-compression.tex`, lines 565–579. -/
+theorem sum_sum_pi_eq_sum_pi_prod {β : Type*} [AddCommMonoid β]
+    (F : ((g : G) → K g) → ((g : G) → B g) → β) :
+    ∑ η, ∑ θ, F η θ = ∑ ξ : (g : G) → K g × B g, F (fun g ↦ (ξ g).1) (fun g ↦ (ξ g).2) :=
+  (Fintype.sum_prod_type' F).symm.trans
+    ((Equiv.arrowProdEquivProdArrow G K B).sum_comp fun t ↦ F t.1 t.2).symm
+
+/-- A product of weights `w g` and an outer scalar `γ` in front of a double sum with product
+coefficients `∏ g, a g (η g) * conj (b g (θ g))`: the weights go inside the coefficients of
+the sum over pair-valued choice functions, and `γ` stays outside. No coefficient is cancelled.
+Theorem 5.2, `04-compression.tex`, lines 568–588. -/
+theorem smul_sum_sum_pi_eq_smul_sum_pi_prod {β : Type*} [AddCommMonoid β] [Module ℂ β]
+    (w : G → ℂ) (γ : ℂ) (a : (g : G) → K g → ℂ) (b : (g : G) → B g → ℂ)
+    (F : ((g : G) → K g) → ((g : G) → B g) → β) :
+    ((∏ g, w g) * γ) • ∑ η, ∑ θ, (∏ g, a g (η g) * conj (b g (θ g))) • F η θ =
+      γ • ∑ ξ : (g : G) → K g × B g,
+        (∏ g, w g * a g (ξ g).1 * conj (b g (ξ g).2)) •
+          F (fun g ↦ (ξ g).1) (fun g ↦ (ξ g).2) := by
+  rw [sum_sum_pi_eq_sum_pi_prod, mul_comm, mul_smul, Finset.smul_sum]
+  congr 1
+  refine Finset.sum_congr rfl fun ξ _ ↦ ?_
+  rw [smul_smul, ← Finset.prod_mul_distrib]
+  simp only [mul_assoc]
+
+end Fintype
+
+end PairChoice

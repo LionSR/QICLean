@@ -8,6 +8,8 @@ import QICLean.Probability.Gaussian.GlobalBranchLaw
 /-! Boundary regressions for selected branches under one global Gaussian law. -/
 
 open QICLean.ComplexGaussian MeasureTheory
+open ProductSource
+open EuclideanSpace (complexCoordinate complexCoordinate_apply)
 open scoped BigOperators Matrix Matrix.Norms.L2Operator
 attribute [local instance 10000] Classical.propDecidable
 
@@ -61,16 +63,16 @@ def phaseSamples : (p : Fin 2) → (b : Branches p) → Sample (Fin 1 × (Ket p 
   fun _ b ↦ WithLp.toLp 2 (fun q ↦ if b.val = 1 then
     (if q.2 = 1 then Real.sqrt 2 else 0) else (if q.2 = 0 then Real.sqrt 2 else 0))
 
-example : coordinate (0, (0, 0))
+example : complexCoordinate (0, (0, 0))
     (selectedBranchSamples (A := Ket) (C := Bra) 1 Selected selector phaseSamples
       ⟨0, by simp [Selected]⟩) = Complex.I := by
-  rw [coordinate_apply]
+  rw [complexCoordinate_apply]
   have hs : (Real.sqrt 2 : ℂ) ≠ 0 := by
     exact_mod_cast (Real.sqrt_pos.mpr (by norm_num : (0 : ℝ) < 2)).ne'
   simp [selectedBranchSamples, selector, phaseSamples, hs]
 
-example : coordinate (0, (0, 0)) (phaseSamples 0 ⟨0, by norm_num⟩) = 1 := by
-  rw [coordinate_apply]
+example : complexCoordinate (0, (0, 0)) (phaseSamples 0 ⟨0, by norm_num⟩) = 1 := by
+  rw [complexCoordinate_apply]
   have hs : (Real.sqrt 2 : ℂ) ≠ 0 := by
     exact_mod_cast (Real.sqrt_pos.mpr (by norm_num : (0 : ℝ) < 2)).ne'
   simp [phaseSamples, hs]
@@ -97,7 +99,7 @@ example (k : ℕ) (hk : 0 < k)
       (((p : (∅ : Finset (Fin 2))) → Bra p (emptySelector p) × Bra p (emptySelector p)) × Fin 1)
       (((p : (∅ : Finset (Fin 2))) → Ket p (emptySelector p) × Ket p (emptySelector p)) × Fin 1) ℂ)
     (hO : ‖O‖ ≤ 1) :
-    (∫ ω, Matrix.rectangularTraceNorm (ProbabilityTheory.weightedSourceError
+    (∫ ω, Matrix.rectangularTraceNorm (Matrix.halfWeightedBlockCombination
       (fun _ : Fin 1 ↦ (1 : ℝ)) (fun _ : Fin 1 ↦ (1 : ℝ)) O
       (fun b ↦ selectedBranchDensityCoefficient k ∅ emptySelector
         (fun _ _ ↦ (0 : ℝ)) (fun _ _ ↦ (0 : ℝ)) b.1 b.2 ω)) ∂globalBranchLaw k Ket Bra) ≤ 1 := by
@@ -116,7 +118,7 @@ example (k : ℕ) (hk : 0 < k)
     (O : Matrix (((p : Selected) → Bra p (selector p) × Bra p (selector p)) × Fin 3)
       (((p : Selected) → Ket p (selector p) × Ket p (selector p)) × Fin 2) ℂ)
     (hO : ‖O‖ ≤ 1) :
-    (∫ ω, Matrix.rectangularTraceNorm (ProbabilityTheory.weightedSourceError
+    (∫ ω, Matrix.rectangularTraceNorm (Matrix.halfWeightedBlockCombination
       (fun t : Fin 2 ↦ if t = 0 then (1 : ℝ) else 0)
       (fun u : Fin 3 ↦ if u = 0 then (1 : ℝ) else 0) O
       (fun b ↦ selectedBranchDensityCoefficient k Selected selector

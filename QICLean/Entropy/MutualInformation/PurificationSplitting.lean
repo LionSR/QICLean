@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Algebra.Unitary.MatrixUnitaryBetween
+import QICLean.Algebra.PartialTrace
 import QICLean.Entropy.Relative.RootFidelityRelativeEntropy
 import QICLean.Channel.Schmidt.UhlmannIsometry
 import QICLean.Entropy.MutualInformation.ProductMarginals
@@ -88,12 +89,6 @@ theorem norm_toLp_sq {ι : Type*} [Fintype ι] (v : ι → ℂ) :
   rw [@norm_sq_eq_re_inner ℂ, EuclideanSpace.inner_toLp_toLp, dotProduct_comm]
   rfl
 
-/-- A matrix with `Kᴴ * K = 1` preserves `star v ⬝ᵥ v`. -/
-theorem star_mulVec_dotProduct_mulVec_of_conjTranspose_mul_eq_one {ι κ : Type*}
-    [Fintype ι] [DecidableEq ι] [Fintype κ] {K : Matrix κ ι ℂ} (hK : Kᴴ * K = 1)
-    (v : ι → ℂ) : star (K *ᵥ v) ⬝ᵥ (K *ᵥ v) = star v ⬝ᵥ v := by
-  rw [star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, hK, one_mulVec]
-
 /-- **Purification distance, room-condition form** (Lemma 2.2 `lem:fidelity`,
 "Moreover" clause combined with $F(\rho,\sigma)\ge e^{-D(\rho\Vert\sigma)/2}$, when the
 purifying space of `φ` is already large enough).  Let
@@ -166,22 +161,6 @@ end Purification
 section Splitting
 
 variable {T E U BT BE : Type*}
-
-/-- The product $s\otimes s'$ of a vector on `T × BT` and a vector on `E × BE`, with its
-coordinates regrouped as `(T × E) × (BT × BE)`. -/
-def tensorPurification (s : T × BT → ℂ) (s' : E × BE → ℂ) : (T × E) × (BT × BE) → ℂ :=
-  fun x => s (x.1.1, x.2.1) * s' (x.1.2, x.2.2)
-
-/-- The reduced state of $s\otimes s'$ is the tensor product of the reduced states. -/
-theorem partialTraceRight_vecMulVec_tensorPurification [Fintype BT] [Fintype BE]
-    (s : T × BT → ℂ) (s' : E × BE → ℂ) :
-    partialTraceRight (vecMulVec (tensorPurification s s') (star (tensorPurification s s'))) =
-      partialTraceRight (vecMulVec s (star s)) ⊗ₖ partialTraceRight (vecMulVec s' (star s')) := by
-  ext ⟨t, e⟩ ⟨t', e'⟩
-  simp only [partialTraceRight_apply, vecMulVec_apply, Pi.star_apply, tensorPurification,
-    kroneckerMap_apply, Fintype.sum_prod_type, Finset.sum_mul_sum, star_mul']
-  refine Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun b' _ => ?_
-  ring
 
 /-- The canonical purification of `ρ`, whose coefficient matrix is $\sqrt\rho$. -/
 noncomputable def canonicalPurification [Fintype T] [DecidableEq T] (ρ : Matrix T T ℂ) :

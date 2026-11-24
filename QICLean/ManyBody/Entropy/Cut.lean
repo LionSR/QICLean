@@ -22,4 +22,3 @@ import QICLean.ManyBody.Entropy.Cut.RegionalViability
 import QICLean.ManyBody.Entropy.Cut.RightLocalLift
 import QICLean.ManyBody.Entropy.Cut.SubregionCut
 import QICLean.ManyBody.Entropy.Cut.SupportedOperatorSchmidtWords
-import QICLean.ManyBody.Entropy.Cut.ThreeWayCut

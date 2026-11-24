@@ -17,6 +17,7 @@ of coincident indices; no distinctness assumption is imposed.
 -/
 
 open MeasureTheory ProbabilityTheory
+open EuclideanSpace (complexCoordinate complexCoordinate_apply)
 open scoped RealInnerProductSpace ComplexConjugate BigOperators ENNReal
 
 namespace QICLean.ComplexGaussian
@@ -88,39 +89,40 @@ private theorem pairing_conj_coordinate (a b : ι) :
 /-- The normalized complex coordinates have identity covariance.
 Source: `04-compression.tex:306–309`. -/
 theorem integral_coordinate_mul_conj (a b : ι) :
-    (∫ x, coordinate a x * conj (coordinate b x) ∂law ι) = delta a b := by
-  simp_rw [conj_coordinate]
+    (∫ x, complexCoordinate a x * conj (complexCoordinate b x) ∂law ι) = delta a b := by
+  simp_rw [conj_coordinate, complexCoordinate_eq_linearField]
   exact (integral_linearField_mul _ _ _ _).trans (pairing_coordinate_conj a b)
 
 omit [DecidableEq ι] in
 /-- Circular coordinates have vanishing bilinear covariance. -/
 theorem integral_coordinate_mul (a b : ι) :
-    (∫ x, coordinate a x * coordinate b x ∂law ι) = 0 :=
-  (integral_linearField_mul _ _ _ _).trans (pairing_coordinate a b)
+    (∫ x, complexCoordinate a x * complexCoordinate b x ∂law ι) = 0 := by
+  simp_rw [complexCoordinate_eq_linearField]
+  exact (integral_linearField_mul _ _ _ _).trans (pairing_coordinate a b)
 
 omit [DecidableEq ι] in
 theorem memLp_coordinate_mul_conj (a b : ι) :
-    MemLp (fun x ↦ coordinate a x * conj (coordinate b x)) 2 (law ι) := by
-  simp_rw [conj_coordinate]
+    MemLp (fun x ↦ complexCoordinate a x * conj (complexCoordinate b x)) 2 (law ι) := by
+  simp_rw [conj_coordinate, complexCoordinate_eq_linearField]
   exact memLp_linearField_mul _ _ _ _
 
 omit [DecidableEq ι] in
 theorem integrable_coordinate_four (a b c d : ι) :
-    Integrable (fun x ↦ (coordinate a x * conj (coordinate b x)) *
-      conj (coordinate c x * conj (coordinate d x))) (law ι) := by
-  have hcd : MemLp (fun x ↦ conj (coordinate c x * conj (coordinate d x))) 2
+    Integrable (fun x ↦ (complexCoordinate a x * conj (complexCoordinate b x)) *
+      conj (complexCoordinate c x * conj (complexCoordinate d x))) (law ι) := by
+  have hcd : MemLp (fun x ↦ conj (complexCoordinate c x * conj (complexCoordinate d x))) 2
       (law ι) := by
-    simp_rw [map_mul, starRingEnd_self_apply, conj_coordinate]
+    simp_rw [map_mul, starRingEnd_self_apply, conj_coordinate, complexCoordinate_eq_linearField]
     exact memLp_linearField_mul _ _ _ _
   exact (memLp_coordinate_mul_conj a b).integrable_mul hcd
 
 /-- Complex fourth pairing, including the value `2` when all indices coincide.
 Source: `04-compression.tex:326–334`. -/
 theorem integral_coordinate_four_eq_pairings (a b c d : ι) :
-    (∫ x, (coordinate a x * conj (coordinate b x)) *
-      conj (coordinate c x * conj (coordinate d x)) ∂law ι) =
+    (∫ x, (complexCoordinate a x * conj (complexCoordinate b x)) *
+      conj (complexCoordinate c x * conj (complexCoordinate d x)) ∂law ι) =
     delta a b * delta c d + delta a c * delta b d := by
-  simp_rw [map_mul, starRingEnd_self_apply, conj_coordinate]
+  simp_rw [map_mul, starRingEnd_self_apply, conj_coordinate, complexCoordinate_eq_linearField]
   change (∫ x, linearField (coordinateVectors a) coordinateCoefficients x *
     linearField (coordinateVectors b) (fun j ↦ conj (coordinateCoefficients j)) x *
     (linearField (coordinateVectors c) (fun j ↦ conj (coordinateCoefficients j)) x *
@@ -132,7 +134,7 @@ theorem integral_coordinate_four_eq_pairings (a b c d : ι) :
 omit [DecidableEq ι] in
 /-- Unit second moment of a standard circular complex Gaussian. -/
 theorem integral_coordinate_norm_sq (a : ι) :
-    (∫ x, ‖coordinate a x‖ ^ 2 ∂law ι) = 1 := by
+    (∫ x, ‖complexCoordinate a x‖ ^ 2 ∂law ι) = 1 := by
   classical
   have h := integral_coordinate_mul_conj a a
   simp only [Complex.mul_conj', ← Complex.ofReal_pow, integral_complex_ofReal, delta, ite_true] at h
@@ -142,11 +144,12 @@ omit [DecidableEq ι] in
 /-- The fourth moment is `2`, including the coincident-index case needed for centering.
 Source: `04-compression.tex:328–334`. -/
 theorem integral_coordinate_norm_four (a : ι) :
-    (∫ x, ‖coordinate a x‖ ^ 4 ∂law ι) = 2 := by
+    (∫ x, ‖complexCoordinate a x‖ ^ 4 ∂law ι) = 2 := by
   classical
   have h := integral_coordinate_four_eq_pairings a a a a
-  have he (x : Sample ι) : (coordinate a x * conj (coordinate a x)) *
-      conj (coordinate a x * conj (coordinate a x)) = ((‖coordinate a x‖ ^ 4 : ℝ) : ℂ) := by
+  have he (x : Sample ι) : (complexCoordinate a x * conj (complexCoordinate a x)) *
+      conj (complexCoordinate a x * conj (complexCoordinate a x)) =
+        ((‖complexCoordinate a x‖ ^ 4 : ℝ) : ℂ) := by
     simp only [Complex.mul_conj', map_pow, Complex.conj_ofReal]
     push_cast
     ring
@@ -158,7 +161,7 @@ theorem integral_coordinate_norm_four (a : ι) :
 /-- The centered coefficient of a single random source. Source:
 `04-compression.tex:311–324`, equation `compression-gaussian-covariance`. -/
 def centered (a b : ι) (x : Sample ι) : ℂ :=
-  coordinate a x * conj (coordinate b x) - delta a b
+  complexCoordinate a x * conj (complexCoordinate b x) - delta a b
 
 theorem memLp_centered (a b : ι) : MemLp (centered a b) 2 (law ι) :=
   (memLp_coordinate_mul_conj a b).sub (memLp_const _)
@@ -188,10 +191,11 @@ Source: `eq:compression-gaussian-covariance`, `04-compression.tex:320–334`. -/
 theorem integral_centered_mul_conj (a b c d : ι) :
     (∫ x, centered a b x * conj (centered c d x) ∂law ι) = delta a c * delta b d := by
   have he (x : Sample ι) : centered a b x * conj (centered c d x) =
-      (coordinate a x * conj (coordinate b x)) *
-        conj (coordinate c x * conj (coordinate d x)) -
-      delta c d * (coordinate a x * conj (coordinate b x)) -
-      delta a b * (coordinate d x * conj (coordinate c x)) + delta a b * delta c d := by
+      (complexCoordinate a x * conj (complexCoordinate b x)) *
+        conj (complexCoordinate c x * conj (complexCoordinate d x)) -
+      delta c d * (complexCoordinate a x * conj (complexCoordinate b x)) -
+      delta a b * (complexCoordinate d x * conj (complexCoordinate c x)) +
+        delta a b * delta c d := by
     simp only [centered, map_sub, map_mul, conj_delta, starRingEnd_self_apply]
     ring
   have hab := (memLp_coordinate_mul_conj a b).integrable (by norm_num)
