@@ -15,6 +15,7 @@ import QICLean.Circuit.Party.Syntax.EffectCircuit
 import QICLean.Circuit.Party.Syntax.Frame
 import QICLean.Circuit.Party.Syntax.Gates
 import QICLean.Circuit.Party.Syntax.Local
+import QICLean.Circuit.Party.Syntax.LocalProduct
 import QICLean.Circuit.Party.Syntax.OnCell
 import QICLean.Circuit.Party.Syntax.OwnerMap
 import QICLean.Circuit.Party.Syntax.PartyCircuit
