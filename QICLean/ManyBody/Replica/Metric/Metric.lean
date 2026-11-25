@@ -36,7 +36,8 @@ separate statements. The proofs are written from the paper; no Lean source was a
 * `TensorPower.replicaDim`, `TensorPower.replicaLabelWeight`, `TensorPower.replicaMetric`.
 * `TensorPower.posDef_replicaMetric`, `TensorPower.replicaMetric_zero`.
 * `TensorPower.commute_replicaMetric_of_subset`, `TensorPower.commute_replicaMetric_of_disjoint`.
-* `TensorPower.replicaMetric_mul_symProj_compl`.
+* `TensorPower.labelObservable_subsystemPerm_mul_symProj_compl`,
+  `TensorPower.replicaMetric_mul_symProj_compl`.
 * `TensorPower.exists_replicaMetric_comparison`.
 -/
 
@@ -157,14 +158,24 @@ theorem commute_replicaMetric_of_disjoint (t : ℝ) (k : ℕ) {Q Q' : Finset F}
     labelObservable_eq_groupAlgebraRep]
   exact commute_groupAlgebraRep_subsystemPerm_of_disjoint ι k h _ _
 
+/-- On the symmetric subspace `𝒮_k`, a label function of the subsystem `Q` acts as the same
+label function of the complementary subsystem `Qᶜ`: `∑_λ g(λ) π^λ_{Q,k} Π_k =
+∑_λ g(λ) π^λ_{Qᶜ,k} Π_k` for every real function `g` of the labels (`05-replicas.tex`,
+Lemma 6.1(2), lines 102–103, and Lemma 6.2, line 316). -/
+theorem labelObservable_subsystemPerm_mul_symProj_compl (k : ℕ) (Q : Finset F)
+    (g : IrrepLabel (Equiv.Perm (Fin k)) → ℝ) :
+    labelObservable (subsystemPerm k ι Q) g * symProj (copyPerm ((f : F) → ι f) k) =
+      labelObservable (subsystemPerm k ι Qᶜ) g * symProj (copyPerm ((f : F) → ι f) k) := by
+  simp only [labelObservable, Finset.sum_mul]
+  refine Finset.sum_congr rfl fun l _ => ?_
+  rw [smul_mul_assoc, smul_mul_assoc, labelProj_mul_symProj_compl]
+
 /-- **Lemma 6.2, complementary metrics** (`05-replicas.tex`, line 316): on the symmetric
 subspace `𝒮_k`, `W_{Q,k} = W_{Qᶜ,k}`, in the operator form `W_{Q,k} Π_k = W_{Qᶜ,k} Π_k`. -/
 theorem replicaMetric_mul_symProj_compl (t : ℝ) (k : ℕ) (Q : Finset F) :
     replicaMetric ι t k Q * symProj (copyPerm ((f : F) → ι f) k) =
-      replicaMetric ι t k Qᶜ * symProj (copyPerm ((f : F) → ι f) k) := by
-  simp only [replicaMetric, labelObservable, Finset.sum_mul]
-  refine Finset.sum_congr rfl fun l _ => ?_
-  rw [smul_mul_assoc, smul_mul_assoc, labelProj_mul_symProj_compl]
+      replicaMetric ι t k Qᶜ * symProj (copyPerm ((f : F) → ι f) k) :=
+  labelObservable_subsystemPerm_mul_symProj_compl ι k Q (replicaLabelWeight ι t)
 
 /-- The labelwise comparison behind `replicas:W-comparison`: for a label occurring on a
 subsystem, `|log w_k(λ) + t log d_λ| ≤ C log(k + 2)` with `C` depending only on `d` and `t`. -/

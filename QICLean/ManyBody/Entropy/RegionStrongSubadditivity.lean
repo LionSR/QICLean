@@ -193,3 +193,19 @@ theorem regionMutualInformation_mono_left (ψ : EuclideanSpace ℂ ((v : V) → 
   linarith
 
 end ManyBody
+
+
+namespace ManyBody
+
+variable {V : Type*} [Fintype V] [DecidableEq V]
+variable (β : V → Type*) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
+
+/-- Discarding part of the second region cannot increase mutual information:
+`I(X : W) ≤ I(X : T)` for `W ⊆ T` and `T` disjoint from `X`. No normalization is required. -/
+theorem regionMutualInformation_mono_right (ψ : EuclideanSpace ℂ ((v : V) → β v))
+    {X W T : Finset V} (hWT : W ⊆ T) (hXT : Disjoint X T) :
+    regionMutualInformation ψ X W ≤ regionMutualInformation ψ X T := by
+  rw [regionMutualInformation_comm β ψ X W, regionMutualInformation_comm β ψ X T]
+  exact regionMutualInformation_mono_left β ψ W T X hWT hXT.symm
+
+end ManyBody

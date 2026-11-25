@@ -30,6 +30,8 @@ that complement.
 
 * `ManyBody.traceDistance_regionState_le` — reduction does not increase the trace
   distance of pure states.
+* `ManyBody.abs_regionMutualInformation_sub_le_of_traceDistance` — continuity of the mutual
+  information in the dimension of the first region.
 * `ManyBody.regionMutualInformation_le_of_norm_sub_le` — continuity against a state without
   correlations.
 * `ManyBody.regionMutualInformation_le_of_supported_unitary` — the comparison after a unitary
@@ -72,16 +74,18 @@ theorem traceDistance_regionState_le (ψ η : EuclideanSpace ℂ ((v : V) → β
       (posSemidef_vecMulVec_self_star _).isHermitian
       (posSemidef_vecMulVec_self_star _).isHermitian)
 
-/-- **Continuity against a state without correlations.** Let `ψ, η` be unit vectors and
-`X, J` disjoint regions with `I_η(X : J) = 0`. Then `I_ψ(X : J) ≤ 8 √‖ψ - η‖ log(e dim X)`.
-Only the dimension of `X` enters. Two-dimensional area law, Lemma 2.1,
-`01-preliminaries.tex`, lines 33–46 and 76–77, as applied in `09-amplification.tex`,
-lines 550–555. -/
-theorem regionMutualInformation_le_of_norm_sub_le {ψ η : EuclideanSpace ℂ ((v : V) → β v)}
-    (hψ : ‖ψ‖ = 1) (hη : ‖η‖ = 1) {X J : Finset V} (hXJ : Disjoint X J)
-    (hprod : regionMutualInformation η X J = 0) :
-    regionMutualInformation ψ X J ≤
-      8 * √‖ψ - η‖ * Real.log (Real.exp 1 * Fintype.card (RegionConfig β X)) := by
+/-- **Continuity of mutual information in the dimension of the first region.** For unit
+vectors `ψ, η` at trace distance `δ` and disjoint regions `X, J`, the mutual information
+`I(X : J)` changes by at most `8 √δ log(e dim X)`. The dimensions of `J` and of the remaining
+sites do not enter. Two-dimensional area law, Lemma 2.1, `01-preliminaries.tex`,
+lines 33–46 and 76–77, as applied in `08-scanner.tex`, lines 936–941. -/
+theorem abs_regionMutualInformation_sub_le_of_traceDistance
+    {ψ η : EuclideanSpace ℂ ((v : V) → β v)} (hψ : ‖ψ‖ = 1) (hη : ‖η‖ = 1)
+    {X J : Finset V} (hXJ : Disjoint X J) :
+    |regionMutualInformation ψ X J - regionMutualInformation η X J| ≤
+      8 * √(traceDistance (vecMulVec (WithLp.ofLp ψ) (star (WithLp.ofLp ψ)))
+          (vecMulVec (WithLp.ofLp η) (star (WithLp.ofLp η)))) *
+        Real.log (Real.exp 1 * Fintype.card (RegionConfig β X)) := by
   have htr (χ : EuclideanSpace ℂ ((v : V) → β v)) (hχ : ‖χ‖ = 1) :
       (jointMatrix β χ X J hXJ).trace = 1 := by
     unfold jointMatrix
@@ -98,23 +102,40 @@ theorem regionMutualInformation_le_of_norm_sub_le {ψ η : EuclideanSpace ℂ ((
       (jointMatrix_posSemidef β η X J hXJ).isHermitian
           = regionMutualInformation η X J :=
     (regionMutualInformation_eq_matrix β η X J hXJ).symm
-  rw [hψI, hηI, hprod, sub_zero] at h
+  rw [hψI, hηI] at h
   have hdist : traceDistance (jointMatrix β ψ X J hXJ) (jointMatrix β η X J hXJ) ≤
-      ‖ψ - η‖ := by
+      traceDistance (vecMulVec (WithLp.ofLp ψ) (star (WithLp.ofLp ψ)))
+        (vecMulVec (WithLp.ofLp η) (star (WithLp.ofLp η))) := by
     unfold jointMatrix
     rw [traceDistance_submatrix_equiv _ (regionState_posSemidef _ ψ).isHermitian
       (regionState_posSemidef _ η).isHermitian]
-    exact (traceDistance_regionState_le β ψ η hψ hη _).trans
-      (traceDistance_vecMulVec_le_norm_sub hψ hη)
+    exact traceDistance_regionState_le β ψ η hψ hη _
   have hlog : 0 ≤ Real.log (Real.exp 1 * Fintype.card (RegionConfig β X)) :=
     Real.log_nonneg (one_le_mul_of_one_le_of_one_le (Real.one_le_exp zero_le_one)
       (Nat.one_le_cast.mpr (Fintype.card_pos_iff.mpr
         (Entropy.Matrix.PosSemidef.nonempty_of_trace_eq_one
           (trace_regionState_eq_one hψ (D := X))))))
-  calc regionMutualInformation ψ X J
-      ≤ |regionMutualInformation ψ X J| := le_abs_self _
-    _ ≤ _ := h
-    _ ≤ _ := by gcongr
+  exact h.trans (by gcongr)
+
+/-- **Continuity against a state without correlations.** Let `ψ, η` be unit vectors and
+`X, J` disjoint regions with `I_η(X : J) = 0`. Then `I_ψ(X : J) ≤ 8 √‖ψ - η‖ log(e dim X)`.
+Only the dimension of `X` enters. Two-dimensional area law, Lemma 2.1,
+`01-preliminaries.tex`, lines 33–46 and 76–77, as applied in `09-amplification.tex`,
+lines 550–555. -/
+theorem regionMutualInformation_le_of_norm_sub_le {ψ η : EuclideanSpace ℂ ((v : V) → β v)}
+    (hψ : ‖ψ‖ = 1) (hη : ‖η‖ = 1) {X J : Finset V} (hXJ : Disjoint X J)
+    (hprod : regionMutualInformation η X J = 0) :
+    regionMutualInformation ψ X J ≤
+      8 * √‖ψ - η‖ * Real.log (Real.exp 1 * Fintype.card (RegionConfig β X)) := by
+  have h := abs_regionMutualInformation_sub_le_of_traceDistance β hψ hη hXJ
+  rw [hprod, sub_zero] at h
+  have hlog : 0 ≤ Real.log (Real.exp 1 * Fintype.card (RegionConfig β X)) :=
+    Real.log_nonneg (one_le_mul_of_one_le_of_one_le (Real.one_le_exp zero_le_one)
+      (Nat.one_le_cast.mpr (Fintype.card_pos_iff.mpr
+        (Entropy.Matrix.PosSemidef.nonempty_of_trace_eq_one
+          (trace_regionState_eq_one hψ (D := X))))))
+  have hdist := traceDistance_vecMulVec_le_norm_sub hψ hη
+  exact (le_abs_self _).trans (h.trans (by gcongr))
 
 /-- **The comparison after a unitary supported away from both regions.** Let `U` be a unitary
 supported on a region `S` disjoint from `X ∪ J`, and let `η` be a unit vector with
