@@ -14,6 +14,7 @@ import QICLean.ManyBody.Replica.BandMetric.FiniteFamily
 import QICLean.ManyBody.Replica.BandMetric.Integrated
 import QICLean.ManyBody.Replica.BandMetric.IntegratedEntropy
 import QICLean.ManyBody.Replica.BandMetric.LeafMeasure
+import QICLean.ManyBody.Replica.BandMetric.MoveEntropy
 import QICLean.ManyBody.Replica.BandMetric.Prerequisites
 import QICLean.ManyBody.Replica.BandMetric.Proposition
 import QICLean.ManyBody.Replica.BandMetric.RelativePinBound

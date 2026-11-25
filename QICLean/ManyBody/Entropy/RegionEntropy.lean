@@ -389,3 +389,18 @@ theorem regionEntropy_cond_anti {X T' T : Finset V} (hXT : Disjoint X T) (hT' : 
   linarith
 
 end Entropy
+
+
+namespace ManyBody
+
+variable {V : Type*} [Fintype V] [DecidableEq V]
+variable (β : V → Type*) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
+
+/-- Mutual information of two regions is symmetric: `I(R : T) = I(T : R)`. -/
+theorem regionMutualInformation_comm (ψ : EuclideanSpace ℂ ((v : V) → β v)) (R T : Finset V) :
+    regionMutualInformation ψ R T = regionMutualInformation ψ T R := by
+  unfold regionMutualInformation
+  rw [Finset.union_comm]
+  ring
+
+end ManyBody
