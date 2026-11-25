@@ -21,3 +21,4 @@ import QICLean.Circuit.Party.Source.PartyMaps
 import QICLean.Circuit.Party.Source.Preparation
 import QICLean.Circuit.Party.Source.PreparedGate
 import QICLean.Circuit.Party.Source.PreparedSourceGate
+import QICLean.Circuit.Party.Source.ZeroPartyGate
