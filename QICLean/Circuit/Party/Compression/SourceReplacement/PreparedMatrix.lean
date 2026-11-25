@@ -25,6 +25,9 @@ families spanning proper subspaces.
 
 * `QuantumCircuit.Party.SourceInventory.slotColumnEquiv`,
   `QuantumCircuit.Party.SourceInventory.slotVector` — the source coordinates of a slot system.
+* `QuantumCircuit.Party.SourceInventory.slotSiteEquiv` — the coordinates of a slot system at
+  one party: the fresh factors of the slots at that party and the basis of the underlying
+  system.
 * `QuantumCircuit.Party.Word.preparedMatrix`,
   `QuantumCircuit.Party.Word.preparedDensityCoefficient`.
 
@@ -404,3 +407,42 @@ theorem preparedMatrix_mul_euclideanOuterProduct_preparedInput
 end Word
 
 end QuantumCircuit.Party
+
+namespace QuantumCircuit.Party.SourceInventory
+
+variable {P : Type} [DecidableEq P]
+
+/-! ### Party coordinates of a slot system -/
+
+/-- The basis of a slot system at one party: the fresh factors of the slots at that party, the
+first slot first, and the basis of the underlying system. A slot without an endpoint at the
+party contributes a factor with one element. Source: Theorem 5.2, `04-compression.tex`,
+lines 253–267 and 409–434. -/
+def slotSiteEquiv : (R : SourceInventory P) → (B : SlotBases R.length) → (Z : P → Type) →
+    (p : P) → slotSystem R B Z p ≃
+      (∀ i, pairFactor (R.get i).distinct (B.left i) (B.right i) p) × Z p
+  | [], _, _, _ =>
+    haveI : IsEmpty (Fin ([] : SourceInventory P).length) := Fin.isEmpty'
+    (Equiv.uniqueProd _ _).symm
+  | r :: R, B, Z, p =>
+    (addPairSiteEquiv r.distinct (B.left 0) (B.right 0) (slotSystem R B.tail Z) p).trans
+      (((Equiv.refl _).prodCongr (slotSiteEquiv R B.tail Z p)).trans
+        ((Equiv.prodAssoc _ _ _).symm.trans
+          ((Fin.consEquiv fun i ↦ pairFactor ((r :: R).get i).distinct (B.left i)
+            (B.right i) p).prodCongr (Equiv.refl _))))
+
+/-- The party coordinates of a slot system with one more slot: the fresh factor of the first
+slot, then those of the remaining slots. -/
+theorem slotSiteEquiv_cons_apply (r : PairSource P) (R : SourceInventory P)
+    (B : SlotBases (r :: R).length) (Z : P → Type) (p : P) (z : slotSystem (r :: R) B Z p) :
+    slotSiteEquiv (r :: R) B Z p z =
+      (Fin.cons (addPairSiteEquiv r.distinct (B.left 0) (B.right 0)
+          (slotSystem R B.tail Z) p z).1
+          (slotSiteEquiv R B.tail Z p (addPairSiteEquiv r.distinct (B.left 0) (B.right 0)
+            (slotSystem R B.tail Z) p z).2).1,
+        (slotSiteEquiv R B.tail Z p (addPairSiteEquiv r.distinct (B.left 0) (B.right 0)
+          (slotSystem R B.tail Z) p z).2).2) := by
+  simp only [slotSiteEquiv]
+  rfl
+
+end QuantumCircuit.Party.SourceInventory
