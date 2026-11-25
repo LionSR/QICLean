@@ -77,6 +77,12 @@ noncomputable instance (w : SourceCircuit X Y) (S : Finset w.sourceLocations)
   unfold crossingSlotBasis
   split_ifs <;> infer_instance
 
+/-- The basis on either side of a crossing slot has decidable equality. -/
+noncomputable instance (w : SourceCircuit X Y) (S : Finset w.sourceLocations)
+    (i : w.crossingSlots S) (side : Bool) : DecidableEq (w.crossingSlotBasis S i side) := by
+  unfold crossingSlotBasis
+  split_ifs <;> infer_instance
+
 /-- The two endpoint bases in the order affected, exterior: the identity when the left
 endpoint is affected, the exchange of the two factors otherwise. -/
 noncomputable def crossingSlotEquiv (w : SourceCircuit X Y) (S : Finset w.sourceLocations)

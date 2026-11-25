@@ -51,9 +51,8 @@ theorem exists_side_product_of_sources_eq_nil (f : Q → Bool) (p₀ : Word U X)
       (M : Matrix r s ℂ) (j : s),
       ‖M.submatrix id fun _ : Unit ↦ j‖ ≤ ‖M‖ := by
     intro r s _ _ _ _ M j
-    rw [← l2_opNorm_conjTranspose, conjTranspose_submatrix]
-    exact (l2_opNorm_submatrix_le_of_injective _
-      (Function.injective_of_subsingleton _)).trans_eq (l2_opNorm_conjTranspose M)
+    exact l2_opNorm_submatrix_le_of_injective M Function.injective_id
+      (Function.injective_of_subsingleton _)
   refine ⟨c.op.submatrix id fun _ ↦ t.1, d.op.submatrix id fun _ ↦ t.2, (hcol _ _).trans hcn,
     (hcol _ _).trans hdn, fun s ↦ ?_⟩
   have hentry := congrFun (congrFun hop ((cutEquiv (blockSystem f X) {true}).symm s))
