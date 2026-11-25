@@ -7,7 +7,7 @@ Authors: Sirui Lu
 import Mathlib.LinearAlgebra.Matrix.Kronecker
 import Mathlib.Analysis.Matrix.Order
 import QICLean.Analysis.FunctionalCalculus.CfcKronecker
-import QICLean.Analysis.Logarithm.CfcLogAdditive
+import QICLean.Analysis.FunctionalCalculus.CfcLogAdditive
 import QICLean.Entropy.VonNeumann.Entropy
 
 /-!

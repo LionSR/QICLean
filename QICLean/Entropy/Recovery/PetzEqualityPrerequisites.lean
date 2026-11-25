@@ -7,7 +7,6 @@ Authors: TNLean contributors
 import QICLean.Algebra.Matrix.MatrixAux
 import QICLean.Analysis.Order.SuperoperatorResolvent
 import QICLean.Entropy.Recovery.PetzRecoverySupport
-import QICLean.Entropy.StrongSubadditivity.SSAEqualityDPI
 import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.Rpow.Basic
 import Mathlib.Basic.Complex.BigOperators
 import Mathlib.LinearAlgebra.Matrix.Vec

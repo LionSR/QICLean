@@ -10,8 +10,10 @@ Authors: QICLean contributors
 
 import QICLean.Entropy.Conditional.BoundaryEnergy
 import QICLean.Entropy.Conditional.Collision
+import QICLean.Entropy.Conditional.ConditionalContinuity
 import QICLean.Entropy.Conditional.ConditionalEntropy
 import QICLean.Entropy.Conditional.ConditionalPhase
+import QICLean.Entropy.Conditional.ControlledContinuity
 import QICLean.Entropy.Conditional.DoubleCurve
 import QICLean.Entropy.Conditional.EntropyBounds
 import QICLean.Entropy.Conditional.FilterEntropy
@@ -25,6 +27,7 @@ import QICLean.Entropy.Conditional.ModularDistance
 import QICLean.Entropy.Conditional.MovementEstimate
 import QICLean.Entropy.Conditional.Optimizer
 import QICLean.Entropy.Conditional.PhaseTransfer
+import QICLean.Entropy.Conditional.PureEntropy
 import QICLean.Entropy.Conditional.Purification
 import QICLean.Entropy.Conditional.RelativeLogMoments
 import QICLean.Entropy.Conditional.SingularInterpolation

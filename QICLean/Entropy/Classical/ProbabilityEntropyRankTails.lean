@@ -11,7 +11,7 @@ import Mathlib.Tactic.Ring
 import Lean.Elab.Tactic.Omega
 import Mathlib.Data.Nat.Find
 import QICLean.Entropy.Classical.ProbabilityEntropy
-import QICLean.Entropy.Relative.KleinInequality
+import Mathlib.Algebra.BigOperators.Field
 import Mathlib.Algebra.Ring.GeomSum
 
 /-!
