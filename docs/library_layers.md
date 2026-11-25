@@ -356,9 +356,9 @@ it is repaired by moving the module or the lemma, never by changing the order to
 | `Kraus` | Tactic < (top) < MixedMap < PrimitiveFixedPoint < Wielandt | 0 |
 | `Entropy` | Classical < VonNeumann < Relative < Renyi < MutualInformation < Recovery < Markov < StrongSubadditivity < Conditional < Surprisal < Typical < (top) | 3 |
 | `Probability` | Measurable < Measure < Concentration < (top) < Gaussian < Haar < PoissonWord < Sampling | 1 |
-| `Representation` | Partition < SymmetricGroup < Permutation < TensorPower < YoungSubgroup < Character < Replica < SchurWeyl < Twirl < Coherent < Bell < (top) | 17 |
+| `Representation` | Partition < SymmetricGroup < Permutation < TensorPower < YoungSubgroup < Character < Replica < SchurWeyl < Twirl < Coherent < Bell < (top) | 5 |
 
-38 imports are recorded. `ManyBody` and `Circuit` keep the orders of
+26 imports are recorded. `ManyBody` and `Circuit` keep the orders of
 `docs/many_body_circuit_architecture.md`, which the same script checks.
 
 ### Order inside a subdirectory

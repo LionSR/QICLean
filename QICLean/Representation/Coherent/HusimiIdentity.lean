@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Representation.Coherent.Resolution
+import QICLean.Representation.TensorPower.Action
 import QICLean.Algebra.Matrix.MatrixReindex
 
 /-!
@@ -18,10 +19,11 @@ For a density matrix `σ` on `k` copies and an operator `G` on `m` copies, the a
 with `dμ_σ(θ) = D_k Tr(σ P_{θ,k}) dθ`. Since `P_{θ,k+m} = P_{θ,k} ⊗ P_{θ,m}`, this is the
 coherent-state resolution of `Π_{k+m}` paired with `σ ⊗ G`. Here the invariant measure on unit
 vectors is the image of the Haar measure under `U ↦ U e_a`.
+The splitting `TensorPower.splitCopies` of `V^{⊗(k+m)}` into `V^{⊗k} ⊗ V^{⊗m}` is in
+`QICLean.Representation.TensorPower.Action`.
 
 ## Main declarations
 
-* `TensorPower.splitCopies` — `V^{⊗(k+m)} ≅ V^{⊗k} ⊗ V^{⊗m}`.
 * `TensorPower.coherentProj_split` — `P_{θ,k+m} = P_{θ,k} ⊗ P_{θ,m}`.
 * `TensorPower.integral_coherent_pairing` — the finite-copy identity.
 -/
@@ -32,13 +34,6 @@ open scoped Kronecker
 namespace TensorPower
 
 variable {Ω : Type*} [Fintype Ω] [DecidableEq Ω]
-
-/-- Splitting `k + m` copies into the first `k` and the last `m`. -/
-def splitCopies (k m : ℕ) : (Fin (k + m) → Ω) ≃ (Fin k → Ω) × (Fin m → Ω) where
-  toFun x := (fun i => x (Fin.castAdd m i), fun j => x (Fin.natAdd k j))
-  invFun p := Fin.append p.1 p.2
-  left_inv x := Fin.append_castAdd_natAdd
-  right_inv p := by simp
 
 omit [Fintype Ω] [DecidableEq Ω] in
 theorem tensorVec_split (k m : ℕ) (θ : Ω → ℂ) (x : Fin (k + m) → Ω) :

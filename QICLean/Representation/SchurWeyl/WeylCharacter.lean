@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Representation.SchurWeyl.ExteriorPieri
-import QICLean.Representation.Character.WeylDimension
+import QICLean.Representation.SchurWeyl.WeylDimension
 
 /-!
 # The Weyl character formula for the multiplicity spaces

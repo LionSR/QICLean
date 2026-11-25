@@ -87,16 +87,6 @@ theorem hasDerivAt_rotation_apply (P J : Matrix Ω Ω ℂ) (a b : Ω) :
   simp [rotation, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]
 
 omit [Fintype Ω] in
-theorem diagOp_apply (A : Matrix Ω Ω ℂ) (x y : Fin k → Ω) :
-    diagOp A x y = ∑ j, if ∀ i, i ≠ j → x i = y i then A (x j) (y j) else 0 := by
-  simp only [diagOp, Matrix.sum_apply, siteOp_apply]
-
-omit [Fintype Ω] in
-theorem tensorPow_apply (A : Matrix Ω Ω ℂ) (x y : Fin k → Ω) :
-    tensorPow A x y = ∏ j, A (x j) (y j) := by
-  simp [tensorPow]
-
-omit [Fintype Ω] in
 /-- The entries of `B(θ)^{⊗k}` have derivative `Δ(J)` at `θ = 0`. -/
 theorem hasDerivAt_tensorPow_rotation_apply (P J : Matrix Ω Ω ℂ) (x y : Fin k → Ω) :
     HasDerivAt (fun θ => tensorPow (k := k) (rotation P J θ) x y) (diagOp J x y) 0 := by

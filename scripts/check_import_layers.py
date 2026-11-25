@@ -158,23 +158,11 @@ SUBLAYER_DEBT: frozenset[str] = frozenset({
         "QICLean.Entropy.MutualInformation.MutualInformation -> QICLean.Entropy.StrongSubadditivity.Basic",
         "QICLean.Entropy.VonNeumann.Bipartite -> QICLean.Entropy.StrongSubadditivity.Basic",
         "QICLean.Probability.Measurable.CanonicalSampleProjectionMeasurable -> QICLean.Probability.Sampling.ViableSubspaceRandomSampling",
-        "QICLean.Representation.Character.WeylCharacter -> QICLean.Representation.SchurWeyl.ExteriorPieri",
-        "QICLean.Representation.Character.WeylDimension -> QICLean.Representation.SchurWeyl.SchurLabelEstimates",
         "QICLean.Representation.Partition.HookDimension -> QICLean.Representation.SchurWeyl.BranchingPieri",
-        "QICLean.Representation.Permutation.CommutantDimension -> QICLean.Representation.TensorPower.Action",
         "QICLean.Representation.Permutation.LabelProjectors -> QICLean.Representation.Character.IrrepLabels",
         "QICLean.Representation.Permutation.MergeDimensions -> QICLean.Representation.Replica.SchurLabelCommutation",
         "QICLean.Representation.Permutation.MergeDimensions -> QICLean.Representation.YoungSubgroup.GroupedCopies",
-        "QICLean.Representation.Permutation.MergeExponential -> QICLean.Representation.Replica.SchurLabelCommutation",
-        "QICLean.Representation.Permutation.TrivialLabel -> QICLean.Representation.TensorPower.Action",
-        "QICLean.Representation.SymmetricGroup.JucysRecursion -> QICLean.Representation.Character.RegularTrace",
-        "QICLean.Representation.TensorPower.CompatiblePhysicalLabel -> QICLean.Representation.Replica.SchurLabelCommutation",
-        "QICLean.Representation.TensorPower.InjectionAverage -> QICLean.Representation.Coherent.HusimiIdentity",
-        "QICLean.Representation.TensorPower.InjectionProduct -> QICLean.Representation.Coherent.UniformHusimi",
-        "QICLean.Representation.TensorPower.ReplicaMeanIdentityExtension -> QICLean.Representation.SchurWeyl.Commutant",
-        "QICLean.Representation.TensorPower.Rpow -> QICLean.Representation.Twirl.UnitaryTwirl",
         "QICLean.Representation.TensorPower.SplitCopies -> QICLean.Representation.Character.Branching",
-        "QICLean.Representation.TensorPower.SplitCopies -> QICLean.Representation.Twirl.UnitaryTwirl",
 })
 DEEP_ROOTS: frozenset[str] = frozenset({"ManyBody", "Circuit"})
 MUTUAL_DIRECTORIES: frozenset[str] = frozenset({})

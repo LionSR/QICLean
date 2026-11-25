@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Representation.Coherent.HusimiIdentity
+import QICLean.Representation.TensorPower.Action
 import QICLean.Analysis.Norm.RootChannel
 import QICLean.Analysis.Norm.L2OpNormReindex
 
@@ -29,6 +29,7 @@ for every `j`, `Tr[(σ ⊗ G) U(π_ι)] = Tr[σ G_ι]`: this is the partial-trac
 * `TensorPower.injectionAverage` — `𝒯_{k,m}(G)`.
 * `TensorPower.injectionSwap` — the permutation `π_ι`.
 * `TensorPower.trace_kronecker_mul_injectionSwap` — `Tr[(σ ⊗ G) U(π_ι)] = Tr[σ G_ι]`.
+* `TensorPower.copyKronecker` — the matrix `σ ⊗ G` on `k + m` copies.
 
 ## References
 
@@ -228,5 +229,10 @@ theorem trace_kronecker_mul_injectionSwap (ι : Fin m ↪ Fin k)
   refine Finset.sum_congr rfl fun w _ => ?_
   rw [Finset.sum_ite_eq' Finset.univ]
   simp
+
+/-- The matrix `σ ⊗ G` on `k + m` copies, with `σ` on the first `k` and `G` on the last `m`. -/
+noncomputable def copyKronecker (σ : Matrix (Fin k → Ω) (Fin k → Ω) ℂ)
+    (G : Matrix (Fin m → Ω) (Fin m → Ω) ℂ) : Matrix (Fin (k + m) → Ω) (Fin (k + m) → Ω) ℂ :=
+  reindex (splitCopies k m).symm (splitCopies k m).symm (σ ⊗ₖ G)
 
 end TensorPower

@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Sirui Lu
 -/
-import QICLean.Representation.SchurWeyl.Commutant
+import QICLean.Representation.TensorPower.SiteOperators
 import QICLean.Algebra.Kronecker.KroneckerFactorPositivity
 import Mathlib.Algebra.BigOperators.GroupWithZero.Finset
 import Mathlib.Logic.Equiv.Prod
