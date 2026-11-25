@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Circuit.Party.Compression.PartialExpansion.Residual
 import QICLean.Circuit.Party.Source.LocalPartCoarsen
+import QICLean.Circuit.Party.Source.ZeroPartyGate
 
 /-!
 # The exterior scalar of the expansion along all parties
@@ -24,6 +25,7 @@ part of the branch of the gate is the identification of equal bases.
 
 ## Main results
 
+* `QuantumCircuit.Party.SourceInventory.slotSystem_eq_of_forall_ne`.
 * `QuantumCircuit.Party.SourceCircuit.norm_emptyGateScalar_le_one`.
 * `QuantumCircuit.Party.SourceCircuit.localPartOp_partialWord_all_none_apply`,
   `QuantumCircuit.Party.SourceCircuit.partyOp_partialResidual_all_none_apply`,
@@ -109,8 +111,9 @@ private theorem system_eq_of_forall_ne (Z : P → Type) (q : P) :
       (hS s List.mem_cons_self).2.symm).trans
       (system_eq_of_forall_ne Z q S fun t ht ↦ hS t (List.mem_cons_of_mem _ ht))
 
-/-- At a party that is no endpoint of the slots, the slot system has the bases of the system. -/
-private theorem slotSystem_eq_of_forall_ne (Z : P → Type) (q : P) : (R : SourceInventory P) →
+/-- At a party that is no endpoint of the slots, the slot system has the bases of the system.
+Source: `04-compression.tex`, lines 246–267. -/
+theorem slotSystem_eq_of_forall_ne (Z : P → Type) (q : P) : (R : SourceInventory P) →
     (B : SlotBases R.length) → (∀ i, (R.get i).left ≠ q ∧ (R.get i).right ≠ q) →
       slotSystem R B Z q = Z q
   | [], _, _ => rfl
@@ -229,26 +232,6 @@ theorem emptyGateScalar_gate_of_not_nonempty (D : Finset P) (hY : ∀ s ∉ D, Y
     emptyGateScalar (PartyCircuit.comp w w') = emptyGateScalar w * emptyGateScalar w' :=
   rfl
 
-/-- An entry of a matrix is at most its operator norm. -/
-private theorem norm_apply_le_l2_opNorm {m n : Type} [Fintype m] [Fintype n] [DecidableEq n]
-    (M : Matrix m n ℂ) (i : m) (j : n) : ‖M i j‖ ≤ ‖M‖ := by
-  have h := Matrix.l2_opNorm_mulVec M (EuclideanSpace.single j (1 : ℂ))
-  have h1 : ‖EuclideanSpace.single j (1 : ℂ)‖ = 1 := by simp
-  rw [h1, mul_one] at h
-  refine le_trans (le_of_eq ?_) ((PiLp.norm_apply_le _ i).trans h)
-  simp
-
-omit [∀ p, Fintype (Y p)] [∀ p, DecidableEq (Y p)] in
-/-- A prepared gate on a cell with no party acts by the sum of its coefficients. Source:
-`04-compression.tex`, lines 24–28 and 233–251. -/
-private theorem PreparedGate.eval_apply_of_not_nonempty {D : Finset P}
-    [∀ p, Fintype (X p)] [∀ p, DecidableEq (X p)] (g : PreparedGate D X Y) (hD : ¬ D.Nonempty)
-    (y : Config fun s : ↥D ↦ Y s) (x : Config fun s : ↥D ↦ X s) :
-    g.gate.eval y x = ∑ ξ, g.coeff ξ := by
-  have : IsEmpty ↥D := ⟨fun s ↦ hD ⟨s.1, s.2⟩⟩
-  simp only [PreparedSourceGate.eval, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul]
-  exact Finset.sum_congr rfl fun ξ _ ↦ by rw [Word.op_apply_of_isEmpty, mul_one]
-
 set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 -- The finiteness of the bases gives the bound of the prepared gates.
@@ -262,8 +245,7 @@ theorem norm_emptyGateScalar_le_one [Fintype P] : {X Y : P → Type} → [∀ p,
     split_ifs with hD
     · exact norm_one.le
     · have : IsEmpty ↥D := ⟨fun s ↦ hD ⟨s.1, s.2⟩⟩
-      rw [← PreparedGate.eval_apply_of_not_nonempty g hD isEmptyElim isEmptyElim]
-      exact (norm_apply_le_l2_opNorm _ _ _).trans g.gate.norm_eval_le_one
+      exact g.gate.norm_coeffSum_le_one_of_isEmpty
   | _, _, _, _, PartyCircuit.localOp _ _ _ => norm_one.le
   | _, _, _, _, PartyCircuit.localOps _ => norm_one.le
   | _, _, _, _, PartyCircuit.comp c c' =>
@@ -360,7 +342,8 @@ private theorem constEntries_localPartOp_partialWord_all : {X Y : P → Type} �
       rw [ite_eq_left fun (v : {v // v ∈ blockPreimage (affectedOwner fun _ : P ↦ true) {none}})
         _ ↦ (affectedOwner_true_ne_none v.1
           ((mem_blockPreimage_singleton (f := affectedOwner fun _ : P ↦ true)).mp v.2)).elim]
-      exact PreparedGate.eval_apply_of_not_nonempty g hD _ _
+      have : IsEmpty ↥D := ⟨fun s ↦ hD ⟨s.1, s.2⟩⟩
+      exact g.gate.eval_apply_of_isEmpty _ _
   | _, _, _, _, PartyCircuit.localOp p hY U, _ => by
     rw [partialWord_localOp]
     exact constEntries_localPartOp_coarsen_all _
