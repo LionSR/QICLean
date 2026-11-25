@@ -76,10 +76,25 @@ theorem mul_exp_neg_log_eq_rpow {p u : ℝ} (hp : 0 ≤ p) (hu : u ≠ 1) :
   · rw [Real.rpow_def_of_pos hp, ← Real.exp_log hp, ← Real.exp_add, Real.log_exp]
     ring_nf
 
-/-- The moment at `u` is `∑ p i ^ (1 - u)` away from `u = 1`. -/
-theorem surprisalMoment_eq_sum_rpow {p : ι → ℝ} (hp : ∀ i, 0 ≤ p i) {u : ℝ} (hu : u ≠ 1) :
-    surprisalMoment p u = ∑ i, p i ^ (1 - u) :=
-  Finset.sum_congr rfl fun i _ ↦ mul_exp_neg_log_eq_rpow (hp i) hu
+/-- For nonnegative weights and every `u`, the moment is the sum of `p i ^ (1 - u)` over the
+positive weights: with only positive eigenvalues retained, `Tr ρ^{1-u}` is the moment of the
+surprisal. Area-law manuscript, `07-comparators.tex`, lines 77–83. -/
+theorem surprisalMoment_eq_sum_rpow (p : ι → ℝ) (hp : ∀ i, 0 ≤ p i) (u : ℝ) :
+    surprisalMoment p u = ∑ i, if 0 < p i then p i ^ (1 - u) else 0 := by
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  split_ifs with h
+  · rw [Real.rpow_sub h, Real.rpow_one, Real.rpow_def_of_pos h, div_eq_mul_inv,
+      ← Real.exp_neg]
+    ring_nf
+  · simp [le_antisymm (not_lt.mp h) (hp i)]
+
+/-- Away from `u = 1` the zero weights may be included: the moment is `∑ p i ^ (1 - u)`. -/
+theorem surprisalMoment_eq_sum_rpow_of_ne_one {p : ι → ℝ} (hp : ∀ i, 0 ≤ p i) {u : ℝ}
+    (hu : u ≠ 1) : surprisalMoment p u = ∑ i, p i ^ (1 - u) :=
+  (surprisalMoment_eq_sum_rpow p hp u).trans <| Finset.sum_congr rfl fun i _ ↦ by
+    split_ifs with h
+    · rfl
+    · rw [le_antisymm (not_lt.mp h) (hp i), Real.zero_rpow (sub_ne_zero.mpr (Ne.symm hu))]
 
 theorem surprisalMoment_zero {p : ι → ℝ} (hs : ∑ i, p i = 1) : surprisalMoment p 0 = 1 := by
   simpa [surprisalMoment] using hs

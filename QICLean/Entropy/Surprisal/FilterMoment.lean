@@ -113,7 +113,7 @@ theorem norm_kronecker_one_apply_sq_le_rpow {L : Matrix α α ℂ} (hL : L.IsHer
     rw [← Real.rpow_natCast, ← Real.rpow_mul (hLnn j)]
     congr 1
   have h2 : ∑ i, hρ.eigenvalues i ^ (1 - a)⁻¹ = surprisalMoment hρ.eigenvalues (-a / (1 - a)) := by
-    rw [surprisalMoment_eq_sum_rpow hp]
+    rw [surprisalMoment_eq_sum_rpow_of_ne_one hp]
     · refine Finset.sum_congr rfl fun i _ ↦ ?_
       congr 1
       have h1a : (1 - a) ≠ 0 := by linarith

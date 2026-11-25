@@ -8,6 +8,7 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Representation.Bell
 
+import QICLean.Representation.Bell.LabelDimensionRemainder
 import QICLean.Representation.Bell.ReplicaPrevector
 import QICLean.Representation.Bell.SchmidtBellPrevector
 import QICLean.Representation.Bell.UniformBellLabel

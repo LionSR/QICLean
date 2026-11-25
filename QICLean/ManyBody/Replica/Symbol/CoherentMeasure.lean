@@ -206,3 +206,49 @@ theorem coherentMeasure_zero :
   simp [coherentMeasure]
 
 end TensorPower
+
+namespace TensorPower
+
+variable {Ω : Type*} [Fintype Ω] [DecidableEq Ω]
+
+/-- The coherent integral against a positive semidefinite matrix is monotone in the symbol:
+if `f ≤ g` pointwise for continuous `f` and `g`, then `ℋ_ρ(f) ≤ ℋ_ρ(g)`. The operator form is
+`TensorPower.coherentAverage_mono`. -/
+theorem realCoherentIntegral_mono (k : ℕ) (a : Ω)
+    {ρ : Matrix (Fin k → Ω) (Fin k → Ω) ℂ} (hρ : ρ.PosSemidef)
+    {f g : (Ω → ℂ) → ℝ} (hf : Continuous f) (hg : Continuous g)
+    (hfg : ∀ θ, f θ ≤ g θ) :
+    realCoherentIntegral k a ρ f ≤ realCoherentIntegral k a ρ g := by
+  unfold realCoherentIntegral
+  apply mul_le_mul_of_nonneg_left _ (Nat.cast_nonneg _)
+  apply integral_mono (integrable_realCoherentIntegral_integrand k a ρ hf)
+    (integrable_realCoherentIntegral_integrand k a ρ hg)
+  intro U
+  apply mul_le_mul_of_nonneg_right (hfg _) ?_
+  rw [coherentProj, Matrix.mul_vecMulVec, Matrix.trace_vecMulVec, dotProduct_comm]
+  exact (Complex.nonneg_iff.mp (hρ.dotProduct_mulVec_nonneg _)).1
+
+/-- The coherent integral of a finite sum of continuous symbols is the sum of the coherent
+integrals, for every matrix. The complex-valued form, with symbols on the unitary group, is
+`TensorPower.coherentIntegral_sum`. -/
+theorem realCoherentIntegral_sum (k : ℕ) (a : Ω)
+    (ρ : Matrix (Fin k → Ω) (Fin k → Ω) ℂ) {ι : Type*} (s : Finset ι)
+    (f : ι → (Ω → ℂ) → ℝ) (hf : ∀ i ∈ s, Continuous (f i)) :
+    realCoherentIntegral k a ρ (fun θ => ∑ i ∈ s, f i θ) =
+      ∑ i ∈ s, realCoherentIntegral k a ρ (f i) := by
+  unfold realCoherentIntegral
+  simp_rw [Finset.sum_mul]
+  rw [integral_finsetSum _ fun i hi => integrable_realCoherentIntegral_integrand k a ρ (hf i hi),
+    Finset.mul_sum]
+
+/-- The coherent integral is homogeneous in the symbol, `ℋ_ρ(c f) = c ℋ_ρ(f)`, for every
+matrix and every symbol. -/
+theorem realCoherentIntegral_const_mul (k : ℕ) (a : Ω)
+    (ρ : Matrix (Fin k → Ω) (Fin k → Ω) ℂ) (c : ℝ) (f : (Ω → ℂ) → ℝ) :
+    realCoherentIntegral k a ρ (fun θ => c * f θ) = c * realCoherentIntegral k a ρ f := by
+  unfold realCoherentIntegral
+  simp_rw [mul_assoc]
+  rw [integral_const_mul]
+  ring
+
+end TensorPower

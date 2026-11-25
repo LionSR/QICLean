@@ -6,6 +6,8 @@ Authors: QICLean contributors
 import QICLean.ManyBody.Replica.BandMetric.Setup
 import QICLean.ManyBody.Entropy.MovementEtaRegional
 import QICLean.ManyBody.Entropy.RegionStrongSubadditivity
+import QICLean.ManyBody.Entropy.ConditionalTwoFamilies
+import QICLean.ManyBody.Entropy.RegionEntropyInequalities
 import Mathlib.Tactic.Ring
 import Mathlib.Tactic.Tauto
 
@@ -21,21 +23,26 @@ move to `P` and `I(x : P | F)` for a move to `F` (area-law paper, `06-transport.
 * a move of the empty subsystem has entropy zero;
 * since complementary regions of a pure vector have equal entropy, the entropy of a move to
   `P` is the sum `S(x ∪ P) - S(P) + S(Y) - S(Y ∖ x)` of two conditional entropy differences,
-  and the same holds for a move to `F` with `F` in place of `P`.
+  and the same holds for a move to `F` with `F` in place of `P`;
+* for a unit vector, the entropy of a valid move is at most twice the logarithmic dimension
+  `log (e · dim x)` of the moved subsystem.
 
-These are balanced entropy identities and inequalities, so the vector need not be normalized.
+The first three are balanced entropy identities and inequalities, so the vector need not be
+normalized there.
 
 ## Main statements
 
 * `TensorPower.ReplicaTransport.moveEta_nonneg`
 * `TensorPower.ReplicaTransport.moveEta_toP_eq_entropy_difference`,
   `TensorPower.ReplicaTransport.moveEta_toF_eq_entropy_difference`
+* `TensorPower.ReplicaTransport.regionEntropy_le_logDim_of_subset`,
+  `TensorPower.ReplicaTransport.moveEta_le_two_mul_logDim`
 
 ## References
 
 * OpenAI, *A two-dimensional area law from a global spectral gap*, September 24, 2026,
-  `06-transport.tex`, display `transport:move-eta`, lines 321–330; `05-replicas.tex`,
-  lines 490–492.
+  `06-transport.tex`, display `transport:move-eta`, lines 315–330; `05-replicas.tex`,
+  lines 490–492; `08-scanner.tex`, lines 434–440.
 
 Independently formalized from the manuscript; no upstream Lean proof text is reused.
 -/
@@ -114,5 +121,51 @@ theorem moveEta_toF_eq_entropy_difference (π : PYF V) (hπ : π.IsPartition)
     simpa only [Finset.union_assoc, Finset.union_left_comm, Finset.union_comm]
       using hπ.2.2.2
   exact moveEta_toP_eq_entropy_difference n ⟨π.F, π.Y, π.P⟩ hswap x hx θ
+
+end TensorPower.ReplicaTransport
+
+namespace TensorPower.ReplicaTransport
+
+variable {V : Type*} [Fintype V] [DecidableEq V] (n : V → ℕ) [∀ v, NeZero (n v)]
+
+/-- The entropy of a region `R` of a unit vector is at most the logarithmic dimension
+`log (e · dim B)` of any set of tensor factors `B ⊇ R`. -/
+theorem regionEntropy_le_logDim_of_subset (θ : EuclideanSpace ℂ (∀ v, Fin (n v)))
+    (hθ : ‖θ‖ = 1) {R B : Finset V} (hRB : R ⊆ B) :
+    ManyBody.regionEntropy θ R ≤ logDim n B := by
+  have hcard : Fintype.card (ManyBody.RegionConfig (fun v => Fin (n v)) R) ≤ ∏ v ∈ B, n v := by
+    calc
+      _ = ∏ v ∈ R, n v := by
+        simp only [ManyBody.RegionConfig, Fintype.card_pi, Fintype.card_fin,
+          Finset.prod_coe_sort]
+      _ ≤ ∏ v ∈ B, n v := Finset.prod_le_prod_of_subset_of_one_le hRB
+        (fun v _ _ => Nat.one_le_iff_ne_zero.mpr (NeZero.ne (n v)))
+  have hlog := Real.log_le_log (Nat.cast_pos.mpr Fintype.card_pos) (Nat.cast_le.mpr hcard)
+  have hprod : 0 < ∏ v ∈ B, (n v : ℝ) := Finset.prod_pos fun v _ =>
+    Nat.cast_pos.mpr (Nat.pos_of_ne_zero (NeZero.ne (n v)))
+  rw [Nat.cast_prod] at hlog
+  refine (ManyBody.regionEntropy_le_log_card _ hθ R).trans (hlog.trans ?_)
+  rw [logDim, Real.log_mul (Real.exp_pos 1).ne' hprod.ne', Real.log_exp]
+  linarith
+
+/-- A valid move has entropy at most twice the logarithmic dimension of its moved
+subsystem (`06-transport.tex`, lines 315–322; `08-scanner.tex`, lines 434–440). -/
+theorem moveEta_le_two_mul_logDim (π : PYF V) (hπ : π.IsPartition) (m : Move V)
+    (hm : m.IsValid π) (θ : EuclideanSpace ℂ (∀ v, Fin (n v))) (hθ : ‖θ‖ = 1) :
+    moveEta n π m θ ≤ 2 * logDim n m.subsystem := by
+  cases m with
+  | stay => simp [moveEta, Move.subsystem, logDim]
+  | toP x =>
+    have hxY : x ⊆ π.Y := hm
+    exact (ManyBody.conditionalMutualInformation_le_two_regionEntropy _ θ hθ x π.F π.P
+      (hπ.2.2.1.mono_left hxY) (hπ.1.symm.mono_left hxY)).trans
+      (mul_le_mul_of_nonneg_left (regionEntropy_le_logDim_of_subset n θ hθ subset_rfl)
+        (by norm_num))
+  | toF x =>
+    have hxY : x ⊆ π.Y := hm
+    exact (ManyBody.conditionalMutualInformation_le_two_regionEntropy _ θ hθ x π.P π.F
+      (hπ.1.symm.mono_left hxY) (hπ.2.2.1.mono_left hxY)).trans
+      (mul_le_mul_of_nonneg_left (regionEntropy_le_logDim_of_subset n θ hθ subset_rfl)
+        (by norm_num))
 
 end TensorPower.ReplicaTransport
