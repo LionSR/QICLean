@@ -399,20 +399,6 @@ theorem eval_mul_of_commute {B : ι → Matrix n n ℂ} (hA : ∀ j, (A j).PosDe
       (posDef_eval hB r) (commute_eval_eval hA hB hAB l l) (commute_eval_eval hA hB hAB l r)
       (commute_eval_eval hA hB hAB r l) (commute_eval_eval hA hB hAB r r) p
 
-/-- A product, in index order, of pairwise commuting positive definite matrices is
-positive definite. -/
-theorem posDef_listProd_ofFn {K : ℕ} {D : Fin K → Matrix n n ℂ} (hD : ∀ g, (D g).PosDef)
-    (hcomm : ∀ g g', g ≠ g' → Commute (D g) (D g')) : (List.ofFn D).prod.PosDef := by
-  induction K with
-  | zero => simpa using PosDef.one
-  | succ K ih =>
-    rw [List.ofFn_succ, List.prod_cons]
-    have hrest := ih (D := fun g ↦ D g.succ) (fun g ↦ hD _)
-      (fun g g' h ↦ hcomm _ _ (fun h' ↦ h (Fin.succ_injective _ h')))
-    refine (hD 0).mul_of_commute hrest (Commute.list_prod_right _ _ fun y hy ↦ ?_)
-    obtain ⟨g, rfl⟩ := List.mem_ofFn.mp hy
-    exact hcomm _ _ (Fin.succ_ne_zero g).symm
-
 /-- **Factorization across commuting bands.** Suppose every input is an ordered product
 `A_j = ∏_g A_{j,g}` of positive definite factors, and every factor from band `g`
 commutes with every factor from band `g'` whenever `g ≠ g'`. Then the root is the

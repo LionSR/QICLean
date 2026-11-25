@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.FunctionalCalculus.SpectralFunUnique
+import QICLean.Analysis.FunctionalCalculus.CfcComplex
 import Mathlib.Analysis.SpecialFunctions.Pow.Deriv
 import Mathlib.Analysis.MeanInequalities
 
@@ -25,6 +25,7 @@ analyticity in `z`, and the sandwich bound
 
 * `Matrix.supportCPow_mul_supportCPow`, `Matrix.conjTranspose_supportCPow`.
 * `Matrix.differentiable_supportCPow`.
+* `Matrix.supportCPow_eq_cfcC`: the power as a complex function of the matrix.
 * `Matrix.re_trace_supportCPow_sandwich_le`.
 
 ## References
@@ -237,6 +238,13 @@ theorem re_trace_supportCPow_sandwich_le (hA : A.PosSemidef) (htr : A.trace.re �
             mul_le_mul_of_nonneg_left (hcol k) (ha k)) h12s
     _ = ∑ k, a k := by simp only [mul_one]; ring
     _ ≤ 1 := htrA
+
+/-- The power `A^{[z]}` vanishing on the kernel equals the complex function
+`t ↦ if t = 0 then 0 else t^z`. -/
+theorem supportCPow_eq_cfcC {A : Matrix n n ℂ} (hA : A.IsHermitian) (z : ℂ) :
+    supportCPow hA z = cfcC A (fun t => if t = 0 then 0 else ((t : ℝ) : ℂ) ^ z) := by
+  rw [cfcC_eq_spectralFun hA]
+  rfl
 
 end Matrix
 

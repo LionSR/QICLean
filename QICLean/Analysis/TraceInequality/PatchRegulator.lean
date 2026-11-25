@@ -6,7 +6,7 @@ Authors: TNLean contributors
 import QICLean.Analysis.Projection.PosSemidefSupport
 import QICLean.Analysis.Order.PosSemidefCommute
 import QICLean.Analysis.FunctionalCalculus.ShiftedDensityPowers
-import QICLean.Analysis.Norm.TraceNormContractivity
+import QICLean.Analysis.TraceNorm.TraceNormContractivity
 
 /-!
 # A trace estimate for positive regulators

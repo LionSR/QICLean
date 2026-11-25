@@ -3,7 +3,8 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Representation.Character.WeylCharacter
+import QICLean.Representation.SchurWeyl.WeylCharacter
+import QICLean.Representation.Twirl.UnitaryTwirl
 import QICLean.Representation.Partition.ReplicaGammaIntegral
 import QICLean.Analysis.FunctionalCalculus.CfcConjugation
 

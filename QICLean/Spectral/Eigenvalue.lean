@@ -24,7 +24,6 @@ import QICLean.Spectral.Eigenvalue.GroundEnergyBounds
 import QICLean.Spectral.Eigenvalue.HermitianExtremalEigenvalues
 import QICLean.Spectral.Eigenvalue.HermitianNilpotent
 import QICLean.Spectral.Eigenvalue.HermitianSpectrumMultiplicity
-import QICLean.Spectral.Eigenvalue.HermitianSpectrumPreserver
 import QICLean.Spectral.Eigenvalue.KramersDegeneracy
 import QICLean.Spectral.Eigenvalue.KrausStateEffectCoupling
 import QICLean.Spectral.Eigenvalue.KyFanNorm
@@ -33,6 +32,8 @@ import QICLean.Spectral.Eigenvalue.MatrixSpectralDecomp
 import QICLean.Spectral.Eigenvalue.NonzeroTraceEigenvalue
 import QICLean.Spectral.Eigenvalue.PositiveRayleighEigenvalue
 import QICLean.Spectral.Eigenvalue.ProjectiveCommutantEigenspace
+import QICLean.Spectral.Eigenvalue.RitzCompression
+import QICLean.Spectral.Eigenvalue.RitzSubspace
 import QICLean.Spectral.Eigenvalue.SemisimpleTracePowers
 import QICLean.Spectral.Eigenvalue.ShiftedDensityClipping
 import QICLean.Spectral.Eigenvalue.ShiftedFilterClipping

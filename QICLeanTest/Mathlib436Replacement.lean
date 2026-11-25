@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Algebra.Unitary.MatrixUnitaryBetween
 import QICLean.Spectral.Radius.PowerDecay
-import QICLean.Channel.OrderedCP
+import QICLean.Channel.Dilation.OrderedCP
 
 /-! # Boundary cases and axiom checks for Mathlib 4.36 proof replacements -/
 

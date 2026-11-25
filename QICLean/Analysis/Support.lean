@@ -17,3 +17,4 @@ import QICLean.Analysis.Support.MatrixFamilySupport
 import QICLean.Analysis.Support.MatrixFamilySupportProjection
 import QICLean.Analysis.Support.Power
 import QICLean.Analysis.Support.ProjectionOrder
+import QICLean.Analysis.Support.ReducedProjection

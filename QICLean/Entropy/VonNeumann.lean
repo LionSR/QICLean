@@ -12,15 +12,11 @@ import QICLean.Entropy.VonNeumann.AGSPFavorableEntropy
 import QICLean.Entropy.VonNeumann.AGSPGeneralEntropy
 import QICLean.Entropy.VonNeumann.Aliases
 import QICLean.Entropy.VonNeumann.Bipartite
-import QICLean.Entropy.VonNeumann.ConditionalContinuity
-import QICLean.Entropy.VonNeumann.ControlledContinuity
 import QICLean.Entropy.VonNeumann.Entropy
 import QICLean.Entropy.VonNeumann.EntropyContinuity
 import QICLean.Entropy.VonNeumann.EntropyDecomposition
 import QICLean.Entropy.VonNeumann.EntropySubadditivity
-import QICLean.Entropy.VonNeumann.FilterEnergy
 import QICLean.Entropy.VonNeumann.LeadingWeights
-import QICLean.Entropy.VonNeumann.PureEntropy
 import QICLean.Entropy.VonNeumann.PureMarginalRank
 import QICLean.Entropy.VonNeumann.SpectralTail
 import QICLean.Entropy.VonNeumann.VonNeumannEntropySpectralTail

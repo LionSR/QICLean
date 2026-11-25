@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import Mathlib.Data.Matrix.Composition
-import QICLean.Analysis.Norm.WeightedRectangular
+import QICLean.Analysis.TraceNorm.WeightedRectangular
 
 /-!
 # Weighted combinations of the blocks of a rectangular contraction

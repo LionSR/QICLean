@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Analysis.Real.ComplexSqrt
-import QICLean.Channel.Entanglement.MaximallyEntangled
+import QICLean.Algebra.Kronecker.MaximallyEntangled
 import QICLean.Channel.Twirl.WeylTwirl
 import QICLean.Circuit.Core.LocalGate
 import QICLean.Circuit.Gate.Controlled

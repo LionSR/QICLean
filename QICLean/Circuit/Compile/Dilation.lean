@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import Mathlib.Data.Finset.Pairwise
 import QICLean.Algebra.Kronecker.KroneckerEmbed
-import QICLean.Channel.KrausMap.KrausFamilyDilation
+import QICLean.Channel.Dilation.KrausFamilyDilation
 import QICLean.Circuit.Compile.Encoding
 import QICLean.Circuit.Core.LayerEntry
 import QICLean.Circuit.Core.TensorRight

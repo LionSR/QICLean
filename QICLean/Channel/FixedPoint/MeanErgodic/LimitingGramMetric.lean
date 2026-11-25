@@ -5,7 +5,7 @@ Authors: TNLean contributors
 -/
 import QICLean.Analysis.Norm.FrobeniusHilbert
 import QICLean.Channel.Choi.RectangularChoi
-import QICLean.Channel.Peripheral.Spectrum.Primitive
+import QICLean.Channel.FixedPoint.MeanErgodic.FixedPointProjection
 
 /-!
 # The limiting Gram metric

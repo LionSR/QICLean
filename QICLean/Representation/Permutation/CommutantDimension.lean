@@ -5,7 +5,6 @@ Authors: TNLean contributors
 -/
 import QICLean.Analysis.FunctionalCalculus.OrthogonalResolution
 import QICLean.Representation.Permutation.IsotypicDimension
-import QICLean.Representation.TensorPower.Action
 
 import Mathlib.Analysis.Matrix.PosDef
 import Mathlib.LinearAlgebra.Dimension.Constructions

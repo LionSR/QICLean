@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Channel.ChoiTypeMap.HaTwoSimpleWitness
-import QICLean.Channel.Entanglement.PartialTranspose
+import QICLean.Algebra.Kronecker.PartialTranspose
 
 /-!
 # Ha's block-transpose decomposition

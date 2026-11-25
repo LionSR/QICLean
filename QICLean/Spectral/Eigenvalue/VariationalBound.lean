@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import Mathlib.Analysis.Matrix.Order
 import QICLean.Spectral.Eigenvalue.HermitianExtremalEigenvalues
-import QICLean.Spectral.Filter.Gaussian.CommutatorSeries
+import QICLean.Analysis.Exponential.MatrixCommutator
 
 /-!
 # A variational lower bound on the ground energy

@@ -21,7 +21,6 @@ import QICLean.Entropy.Relative.RelativeEntropyDataProcessing
 import QICLean.Entropy.Relative.RelativeEntropyUnitaryInvariance
 import QICLean.Entropy.Relative.ResolventIntegral
 import QICLean.Entropy.Relative.RootFidelityRelativeEntropy
-import QICLean.Entropy.Relative.SupportCompressedEntropy
 import QICLean.Entropy.Relative.SupportIntegral
 import QICLean.Entropy.Relative.SupportLeftRightQuadratic
 import QICLean.Entropy.Relative.SupportLeftRightRelativeModular
@@ -29,5 +28,3 @@ import QICLean.Entropy.Relative.SupportRelativeEntropyEquality
 import QICLean.Entropy.Relative.SupportRelativeEntropyGap
 import QICLean.Entropy.Relative.SupportRelativeModular
 import QICLean.Entropy.Relative.SupportSourceDefect
-import QICLean.Entropy.Relative.WeylRelativeEntropyIntegral
-import QICLean.Entropy.Relative.WeylSupportRelativeEntropyEquality

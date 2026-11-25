@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds
-import QICLean.Analysis.TraceInequality.EntropyHolder
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.LinearAlgebra.UnitaryGroup
+import QICLean.Analysis.FunctionalCalculus.SpectralPowers
+import QICLean.Analysis.Real.RenyiSlack
 
 /-!
 # Spectral phase differences
@@ -22,6 +25,8 @@ adc7f1241b42e322a6451854ab7e4b4c146bf78a, file
 modifications: the namespace prefix `OAI.PolynomialPEPS.PhysicalMove` is replaced by
 `ConditionalMovement`, the imports are restricted to the needed modules, and operator
 spacing and line breaks are normalized.  Statements and proofs are otherwise unchanged.
+The scalar identity `SpectralPhase.phase_difference_norm` of that file is in
+`QICLean.Analysis.Real.RenyiSlack`.
 -/
 
 namespace ConditionalMovement
@@ -69,23 +74,6 @@ theorem spectral_difference_energy (C : Matrix ι κ ℂ)
   apply Finset.sum_congr rfl
   intro i hi
   ring
-
-theorem phase_difference_norm (x y : ℝ) :
-    ‖Complex.exp (Complex.I * (x : ℂ)) - Complex.exp (Complex.I * (y : ℂ))‖ =
-      ‖Complex.exp (Complex.I * ((x - y : ℝ) : ℂ)) - 1‖ := by
-  have he : Complex.exp (Complex.I * (x : ℂ)) =
-      Complex.exp (Complex.I * ((x - y : ℝ) : ℂ)) * Complex.exp (Complex.I * (y : ℂ)) := by
-    rw [← Complex.exp_add]
-    congr 1
-    push_cast
-    ring
-  rw [he]
-  calc
-    _ = ‖(Complex.exp (Complex.I * ((x - y : ℝ) : ℂ)) - 1) * Complex.exp (Complex.I *
-        (y : ℂ))‖ := by
-      congr 1
-      ring
-    _ = _ := by rw [norm_mul]; simp [Complex.norm_exp]
 
 theorem phase_difference_sq_le (t x y : ℝ) :
     ‖Complex.exp (Complex.I * ((t * x : ℝ) : ℂ)) - Complex.exp (Complex.I * ((t * y : ℝ) : ℂ))‖ ^ 2

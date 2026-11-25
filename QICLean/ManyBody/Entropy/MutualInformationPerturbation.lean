@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Analysis.TraceNorm.PureStateTraceDistance
-import QICLean.Entropy.VonNeumann.ControlledContinuity
+import QICLean.Entropy.Conditional.ControlledContinuity
 import QICLean.ManyBody.Entropy.RegionStrongSubadditivity
 
 /-!

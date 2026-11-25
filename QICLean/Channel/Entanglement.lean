@@ -10,9 +10,7 @@ Authors: QICLean contributors
 
 import QICLean.Channel.Entanglement.DecomposableWitness
 import QICLean.Channel.Entanglement.EntanglementWitness
-import QICLean.Channel.Entanglement.MaximallyEntangled
 import QICLean.Channel.Entanglement.PPTIndecomposable
-import QICLean.Channel.Entanglement.PartialTranspose
 import QICLean.Channel.Entanglement.PositiveMapDetection
 import QICLean.Channel.Entanglement.SchmidtNumber
 import QICLean.Channel.Entanglement.SchmidtNumberCompact

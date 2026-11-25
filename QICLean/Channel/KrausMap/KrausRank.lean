@@ -9,7 +9,7 @@ import Mathlib.Data.Fintype.Card
 import QICLean.Algebra.Combinatorics.FinSum
 import QICLean.Spectral.Eigenvalue.MatrixSpectralDecomp
 import QICLean.Channel.Choi.Rectangular
-import QICLean.Channel.Schwarz.Basic
+import QICLean.Channel.KrausMap.KrausAction
 
 /-!
 # Kraus-cardinality and Choi-rank correspondence

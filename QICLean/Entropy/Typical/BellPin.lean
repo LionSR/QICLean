@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Entropy.Typical.PureCompression
-import QICLean.Channel.Entanglement.MaximallyEntangled
+import QICLean.Algebra.Kronecker.MaximallyEntangled
 
 /-!
 # A Bell projection onto a selected spectral subspace

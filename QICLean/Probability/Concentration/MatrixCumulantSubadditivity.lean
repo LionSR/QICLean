@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Entropy.Relative.LiebTraceExponential
-import QICLean.Analysis.TraceInequality.MatrixBernsteinInputs
+import QICLean.Analysis.Exponential.MatrixBernsteinInputs
 import Mathlib.Analysis.Convex.Integral
 import Mathlib.Analysis.Matrix.MeasurableSpace
 import Mathlib.Probability.Independence.Basic

@@ -17,7 +17,6 @@ import QICLean.Analysis.Order.FloorPin
 import QICLean.Analysis.Order.HermitianTracePower
 import QICLean.Analysis.Order.InverseCompressionLowerPin
 import QICLean.Analysis.Order.LowEnergyPerturbation
-import QICLean.Analysis.Order.MaximalWeightConvexDecomposition
 import QICLean.Analysis.Order.PosSemidefCommute
 import QICLean.Analysis.Order.ProjectionQuadraticBound
 import QICLean.Analysis.Order.ProjectiveDiameterCounterexample

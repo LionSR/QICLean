@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Spectral.Filter.EnergyTruncation
 import QICLean.Spectral.Filter.ExponentialWeights
-import QICLean.Analysis.TraceInequality.MatrixBernsteinInputs
+import QICLean.Analysis.Exponential.MatrixBernsteinInputs
 import QICLean.Analysis.Exponential.TraceExponentialPerturbation
 
 /-!

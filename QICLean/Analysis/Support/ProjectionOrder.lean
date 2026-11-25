@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Analysis.Projection.PosSemidefSupport
+import QICLean.Analysis.FunctionalCalculus.CfcConjugation
 import QICLean.Algebra.Matrix.MatrixAux
 import Mathlib.Analysis.Matrix.HermitianFunctionalCalculus
 import Mathlib.Analysis.Matrix.Order
@@ -18,6 +19,9 @@ the positive terms of a frustration-free Hamiltonian by their range projections 
 (`ContinuousLinearMap.norm_pow_complementProd_le_of_gap`). `PosSemidef.le_smul_supportProj` is
 moved from TNLean, `TNLean/PEPS/AreaLaw/FrustrationFree/RangeProjection.lean` at commit
 `414a18fb88`, with no change to the statement.
+
+The support projection of a Hermitian matrix commutes with transpose
+(`IsHermitian.supportProj_transpose`).
 -/
 
 open scoped Matrix ComplexOrder MatrixOrder Matrix.Norms.L2Operator
@@ -107,5 +111,12 @@ theorem PosSemidef.sum_supportProj_mulVec_eq_zero_iff
     have hz (i : ι) : (hh i).supportProj *ᵥ x = 0 :=
       (hh i).supportProj_mulVec_eq_zero_of_mulVec_eq_zero x (hi i)
     simp only [Matrix.sum_mulVec, hz, Finset.sum_const_zero]
+
+/-- The support projection of a Hermitian matrix commutes with transpose. -/
+theorem IsHermitian.supportProj_transpose {A : Matrix n n ℂ} (hA : A.IsHermitian) :
+    hA.transpose.supportProj = hA.supportProjᵀ := by
+  let f : ℝ → ℝ := fun x ↦ if x ≠ 0 then 1 else 0
+  rw [hA.transpose.supportProj_eq_cfc, hA.supportProj_eq_cfc]
+  exact (cfc_transpose hA f).symm
 
 end Matrix

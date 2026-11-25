@@ -6,7 +6,7 @@ Authors: TNLean contributors
 import QICLean.Algebra.Combinatorics.FinSum
 import QICLean.Channel.Positive.BreuerHallMap
 import QICLean.Channel.Positive.DecomposablePPT
-import QICLean.Channel.Entanglement.MaximallyEntangled
+import QICLean.Algebra.Kronecker.MaximallyEntangled
 
 /-!
 # Indecomposability of the Breuer-Hall map

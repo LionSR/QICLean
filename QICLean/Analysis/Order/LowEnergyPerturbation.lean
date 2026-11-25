@@ -32,7 +32,8 @@ statement uses `⌈(c - m) / (2 h)⌉`. Documented in
 
 ## Main statements
 
-* `Submodule.spectralSpanLE`: the span `T(c)`.
+* `Submodule.spectralSpanLE`: the span `T(c)`, which increases with the cutoff
+  (`Submodule.spectralSpanLE_mono_cutoff`).
 * `Submodule.mul_norm_starProjection_orthogonal_spectralSpanLE_le`: Markov's inequality.
 * `Submodule.isCloseTo_spectralSpanLE_of_perturbation`: the closeness.
 * `Submodule.finrank_le_finrank_of_quadratic_window`: a subspace on which a quadratic form stays
@@ -547,3 +548,17 @@ theorem Matrix.exists_slice_product_energy_le (M : Matrix α α ℂ)
   linarith
 
 end QuadraticWindow
+
+namespace Submodule
+
+/-- Monotonicity of a closed low-energy span, used in the finite cutoff
+comparison in ALVV, arXiv:1602.08828v2, lines 955–968 and 1020. -/
+theorem spectralSpanLE_mono_cutoff
+    {F ι : Type*} [NormedAddCommGroup F] [InnerProductSpace ℂ F] [Fintype ι]
+    (b : OrthonormalBasis ι ℂ F) (a : ι → ℝ) {c d : ℝ} (hcd : c ≤ d) :
+    spectralSpanLE b a c ≤ spectralSpanLE b a d := by
+  apply span_mono
+  rintro _ ⟨j, hj, rfl⟩
+  exact ⟨j, hj.trans hcd, rfl⟩
+
+end Submodule

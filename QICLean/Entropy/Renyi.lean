@@ -17,5 +17,6 @@ import QICLean.Entropy.Renyi.SandwichedRenyi
 import QICLean.Entropy.Renyi.SandwichedRenyiTwo
 import QICLean.Entropy.Renyi.SchmidtRankMixture
 import QICLean.Entropy.Renyi.Smooth
+import QICLean.Entropy.Renyi.SupportCompressedEntropy
 import QICLean.Entropy.Renyi.Tail
 import QICLean.Entropy.Renyi.VonNeumannBound

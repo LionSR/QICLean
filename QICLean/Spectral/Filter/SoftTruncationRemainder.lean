@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Spectral.Filter.SoftHardTruncation
 import QICLean.Analysis.Real.SoftTruncation
-import QICLean.Analysis.TraceInequality.MatrixBernsteinInputs
+import QICLean.Analysis.Exponential.MatrixBernsteinInputs
 
 /-!
 # Exponentially weighted soft-truncation remainders

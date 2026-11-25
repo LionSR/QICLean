@@ -6,7 +6,7 @@ Authors: Sirui Lu
 import QICLean.Spectral.Jordan.UnitarySchurTriangularization
 import QICLean.Spectral.Radius.UpperTriangularBound
 import QICLean.Spectral.Eigenvalue.HermitianExtremalEigenvalues
-import QICLean.Analysis.Norm.TraceNormContractivity
+import QICLean.Analysis.TraceNorm.TraceNormContractivity
 import QICLean.Analysis.TraceNorm.Frobenius
 import QICLean.Channel.Determinant.Bound
 import QICLean.Channel.FixedPoint.Stationary.StationaryStates

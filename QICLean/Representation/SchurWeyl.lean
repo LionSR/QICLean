@@ -20,3 +20,5 @@ import QICLean.Representation.SchurWeyl.Labels
 import QICLean.Representation.SchurWeyl.Lift
 import QICLean.Representation.SchurWeyl.SchurLabelEstimates
 import QICLean.Representation.SchurWeyl.SchurSectorMass
+import QICLean.Representation.SchurWeyl.WeylCharacter
+import QICLean.Representation.SchurWeyl.WeylDimension

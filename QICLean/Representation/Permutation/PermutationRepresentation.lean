@@ -31,6 +31,9 @@ the `k` copies.
 * `MonoidAlgebra.invStar` — the conjugate-linear involution `g ↦ g⁻¹` of `ℂ[G]`.
 * `PermutationRepresentation.groupAlgebraRep_invStar` — the image of `invStar a` is
   the conjugate transpose of the image of `a`.
+* `PermutationRepresentation.invariantSubspace φ`, `PermutationRepresentation.symProj φ` —
+  the fixed subspace of a permutation action and its orthogonal projector.
+* `TensorPower.copyPerm Ω k` — the permutation of the copies of `Fin k → Ω`.
 -/
 
 open MonoidAlgebra Matrix
@@ -243,3 +246,65 @@ theorem groupAlgebraRep_submatrix_of_prod_action
 end PermutationRepresentation
 
 end GroupAlgebraProductCoordinates
+
+section InvariantVectors
+
+open Matrix
+
+namespace PermutationRepresentation
+
+variable {G X : Type*} [Group G] [Fintype X] [DecidableEq X]
+
+/-- The subspace of vectors fixed by every permutation operator of `φ`. -/
+def invariantSubspace (φ : G →* Equiv.Perm X) : Submodule ℂ (X → ℂ) where
+  carrier := {v | ∀ g, permOp φ g *ᵥ v = v}
+  add_mem' {v w} hv hw g := by rw [mulVec_add, hv g, hw g]
+  zero_mem' g := mulVec_zero _
+  smul_mem' c v hv g := by rw [mulVec_smul, hv g]
+
+theorem mem_invariantSubspace (φ : G →* Equiv.Perm X) {v : X → ℂ} :
+    v ∈ invariantSubspace φ ↔ ∀ g, permOp φ g *ᵥ v = v := Iff.rfl
+
+variable [Fintype G]
+
+/-- The averaging projector `|G|⁻¹ ∑_g U(g)` onto the fixed subspace of `φ`. -/
+noncomputable def symProj (φ : G →* Equiv.Perm X) : Matrix X X ℂ :=
+  (Fintype.card G : ℂ)⁻¹ • ∑ g, permOp φ g
+
+theorem permOp_mul_symProj (φ : G →* Equiv.Perm X) (g : G) :
+    permOp φ g * symProj φ = symProj φ := by
+  rw [symProj, mul_smul_comm, Finset.mul_sum]
+  congr 1
+  simp_rw [← map_mul]
+  exact Fintype.sum_equiv (Equiv.mulLeft g) _ _ (fun _ => rfl)
+
+theorem symProj_mulVec_mem (φ : G →* Equiv.Perm X) (v : X → ℂ) :
+    symProj φ *ᵥ v ∈ invariantSubspace φ := fun g => by
+  rw [mulVec_mulVec, permOp_mul_symProj]
+
+theorem symProj_mulVec_of_mem (φ : G →* Equiv.Perm X) {v : X → ℂ}
+    (hv : v ∈ invariantSubspace φ) : symProj φ *ᵥ v = v := by
+  rw [symProj, smul_mulVec, sum_mulVec]
+  simp_rw [hv _]
+  rw [Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul,
+    inv_mul_cancel₀ (by exact_mod_cast Fintype.card_ne_zero), one_smul]
+
+end PermutationRepresentation
+
+end InvariantVectors
+
+namespace TensorPower
+
+variable (Ω : Type*) (k : ℕ)
+
+/-- The permutation of the `k` copies of `Fin k → Ω`: `(π • x) j = x (π⁻¹ j)`. -/
+def copyPerm : Equiv.Perm (Fin k) →* Equiv.Perm (Fin k → Ω) where
+  toFun σ := Equiv.arrowCongr σ (Equiv.refl Ω)
+  map_one' := by ext; rfl
+  map_mul' σ τ := by ext; rfl
+
+@[simp]
+theorem copyPerm_apply (σ : Equiv.Perm (Fin k)) (x : Fin k → Ω) (j : Fin k) :
+    copyPerm Ω k σ x j = x (σ⁻¹ j) := rfl
+
+end TensorPower

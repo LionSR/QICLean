@@ -14,7 +14,6 @@ import QICLean.Channel.Peripheral.Spectrum.Conjugation
 import QICLean.Channel.Peripheral.Spectrum.CyclicGroup
 import QICLean.Channel.Peripheral.Spectrum.PeriodicityRemoval
 import QICLean.Channel.Peripheral.Spectrum.Powers
-import QICLean.Channel.Peripheral.Spectrum.Primitive
 import QICLean.Channel.Peripheral.Spectrum.RankOnePositiveProjection
 import QICLean.Channel.Peripheral.Spectrum.SpectralRadius
 import QICLean.Channel.Peripheral.Spectrum.Spectrum

@@ -3,16 +3,18 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Algebra.OperatorSchmidt.OneMarkerWeightedSchmidtRank
+import Mathlib.Basic.Complex.Basic
 import QICLean.Algebra.Word.WordMultiplicity
 import Mathlib.Logic.Equiv.Option
 
 /-!
 # One distinguished frequency in the original word family
 
-Removing one distinguished letter identifies the remaining alphabet with its complement.
-The actual full-frequency coefficient is unchanged when words are rewritten using an
-optional ordinary letter, with `none` denoting the distinguished interaction.
+`WordMultiplicity.oneMarkerCoefficient` is the ordered-word coefficient with a fixed
+marker frequency and prescribed ordinary frequencies. Removing one distinguished letter
+identifies the remaining alphabet with its complement. The actual full-frequency
+coefficient is unchanged when words are rewritten using an optional ordinary letter, with
+`none` denoting the distinguished interaction.
 
 Source: AKLV, arXiv:1301.1162v1, Lemma 4.2 (`l:agsp`), lines 604--635.
 This identity retains every ordered-word multiplicity and imposes no independence
@@ -22,6 +24,33 @@ condition on the operator family.
 open scoped BigOperators
 
 namespace WordMultiplicity
+
+/-- The actual ordered-word coefficient with a fixed marker frequency and prescribed
+ordinary frequencies. AKLV, arXiv:1301.1162v1, Lemma 4.2 (`l:agsp`), lines 604--635. -/
+noncomputable def oneMarkerCoefficient {ι R : Type*} [Fintype ι] [Semiring R]
+    (H : ι → R) (T : R) (m k : ℕ) (α : ι → ℕ) : R :=
+  open Classical in
+  ∑ w ∈ (Finset.univ : Finset (Fin (m + k) → Option ι)).filter
+      (fun w ↦ countsFinsupp w none = k ∧ ∀ a : ι, countsFinsupp w (some a) = α a),
+    (List.ofFn (fun p ↦ match w p with
+      | none => T
+      | some a => H a)).prod
+
+/-- A ring homomorphism preserves the actual one-marker word coefficient.
+Supporting change-of-coordinates identity for AKLV, Lemma 4.2, lines 604--635. -/
+theorem map_oneMarkerCoefficient {ι R S : Type*} [Fintype ι] [Semiring R] [Semiring S]
+    (φ : R →+* S) (H : ι → R) (T : R) (m k : ℕ) (α : ι → ℕ) :
+    φ (oneMarkerCoefficient H T m k α) =
+      oneMarkerCoefficient (fun a ↦ φ (H a)) (φ T) m k α := by
+  classical
+  simp only [oneMarkerCoefficient, map_sum]
+  refine Finset.sum_congr rfl fun w _ ↦ ?_
+  rw [map_list_prod, List.map_ofFn]
+  congr 1
+  apply congrArg List.ofFn
+  funext p
+  dsimp only [Function.comp_def]
+  cases w p <;> rfl
 
 open Classical in
 /-- The full frequency vector obtained by inserting the distinguished frequency.

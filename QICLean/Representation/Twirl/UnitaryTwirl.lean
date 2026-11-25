@@ -37,37 +37,6 @@ namespace TensorPower
 
 variable {Ω : Type*} [Fintype Ω] [DecidableEq Ω] {k : ℕ}
 
-/-! ### Algebra of tensor powers -/
-
-theorem tensorPow_mul (A B : Matrix Ω Ω ℂ) :
-    tensorPow (k := k) (A * B) = tensorPow A * tensorPow B := by
-  ext x y
-  simp only [tensorPow_apply, mul_apply]
-  rw [Finset.prod_univ_sum]
-  exact Fintype.sum_congr _ _ fun z => Finset.prod_mul_distrib
-
-omit [Fintype Ω] in
-theorem tensorPow_one : tensorPow (k := k) (1 : Matrix Ω Ω ℂ) = 1 := by
-  ext x y
-  rw [tensorPow_apply]
-  by_cases h : x = y
-  · subst h; simp
-  · obtain ⟨j, hj⟩ := Function.ne_iff.mp h
-    rw [Finset.prod_eq_zero (Finset.mem_univ j) (by simp [hj]), one_apply_ne h]
-
-omit [Fintype Ω] in
-theorem conjTranspose_tensorPow (A : Matrix Ω Ω ℂ) :
-    (tensorPow (k := k) A)ᴴ = tensorPow Aᴴ := by
-  ext x y
-  simp [tensorPow_apply, conjTranspose_apply, star_prod]
-
-/-- Tensor powers commute with the copy permutations. -/
-theorem commute_permOp_copyPerm_tensorPow (A : Matrix Ω Ω ℂ) (σ : Equiv.Perm (Fin k)) :
-    Commute (permOp (copyPerm Ω k) σ) (tensorPow A) := by
-  refine commute_permOp_of_apply_eq _ σ fun x y => ?_
-  simp only [tensorPow_apply, copyPerm_apply]
-  exact Fintype.prod_equiv σ⁻¹ _ _ fun j => rfl
-
 /-! ### The twirl -/
 
 variable (Ω) in

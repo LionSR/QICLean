@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Spectral.Filter.SoftHardTruncation
-import QICLean.Analysis.TraceInequality.MatrixBernsteinInputs
+import QICLean.Analysis.Exponential.MatrixBernsteinInputs
 import Mathlib.Data.Nat.Choose.Sum
 
 /-!

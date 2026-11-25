@@ -3,6 +3,7 @@ Copyright (c) 2026 Sirui Lu and TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Sirui Lu
 -/
+import QICLean.Algebra.Hermitian.ProjectionMatrixRange
 import QICLean.Analysis.Norm.SchattenNorm
 import QICLean.Analysis.FunctionalCalculus.TraceCFC
 import Mathlib.Analysis.Matrix.Order
@@ -67,16 +68,6 @@ end LinearMap
 namespace Matrix
 
 variable {n : Type*} [Fintype n] [DecidableEq n] {D : ℕ}
-
-/-- Multiplicativity of `Matrix.toEuclideanLin`: matrix multiplication becomes
-composition of Euclidean linear maps. -/
-theorem toEuclideanLin_mul (A B : Matrix n n ℂ) :
-    toEuclideanLin (A * B) = (toEuclideanLin A).comp (toEuclideanLin B) := by
-  change Matrix.toLin (EuclideanSpace.basisFun n ℂ).toBasis
-      (EuclideanSpace.basisFun n ℂ).toBasis (A * B) = _
-  exact Matrix.toLin_mul (EuclideanSpace.basisFun n ℂ).toBasis
-    (EuclideanSpace.basisFun n ℂ).toBasis
-    (EuclideanSpace.basisFun n ℂ).toBasis A B
 
 /-- The symmetric map $T^\dagger \circ T$, where $T$ is `Matrix.toEuclideanLin A`,
 is represented by the positive-semidefinite matrix $A^\dagger A$. -/

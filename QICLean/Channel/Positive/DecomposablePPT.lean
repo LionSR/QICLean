@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Channel.Schwarz.TwoPositive
-import QICLean.Channel.Entanglement.PartialTranspose
+import QICLean.Algebra.Kronecker.PartialTranspose
 import QICLean.Algebra.Kronecker.TensorMap
 import QICLean.Channel.KrausMap.LocalizedKrausCPTP
 

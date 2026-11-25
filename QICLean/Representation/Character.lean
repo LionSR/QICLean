@@ -22,5 +22,3 @@ import QICLean.Representation.Character.Theta
 import QICLean.Representation.Character.TranslatedOrthogonality
 import QICLean.Representation.Character.Twirl
 import QICLean.Representation.Character.UnitaryAlgebra
-import QICLean.Representation.Character.WeylCharacter
-import QICLean.Representation.Character.WeylDimension

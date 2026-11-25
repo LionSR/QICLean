@@ -7,6 +7,7 @@ import QICLean.Algebra.OperatorSchmidt.MonomialEvaluationSchmidtRank
 import QICLean.Algebra.OperatorSchmidt.CommutingPolynomialSchmidtRank
 import QICLean.Algebra.Word.WordCoefficientExpansion
 import QICLean.Algebra.OperatorSchmidt.Bounds
+import QICLean.Algebra.Word.OneMarkerFullCounts
 
 /-!
 # One-marker weighted frequency sums
@@ -28,37 +29,6 @@ separate statements.
 -/
 
 open scoped BigOperators Kronecker
-
-namespace WordMultiplicity
-
-/-- The actual ordered-word coefficient with a fixed marker frequency and prescribed
-ordinary frequencies. AKLV, arXiv:1301.1162v1, Lemma 4.2 (`l:agsp`), lines 604--635. -/
-noncomputable def oneMarkerCoefficient {ι R : Type*} [Fintype ι] [Semiring R]
-    (H : ι → R) (T : R) (m k : ℕ) (α : ι → ℕ) : R :=
-  open Classical in
-  ∑ w ∈ (Finset.univ : Finset (Fin (m + k) → Option ι)).filter
-      (fun w ↦ countsFinsupp w none = k ∧ ∀ a : ι, countsFinsupp w (some a) = α a),
-    (List.ofFn (fun p ↦ match w p with
-      | none => T
-      | some a => H a)).prod
-
-/-- A ring homomorphism preserves the actual one-marker word coefficient.
-Supporting change-of-coordinates identity for AKLV, Lemma 4.2, lines 604--635. -/
-theorem map_oneMarkerCoefficient {ι R S : Type*} [Fintype ι] [Semiring R] [Semiring S]
-    (φ : R →+* S) (H : ι → R) (T : R) (m k : ℕ) (α : ι → ℕ) :
-    φ (oneMarkerCoefficient H T m k α) =
-      oneMarkerCoefficient (fun a ↦ φ (H a)) (φ T) m k α := by
-  classical
-  simp only [oneMarkerCoefficient, map_sum]
-  refine Finset.sum_congr rfl fun w _ ↦ ?_
-  rw [map_list_prod, List.map_ofFn]
-  congr 1
-  apply congrArg List.ofFn
-  funext p
-  dsimp only [Function.comp_def]
-  cases w p <;> rfl
-
-end WordMultiplicity
 
 namespace Matrix
 

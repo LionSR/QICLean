@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Analysis.TraceNorm.TraceNormAbs
 import QICLean.Analysis.TraceNorm.Variational
+import QICLean.Analysis.Isometry.FramePerturbation
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Topology.Order.OrderClosed
 
@@ -31,16 +32,6 @@ noncomputable section
 namespace Matrix
 
 variable {m n : Type*} [Fintype m] [Fintype n] [DecidableEq n]
-
-/-- Composition of rectangular operator-norm contractions is a contraction.
-This packages the repeated pullback estimate in trace-norm duality. -/
-theorem l2_opNorm_mul_le_one {r s t : Type*} [Fintype r] [Fintype s] [Fintype t]
-    [DecidableEq s] [DecidableEq t] (A : Matrix r s ℂ) (B : Matrix s t ℂ)
-    (hA : ‖A‖ ≤ 1) (hB : ‖B‖ ≤ 1) : ‖A * B‖ ≤ 1 := by
-  calc
-    ‖A * B‖ ≤ ‖A‖ * ‖B‖ := l2_opNorm_mul _ _
-    _ ≤ 1 * 1 := mul_le_mul hA hB (norm_nonneg B) zero_le_one
-    _ = 1 := one_mul 1
 
 /-- The trace norm of a rectangular complex matrix: the sum of the singular
 values of its represented Euclidean linear map. Theorem 5.2,

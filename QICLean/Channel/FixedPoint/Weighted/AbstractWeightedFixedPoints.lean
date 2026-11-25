@@ -4,7 +4,6 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Analysis.FunctionalCalculus.MatrixSqrt
-import QICLean.Channel.ConditionalExpectation.DirectSumConditionalExpectation
 import QICLean.Channel.FixedPoint.Weighted.AbstractCornerFixedPoints
 import QICLean.Channel.FixedPoint.Stationary.AbstractMaximalRank
 import QICLean.Channel.FixedPoint.Weighted.WeightedCornerFixedPoints

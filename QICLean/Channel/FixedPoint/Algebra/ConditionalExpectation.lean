@@ -6,7 +6,6 @@ Authors: TNLean contributors
 import QICLean.Channel.FixedPoint.Algebra.AbstractAlgebra
 import QICLean.Channel.FixedPoint.Algebra.Algebra
 import QICLean.Channel.FixedPoint.MeanErgodic.MeanErgodicAdjoint
-import QICLean.Channel.Semigroup.CPClosure
 import Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Basic
 import Mathlib.Analysis.Matrix.Order
 

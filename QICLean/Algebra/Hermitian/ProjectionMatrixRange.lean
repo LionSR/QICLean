@@ -14,7 +14,8 @@ onto its actual range. Rectangular ranges are transported from ordinary
 function coordinates to Euclidean coordinates by the existing linear
 equivalence. These identities support ALVV, arXiv:1602.08828v2,
 Definition `d:close`, lines 469–474, and collective trimming,
-Definition `def:trimming`, lines 648–655.
+Definition `def:trimming`, lines 648–655. Matrix multiplication becomes composition of
+Euclidean linear maps (`Matrix.toEuclideanLin_mul`).
 -/
 
 namespace Matrix
@@ -35,6 +36,16 @@ theorem range_toEuclideanLin_eq_map_range_mulVecLin {m n : Type*}
     exact ⟨WithLp.toLp 2 z, rfl⟩
 
 variable {n : Type*} [Fintype n] [DecidableEq n]
+
+/-- Multiplicativity of `Matrix.toEuclideanLin`: matrix multiplication becomes
+composition of Euclidean linear maps. -/
+theorem toEuclideanLin_mul (A B : Matrix n n ℂ) :
+    toEuclideanLin (A * B) = (toEuclideanLin A).comp (toEuclideanLin B) := by
+  change Matrix.toLin (EuclideanSpace.basisFun n ℂ).toBasis
+      (EuclideanSpace.basisFun n ℂ).toBasis (A * B) = _
+  exact Matrix.toLin_mul (EuclideanSpace.basisFun n ℂ).toBasis
+    (EuclideanSpace.basisFun n ℂ).toBasis
+    (EuclideanSpace.basisFun n ℂ).toBasis A B
 
 /-- The matrix of the orthogonal projection onto the range of an actual
 orthogonal projection matrix is that same matrix. Extracted unchanged

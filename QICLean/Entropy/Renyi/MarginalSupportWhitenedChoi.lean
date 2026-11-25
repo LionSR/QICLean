@@ -3,11 +3,11 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Entropy.Relative.SupportCompressedEntropy
+import QICLean.Entropy.Renyi.SupportCompressedEntropy
 import QICLean.Channel.PartialTrace.MarginalSupportAbsorption
 import QICLean.Analysis.FunctionalCalculus.MatrixSqrt
 import QICLean.Entropy.Renyi.SandwichedRenyiTwo
-import QICLean.Channel.Choi.WhitenedChoi
+import QICLean.Channel.WhitenedChoi
 
 /-!
 # Marginal-support whitening

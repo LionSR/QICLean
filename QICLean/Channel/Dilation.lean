@@ -13,8 +13,11 @@ import QICLean.Channel.Dilation.ChronologicalGarbageError
 import QICLean.Channel.Dilation.DeferredEnvironmentTrace
 import QICLean.Channel.Dilation.EnvironmentDilation
 import QICLean.Channel.Dilation.EnvironmentEmbedding
+import QICLean.Channel.Dilation.KrausFamilyDilation
+import QICLean.Channel.Dilation.KrausFamilyTraceNorm
 import QICLean.Channel.Dilation.OpenSystem
 import QICLean.Channel.Dilation.OpenSystemRectangular
+import QICLean.Channel.Dilation.OrderedCP
 import QICLean.Channel.Dilation.RadonNikodym
 import QICLean.Channel.Dilation.RestoringGroundComponent
 import QICLean.Channel.Dilation.RestoringMarginal

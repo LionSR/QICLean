@@ -8,7 +8,6 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Analysis.Logarithm
 
-import QICLean.Analysis.Logarithm.CfcLogAdditive
 import QICLean.Analysis.Logarithm.CfcLogListProduct
 import QICLean.Analysis.Logarithm.InversePowerLogJensen
 import QICLean.Analysis.Logarithm.LogCompression

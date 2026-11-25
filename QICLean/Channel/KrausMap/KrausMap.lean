@@ -5,7 +5,7 @@ Authors: TNLean contributors
 -/
 import QICLean.Algebra.Matrix.MatrixAux
 import QICLean.Channel.KrausMap.KrausRepresentation
-import QICLean.Channel.Schwarz.Basic
+import QICLean.Channel.KrausMap.KrausAction
 
 /-!
 # Completely positive maps from finite Kraus families

@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Entropy.Filter.Chain
-import QICLean.Entropy.VonNeumann.FilterEnergy
+import QICLean.Entropy.Surprisal.FilterEnergy
 import QICLean.ManyBody.Entropy.Filter.Maximizer
 
 /-!

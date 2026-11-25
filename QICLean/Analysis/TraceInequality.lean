@@ -10,12 +10,12 @@ Authors: QICLean contributors
 
 import QICLean.Analysis.TraceInequality.DeterminantTraceBound
 import QICLean.Analysis.TraceInequality.EntropyHolder
-import QICLean.Analysis.TraceInequality.MatrixBernsteinInputs
 import QICLean.Analysis.TraceInequality.MatrixTraceInequalities
 import QICLean.Analysis.TraceInequality.PatchRegulator
 import QICLean.Analysis.TraceInequality.RestoringCoefficientBound
 import QICLean.Analysis.TraceInequality.RootFidelity
 import QICLean.Analysis.TraceInequality.SICPOVMBound
+import QICLean.Analysis.TraceInequality.SchattenVariational
 import QICLean.Analysis.TraceInequality.TraceCompression
 import QICLean.Analysis.TraceInequality.TraceHolder
 import QICLean.Analysis.TraceInequality.TraceHolderMulti

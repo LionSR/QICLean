@@ -23,6 +23,8 @@ is introduced. This permits one matrix error bound to control every entangled in
 * `Matrix.norm_sub_isometry_sq_le` bounds the squared frame error by the Gram and cross errors.
 * `Matrix.l2_opNorm_kronecker_one_mulVec_le` gives dimension-free reference amplification.
 * `Matrix.norm_encoder_conversion_reference_le` applies amplification to encoded inputs.
+* `Matrix.l2_opNorm_le_one_of_conjTranspose_mul_self_eq_one` and `Matrix.l2_opNorm_mul_le_one`:
+  isometries and products of contractions are contractions.
 
 ## References
 
@@ -43,6 +45,16 @@ theorem l2_opNorm_le_one_of_conjTranspose_mul_self_eq_one {m n : Type*}
     exact (pi_norm_le_iff_of_nonneg zero_le_one).2 fun _ => by simp
   have h2 : ‖L‖ * ‖L‖ ≤ 1 := by rw [← Matrix.l2_opNorm_conjTranspose_mul_self, h]; exact h1
   nlinarith [norm_nonneg L]
+
+/-- Composition of rectangular operator-norm contractions is a contraction.
+This packages the repeated pullback estimate in trace-norm duality. -/
+theorem l2_opNorm_mul_le_one {r s t : Type*} [Fintype r] [Fintype s] [Fintype t]
+    [DecidableEq s] [DecidableEq t] (A : Matrix r s ℂ) (B : Matrix s t ℂ)
+    (hA : ‖A‖ ≤ 1) (hB : ‖B‖ ≤ 1) : ‖A * B‖ ≤ 1 := by
+  calc
+    ‖A * B‖ ≤ ‖A‖ * ‖B‖ := l2_opNorm_mul _ _
+    _ ≤ 1 * 1 := mul_le_mul hA hB (norm_nonneg B) zero_le_one
+    _ = 1 := one_mul 1
 
 variable {m n : Type*} [Fintype m] [Fintype n] [DecidableEq n]
 

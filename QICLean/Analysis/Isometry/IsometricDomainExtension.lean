@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 Assisted-by: OpenAI Codex (GPT-6).
 -/
-import QICLean.Analysis.TraceNorm.RectangularTraceNormAlgebra
+import QICLean.Analysis.Isometry.FramePerturbation
 import QICLean.Algebra.Matrix.DependentBlockDiagonal
 import QICLean.Algebra.Unitary.MatrixUnitaryBetween
 

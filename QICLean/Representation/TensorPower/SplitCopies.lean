@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Representation.Partition.Alternant
-import QICLean.Representation.Twirl.UnitaryTwirl
+import QICLean.Representation.TensorPower.SiteOperators
 import QICLean.Representation.Character.Branching
 
 /-!

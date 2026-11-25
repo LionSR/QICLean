@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Analysis.TraceNorm.RectangularTraceNorm
-import QICLean.Analysis.Norm.WeightedRectangular
+import QICLean.Analysis.TraceNorm.WeightedRectangular
 import QICLean.Analysis.TraceNorm.RectangularTraceNormContraction
 import QICLean.Probability.Gaussian.Basic
 import QICLean.Probability.Gaussian.Covariance

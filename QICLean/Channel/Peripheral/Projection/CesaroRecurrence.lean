@@ -8,7 +8,6 @@ import QICLean.Analysis.Real.Dirichlet
 import QICLean.Analysis.Norm.OperatorNormConvergence
 import QICLean.Channel.FixedPoint.MeanErgodic.MeanErgodicProjection
 import QICLean.Channel.Peripheral.Projection.SpectralProjection
-import QICLean.Channel.Semigroup.CPClosure
 import Mathlib.Data.Nat.Choose.Bounds
 import Mathlib.Data.Nat.Choose.Sum
 import Mathlib.Analysis.SpecificLimits.Normed

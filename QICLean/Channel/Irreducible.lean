@@ -30,3 +30,4 @@ import QICLean.Channel.Irreducible.PositiveMapSpectralCharacterization
 import QICLean.Channel.Irreducible.Scaling
 import QICLean.Channel.Irreducible.Similarity
 import QICLean.Channel.Irreducible.SpectralRadius
+import QICLean.Channel.Irreducible.StationarySupport

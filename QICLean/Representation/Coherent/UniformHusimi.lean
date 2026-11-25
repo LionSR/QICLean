@@ -182,11 +182,6 @@ theorem card_filter_not_goodPerms_mul_le :
 
 /-! ### The permutation expansion of `Tr[(σ ⊗ G) Π_{k+m}]` -/
 
-/-- The matrix `σ ⊗ G` on `k + m` copies, with `σ` on the first `k` and `G` on the last `m`. -/
-noncomputable def copyKronecker (σ : Matrix (Fin k → Ω) (Fin k → Ω) ℂ)
-    (G : Matrix (Fin m → Ω) (Fin m → Ω) ℂ) : Matrix (Fin (k + m) → Ω) (Fin (k + m) → Ω) ℂ :=
-  reindex (splitCopies k m).symm (splitCopies k m).symm (σ ⊗ₖ G)
-
 /-- The term `Tr[(σ ⊗ G) U(π)]` of the permutation expansion of `Tr[(σ ⊗ G) Π_{k+m}]`. -/
 noncomputable def exchangeTrace (σ : Matrix (Fin k → Ω) (Fin k → Ω) ℂ)
     (G : Matrix (Fin m → Ω) (Fin m → Ω) ℂ) (π : Perm (Fin (k + m))) : ℂ :=

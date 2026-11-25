@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Representation.TensorPower.InjectionProduct
+import QICLean.Representation.Coherent.UniformHusimi
 
 /-!
 # Finite sums of injection averages and their coherent symbols

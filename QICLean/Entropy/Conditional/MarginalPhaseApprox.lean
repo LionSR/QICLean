@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Entropy.Relative.MarginalPhaseSupport
+import QICLean.Entropy.Conditional.MarginalPhaseComparison
 
 /-!
 # Faithful approximation of a state on three systems

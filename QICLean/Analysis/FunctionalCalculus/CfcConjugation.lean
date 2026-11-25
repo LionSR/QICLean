@@ -4,7 +4,6 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Algebra.Matrix.MatrixReindex
-import QICLean.Analysis.Support.ProjectionOrder
 import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Analysis.Matrix.HermitianFunctionalCalculus
@@ -30,14 +29,22 @@ quantum relative-entropy stack.
   calculus under reindexing.
 * `Matrix.cfc_transpose` — covariance of the continuous functional calculus
   under transpose.
-* `Matrix.IsHermitian.log_transpose` and `Matrix.IsHermitian.supportProj_transpose` —
-  transpose covariance of the logarithm and support projection.
+* `Matrix.IsHermitian.log_transpose` — transpose covariance of the logarithm.
 * `Matrix.PosSemidef.rpow_transpose` and `Matrix.PosSemidef.sqrt_transpose` —
   transpose covariance of real powers and the positive square root.
 * `Matrix.cfc_conj_unitary` — covariance of the continuous functional calculus
   under conjugation by a unitary.
 * `Matrix.rpow_conj_unitary` — covariance of real powers under unitary conjugation.
 * `Matrix.cfc_diagonal` — entrywise functional calculus for real diagonal matrices.
+* `Matrix.cfc_fromBlocks_diag` — the functional calculus of a block-diagonal Hermitian
+  matrix acts blockwise.
+* `ConditionalMovement.QuantumSSA.cfc_intertwine` — an intertwiner `A V = V B` of
+  Hermitian matrices intertwines `f(A)` and `f(B)`.
+
+`cfc_intertwine` is adapted from openai/math (Apache-2.0), commit
+adc7f1241b42e322a6451854ab7e4b4c146bf78a, file
+`lean/OAI/MathematicalPhysics/PEPSMove/LogCompression.lean`, with the namespace prefix
+`OAI.PolynomialPEPS.PhysicalMove` replaced by `ConditionalMovement`.
 -/
 
 open scoped Matrix ComplexOrder MatrixOrder Matrix.Norms.L2Operator
@@ -132,13 +139,6 @@ theorem PosSemidef.sqrt_transpose {A : Matrix n n ℂ} (hA : A.PosSemidef) :
   rw [CFC.sqrt_eq_real_sqrt Aᵀ hA.transpose.nonneg,
     CFC.sqrt_eq_real_sqrt A hA.nonneg, cfcₙ_eq_cfc, cfcₙ_eq_cfc]
   exact (cfc_transpose hA.isHermitian Real.sqrt).symm
-
-/-- The support projection of a Hermitian matrix commutes with transpose. -/
-theorem IsHermitian.supportProj_transpose {A : Matrix n n ℂ} (hA : A.IsHermitian) :
-    hA.transpose.supportProj = hA.supportProjᵀ := by
-  let f : ℝ → ℝ := fun x ↦ if x ≠ 0 then 1 else 0
-  rw [hA.transpose.supportProj_eq_cfc, hA.supportProj_eq_cfc]
-  exact (cfc_transpose hA f).symm
 
 -- All four consequences include the singular zero matrix.
 -- Transpose covariance also permits the zero-dimensional matrix algebra.
@@ -264,6 +264,59 @@ theorem cfc_diagonal (g : n → ℝ) (f : ℝ → ℝ)
 
 end Diagonal
 
+section BlockDiagonal
+
+variable {n m : Type*} [Fintype n] [DecidableEq n] [Fintype m] [DecidableEq m]
+
+/-- **The functional calculus of a block-diagonal Hermitian matrix acts blockwise.** -/
+theorem cfc_fromBlocks_diag {X : Matrix n n ℂ} {Y : Matrix m m ℂ} (hX : X.IsHermitian)
+    (hY : Y.IsHermitian) (f : ℝ → ℝ) :
+    cfc f (fromBlocks X 0 0 Y) = fromBlocks (cfc f X) 0 0 (cfc f Y) := by
+  set U₁ : Matrix n n ℂ := (hX.eigenvectorUnitary : Matrix n n ℂ)
+  set U₂ : Matrix m m ℂ := (hY.eigenvectorUnitary : Matrix m m ℂ)
+  set W : Matrix (n ⊕ m) (n ⊕ m) ℂ := fromBlocks U₁ 0 0 U₂
+  have hU₁ : star U₁ * U₁ = 1 := Unitary.coe_star_mul_self _
+  have hU₂ : star U₂ * U₂ = 1 := Unitary.coe_star_mul_self _
+  have hstarW : star W = fromBlocks (star U₁) 0 0 (star U₂) := by
+    simp [W, star_eq_conjTranspose, fromBlocks_conjTranspose]
+  have hWW : star W * W = 1 := by
+    rw [hstarW, fromBlocks_multiply]; simp [hU₁, hU₂, fromBlocks_one]
+  have hWW' : W * star W = 1 := mul_eq_one_comm.mp hWW
+  let Wu : unitary (Matrix (n ⊕ m) (n ⊕ m) ℂ) := ⟨W, by
+    rw [Unitary.mem_iff]; exact ⟨hWW, hWW'⟩⟩
+  set g : n ⊕ m → ℝ := Sum.elim hX.eigenvalues hY.eigenvalues
+  have hblock : ∀ (d₁ : n → ℝ) (d₂ : m → ℝ),
+      W * diagonal (fun i ↦ ((Sum.elim d₁ d₂ i : ℝ) : ℂ)) * star W =
+        fromBlocks (U₁ * diagonal (fun i ↦ (d₁ i : ℂ)) * star U₁) 0 0
+          (U₂ * diagonal (fun i ↦ (d₂ i : ℂ)) * star U₂) := by
+    intro d₁ d₂
+    have hd : diagonal (fun i ↦ ((Sum.elim d₁ d₂ i : ℝ) : ℂ)) =
+        fromBlocks (diagonal fun i ↦ (d₁ i : ℂ)) 0 0 (diagonal fun i ↦ (d₂ i : ℂ)) := by
+      rw [fromBlocks_diagonal]; congr 1; ext i; cases i <;> rfl
+    rw [hd, hstarW, fromBlocks_multiply, fromBlocks_multiply]
+    simp
+  have hXs : X = U₁ * diagonal (fun i ↦ (hX.eigenvalues i : ℂ)) * star U₁ := by
+    conv_lhs => rw [hX.spectral_theorem]
+    rfl
+  have hYs : Y = U₂ * diagonal (fun i ↦ (hY.eigenvalues i : ℂ)) * star U₂ := by
+    conv_lhs => rw [hY.spectral_theorem]
+    rfl
+  have hbd : fromBlocks X 0 0 Y = (Wu : Matrix (n ⊕ m) (n ⊕ m) ℂ) *
+      diagonal (fun i ↦ (g i : ℂ)) * star (Wu : Matrix (n ⊕ m) (n ⊕ m) ℂ) := by
+    rw [hblock, ← hXs, ← hYs]
+  have hdh : (diagonal (fun i ↦ (g i : ℂ))).IsHermitian := by
+    rw [IsHermitian, diagonal_conjTranspose]; congr 1; ext i; simp [Complex.conj_ofReal]
+  rw [hbd, cfc_conj_unitary hdh f Wu, cfc_diagonal g f ((Set.finite_range g).continuousOn _)]
+  change W * diagonal (fun i ↦ ((f (Sum.elim hX.eigenvalues hY.eigenvalues i) : ℝ) : ℂ)) *
+    star W = _
+  have hcomp : (fun i ↦ ((f (Sum.elim hX.eigenvalues hY.eigenvalues i) : ℝ) : ℂ)) =
+      fun i ↦ ((Sum.elim (f ∘ hX.eigenvalues) (f ∘ hY.eigenvalues) i : ℝ) : ℂ) := by
+    ext i; cases i <;> rfl
+  rw [hcomp, hblock, hX.cfc_eq, hY.cfc_eq]
+  rfl
+
+end BlockDiagonal
+
 end Matrix
 
 section CfcScalarShift
@@ -359,3 +412,64 @@ theorem norm_cfc_apply_le_of_nonneg_le
 end Matrix
 
 end CfcVectorNormOrder
+
+section Intertwine
+
+namespace ConditionalMovement
+namespace QuantumSSA
+
+open Matrix
+
+variable {m n : Type*} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n]
+
+lemma cfc_intertwine {A : Matrix m m ℂ} {B : Matrix n n ℂ}
+    (hA : A.IsHermitian) (hB : B.IsHermitian) (V : Matrix m n ℂ)
+    (hV : A * V = V * B) (f : ℝ → ℝ) : cfc f A * V = V * cfc f B := by
+  let U := hA.eigenvectorUnitary
+  let W := hB.eigenvectorUnitary
+  let K := star (U : Matrix m m ℂ) * V * (W : Matrix n n ℂ)
+  let d := diagonal (fun i => (hA.eigenvalues i : ℂ))
+  let e := diagonal (fun i => (hB.eigenvalues i : ℂ))
+  have hAu : A = (U : Matrix m m ℂ) * d * star (U : Matrix m m ℂ) := hA.spectral_theorem
+  have hBw : B = (W : Matrix n n ℂ) * e * star (W : Matrix n n ℂ) := hB.spectral_theorem
+  have huu : star (U : Matrix m m ℂ) * (U : Matrix m m ℂ) = 1 := Unitary.coe_star_mul_self U
+  have hww : star (W : Matrix n n ℂ) * (W : Matrix n n ℂ) = 1 := Unitary.coe_star_mul_self W
+  have huU : (U : Matrix m m ℂ) * star (U : Matrix m m ℂ) = 1 := Unitary.coe_mul_star_self U
+  have hwW : (W : Matrix n n ℂ) * star (W : Matrix n n ℂ) = 1 := Unitary.coe_mul_star_self W
+  have hdK : d * K = K * e := by
+    have h := congrArg (fun T : Matrix m n ℂ => star (U : Matrix m m ℂ) * T * (W : Matrix n n ℂ)) hV
+    rw [hAu, hBw] at h
+    simpa only [K, Matrix.mul_assoc,
+        ← Matrix.mul_assoc (star (U : Matrix m m ℂ)) (U : Matrix m m ℂ), huu,
+      Matrix.one_mul, ← Matrix.mul_assoc (star (W : Matrix n n ℂ)) (W : Matrix n n ℂ), hww,
+          Matrix.mul_one] using h
+  have hdiag : diagonal (fun i => (f (hA.eigenvalues i) : ℂ)) * K =
+      K * diagonal (fun i => (f (hB.eigenvalues i) : ℂ)) := by
+    ext i j
+    have h := congrArg (fun T : Matrix m n ℂ => T i j) hdK
+    simp only [d, e, Matrix.diagonal_mul, Matrix.mul_diagonal] at h ⊢
+    by_cases heq : hA.eigenvalues i = hB.eigenvalues j
+    · rw [heq, mul_comm]
+    · have hz : K i j = 0 := by
+        apply (mul_eq_zero.mp (show ((hA.eigenvalues i : ℂ) - (hB.eigenvalues j : ℂ)) * K i j = 0 by
+          linear_combination h)).resolve_left
+        simpa only [sub_eq_zero, Complex.ofReal_inj] using heq
+      simp only [hz, mul_zero, zero_mul]
+  have hk : (U : Matrix m m ℂ) * K * star (W : Matrix n n ℂ) = V := by
+    simp only [K, ← Matrix.mul_assoc, huU, Matrix.one_mul]
+    simp only [Matrix.mul_assoc, hwW, Matrix.mul_one]
+  rw [hA.cfc_eq, hB.cfc_eq]
+  simp only [Matrix.IsHermitian.cfc, Unitary.conjStarAlgAut_apply, Function.comp_def]
+  change (U : Matrix m m ℂ) * diagonal (fun i => (f (hA.eigenvalues i) : ℂ)) *
+    star (U : Matrix m m ℂ) * V = V * ((W : Matrix n n ℂ) *
+    diagonal (fun i => (f (hB.eigenvalues i) : ℂ)) * star (W : Matrix n n ℂ))
+  rw [← hk]
+  simp only [Matrix.mul_assoc, ← Matrix.mul_assoc (star (U : Matrix m m ℂ)) (U : Matrix m m ℂ), huu,
+    Matrix.one_mul, ← Matrix.mul_assoc (star (W : Matrix n n ℂ)) (W : Matrix n n ℂ), hww]
+  simpa only [Matrix.mul_assoc] using congrArg (fun T : Matrix m n ℂ =>
+    (U : Matrix m m ℂ) * T * star (W : Matrix n n ℂ)) hdiag
+
+end QuantumSSA
+end ConditionalMovement
+
+end Intertwine

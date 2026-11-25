@@ -8,6 +8,7 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Entropy.Surprisal
 
+import QICLean.Entropy.Surprisal.FilterEnergy
 import QICLean.Entropy.Surprisal.FilterMoment
 import QICLean.Entropy.Surprisal.GapSurprisal
 import QICLean.Entropy.Surprisal.MarginalTails

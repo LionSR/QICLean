@@ -8,6 +8,7 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Channel.Convexity
 
+import QICLean.Channel.Convexity.ConvexFunctionalMonotonicity
 import QICLean.Channel.Convexity.LiebConcavity
 import QICLean.Channel.Convexity.LiebConvexity
 import QICLean.Channel.Convexity.LiebSubBoundary

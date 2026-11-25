@@ -8,7 +8,6 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Analysis.Complex
 
-import QICLean.Analysis.Complex.Interpolation
 import QICLean.Analysis.Complex.SkewFromPhases
 import QICLean.Analysis.Complex.StripQuadratic
 import QICLean.Analysis.Complex.ThreeLines

@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import QICLean.Analysis.TraceNorm.RectangularTraceNormAlgebra
-import QICLean.Channel.KrausMap.KrausFamilyTraceNorm
+import QICLean.Channel.Dilation.KrausFamilyTraceNorm
 import QICLean.Circuit.Model.Protocol
 
 /-!

@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import QICLean.Spectral.Projection.ShiftedDensityTruncation
-import QICLean.Analysis.Norm.TraceNormContractivity
+import QICLean.Analysis.TraceNorm.TraceNormContractivity
 
 /-!
 # Power approximation of an isolated ground projection

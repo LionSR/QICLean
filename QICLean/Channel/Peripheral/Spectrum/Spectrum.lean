@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Analysis.Order.ComplexPhasePositivity
-import QICLean.Channel.Peripheral.Spectrum.Primitive
+import QICLean.Channel.FixedPoint.MeanErgodic.FixedPointProjection
 import Mathlib.LinearAlgebra.Eigenspace.Basic
 import Mathlib.LinearAlgebra.Eigenspace.Minpoly
 import Mathlib.RingTheory.RootsOfUnity.Basic
