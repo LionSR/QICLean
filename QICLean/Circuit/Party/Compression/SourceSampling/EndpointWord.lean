@@ -14,7 +14,25 @@ A source slot provides a basis at each of two parties. A product of operators
 on the endpoints of all slots is represented by a word of local operations.
 The word leaves the underlying system untouched. In source coordinates each
 matrix entry is the product of the entries of the endpoint operators and the
-identity entry of the underlying system.
+identity entry of the underlying system. At one party, read in the party coordinates
+`SourceInventory.slotSiteEquiv`, the word is the Kronecker product over the slots of the
+endpoint operator at that party, the identity of a one-element factor at a slot without an
+endpoint there; it therefore depends only on the endpoint operators at that party. The
+inventory, the bases and the operators are arbitrary.
+
+## Main definitions
+
+* `QuantumCircuit.Party.SourceInventory.endpointWord`.
+
+## Main results
+
+* `QuantumCircuit.Party.SourceInventory.op_endpointWord`,
+  `QuantumCircuit.Party.SourceInventory.sum_op_endpointWord`,
+  `QuantumCircuit.Party.SourceInventory.op_endpointWord_mulVec_slotVector`,
+  `QuantumCircuit.Party.SourceInventory.op_endpointWord_mulVec_slotVector_tmul`.
+* `QuantumCircuit.Party.SourceInventory.partyOp_endpointWord`,
+  `QuantumCircuit.Party.SourceInventory.partyOp_endpointWord_congr`,
+  `QuantumCircuit.Party.SourceInventory.partyOp_endpointWord_eq_one`.
 
 Source: polynomial-PEPS, Theorem 5.2, `04-compression.tex`, lines 279–340 and 565–588.
 Adapted from TNLean, `TNLean/Lattice/Compression/EndpointOperatorWord.lean` at
@@ -28,73 +46,35 @@ namespace QuantumCircuit.Party
 
 variable {P : Type} [Fintype P] [DecidableEq P]
 
-/-- The party factors of the two endpoint operators of a pair: `L` at the left endpoint, `R` at the
-right endpoint and the identity elsewhere. -/
-private def endpointFactors {p q : P} (hpq : p ≠ q) {A B : Type}
-    (L : Matrix A A ℂ) (R : Matrix B B ℂ) (r : P) :
-    Matrix (pairFactor hpq A B r) (pairFactor hpq A B r) ℂ :=
-  fun x y ↦
-    if hrp : r = p then
-      L (cast (by subst r; simp [pairFactor]) x) (cast (by subst r; simp [pairFactor]) y)
-    else if hrq : r = q then
-      R (cast (by subst r; simp [pairFactor, hpq.symm]) x)
-        (cast (by subst r; simp [pairFactor, hpq.symm]) y)
-    else 1
+omit [Fintype P] in
+/-- The fresh-factor maps of a pair at a party depend only on the map at that party. -/
+private theorem pairFactorMatrix_congr {p q : P} (hpq : p ≠ q) {A B : Type}
+    {L L' : Matrix A A ℂ} {R R' : Matrix B B ℂ} {r : P} (hL : p = r → L = L')
+    (hR : q = r → R = R') : pairFactorMatrix hpq L R r = pairFactorMatrix hpq L' R' r := by
+  unfold pairFactorMatrix
+  split_ifs with hp hq
+  · rw [hL hp.symm]
+  · rw [hR hq.symm]
+  · rfl
 
-/-- The tensor product of the endpoint factors is `L ⊗ R` in the coordinates of the pair. -/
-private theorem piKronecker_endpointFactors {p q : P} (hpq : p ≠ q) {A B : Type}
-    (L : Matrix A A ℂ) (R : Matrix B B ℂ) :
-    piKronecker (endpointFactors hpq L R) =
-      reindex (pairFactorConfigEquiv hpq A B).symm (pairFactorConfigEquiv hpq A B).symm
-        (L ⊗ₖ R) := by
-  ext x y
-  simp only [piKronecker_apply, reindex_apply, submatrix_apply, Equiv.symm_symm,
-    kroneckerMap_apply]
-  rw [← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ p),
-    ← Finset.mul_prod_erase (Finset.univ.erase p) _ (by simp [hpq.symm] : q ∈ _)]
-  have hrest :
-      (∏ r ∈ (Finset.univ.erase p).erase q, endpointFactors hpq L R r (x r) (y r)) = 1 := by
-    apply Finset.prod_eq_one
-    intro r hr
-    have hrq := (Finset.mem_erase.mp hr).1
-    have hrp := (Finset.mem_erase.mp (Finset.mem_erase.mp hr).2).1
-    simp [endpointFactors, hrp, hrq]
-  rw [hrest]
-  simp [endpointFactors, pairFactorConfigEquiv, hpq.symm]
+omit [Fintype P] in
+/-- The fresh-factor maps of two identities are identities. -/
+private theorem pairFactorMatrix_one_one {p q : P} (hpq : p ≠ q) (A B : Type) [DecidableEq A]
+    [DecidableEq B] (r : P) :
+    pairFactorMatrix hpq (1 : Matrix A A ℂ) (1 : Matrix B B ℂ) r = 1 := by
+  unfold pairFactorMatrix
+  split_ifs <;> rw [reindex_apply, submatrix_one_equiv]
 
-/-- The word applying `L` and `R` at the two endpoints of one pair, beside the system `Z`. -/
-private noncomputable def endpointPairWord {p q : P} (hpq : p ≠ q) {A B : Type}
+/-- The operator of the word applying `L` and `R` at the two endpoints of one pair. -/
+private theorem op_mapPair {p q : P} (hpq : p ≠ q) {A B : Type}
     [Fintype A] [DecidableEq A] [Fintype B] [DecidableEq B] (Z : P → Type)
     [∀ r, Fintype (Z r)] [∀ r, DecidableEq (Z r)]
     (L : Matrix A A ℂ) (R : Matrix B B ℂ) :
-    Word (addPair Z hpq A B) (addPair Z hpq A B) :=
-  PartyCircuit.localOps fun r ↦
-    reindex (addPairSiteEquiv hpq A B Z r).symm (addPairSiteEquiv hpq A B Z r).symm
-      (endpointFactors hpq L R r ⊗ₖ (1 : Matrix (Z r) (Z r) ℂ))
-
-/-- The operator of the endpoint word of one pair. -/
-private theorem op_endpointPairWord {p q : P} (hpq : p ≠ q) {A B : Type}
-    [Fintype A] [DecidableEq A] [Fintype B] [DecidableEq B] (Z : P → Type)
-    [∀ r, Fintype (Z r)] [∀ r, DecidableEq (Z r)]
-    (L : Matrix A A ℂ) (R : Matrix B B ℂ) :
-    (endpointPairWord hpq Z L R).op =
+    (Word.mapPair hpq L R Z).op =
       reindex (addPairConfigEquiv (X := Z) hpq A B).symm
         (addPairConfigEquiv (X := Z) hpq A B).symm
         ((L ⊗ₖ R) ⊗ₖ (1 : Matrix (Config Z) (Config Z) ℂ)) := by
-  rw [endpointPairWord, Word.op, PartyCircuit.op_localOps]
-  ext y x
-  rw [addPairConfigEquiv_eq_siteEquiv]
-  simp only [piKronecker_apply, reindex_apply, submatrix_apply, Equiv.symm_symm,
-    kroneckerMap_apply, Equiv.trans_apply, Equiv.prodCongr_apply, Prod.map, Equiv.refl_apply,
-    Equiv.piCongrRight_apply, Equiv.arrowProdEquivProdArrow_apply, Finset.prod_mul_distrib]
-  have hf := congrFun (congrFun (piKronecker_endpointFactors hpq L R)
-    (fun r ↦ (addPairSiteEquiv hpq A B Z r (y r)).1))
-      (fun r ↦ (addPairSiteEquiv hpq A B Z r (x r)).1)
-  simp only [piKronecker_apply, reindex_apply, submatrix_apply, Equiv.symm_symm,
-    kroneckerMap_apply] at hf
-  rw [hf]
-  congr 1
-  simp only [one_apply, Finset.prod_boole, Finset.mem_univ, forall_const, funext_iff, Pi.map_apply]
+  rw [Word.mapPair, Word.op, PartyCircuit.op_localOps, piKronecker_pairMapMatrix]
 
 namespace SourceInventory
 
@@ -106,7 +86,7 @@ noncomputable def endpointWord (Z : P → Type) [∀ p, Fintype (Z p)] [∀ p, D
       Word (slotSystem R B Z) (slotSystem R B Z)
   | [], _, _, _ => .done Z
   | r :: R, B, L, M =>
-    (endpointPairWord r.distinct (slotSystem R B.tail Z) (L 0) (M 0)).comp
+    (Word.mapPair r.distinct (L 0) (M 0) (slotSystem R B.tail Z)).comp
       (PartyCircuit.liftPair r.distinct (B.left 0) (B.right 0)
         (endpointWord Z R B.tail (fun i ↦ L i.succ) (fun i ↦ M i.succ)))
 
@@ -153,22 +133,15 @@ theorem partyOp_endpointWord_eq_one (Z : P → Type) [∀ p, Fintype (Z p)]
   | cons r R ih =>
     have htail := ih B.tail (fun i ↦ L i.succ) (fun i ↦ M i.succ)
       (fun i ↦ hL i.succ) (fun i ↦ hM i.succ)
-    have hhead : endpointFactors r.distinct (L 0) (M 0) p = 1 := by
-      ext x y
-      by_cases hl : p = r.left
-      · simp [endpointFactors, hl, hL 0 hl.symm, one_apply, cast_inj]
-      by_cases hr : p = r.right
-      · simp [endpointFactors, hr, r.distinct.symm, hM 0 hr.symm, one_apply, cast_inj]
-      · have hU : pairFactor r.distinct (B.left 0) (B.right 0) p = Unit := by
-          simp [pairFactor, hl, hr]
-        have hxy := (Equiv.cast hU).subsingleton.elim x y
-        simp [endpointFactors, hl, hr, one_apply, hxy]
+    have hhead : pairFactorMatrix r.distinct (L 0) (M 0) p = 1 :=
+      (pairFactorMatrix_congr r.distinct (hL 0) (hM 0)).trans
+        (pairFactorMatrix_one_one r.distinct _ _ p)
     change (PartyCircuit.liftPair r.distinct (B.left 0) (B.right 0)
       (endpointWord Z R B.tail (fun i ↦ L i.succ) (fun i ↦ M i.succ))).partyOp p *
-      (endpointPairWord r.distinct (slotSystem R B.tail Z) (L 0) (M 0)).partyOp p = 1
+      (Word.mapPair r.distinct (L 0) (M 0) (slotSystem R B.tail Z)).partyOp p = 1
     have h := partyOp_liftPair_eq_one r.distinct (B.left 0) (B.right 0) _ p htail
     rw [h, Matrix.one_mul]
-    simp [endpointPairWord, hhead]
+    simp [Word.mapPair, pairMapMatrix, hhead]
 
 /-- The entries of the endpoint word are the product of the endpoint entries, times the
 identity on the underlying configuration. Source: Theorem 5.2, `04-compression.tex`,
@@ -190,7 +163,7 @@ theorem op_endpointWord (Z : P → Type) [∀ p, Fintype (Z p)] [∀ p, Decidabl
     rfl
   | cons r R ih =>
     rw [endpointWord]
-    erw [Word.op_comp, op_endpointPairWord]
+    erw [Word.op_comp, op_mapPair]
     change (PartyCircuit.liftPair r.distinct (B.left 0) (B.right 0)
       (endpointWord Z R B.tail (fun i ↦ L i.succ) (fun i ↦ M i.succ))).op SourceGate.ev * _ = _
     erw [PartyCircuit.op_liftPair _ _ _ _ SourceGate.isCompatible_frame]
@@ -226,6 +199,125 @@ theorem sum_op_endpointWord (Z : P → Type) [∀ p, Fintype (Z p)] [∀ p, Deci
   rw [Finset.prod_univ_sum, Finset.sum_mul]
   refine Finset.sum_congr rfl fun a _ ↦ ?_
   simp only [Finset.prod_mul_distrib, mul_assoc]
+
+omit [Fintype P] in
+/-- **The endpoint word acts at each party by the endpoint operators of the slots at that
+party, in the order of the slots, and by the identity on the underlying basis.** In the party
+coordinates of the slot system, its party operation is the Kronecker product over the slots of
+the endpoint matrix of the slot at the party — `L i` at the left endpoint, `M i` at the right
+endpoint, the identity of the one-element factor at a party that is no endpoint — tensored with
+the identity. The inventory and the matrices are arbitrary, including the empty inventory, empty
+bases and zero matrices. Source: Theorem 5.2, `04-compression.tex`, lines 279–309, 409–434 and
+565–588. -/
+theorem partyOp_endpointWord (Z : P → Type) [∀ p, Fintype (Z p)] [∀ p, DecidableEq (Z p)]
+    (R : SourceInventory P) (B : SlotBases R.length) (L : ∀ i, Matrix (B.left i) (B.left i) ℂ)
+    (M : ∀ i, Matrix (B.right i) (B.right i) ℂ) (p : P) :
+    (endpointWord Z R B L M).partyOp p =
+      reindex (slotSiteEquiv R B Z p).symm (slotSiteEquiv R B Z p).symm
+        (piKronecker (fun i ↦ pairFactorMatrix (R.get i).distinct (L i) (M i) p) ⊗ₖ
+          (1 : Matrix (Z p) (Z p) ℂ)) := by
+  induction R with
+  | nil =>
+    ext y x
+    change (1 : Matrix (Z p) (Z p) ℂ) y x = _
+    let : IsEmpty (Fin ([] : SourceInventory P).length) := Fin.isEmpty'
+    simp only [reindex_apply, submatrix_apply, kroneckerMap_apply, piKronecker_apply,
+      Finset.univ_eq_empty, Finset.prod_empty, one_mul]
+    rfl
+  | cons r R ih =>
+    rw [endpointWord]
+    change (PartyCircuit.liftPair r.distinct (B.left 0) (B.right 0)
+      (endpointWord Z R B.tail (fun i ↦ L i.succ) (fun i ↦ M i.succ))).partyOp p *
+      (Word.mapPair r.distinct (L 0) (M 0) (slotSystem R B.tail Z)).partyOp p = _
+    have htail := ih B.tail (fun i ↦ L i.succ) (fun i ↦ M i.succ)
+    rw [PartyCircuit.liftPair, PartyCircuit.partyOp_comp, PartyCircuit.partyOp_comp,
+      PartyCircuit.partyOp_frame]
+    erw [htail]
+    simp only [Word.mapPair, pairMapMatrix, PartyCircuit.relabel,
+      PartyCircuit.partyOp_localOps]
+    rw [PEquiv.toMatrix_toPEquiv_mul, Matrix.mul_assoc, PEquiv.toMatrix_toPEquiv_mul]
+    ext y x
+    change _ = (piKronecker (fun i ↦ pairFactorMatrix ((r :: R).get i).distinct (L i) (M i) p) ⊗ₖ
+      (1 : Matrix (Z p) (Z p) ℂ)) (slotSiteEquiv (r :: R) B Z p y) (slotSiteEquiv (r :: R) B Z p x)
+    erw [slotSiteEquiv_cons_apply r R B Z p y, slotSiteEquiv_cons_apply r R B Z p x]
+    rw [kroneckerMap_apply, piKronecker_apply]
+    erw [Fin.prod_univ_succ]
+    rw [mul_apply, Fintype.sum_prod_type]
+    simp only [submatrix_apply, reindex_apply, Equiv.symm_symm, Equiv.apply_symm_apply, id,
+      kroneckerMap_apply, one_apply, piKronecker_apply, ite_mul,
+      one_mul, zero_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ,
+      ite_true]
+    by_cases hC : ((slotSiteEquiv R B.tail Z p) ((addPairSiteEquiv r.distinct (B.left 0)
+        (B.right 0) (slotSystem R B.tail Z) p) y).2).2 =
+        ((slotSiteEquiv R B.tail Z p) ((addPairSiteEquiv r.distinct (B.left 0)
+        (B.right 0) (slotSystem R B.tail Z) p) x).2).2
+    · simp only [hC, ite_true, Finset.sum_ite_eq, Finset.mem_univ]
+      exact mul_comm _ _
+    · simp only [hC, ite_false, Finset.sum_const_zero]
+
+omit [Fintype P] in
+/-- **The party operation of an endpoint word depends only on the endpoint operators at that
+party**: two families of endpoint matrices that agree at every left endpoint and at every right
+endpoint equal to `p` give the same operation at `p`. Source: Theorem 5.2,
+`04-compression.tex`, lines 279–309, 409–434 and 565–588. -/
+theorem partyOp_endpointWord_congr (Z : P → Type) [∀ p, Fintype (Z p)] [∀ p, DecidableEq (Z p)]
+    (R : SourceInventory P) (B : SlotBases R.length)
+    {L L' : ∀ i, Matrix (B.left i) (B.left i) ℂ} {M M' : ∀ i, Matrix (B.right i) (B.right i) ℂ}
+    (p : P) (hL : ∀ i, (R.get i).left = p → L i = L' i)
+    (hM : ∀ i, (R.get i).right = p → M i = M' i) :
+    (endpointWord Z R B L M).partyOp p = (endpointWord Z R B L' M').partyOp p := by
+  rw [partyOp_endpointWord, partyOp_endpointWord]
+  exact congrArg (fun K ↦ reindex (slotSiteEquiv R B Z p).symm (slotSiteEquiv R B Z p).symm
+    (piKronecker K ⊗ₖ (1 : Matrix (Z p) (Z p) ℂ)))
+    (funext fun i ↦ pairFactorMatrix_congr _ (hL i) (hM i))
+
+/-- **The endpoint word acts slot by slot on product vectors**: in the source coordinates, the
+product of slot vectors `η i` beside a vector `ψ` of the underlying system goes to the product
+of the vectors `(L i ⊗ M i) η i` beside `ψ`. No normalization or nonvanishing is used. Source:
+Theorem 5.2, `04-compression.tex`, lines 279–309 and 565–588. -/
+theorem op_endpointWord_mulVec_slotVector (Z : P → Type) [∀ p, Fintype (Z p)]
+    [∀ p, DecidableEq (Z p)] (R : SourceInventory P) (B : SlotBases R.length)
+    (L : ∀ i, Matrix (B.left i) (B.left i) ℂ) (M : ∀ i, Matrix (B.right i) (B.right i) ℂ)
+    (η : ∀ i, EuclideanSpace ℂ (B.left i × B.right i)) (ψ : Config Z → ℂ) :
+    ((endpointWord Z R B L M).op *ᵥ fun z ↦
+        slotVector R B η (slotColumnEquiv R B Z z).1 * ψ (slotColumnEquiv R B Z z).2) =
+      fun z ↦ slotVector R B (fun i ↦ WithLp.toLp 2 ((L i ⊗ₖ M i) *ᵥ η i))
+        (slotColumnEquiv R B Z z).1 * ψ (slotColumnEquiv R B Z z).2 := by
+  funext z
+  have hK := congrFun (piKronecker_mulVec_prod (fun i ↦ L i ⊗ₖ M i) fun i ↦ η i)
+    (slotColumnEquiv R B Z z).1
+  refine Eq.trans ?_ (congrArg (· * ψ (slotColumnEquiv R B Z z).2) hK)
+  rw [op_endpointWord, mulVec, dotProduct, mulVec, dotProduct, Finset.sum_mul,
+    ← (slotColumnEquiv R B Z).symm.sum_comp, Fintype.sum_prod_type]
+  refine Finset.sum_congr rfl fun a _ ↦ ?_
+  simp only [reindex_apply, submatrix_apply, Equiv.symm_symm, Equiv.apply_symm_apply,
+    kroneckerMap_apply, one_apply, slotVector_apply, mul_ite, mul_one, mul_zero, ite_mul,
+    zero_mul, Finset.sum_ite_eq, Finset.mem_univ, ite_true]
+  ring
+
+/-- **The endpoint word acts factor by factor on the endpoint vectors**: the product over the
+slots of `u i ⊗ v i`, beside a vector of the underlying system, goes to the product of
+`L i (u i) ⊗ M i (v i)`. No normalization or nonvanishing is used. Source: Theorem 5.2,
+`04-compression.tex`, lines 279–309 and 565–588. -/
+theorem op_endpointWord_mulVec_slotVector_tmul (Z : P → Type) [∀ p, Fintype (Z p)]
+    [∀ p, DecidableEq (Z p)] (R : SourceInventory P) (B : SlotBases R.length)
+    (L : ∀ i, Matrix (B.left i) (B.left i) ℂ) (M : ∀ i, Matrix (B.right i) (B.right i) ℂ)
+    (u : ∀ i, B.left i → ℂ) (v : ∀ i, B.right i → ℂ) (ψ : Config Z → ℂ) :
+    ((endpointWord Z R B L M).op *ᵥ fun z ↦
+        slotVector R B (fun i ↦ WithLp.toLp 2 fun a ↦ u i a.1 * v i a.2)
+          (slotColumnEquiv R B Z z).1 * ψ (slotColumnEquiv R B Z z).2) =
+      fun z ↦ slotVector R B (fun i ↦ WithLp.toLp 2 fun a ↦ (L i *ᵥ u i) a.1 * (M i *ᵥ v i) a.2)
+        (slotColumnEquiv R B Z z).1 * ψ (slotColumnEquiv R B Z z).2 := by
+  rw [op_endpointWord_mulVec_slotVector]
+  have h (i : Fin R.length) : ((L i ⊗ₖ M i) *ᵥ fun a ↦ u i a.1 * v i a.2) =
+      fun a ↦ (L i *ᵥ u i) a.1 * (M i *ᵥ v i) a.2 := by
+    funext a
+    simp only [mulVec, dotProduct, kroneckerMap_apply, Fintype.sum_prod_type,
+      Finset.sum_mul_sum]
+    exact Finset.sum_congr rfl fun _ _ ↦ Finset.sum_congr rfl fun _ _ ↦ by ring
+  exact congrArg (fun η : ∀ i, B.left i × B.right i → ℂ ↦ fun z ↦
+    slotVector R B (fun i ↦ WithLp.toLp 2 (η i)) (slotColumnEquiv R B Z z).1 *
+      ψ (slotColumnEquiv R B Z z).2) (funext h)
 
 end SourceInventory
 

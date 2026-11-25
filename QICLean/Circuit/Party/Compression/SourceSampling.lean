@@ -12,6 +12,7 @@ import QICLean.Circuit.Party.Compression.SourceSampling.Approximation
 import QICLean.Circuit.Party.Compression.SourceSampling.BranchEstimate
 import QICLean.Circuit.Party.Compression.SourceSampling.CorrectedTermBound
 import QICLean.Circuit.Party.Compression.SourceSampling.EndpointWord
+import QICLean.Circuit.Party.Compression.SourceSampling.ExteriorFactor
 import QICLean.Circuit.Party.Compression.SourceSampling.GaussianError
 import QICLean.Circuit.Party.Compression.SourceSampling.Integrability
 import QICLean.Circuit.Party.Compression.SourceSampling.Law

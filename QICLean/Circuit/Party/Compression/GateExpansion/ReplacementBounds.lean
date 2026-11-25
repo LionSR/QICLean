@@ -3,10 +3,10 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import Mathlib.Data.Sym.Card
 import QICLean.Analysis.Real.SampleCount
 import QICLean.Circuit.Party.Effect.Resources
 import QICLean.Circuit.Party.Original.Density
+import QICLean.Circuit.Party.Source.PairIndex
 
 /-!
 # Polynomial resources of the source-only replacement
@@ -17,7 +17,7 @@ bounds on the original data give power bounds on it and on the number of branch 
 prepared gate of the replacement (`card_branchLabels_replacement_le_power`).
 
 Every prepared gate has one source slot for each unordered pair of distinct parties of its cell
-(`PreparedSourceGate.length_slots`). The source positions of a source circuit are therefore
+(`SourceInventory.length_eq_choose`). The source positions of a source circuit are therefore
 counted by the binomial coefficients of its cells (`card_sourceLocations_eq_sum_choose`), and
 those of the replacement of an original circuit by the number of nonprivate gates times the
 binomial coefficient of a bound on the cells (`card_sourceLocations_replacement_le`). With the
@@ -30,8 +30,8 @@ choice cost of Theorem 5.2 this bounds the sample count of the replacement by a 
   `stackLength_sourceGateBudget_lt_of_power_bounds`,
   `replacementMonomialBound_le_of_power_bounds`.
 * `QuantumCircuit.Party.SourceCircuit.IsExpansionBounded.at_gate`.
-* `QuantumCircuit.Party.PreparedSourceGate.length_slots`,
-  `length_sources_branchWord_eq_choose`, `length_sources_branchWord_le_choose`.
+* `QuantumCircuit.Party.PreparedSourceGate.length_sources_branchWord_eq_choose`,
+  `length_sources_branchWord_le_choose`.
 * `QuantumCircuit.Party.SourceCircuit.slotCount_eq_choose`, `card_sourceLocations_eq_sum_choose`,
   `card_sourceLocations_le`.
 * `QuantumCircuit.Party.OriginalCircuit.card_branchLabels_replacement_le_power`,
@@ -125,24 +125,14 @@ theorem length_sources_branchWord [∀ p, Fintype (X p)] [∀ p, DecidableEq (X 
   rw [G.sources_branchWord]
   simp only [SourceInventory.ofSlots, List.length_ofFn]
 
-/-- The slots of a prepared gate are the unordered pairs of distinct parties. Source:
-`04-compression.tex`, lines 233–251 and 342–355. -/
-theorem length_slots (G : PreparedSourceGate c X Y) :
-    G.slots.length = (Fintype.card P).choose 2 := by
-  let s := (G.slots.map PairSource.partyPair).toFinset
-  have hc : Fintype.card {k : Sym2 P // ¬k.IsDiag} = s.card :=
-    Fintype.card_of_subtype s (by intro k; simpa [s] using G.pair_complete k)
-  have hlen : G.slots.length = s.card := by
-    simpa only [s, List.length_map] using (List.toFinset_card_of_nodup G.pair_nodup).symm
-  exact hlen.trans (hc.symm.trans Sym2.card_subtype_not_diag)
-
 /-- A prepared branch has one normalized source on every pair of distinct parties,
 one-dimensional padding slots included. Source: `04-compression.tex`, lines 233–251 and
 342–355. -/
 theorem length_sources_branchWord_eq_choose [∀ p, Fintype (X p)] [∀ p, DecidableEq (X p)]
     (G : PreparedSourceGate c X Y) (ξ : ι) :
     (G.branchWord ξ).sources.length = (Fintype.card P).choose 2 :=
-  (G.length_sources_branchWord ξ).trans G.length_slots
+  (G.length_sources_branchWord ξ).trans
+    (SourceInventory.length_eq_choose G.slots G.pair_nodup G.pair_complete)
 
 /-- A bound on the number of parties bounds the sources of every prepared branch, independently
 of the stack length, of the private dimensions and of the size of the expansion. Source:
@@ -165,7 +155,8 @@ theorem slotCount_eq_choose : {X Y : P → Type} → (w : SourceCircuit X Y) →
     (g : w.gateLocations) → w.slotCount g = (w.participants g).card.choose 2
   | _, _, PartyCircuit.done _, g => g.elim
   | _, _, PartyCircuit.gate D _ g, _ =>
-    g.gate.length_slots.trans (by rw [Fintype.card_coe]; rfl)
+    (SourceInventory.length_eq_choose _ g.gate.pair_nodup g.gate.pair_complete).trans
+      (by rw [Fintype.card_coe]; rfl)
   | _, _, PartyCircuit.localOp _ _ _, g => g.elim
   | _, _, PartyCircuit.localOps _, g => g.elim
   | _, _, PartyCircuit.comp c c', g => by

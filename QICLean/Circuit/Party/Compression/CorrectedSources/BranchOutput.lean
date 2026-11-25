@@ -245,21 +245,6 @@ private def sidePairFalseEquiv (A B : Type) : ComplConfig (sidePair A B) {true} 
     rfl
   right_inv _ := rfl
 
-/-- Reading rows and columns of a matrix along injective maps does not increase its operator
-norm. -/
-private theorem l2_opNorm_submatrix_le_of_injective₂ {m n m' n' : Type} [Fintype m] [Fintype n]
-    [Fintype m'] [Fintype n'] [DecidableEq n] [DecidableEq n'] (M : Matrix m n ℂ) {r : m' → m}
-    {c : n' → n} (hr : Function.Injective r) (hc : Function.Injective c) :
-    ‖M.submatrix r c‖ ≤ ‖M‖ := by
-  classical
-  have h : M.submatrix r c = ((M.submatrix r id)ᴴ.submatrix c id)ᴴ := by
-    ext i j
-    simp
-  rw [h, l2_opNorm_conjTranspose]
-  refine (l2_opNorm_submatrix_le_of_injective _ hc).trans ?_
-  rw [l2_opNorm_conjTranspose]
-  exact l2_opNorm_submatrix_le_of_injective M hr
-
 /-- **A contraction between systems over one party is the operator of an allowed source-free
 word.** -/
 private theorem exists_word_op_eq {ι : Type} [Fintype ι] [DecidableEq ι] [Unique ι]
@@ -279,7 +264,7 @@ private theorem exists_word_op_eq {ι : Type} [Fintype ι] [DecidableEq ι] [Uni
     exact congrFun h i
   refine ⟨PartyCircuit.localOps fun i ↦ N.submatrix (single B i) (single A i),
     Word.isAllowed_localOps _ fun i ↦
-      (l2_opNorm_submatrix_le_of_injective₂ N (hinj B i) (hinj A i)).trans hN, rfl, ?_⟩
+      (l2_opNorm_submatrix_le_of_injective N (hinj B i) (hinj A i)).trans hN, rfl, ?_⟩
   change PartyCircuit.op SourceGate.ev (PartyCircuit.localOps _) = N
   rw [PartyCircuit.op_localOps]
   ext a a'
@@ -290,12 +275,6 @@ namespace SourceCircuit
 variable {P : Type} [Fintype P] [DecidableEq P] {X Y : P → Type} [∀ p, Fintype (X p)]
   [∀ p, DecidableEq (X p)] [∀ p, Fintype (Y p)] [∀ p, DecidableEq (Y p)]
   (w : SourceCircuit X Y) (S : Finset w.sourceLocations)
-
-/-- The basis on one side of a crossing slot has decidable equality. -/
-noncomputable instance (i : w.crossingSlots S) (b : Bool) :
-    DecidableEq (w.crossingSlotBasis S i b) := by
-  unfold crossingSlotBasis
-  split_ifs <;> infer_instance
 
 local notation "mask" => correctedMask w S
 local notation "slots" => selectedPartialSlots mask w S
@@ -428,9 +407,9 @@ theorem hasSchmidtOutput_partialSchmidtOutput (hw : w.IsLocalContractive)
   let eF := sidePairFalseEquiv ((∀ i : slots, (basis).left i × (basis).right i) ×
     (∀ i : cross, w.crossingSlotBasis S i true)) (∀ i : cross, w.crossingSlotBasis S i false)
   have hnA : ‖PA.submatrix id eT‖ ≤ 1 :=
-    (l2_opNorm_submatrix_le_of_injective₂ PA Function.injective_id eT.injective).trans hPA
+    (l2_opNorm_submatrix_le_of_injective PA Function.injective_id eT.injective).trans hPA
   have hnE : ‖PE.submatrix id eF‖ ≤ 1 :=
-    (l2_opNorm_submatrix_le_of_injective₂ PE Function.injective_id eF.injective).trans hPE
+    (l2_opNorm_submatrix_le_of_injective PE Function.injective_id eF.injective).trans hPE
   refine Exists.elim (exists_word_op_eq (ι := {b : Bool // b ∈ ({true} : Finset Bool)})
     (PA.submatrix id eT) hnA) fun c₀ hc₀ ↦ ?_
   refine Exists.elim (exists_word_op_eq (ι := {b : Bool // b ∉ ({true} : Finset Bool)})
