@@ -21,6 +21,7 @@ import QICLean.ManyBody.Replica.EtaForms
 import QICLean.ManyBody.Replica.Label
 import QICLean.ManyBody.Replica.LowDefect
 import QICLean.ManyBody.Replica.Metric
+import QICLean.ManyBody.Replica.NormComparison
 import QICLean.ManyBody.Replica.RelativePin
 import QICLean.ManyBody.Replica.RelativePinCommute
 import QICLean.ManyBody.Replica.RelativePinCompensator

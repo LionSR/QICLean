@@ -413,3 +413,42 @@ end ManyBody
 end
 
 end CompressedTypicalSiteNorm
+
+section CompressedTypicalAuxiliaryEntropy
+
+open Matrix
+open scoped BigOperators Matrix ComplexOrder
+
+namespace ManyBody
+
+variable {V : Type*} [Fintype V] [DecidableEq V]
+variable (β : V → Type*) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
+
+open Classical in
+/-- Let `p` be the eigenvalues of the reduced density of a region `X`, let `E` be a set of
+them of positive mass, and let `ψ` be the normalized vector obtained by compressing to the
+spectral subspace of `E`, with the selected index as an auxiliary coordinate. The marginal of
+`ψ` on the auxiliary coordinate has entropy `∑_{i ∈ E} -p'_i log p'_i`, `p'_i = p_i / z`,
+`z = ∑_{j ∈ E} p_j`: the entropy of the selected spectrum (area-law paper,
+`07-comparators.tex`, `comparator:typical-set`, line 45). -/
+theorem vonNeumannEntropy_compressedTypicalPureState_eq_sum
+    (Ω : EuclideanSpace ℂ ((v : V) → β v)) (X : Finset V)
+    (E : Finset (RegionConfig β X))
+    (hz : 0 < (regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E) :
+    let p := (regionState_posSemidef X Ω).isHermitian.eigenvalues
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (cutEquiv β X) Ω
+    let ψ : ComplConfig β X × Fin E.card → ℂ := fun x ↦
+      compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.2, x.1)
+    vonNeumannEntropy (partialTraceLeft (vecMulVec ψ (star ψ)))
+        (posSemidef_vecMulVec_self_star ψ).partialTraceLeft.isHermitian =
+      ∑ i ∈ E, Real.negMulLog (p i / ∑ j ∈ E, p j) := by
+  intro p ΩX ψ
+  refine (entropy_compressedTypicalPureState_equivFin_swap ΩX E hz).trans
+    (((posSemidef_vecMulVec_self_star ΩX).partialTraceRight.entropy_normalizedSpectralRestriction
+      E hz).trans ?_)
+  rw [Entropy.probabilityEntropy]
+  exact Finset.sum_coe_sort E fun i ↦ Real.negMulLog (p i / ∑ j ∈ E, p j)
+
+end ManyBody
+
+end CompressedTypicalAuxiliaryEntropy

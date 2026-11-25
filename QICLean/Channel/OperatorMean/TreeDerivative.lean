@@ -338,3 +338,52 @@ theorem leafMap_node_right (hA : ∀ i, (A i).PosDef) (p : I) (l r : MeanTree ι
 end MeanTree
 
 end Matrix
+
+namespace Matrix.MeanTree
+
+variable {ι : Type*} [DecidableEq ι]
+
+/-- The same tree with its leaf labels read in a finite set `s` containing all of them: a
+tree with labels in the subtype `s`. -/
+def restrict (s : Finset ι) : (T : MeanTree ι) → (∀ j ∈ T.labels, j ∈ s) → MeanTree s
+  | leaf j, h => leaf ⟨j, h j (List.mem_singleton_self j)⟩
+  | node p l r, h => node p (l.restrict s fun j hj ↦ h j (List.mem_append_left _ hj))
+      (r.restrict s fun j hj ↦ h j (List.mem_append_right _ hj))
+
+omit [DecidableEq ι] in
+/-- The root of a restricted tree, with the inputs read on the subtype, is the root of the
+tree. -/
+theorem eval_restrict {n : Type*} [Fintype n] [DecidableEq n] (A : ι → Matrix n n ℂ)
+    (s : Finset ι) : (T : MeanTree ι) → (h : ∀ j ∈ T.labels, j ∈ s) →
+    (T.restrict s h).eval (fun j ↦ A j.val) = T.eval A
+  | leaf _, _ => rfl
+  | node p l r, h => by
+    simp only [restrict, eval_node, eval_restrict A s l, eval_restrict A s r]
+
+/-- The terminal weight of a label of a restricted tree is its terminal weight in the
+tree. -/
+theorem weight_restrict (s : Finset ι) : (T : MeanTree ι) → (h : ∀ j ∈ T.labels, j ∈ s) →
+    ∀ j : s, (T.restrict s h).weight j = T.weight j.val
+  | leaf j, h, i => by
+    by_cases hij : i.val = j
+    · have hi : i = ⟨j, h j (List.mem_singleton_self j)⟩ := Subtype.ext hij
+      subst hi
+      simp [restrict]
+    · have hi : i ≠ ⟨j, h j (List.mem_singleton_self j)⟩ := fun hi ↦ hij (by simp [hi])
+      simp [restrict, hi, hij]
+  | node p l r, h, i => by
+    simp only [restrict, weight_node, weight_restrict s l, weight_restrict s r]
+
+/-- A weighted sum over the leaf labels of a tree, taken with the weights of the tree
+restricted to its set of leaf labels, is the weighted sum over all labels: labels at no leaf
+have weight zero. -/
+theorem sum_weight_restrict_mul [Fintype ι] (T : MeanTree ι) (f : ι → ℝ) :
+    ∑ j : T.labels.toFinset,
+        (T.restrict T.labels.toFinset fun _ hj ↦ List.mem_toFinset.mpr hj).weight j * f j.val =
+      ∑ j, T.weight j * f j := by
+  simp only [weight_restrict]
+  rw [Finset.sum_coe_sort T.labels.toFinset (fun j ↦ T.weight j * f j)]
+  exact Finset.sum_subset (Finset.subset_univ _) fun j _ hj ↦ by
+    rw [weight_eq_zero_of_not_mem (fun h ↦ hj (List.mem_toFinset.mpr h)), zero_mul]
+
+end Matrix.MeanTree
