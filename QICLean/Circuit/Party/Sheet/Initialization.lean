@@ -25,6 +25,8 @@ nonprivate gate (`exists_originalCircuit_framesVec`, `Sheet.exists_originalCircu
 ## Main definitions
 
 * `QuantumCircuit.Party.framesVec`: the reference vector of a list of sheets.
+* `QuantumCircuit.Party.partyFactor`: the factor at one party of the reference vector of a
+  sheet held by one party.
 
 ## Main results
 
@@ -32,6 +34,10 @@ nonprivate gate (`exists_originalCircuit_framesVec`, `Sheet.exists_originalCircu
   `QuantumCircuit.Party.Sheet.exists_productVector_eq_framesVec`.
 * `QuantumCircuit.Party.exists_originalCircuit_framesVec`,
   `QuantumCircuit.Party.Sheet.exists_originalCircuit_framesVec`.
+* `QuantumCircuit.Party.eq_of_apply_holder_eq`, `QuantumCircuit.Party.prod_partyFactor`,
+  `QuantumCircuit.Party.norm_partyFactor`: a configuration of a sheet held by one party is
+  determined at the holder, and the party factors multiply to the reference vector, with the
+  norm of the reference vector at the holder and norm one elsewhere.
 
 ## References
 
@@ -67,13 +73,13 @@ open Classical in
 /-- The factor at the party `p` of the reference vector of a sheet held by `holder F`: the
 vector itself, read on the basis of `p`, if `p` holds the sheet, and the vector `1` of the
 one-point basis otherwise. -/
-private noncomputable def partyFactor (holder : κ → P) (F : κ) (p : P) : sys F p → ℂ :=
+noncomputable def partyFactor (holder : κ → P) (F : κ) (p : P) : sys F p → ℂ :=
   if p = holder F then fun a ↦ ∑ z : Config (sys F), if z p = a then ref F z else 0
   else fun _ ↦ 1
 
 omit [DecidableEq P] [Fintype P] [∀ F p, Fintype (sys F p)] in
 /-- A configuration of a sheet held by one party is determined by its value at that party. -/
-private theorem eq_of_apply_holder_eq [∀ F p, Fintype (sys F p)] {holder : κ → P} {F : κ}
+theorem eq_of_apply_holder_eq [∀ F p, Fintype (sys F p)] {holder : κ → P} {F : κ}
     (hown : ∀ p ≠ holder F, Fintype.card (sys F p) = 1) {z z' : Config (sys F)}
     (h : z (holder F) = z' (holder F)) : z = z' := by
   funext p
@@ -83,7 +89,7 @@ private theorem eq_of_apply_holder_eq [∀ F p, Fintype (sys F p)] {holder : κ 
   · exact (Fintype.card_le_one_iff_subsingleton.mp (hown p hp).le).elim _ _
 
 /-- The product of the party factors of a sheet held by one party is its reference vector. -/
-private theorem prod_partyFactor {holder : κ → P} {F : κ}
+theorem prod_partyFactor {holder : κ → P} {F : κ}
     (hown : ∀ p ≠ holder F, Fintype.card (sys F p) = 1) (z : Config (sys F)) :
     ∏ p, partyFactor ref holder F p (z p) = ref F z := by
   rw [Fintype.prod_eq_single (holder F) fun p hp ↦ by simp [partyFactor, hp]]
@@ -93,7 +99,7 @@ private theorem prod_partyFactor {holder : κ → P} {F : κ}
 
 /-- The party factor of a sheet held by one party has the norm of the reference vector at the
 holder and norm one elsewhere. -/
-private theorem norm_partyFactor {holder : κ → P} {F : κ}
+theorem norm_partyFactor {holder : κ → P} {F : κ}
     (hown : ∀ p ≠ holder F, Fintype.card (sys F p) = 1) (p : P) :
     ‖(WithLp.toLp 2 (partyFactor ref holder F p) : EuclideanSpace ℂ (sys F p))‖ =
       if p = holder F then ‖ref F‖ else 1 := by
