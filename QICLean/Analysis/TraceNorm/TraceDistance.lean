@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Analysis.FunctionalCalculus.CfcConjugation
-import QICLean.Analysis.Norm.TraceNormContractivity
+import QICLean.Analysis.TraceNorm.TraceNormContractivity
 import QICLean.Algebra.PartialTrace
 
 /-!

@@ -3,6 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
+import QICLean.Analysis.FunctionalCalculus.CfcConjugation
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.Matrix.Order
 import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.ExpLog.Order
@@ -31,6 +32,8 @@ adc7f1241b42e322a6451854ab7e4b4c146bf78a, file
 modifications: the namespace prefix `OAI.PolynomialPEPS.PhysicalMove` is replaced by
 `ConditionalMovement`, the imports are restricted to the needed modules, and operator
 spacing and line breaks are normalized.  Statements and proofs are otherwise unchanged.
+The intertwining lemma `QuantumSSA.cfc_intertwine` of that file is in
+`QICLean.Analysis.FunctionalCalculus.CfcConjugation`.
 -/
 
 namespace ConditionalMovement
@@ -44,53 +47,6 @@ open scoped BigOperators Matrix.Norms.L2Operator MatrixOrder ComplexOrder
 open Matrix
 namespace QuantumSSA
 variable {m n : Type*} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n]
-
-lemma cfc_intertwine {A : Matrix m m ℂ} {B : Matrix n n ℂ}
-    (hA : A.IsHermitian) (hB : B.IsHermitian) (V : Matrix m n ℂ)
-    (hV : A * V = V * B) (f : ℝ → ℝ) : cfc f A * V = V * cfc f B := by
-  let U := hA.eigenvectorUnitary
-  let W := hB.eigenvectorUnitary
-  let K := star (U : Matrix m m ℂ) * V * (W : Matrix n n ℂ)
-  let d := diagonal (fun i => (hA.eigenvalues i : ℂ))
-  let e := diagonal (fun i => (hB.eigenvalues i : ℂ))
-  have hAu : A = (U : Matrix m m ℂ) * d * star (U : Matrix m m ℂ) := hA.spectral_theorem
-  have hBw : B = (W : Matrix n n ℂ) * e * star (W : Matrix n n ℂ) := hB.spectral_theorem
-  have huu : star (U : Matrix m m ℂ) * (U : Matrix m m ℂ) = 1 := Unitary.coe_star_mul_self U
-  have hww : star (W : Matrix n n ℂ) * (W : Matrix n n ℂ) = 1 := Unitary.coe_star_mul_self W
-  have huU : (U : Matrix m m ℂ) * star (U : Matrix m m ℂ) = 1 := Unitary.coe_mul_star_self U
-  have hwW : (W : Matrix n n ℂ) * star (W : Matrix n n ℂ) = 1 := Unitary.coe_mul_star_self W
-  have hdK : d * K = K * e := by
-    have h := congrArg (fun T : Matrix m n ℂ => star (U : Matrix m m ℂ) * T * (W : Matrix n n ℂ)) hV
-    rw [hAu, hBw] at h
-    simpa only [K, Matrix.mul_assoc,
-        ← Matrix.mul_assoc (star (U : Matrix m m ℂ)) (U : Matrix m m ℂ), huu,
-      Matrix.one_mul, ← Matrix.mul_assoc (star (W : Matrix n n ℂ)) (W : Matrix n n ℂ), hww,
-          Matrix.mul_one] using h
-  have hdiag : diagonal (fun i => (f (hA.eigenvalues i) : ℂ)) * K =
-      K * diagonal (fun i => (f (hB.eigenvalues i) : ℂ)) := by
-    ext i j
-    have h := congrArg (fun T : Matrix m n ℂ => T i j) hdK
-    simp only [d, e, Matrix.diagonal_mul, Matrix.mul_diagonal] at h ⊢
-    by_cases heq : hA.eigenvalues i = hB.eigenvalues j
-    · rw [heq, mul_comm]
-    · have hz : K i j = 0 := by
-        apply (mul_eq_zero.mp (show ((hA.eigenvalues i : ℂ) - (hB.eigenvalues j : ℂ)) * K i j = 0 by
-          linear_combination h)).resolve_left
-        simpa only [sub_eq_zero, Complex.ofReal_inj] using heq
-      simp only [hz, mul_zero, zero_mul]
-  have hk : (U : Matrix m m ℂ) * K * star (W : Matrix n n ℂ) = V := by
-    simp only [K, ← Matrix.mul_assoc, huU, Matrix.one_mul]
-    simp only [Matrix.mul_assoc, hwW, Matrix.mul_one]
-  rw [hA.cfc_eq, hB.cfc_eq]
-  simp only [Matrix.IsHermitian.cfc, Unitary.conjStarAlgAut_apply, Function.comp_def]
-  change (U : Matrix m m ℂ) * diagonal (fun i => (f (hA.eigenvalues i) : ℂ)) *
-    star (U : Matrix m m ℂ) * V = V * ((W : Matrix n n ℂ) *
-    diagonal (fun i => (f (hB.eigenvalues i) : ℂ)) * star (W : Matrix n n ℂ))
-  rw [← hk]
-  simp only [Matrix.mul_assoc, ← Matrix.mul_assoc (star (U : Matrix m m ℂ)) (U : Matrix m m ℂ), huu,
-    Matrix.one_mul, ← Matrix.mul_assoc (star (W : Matrix n n ℂ)) (W : Matrix n n ℂ), hww]
-  simpa only [Matrix.mul_assoc] using congrArg (fun T : Matrix m n ℂ =>
-    (U : Matrix m m ℂ) * T * star (W : Matrix n n ℂ)) hdiag
 
 omit [Fintype n] [DecidableEq m] [DecidableEq n] in
 variable [Finite n] in

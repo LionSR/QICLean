@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.Logarithm.CfcLogAdditive
+import QICLean.Analysis.FunctionalCalculus.CfcLogAdditive
 import QICLean.Analysis.FunctionalCalculus.MatrixSqrt
 import QICLean.Analysis.Order.PosSemidefCommute
 import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.Rpow.Order
@@ -27,6 +27,8 @@ commuting positive definite matrices.
   matrices commute.
 * `Matrix.PosDef.mul_rpow_of_commute` — `(A * B) ^ r = A ^ r * B ^ r` for
   commuting positive definite `A` and `B`.
+* `Matrix.MeanTree.posDef_listProd_ofFn` — an ordered product of pairwise commuting
+  positive definite matrices is positive definite.
 -/
 
 open scoped Matrix ComplexOrder MatrixOrder Matrix.Norms.L2Operator
@@ -131,5 +133,23 @@ theorem mul_rpow_of_commute (hA : A.PosDef) (hB : B.PosDef) (hAB : Commute A B) 
     ← CFC.exp_log (A ^ r * B ^ r) hr.isStrictlyPositive, hlog]
 
 end PosDef
+
+namespace MeanTree
+
+/-- A product, in index order, of pairwise commuting positive definite matrices is
+positive definite. -/
+theorem posDef_listProd_ofFn {K : ℕ} {D : Fin K → Matrix n n ℂ} (hD : ∀ g, (D g).PosDef)
+    (hcomm : ∀ g g', g ≠ g' → Commute (D g) (D g')) : (List.ofFn D).prod.PosDef := by
+  induction K with
+  | zero => simpa using PosDef.one
+  | succ K ih =>
+    rw [List.ofFn_succ, List.prod_cons]
+    have hrest := ih (D := fun g ↦ D g.succ) (fun g ↦ hD _)
+      (fun g g' h ↦ hcomm _ _ (fun h' ↦ h (Fin.succ_injective _ h')))
+    refine (hD 0).mul_of_commute hrest (Commute.list_prod_right _ _ fun y hy ↦ ?_)
+    obtain ⟨g, rfl⟩ := List.mem_ofFn.mp hy
+    exact hcomm _ _ (Fin.succ_ne_zero g).symm
+
+end MeanTree
 
 end Matrix

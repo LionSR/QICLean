@@ -5,7 +5,7 @@ Authors: Sirui Lu
 -/
 import Mathlib.Analysis.Normed.Lp.lpSpace
 import QICLean.Spectral.Eigenvalue.MatrixSpectralDecomp
-import QICLean.Analysis.Norm.TraceNormContractivity
+import QICLean.Analysis.TraceNorm.TraceNormContractivity
 import QICLean.Analysis.TraceNorm.Variational
 import QICLean.Channel.Basic
 

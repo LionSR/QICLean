@@ -17,7 +17,6 @@ import QICLean.Analysis.Norm.CStarMatrixKronecker
 import QICLean.Analysis.Norm.ContractionChain
 import QICLean.Analysis.Norm.ExpectationOverlap
 import QICLean.Analysis.Norm.FrobeniusHilbert
-import QICLean.Analysis.Norm.HermitianDilation
 import QICLean.Analysis.Norm.HermitianPartNorm
 import QICLean.Analysis.Norm.IdempotentTracePerturbation
 import QICLean.Analysis.Norm.InvariantOperatorBounds
@@ -37,11 +36,8 @@ import QICLean.Analysis.Norm.PrincipalSubmatrixNorm
 import QICLean.Analysis.Norm.ReindexMulVec
 import QICLean.Analysis.Norm.RootChannel
 import QICLean.Analysis.Norm.SchattenNorm
-import QICLean.Analysis.Norm.SchattenVariational
 import QICLean.Analysis.Norm.SquaredTriangle
 import QICLean.Analysis.Norm.ThreeOperatorPerturbation
-import QICLean.Analysis.Norm.TraceNormContractivity
 import QICLean.Analysis.Norm.UnitNormalizationDistance
 import QICLean.Analysis.Norm.VectorPreparation
-import QICLean.Analysis.Norm.WeightedRectangular
 import QICLean.Analysis.Norm.WeightedSupertrace

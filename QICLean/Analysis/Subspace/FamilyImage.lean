@@ -13,12 +13,68 @@ whole environment into the span of the retained-factor images tensored
 with that same environment. This is the containment argument in ALVV,
 arXiv:1602.08828v2, Lemma `l:er`, lines 606–622. No contraction or
 identity on a spectral band is used in this algebraic step.
+
+The dimension of a finite supremum of subspaces is at most the sum of their dimensions
+(`Submodule.finrank_iSup_le_sum`), so the span of finitely many images of a subspace has
+dimension at most the number of maps times its dimension
+(`Submodule.finrank_iSup_map_le_card_mul`).
 -/
 
 open scoped TensorProduct InnerProductSpace BigOperators
 open TensorProduct Module
 
 namespace Submodule
+
+section General
+
+variable {𝕜 E F : Type*} [RCLike 𝕜]
+  [NormedAddCommGroup E] [InnerProductSpace 𝕜 E] [FiniteDimensional 𝕜 E]
+  [NormedAddCommGroup F] [InnerProductSpace 𝕜 F] [FiniteDimensional 𝕜 F]
+
+omit [FiniteDimensional 𝕜 E] in
+/-- The dimension of a finite supremum of subspaces is at most the sum of the dimensions. -/
+theorem finrank_iSup_le_sum {ι : Type*} [Fintype ι] (f : ι → Submodule 𝕜 E)
+    [∀ i, FiniteDimensional 𝕜 (f i)] :
+    finrank 𝕜 ↥(⨆ i, f i) ≤ ∑ i, finrank 𝕜 (f i) := by
+  classical
+  rw [← Finset.sup_univ_eq_iSup]
+  generalize (Finset.univ : Finset ι) = s
+  induction s using Finset.induction_on with
+  | empty => simp
+  | insert i s hi ih =>
+    rw [Finset.sup_insert, Finset.sum_insert hi]
+    have : FiniteDimensional 𝕜 ↥(s.sup f) := by
+      rw [Finset.sup_eq_iSup]
+      infer_instance
+    exact (finrank_add_le_finrank_add_finrank _ _).trans (by gcongr)
+
+end General
+
+section ImageDimension
+
+variable {𝕜 E F ι : Type*} [RCLike 𝕜] [Fintype ι]
+  [NormedAddCommGroup E] [InnerProductSpace 𝕜 E]
+  [NormedAddCommGroup F] [InnerProductSpace 𝕜 F]
+
+/-- The span of finitely many linear images of one finite-dimensional
+subspace has dimension at most the number of maps times its dimension.
+This is the common dimension estimate in ALVV, arXiv:1602.08828v2,
+Lemma `l:er`, lines 597–622, and the bootstrap argument, lines 1067–1075. -/
+theorem finrank_iSup_map_le_card_mul
+    (S : Submodule 𝕜 E) [FiniteDimensional 𝕜 S] (A : ι → E →ₗ[𝕜] F) :
+    Module.finrank 𝕜
+        (↥((⨆ i, S.map (A i)) : Submodule 𝕜 F)) ≤
+      Fintype.card ι * Module.finrank 𝕜 S := by
+  classical
+  calc
+    Module.finrank 𝕜
+        (↥((⨆ i, S.map (A i)) : Submodule 𝕜 F)) ≤
+        ∑ i, Module.finrank 𝕜 (S.map (A i)) := finrank_iSup_le_sum _
+    _ ≤ ∑ _i : ι, Module.finrank 𝕜 S :=
+      Finset.sum_le_sum fun i _ ↦ finrank_map_le _ _
+    _ = Fintype.card ι * Module.finrank 𝕜 S := by simp
+
+end ImageDimension
 
 variable {𝕜 E F : Type*} [RCLike 𝕜]
   [NormedAddCommGroup E] [InnerProductSpace 𝕜 E] [FiniteDimensional 𝕜 E]

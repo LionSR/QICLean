@@ -3,6 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
+import QICLean.Analysis.FunctionalCalculus.SpectralKronecker
 import Mathlib.Analysis.Matrix.Order
 import Mathlib.LinearAlgebra.Matrix.PosDef
 
@@ -24,7 +25,8 @@ All functions of `A` and `B` are taken through the given eigenbases:
 
 ## Main definitions
 
-* `Matrix.spectralFun` — `U diag(f) U*`.
+* `Matrix.spectralFun` — `U diag(f) U*`, from
+  `QICLean.Analysis.FunctionalCalculus.SpectralKronecker`.
 * `Matrix.ResolventCompression` — the data `A, B, V, b₀` with the hypotheses above.
 * `Matrix.ResolventCompression.defect`, `Matrix.ResolventCompression.discrepancy`.
 
@@ -49,59 +51,6 @@ noncomputable section
 namespace Matrix
 
 variable {n m : Type*} [Fintype n] [DecidableEq n] [Fintype m] [DecidableEq m]
-
-/-- The function `f` of the operator with orthonormal eigenbasis `U`:
-`U diag(f) U*`. -/
-def spectralFun (U : unitary (Matrix n n ℂ)) (f : n → ℂ) : Matrix n n ℂ :=
-  (U : Matrix n n ℂ) * diagonal f * star (U : Matrix n n ℂ)
-
-theorem spectralFun_mul (U : unitary (Matrix n n ℂ)) (f g : n → ℂ) :
-    spectralFun U f * spectralFun U g = spectralFun U (f * g) := by
-  simp only [spectralFun]
-  rw [show (U : Matrix n n ℂ) * diagonal f * star (U : Matrix n n ℂ) *
-      ((U : Matrix n n ℂ) * diagonal g * star (U : Matrix n n ℂ)) =
-      (U : Matrix n n ℂ) * diagonal f * (star (U : Matrix n n ℂ) * (U : Matrix n n ℂ)) *
-        diagonal g * star (U : Matrix n n ℂ) by simp only [Matrix.mul_assoc],
-    Unitary.star_mul_self_of_mem U.2, Matrix.mul_one, Matrix.mul_assoc (U : Matrix n n ℂ),
-    diagonal_mul_diagonal]
-  rfl
-
-theorem spectralFun_add (U : unitary (Matrix n n ℂ)) (f g : n → ℂ) :
-    spectralFun U (f + g) = spectralFun U f + spectralFun U g := by
-  rw [spectralFun, spectralFun, spectralFun, show diagonal (f + g) = diagonal f + diagonal g from
-    (diagonal_add f g).symm, Matrix.mul_add, Matrix.add_mul]
-
-theorem spectralFun_const (U : unitary (Matrix n n ℂ)) (c : ℂ) :
-    spectralFun U (fun _ => c) = c • 1 := by
-  simp only [spectralFun]
-  rw [show diagonal (fun _ : n => c) = c • (1 : Matrix n n ℂ) by
-      ext i j; by_cases h : i = j <;> simp [h, diagonal],
-    Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, Unitary.mul_star_self_of_mem U.2]
-
-theorem spectralFun_one (U : unitary (Matrix n n ℂ)) :
-    spectralFun U (fun _ => 1) = 1 := by
-  rw [spectralFun_const, one_smul]
-
-theorem conjTranspose_spectralFun (U : unitary (Matrix n n ℂ)) (f : n → ℂ) :
-    (spectralFun U f)ᴴ = spectralFun U (star f) := by
-  simp only [spectralFun, conjTranspose_mul, star_eq_conjTranspose, conjTranspose_conjTranspose,
-    diagonal_conjTranspose, Matrix.mul_assoc]
-
-/-- The quadratic form of a spectral function in eigencoordinates:
-`⟨x, f(A) x⟩ = ∑ₖ f(λₖ) |(U* x)ₖ|²`. -/
-theorem dotProduct_spectralFun_mulVec (U : unitary (Matrix n n ℂ)) (f : n → ℂ) (x : n → ℂ) :
-    star x ⬝ᵥ (spectralFun U f *ᵥ x) =
-      ∑ k, f k * ((Complex.normSq ((star (U : Matrix n n ℂ) *ᵥ x) k) : ℝ) : ℂ) := by
-  set c := star (U : Matrix n n ℂ) *ᵥ x
-  have hx : star x ⬝ᵥ (spectralFun U f *ᵥ x) = star c ⬝ᵥ (diagonal f *ᵥ c) := by
-    simp only [spectralFun, c, ← mulVec_mulVec]
-    rw [dotProduct_mulVec, star_mulVec, star_eq_conjTranspose, conjTranspose_conjTranspose]
-  rw [hx]
-  simp only [dotProduct, mulVec_diagonal, Pi.star_apply]
-  refine Finset.sum_congr rfl fun k _ => ?_
-  rw [Complex.normSq_eq_conj_mul_self]
-  simp only [RCLike.star_def]
-  ring
 
 omit [DecidableEq n] [DecidableEq m] in
 theorem star_mulVec_dotProduct (W : Matrix n m ℂ) (x : m → ℂ) (y : n → ℂ) :

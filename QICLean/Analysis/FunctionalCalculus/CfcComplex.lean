@@ -3,10 +3,9 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.Support.Power
+import QICLean.Analysis.FunctionalCalculus.SpectralFunUnique
 import QICLean.Analysis.FunctionalCalculus.CfcConjugation
 import QICLean.Analysis.FunctionalCalculus.CfcKronecker
-import QICLean.Analysis.Logarithm.LogCompression
 
 /-!
 # Complex functions of Hermitian matrices
@@ -78,13 +77,6 @@ theorem cfcC_mul_intertwine {A : Matrix n n ℂ} {B : Matrix m m ℂ} (hA : A.Is
   rw [cfcC, cfcC, Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul,
     ConditionalMovement.QuantumSSA.cfc_intertwine hA hB V hV,
     ConditionalMovement.QuantumSSA.cfc_intertwine hA hB V hV]
-
-/-- The power `A^{[z]}` vanishing on the kernel equals the complex function
-`t ↦ if t = 0 then 0 else t^z`. -/
-theorem supportCPow_eq_cfcC {A : Matrix n n ℂ} (hA : A.IsHermitian) (z : ℂ) :
-    supportCPow hA z = cfcC A (fun t => if t = 0 then 0 else ((t : ℝ) : ℂ) ^ z) := by
-  rw [cfcC_eq_spectralFun hA]
-  rfl
 
 theorem cfcC_add {A : Matrix n n ℂ} (hA : A.IsHermitian) (g₁ g₂ : ℝ → ℂ) :
     cfcC A g₁ + cfcC A g₂ = cfcC A (fun t => g₁ t + g₂ t) := by

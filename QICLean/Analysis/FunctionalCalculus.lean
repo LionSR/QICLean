@@ -11,11 +11,14 @@ Authors: QICLean contributors
 import QICLean.Analysis.FunctionalCalculus.CfcComplex
 import QICLean.Analysis.FunctionalCalculus.CfcConjugation
 import QICLean.Analysis.FunctionalCalculus.CfcKronecker
+import QICLean.Analysis.FunctionalCalculus.CfcLogAdditive
 import QICLean.Analysis.FunctionalCalculus.CfcUnitaryConjugation
 import QICLean.Analysis.FunctionalCalculus.FiniteKroneckerPowers
+import QICLean.Analysis.FunctionalCalculus.Interpolation
 import QICLean.Analysis.FunctionalCalculus.MatrixCFCIntegral
 import QICLean.Analysis.FunctionalCalculus.MatrixPowers
 import QICLean.Analysis.FunctionalCalculus.MatrixSqrt
+import QICLean.Analysis.FunctionalCalculus.MaximalWeightConvexDecomposition
 import QICLean.Analysis.FunctionalCalculus.ModularExpectation
 import QICLean.Analysis.FunctionalCalculus.NormalizedRows
 import QICLean.Analysis.FunctionalCalculus.OrthogonalResolution

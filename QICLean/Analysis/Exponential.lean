@@ -9,14 +9,17 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Analysis.Exponential
 
 import QICLean.Analysis.Exponential.ExpConjugation
+import QICLean.Analysis.Exponential.HermitianDilation
 import QICLean.Analysis.Exponential.HermitianProductFormula
 import QICLean.Analysis.Exponential.HermitianUnitaryPath
 import QICLean.Analysis.Exponential.InvariantExponentialComparison
 import QICLean.Analysis.Exponential.KroneckerExponential
 import QICLean.Analysis.Exponential.MandatoryExponentialNorm
+import QICLean.Analysis.Exponential.MatrixBernsteinInputs
 import QICLean.Analysis.Exponential.MatrixCommutator
 import QICLean.Analysis.Exponential.MatrixFilter
 import QICLean.Analysis.Exponential.ProductFormula
+import QICLean.Analysis.Exponential.ProjectedEvolution
 import QICLean.Analysis.Exponential.TraceExpAlternatingSum
 import QICLean.Analysis.Exponential.TraceExponentialPerturbation
 import QICLean.Analysis.Exponential.UnitaryEvolution

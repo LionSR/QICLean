@@ -9,6 +9,7 @@ import Mathlib.Analysis.Matrix.Spectrum
 import Mathlib.Analysis.Matrix.PosDef
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import QICLean.Algebra.PerronFrobenius.RankOne
+import QICLean.Analysis.Order.DensityMatrix
 
 /-!
 # Trace inequalities for positive semidefinite matrices
@@ -83,23 +84,6 @@ variable {n : Type*} [Fintype n] [DecidableEq n]
 section OperatorNorm
 
 open scoped Matrix.Norms.L2Operator
-
-/-- The operator norm of a positive semidefinite matrix is at most its real trace. -/
-theorem PosSemidef.l2_opNorm_le_trace_re {A : Matrix n n ℂ} (hA : A.PosSemidef) :
-    ‖A‖ ≤ A.trace.re := by
-  have ht : A.trace.re = ∑ i, hA.isHermitian.eigenvalues i := by
-    rw [hA.isHermitian.trace_eq_sum_eigenvalues]
-    simp
-  conv_lhs => rw [hA.isHermitian.spectral_theorem]
-  simp only [Unitary.conjStarAlgAut_apply, ← Unitary.coe_star,
-    CStarRing.norm_mul_coe_unitary, CStarRing.norm_coe_unitary_mul,
-    Matrix.l2_opNorm_diagonal]
-  rw [ht]
-  refine (pi_norm_le_iff_of_nonneg
-    (Finset.sum_nonneg fun i _ => hA.eigenvalues_nonneg i)).2 ?_
-  intro i
-  simp only [Function.comp_apply, RCLike.norm_ofReal, abs_of_nonneg (hA.eigenvalues_nonneg i)]
-  exact Finset.single_le_sum (fun j _ => hA.eigenvalues_nonneg j) (Finset.mem_univ i)
 
 /-- The squared operator norm is at most the squared Hilbert--Schmidt norm, expressed
 as the real trace of the Gram matrix. Both matrix dimensions may vary. -/

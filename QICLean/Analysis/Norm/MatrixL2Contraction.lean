@@ -6,7 +6,6 @@ Authors: QICLean contributors
 import QICLean.Analysis.Norm.L2OpNormReindex
 import QICLean.Algebra.Matrix.MatrixAux
 import QICLean.Analysis.Isometry.FramePerturbation
-import QICLean.Analysis.TraceNorm.RectangularTraceNorm
 import QICLean.Analysis.Norm.RootChannel
 
 /-!

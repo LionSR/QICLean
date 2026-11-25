@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Dynamics.HeisenbergEvolution
 import QICLean.ManyBody.Sites.Twirl
-import QICLean.Analysis.Calculus.ProjectedEvolution
+import QICLean.Analysis.Exponential.ProjectedEvolution
 
 /-!
 # A supported projected relative evolution

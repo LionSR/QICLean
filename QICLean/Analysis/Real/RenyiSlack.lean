@@ -3,7 +3,11 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.FunctionalCalculus.SpectralPhase
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Analysis.Convex.SpecificFunctions.Basic
+import Mathlib.Analysis.CStarAlgebra.Matrix
+import Mathlib.Analysis.Matrix.Order
 
 /-!
 # Rényi slack and phase bounds
@@ -22,6 +26,8 @@ adc7f1241b42e322a6451854ab7e4b4c146bf78a, file
 modifications: the namespace prefix `OAI.PolynomialPEPS.PhysicalMove` is replaced by
 `ConditionalMovement`, the imports are restricted to the needed modules, and operator
 spacing and line breaks are normalized.  Statements and proofs are otherwise unchanged.
+The scalar identity `SpectralPhase.phase_difference_norm` is adapted in the same way from
+the file `lean/OAI/MathematicalPhysics/PEPSMove/SpectralPhase.lean` of that commit.
 -/
 
 namespace ConditionalMovement
@@ -29,6 +35,27 @@ namespace ConditionalMovement
 noncomputable section
 open scoped BigOperators ComplexOrder Matrix.Norms.L2Operator MatrixOrder
 open Matrix
+
+namespace SpectralPhase
+
+theorem phase_difference_norm (x y : ℝ) :
+    ‖Complex.exp (Complex.I * (x : ℂ)) - Complex.exp (Complex.I * (y : ℂ))‖ =
+      ‖Complex.exp (Complex.I * ((x - y : ℝ) : ℂ)) - 1‖ := by
+  have he : Complex.exp (Complex.I * (x : ℂ)) =
+      Complex.exp (Complex.I * ((x - y : ℝ) : ℂ)) * Complex.exp (Complex.I * (y : ℂ)) := by
+    rw [← Complex.exp_add]
+    congr 1
+    push_cast
+    ring
+  rw [he]
+  calc
+    _ = ‖(Complex.exp (Complex.I * ((x - y : ℝ) : ℂ)) - 1) * Complex.exp (Complex.I *
+        (y : ℂ))‖ := by
+      congr 1
+      ring
+    _ = _ := by rw [norm_mul]; simp [Complex.norm_exp]
+
+end SpectralPhase
 
 noncomputable section
 open scoped BigOperators

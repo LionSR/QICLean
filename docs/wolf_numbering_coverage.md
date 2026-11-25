@@ -2619,7 +2619,7 @@ item 1 with `p⁻¹ + q⁻¹ = 1` in trace form is Equation (8.6), below.
 
 ### Theorem 8.3 “Variational ways to p-norms” (Equations 8.10–8.13) — FORMALIZED WITH LOCAL FIX
 
-In `QICLean.Analysis.Norm.SchattenVariational`, `Matrix.schattenNorm A p` is
+In `QICLean.Analysis.TraceInequality.SchattenVariational`, `Matrix.schattenNorm A p` is
 `(tr |A|^p)^{1/p}`, `|A| = √(A†A)`.
 
 * Equation (8.6): `Matrix.norm_trace_conjTranspose_mul_le_schattenNorm` for

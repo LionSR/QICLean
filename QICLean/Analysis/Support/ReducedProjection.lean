@@ -5,7 +5,7 @@ Authors: TNLean contributors
 -/
 import QICLean.Algebra.Hermitian.OrthogonalProjection
 import QICLean.Analysis.FunctionalCalculus.MatrixSqrt
-import QICLean.Analysis.TraceNorm.TraceNormAbs
+import QICLean.Algebra.Hermitian.ProjectionMatrixRange
 import QICLean.Analysis.Projection.TwoProjectionReducedProjection
 
 /-!

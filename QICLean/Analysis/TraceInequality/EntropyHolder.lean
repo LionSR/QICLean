@@ -23,6 +23,9 @@ adc7f1241b42e322a6451854ab7e4b4c146bf78a, file
 modifications: the namespace prefix `OAI.PolynomialPEPS.PhysicalMove` is replaced by
 `ConditionalMovement`, the imports are restricted to the needed modules, and operator
 spacing and line breaks are normalized.  Statements and proofs are otherwise unchanged.
+The lemmas `MatrixEntropy.unitary_row_normSq`, `MatrixEntropy.unitary_col_normSq` and
+`MatrixEntropy.diagonal_conjugate` of that file are in
+`QICLean.Analysis.FunctionalCalculus.SpectralPowers`.
 -/
 
 namespace ConditionalMovement
@@ -36,29 +39,6 @@ variable {n : Type*} [Fintype n] [DecidableEq n]
 
 def entropy (A : Matrix n n ℂ) (hA : A.IsHermitian) : ℝ :=
   ∑ i, Real.negMulLog (hA.eigenvalues i)
-
-theorem unitary_row_normSq (U : unitary (Matrix n n ℂ)) (i : n) :
-    ∑ j, Complex.normSq ((U : Matrix n n ℂ) i j) = 1 := by
-  have h := congrArg (fun A : Matrix n n ℂ => (A i i).re)
-    (Unitary.coe_mul_star_self U)
-  simpa [Matrix.mul_apply, Matrix.star_apply, Complex.mul_conj] using h
-
-theorem unitary_col_normSq (U : unitary (Matrix n n ℂ)) (j : n) :
-    ∑ i, Complex.normSq ((U : Matrix n n ℂ) i j) = 1 := by
-  have h := congrArg (fun A : Matrix n n ℂ => (A j j).re)
-    (Unitary.coe_star_mul_self U)
-  simpa [Matrix.mul_apply, Matrix.star_apply, Complex.normSq_apply] using h
-
-theorem diagonal_conjugate (U : Matrix n n ℂ) (v : n → ℝ) (i : n) :
-    ((U * diagonal (fun j => (v j : ℂ)) * U.conjTranspose) i i).re =
-      ∑ j, Complex.normSq (U i j) * v j := by
-  rw [Matrix.mul_apply]
-  simp only [Matrix.mul_diagonal, Matrix.conjTranspose_apply, Complex.re_sum,
-    RCLike.star_def]
-  apply Finset.sum_congr rfl
-  intro j hj
-  rw [mul_assoc, mul_comm (v j : ℂ), ← mul_assoc, Complex.mul_conj]
-  simp
 
 theorem entropy_le_diagonal {A : Matrix n n ℂ} (hA : A.PosSemidef) :
     entropy A hA.isHermitian ≤ ∑ i, Real.negMulLog (A i i).re := by
