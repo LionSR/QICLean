@@ -138,7 +138,6 @@ MODULE_MAP_PATH = Path(__file__).resolve().parent / "library_layers_module_map.t
 # declaration down.
 SUBLAYER_DEBT: frozenset[str] = frozenset({
         "QICLean.Algebra.OperatorSchmidt.LocalPolynomialSchmidtRank -> QICLean.Algebra.Kronecker.KroneckerEmbed",
-        "QICLean.Algebra.Word.OneMarkerFullCounts -> QICLean.Algebra.OperatorSchmidt.OneMarkerWeightedSchmidtRank",
         "QICLean.Analysis.Projection.InjectiveRangeProjector -> QICLean.Analysis.Norm.NeumannInverse",
         "QICLean.Channel.Choi.Doeblin -> QICLean.Channel.SupportCompletion",
         "QICLean.Channel.Choi.Rectangular -> QICLean.Channel.Basic",
