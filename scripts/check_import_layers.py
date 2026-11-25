@@ -185,11 +185,6 @@ SUBLAYER_DEBT: frozenset[str] = frozenset({
         "QICLean.Representation.TensorPower.Rpow -> QICLean.Representation.Twirl.UnitaryTwirl",
         "QICLean.Representation.TensorPower.SplitCopies -> QICLean.Representation.Character.Branching",
         "QICLean.Representation.TensorPower.SplitCopies -> QICLean.Representation.Twirl.UnitaryTwirl",
-        "QICLean.Spectral.Eigenvalue.CompressionEnergyBounds -> QICLean.Spectral.LowEnergy.RitzCompression",
-        "QICLean.Spectral.Eigenvalue.HermitianSpectrumPreserver -> QICLean.Spectral.Perturbation.HermitianSpectrumPerturbation",
-        "QICLean.Spectral.Eigenvalue.TensorEnergyMinimum -> QICLean.Spectral.LowEnergy.RitzCompression",
-        "QICLean.Spectral.Eigenvalue.VariationalBound -> QICLean.Spectral.Filter.Gaussian.CommutatorSeries",
-        "QICLean.Spectral.Perturbation.ClusterNormPerturbation -> QICLean.Spectral.LowEnergy.Order",
 })
 DEEP_ROOTS: frozenset[str] = frozenset({"ManyBody", "Circuit"})
 MUTUAL_DIRECTORIES: frozenset[str] = frozenset({})

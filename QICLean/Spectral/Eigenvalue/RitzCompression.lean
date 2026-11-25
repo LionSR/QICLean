@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Spectral.LowEnergy.RitzSubspace
+import QICLean.Spectral.Eigenvalue.RitzSubspace
 
 /-!
 # Rayleigh–Ritz extraction from an actual candidate space

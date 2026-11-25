@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Analysis.Real.ChebyshevFilter
 import QICLean.Spectral.Projection.ShiftedDensityTruncation
-import QICLean.Analysis.Norm.TraceNormContractivity
+import QICLean.Analysis.TraceNorm.TraceNormContractivity
 
 /-!
 # Hermitian Chebyshev filters and isolated-energy projections

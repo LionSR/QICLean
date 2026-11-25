@@ -4,8 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Analysis.TensorProduct.Weights
-import QICLean.Analysis.TensorProduct.FamilyImage
-import QICLean.Spectral.LowEnergy.RitzCompression
+import QICLean.Analysis.Subspace.FamilyImage
+import QICLean.Spectral.Eigenvalue.RitzCompression
 
 /-!
 # A local energy bound from a tensor vector

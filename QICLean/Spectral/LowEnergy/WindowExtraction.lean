@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Analysis.Projection.ProjectedPositiveEnergy
 import QICLean.Analysis.Projection.ProjectedTrialSpaceEnergy
-import QICLean.Spectral.LowEnergy.RitzCompression
+import QICLean.Spectral.Eigenvalue.RitzCompression
 import QICLean.Analysis.Subspace.ViableSubspace
 import QICLean.Analysis.Order.LowEnergyPerturbation
 import QICLean.Spectral.Eigenvalue.HermitianExtremalEigenvalues
