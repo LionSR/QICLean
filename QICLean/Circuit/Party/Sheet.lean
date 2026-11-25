@@ -11,8 +11,13 @@ Authors: QICLean contributors
 import QICLean.Circuit.Party.Sheet.BirthDeath
 import QICLean.Circuit.Party.Sheet.BoundedChanges
 import QICLean.Circuit.Party.Sheet.Defs
+import QICLean.Circuit.Party.Sheet.Environment
+import QICLean.Circuit.Party.Sheet.EnvironmentBirth
+import QICLean.Circuit.Party.Sheet.EnvironmentDeath
 import QICLean.Circuit.Party.Sheet.Initialization
 import QICLean.Circuit.Party.Sheet.Placement
 import QICLean.Circuit.Party.Sheet.PrivateBirthDeath
 import QICLean.Circuit.Party.Sheet.Stack
 import QICLean.Circuit.Party.Sheet.StackChange
+import QICLean.Circuit.Party.Sheet.TaggedBirthDeath
+import QICLean.Circuit.Party.Sheet.TaggedExchange

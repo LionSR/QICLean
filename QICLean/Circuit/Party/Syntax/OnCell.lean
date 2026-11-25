@@ -134,3 +134,19 @@ theorem op_onCell (hY : ∀ s ∉ D, Y s = X s)
 end Word
 
 end QuantumCircuit.Party
+
+/-! ### The inverse relabelling at a party outside the cell -/
+
+namespace QuantumCircuit.Party
+
+variable {P : Type} [DecidableEq P]
+
+/-- **The inverse of `cellEquiv` at a party outside the cell** reads the spectator factor,
+through the identification of the equal bases `Y p = X p`. -/
+theorem cellEquiv_symm_apply_of_notMem (D : Finset P) (X Y : P → Type)
+    (hY : ∀ s ∉ D, Y s = X s) {p : P} (hp : p ∉ D)
+    (z : (p ∉ D → X p) × blockSystem (Subtype.val : ↥D → P) (fun s ↦ Y s) p) :
+    (cellEquiv D X Y hY p).symm z = cast (hY p hp).symm (z.1 hp) := by
+  simp [cellEquiv, hp]
+
+end QuantumCircuit.Party

@@ -21,6 +21,10 @@ their coordinates along equivalences, used when two copies of a system are rearr
   contraction, from `Matrix.l2_opNorm_kronecker_le`.
 * `Matrix.l2_opNorm_toMatrix_toPEquiv_le`: the matrix of a bijection of coordinates is a
   contraction.
+* `Matrix.conjTranspose_toMatrix_toPEquiv_mul_self`,
+  `Matrix.l2_opNorm_submatrix_le_of_injective`, `Matrix.exists_contraction_of_injective_prod`:
+  the matrix of a bijection has orthonormal columns, reading rows and columns along injections
+  does not increase the norm, and a contraction on a product read along injective coordinates.
 * `Matrix.norm_submatrix_equiv_le`, `Commute.submatrix_equiv`: relabelling both coordinates of a
   square matrix along one equivalence.
 * `EuclideanSpace.vecKron`, `EuclideanSpace.norm_vecKron`: the product vector `x ⊗ y` and
@@ -201,3 +205,92 @@ theorem norm_pairMap_le [Fintype α] [Fintype β] [DecidableEq α] [DecidableEq 
 end Pair
 
 end EuclideanSpace
+
+
+/-! ### Bijections and injections of coordinates -/
+
+namespace Matrix
+
+/-- The matrix of a bijection of coordinates has orthonormal columns. -/
+theorem conjTranspose_toMatrix_toPEquiv_mul_self {m n : Type*} [Fintype m] [DecidableEq n]
+    (f : m ≃ n) :
+    (f.toPEquiv.toMatrix : Matrix m n ℂ)ᴴ * (f.toPEquiv.toMatrix : Matrix m n ℂ) = 1 := by
+  ext x y
+  simp only [mul_apply, conjTranspose_apply, PEquiv.toMatrix_apply, Equiv.toPEquiv_apply,
+    Option.mem_def, Option.some.injEq, Matrix.one_apply]
+  rw [Finset.sum_eq_single (f.symm x) ?_ fun h ↦ absurd (Finset.mem_univ _) h]
+  · rw [Equiv.apply_symm_apply]
+    by_cases h : x = y <;> simp [h]
+  · intro b _ hb
+    have : ¬ f b = x := fun h ↦ hb (by rw [← h, Equiv.symm_apply_apply])
+    simp [this]
+
+/-- The matrix that reads coordinates along an injective map has norm at most one. -/
+private theorem l2_opNorm_one_submatrix_le_one {m m' : Type*} [Fintype m] [Fintype m']
+    [DecidableEq m] {g : m' → m} (hg : Function.Injective g) :
+    ‖(1 : Matrix m m ℂ).submatrix g id‖ ≤ 1 := by
+  classical
+  let R : Matrix m' m ℂ := (1 : Matrix m m ℂ).submatrix g id
+  have hR : Rᴴᴴ * Rᴴ = 1 := by
+    ext i i'
+    simp only [conjTranspose_conjTranspose, R, mul_apply, conjTranspose_apply, submatrix_apply,
+      id_eq, Matrix.one_apply]
+    rw [Finset.sum_eq_single (g i) ?_ fun h ↦ absurd (Finset.mem_univ _) h]
+    · by_cases h : i = i'
+      · simp [h]
+      · have h' : ¬ g i' = g i := fun h' ↦ h (hg h').symm
+        simp [h, h']
+    · intro b _ hb
+      simp [Ne.symm hb]
+  rw [← l2_opNorm_conjTranspose]
+  exact l2_opNorm_le_one_of_conjTranspose_mul_self_le_one (by
+    rw [hR]; exact (IsStarProjection.one _).norm_le)
+
+/-- Reading the rows and the columns of a matrix along injective maps does not increase its
+operator norm. -/
+theorem l2_opNorm_submatrix_le_of_injective {m n m' n' : Type*} [Fintype m] [Fintype n]
+    [Fintype m'] [Fintype n'] [DecidableEq n] [DecidableEq n'] (M : Matrix m n ℂ) {r : m' → m}
+    {c : n' → n} (hr : Function.Injective r) (hc : Function.Injective c) :
+    ‖M.submatrix r c‖ ≤ ‖M‖ := by
+  classical
+  have hmul : M.submatrix r c =
+      (1 : Matrix m m ℂ).submatrix r id * M * ((1 : Matrix n n ℂ).submatrix c id)ᴴ := by
+    ext i j
+    simp [mul_apply, Matrix.one_apply]
+  rw [hmul]
+  refine (l2_opNorm_mul _ _).trans ?_
+  have hc' : ‖((1 : Matrix n n ℂ).submatrix c id)ᴴ‖ ≤ 1 := by
+    rw [l2_opNorm_conjTranspose]
+    exact l2_opNorm_one_submatrix_le_one hc
+  refine (mul_le_of_le_one_right (norm_nonneg _) hc').trans ?_
+  refine (l2_opNorm_mul _ _).trans ?_
+  exact mul_le_of_le_one_left (norm_nonneg M) (l2_opNorm_one_submatrix_le_one hr)
+
+/-- **Two contractions read along product coordinates.** Let `Θ` be an injective map from pairs
+`(a, e)` to pairs whose first component does not depend on `e` and whose second component does
+not depend on `a`. The products of the entries of two contractions at the two components of
+`Θ (a, e)` are the products of the entries of two contractions indexed by `a` and by `e`. -/
+theorem exists_contraction_of_injective_prod {𝒜 ℰ α β n n' : Type*} [Fintype 𝒜] [Fintype ℰ]
+    [Fintype α] [Fintype β] [Fintype n] [Fintype n'] [DecidableEq n] [DecidableEq n']
+    (Θ : 𝒜 × ℰ → α × β) (hΘ : Function.Injective Θ)
+    (h₁ : ∀ a e e', (Θ (a, e)).1 = (Θ (a, e')).1) (h₂ : ∀ a a' e, (Θ (a, e)).2 = (Θ (a', e)).2)
+    (M : Matrix α n ℂ) (N : Matrix β n' ℂ) (hM : ‖M‖ ≤ 1) (hN : ‖N‖ ≤ 1) :
+    ∃ (Fr : Matrix 𝒜 n ℂ) (Gr : Matrix ℰ n' ℂ), ‖Fr‖ ≤ 1 ∧ ‖Gr‖ ≤ 1 ∧
+      ∀ a e i j, Fr a i * Gr e j = M (Θ (a, e)).1 i * N (Θ (a, e)).2 j := by
+  rcases isEmpty_or_nonempty 𝒜 with h𝒜 | ⟨⟨a₀⟩⟩
+  · refine ⟨0, 0, ?_, ?_, fun a _ _ _ ↦ (h𝒜.false a).elim⟩ <;>
+      exact norm_zero.trans_le zero_le_one
+  rcases isEmpty_or_nonempty ℰ with hℰ | ⟨⟨e₀⟩⟩
+  · refine ⟨0, 0, ?_, ?_, fun _ e _ _ ↦ (hℰ.false e).elim⟩ <;>
+      exact norm_zero.trans_le zero_le_one
+  have hgA : Function.Injective fun a ↦ (Θ (a, e₀)).1 := fun a a' h ↦
+    (Prod.ext_iff.mp (hΘ (Prod.ext h (h₂ a a' e₀)))).1
+  have hgE : Function.Injective fun e ↦ (Θ (a₀, e)).2 := fun e e' h ↦
+    (Prod.ext_iff.mp (hΘ (Prod.ext (h₁ a₀ e e') h))).2
+  refine ⟨M.submatrix (fun a ↦ (Θ (a, e₀)).1) id, N.submatrix (fun e ↦ (Θ (a₀, e)).2) id,
+    (l2_opNorm_submatrix_le_of_injective M hgA Function.injective_id).trans hM,
+    (l2_opNorm_submatrix_le_of_injective N hgE Function.injective_id).trans hN, fun a e i j ↦ ?_⟩
+  simp only [submatrix_apply, id_eq]
+  rw [h₁ a e₀ e, h₂ a₀ a e]
+
+end Matrix

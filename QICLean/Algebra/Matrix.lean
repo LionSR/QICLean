@@ -34,5 +34,6 @@ import QICLean.Algebra.Matrix.OrderedMatrixAction
 import QICLean.Algebra.Matrix.PermutationMatrixCommute
 import QICLean.Algebra.Matrix.RankOneFactorization
 import QICLean.Algebra.Matrix.RankOneSandwich
+import QICLean.Algebra.Matrix.ReindexSandwich
 import QICLean.Algebra.Matrix.SkewSymmetricMatrix
 import QICLean.Algebra.Matrix.TraceFormDuality

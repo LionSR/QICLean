@@ -57,6 +57,14 @@ LAYERS: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("subspace", ("QICLean.ManyBody.Subspace",)),
     ("replica", ("QICLean.ManyBody.Replica",)),
     ("gate", ("QICLean.Circuit.Gate",)),
+    ("party_probability", (
+        "QICLean.Circuit.Party.Compression.SourceSampling.Law",
+        "QICLean.Circuit.Party.Compression.SourceSampling.Integrability",
+        "QICLean.Circuit.Party.Compression.SourceSampling.GaussianError",
+        "QICLean.Circuit.Party.Compression.SourceSampling.BranchEstimate",
+        "QICLean.Circuit.Party.Compression.SourceSampling.CorrectedTermBound",
+        "QICLean.Circuit.Party.Compression.SourceSampling.Approximation",
+    )),
     ("party", ("QICLean.Circuit.Party",)),
     ("algorithm", ("QICLean.Circuit.Algorithm",)),
     ("model", ("QICLean.Circuit.Model",)),
@@ -80,7 +88,7 @@ LAYERS: tuple[tuple[str, tuple[str, ...]], ...] = (
 # moved from the single-system directories and keep their recorded forwarders.
 NEW_LAYERS = frozenset({
     "sites", "dynamics", "hamiltonian", "gate", "circuit", "party", "algorithm", "model",
-    "compile", "protocol", "simulation"
+    "compile", "protocol", "simulation", "party_probability"
 })
 # Matrices of one system, maps between matrix algebras, and the systems of one or two
 # parties that the many-body layers build on.
@@ -111,6 +119,7 @@ ALLOWED: dict[str, frozenset[str]] = {
     "gate": MATRIX,
     "circuit": MATRIX | CHANNEL | {"sites", "gate"},
     "party": MATRIX | CHANNEL | {"sites", "gate", "circuit"},
+    "party_probability": MATRIX | CHANNEL | {"sites", "gate", "circuit", "party", "probability"},
     "algorithm": MATRIX | CHANNEL | {"sites", "gate", "circuit"},
     "model": MATRIX | CHANNEL | {"sites", "gate", "circuit"},
     "compile": MATRIX | CHANNEL | {"sites", "gate", "circuit", "model"},

@@ -42,6 +42,9 @@ Framing by the trivial system `fun _ ↦ Unit` is not the circuit itself (the sy
   — the operator.
 * `QuantumCircuit.Party.PartyCircuit.isAllowed_frame`, `gateCells_frame`, `numGates_frame`,
   `gateCount_frame`, `participation_frame`, `QuantumCircuit.Party.Word.sources_frame`.
+* `QuantumCircuit.Party.ChainGate.isAllowed_frame`,
+  `QuantumCircuit.Party.PartyCircuit.forallGate_isRight_frame`,
+  `QuantumCircuit.Party.WeightedGate.isAllowed_frame` — allowed gates and effect chains.
 
 ## References
 
@@ -228,6 +231,29 @@ def frame : {X Y : P → Type} → [∀ p, Fintype (X p)] → [∀ p, DecidableE
   | _, _, _, _, @PartyCircuit.localOps _ _ _ _ _ _ A =>
     .localOps fun p ↦ (1 : Matrix (W p) (W p) ℂ) ⊗ₖ A p
   | _, _, _, _, @PartyCircuit.comp _ _ _ _ _ _ _ c c' => .comp (frame c) (frame c')
+
+omit [DecidableEq P] in
+/-- A circuit beside spectator factors uses the same set of parties. -/
+theorem UsesOnly.frame {R : Set P} : {X Y : P → Type} →
+    [∀ p, Fintype (X p)] → [∀ p, DecidableEq (X p)] →
+    {c : PartyCircuit G X Y} → c.UsesOnly R → (c.frame W).UsesOnly R
+  | _, _, _, _, .done _, h => h
+  | _, _, _, _, @PartyCircuit.gate _ _ _ _ _ _ _ _ _, h => h
+  | _, _, _, _, @PartyCircuit.localOp _ _ _ _ _ _ _ _ _, h => h
+  | _, _, _, _, @PartyCircuit.localOps _ _ _ _ _ _ _, h => fun p hp ↦ by
+    obtain ⟨e, he⟩ := h p hp
+    refine ⟨congrArg (W p × ·) e, fun y x ↦ ?_⟩
+    have cast_prod {A B : Type} (e : A = B) (y : W p × A) :
+        cast (congrArg (W p × ·) e) y = (y.1, cast e y.2) := by
+      subst e
+      rfl
+    simp only [kroneckerMap_apply, one_apply, he]
+    change _ = @ite ℂ (cast (congrArg (W p × ·) e) y = x) (Classical.propDecidable _) 1 0
+    have hcast : cast (congrArg (W p × ·) e) y = x ↔
+        y.1 = x.1 ∧ cast e y.2 = x.2 := by rw [cast_prod, Prod.ext_iff]
+    split_ifs <;> simp_all
+  | _, _, _, _, @PartyCircuit.comp _ _ _ _ _ _ _ c c', h =>
+    ⟨UsesOnly.frame (c := c) h.1, UsesOnly.frame (c := c') h.2⟩
 
 omit [DecidableEq P] in
 /-- Framing keeps the cells. -/
@@ -546,6 +572,26 @@ theorem WeightedGate.isCompatible_frame :
     rw [List.map_map]
     exact sum_map_op_frame (W := W) g.terms
 
+/-- Framing keeps allowed chain gates allowed. -/
+theorem ChainGate.isAllowed_frame {D : Finset P} {X Y W : P → Type} [∀ p, Fintype (X p)]
+    [∀ p, DecidableEq (X p)] [∀ p, Fintype (Y p)] [∀ p, DecidableEq (Y p)] [∀ p, Fintype (W p)]
+    [∀ p, DecidableEq (W p)] {g : ChainGate D X Y} (hg : ChainGate.IsAllowed g) :
+    ChainGate.IsAllowed (GateFrame.frame W g) := by
+  rcases g with g | g <;> exact hg
+
+/-- Framing keeps a chain whose gates are all effects (right summands) such a chain. -/
+theorem PartyCircuit.forallGate_isRight_frame (W : P → Type) [∀ p, Fintype (W p)]
+    [∀ p, DecidableEq (W p)] : {U V : P → Type} → [∀ r, Fintype (U r)] →
+    [∀ r, DecidableEq (U r)] → (M : PartyCircuit (ChainGate (P := P)) U V) →
+    M.ForallGate (fun _ _ _ g ↦ Sum.isRight g) →
+      (M.frame W).ForallGate (fun _ _ _ g ↦ Sum.isRight g)
+  | _, _, _, _, .done _, _ => trivial
+  | _, _, _, _, @PartyCircuit.gate _ _ _ _ _ _ _ _ g, h => by cases g <;> exact h
+  | _, _, _, _, @PartyCircuit.localOp _ _ _ _ _ _ _ _ _, _ => trivial
+  | _, _, _, _, @PartyCircuit.localOps _ _ _ _ _ _ _, _ => trivial
+  | _, _, _, _, @PartyCircuit.comp _ _ _ _ _ _ _ c c', h =>
+    ⟨forallGate_isRight_frame W c h.1, forallGate_isRight_frame W c' h.2⟩
+
 /-- Framing keeps allowed weighted gates allowed. -/
 theorem WeightedGate.isAllowed_frame {D : Finset P} {X Y W : P → Type} [∀ p, Fintype (X p)]
     [∀ p, DecidableEq (X p)] [∀ p, Fintype (Y p)] [∀ p, DecidableEq (Y p)] [∀ p, Fintype (W p)]
@@ -554,6 +600,6 @@ theorem WeightedGate.isAllowed_frame {D : Finset P} {X Y W : P → Type} [∀ p,
   intro t ht
   obtain ⟨t', ht', rfl⟩ := List.mem_map.mp ht
   exact PartyCircuit.isAllowed_frame _ _ chainEv_isCompatible_frame
-    (fun _ _ _ _ _ _ _ g h ↦ by rcases g with g | g <;> exact h) (hg t' ht')
+    (fun _ _ _ _ _ _ _ _ h ↦ ChainGate.isAllowed_frame h) (hg t' ht')
 
 end QuantumCircuit.Party
