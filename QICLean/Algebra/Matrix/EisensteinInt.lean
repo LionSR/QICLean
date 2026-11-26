@@ -10,30 +10,19 @@ import Mathlib.Tactic.LinearCombination
 /-!
 # The ring of Eisenstein integers
 
-**Source.** None: this is infrastructure of this development for exact arithmetic in the
-`ℤ/3` worked examples, and no paper states it.
+The ring `ℤ[ω]`, with `ω = e^{2πi/3}` a primitive cube root of unity satisfying
+`ω² + ω + 1 = 0`, in two layers, for exact arithmetic with matrices whose entries are
+`ℤ`-linear combinations of `1` and `ω`.
 
-**Formalized here.** The tensors of the `ℤ/3` matrix product operator symmetries have entries in
-the cyclotomic field `ℚ(ω)`, where `ω = e^{2πi/3}` is a primitive cube root of unity and
-satisfies `ω² + ω + 1 = 0`. The entries are in fact all integral: every one of them is a
-`ℤ`-linear combination of `1` and `ω`, and so are the gauges and their inverses, which are
-unimodular.
+The computational layer is `EisensteinInt`, the ring presented by the two integer coordinates of
+an element in the basis `1, ω`, with the multiplication obtained by reducing `ω² = -1 - ω`.
+Equality is decidable, so every identity between explicit matrices over `ℤ[ω]` is decidable.
+Mathlib's `Zsqrtd (-3)` is the ring `ℤ[√-3]`, a subring of index two that does not contain `ω`,
+so a dedicated structure is used.
 
-This file builds the exact arithmetic of that ring in two layers, following
-`GoldenRing.lean`.
-
-The computational layer is `EisensteinInt`, the ring `ℤ[ω]` presented by the two integer
-coordinates of an element in the basis `1, ω`, with the multiplication obtained by reducing
-`ω² = -1 - ω`. Equality of Eisenstein integers is decidable, so every matrix identity between
-explicit matrices over `ℤ[ω]` is decidable, exactly as an identity between integer matrices is.
-Mathlib's `Zsqrtd (-3)` is the ring `ℤ[√-3]`, a subring of index two in `ℤ[ω]` that does not
-contain `ω` itself, so a dedicated structure is used.
-
-The algebraic layer identifies those coordinates with the actual complex number
-`ω = (-1 + i√3)/2`. The ring homomorphism `eisensteinToComplex` is the embedding along which a
-matrix over `ℤ[ω]` becomes a complex matrix, and identities proved by decision over `ℤ[ω]`
-transport to the complex matrices. The embedding is injective, so a nonzero Eisenstein integer
-stays nonzero in `ℂ`; this is what allows a matrix unit scaled by `ω - 1` to be divided back.
+The algebraic layer identifies the coordinates with the complex number `ω = (-1 + i√3)/2`. The
+ring homomorphism `eisensteinToComplex` is injective, so identities decided over `ℤ[ω]`
+transport to complex matrices along `Matrix.complexOfRing`, and nonzero elements stay nonzero.
 
 ## Main definitions
 
@@ -41,8 +30,6 @@ stays nonzero in `ℂ`; this is what allows a matrix unit scaled by `ω - 1` to 
 * `EisensteinInt.omega`: the generator `ω`.
 * `eisensteinOmega`: the complex number `(-1 + i√3)/2`.
 * `eisensteinToComplex`: the embedding of `ℤ[ω]` into the complex numbers.
-* `MPSTensor.complexOfEisenstein`: the entrywise image of a matrix over `ℤ[ω]` in the complex
-  matrices.
 
 ## Main results
 
@@ -50,14 +37,7 @@ stays nonzero in `ℂ`; this is what allows a matrix unit scaled by `ω - 1` to 
   in the two models.
 * `eisensteinMulRule`: the multiplication rule of `ℤ[ω]` in any commutative ring carrying a root
   of `X² + X + 1`.
-* `eisensteinToComplex_injective`, `MPSTensor.complexOfEisenstein_ne_zero`: the embedding is
-  injective, on scalars, and nonzero matrices have nonzero images.
-* `MPSTensor.complexOfEisenstein_mul`, `MPSTensor.complexOfEisenstein_one`: the embedding of
-  matrices is multiplicative and unital.
-
-Word evaluation and bond-space products over `ℤ[ω]` are the general `MPSTensor.evalWordR` and
-`MPSTensor.mulTensorR`, transported by `MPSTensor.evalWord_complexOfRing` and
-`MPSTensor.mulTensor_complexOfRing`.
+* `eisensteinToComplex_injective`, `eisensteinToComplex_ne_zero`: the embedding is injective.
 
 Moved from TNLean, `TNLean/MPS/Examples/Rings/EisensteinRing.lean` at commit `021ba0bd19`
 (Apache-2.0).

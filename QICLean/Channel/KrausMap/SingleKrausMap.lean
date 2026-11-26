@@ -6,17 +6,12 @@ Authors: QICLean contributors
 import QICLean.Channel.KrausMap.KrausCPTP
 
 /-!
-# Sitewise physical matrices on periodic MPOs
+# Maps with a single Kraus operator
 
-A one-site matrix `V` acts on a chain by its sitewise tensor power
-`(Matrix.piKronecker fun _ : Fin N ↦ V)`, with entries `∏ₙ V (s n) (t n)`. Acting on
-the ket leg at every site left-multiplies the closed MPO by this tensor power.
-Acting on both physical legs is the same as changing the physical basis of
-every local MPO matrix before closing the virtual trace.
-
-This is finite-dimensional tensor-product algebra.  The construction is used
-below with the BNT physical-sector projections of arXiv:1606.00608,
-Appendix C.2, equations `generateMPDO` and `sigmaNKj`.
+The map `X ↦ V X Vᴴ` of one matrix `V`: its behaviour under reindexing of the two spaces, the
+range of an isometric conjugation, and commutation with a unitary intertwiner of `V`. These are
+finite-dimensional facts about sitewise physical matrices, used with the physical-sector
+projections of arXiv:1606.00608, Appendix C.2.
 
 Moved from TNLean, `TNLean/MPS/Operator/PhysicalSector/SitewisePhysicalMatrix.lean`,
 `TNLean/MPS/Symmetry/GappedPath/PhysicalInteractionGroundSpace.lean`,

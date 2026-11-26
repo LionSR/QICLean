@@ -12,32 +12,21 @@ import Mathlib.Tactic.LinearCombination
 /-!
 # Golden integers: the ring `ℤ[σ]` with `σ = φ^{-1/2}`
 
-**Source.** Construction of this development. The ring is chosen to hold the Fibonacci data of
-Bultinck et al. (arXiv:1511.08090), Appendix D.1.1, `References/1511.08090/AnyonsPEPS.tex`
-lines 1244–1260: quantum dimension `d_τ = φ = (1 + √5)/2`, F-symbols
-`F^{τττ}_{τ11} = 1/φ`, `F^{τττ}_{ττ1} = F^{τττ}_{τ1τ} = 1/√φ`, `F^{τττ}_{τττ} = -1/φ`, and
-`G`-symbols `G^{abc}_{def} = F^{abc}_{def}/(v_e v_f)` with `v_i = √d_i`. The same F-matrix
-appears in Feiguin et al. (arXiv:cond-mat/0612341),
-`References/cond-mat_0612341/source/fibonacci.tex` lines 163–167.
-Review: arXiv:2011.12127, Appendix A, "The MPO for the Fibonacci model"
-(`Papers/2011.12127/TN-Review-main.tex` lines 2613–2625).
-
-**Formalized here.** Every such entry lies in the degree-four field `ℚ(σ)`, where `σ = φ^{-1/2}`
-satisfies `σ⁴ + σ² - 1 = 0`, and is in fact a `ℤ`-linear combination of `1, σ, σ², σ³`, because
-the golden ratio is a unit of that ring, `φ = 1 + σ²` and `φ⁻¹ = σ²`. The file builds the exact
-arithmetic of that ring in two layers.
+The number `σ = φ^{-1/2}`, for the golden ratio `φ = (1 + √5)/2`, satisfies
+`σ⁴ + σ² - 1 = 0`, and `φ = 1 + σ²`, `φ⁻¹ = σ²`. The Fibonacci data of Bultinck et al.,
+arXiv:1511.08090, Appendix D.1.1 (quantum dimension `φ`, F-symbols `1/φ`, `1/√φ`, `-1/φ`) are
+`ℤ`-linear combinations of `1, σ, σ², σ³`. This file builds the exact arithmetic of that ring in
+two layers.
 
 The computational layer is `GoldenInt`, the ring `ℤ[σ]` presented by the four integer
 coordinates of an element in the basis `1, σ, σ², σ³`, with the multiplication obtained by
-reducing `σ⁴ = 1 - σ²`, `σ⁵ = σ - σ³` and `σ⁶ = 2σ² - 1`. Equality of golden integers is
-decidable, so every matrix identity between explicit matrices over `ℤ[σ]` is decidable, exactly
-as an identity between integer matrices is.
+reducing `σ⁴ = 1 - σ²`, `σ⁵ = σ - σ³` and `σ⁶ = 2σ² - 1`. Equality is decidable, so every
+identity between explicit matrices over `ℤ[σ]` is decidable.
 
-The algebraic layer identifies those coordinates with an actual algebraic number. The quotient
+The algebraic layer identifies the coordinates with an algebraic number. The quotient
 `ℚ[X] ⧸ (X⁴ + X² - 1)` receives `ℤ[σ]` by a ring homomorphism, and it maps to `ℂ` by sending the
 class of `X` to the positive real root `√((√5 - 1)/2)`. The composite `goldenToComplex` is the
-embedding along which a matrix over `ℤ[σ]` becomes a complex matrix, and identities proved by
-decision over `ℤ[σ]` transport to the complex matrices.
+embedding along which a matrix over `ℤ[σ]` becomes a complex matrix (`Matrix.complexOfRing`).
 
 ## Main definitions
 
@@ -47,61 +36,19 @@ decision over `ℤ[σ]` transport to the complex matrices.
   the class of `X` in it.
 * `GoldenInt.toAdjoin`, `goldenAdjoinToComplex`, `goldenToComplex`: the two layers of the
   embedding and their composite.
-* `MPSTensor.complexOfGolden`, `MPSTensor.mulGoldenTensor`, `MPSTensor.evalWordGolden`: the
-  entrywise image of a matrix over `ℤ[σ]` in the complex matrices, the bond-space product and
-  word evaluation over `ℤ[σ]`, as the instances at `goldenToComplex` of the general
-  `Matrix.complexOfRing`, `MPSTensor.mulTensorR` and `MPSTensor.evalWordR`.
 
 ## Main results
 
 * `GoldenInt.sigma_quartic`, `adjoinSigma_quartic`, `goldenSigmaReal_quartic`: the quartic
   relation in the three models.
-* `goldenSigmaReal_sq`, `goldenSigmaReal_eq_inv_sqrt_goldenRatio`: `σ² = φ⁻¹` and `σ = 1/√φ`
-  for the golden ratio `φ`.
+* `goldenSigmaReal_sq`, `goldenSigmaReal_eq_inv_sqrt_goldenRatio`: `σ² = φ⁻¹` and `σ = 1/√φ`.
 * `goldenMulRule`: the multiplication rule of `ℤ[σ]` in any commutative ring carrying a root of
   the quartic.
-* `MPSTensor.complexOfGolden_mul`, `MPSTensor.complexOfGolden_one`: the embedding of matrices is
-  multiplicative and unital.
-* `MPSTensor.mulTensor_complexOfGolden`, `MPSTensor.evalWord_complexOfGolden`: the bond-space
-  product and word evaluation commute with the embedding.
 
 ## References
 
-- [arXiv:1511.08090](https://arxiv.org/abs/1511.08090) -- N. Bultinck, M. Mariën,
-  D. J. Williamson, M. B. Sahinoglu, J. Haegeman, F. Verstraete, *Anyons and matrix product
-  operator algebras*
-- [arXiv:cond-mat/0612341](https://arxiv.org/abs/cond-mat/0612341) -- A. Feiguin, S. Trebst,
-  A. W. W. Ludwig, M. Troyer, A. Kitaev, Z. Wang, M. H. Freedman, *Interacting anyons in
-  topological quantum liquids: The golden chain*
-- [arXiv:2011.12127](https://arxiv.org/abs/2011.12127) -- J. I. Cirac, D. Pérez-García,
-  N. Schuch, F. Verstraete, *Matrix product states and projected entangled pair states:
-  Concepts, symmetries, theorems*
-
-## Golden compression: compression data with gauges over `ℤ[σ]`
-
-**Source.** Construction of this development; no paper prints it. It packages the exact
-arithmetic shared by the Fibonacci examples (`Examples/Fibonacci.lean`,
-`Examples/FibonacciUnit.lean`, `Examples/FibonacciAction.lean`), whose entries come from the
-F-symbols of arXiv:1511.08090, Appendix D.1.1, `References/1511.08090/AnyonsPEPS.tex`
-lines 1250–1260.
-
-**Formalized here.** In the worked examples over the ring `ℤ[σ]` of `GoldenRing.lean`, the
-letters of the source tensor, of the target blocks, of the change of bond coordinates and of its
-inverse are explicit matrices over `ℤ[σ]`, the conjugated letters `G B^i G⁻¹` are explicit
-block-triangular matrices recorded through `B^i G⁻¹ = G⁻¹ K^i`, and every identity between them
-is decided in exact arithmetic. The datum is the ring-generic
-`MPSTensor.MultiBlockCompression.ofRing` along the embedding `goldenToComplex`.
-
-### Main definitions
-
-* `MPSTensor.MultiBlockCompression.ofGolden`: the multi-block compression datum assembled from a
-  gauge over `ℤ[σ]` and the decided block structure of the conjugated letters.
-
-### References
-
-- [arXiv:1511.08090](https://arxiv.org/abs/1511.08090) -- N. Bultinck, M. Mariën,
-  D. J. Williamson, M. B. Sahinoglu, J. Haegeman, F. Verstraete, *Anyons and matrix product
-  operator algebras*
+- [arXiv:1511.08090](https://arxiv.org/abs/1511.08090) -- N. Bultinck et al., *Anyons and
+  matrix product operator algebras*
 
 Moved from TNLean, `TNLean/MPS/Examples/Rings/GoldenRing.lean` at commit `021ba0bd19` (Apache-2.0).
 -/

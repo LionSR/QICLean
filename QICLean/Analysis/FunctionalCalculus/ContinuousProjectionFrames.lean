@@ -23,9 +23,7 @@ the original matrices preserve these projection ranges.
 
 This is an auxiliary finite-dimensional construction in the context of
 Schuch–Pérez-García–Cirac, arXiv:1010.3732, Appendix C, lines 2653–2717.
-Spectral separation and density continuity are supplied explicitly; their
-derivation from a physical gap and canonical MPS data remains open, as
-recorded in `docs/paper-gaps/spc11_spt_interpolation_upper_range.tex`.
+Spectral separation and continuity of the family are hypotheses.
 
 Moved from TNLean, `TNLean/MPS/Symmetry/ContinuousFamily/ContinuousSpectralCorner.lean`,
 `TNLean/MPS/Symmetry/ContinuousFamily/ContinuousProjectionFrame.lean`,

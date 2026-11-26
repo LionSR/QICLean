@@ -12,9 +12,9 @@ import QICLean.Analysis.FunctionalCalculus.MatrixPolar
 The polar decomposition `M = V P` of `Matrix.polarIso` and `Matrix.polarPos` is unique in the
 following sense: if `M = W Q` with `Q` positive semidefinite and `Wᴴ W = E`, where `E` is an
 orthogonal projector with the same range as `Q`, then `Q = polarPos M`, `E = polarSupport M`,
-and `W = polarIso M`.  The log-depth preparation of matrix product states uses this to identify
-the polar factors of an orthogonal sum (`TNLean.MPS.Preparation.OrthogonalSumPolar`); the other
-results here serve the diagonal, supported and block-sum cases.
+and `W = polarIso M`. This identifies the polar factors of an orthogonal sum
+(`Matrix.polarIso_sum_of_orthogonal`); the other results here serve the diagonal, supported and
+block-sum cases.
 
 ## Main declarations
 
@@ -292,8 +292,7 @@ is `∑ⱼ cⱼ Kⱼ Pⱼ Kⱼᴴ`, with `Bⱼ = Vⱼ Pⱼ`.
 
 This is the block form of the positive part asserted in arXiv:2307.01696, Supplemental Material,
 eq. (S5), for blocks of multiplicity one whose states are orthogonal; the source does not state
-the orthogonality, without which the block form fails
-(`docs/paper-gaps/mswc24_block_form_mixed_overlap.tex`). -/
+the orthogonality, without which the block form fails. -/
 theorem polarIso_sum_of_orthogonal {B : (j : β) → Matrix ι (κj j) ℂ}
     (hB : ∀ j j', j ≠ j' → (B j)ᴴ * B j' = 0) {c : β → ℝ} (hc : ∀ j, 0 < c j)
     {K : (j : β) → Matrix κ (κj j) ℂ} (hK : ∀ j, (K j)ᴴ * K j = 1)

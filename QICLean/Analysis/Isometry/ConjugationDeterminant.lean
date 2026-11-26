@@ -9,42 +9,28 @@ import QICLean.Analysis.Isometry.ConjugationCovariantGauge
 import QICLean.Analysis.Topology.OrthogonalGroupJoined
 
 /-!
-# Strict equivalence under conjugation
+# Determinants under conjugation and sign-flip gauges
 
-The "if" directions of Theorems `conjphs` and `prop:conjsym-strict-equiv` of
-arXiv:1703.09188 (lines 1406--1446 and 1480--1546): two MPUs whose
-standard-form gates have the same determinant invariants are strictly
-equivalent under complex conjugation.
-
-The determinant of `u v` reads the composite
-`ℂ^r ⊗ ℂ^ℓ → ℂ^ℓ ⊗ ℂ^r` on `ℂ^ℓ ⊗ ℂ^r` through the swap of the two factors;
-it is invariant under the gauge `u ↦ (x ⊗ y) u`, `v ↦ v (y† ⊗ x†)` of the
-standard form, as computed at line 1416 of the source
-(`det_gauge_mul_swap`).
-
-The "only if" direction of Theorem `conjphs` is
-`MPOTensor.StrictlyEquivalentUnderSymmetry.det_mul_eq_of_conjugation`, in
-`TNLean.MPS.MPU.ConjugationDeterminantInvariant`. That of Theorem
-`prop:conjsym-strict-equiv` rests on the forward direction of Lemma
-`lem:equivalent-symmetry`, which is available only after blocking, where the
-determinant invariants are trivial; it remains open, see
-`docs/paper-gaps/mpu_symmetry_path_criterion_blocking.tex`.
+Determinant identities for the standard-form gates of matrix product unitaries under complex
+conjugation, from arXiv:1703.09188, Theorems `conjphs` and `prop:conjsym-strict-equiv`
+(lines 1406--1446 and 1480--1546). The determinant of `u v` reads the composite
+`ℂ^r ⊗ ℂ^ℓ → ℂ^ℓ ⊗ ℂ^r` on `ℂ^ℓ ⊗ ℂ^r` through the swap of the two factors; it is invariant
+under the gauge `u ↦ (x ⊗ y) u`, `v ↦ v (y† ⊗ x†)`, as computed at line 1416 of the source. A
+unitary with real entries has determinant `±1`, and a unitary gauge flipping one coordinate
+changes its sign. Gates fixed by conjugation up to the skew form `J ⊗ J` are joined by a path of
+such gates when their determinants agree.
 
 ## Main results
 
 * `Matrix.det_gauge_mul_swap`: gauge invariance of `det(u v)`.
-* `MPOTensor.strictlyEquivalentUnderSymmetry_conjugation_reindexPhysical_of_gate_path`: gate
-  paths satisfying the local conjugation equations give strict equivalence.
-* `MPOTensor.strictlyEquivalentUnderSymmetry_conjugation_reindexPhysical_of_det_mul_eq`: the
-  "if" direction of Theorem `conjphs`, for any standard forms of tensors in canonical form.
-* `MPOTensor.strictlyEquivalentUnderSymmetry_conjugation_reindexPhysical_of_det_eq_of_even`:
-  the "if" direction of Theorem `prop:conjsym-strict-equiv`, likewise.
-* `MPOTensor.strictlyEquivalentUnderSymmetry_conjugation_of_det_mul_eq`,
-  `MPOTensor.strictlyEquivalentUnderSymmetry_conjugation_of_det_eq_of_even`: the same for the
-  two-site blocks of tensors in canonical form II.
-
-The standard forms need not come from canonical form II: the statements only use the
-standard-form data and the canonical form of the endpoints, which strict equivalence requires.
+* `Matrix.det_eq_one_or_neg_one_of_map_star_eq`: a unitary with real entries has determinant
+  `±1`.
+* `Matrix.coordinateFlip`, `Matrix.det_coordinateFlip`: the flip of one coordinate.
+* `Matrix.exists_sign_flip_gauge`: a unitary gauge `x ⊗ y` keeping a pair of real gates real and
+  flipping the sign of the determinant of their composite.
+* `Matrix.IsUnitaryBetween.joinedIn_symplectic_of_det_eq`,
+  `Matrix.IsUnitaryBetween.joinedIn_symplectic_right_of_det_eq`: gates satisfying the skew-form
+  conjugation condition with equal determinants are joined by a path of such gates.
 
 Moved from TNLean, `TNLean/MPS/MPU/Symmetry/Phases/ConjugationStrictEquivalence.lean` at commit
 `021ba0bd19` (Apache-2.0).

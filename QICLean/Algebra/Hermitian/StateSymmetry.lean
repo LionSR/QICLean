@@ -10,58 +10,34 @@ import Mathlib.LinearAlgebra.Matrix.Hermitian
 import Mathlib.LinearAlgebra.Matrix.Trace
 
 /-!
-# Strong and weak symmetries of matrix product density operators
+# Strong and weak symmetries of a matrix
 
-**Source.** Sun 2025 (arXiv:2504.16985), "Anomalous matrix product operator symmetries and
-1D mixed-state phases", `References/2504.16985/main.tex` line 182: a matrix product density
-operator `ρ^{(L)}(X,M)` is strongly symmetric under a family of matrix product operators
-`O_a^{(L)}` when
-`O_a^{(L)} ρ^{(L)} = λ_a^{(L)} ρ^{(L)}` for all `a` and `L`, and weakly symmetric when
-`[O_a^{(L)}, ρ^{(L)}] = 0` for all `a` and `L`; strong symmetry is a special case of weak
-symmetry provided each `O_a^{(L)}` has its adjoint `O_{ā}^{(L)}` in the family. The on-site
-group case, `[U, ρ] = 0` (weak) and `U ρ = ρ` (strong), is recalled in Garre Rubio, Molnár,
-Schuch, Verstraete 2026 (arXiv:2603.28349), `References/2603.28349/main.tex` line 362, from
-de Groot, Turzillo, Schuch 2022 (arXiv:2112.04483).
-
-**Formalized here.** The two predicates at one system size and along the whole family of
-periodic operators; the implication from strong to weak symmetry under the source's
-adjoint-closure proviso; the unit modulus of the eigenvalue of a unitary strong symmetry; the
-fusion rules satisfied by strong eigenvalues; and the on-site specialization `U_g^{⊗L}`, where
-the eigenvalues form a character of the group at each length.
-
-The family predicates permit an arbitrary virtual boundary. The source's
-commuting boundaries are the elements of `commutingBoundaryAlgebra M`;
-positivity of the resulting operators is `IsMPDOWithBoundary M X`.
-Neither commutation nor positivity is required for the symmetry equations
-themselves. Density-operator conclusions state positivity where it is used.
+A matrix `O` is a *strong symmetry* of a matrix `ρ` when `O ρ = c ρ` for a scalar `c`, and a
+*weak symmetry* when `O` commutes with `ρ`. For density operators these are the two notions of
+symmetry of mixed states: Sun, arXiv:2504.16985, line 182, for families of matrix product
+operators, and de Groot, Turzillo and Schuch, arXiv:2112.04483, for on-site unitaries
+(`U ρ = ρ` and `[U, ρ] = 0`).
 
 ## Main definitions
 
 * `Matrix.IsStrongSymmetry`, `Matrix.IsWeakSymmetry`: `O ρ = c ρ` and `[O, ρ] = 0`.
-* `MPOTensor.IsStrongMPOSymmetry`, `MPOTensor.IsWeakMPOSymmetry`: the same at every positive
-  length along a family of periodic matrix product operators, with length-dependent
-  eigenvalues `c a L`.
-* `MPOTensor.onSite`: the bond-dimension-one tensor of an on-site operator.
-* `MPOTensor.IsStrongOnSiteSymmetry`, `MPOTensor.IsWeakOnSiteSymmetry`: the on-site group case.
 
 ## Main results
 
-* `Matrix.IsStrongSymmetry.isWeakSymmetry_of_conjTranspose`,
-  `MPOTensor.IsStrongMPOSymmetry.isWeakMPOSymmetry`: strong implies weak under adjoint closure.
+* `Matrix.IsStrongSymmetry.isWeakSymmetry_of_conjTranspose`: a strong symmetry whose adjoint is
+  also a strong symmetry of a Hermitian `ρ` is a weak symmetry, the adjoint-closure proviso of
+  the source.
+* `Matrix.IsStrongSymmetry.conjTranspose_of_unitary`,
+  `Matrix.IsStrongSymmetry.isWeakSymmetry_of_unitary`: the unitary case.
 * `Matrix.IsStrongSymmetry.norm_eq_one`: a unitary strong symmetry of a nonzero matrix has a
   unimodular eigenvalue.
-* `MPOTensor.IsStrongMPOSymmetry.mul_eq_sum`: strong eigenvalues obey the fusion rules.
-* `MPOTensor.mpo_onSite`: the periodic operator of `onSite u` is `u^{⊗L}`.
-* `MPOTensor.IsStrongOnSiteSymmetry.isWeakOnSiteSymmetry`,
-  `MPOTensor.IsStrongOnSiteSymmetry.map_mul`, `MPOTensor.IsStrongOnSiteSymmetry.map_one`.
 
 ## References
+
 - [arXiv:2504.16985](https://arxiv.org/abs/2504.16985) -- X.-Q. Sun, *Anomalous matrix
   product operator symmetries and 1D mixed-state phases*
 - [arXiv:2112.04483](https://arxiv.org/abs/2112.04483) -- C. de Groot, A. Turzillo,
   N. Schuch, *Symmetry protected topological order in open quantum systems*
-- [arXiv:2603.28349](https://arxiv.org/abs/2603.28349) -- J. Garre Rubio, A. Molnár,
-  N. Schuch, F. Verstraete, *The local characterization of global tensor network eigenstates*
 
 Moved from TNLean, `TNLean/MPS/Operator/Fusion/DensityOperatorSymmetry.lean` at commit `021ba0bd19`
 (Apache-2.0).
