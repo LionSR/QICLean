@@ -14,22 +14,22 @@ import Mathlib.LinearAlgebra.Matrix.DotProduct
 # Strong and weak symmetries of a matrix
 
 A matrix `O` is a *strong symmetry* of a matrix `ρ` when `O ρ = c ρ` for a scalar `c`, and a
-*weak symmetry* when `O` commutes with `ρ`. For density operators these are the two notions of
+*weak symmetry* when `O` commutes with `ρ` (`Commute O ρ`). For density operators these are the two notions of
 symmetry of mixed states: Sun, arXiv:2504.16985, line 182, for families of matrix product
 operators, and de Groot, Turzillo and Schuch, arXiv:2112.04483, for on-site unitaries
 (`U ρ = ρ` and `[U, ρ] = 0`).
 
 ## Main definitions
 
-* `Matrix.IsStrongSymmetry`, `Matrix.IsWeakSymmetry`: `O ρ = c ρ` and `[O, ρ] = 0`.
+* `Matrix.IsStrongSymmetry`: `O ρ = c ρ`; weak symmetry is `Commute O ρ`.
 
 ## Main results
 
-* `Matrix.IsStrongSymmetry.isWeakSymmetry_of_conjTranspose`: a strong symmetry whose adjoint is
+* `Matrix.IsStrongSymmetry.commute_of_conjTranspose`: a strong symmetry whose adjoint is
   also a strong symmetry of a Hermitian `ρ` is a weak symmetry, the adjoint-closure proviso of
   the source.
 * `Matrix.IsStrongSymmetry.conjTranspose_of_unitary`,
-  `Matrix.IsStrongSymmetry.isWeakSymmetry_of_unitary`: the unitary case.
+  `Matrix.IsStrongSymmetry.commute_of_unitary`: the unitary case.
 * `Matrix.IsStrongSymmetry.norm_eq_one`: a unitary strong symmetry of a nonzero matrix has a
   unimodular eigenvalue.
 
@@ -59,12 +59,6 @@ required to be a phase; `λ = 0` is allowed. -/
 def IsStrongSymmetry (O ρ : Matrix n n ℂ) : Prop :=
   ∃ c : ℂ, O * ρ = c • ρ
 
-/-- **Weak symmetry at one system size.**
-
-Source: arXiv:2504.16985, line 182: `[O, ρ] = 0`. -/
-def IsWeakSymmetry (O ρ : Matrix n n ℂ) : Prop :=
-  Commute O ρ
-
 /-- A Hermitian matrix whose square vanishes is zero. -/
 private theorem IsHermitian.mul_self_ne_zero {ρ : Matrix n n ℂ} (hρ : ρ.IsHermitian)
     (h0 : ρ ≠ 0) : ρ * ρ ≠ 0 := by
@@ -79,9 +73,9 @@ Source: arXiv:2504.16985, line 182: strong symmetry is a special case of weak sy
 provided the conjugate operator `O^†` is also a strong symmetry. For Hermitian `ρ`, the two
 eigenvalue equations give `ρ O = \bar μ ρ` and `ρ O ρ = λ ρ² = \bar μ ρ²`, so `λ = \bar μ`
 unless `ρ = 0`. -/
-theorem IsStrongSymmetry.isWeakSymmetry_of_conjTranspose {O ρ : Matrix n n ℂ}
+theorem IsStrongSymmetry.commute_of_conjTranspose {O ρ : Matrix n n ℂ}
     (hρ : ρ.IsHermitian) (hO : IsStrongSymmetry O ρ) (hOH : IsStrongSymmetry Oᴴ ρ) :
-    IsWeakSymmetry O ρ := by
+    Commute O ρ := by
   obtain ⟨c, hc⟩ := hO
   obtain ⟨μ, hμ⟩ := hOH
   have hρO : ρ * O = star μ • ρ := by
@@ -115,10 +109,10 @@ theorem IsStrongSymmetry.conjTranspose_of_unitary [DecidableEq n] {O ρ : Matrix
 
 Source: arXiv:2504.16985, line 182, in the unitary case, where the adjoint `O^† = O^{-1}` is a
 strong symmetry automatically (`IsStrongSymmetry.conjTranspose_of_unitary`). -/
-theorem IsStrongSymmetry.isWeakSymmetry_of_unitary [DecidableEq n] {O ρ : Matrix n n ℂ}
+theorem IsStrongSymmetry.commute_of_unitary [DecidableEq n] {O ρ : Matrix n n ℂ}
     (hρ : ρ.IsHermitian) (hU : Oᴴ * O = 1) (hO : IsStrongSymmetry O ρ) :
-    IsWeakSymmetry O ρ :=
-  hO.isWeakSymmetry_of_conjTranspose hρ (hO.conjTranspose_of_unitary hU)
+    Commute O ρ :=
+  hO.commute_of_conjTranspose hρ (hO.conjTranspose_of_unitary hU)
 
 /-- **Unit modulus of a unitary strong eigenvalue.**
 

@@ -262,12 +262,6 @@ private noncomputable def frobeniusLinearEquiv (D : ℕ) :
     Matrix (Fin D) (Fin D) ℂ ≃ₗ[ℂ] EuclideanSpace ℂ (Fin D × Fin D) :=
   (Matrix.frobeniusEquivEuclidean (Fin D) (Fin D)).toLinearEquiv
 
-private theorem inner_frobeniusLinearEquiv
-    {D : ℕ} (X Y : Matrix (Fin D) (Fin D) ℂ) :
-    inner ℂ (frobeniusLinearEquiv D X) (frobeniusLinearEquiv D Y) =
-      Matrix.trace (Xᴴ * Y) :=
-  Matrix.inner_frobeniusEquivEuclidean X Y
-
 /-- Mathlib's weighted matrix inner product agrees, by cyclicity of the trace,
 with the convention \(\operatorname{Tr}(\rho X^\dagger Y)\) in FNW 1992, equation (5.6). -/
 theorem rhoWeighted_inner {D : ℕ} (ρ : Matrix (Fin D) (Fin D) ℂ)
@@ -296,7 +290,10 @@ private theorem inner_rightMul_cfcSqrt
     inner ℂ (frobeniusLinearEquiv D (X * CFC.sqrt ρ))
         (frobeniusLinearEquiv D (Y * CFC.sqrt ρ)) = inner ℂ X Y := by
   weighted_matrix_norm_instances ρ hρ
-  rw [inner_frobeniusLinearEquiv, rhoWeighted_inner ρ hρ]
+  rw [show inner ℂ (frobeniusLinearEquiv D (X * CFC.sqrt ρ))
+      (frobeniusLinearEquiv D (Y * CFC.sqrt ρ)) =
+        Matrix.trace ((X * CFC.sqrt ρ)ᴴ * (Y * CFC.sqrt ρ)) from
+      Matrix.inner_frobeniusEquivEuclidean _ _, rhoWeighted_inner ρ hρ]
   rw [Matrix.conjTranspose_mul, Matrix.conjTranspose_cfc_sqrt]
   calc
     Matrix.trace (CFC.sqrt ρ * Xᴴ * (Y * CFC.sqrt ρ)) =
