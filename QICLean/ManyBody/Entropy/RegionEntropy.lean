@@ -11,6 +11,7 @@ import QICLean.ManyBody.Sites.RegionState
 import QICLean.ManyBody.Sites.Relabel
 import QICLean.ManyBody.Dynamics.Interaction
 import QICLean.ManyBody.Hamiltonian.KroneckerSum
+import QICLean.ManyBody.Hamiltonian.Models
 
 /-!
 # Entropies of regions and strong subadditivity
@@ -50,6 +51,9 @@ where `S(X | T) = S(X ∪ T) - S(T)`.
   nested regions `T_j`.
 
 Independently written from the manuscript; no upstream Lean proof text is reused.
+
+Moved from TNLean, `TNLean/MPS/AreaLaw/Entropy/LogarithmicAreaLaw.lean` at commit `021ba0bd19`
+(Apache-2.0).
 -/
 
 section RegionEntropy
@@ -659,3 +663,37 @@ theorem entropy_eq_zero_of_forall_subset_or_disjoint {Φ : Interaction X S}
 end ManyBody.Interaction
 
 end ZeroEntropy
+
+section
+
+open scoped Matrix.Norms.L2Operator
+
+open ManyBody
+    (ChainSupport DomainSupport DomainSupport.toChainSupport DomainSupport.toChainSupport_injective IsDomainSupport boundaryEdges interval sitePos ChainInteraction DomainInteraction)
+
+open ManyBody (IsGapped groundSpace)
+
+open ManyBody (regionEntropy_eq_zero_of_localDimension_one)
+
+section
+
+variable {L q R : ℕ} {J Δ : ℝ}
+
+/-- On-site interactions give zero entropy on every region of a gapped ground state.
+Source: the one-dimensional note, Section 2 (`sec:setting`), component reduction. -/
+theorem ManyBody.ChainInteraction.regionEntropy_eq_zero_of_range_zero
+    {L q : ℕ} {Δ : ℝ} (h : ChainInteraction L q 0) (hh : ∀ X, (h.term X).IsHermitian)
+    {E₀ : ℝ} {Ω : EuclideanSpace ℂ (Fin L → Fin q)}
+    (hΔ : 0 < Δ) (hΩ : ‖Ω‖ = 1) (hgap : IsGapped h.hamiltonian E₀ Δ)
+    (hspan : groundSpace h.hamiltonian E₀ = Submodule.span ℂ {Ω})
+    (A : Finset (Fin L)) :
+    ManyBody.regionEntropy (X := fun _ ↦ Fin q) Ω A = 0 := by
+  refine ManyBody.Interaction.entropy_eq_zero_of_forall_subset_or_disjoint (Φ := h) hh hΔ hΩ hgap
+    hspan (B := A) ?_
+  intro X
+  have hcard := X.property.card_le
+  grind [Finset.card_le_one_iff, Finset.disjoint_left]
+
+end
+
+end

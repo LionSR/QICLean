@@ -284,6 +284,13 @@ private def evalWordMarkedLast (A B : Fin d → Matrix (Fin D) (Fin D) ℂ) :
   | [i] => B i
   | i :: j :: w => A i * evalWordMarkedLast A B (j :: w)
 
+private theorem ofFn_ne_nil_of_pos {N : ℕ} (hN : 0 < N) (σ : Fin N → Fin d) :
+    List.ofFn σ ≠ [] := by
+  intro h
+  have := congrArg List.length h
+  simp only [List.length_ofFn, List.length_nil] at this
+  omega
+
 private theorem mul_evalWord_eq_mul_evalWordMarkedLast
     (A B : Fin d → Matrix (Fin D) (Fin D) ℂ)
     (hcross : ∀ i j, B i * A j = A i * B j) :

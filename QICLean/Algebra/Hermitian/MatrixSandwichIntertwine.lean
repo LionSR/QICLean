@@ -6,6 +6,7 @@ Authors: QICLean contributors
 import Mathlib.LinearAlgebra.Matrix.Hermitian
 import Mathlib.Data.Matrix.Mul
 import Mathlib.LinearAlgebra.Matrix.Trace
+import Mathlib.Analysis.Complex.Basic
 
 /-!
 # Sandwich transport along an intertwiner of Hermitian matrices

@@ -12,6 +12,7 @@ import QICLean.ManyBody.Entropy.RegionEntropy
 import QICLean.ManyBody.Entropy.SupportedMarginalTails
 import QICLean.ManyBody.Hamiltonian.GroundSpace
 import QICLean.ManyBody.Hamiltonian.Models
+import Mathlib.Combinatorics.SimpleGraph.Metric
 
 /-!
 # Regional entropies on the chain
@@ -40,6 +41,9 @@ dimension `q`.
 * Two-dimensional area-law manuscript (September 24, 2026), Lemma 3.1 (`lem:tail`),
   `02-initial.tex`, lines 34–69.
   Source revision: `openai/math@adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
+
+Moved from TNLean, `TNLean/MPS/AreaLaw/Entropy/ComponentReduction.lean` at commit `021ba0bd19`
+(Apache-2.0).
 -/
 
 open Matrix
@@ -424,3 +428,60 @@ theorem ChainInteraction.log_surprisalMoment_interval_le_of_consecutive_terms
 end ConsecutiveWindows
 
 end ManyBody
+
+section
+
+open ManyBody
+    (ChainSupport DomainSupport DomainSupport.toChainSupport DomainSupport.toChainSupport_injective IsChainSupport IsDomainSupport boundaryEdges exists_sitePos_eq interval mem_boundaryEdges mem_interval sitePos sitePos_mem val_eq_add_one_of_sitePos_eq_add_one DomainInteraction)
+
+open Matrix
+
+open scoped ComplexOrder Kronecker symmDiff Matrix.Norms.L2Operator
+
+open ManyBody (IsGapped groundSpace)
+
+section
+
+section TheoremA
+
+variable {Λ : Finset ℤ} {q R : ℕ} {J Δ : ℝ}
+
+/-- Removing boundary cuts across gaps preserves entropy and leaves the actual domain boundary.
+Source: the one-dimensional note, part1_arealaw.tex, lines 64–93. -/
+theorem ManyBody.DomainInteraction.exists_regionEntropy_eq_card_boundaryEdges_eq
+    {Λ : Finset ℤ} {q R : ℕ} {E₀ Δ : ℝ}
+    (h : DomainInteraction Λ q R) (hh : ∀ X, (h.term X).IsHermitian)
+    {Ω : EuclideanSpace ℂ (Fin Λ.card → Fin q)}
+    (hΔ : 0 < Δ) (hΩ : ‖Ω‖ = 1) (hgap : IsGapped h.hamiltonian E₀ Δ)
+    (hspan : groundSpace h.hamiltonian E₀ = Submodule.span ℂ {Ω})
+    (A : Finset ℤ) :
+    ∃ A' : Finset (Fin Λ.card),
+      ManyBody.regionEntropy (X := fun _ ↦ Fin q) Ω A' =
+        ManyBody.regionEntropy (X := fun _ ↦ Fin q) Ω (ManyBody.domainRegion Λ A) ∧
+      (boundaryEdges Λ.card A').card = (ManyBody.domainBoundaryEdges Λ A).card := by
+  classical
+  set G := (boundaryEdges Λ.card (ManyBody.domainRegion Λ A)).filter
+    fun p ↦ ¬ ManyBody.IsDomainEdge Λ p
+  have hG : ∀ p ∈ G, p + 1 < Λ.card ∧ ManyBody.regionEntropy (X := fun _ ↦ Fin q)
+      Ω (interval Λ.card 0 (p + 1)) = 0 := by
+    intro p hp
+    obtain ⟨hpb, hpe⟩ := Finset.mem_filter.mp hp
+    have hp1 := (mem_boundaryEdges.mp hpb).1
+    refine ⟨hp1,
+      ManyBody.Interaction.entropy_eq_zero_of_forall_subset_or_disjoint (Φ := h) hh hΔ hΩ hgap
+        hspan (B := interval Λ.card 0 (p + 1)) fun X ↦ ?_⟩
+    exact X.2.subset_or_disjoint_of_gap hp1 fun he ↦ hpe ⟨hp1, he⟩
+  obtain ⟨A', hS, hB⟩ :=
+    ManyBody.exists_regionEntropy_eq_boundaryEdges_eq_symmDiff hΩ G hG (ManyBody.domainRegion Λ A)
+  have hsymm : boundaryEdges Λ.card (ManyBody.domainRegion Λ A) ∆ G =
+      (boundaryEdges Λ.card (ManyBody.domainRegion Λ A)).filter (ManyBody.IsDomainEdge Λ) := by
+    ext p
+    simp only [G, Finset.mem_symmDiff, Finset.mem_filter]
+    tauto
+  exact ⟨A', hS, by rw [hB, hsymm, ManyBody.card_domainBoundaryEdges]⟩
+
+end TheoremA
+
+end
+
+end

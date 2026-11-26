@@ -8,6 +8,7 @@ import Mathlib.Analysis.Complex.Basic
 import Mathlib.LinearAlgebra.UnitaryGroup
 import Mathlib.LinearAlgebra.Matrix.Hermitian
 import Mathlib.LinearAlgebra.Matrix.Trace
+import Mathlib.LinearAlgebra.Matrix.DotProduct
 
 /-!
 # Strong and weak symmetries of a matrix

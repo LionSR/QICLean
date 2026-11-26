@@ -8,6 +8,8 @@ import Mathlib.LinearAlgebra.FiniteDimensional.Defs
 import Mathlib.LinearAlgebra.Basis.VectorSpace
 import Mathlib.LinearAlgebra.Pi
 import Mathlib.Analysis.Complex.Basic
+import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
+import Mathlib.LinearAlgebra.FiniteDimensional.Basic
 
 /-!
 # Spanning families indexed by the dimension bound
@@ -19,6 +21,10 @@ Schmidt rank across the cut, it gives `D` slices, indexed by `Fin D`, that span 
 Moved from TNLean, `TNLean/Algebra/FinSpanOfFinrank.lean` at commit `49b78ed821` (Apache-2.0).
 
 Moved from TNLean, `TNLean/MPS/FundamentalTheorem/WordModule/FiniteTraceTest.lean` at commit
+`021ba0bd19` (Apache-2.0).
+
+Moved from TNLean,
+`TNLean/MPS/AreaLaw/LowEnergyAlgorithm/ImprovingFamily/NestedChebyshevWordViability.lean` at commit
 `021ba0bd19` (Apache-2.0).
 -/
 
@@ -151,5 +157,28 @@ theorem prod_map_mem_span_of_finrank_le {A : Type*} [Ring A] [Algebra ℂ A]
       omega
   have hplat := hmono.le_of_plateau hstep hr hbound w.length
   exact hplat (hmem w.length w hw le_rfl)
+
+end
+
+section
+
+open scoped BigOperators TensorProduct InnerProductSpace Matrix.Norms.L2Operator
+
+section
+
+open Matrix
+
+/-- Words of length one in a finite family of operators have the same images
+as the operators themselves. Supporting ALVV, arXiv:1602.08828v2, `l:er`,
+lines 597–622. -/
+theorem Submodule.iSup_map_ofFn_prod_fin_one {M ι : Type*} [NormedAddCommGroup M]
+    [InnerProductSpace ℂ M] (A : ι → M →L[ℂ] M) (S : Submodule ℂ M) :
+    (⨆ w : Fin 1 → ι, S.map ((List.ofFn (fun j ↦ A (w j))).prod : M →ₗ[ℂ] M)) =
+      ⨆ i, S.map (A i : M →ₗ[ℂ] M) := by
+  rw [← (Equiv.funUnique (Fin 1) ι).symm.iSup_comp]
+  simp only [Equiv.funUnique_symm_apply, List.ofFn_succ, List.ofFn_zero, List.prod_cons,
+    List.prod_nil, mul_one, uniqueElim_const]
+
+end
 
 end

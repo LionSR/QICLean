@@ -334,22 +334,3 @@ theorem blockDecompositionMap_sum {A : Fin d → Matrix (Fin D) (Fin D) ℂ} {N 
 end Kraus
 
 end OneSidedInverse
-
-section CrossProductRigidity
-
-open scoped Matrix BigOperators
-
-namespace Kraus
-
-variable {d D : ℕ}
-
-private theorem ofFn_ne_nil_of_pos {N : ℕ} (hN : 0 < N) (σ : Fin N → Fin d) :
-    List.ofFn σ ≠ [] := by
-  intro h
-  have := congrArg List.length h
-  simp only [List.length_ofFn, List.length_nil] at this
-  omega
-
-end Kraus
-
-end CrossProductRigidity

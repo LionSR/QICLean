@@ -151,7 +151,6 @@ end
 
 section
 
-open scoped ScalarCohomology
 
 open scoped Matrix Matrix.Norms.L2Operator ComplexConjugate
 

@@ -169,7 +169,6 @@ section PointwiseInvariantCompression
 
 open scoped Matrix
 
-open scoped ScalarCohomology
 
 namespace Matrix
 
@@ -207,7 +206,6 @@ open scoped Matrix Matrix.Norms.L2Operator ComplexOrder
 
 open Filter Topology
 
-open scoped ScalarCohomology
 
 namespace Set.Icc
 
