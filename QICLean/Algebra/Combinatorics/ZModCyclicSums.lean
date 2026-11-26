@@ -16,6 +16,9 @@ import Mathlib.Tactic.Module
 
 This file collects translation-invariance, triangular-counting, window-counting,
 and offset-partition identities for sums over a finite cyclic group.
+
+Moved from TNLean, `TNLean/MPS/CanonicalForm/Periodic/SectorNormalization.lean` at commit
+`021ba0bd19` (Apache-2.0).
 -/
 
 namespace ZModCyclicSums
@@ -355,3 +358,23 @@ theorem sum_offset_partition (F : ZMod N → M) {m : ℕ} (hm1 : 1 ≤ m) (hm : 
 end CyclicSums
 
 end ZModCyclicSums
+
+section PeriodExistence
+
+open scoped Matrix BigOperators ComplexOrder MatrixOrder Matrix.Norms.Operator Kraus
+
+/-- The powers of a primitive `m`-th root of unity in `ℂ` are exactly the
+solutions of `μ ^ m = 1`. -/
+theorem IsPrimitiveRoot.powRange_eq_setOf_pow_eq_one {m : ℕ} [NeZero m] {γ : ℂ}
+    (hγ : IsPrimitiveRoot γ m) :
+    {z : ℂ | ∃ k : Fin m, z = γ ^ (k : ℕ)} = {μ : ℂ | μ ^ m = 1} := by
+  ext z
+  simp only [Set.mem_ofPred_eq]
+  constructor
+  · rintro ⟨k, rfl⟩
+    rw [← pow_mul, mul_comm, pow_mul, hγ.pow_eq_one, one_pow]
+  · intro hz
+    obtain ⟨i, hi, hip⟩ := hγ.eq_pow_of_pow_eq_one hz
+    exact ⟨⟨i, hi⟩, hip.symm⟩
+
+end PeriodExistence

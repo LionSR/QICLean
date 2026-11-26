@@ -11,6 +11,7 @@ import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.LinearAlgebra.Matrix.PosDef
 import Mathlib.Analysis.Complex.Order
 import Mathlib.Algebra.Module.Equiv.Basic
+import QICLean.Algebra.Combinatorics.FinSum
 
 /-!
 # Reindexing complex matrix star algebras
@@ -18,6 +19,8 @@ import Mathlib.Algebra.Module.Equiv.Basic
 Simultaneous reindexing of rows and columns gives a star-algebra equivalence.
 Its underlying map is `Matrix.reindex`; inversion and composition agree with
 those of the index equivalences.
+
+Moved from TNLean, `TNLean/MPS/Operator/Product/DirectSum.lean` at commit `021ba0bd19` (Apache-2.0).
 -/
 
 namespace Matrix
@@ -152,3 +155,20 @@ theorem PosDef.reindex (e : α ≃ β) {A : Matrix α α ℂ} (hA : A.PosDef) :
 end Matrix
 
 end ReindexEndomorphism
+
+section
+
+open scoped Matrix
+
+/-- The trace of a block-diagonal matrix on `Fin (D₁ + D₂)` is the sum of the traces of its
+two diagonal blocks. -/
+theorem Matrix.trace_fromBlocks_submatrix_finSumFinEquiv {D₁ D₂ : ℕ} {R : Type*}
+    [AddCommMonoid R] (X : Matrix (Fin D₁) (Fin D₁) R) (Y : Matrix (Fin D₂) (Fin D₂) R) :
+    Matrix.trace ((Matrix.fromBlocks X 0 0 Y).submatrix finSumFinEquiv.symm
+      finSumFinEquiv.symm) = Matrix.trace X + Matrix.trace Y := by
+  simp only [Matrix.trace, Matrix.diag, Matrix.submatrix_apply]
+  rw [finSumFinEquiv.symm.sum_comp fun j => Matrix.fromBlocks X 0 0 Y j j,
+    Fintype.sum_sum_type]
+  simp only [Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₂₂]
+
+end

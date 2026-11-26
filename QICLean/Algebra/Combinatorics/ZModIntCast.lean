@@ -21,6 +21,9 @@ Moved from TNLean, `TNLean/Algebra/ZModSmallDifference.lean` at commit `49b78ed8
 
 * `ZMod.intCast_eq_intCast_iff_of_natAbs_sub_lt`
 * `ZMod.intCast_ne_intCast_of_natAbs_sub_lt`
+
+Moved from TNLean, `TNLean/MPS/FundamentalTheorem/OperatorGroup/AssociatorToolkit.lean` at commit
+`021ba0bd19` (Apache-2.0).
 -/
 
 namespace ZMod
@@ -96,3 +99,38 @@ theorem exists_mul_card_filter_emod_or_emod_le (F : Finset (ℤ × ℤ)) (m : �
     (by simpa only [Nat.mul_add, two_mul] using Nat.add_le_add ha hb)
 
 end Finset
+
+section
+
+open scoped Matrix Kronecker
+
+namespace Multiplicative
+
+/-- A statement about every element of `ℤ₂`, written multiplicatively, follows from its
+two instances. -/
+theorem forall_zmod_two {P : Multiplicative (ZMod 2) → Prop}
+    (h0 : P (ofAdd 0)) (h1 : P (ofAdd 1)) : ∀ x, P x := by
+  intro x
+  fin_cases x
+  exacts [h0, h1]
+
+/-- A statement about every element of `ℤ₂ × ℤ₂`, written multiplicatively, follows from its
+four instances. -/
+theorem forall_zmod_two_prod {P : Multiplicative (ZMod 2 × ZMod 2) → Prop}
+    (h00 : P (ofAdd (0, 0))) (h01 : P (ofAdd (0, 1))) (h10 : P (ofAdd (1, 0)))
+    (h11 : P (ofAdd (1, 1))) : ∀ x, P x := by
+  intro x
+  fin_cases x
+  exacts [h00, h01, h10, h11]
+
+/-- A statement about every element of `ℤ₃`, written multiplicatively, follows from its
+three instances. -/
+theorem forall_zmod_three {P : Multiplicative (ZMod 3) → Prop}
+    (h0 : P (ofAdd 0)) (h1 : P (ofAdd 1)) (h2 : P (ofAdd 2)) : ∀ x, P x := by
+  intro x
+  fin_cases x
+  exacts [h0, h1, h2]
+
+end Multiplicative
+
+end

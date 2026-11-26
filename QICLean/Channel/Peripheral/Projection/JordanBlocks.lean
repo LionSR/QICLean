@@ -6,6 +6,17 @@ Authors: TNLean contributors
 import QICLean.Channel.FixedPoint.MeanErgodic.MeanErgodicProjection
 import QICLean.Channel.Schwarz.PositiveMapProperties
 import Mathlib.Analysis.Matrix.Normed
+import Mathlib.LinearAlgebra.Eigenspace.Charpoly
+import Mathlib.LinearAlgebra.Eigenspace.Zero
+import Mathlib.LinearAlgebra.Matrix.Charpoly.Eigs
+import Mathlib.Analysis.Complex.Polynomial.Basic
+import Mathlib.FieldTheory.IsAlgClosed.Spectrum
+import Mathlib.Algebra.Order.BigOperators.Group.Multiset
+import Mathlib.Analysis.Normed.Group.Basic
+import Mathlib.Tactic.Linarith
+import Mathlib.Analysis.Complex.Basic
+import Mathlib.LinearAlgebra.Quotient.Basic
+import Mathlib.Analysis.SpecificLimits.Basic
 
 /-!
 # Trivial Jordan blocks for peripheral eigenvalues — Wolf Proposition 6.2
@@ -40,6 +51,9 @@ formalized by the same route, through `T.HasBoundedOrbits`.
 
 * [M. Wolf, *Quantum Channels & Operations: Guided Tour*, Proposition 6.2][Wolf2012QChannels]
 * Local source: `Notes/WolfNoteTexSource/ch06_spectral_properties.tex`, lines 181--224.
+
+Moved from TNLean, `TNLean/MPS/CanonicalForm/Periodic/Overlap/PeriodicMPSNormLowerBound.lean` at
+commit `021ba0bd19` (Apache-2.0).
 -/
 
 open scoped Matrix ComplexOrder MatrixOrder Matrix.Norms.Frobenius
@@ -502,3 +516,34 @@ theorem peripheral_Jordan_trivial_of_unital
 
 
 end IsPositiveMap
+
+section
+
+open Kraus (blockTensor)
+
+set_option relaxedAutoImplicit false
+
+set_option maxSynthPendingDepth 3
+
+set_option linter.mathlibStandardSet true
+
+open scoped Matrix
+
+/-- Wolf Proposition 6.2 identifies geometric and algebraic multiplicity at one
+for a positive unital map. -/
+theorem simple_fixedEigenvalue_of_unital_positive
+    {D : ℕ} [NeZero D]
+    (T : Module.End ℂ (Matrix (Fin D) (Fin D) ℂ))
+    (hPos : IsPositiveMap T) (hOne : T 1 = 1)
+    (hDim : Module.finrank ℂ (Module.End.eigenspace T 1) = 1) :
+    T.charpoly.rootMultiplicity 1 = 1 := by
+  have hEq : Module.End.maxGenEigenspace T 1 = Module.End.eigenspace T 1 := by
+    apply le_antisymm _ Module.End.eigenspace_le_maxGenEigenspace
+    intro X hX
+    obtain ⟨k, hk⟩ := (Module.End.mem_maxGenEigenspace T 1 X).mp hX
+    have h := hPos.peripheral_Jordan_trivial_of_unital hOne 1 (by simp) k X hk
+    rw [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply] at h
+    exact Module.End.mem_eigenspace_iff.mpr (sub_eq_zero.mp h)
+  rw [← LinearMap.finrank_maxGenEigenspace_eq, hEq, hDim]
+
+end

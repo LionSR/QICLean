@@ -6,6 +6,7 @@ Authors: QICLean contributors
 import Mathlib.Basic.Complex.Basic
 import Mathlib.Data.Matrix.Block
 import Mathlib.LinearAlgebra.Matrix.Kronecker
+import Mathlib.NumberTheory.Zsqrtd.ToReal
 
 /-!
 # Entrywise images of matrices over a ring embedded in the complex numbers
@@ -35,6 +36,8 @@ Changes: the declarations live in the namespace `Matrix` instead of `MPSTensor`,
   matrix unit.
 * `Matrix.complexOfRing_ne_zero`: the entrywise image along an injective ring homomorphism of a
   nonzero matrix is nonzero; injectivity itself is `Matrix.map_injective`.
+
+Moved from TNLean, `TNLean/MPS/Examples/Rings/Zsqrt2Ring.lean` at commit `021ba0bd19` (Apache-2.0).
 -/
 
 open scoped Matrix
@@ -111,3 +114,29 @@ theorem complexOfRing_ne_zero (hf : Function.Injective f) {m n : Type*} {X : Mat
   fun h => hX (Matrix.map_injective hf (h.trans (complexOfRing_zero f).symm))
 
 end Matrix
+
+section
+
+open scoped Matrix Kronecker
+
+/-- Two is not the square of an integer. -/
+theorem two_ne_int_mul_self (n : ℤ) : (2 : ℤ) ≠ n * n := by
+  intro hn
+  refine Nat.not_exists_sq (m := 1) (n := 2) (by norm_num) (by norm_num) ⟨n.natAbs, ?_⟩
+  exact_mod_cast (Int.natAbs_mul_self (a := n)).trans hn.symm
+
+/-- The embedding of `ℤ√2` into the complex numbers sending `√2` to the positive real square
+root of two. -/
+noncomputable def zsqrt2ToComplex : ℤ√2 →+* ℂ :=
+  Complex.ofRealHom.comp (Zsqrtd.toReal (by norm_num))
+
+theorem zsqrt2ToComplex_injective : Function.Injective zsqrt2ToComplex :=
+  fun _ _ h => Zsqrtd.toReal_injective _ two_ne_int_mul_self (Complex.ofReal_injective h)
+
+theorem zsqrt2ToComplex_ne_zero {x : ℤ√2} (hx : x ≠ 0) : zsqrt2ToComplex x ≠ 0 :=
+  fun h => hx (zsqrt2ToComplex_injective (h.trans (map_zero _).symm))
+
+@[simp] theorem zsqrt2ToComplex_sqrtd : zsqrt2ToComplex Zsqrtd.sqrtd = (Real.sqrt 2 : ℂ) := by
+  simp [zsqrt2ToComplex, Zsqrtd.sqrtd]
+
+end

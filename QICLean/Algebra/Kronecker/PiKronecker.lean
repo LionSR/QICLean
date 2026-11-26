@@ -7,6 +7,7 @@ import Mathlib.Analysis.Complex.Basic
 import Mathlib.LinearAlgebra.Matrix.PosDef
 import Mathlib.LinearAlgebra.Matrix.Trace
 import QICLean.Algebra.Unitary.MatrixUnitaryBetween
+import Mathlib.Order.Interval.Finset.Fin
 
 /-!
 # The Kronecker product of a finite family of matrices
@@ -38,6 +39,9 @@ coisometries, unitaries and basis inclusions.
 * `Matrix.sum_star_piKronecker_mulVec_mul`, `Matrix.sum_norm_sq_piKronecker_mulVec_le` — inner
   products and norms after a Kronecker product of partial isometries
   (arXiv:2307.01696, Supplemental Material, proof of Lemma 1).
+
+Moved from TNLean, `TNLean/MPS/Tensor/TruncationCommutator.lean`,
+`TNLean/MPS/MPU/DomainWall/FiniteGroupDetectorEndpoint.lean` at commit `021ba0bd19` (Apache-2.0).
 -/
 
 open scoped BigOperators Matrix ComplexOrder Kronecker
@@ -306,3 +310,241 @@ theorem sum_norm_sq_piKronecker_mulVec_le {n : ν → Type*} [∀ k, Fintype (n 
 end Isometry
 
 end Matrix
+
+section
+
+open scoped Matrix
+
+namespace Matrix
+
+variable {n : Type*} [Fintype n] [DecidableEq n]
+
+/-- **The group commutator** `U₂† U₁† U₂ U₁` of two operators, the operator whose expectation
+value detects the anomaly in arXiv:2405.00439, `detecZ2`, `Papers/2405.00439/MPU-DW.tex`
+lines 2097--2102, with `U₁ = U^{[i₁,j₁]}` and `U₂ = U^{[i₂,j₂]}`. -/
+def groupCommutator (U₁ U₂ : Matrix n n ℂ) : Matrix n n ℂ :=
+  U₂ᴴ * U₁ᴴ * U₂ * U₁
+
+/-- **The commutator of two unitaries acts by the exchange phase.** If `U₁† U₁ = 1`,
+`U₂† U₂ = 1` and `U₂ U₁ ψ = c U₁ U₂ ψ`, then `U₂† U₁† U₂ U₁ ψ = c ψ`.
+
+Source: arXiv:2405.00439, `Papers/2405.00439/MPU-DW.tex` lines 2097--2102 (the expectation
+value of the commutator "precisely measures the commutator between `U^{[i₁,j₁]}` and
+`U^{[i₂,j₂]}`"). -/
+theorem groupCommutator_mulVec_eq_smul {U₁ U₂ : Matrix n n ℂ} (hU₁ : U₁ᴴ * U₁ = 1)
+    (hU₂ : U₂ᴴ * U₂ = 1) {ψ : n → ℂ} {c : ℂ} (h : U₂ *ᵥ (U₁ *ᵥ ψ) = c • (U₁ *ᵥ (U₂ *ᵥ ψ))) :
+    groupCommutator U₁ U₂ *ᵥ ψ = c • ψ := by
+  have hc : groupCommutator U₁ U₂ *ᵥ ψ = U₂ᴴ *ᵥ (U₁ᴴ *ᵥ (U₂ *ᵥ (U₁ *ᵥ ψ))) := by
+    simp only [groupCommutator, mulVec_mulVec, Matrix.mul_assoc]
+  rw [hc, h, mulVec_smul, mulVec_smul, mulVec_mulVec _ U₁ᴴ U₁, hU₁, one_mulVec,
+    mulVec_mulVec _ U₂ᴴ U₂, hU₂, one_mulVec]
+
+/-- **The expectation value of the commutator** (arXiv:2405.00439, `detecZ2`,
+`Papers/2405.00439/MPU-DW.tex` lines 2097--2102): if `U₁`, `U₂` are unitary and
+`U₂ U₁ ψ = c U₁ U₂ ψ`, then `⟨ψ| U₂† U₁† U₂ U₁ |ψ⟩ = c ⟨ψ|ψ⟩`. -/
+theorem star_dotProduct_groupCommutator_mulVec {U₁ U₂ : Matrix n n ℂ} (hU₁ : U₁ᴴ * U₁ = 1)
+    (hU₂ : U₂ᴴ * U₂ = 1) {ψ : n → ℂ} {c : ℂ} (h : U₂ *ᵥ (U₁ *ᵥ ψ) = c • (U₁ *ᵥ (U₂ *ᵥ ψ))) :
+    star ψ ⬝ᵥ (groupCommutator U₁ U₂ *ᵥ ψ) = c * (star ψ ⬝ᵥ ψ) := by
+  rw [groupCommutator_mulVec_eq_smul hU₁ hU₂ h, dotProduct_smul, smul_eq_mul]
+
+section OnSite
+
+variable {ι : Type*} [Fintype ι] [DecidableEq ι] {N : ℕ}
+
+/-- **The truncation of an on-site symmetry** `⊗_{i ∈ S} u` to a set `S` of sites of a chain of
+`N` sites: `u` on the sites of `S` and the identity elsewhere.
+
+Source: arXiv:2405.00439, `Papers/2405.00439/MPU-DW.tex` lines 2104--2105 (truncating
+`U = ⊗_{i ∈ Λ} u^{[i]}` gives `U^{[a,b]} = ⊗_{i ∈ [a,b]} u^{[i]}`). -/
+noncomputable def onSiteTruncation (u : Matrix ι ι ℂ) (S : Finset (Fin N)) :
+    Matrix (Fin N → ι) (Fin N → ι) ℂ :=
+  Matrix.piKronecker fun k ↦ if k ∈ S then u else 1
+
+omit [Fintype ι] in
+/-- The truncation of an on-site symmetry to all sites is the symmetry `u^{⊗N}`. -/
+theorem onSiteTruncation_univ (u : Matrix ι ι ℂ) :
+    onSiteTruncation u (Finset.univ : Finset (Fin N)) = Matrix.piKronecker fun _ : Fin N ↦ u := by
+  simp [onSiteTruncation]
+
+/-- A truncation of an on-site symmetry with `u† u = 1` satisfies the same relation. -/
+theorem onSiteTruncation_conjTranspose_mul_self {u : Matrix ι ι ℂ} (hu : uᴴ * u = 1)
+    (S : Finset (Fin N)) : (onSiteTruncation u S)ᴴ * onSiteTruncation u S = 1 := by
+  rw [onSiteTruncation, Matrix.conjTranspose_piKronecker, Matrix.piKronecker_mul]
+  convert Matrix.piKronecker_one (ι := fun _ : Fin N ↦ ι) using 2
+  funext k
+  split_ifs <;> simp [hu]
+
+/-- **Truncations of an on-site symmetry commute up to the identity** (arXiv:2405.00439,
+`Papers/2405.00439/MPU-DW.tex` lines 2104--2106): for `u† u = 1` and any two sets of sites,
+`(U^{S₂})† (U^{S₁})† U^{S₂} U^{S₁} = 1`. On every site the four factors are powers of `u`
+and `u†`, and they cancel. -/
+theorem groupCommutator_onSiteTruncation {u : Matrix ι ι ℂ} (hu : uᴴ * u = 1)
+    (S₁ S₂ : Finset (Fin N)) :
+    groupCommutator (onSiteTruncation u S₁) (onSiteTruncation u S₂) = 1 := by
+  rw [groupCommutator, onSiteTruncation, onSiteTruncation, Matrix.conjTranspose_piKronecker,
+    Matrix.conjTranspose_piKronecker, Matrix.piKronecker_mul, Matrix.piKronecker_mul,
+    Matrix.piKronecker_mul]
+  convert Matrix.piKronecker_one (ι := fun _ : Fin N ↦ ι) using 2
+  funext k
+  split_ifs <;> simp [hu, Matrix.mul_assoc]
+
+/-- **The anomaly detector of an on-site symmetry is one** (arXiv:2405.00439,
+`Papers/2405.00439/MPU-DW.tex` lines 2104--2106): for `u† u = 1`, any two sets of sites and a
+normalized state `ψ`, `⟨ψ| (U^{S₂})† (U^{S₁})† U^{S₂} U^{S₁} |ψ⟩ = 1`, in agreement with the
+trivial anomaly `ω = 1` of on-site symmetries. -/
+theorem star_dotProduct_groupCommutator_onSiteTruncation_mulVec {u : Matrix ι ι ℂ}
+    (hu : uᴴ * u = 1) (S₁ S₂ : Finset (Fin N)) {ψ : (Fin N → ι) → ℂ} (hψ : star ψ ⬝ᵥ ψ = 1) :
+    star ψ ⬝ᵥ (groupCommutator (onSiteTruncation u S₁) (onSiteTruncation u S₂) *ᵥ ψ) = 1 := by
+  rw [groupCommutator_onSiteTruncation hu, one_mulVec, hψ]
+
+local notation "σX" => !![(0 : ℂ), 1; 1, 0]
+
+local notation "σZ" => !![(1 : ℂ), 0; 0, -1]
+
+/-- A truncation of an on-site symmetry dressed by a unitary `w` at one site is still unitary. -/
+theorem dressed_onSiteTruncation_conjTranspose_mul_self {u w : Matrix ι ι ℂ} (hu : uᴴ * u = 1)
+    (hw : wᴴ * w = 1) (S : Finset (Fin N)) (j : Fin N) :
+    (onSiteTruncation w {j} * onSiteTruncation u S)ᴴ *
+        (onSiteTruncation w {j} * onSiteTruncation u S) = 1 := by
+  rw [conjTranspose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (onSiteTruncation w {j})ᴴ,
+    onSiteTruncation_conjTranspose_mul_self hw, Matrix.one_mul,
+    onSiteTruncation_conjTranspose_mul_self hu]
+
+/-- **The anomaly detector depends on the endpoints of the truncations.** For the on-site
+symmetry `X^{⊗N}`, whose anomaly is trivial, take the truncations
+`U₁ = Z_{j₁} X^{S₁}` and `U₂ = Z_{j₂} X^{S₂}`, each dressed by the Pauli matrix `Z` at one
+endpoint. If `j₁ ∈ S₂`, `j₂ ∉ S₁` and `j₁ ≠ j₂`, then `U₂† U₁† U₂ U₁ = -1`.
+
+These are circuit truncations in the sense of arXiv:2405.00439, `Papers/2405.00439/MPU-DW.tex`
+lines 2081--2087. The symmetry `X^{⊗N}` is the depth-two circuit whose first layer applies
+`X ⊗ ZX` to the pairs of sites `(2k, 2k+1)` and whose second layer applies `Z` to every odd site,
+a gate on the pair `(2k+1, 2k+2)`; indeed `Z · ZX = X`. Dropping the gates that are not
+contained in an interval `[i, j]` with `i` even and `j` odd keeps both factors on every odd
+site of `[i, j]` except `j`, which keeps only `ZX`, so the truncation is `Z_j X^{⊗[i,j]}`; this
+identification of the circuit truncation is not formalized.
+For `i₂ < i₁ < j₁ < j₂` of these parities the hypotheses hold, and the expectation value of the
+commutator on every normalized state is `-1`, not the trivial anomaly `1`
+(`star_dotProduct_groupCommutator_dressed_onSiteTruncation_pauliX`).
+
+This is a counterexample to arXiv:2405.00439, `detecZ2`, lines 2097--2102, read for an
+arbitrary circuit truncation. -/
+theorem groupCommutator_dressed_onSiteTruncation_pauliX {S₁ S₂ : Finset (Fin N)} {j₁ j₂ : Fin N}
+    (hj₁ : j₁ ∈ S₂) (hj₂ : j₂ ∉ S₁) (hj : j₁ ≠ j₂) :
+    groupCommutator (onSiteTruncation σZ {j₁} * onSiteTruncation σX S₁)
+        (onSiteTruncation σZ {j₂} * onSiteTruncation σX S₂) = -1 := by
+  simp only [groupCommutator, onSiteTruncation, Matrix.piKronecker_mul,
+      Matrix.conjTranspose_piKronecker]
+  rw [← neg_one_smul ℂ (1 : Matrix (Fin N → Fin 2) (Fin N → Fin 2) ℂ),
+    ← Matrix.piKronecker_ite_smul_one (ι := fun _ ↦ Fin 2) j₁]
+  congr 1
+  funext k
+  simp only [Finset.mem_singleton]
+  by_cases hk₁ : k = j₁
+  · subst hk₁
+    simp only [hj₁, hj, ite_true, ite_false]
+    split_ifs <;> ext a b <;> fin_cases a <;> fin_cases b <;>
+      simp [Matrix.mul_apply, Fin.sum_univ_two]
+  · by_cases hk₂ : k = j₂
+    · subst hk₂
+      simp only [hj₂, hk₁, ite_true, ite_false]
+      split_ifs <;> ext a b <;> fin_cases a <;> fin_cases b <;>
+        simp [Matrix.mul_apply, Fin.sum_univ_two]
+    · simp only [hk₁, hk₂, ite_false]
+      split_ifs <;> ext a b <;> fin_cases a <;> fin_cases b <;>
+        simp [Matrix.mul_apply, Fin.sum_univ_two]
+
+/-- **The detector of the dressed truncations is `-1`** (arXiv:2405.00439, `detecZ2`,
+`Papers/2405.00439/MPU-DW.tex` lines 2097--2102): for the truncations of
+`groupCommutator_dressed_onSiteTruncation_pauliX` and every normalized state `ψ`,
+`⟨ψ| U₂† U₁† U₂ U₁ |ψ⟩ = -1`, although the on-site symmetry `X^{⊗N}` has trivial anomaly. -/
+theorem star_dotProduct_groupCommutator_dressed_onSiteTruncation_pauliX {S₁ S₂ : Finset (Fin N)}
+    {j₁ j₂ : Fin N} (hj₁ : j₁ ∈ S₂) (hj₂ : j₂ ∉ S₁) (hj : j₁ ≠ j₂)
+    {ψ : (Fin N → Fin 2) → ℂ} (hψ : star ψ ⬝ᵥ ψ = 1) :
+    star ψ ⬝ᵥ (groupCommutator (onSiteTruncation σZ {j₁} * onSiteTruncation σX S₁)
+        (onSiteTruncation σZ {j₂} * onSiteTruncation σX S₂) *ᵥ ψ) = -1 := by
+  rw [groupCommutator_dressed_onSiteTruncation_pauliX hj₁ hj₂ hj, neg_mulVec, one_mulVec,
+    dotProduct_neg, hψ]
+
+end OnSite
+
+end Matrix
+
+end
+
+section
+
+open scoped Matrix
+
+namespace Matrix
+
+variable {N : ℕ} {ι : Type*} [Fintype ι] [DecidableEq ι]
+
+/-- The interval truncation `wₐ u^[a,b]`, dressed at its left endpoint.
+Source context: arXiv:2405.00439, Section V, lines 2081–2087 and `detectG`.
+The dressing is an explicit choice, not a hypothesis implicit in that source. -/
+noncomputable def leftDressedOnSiteInterval (u w : Matrix ι ι ℂ) (a b : Fin N) :
+    Matrix (Fin N → ι) (Fin N → ι) ℂ :=
+  onSiteTruncation w {a} * onSiteTruncation u (Finset.Icc a b)
+
+/-- The six-factor detector at group-element order two, with forward action
+`T₀₀`, then `T₁₁`, then `T₂₂` on kets. Source: arXiv:2405.00439, `detectG`,
+lines 2108–2117. The order of multiplication is specified explicitly. -/
+def cyclicTwoTruncationDetector (T : Fin N → Fin N → Matrix ι ι ℂ)
+    (a₀ a₁ a₂ b₀ b₁ b₂ : Fin N) : Matrix ι ι ℂ :=
+  (T a₀ b₁)ᴴ * (T a₂ b₂)ᴴ * (T a₁ b₀)ᴴ * T a₂ b₂ * T a₁ b₁ * T a₀ b₀
+
+/-- Every interval in a left-dressed on-site family is unitary if both one-site
+matrices are unitary. Source context: arXiv:2405.00439, Section V, lines
+2081–2087. This is a property of the explicit family, not a circuit comparison. -/
+theorem leftDressedOnSiteInterval_conjTranspose_mul_self {u w : Matrix ι ι ℂ}
+    (hu : uᴴ * u = 1) (hw : wᴴ * w = 1) (a b : Fin N) :
+    (leftDressedOnSiteInterval u w a b)ᴴ * leftDressedOnSiteInterval u w a b = 1 :=
+  dressed_onSiteTruncation_conjTranspose_mul_self hu hw (Finset.Icc a b) a
+
+local notation "σX" => !![(0 : ℂ), 1; 1, 0]
+
+local notation "σZ" => !![(1 : ℂ), 0; 0, -1]
+
+/-- The chronological finite-group detector at order two is `-1` for the coherent
+left-endpoint dressings `T(a,b) = Zₐ X^[a,b]` and the printed cut order.
+
+Project counterexample to the arbitrary-truncation reading of arXiv:2405.00439,
+`detectG`, lines 2108–2117. The six-factor matrix identity is formalized here;
+the fixed-circuit identification and the general even-order extension are separate
+claims in `docs/audits/2026-11-15_finite_group_detector_endpoints.md`. -/
+theorem cyclicTwoTruncationDetector_leftDressedOnSiteInterval_pauliX
+    {a₀ a₁ a₂ b₀ b₁ b₂ : Fin N}
+    (h₀ : a₀ < a₂) (h₁ : a₂ < a₁) (h₂ : a₁ < b₀)
+    (h₃ : b₀ < b₂) (h₄ : b₂ < b₁) :
+    cyclicTwoTruncationDetector (leftDressedOnSiteInterval σX σZ)
+      a₀ a₁ a₂ b₀ b₁ b₂ = -1 := by
+  simp only [cyclicTwoTruncationDetector, leftDressedOnSiteInterval,
+    onSiteTruncation, Matrix.piKronecker_mul, Matrix.conjTranspose_piKronecker]
+  rw [← neg_one_smul ℂ (1 : Matrix (Fin N → Fin 2) (Fin N → Fin 2) ℂ),
+    ← Matrix.piKronecker_ite_smul_one (ι := fun _ ↦ Fin 2) a₁]
+  congr 1
+  funext k
+  simp only [Finset.mem_singleton, Finset.mem_Icc, Fin.le_def, Fin.ext_iff]
+  simp only [Fin.lt_def] at h₀ h₁ h₂ h₃ h₄
+  split_ifs <;> first
+    | omega
+    | (ext i j; fin_cases i <;> fin_cases j <;>
+        simp [Matrix.mul_apply, Fin.sum_univ_two])
+
+/-- The six-factor finite-group detector of the explicit dressed interval family
+has expectation `-1` on every normalized state. Source context:
+arXiv:2405.00439, `detectG`, lines 2108–2117; this is the matrix counterexample
+above, not the claimed anomaly detection theorem. -/
+theorem star_dotProduct_cyclicTwoTruncationDetector_leftDressedOnSiteInterval_pauliX
+    {a₀ a₁ a₂ b₀ b₁ b₂ : Fin N}
+    (h₀ : a₀ < a₂) (h₁ : a₂ < a₁) (h₂ : a₁ < b₀)
+    (h₃ : b₀ < b₂) (h₄ : b₂ < b₁)
+    {ψ : (Fin N → Fin 2) → ℂ} (hψ : star ψ ⬝ᵥ ψ = 1) :
+    star ψ ⬝ᵥ (cyclicTwoTruncationDetector (leftDressedOnSiteInterval σX σZ)
+      a₀ a₁ a₂ b₀ b₁ b₂ *ᵥ ψ) = -1 := by
+  rw [cyclicTwoTruncationDetector_leftDressedOnSiteInterval_pauliX h₀ h₁ h₂ h₃ h₄,
+    neg_mulVec, one_mulVec, dotProduct_neg, hψ]
+
+end Matrix
+
+end

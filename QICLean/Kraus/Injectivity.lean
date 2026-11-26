@@ -5,6 +5,11 @@ Authors: TNLean contributors
 -/
 import QICLean.Kraus.WordSpan
 import QICLean.Channel.Schwarz.Basic
+import Mathlib.LinearAlgebra.Basis.VectorSpace
+import Mathlib.LinearAlgebra.Finsupp.LinearCombination
+import Mathlib.Algebra.Algebra.Bilinear
+import Mathlib.Algebra.Module.Submodule.Range
+import Mathlib.Data.Matrix.Basis
 
 /-!
 # Injectivity and normality of finite Kraus families
@@ -26,6 +31,9 @@ biconditional obtained by applying conjugate transposition twice.
 * `Kraus.IsNBlkInjective`: injectivity after blocking `N` letters into words
 * `Kraus.isNBlkInjective_conjTranspose_iff`: block injectivity is invariant under adjoints
 * `Kraus.IsNormal`: eventual block injectivity at some positive blocking length
+
+Moved from TNLean, `TNLean/MPS/Tensor/Words/OneSidedInverse.lean` at commit `021ba0bd19`
+(Apache-2.0).
 -/
 
 open scoped Matrix BigOperators
@@ -248,3 +256,83 @@ theorem hasEventuallyFullWordSpan_iff_exists_pos_of_isTP [Fintype ι]
       ⟨N, fun m hNm => wordSpan_eq_top_of_ge_of_isTP K hTP hN hNm⟩
 
 end Kraus
+
+section OneSidedInverse
+
+open scoped Matrix BigOperators
+
+namespace Kraus
+
+variable {d D : ℕ}
+
+/-- An injective tensor has a linear right inverse: a linear map
+`Ψ : M_D(ℂ) → ℂ^d` such that `Φ ∘ Ψ = id`, where `Φ` is the linear combination map. -/
+theorem IsInjective.exists_rightInverse {A : Fin d → Matrix (Fin D) (Fin D) ℂ} (hA : Kraus.IsInjective A) :
+    ∃ Ψ : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] (Fin d → ℂ),
+      ∀ X, Fintype.linearCombination ℂ A (Ψ X) = X := by
+  obtain ⟨Ψ, hΨ⟩ := (Fintype.linearCombination ℂ A).exists_rightInverse_of_surjective
+    (LinearMap.range_eq_top.mpr hA.linearCombination_surjective)
+  exact ⟨Ψ, fun X => by simpa using LinearMap.congr_fun hΨ X⟩
+
+/-- An `N`-block-injective tensor has a linear right inverse for the span of
+length-`N` word products.
+
+This is the algebraic right inverse denoted by `Ω_u` in arXiv:1708.00029,
+Appendix A, equations `eq:Fu` and `eq:Omegauprop`, after specializing to a
+chosen sector tensor and an injective repetition length. -/
+theorem IsNBlkInjective.exists_rightInverse {A : Fin d → Matrix (Fin D) (Fin D) ℂ} {N : ℕ}
+    (hA : Kraus.IsNBlkInjective A N) :
+    ∃ Ω : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] ((Fin N → Fin d) → ℂ),
+      ∀ X,
+        Fintype.linearCombination ℂ
+          (fun σ : Fin N → Fin d => Kraus.evalWord A (List.ofFn σ)) (Ω X) = X := by
+  obtain ⟨Ω, hΩ⟩ :=
+    (Fintype.linearCombination ℂ
+      (fun σ : Fin N → Fin d => Kraus.evalWord A (List.ofFn σ))).exists_rightInverse_of_surjective
+      (LinearMap.range_eq_top.mpr hA.linearCombination_surjective)
+  exact ⟨Ω, fun X => by simpa using LinearMap.congr_fun hΩ X⟩
+
+/-- Noncomputable right inverse for the length-`N` word span of an
+`N`-block-injective tensor. -/
+noncomputable def blockDecompositionMap {A : Fin d → Matrix (Fin D) (Fin D) ℂ} {N : ℕ}
+    (hA : Kraus.IsNBlkInjective A N) :
+    Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] ((Fin N → Fin d) → ℂ) :=
+  (hA.exists_rightInverse).choose
+
+theorem blockDecompositionMap_spec {A : Fin d → Matrix (Fin D) (Fin D) ℂ} {N : ℕ}
+    (hA : Kraus.IsNBlkInjective A N) (X : Matrix (Fin D) (Fin D) ℂ) :
+    Fintype.linearCombination ℂ
+      (fun σ : Fin N → Fin d => Kraus.evalWord A (List.ofFn σ))
+      (blockDecompositionMap hA X) = X :=
+  (hA.exists_rightInverse).choose_spec X
+
+@[simp]
+theorem blockDecompositionMap_sum {A : Fin d → Matrix (Fin D) (Fin D) ℂ} {N : ℕ}
+    (hA : Kraus.IsNBlkInjective A N) (X : Matrix (Fin D) (Fin D) ℂ) :
+    ∑ σ : Fin N → Fin d,
+      blockDecompositionMap hA X σ • Kraus.evalWord A (List.ofFn σ) = X := by
+  have := blockDecompositionMap_spec hA X
+  rwa [Fintype.linearCombination_apply] at this
+
+end Kraus
+
+end OneSidedInverse
+
+section CrossProductRigidity
+
+open scoped Matrix BigOperators
+
+namespace Kraus
+
+variable {d D : ℕ}
+
+private theorem ofFn_ne_nil_of_pos {N : ℕ} (hN : 0 < N) (σ : Fin N → Fin d) :
+    List.ofFn σ ≠ [] := by
+  intro h
+  have := congrArg List.length h
+  simp only [List.length_ofFn, List.length_nil] at this
+  omega
+
+end Kraus
+
+end CrossProductRigidity

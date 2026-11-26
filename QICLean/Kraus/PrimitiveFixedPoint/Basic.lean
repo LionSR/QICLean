@@ -8,6 +8,7 @@ import QICLean.Channel.Schwarz.Basic
 import Mathlib.Analysis.Normed.Operator.CompleteCodomain
 import QICLean.Channel.KrausMap.KrausMap
 import QICLean.Channel.Peripheral.Spectrum.Spectrum
+import QICLean.Kraus.Transfer
 
 /-!
 # Primitive fixed points of finite Kraus families
@@ -38,6 +39,10 @@ The peripheral-spectrum and irreducibility consequences are kept in separate dow
 modules so that this basic layer has the smallest useful dependency surface.
 * `Kraus.HasComplementaryFixedPointGap.isPrimitive`: peripheral primitivity from a complementary
   fixed-point gap.
+
+Moved from TNLean, `TNLean/MPS/Transfer/Primitivity/PrimitiveFixedPoint.lean`,
+`TNLean/MPS/ParentHamiltonian/LocalExpectation/LocalObservableInsertion.lean` at commit `021ba0bd19`
+(Apache-2.0).
 -/
 
 open scoped Matrix Matrix.Norms.Operator ComplexOrder BigOperators
@@ -196,3 +201,85 @@ theorem HasComplementaryFixedPointGap.isPrimitive
 end Peripheral
 
 end Kraus
+
+section
+
+open scoped Matrix Matrix.Norms.Operator ComplexOrder BigOperators Kraus
+
+/-- The rank-one fixed-point projection \(X\mapsto(\operatorname{tr}X/\operatorname{tr}
+\rho)\rho\) is unchanged when the fixed point is rescaled by a nonzero scalar. -/
+theorem fixedPointProj_smul {D : ℕ} (ρ : Matrix (Fin D) (Fin D) ℂ) {c : ℂ}
+    (hcρ : Matrix.trace (c • ρ) ≠ 0) (hρ : Matrix.trace ρ ≠ 0) :
+    fixedPointProj (c • ρ) hcρ = fixedPointProj ρ hρ := by
+  have hc : c ≠ 0 := by
+    rintro rfl
+    simp at hcρ
+  ext X i j
+  simp only [fixedPointProj, LinearMap.coe_mk, AddHom.coe_mk, Matrix.trace_smul,
+    smul_eq_mul, Matrix.smul_apply]
+  field_simp
+
+/-- Dividing a matrix of nonzero trace by its own trace produces a matrix of unit
+trace: the normalized representative of the ray through it. -/
+theorem Matrix.trace_inv_trace_smul {D : ℕ} {ρ : Matrix (Fin D) (Fin D) ℂ}
+    (hρ : Matrix.trace ρ ≠ 0) : Matrix.trace ((Matrix.trace ρ)⁻¹ • ρ) = 1 := by
+  rw [Matrix.trace_smul, smul_eq_mul, inv_mul_cancel₀ hρ]
+
+/-- Dividing a positive-definite matrix by its own trace, which is a positive real,
+leaves it positive definite. -/
+theorem Matrix.PosDef.inv_trace_smul {D : ℕ} [NeZero D]
+    {ρ : Matrix (Fin D) (Fin D) ℂ}
+    (hρ : ρ.PosDef) : ((Matrix.trace ρ)⁻¹ • ρ).PosDef :=
+  hρ.smul (inv_pos.mpr hρ.trace_pos)
+
+/-- Rescaling a positive-definite primitive fixed point to unit trace preserves the
+complementary fixed-point gap. Only the ray through the fixed point enters the gap
+certificate, so the normalized witness carries the same primitivity data. -/
+theorem Kraus.HasComplementaryFixedPointGap.smul_inv_trace {d D : ℕ} [NeZero D]
+    {A : Fin d → Matrix (Fin D) (Fin D) ℂ} {ρ : Matrix (Fin D) (Fin D) ℂ}
+    (hP : Kraus.HasComplementaryFixedPointGap A ρ) (hρ : ρ.PosDef) :
+    Kraus.HasComplementaryFixedPointGap A ((Matrix.trace ρ)⁻¹ • ρ) := by
+  have htr_ne : Matrix.trace ρ ≠ 0 := ne_of_gt hρ.trace_pos
+  have hpd : ((Matrix.trace ρ)⁻¹ • ρ).PosDef := hρ.inv_trace_smul
+  have hne : Matrix.trace ((Matrix.trace ρ)⁻¹ • ρ) ≠ 0 := ne_of_gt hpd.trace_pos
+  refine ⟨hP.norm, fun h ↦ hne (by rw [h, Matrix.trace_zero]), hpd.posSemidef, ?_, ?_⟩
+  · rw [LinearMap.map_smul, hP.fixedPoint_is_fixed]
+  · simpa only [fixedPointProj_smul ρ hne htr_ne] using
+      hP.complementary_transfer_map_gap
+
+end
+
+section
+
+open Filter
+
+open scoped BigOperators Matrix Topology Matrix.Norms.Operator
+
+section
+
+variable {d D : ℕ}
+
+/-- The powers of a normalized primitive transfer map converge in operator norm
+ to its rank-one fixed-point projection. Source: Nachtergaele,
+arXiv:cond-mat/9410110, equations (3.1)--(3.2b) and Section 6. -/
+theorem Kraus.HasComplementaryFixedPointGap.transferMap_pow_tendsto_fixedPointProj
+    [NeZero D] {A : Fin d → Matrix (Fin D) (Fin D) ℂ} {ρ : Matrix (Fin D) (Fin D) ℂ}
+    (hP : Kraus.HasComplementaryFixedPointGap A ρ) :
+    let Φ := Module.End.toContinuousLinearMap (𝕜 := ℂ) (Matrix (Fin D) (Fin D) ℂ)
+    Tendsto (fun n : ℕ => Φ ((Kraus.transferMap A) ^ n)) atTop
+      (nhds (Φ (fixedPointProj ρ hP.trace_ne_zero))) := by
+  let Φ := Module.End.toContinuousLinearMap (𝕜 := ℂ) (Matrix (Fin D) (Fin D) ℂ)
+  have hlim : Tendsto (fun n : ℕ => Φ (fixedPointProj ρ hP.trace_ne_zero) +
+      (Φ (Kraus.transferMap A - fixedPointProj ρ hP.trace_ne_zero)) ^ n) atTop
+      (nhds (Φ (fixedPointProj ρ hP.trace_ne_zero) + 0)) :=
+    tendsto_const_nhds.add hP.complement_pow_tendsto_zero
+  simp only [add_zero] at hlim
+  apply hlim.congr'
+  filter_upwards [eventually_ge_atTop (1 : ℕ)] with n hn
+  rw [pow_eq_fixedPointProj_add_compl_pow (Kraus.transferMap A) hP.trace_ne_zero
+    (Kraus.isTracePreservingMap_mapLM_of_isTP A hP.norm) hP.fixedPoint_is_fixed hn,
+    map_add, map_pow]
+
+end
+
+end

@@ -6,6 +6,7 @@ Authors: TNLean contributors
 import Mathlib.Data.Matrix.Block
 import Mathlib.Basic.Complex.Basic
 import Mathlib.LinearAlgebra.Matrix.Kronecker
+import Mathlib.Algebra.BigOperators.Fin
 
 /-!
 # Dependent block-diagonal matrices
@@ -27,6 +28,9 @@ label map.
 - `Matrix.reindex_blockDiagonal'_sigmaFiberBlockEquiv`: regrouping a dependent
   block diagonal produces diagonal multiplicity matrices tensored with the
   labelled blocks.
+
+Moved from TNLean, `TNLean/MPS/FundamentalTheorem/Compression/MultiBlockDirectSum.lean`,
+`TNLean/MPS/MPDO/Fusion/BNTFusionIsometries.lean` at commit `021ba0bd19` (Apache-2.0).
 -/
 
 open scoped Matrix BigOperators Kronecker
@@ -314,3 +318,59 @@ theorem reindex_blockDiagonal'_sigmaFiberBlockEquiv
       Matrix.blockDiagonal'_apply_ne _ _ _ hγδ]
 
 end Matrix
+
+section
+
+open scoped Matrix
+
+namespace Matrix
+
+variable {ι : Type*} [DecidableEq ι] {m : ι → Type*} {α : Type*} [Zero α]
+
+/-- The block-diagonal part of a matrix on a sigma type keeps the entries whose row and column
+lie in the same block. -/
+theorem blockDiagonal'_blockDiag'_apply (M : Matrix (Σ i, m i) (Σ i, m i) α)
+    (x y : Σ i, m i) :
+    blockDiagonal' M.blockDiag' x y = if x.1 = y.1 then M x y else 0 := by
+  obtain ⟨i, p⟩ := x
+  obtain ⟨j, q⟩ := y
+  by_cases h : i = j
+  · subst h
+    simp [blockDiag'_apply]
+  · simp [blockDiagonal'_apply_ne _ _ _ h, h]
+
+end Matrix
+
+end
+
+section
+
+open scoped Matrix BigOperators ComplexOrder Kronecker
+
+open Matrix
+
+namespace Matrix
+
+/-- Conjugating a dependent block-diagonal matrix by another dependent block-diagonal matrix
+acts blockwise. -/
+theorem blockDiagonal'_conj {ι : Type*} [Fintype ι] [DecidableEq ι]
+    {m n : ι → Type*} [∀ i, Fintype (n i)] (F : ∀ i, Matrix (m i) (n i) ℂ)
+    (G : ∀ i, Matrix (n i) (n i) ℂ) :
+    blockDiagonal' F * blockDiagonal' G * (blockDiagonal' F)ᴴ =
+      blockDiagonal' fun i => F i * G i * (F i)ᴴ := by
+  rw [blockDiagonal'_conjTranspose, ← blockDiagonal'_mul, ← blockDiagonal'_mul]
+
+/-- Reindexing the row space of a conjugating matrix by an equivalence commutes with
+conjugation. -/
+theorem submatrix_left_conj_equiv {l m u : Type*} [Fintype l] (A : Matrix m l ℂ)
+    (r : u ≃ m) (X : Matrix l l ℂ) :
+    A.submatrix r id * X * (A.submatrix r id)ᴴ = (A * X * Aᴴ).submatrix r r := by
+  have hleft : A.submatrix r id * X = (A * X).submatrix r id :=
+    (submatrix_mul A X r id id Function.bijective_id).symm
+  rw [hleft]
+  rw [conjTranspose_submatrix]
+  exact (submatrix_mul (A * X) Aᴴ r id r Function.bijective_id).symm
+
+end Matrix
+
+end

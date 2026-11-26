@@ -37,6 +37,9 @@ Moved from TNLean, `TNLean/Algebra/SemiRegularGroupAlgebra.lean` at commit `49b7
 
 - [arXiv:1001.3807](https://arxiv.org/abs/1001.3807) -- N. Schuch, J. I. Cirac,
   D. Pérez-García, *PEPS as ground states: degeneracy and topology*
+
+Moved from TNLean, `TNLean/Algebra/SemiRegularTensorFactor.lean` at commit `021ba0bd19`
+(Apache-2.0).
 -/
 
 open Module LinearMap
@@ -209,3 +212,60 @@ theorem isSemiRegular_dual_iff (ρ : Representation ℂ G V) :
 end SemiRegular
 
 end Representation
+
+section
+
+open Module LinearMap
+
+open scoped TensorProduct
+
+namespace Representation
+
+variable {G V W : Type*} [Group G] [Finite G]
+
+variable [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
+
+variable [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] [Nontrivial W]
+
+/-- Tensoring a semi-regular representation with any nonzero finite-dimensional
+representation preserves semi-regularity. Unlike the invariant-vector argument, the
+second factor need not contain the trivial representation. Source: algebraic extension
+of the tensor-product step in SCP10, Lemma 5.2, lines 1334–1336, using the trace-dual
+identity of Lemma 4.6, lines 1015–1029. -/
+theorem IsSemiRegular.tprod_of_nontrivial {ρ : Representation ℂ G V} (hρ : ρ.IsSemiRegular)
+    (σ : Representation ℂ G W) : (ρ.tprod σ).IsSemiRegular := by
+  let _ := Fintype.ofFinite G
+  classical
+  apply isSemiRegular_of_linearIndependent
+  rw [Fintype.linearIndependent_iff]
+  intro c hc g
+  let e := homTensorHomEquiv ℂ V W V W
+  have ht : ∑ h : G, c h • (ρ h ⊗ₜ[ℂ] σ h) = 0 := by
+    apply e.injective
+    simpa only [map_sum, map_smul, map_zero, e, homTensorHomEquiv_apply,
+      TensorProduct.homTensorHomMap_apply, tprod_apply] using hc
+  let F : (Module.End ℂ V ⊗[ℂ] Module.End ℂ W) →ₗ[ℂ] Module.End ℂ W :=
+    (_root_.TensorProduct.lid ℂ (Module.End ℂ W)).toLinearMap ∘ₗ
+      TensorProduct.map (deltaPairing ρ g) LinearMap.id
+  have hd := congrArg F ht
+  simp only [map_sum, map_smul, map_zero, F, LinearMap.comp_apply, TensorProduct.map_tmul,
+    LinearMap.id_apply, LinearEquiv.coe_coe, TensorProduct.lid_tmul,
+    deltaPairing_rep_of_isSemiRegular ρ hρ, ite_smul, one_smul, zero_smul, smul_ite, smul_zero,
+    Finset.sum_ite_eq, Finset.mem_univ, ite_true] at hd
+  apply (smul_eq_zero.mp hd).resolve_right
+  intro hzero
+  obtain ⟨w, hw⟩ := exists_ne (0 : W)
+  apply hw
+  apply (σ.apply_bijective g).injective
+  simp [hzero]
+
+/-- A nonzero tensor factor may also be placed on the left. Source: the same
+algebraic extension of the tensor-product step in SCP10, Lemma 5.2, lines 1334–1336. -/
+theorem IsSemiRegular.tprod_left_of_nontrivial {ρ : Representation ℂ G V}
+    (hρ : ρ.IsSemiRegular) (σ : Representation ℂ G W) :
+    (σ.tprod ρ).IsSemiRegular :=
+  (hρ.tprod_of_nontrivial σ).of_equiv (TensorProduct.comm ρ σ)
+
+end Representation
+
+end

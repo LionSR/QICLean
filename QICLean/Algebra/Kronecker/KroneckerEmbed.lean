@@ -7,6 +7,9 @@ import Mathlib.Basic.Complex.Basic
 import Mathlib.LinearAlgebra.Matrix.ConjTranspose
 import Mathlib.LinearAlgebra.Matrix.Kronecker
 import Mathlib.RingTheory.MatrixAlgebra
+import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
+import Mathlib.Data.Matrix.PEquiv
+import Mathlib.LinearAlgebra.Matrix.Reindex
 
 /-!
 # Unital Kronecker homomorphisms of complex matrix algebras
@@ -26,6 +29,10 @@ both for continuous functional calculus and for operator-norm `CStarMatrix` cons
 * `Matrix.kronecker_one_mul_one_kronecker_comm` — `A ⊗ 1` and `1 ⊗ B` commute.
 * `Matrix.star_dotProduct_kronecker_one_mulVec_eq_sum_slices` — the quadratic form of `A ⊗ 1` is
   the sum of the quadratic forms of `A` on the slices of a vector.
+
+Moved from TNLean, `TNLean/MPS/Operator/Product/MatrixUnitRegister.lean`,
+`TNLean/MPS/FundamentalTheorem/FixedLength/QuadraticReconstruction.lean`,
+`TNLean/MPS/Operator/Product/OperatorProduct.lean` at commit `021ba0bd19` (Apache-2.0).
 -/
 
 open scoped Kronecker
@@ -160,3 +167,159 @@ theorem Matrix.star_dotProduct_kronecker_one_mulVec_eq_sum_slices [DecidableEq �
   exact Finset.sum_comm
 
 end Slices
+
+section
+
+open scoped Matrix Kronecker BigOperators
+
+namespace Matrix
+
+/-- Reconstruct a matrix from its register blocks by tensoring each block with
+its matrix unit. This is the register identity used in the construction record
+`Notes/OpenProblemsTN/checks/asym_ising_action_data.md`, section 0. -/
+theorem sum_single_kronecker_submatrix
+    {R r k : Type*} [CommSemiring R] [Fintype r] [DecidableEq r]
+    (Z : Matrix (r × k) (r × k) R) :
+    (∑ a : r, ∑ b : r, Matrix.single a b (1 : R) ⊗ₖ
+      Z.submatrix (fun i => (a, i)) (fun j => (b, j))) = Z := by
+  ext ⟨a, i⟩ ⟨b, j⟩
+  simp [Matrix.sum_apply, Matrix.single_apply, Matrix.submatrix_apply, ite_and]
+
+end Matrix
+
+end
+
+section
+
+open scoped Matrix Kronecker
+
+namespace Matrix
+
+variable {n m : Type*} [Fintype n] [Fintype m] [DecidableEq m]
+
+variable {R : Type*} [CommRing R]
+
+/-- The multiplicity slice of a matrix on a doubled index: the `(a, b)` slice
+of `W` is the matrix of entries `W (p, a) (q, b)`. This realizes the tensor
+factorization `M_{nm} = M_n ⊗ M_m` used in PGVWC07, Lemma `lem-horn`
+(arXiv:quant-ph/0608197, MPSarchive.tex lines 1053-1058). -/
+def kroneckerSlice (W : Matrix (n × m) (n × m) R) (a b : m) : Matrix n n R :=
+  fun p q ↦ W (p, a) (q, b)
+
+/-- **PGVWC07, Lemma `lem-horn`** (arXiv:quant-ph/0608197, MPSarchive.tex
+lines 1053-1058) in multiplicity-slice form: `W` solves the amplified matrix
+equation `W (C ⊗ 1) = (B ⊗ 1) W` if and only if every multiplicity slice of
+`W` solves the unamplified equation `X C = B X`. The source phrases this as
+the solution space of the amplified equation being `S ⊗ M_n` for `S` the
+solution space of `X C = B X`; the slice decomposition realizes exactly that
+tensor factorization. -/
+theorem kronecker_one_intertwines_iff_kroneckerSlice_intertwines
+    (B C : Matrix n n R) (W : Matrix (n × m) (n × m) R) :
+    W * (C ⊗ₖ (1 : Matrix m m R)) = (B ⊗ₖ (1 : Matrix m m R)) * W ↔
+      ∀ a b, kroneckerSlice W a b * C = B * kroneckerSlice W a b := by
+  constructor
+  · intro h a b
+    ext p q
+    have h' := congrFun (congrFun h (p, a)) (q, b)
+    simpa [kroneckerSlice, Matrix.mul_apply, Matrix.kroneckerMap_apply, Matrix.one_apply,
+      Fintype.sum_prod_type, mul_comm] using h'
+  · intro h
+    ext ⟨p, a⟩ ⟨q, b⟩
+    have h' := congrFun (congrFun (h a b) p) q
+    simpa [kroneckerSlice, Matrix.mul_apply, Matrix.kroneckerMap_apply, Matrix.one_apply,
+      Fintype.sum_prod_type, mul_comm] using h'
+
+/-- The consequence of PGVWC07 Lemma `lem-horn` used in the uniqueness and
+reconstruction proofs (arXiv:quant-ph/0608197, MPSarchive.tex lines 1094-1095): a
+nonzero simultaneous solution `W` of the amplified equations
+`W (C i ⊗ 1) = (B i ⊗ 1) W` yields a nonzero matrix `X` with `X * C i = B i * X`
+for every `i`. -/
+theorem exists_nonzero_intertwiner_of_kronecker_one_intertwines
+    {ι : Type*} (B C : ι → Matrix n n R) (W : Matrix (n × m) (n × m) R)
+    (hW : W ≠ 0)
+    (h : ∀ i, W * (C i ⊗ₖ (1 : Matrix m m R)) = (B i ⊗ₖ (1 : Matrix m m R)) * W) :
+    ∃ X : Matrix n n R, X ≠ 0 ∧ ∀ i, X * C i = B i * X := by
+  have hslice : ∃ a b, kroneckerSlice W a b ≠ 0 := by
+    by_contra hall
+    push Not at hall
+    refine hW ?_
+    ext ⟨p, a⟩ ⟨q, b⟩
+    have := congrFun (congrFun (hall a b) p) q
+    simpa [kroneckerSlice] using this
+  obtain ⟨a, b, hab⟩ := hslice
+  exact ⟨kroneckerSlice W a b, hab, fun i ↦
+    (kronecker_one_intertwines_iff_kroneckerSlice_intertwines (B i) (C i) W).mp (h i) a b⟩
+
+end Matrix
+
+end
+
+section OperatorProduct
+
+open scoped Matrix BigOperators ComplexOrder Kronecker
+
+open Matrix
+
+namespace Matrix
+
+/-- Taking the Kronecker product with a nonempty identity matrix is injective. -/
+theorem kronecker_one_injective {m n : Type*} {D : ℕ} (hD : 0 < D) :
+    Function.Injective (fun A : Matrix m n ℂ =>
+      A ⊗ₖ (1 : Matrix (Fin D) (Fin D) ℂ)) := by
+  intro A B h
+  let z : Fin D := ⟨0, hD⟩
+  ext x y
+  have hEntry := congrArg (fun M => M (x, z) (y, z)) h
+  simpa [one_apply, z] using hEntry
+
+/-- Taking the Kronecker product with an identity matrix preserves matrix multiplication. -/
+theorem mul_kronecker_one {l m n : Type*} [Fintype m]
+    (A : Matrix l m ℂ) (B : Matrix m n ℂ) (D : ℕ) :
+    (A * B) ⊗ₖ (1 : Matrix (Fin D) (Fin D) ℂ) =
+      (A ⊗ₖ (1 : Matrix (Fin D) (Fin D) ℂ)) *
+        (B ⊗ₖ (1 : Matrix (Fin D) (Fin D) ℂ)) := by
+  simpa only [one_mul] using mul_kronecker_mul A B
+    (1 : Matrix (Fin D) (Fin D) ℂ) (1 : Matrix (Fin D) (Fin D) ℂ)
+
+/-- A matrix product is the identity when its Kronecker amplification by a nonempty identity
+matrix is the identity. -/
+theorem mul_eq_one_of_kronecker_one {m n : Type*} [DecidableEq m] [Fintype n]
+    {D : ℕ} (hD : 0 < D) (F : Matrix m n ℂ) (G : Matrix n m ℂ)
+    (h : (F ⊗ₖ (1 : Matrix (Fin D) (Fin D) ℂ)) *
+      (G ⊗ₖ (1 : Matrix (Fin D) (Fin D) ℂ)) = 1) :
+    F * G = 1 := by
+  apply kronecker_one_injective hD
+  calc
+    (F * G) ⊗ₖ (1 : Matrix (Fin D) (Fin D) ℂ) =
+        (F ⊗ₖ (1 : Matrix (Fin D) (Fin D) ℂ)) *
+          (G ⊗ₖ (1 : Matrix (Fin D) (Fin D) ℂ)) := mul_kronecker_one F G D
+    _ = 1 := h
+    _ = (1 : Matrix m m ℂ) ⊗ₖ (1 : Matrix (Fin D) (Fin D) ℂ) :=
+      one_kronecker_one.symm
+
+/-- A matrix has orthonormal rows when its Kronecker amplification by a nonempty identity matrix
+has orthonormal rows. -/
+theorem mul_conjTranspose_eq_one_of_kronecker_one
+    {m n : Type*} [Fintype n] [DecidableEq m] {D : ℕ} (hD : 0 < D)
+    (F : Matrix m n ℂ)
+    (hF : (F ⊗ₖ (1 : Matrix (Fin D) (Fin D) ℂ)) *
+      (F ⊗ₖ (1 : Matrix (Fin D) (Fin D) ℂ))ᴴ = 1) :
+    F * Fᴴ = 1 := by
+  apply mul_eq_one_of_kronecker_one hD F Fᴴ
+  simpa only [conjTranspose_kronecker, conjTranspose_one] using hF
+
+/-- A matrix has orthonormal columns when its Kronecker amplification by a nonempty identity
+matrix has orthonormal columns. -/
+theorem conjTranspose_mul_eq_one_of_kronecker_one
+    {m n : Type*} [Fintype m] [DecidableEq n] {D : ℕ} (hD : 0 < D)
+    (F : Matrix m n ℂ)
+    (hF : (F ⊗ₖ (1 : Matrix (Fin D) (Fin D) ℂ))ᴴ *
+      (F ⊗ₖ (1 : Matrix (Fin D) (Fin D) ℂ)) = 1) :
+    Fᴴ * F = 1 := by
+  apply mul_eq_one_of_kronecker_one hD Fᴴ F
+  rw [conjTranspose_kronecker, conjTranspose_one] at hF
+  exact hF
+
+end Matrix
+
+end OperatorProduct

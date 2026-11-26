@@ -8,6 +8,7 @@ import Mathlib.Data.Matrix.Mul
 import Mathlib.LinearAlgebra.Dimension.Constructions
 import Mathlib.LinearAlgebra.Matrix.Rank
 import Mathlib.LinearAlgebra.Matrix.ToLin
+import Mathlib.Data.Matrix.ColumnRowPartitioned
 
 /-!
 # Ranges of matrix left multiplication
@@ -19,6 +20,9 @@ Left multiplication acts independently on columns: `(P * X).col j = P *ᵥ (X.co
 Consequently, the range of left multiplication consists exactly of matrices whose columns lie
 in `LinearMap.range (Matrix.toLin' P)`, and it has dimension `D * Matrix.rank P`. The final
 theorem gives the corresponding rank-one fact for two-sided multiplication.
+
+Moved from TNLean, `TNLean/MPS/FundamentalTheorem/Compression/UniquenessMatrixForm.lean` at commit
+`021ba0bd19` (Apache-2.0).
 -/
 
 open scoped Matrix
@@ -159,3 +163,29 @@ theorem vecMulVec_mem_range_mulLeft_mulRight
       ((LinearMap.mulLeft ℂ P).comp (LinearMap.mulRight ℂ Q)) (Matrix.vecMulVec y z)
 
 end Matrix
+
+section
+
+open scoped Matrix
+
+namespace Matrix
+
+variable {m n₁ n₂ R : Type*} [CommSemiring R] [Fintype n₁] [Fintype n₂]
+
+/-- The column span of a matrix with two column blocks is the sum of the column spans of the
+blocks. -/
+theorem range_mulVecLin_fromCols (A₁ : Matrix m n₁ R) (A₂ : Matrix m n₂ R) :
+    LinearMap.range (fromCols A₁ A₂).mulVecLin =
+      LinearMap.range A₁.mulVecLin ⊔ LinearMap.range A₂.mulVecLin := by
+  ext v
+  constructor
+  · rintro ⟨w, rfl⟩
+    rw [mulVecLin_apply, fromCols_mulVec]
+    exact Submodule.add_mem_sup ⟨_, rfl⟩ ⟨_, rfl⟩
+  · intro hv
+    obtain ⟨_, ⟨a₁, rfl⟩, _, ⟨a₂, rfl⟩, rfl⟩ := Submodule.mem_sup.1 hv
+    exact ⟨Sum.elim a₁ a₂, fromCols_mulVec_sumElim A₁ A₂ a₁ a₂⟩
+
+end Matrix
+
+end
