@@ -167,12 +167,6 @@ end Matrix
 
 section PointwiseInvariantCompression
 
-set_option relaxedAutoImplicit false
-
-set_option maxSynthPendingDepth 3
-
-set_option linter.mathlibStandardSet true
-
 open scoped Matrix
 
 open scoped ScalarCohomology
@@ -208,12 +202,6 @@ end PointwiseInvariantCompression
 section LocalInvariantCompression
 
 section
-
-set_option relaxedAutoImplicit false
-
-set_option maxSynthPendingDepth 3
-
-set_option linter.mathlibStandardSet true
 
 open scoped Matrix Matrix.Norms.L2Operator ComplexOrder
 

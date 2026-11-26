@@ -39,12 +39,6 @@ Moved from TNLean, `TNLean/MPS/Symmetry/ContinuousFamily/UniformProjectiveRigidi
 
 section
 
-set_option relaxedAutoImplicit false
-
-set_option maxSynthPendingDepth 3
-
-set_option linter.mathlibStandardSet true
-
 open scoped ScalarCohomology
 
 open scoped Matrix Matrix.Norms.Frobenius ComplexOrder InnerProductSpace Kronecker Topology

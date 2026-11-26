@@ -25,4 +25,5 @@ import QICLean.Channel.KrausMap.KrausSupportAbsorption
 import QICLean.Channel.KrausMap.KrausUnitaryFreedom
 import QICLean.Channel.KrausMap.LocalizedKrausCPTP
 import QICLean.Channel.KrausMap.ProjectiveResolution
+import QICLean.Channel.KrausMap.SingleKrausMap
 import QICLean.Channel.KrausMap.SingleKrausPositivity

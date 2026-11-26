@@ -21,4 +21,6 @@ import QICLean.Algebra.Kronecker.PiKronecker
 import QICLean.Algebra.Kronecker.PiKroneckerProducts
 import QICLean.Algebra.Kronecker.PiKroneckerRange
 import QICLean.Algebra.Kronecker.PiTensorProductPhase
+import QICLean.Algebra.Kronecker.SupportAlgebra
+import QICLean.Algebra.Kronecker.SupportAlgebraCommutant
 import QICLean.Algebra.Kronecker.TensorMap

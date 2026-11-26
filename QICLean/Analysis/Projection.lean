@@ -15,6 +15,7 @@ import QICLean.Analysis.Projection.HermitianFactorRepair
 import QICLean.Analysis.Projection.InjectiveRangeProjector
 import QICLean.Analysis.Projection.MatrixStarProjection
 import QICLean.Analysis.Projection.MeanErgodic
+import QICLean.Analysis.Projection.OverlapMatrix
 import QICLean.Analysis.Projection.OverlapTriangle
 import QICLean.Analysis.Projection.PerpendicularShrinking
 import QICLean.Analysis.Projection.PhaseError
@@ -22,6 +23,7 @@ import QICLean.Analysis.Projection.PosSemidefSupport
 import QICLean.Analysis.Projection.ProductOverlapReplacement
 import QICLean.Analysis.Projection.ProjectedPositiveEnergy
 import QICLean.Analysis.Projection.ProjectionProductDefect
+import QICLean.Analysis.Projection.ProjectorSumConvergence
 import QICLean.Analysis.Projection.RegionalEnergyCalibration
 import QICLean.Analysis.Projection.SupportedRangeProjector
 import QICLean.Analysis.Projection.SweepContraction

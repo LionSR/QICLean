@@ -521,12 +521,6 @@ section
 
 open Kraus (blockTensor)
 
-set_option relaxedAutoImplicit false
-
-set_option maxSynthPendingDepth 3
-
-set_option linter.mathlibStandardSet true
-
 open scoped Matrix
 
 /-- Wolf Proposition 6.2 identifies geometric and algebraic multiplicity at one

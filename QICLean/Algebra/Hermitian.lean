@@ -19,3 +19,4 @@ import QICLean.Algebra.Hermitian.MaximallyMixed
 import QICLean.Algebra.Hermitian.OrthogonalProjection
 import QICLean.Algebra.Hermitian.PositiveSemidefiniteNormalization
 import QICLean.Algebra.Hermitian.ProjectionMatrixRange
+import QICLean.Algebra.Hermitian.StateSymmetry

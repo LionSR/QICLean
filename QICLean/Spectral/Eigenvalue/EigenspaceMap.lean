@@ -101,12 +101,6 @@ end Module.End
 
 section
 
-set_option relaxedAutoImplicit false
-
-set_option maxSynthPendingDepth 3
-
-set_option linter.mathlibStandardSet true
-
 open Filter Topology Module
 
 private theorem norm_prod_sub_ge

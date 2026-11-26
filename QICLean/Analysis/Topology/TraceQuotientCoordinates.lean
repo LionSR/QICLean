@@ -45,12 +45,6 @@ Moved from TNLean,
 
 section
 
-set_option relaxedAutoImplicit false
-
-set_option maxSynthPendingDepth 3
-
-set_option linter.mathlibStandardSet true
-
 open scoped Matrix Matrix.Norms.L2Operator ComplexOrder
 
 namespace Matrix
@@ -118,12 +112,6 @@ end Matrix
 end
 
 section
-
-set_option relaxedAutoImplicit false
-
-set_option maxSynthPendingDepth 3
-
-set_option linter.mathlibStandardSet true
 
 open scoped Matrix BigOperators
 
@@ -265,12 +253,6 @@ end
 
 section
 
-set_option relaxedAutoImplicit false
-
-set_option maxSynthPendingDepth 3
-
-set_option linter.mathlibStandardSet true
-
 open scoped Matrix
 
 namespace Matrix
@@ -306,12 +288,6 @@ end Matrix
 end
 
 section
-
-set_option relaxedAutoImplicit false
-
-set_option maxSynthPendingDepth 3
-
-set_option linter.mathlibStandardSet true
 
 open scoped Matrix BigOperators ComplexOrder
 
@@ -352,12 +328,6 @@ end
 
 section TraceQuotientTripleContinuity
 
-set_option relaxedAutoImplicit false
-
-set_option maxSynthPendingDepth 3
-
-set_option linter.mathlibStandardSet true
-
 open scoped Matrix BigOperators
 
 namespace Matrix
@@ -388,12 +358,6 @@ end TraceQuotientTripleContinuity
 
 section
 
-set_option relaxedAutoImplicit false
-
-set_option maxSynthPendingDepth 3
-
-set_option linter.mathlibStandardSet true
-
 open scoped Matrix BigOperators
 
 namespace Matrix
@@ -409,12 +373,6 @@ end Matrix
 end
 
 section
-
-set_option relaxedAutoImplicit false
-
-set_option maxSynthPendingDepth 3
-
-set_option linter.mathlibStandardSet true
 
 open scoped Matrix Matrix.Norms.L2Operator
 
