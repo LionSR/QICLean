@@ -15,8 +15,8 @@ import Mathlib.LinearAlgebra.Matrix.DotProduct
 
 A matrix `O` is a *strong symmetry* of a matrix `ρ` when `O ρ = c ρ` for a scalar `c`, and a
 *weak symmetry* when `O` commutes with `ρ` (`Commute O ρ`). For density operators these are the
-two notions of symmetry of mixed states: Sun, arXiv:2504.16985, line 182, for families of matrix product
-operators, and de Groot, Turzillo and Schuch, arXiv:2112.04483, for on-site unitaries
+two notions of symmetry of mixed states: Sun, arXiv:2504.16985, line 182, for families of matrix
+product operators, and de Groot, Turzillo and Schuch, arXiv:2112.04483, for on-site unitaries
 (`U ρ = ρ` and `[U, ρ] = 0`).
 
 ## Main definitions
