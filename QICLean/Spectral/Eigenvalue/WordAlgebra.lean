@@ -440,7 +440,6 @@ instance isSemisimpleModule_prod : IsSemisimpleModule (WordAlgebra d) (Q × T) :
 
 omit [Module ℂ Q] [IsScalarTower ℂ (WordAlgebra d) Q] [FiniteDimensional ℂ Q] [Module ℂ T]
   [IsScalarTower ℂ (WordAlgebra d) T] [FiniteDimensional ℂ T] in
-
 /-- Every endomorphism of `Q × T` preserves the first factor when `Q` and `T` are non-isomorphic
 simple modules (Schur's lemma). -/
 lemma fst_comp_inr_eq_zero (hne : IsEmpty (Q ≃ₗ[WordAlgebra d] T))
@@ -454,7 +453,6 @@ lemma fst_comp_inr_eq_zero (hne : IsEmpty (Q ≃ₗ[WordAlgebra d] T))
 
 omit [Module ℂ Q] [IsScalarTower ℂ (WordAlgebra d) Q] [FiniteDimensional ℂ Q] [Module ℂ T]
   [IsScalarTower ℂ (WordAlgebra d) T] [FiniteDimensional ℂ T] in
-
 lemma snd_comp_inl_eq_zero (hne : IsEmpty (Q ≃ₗ[WordAlgebra d] T))
     (φ : Module.End (WordAlgebra d) (Q × T)) :
     (LinearMap.snd (WordAlgebra d) Q T).comp (φ.comp (LinearMap.inl (WordAlgebra d) Q T)) = 0 := by
