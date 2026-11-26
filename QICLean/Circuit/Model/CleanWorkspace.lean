@@ -311,7 +311,7 @@ end QuantumCircuit
 
 section
 
-open Matrix MPSPreparation QuantumCircuit
+open Matrix QuantumCircuit
 
 namespace QuantumCircuit.IsCleanImplementation
 

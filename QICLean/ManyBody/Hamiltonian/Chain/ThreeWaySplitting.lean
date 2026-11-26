@@ -275,11 +275,10 @@ section
 
 open ManyBody (ChainSupport card_interval_le interval mem_interval ChainInteraction)
 
-open ManyBody
-    (cutLeftSupports cutRightSupports cutBufferSupports cutCommutatorConst graphNeighborhood)
+open ManyBody (cutLeftSupports cutRightSupports cutBufferSupports graphNeighborhood)
 
-open ManyBody
-    (gaussianFilteredTerm regionExpectation isHermitian_regionExpectation isHermitian_gaussianFilteredTerm)
+open ManyBody (gaussianFilteredTerm regionExpectation isHermitian_regionExpectation
+  isHermitian_gaussianFilteredTerm)
 
 open GaussianFilter Matrix QuantumCircuit
 
@@ -314,11 +313,10 @@ section
 
 open ManyBody (interval mem_interval ChainInteraction)
 
-open ManyBody
-    (cutLeftSupports cutRightSupports cutBufferSupports cutCommutatorConst graphNeighborhood)
+open ManyBody (cutLeftSupports cutRightSupports cutBufferSupports graphNeighborhood)
 
-open ManyBody
-    (gaussianFilteredTerm regionExpectation isHermitian_regionExpectation isHermitian_gaussianFilteredTerm)
+open ManyBody (gaussianFilteredTerm regionExpectation isHermitian_regionExpectation
+  isHermitian_gaussianFilteredTerm)
 
 open GaussianFilter Matrix QuantumCircuit
 
