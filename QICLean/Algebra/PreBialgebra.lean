@@ -52,6 +52,9 @@ at commit `49b78ed821` (Apache-2.0). Changes: the two files are merged.
   lines 1409--1414), and lines 1415--1421 and 1708; Definition 5.8 and Proposition 5.4.
 * Garre-Rubio, Lootens, Molnár, arXiv:2203.12563v3, lines 1236--1320.
 * arXiv:2509.03600.
+
+Moved from TNLean, `TNLean/MPS/Operator/Boundary/WeakHopfRepresentation.lean` at commit `021ba0bd19`
+(Apache-2.0).
 -/
 
 open TensorProduct
@@ -128,3 +131,28 @@ theorem dualStar_one
   (dualStarMulEquiv hcomul).map_one
 
 end Coalgebra
+
+section
+
+open scoped Matrix TensorProduct
+
+open WithConv
+
+noncomputable section
+
+namespace Coalgebra
+
+/-- The comultiplication of a coalgebra is injective: applying the counit to
+the first tensor factor recovers the element. -/
+theorem comul_injective {R A : Type*} [CommSemiring R] [AddCommMonoid A] [Module R A]
+    [Coalgebra R A] : Function.Injective (comul (R := R) (A := A)) := by
+  intro x y h
+  have key : ∀ z : A, TensorProduct.lid R A ((counit (R := R) (A := A)).rTensor A (comul z)) = z :=
+    fun z ↦ by simp
+  rw [← key x, ← key y, h]
+
+end Coalgebra
+
+end
+
+end

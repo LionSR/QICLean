@@ -6,6 +6,8 @@ Authors: QICLean contributors
 import Mathlib.Basic.Complex.Basic
 import Mathlib.LinearAlgebra.Matrix.ConjTranspose
 import Mathlib.Data.Matrix.Mul
+import Mathlib.Analysis.Complex.Order
+import Mathlib.LinearAlgebra.Matrix.Kronecker
 
 /-!
 # Entrywise identities for rectangular matrix isometries and coisometries
@@ -22,6 +24,9 @@ orthonormality equation `Vᴴ * V = 1` and the row orthonormality equation
 * `Matrix.sum_star_mul_eq_ite_of_mul_conjTranspose_eq_one`
 * `Matrix.star_mulVec_dotProduct_mulVec_of_conjTranspose_mul_eq_one`: a matrix with
   `Kᴴ K = 1` preserves `star v ⬝ᵥ v`.
+
+Moved from TNLean, `TNLean/MPS/MPDO/Fusion/BNTFixedFinalUnitarity.lean` at commit `021ba0bd19`
+(Apache-2.0).
 -/
 
 open scoped Matrix BigOperators
@@ -79,3 +84,55 @@ theorem star_mulVec_dotProduct_mulVec_of_conjTranspose_mul_eq_one {ι κ : Type*
 end Norm
 
 end Matrix
+
+section
+
+open scoped Matrix BigOperators ComplexOrder Kronecker
+
+open Matrix
+
+namespace Matrix
+
+universe u
+
+/-- A diagonal corner of a right-unitary matrix over dependent direct sums is
+right-unitary when all off-diagonal corners in the same row vanish.
+
+Source: direct-sum matrix bookkeeping for the fixed-output-channel argument in
+arXiv:1511.08090, lines 247--277. -/
+theorem sigmaDiagonal_mul_conjTranspose_eq_one
+    {ι : Type u} [Fintype ι] [DecidableEq ι]
+    {L R : ι → Type*} [∀ i, DecidableEq (L i)] [∀ i, Fintype (R i)]
+    (C : Matrix ((i : ι) × L i) ((i : ι) × R i) ℂ)
+    (hunit : C * Cᴴ = 1)
+    (hoff : ∀ i j, j ≠ i →
+      C.submatrix (fun x : L i => ⟨i, x⟩) (fun y : R j => ⟨j, y⟩) = 0)
+    (i : ι) :
+    C.submatrix (fun x : L i => ⟨i, x⟩) (fun y : R i => ⟨i, y⟩) *
+        (C.submatrix (fun x : L i => ⟨i, x⟩) (fun y : R i => ⟨i, y⟩))ᴴ = 1 := by
+  ext x y
+  have hentry := Matrix.sum_mul_star_eq_ite_of_mul_conjTranspose_eq_one
+    C hunit ⟨i, x⟩ ⟨i, y⟩
+  simp only [Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.one_apply,
+    Matrix.submatrix_apply, Fintype.sum_sigma] at hentry ⊢
+  rw [Finset.sum_eq_single i] at hentry
+  · by_cases hxy : x = y
+    · subst y
+      simpa using hentry
+    · have hsigma : Sigma.mk i x ≠ Sigma.mk i y := by
+        intro h
+        cases h
+        exact hxy rfl
+      simp only [hxy, hsigma, ↓reduceIte] at hentry ⊢
+      exact hentry
+  · intro j _ hji
+    apply Finset.sum_eq_zero
+    intro z _
+    have hz := congrArg (fun M => M x z) (hoff i j hji)
+    simp only [Matrix.submatrix_apply, Matrix.zero_apply] at hz
+    simp [hz]
+  · simp
+
+end Matrix
+
+end

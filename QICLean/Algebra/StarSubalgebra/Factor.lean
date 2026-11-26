@@ -63,6 +63,9 @@ Pairing the identity with the trace of `φ⁻¹` on rank-one matrices shows that
 `v ↦ v⋆ H v` never vanishes off `0` and, after `H` is rescaled by a scalar `c`, has constant
 sign; the rescaled matrix `c H` is then positive definite. Writing `c H = R⋆ R` with `R`
 invertible, the conjugated map `y ↦ R φ(y) R⁻¹` preserves adjoints.
+
+Moved from TNLean, `TNLean/Algebra/CentralStarSubalgebraMatrix.lean` at commit `021ba0bd19`
+(Apache-2.0).
 -/
 
 open scoped Matrix ComplexOrder MatrixOrder
@@ -407,4 +410,27 @@ theorem finrank_eq_mul_self_of_starAlgEquiv_matrix (S : StarSubalgebra ℂ (Matr
 
 end StarSubalgebra
 
+namespace StarSubalgebra
 
+variable {n : Type*} [Fintype n] [DecidableEq n]
+
+/-- **A star-subalgebra of complex matrices with scalar centre is a full matrix algebra of a
+definite size.** Let `S` be a star-subalgebra of a nonzero full complex matrix algebra whose
+centre consists of the scalar multiples of its unit. Then there is an `r ≥ 1` with
+`S ≃⋆ₐ[ℂ] M_r(ℂ)` and `dim_ℂ S = r * r`.
+
+This is the building-block step of the structure theorem for finite-dimensional C*-algebras,
+Schumacher--Werner, quant-ph/0405174, Proposition `Csform`, lines 2082--2098, specialized to an
+algebra presented as a star-subalgebra of a matrix algebra; the scope restriction is described
+in the module docstring. It is the conclusion invoked by Gross--Nesme--Vogts--Werner,
+arXiv:0910.3675, `References/0910.3675v2/QCI12.tex`, lines 1276--1282, where a support algebra is
+first shown to have scalar centre, because a central element of it is central in the generated
+quasi-local algebra, and is then identified with `M_{r(x)}(ℂ)`. -/
+theorem exists_starAlgEquiv_matrix_and_finrank_of_isCentral [Nonempty n]
+    (S : StarSubalgebra ℂ (Matrix n n ℂ)) [Algebra.IsCentral ℂ ↥S] :
+    ∃ r : ℕ, 0 < r ∧ Nonempty (↥S ≃⋆ₐ[ℂ] Matrix (Fin r) (Fin r) ℂ) ∧
+      Module.finrank ℂ ↥S = r * r := by
+  obtain ⟨r, hr, ⟨e⟩⟩ := S.exists_starAlgEquiv_matrix_of_isCentral
+  exact ⟨r, Nat.pos_of_ne_zero hr.out, ⟨e⟩, S.finrank_eq_mul_self_of_starAlgEquiv_matrix e⟩
+
+end StarSubalgebra

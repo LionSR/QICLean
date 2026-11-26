@@ -27,6 +27,9 @@ multiplicative, intertwining, reindexing, and transpose properties of word evalu
 * `Kraus.evalWord_append` — evaluation sends concatenation to multiplication
 * `Kraus.evalWord_intertwine` — a letter intertwiner also intertwines every word
 * `Kraus.evalWord_conjTranspose` — conjugate transposition reverses a matrix word
+
+Moved from TNLean, `TNLean/MPS/FundamentalTheorem/Compression/AbsorbingCompression.lean` at commit
+`021ba0bd19` (Apache-2.0).
 -/
 
 open scoped Matrix
@@ -220,3 +223,89 @@ lemma evalWord_blockDiagonal'_smul
 end Kraus
 
 end MultiBlockWord
+
+section
+
+open scoped Matrix
+
+namespace Kraus
+
+variable {d D k : ℕ} (B : Fin d → Matrix (Fin D) (Fin D) ℂ)
+  (W : Matrix (Fin k) (Fin D) ℂ) (V : Matrix (Fin D) (Fin k) ℂ)
+
+/-- A left-absorbing corner absorbs every nonempty word. -/
+theorem mul_evalWord_of_left_absorb (h : ∀ i, V * W * B i = B i) (w : List (Fin d))
+    (hw : w ≠ []) : V * W * evalWord B w = evalWord B w := by
+  obtain ⟨a, w, rfl⟩ := List.exists_cons_of_ne_nil hw
+  rw [evalWord_cons, ← Matrix.mul_assoc, h]
+
+/-- A right-absorbing corner absorbs every nonempty word. -/
+theorem evalWord_mul_of_right_absorb (h : ∀ i, B i * (V * W) = B i) :
+    ∀ (w : List (Fin d)), w ≠ [] → evalWord B w * (V * W) = evalWord B w
+  | [], hw => absurd rfl hw
+  | [a], _ => by rw [evalWord_cons, evalWord_nil, Matrix.mul_one, h]
+  | a :: b :: w, _ => by
+      rw [evalWord_cons, Matrix.mul_assoc,
+        evalWord_mul_of_right_absorb h (b :: w) (List.cons_ne_nil _ _)]
+
+/-- **Compression onto a left-absorbing corner.** If `V W B^i = B^i` for every letter, then the
+compressed letters `W B^i V` multiply out to the compression of the product: every nonempty
+word satisfies `W B^{i₁} V ⋯ W B^{iₙ} V = W B^{i₁} ⋯ B^{iₙ} V`.
+
+Source: arXiv:2011.12127, Section IV, `Papers/2011.12127/TN-Review-main.tex` lines 1793–1797
+(the block replacement of the canonical-form construction, in the case where one diagonal block
+carries the whole word). -/
+theorem evalWord_compress_of_left_absorb (h : ∀ i, V * W * B i = B i) :
+    ∀ (w : List (Fin d)), w ≠ [] →
+      evalWord (fun i => W * B i * V) w = W * evalWord B w * V
+  | [], hw => absurd rfl hw
+  | [a], _ => by simp only [evalWord_cons, evalWord_nil, Matrix.mul_one]
+  | a :: b :: w, _ => by
+      rw [evalWord_cons, evalWord_compress_of_left_absorb h (b :: w) (List.cons_ne_nil _ _),
+        evalWord_cons B a]
+      rw [show W * B a * V * (W * evalWord B (b :: w) * V) =
+          W * B a * (V * W * evalWord B (b :: w)) * V by simp only [Matrix.mul_assoc],
+        mul_evalWord_of_left_absorb B W V h (b :: w) (List.cons_ne_nil _ _),
+        Matrix.mul_assoc W]
+
+/-- **Traces under compression onto a left-absorbing corner.** If `V W B^i = B^i` for every
+letter, then every nonempty word of the compressed letters `W B^i V` has the trace of the
+corresponding word of `B`.
+
+Source: arXiv:2011.12127, Section IV, `Papers/2011.12127/TN-Review-main.tex` lines 1793–1797. -/
+theorem trace_evalWord_compress_of_left_absorb (h : ∀ i, V * W * B i = B i)
+    (w : List (Fin d)) (hw : w ≠ []) :
+    Matrix.trace (evalWord (fun i => W * B i * V) w) = Matrix.trace (evalWord B w) := by
+  rw [evalWord_compress_of_left_absorb B W V h w hw, Matrix.trace_mul_comm, ← Matrix.mul_assoc,
+    mul_evalWord_of_left_absorb B W V h w hw]
+
+/-- **Compression onto a right-absorbing corner.** If `B^i V W = B^i` for every letter, then
+every nonempty word satisfies `W B^{i₁} V ⋯ W B^{iₙ} V = W B^{i₁} ⋯ B^{iₙ} V`.
+
+Source: arXiv:2011.12127, Section IV, `Papers/2011.12127/TN-Review-main.tex` lines 1793–1797. -/
+theorem evalWord_compress_of_right_absorb (h : ∀ i, B i * (V * W) = B i) :
+    ∀ (w : List (Fin d)), w ≠ [] →
+      evalWord (fun i => W * B i * V) w = W * evalWord B w * V
+  | [], hw => absurd rfl hw
+  | [a], _ => by simp only [evalWord_cons, evalWord_nil, Matrix.mul_one]
+  | a :: b :: w, _ => by
+      rw [evalWord_cons, evalWord_compress_of_right_absorb h (b :: w) (List.cons_ne_nil _ _),
+        evalWord_cons B a]
+      rw [show W * B a * V * (W * evalWord B (b :: w) * V) =
+          W * (B a * (V * W)) * evalWord B (b :: w) * V by simp only [Matrix.mul_assoc],
+        h, Matrix.mul_assoc W]
+
+/-- **Traces under compression onto a right-absorbing corner.** If `B^i V W = B^i` for every
+letter, then every nonempty word of the compressed letters `W B^i V` has the trace of the
+corresponding word of `B`.
+
+Source: arXiv:2011.12127, Section IV, `Papers/2011.12127/TN-Review-main.tex` lines 1793–1797. -/
+theorem trace_evalWord_compress_of_right_absorb (h : ∀ i, B i * (V * W) = B i)
+    (w : List (Fin d)) (hw : w ≠ []) :
+    Matrix.trace (evalWord (fun i => W * B i * V) w) = Matrix.trace (evalWord B w) := by
+  rw [evalWord_compress_of_right_absorb B W V h w hw, Matrix.mul_assoc, Matrix.trace_mul_comm,
+    Matrix.mul_assoc, evalWord_mul_of_right_absorb B W V h w hw]
+
+end Kraus
+
+end

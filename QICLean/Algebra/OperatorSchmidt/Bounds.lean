@@ -6,6 +6,7 @@ Authors: QICLean contributors
 import Mathlib.Algebra.BigOperators.Fin
 import Mathlib.Algebra.Order.BigOperators.Group.Finset
 import QICLean.Algebra.OperatorSchmidt.Basic
+import Mathlib.LinearAlgebra.Matrix.Rank
 
 /-!
 # Algebraic bounds for operator Schmidt rank
@@ -20,6 +21,9 @@ These are the decomposition-length inequalities used in AKLV,
 arXiv:1301.1162v1, Lemma l:agsp, lines 598–662, and ALVV,
 arXiv:1602.08828v2, Proposition prop:Cheby-AGSP-eff, lines 1324–1332.
 No locality or spectral assumptions enter these algebraic inequalities.
+
+Moved from TNLean, `TNLean/MPS/MPU/Circuit/Gates/SchmidtSpanCuts.lean` at commit `021ba0bd19`
+(Apache-2.0).
 -/
 
 open scoped BigOperators Kronecker
@@ -124,3 +128,40 @@ theorem operatorSchmidtRank_one_le {a b : Type*} [Fintype a] [DecidableEq a]
 end Matrix
 
 end OperatorSchmidtProducts
+
+section
+
+open scoped BigOperators
+
+namespace Matrix
+
+variable {K m n k : Type*} [Field K] [Fintype n] [Fintype k]
+
+/-- Contracting the last coordinate by a scalar functional does not increase rank. -/
+theorem rank_contract_right_le (M : Matrix m (n × k) K) (f : k → K) :
+    Matrix.rank (fun i j => ∑ a : k, M i (j, a) * f a : Matrix m n K) ≤ M.rank := by
+  classical
+  let Q : Matrix (n × k) n K := fun r j => if r.1 = j then f r.2 else 0
+  have hMQ : M * Q = fun i j => ∑ a : k, M i (j, a) * f a := by
+    ext i j
+    change (∑ r : n × k, M i r * Q r j) = _
+    simp [Q, Fintype.sum_prod_type]
+  rw [← hMQ]
+  exact rank_mul_le_left M Q
+
+/-- Contracting the first coordinate by a scalar functional does not increase rank. -/
+theorem rank_contract_left_le [Finite m] (M : Matrix (k × m) n K) (f : k → K) :
+    Matrix.rank (fun i j => ∑ a : k, f a * M (a, i) j : Matrix m n K) ≤ M.rank := by
+  classical
+  let : Fintype m := Fintype.ofFinite m
+  let P : Matrix m (k × m) K := fun i r => if r.2 = i then f r.1 else 0
+  have hPM : P * M = fun i j => ∑ a : k, f a * M (a, i) j := by
+    ext i j
+    change (∑ r : k × m, P i r * M r j) = _
+    simp [P, Fintype.sum_prod_type]
+  rw [← hPM]
+  exact rank_mul_le_right P M
+
+end Matrix
+
+end

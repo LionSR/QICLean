@@ -34,6 +34,12 @@ The last section states the action of rectangular matrices: the bound by the ope
 equal lengths for equal Gram matrices `Aᴴ A`, relabelled rows, the defect `‖M ψ - ψ‖` of a
 product of contractions, a Kronecker product on a product vector and a permutation matrix on a
 basis vector.
+
+Moved from TNLean, `TNLean/MPS/Preparation/Correlations/WindowClustering.lean`,
+`TNLean/MPS/Symmetry/PeriodicRay/PositiveRayExpectations.lean`,
+`TNLean/MPS/Preparation/Normal/DepthLowerBoundCore.lean`,
+`TNLean/MPS/Symmetry/MPOSymmetry/MixedPath/Gap/MixedEndpointOpenSectors.lean` at commit `021ba0bd19`
+(Apache-2.0).
 -/
 
 open scoped InnerProductSpace Matrix.Norms.L2Operator
@@ -276,5 +282,97 @@ theorem norm_toEuclideanLin_sum_sub_le {α : Type*} (s : Finset α) (Mi : α →
     rw [Finset.sum_sub_distrib, Complex.ofReal_sum, Finset.sum_smul]
   rw [e, map_sum, LinearMap.sum_apply]
   exact norm_sum_le _ _
+
+end
+
+section
+
+open scoped Matrix BigOperators InnerProductSpace Matrix.Norms.Operator ComplexOrder
+
+section
+
+variable {d D : ℕ}
+
+/-- The operator norm of a product of matrices is at most the product of the norms. -/
+theorem Matrix.norm_toEuclideanCLM_mul_le {n : Type*} [Fintype n] [DecidableEq n]
+    (P Q : Matrix n n ℂ) :
+    ‖Matrix.toEuclideanCLM (n := n) (𝕜 := ℂ) (P * Q)‖ ≤
+      ‖Matrix.toEuclideanCLM (n := n) (𝕜 := ℂ) P‖ *
+        ‖Matrix.toEuclideanCLM (n := n) (𝕜 := ℂ) Q‖ := by
+  rw [map_mul]
+  exact norm_mul_le _ _
+
+end
+
+end
+
+section
+
+open scoped InnerProductSpace
+
+namespace Matrix
+
+/-- A nonzero scalar does not change the actual normalized expectation
+`⟪ψ, A ψ⟫ / ‖ψ‖²`,
+even when the vector itself is zero. Source: SPC11, arXiv:1010.3732,
+Section II.F, lines 929–953, normalization of physical rays. -/
+theorem inner_toEuclideanCLM_div_norm_sq_smul
+    {n : Type*} [Fintype n] [DecidableEq n]
+    (ψ : EuclideanSpace ℂ n) (A : Matrix n n ℂ) {c : ℂ} (hc : c ≠ 0) :
+    ⟪c • ψ, Matrix.toEuclideanCLM (𝕜 := ℂ) A (c • ψ)⟫_ℂ / ((‖c • ψ‖ ^ 2 : ℝ) : ℂ) =
+      ⟪ψ, Matrix.toEuclideanCLM (𝕜 := ℂ) A ψ⟫_ℂ / ((‖ψ‖ ^ 2 : ℝ) : ℂ) := by
+  have hnorm (φ : EuclideanSpace ℂ n) :
+      ((‖φ‖ ^ 2 : ℝ) : ℂ) = ⟪φ, φ⟫_ℂ := by
+    rw [inner_self_eq_norm_sq_to_K]; norm_cast
+  simp only [hnorm, map_smul, inner_smul_left,
+    inner_smul_right, ← mul_assoc]
+  exact mul_div_mul_left _ _ (mul_ne_zero hc ((map_ne_zero _).mpr hc))
+
+end Matrix
+
+end
+
+section
+
+open scoped Matrix BigOperators InnerProductSpace Matrix.Norms.Operator ComplexOrder
+
+section
+
+variable {d D : ℕ}
+
+/-- A Hermitian matrix minus a real multiple of the identity is Hermitian. -/
+theorem Matrix.IsHermitian.sub_smul_one {n : Type*} [DecidableEq n]
+    {X : Matrix n n ℂ} (hX : X.IsHermitian) {e : ℂ} (he : star e = e) :
+    (X - e • (1 : Matrix n n ℂ)).IsHermitian := by
+  rw [Matrix.IsHermitian, Matrix.conjTranspose_sub, Matrix.conjTranspose_smul,
+    Matrix.conjTranspose_one, hX.eq, he]
+
+/-- Subtracting `e` times the identity changes the operator norm by at most `‖e‖`. -/
+theorem Matrix.norm_toEuclideanCLM_sub_smul_one_le {n : Type*} [Fintype n]
+    [DecidableEq n] (X : Matrix n n ℂ) (e : ℂ) :
+    ‖Matrix.toEuclideanCLM (n := n) (𝕜 := ℂ) (X - e • 1)‖ ≤
+      ‖Matrix.toEuclideanCLM (n := n) (𝕜 := ℂ) X‖ + ‖e‖ := by
+  rw [map_sub, map_smul, map_one]
+  refine (norm_sub_le _ _).trans (add_le_add le_rfl ?_)
+  rw [norm_smul]
+  exact mul_le_of_le_one_right (norm_nonneg _) ContinuousLinearMap.norm_id_le
+
+end
+
+end
+
+section
+
+open scoped BigOperators ComplexOrder InnerProductSpace Matrix
+
+section
+
+/-- A diagonal matrix acts on Euclidean coordinates by pointwise multiplication. -/
+theorem Matrix.toEuclideanLin_diagonal_apply {ι : Type*} [Fintype ι]
+    [DecidableEq ι] (f : ι → ℂ) (v : EuclideanSpace ℂ ι) (i : ι) :
+    Matrix.toEuclideanLin (Matrix.diagonal f) v i = f i * v i := by
+  simp [Matrix.toEuclideanLin, Matrix.toLpLin_apply, Matrix.mulVec_diagonal]
+
+end
 
 end

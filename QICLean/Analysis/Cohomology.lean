@@ -10,6 +10,8 @@ Authors: QICLean contributors
 
 import QICLean.Analysis.Cohomology.CircleCohomology
 import QICLean.Analysis.Cohomology.PositiveGeneralizedCocycle
+import QICLean.Analysis.Cohomology.ProjectiveRigidity
+import QICLean.Analysis.Cohomology.ProjectiveUnitary
 import QICLean.Analysis.Cohomology.StabilizerBlockIndependenceCircle
 import QICLean.Analysis.Cohomology.TwistedRegularProjective
 import QICLean.Analysis.Cohomology.TwistedRegularRepresentation

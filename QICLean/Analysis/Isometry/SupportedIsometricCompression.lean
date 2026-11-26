@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Algebra.Unitary.MatrixUnitaryBetween
 import QICLean.Analysis.Projection.PosSemidefSupport
+import Mathlib.Analysis.Normed.Ring.Units
 
 /-!
 # Comparing isometric frames of supported matrices
@@ -20,6 +21,9 @@ arXiv:1010.3732, Appendix C, lines 2653–2717.
 
 Moved from TNLean, `TNLean/Algebra/SupportedIsometricCompression.lean` at commit
 `49b78ed821` (Apache-2.0).
+
+Moved from TNLean, `TNLean/MPS/Symmetry/ContinuousFamily/LocalInvariantCompression.lean` at commit
+`021ba0bd19` (Apache-2.0).
 -/
 
 open scoped Matrix ComplexOrder
@@ -160,3 +164,69 @@ theorem supportFrame_dimension_pos_of_trace_one {m D : ℕ}
   simp only [hσzero, Matrix.trace_zero, zero_ne_one] at htrace
 
 end Matrix
+
+section PointwiseInvariantCompression
+
+open scoped Matrix
+
+
+namespace Matrix
+
+/-- Conjugation descends through an invariant isometric corner without
+requiring the tensor letters themselves to preserve that corner.
+Source context: arXiv:1010.3732, Appendix C, lines 2712–2717. -/
+theorem isometry_compression_conj_of_commute {D r : ℕ}
+    (J : Matrix (Fin D) (Fin r) ℂ) (hJ : J.IsIsometry)
+    (X M : Matrix (Fin D) (Fin D) ℂ) (hX : Commute X (J * Jᴴ)) :
+    Jᴴ * (X * M * Xᴴ) * J =
+      (Jᴴ * X * J) * (Jᴴ * M * J) * (Jᴴ * X * J)ᴴ := by
+  have hleft := congrArg (fun Y => Jᴴ * Y) hX.eq
+  have hL : Jᴴ * X = (Jᴴ * X * J) * Jᴴ := by
+    simpa only [← Matrix.mul_assoc, show Jᴴ * J = 1 from hJ, Matrix.one_mul]
+      using hleft.symm
+  have hR : Xᴴ * J = J * (Jᴴ * X * J)ᴴ := by
+    simpa only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose]
+      using congrArg Matrix.conjTranspose hL
+  calc
+    Jᴴ * (X * M * Xᴴ) * J = (Jᴴ * X) * M * (Xᴴ * J) := by
+      simp only [Matrix.mul_assoc]
+    _ = (Jᴴ * X * J) * (Jᴴ * M * J) * (Jᴴ * X * J)ᴴ := by
+      rw [hL, hR]
+      simp only [Matrix.mul_assoc, show Jᴴ * J = 1 from hJ, Matrix.mul_one]
+
+end Matrix
+
+end PointwiseInvariantCompression
+
+section LocalInvariantCompression
+
+section
+
+open scoped Matrix Matrix.Norms.L2Operator ComplexOrder
+
+open Filter Topology
+
+
+namespace Set.Icc
+
+/-- A property holding near a point of the unit interval holds along every
+sufficiently short affine subinterval issuing from that point. -/
+theorem eventually_forall_convexComb {p : unitInterval → Prop}
+    (t₀ : unitInterval) (hp : ∀ᶠ t in 𝓝 t₀, p t) :
+    ∀ᶠ t in 𝓝 t₀, ∀ s : unitInterval, p (Set.Icc.convexComb t₀ t s) := by
+  obtain ⟨ε, hε, hpε⟩ := Metric.eventually_nhds_iff.mp hp
+  filter_upwards [Metric.ball_mem_nhds t₀ hε] with t ht
+  intro s
+  apply hpε
+  have hdist : dist (Set.Icc.convexComb t₀ t s) t₀ ≤ dist t t₀ := by
+    change |(1 - (s : ℝ)) * (t₀ : ℝ) + s * t - t₀| ≤ |(t : ℝ) - t₀|
+    rw [show (1 - (s : ℝ)) * (t₀ : ℝ) + s * t - t₀ =
+      (s : ℝ) * (t - t₀) by ring, abs_mul, abs_of_nonneg s.2.1]
+    exact mul_le_of_le_one_left (abs_nonneg _) s.2.2
+  exact hdist.trans_lt ht
+
+end Set.Icc
+
+end
+
+end LocalInvariantCompression

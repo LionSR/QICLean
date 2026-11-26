@@ -11,6 +11,7 @@ import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.LinearAlgebra.Matrix.PosDef
 import Mathlib.Analysis.Complex.Order
 import Mathlib.Algebra.Module.Equiv.Basic
+import QICLean.Algebra.Combinatorics.FinSum
 
 /-!
 # Reindexing complex matrix star algebras
@@ -27,6 +28,11 @@ those of the index equivalences.
   reindexing.
 * `Matrix.equivReindexMap`: simultaneous reindexing along an equivalence as a
   complex-linear map between matrix spaces.
+
+Moved from TNLean, `TNLean/MPS/Operator/Product/DirectSum.lean` at commit `021ba0bd19` (Apache-2.0).
+
+Moved from TNLean, `TNLean/MPS/Tensor/VaryingBond/VaryingBondOBC.lean` at commit `021ba0bd19`
+(Apache-2.0).
 -/
 
 namespace Matrix
@@ -161,6 +167,119 @@ theorem PosDef.reindex (e : α ≃ β) {A : Matrix α α ℂ} (hA : A.PosDef) :
 end Matrix
 
 end ReindexEndomorphism
+
+section
+
+open scoped Matrix
+
+/-- The trace of a block-diagonal matrix on `Fin (D₁ + D₂)` is the sum of the traces of its
+two diagonal blocks. -/
+theorem Matrix.trace_fromBlocks_submatrix_finSumFinEquiv {D₁ D₂ : ℕ} {R : Type*}
+    [AddCommMonoid R] (X : Matrix (Fin D₁) (Fin D₁) R) (Y : Matrix (Fin D₂) (Fin D₂) R) :
+    Matrix.trace ((Matrix.fromBlocks X 0 0 Y).submatrix finSumFinEquiv.symm
+      finSumFinEquiv.symm) = Matrix.trace X + Matrix.trace Y := by
+  simp only [Matrix.trace, Matrix.diag, Matrix.submatrix_apply]
+  rw [finSumFinEquiv.symm.sum_comp fun j => Matrix.fromBlocks X 0 0 Y j j,
+    Fintype.sum_sum_type]
+  simp only [Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₂₂]
+
+end
+
+section VaryingBondOBC
+
+section
+
+open scoped BigOperators Matrix
+
+/-- A fixed-length open-boundary MPS chain whose virtual dimensions may vary
+from bond to bond. The first and last bond spaces are one-dimensional, and all
+bond dimensions are bounded by \(D\). Intermediate bond dimensions may be zero.
+
+Source: PGVWC07, arXiv:quant-ph/0608197, lines 419--429. -/
+structure OBCChainTensor (d D N : ℕ) where
+  /-- The dimension of each virtual bond space. -/
+  bondDim : Fin (N + 1) → ℕ
+  bondDim_le : ∀ k, bondDim k ≤ D
+  left_dim : bondDim 0 = 1
+  right_dim : bondDim (Fin.last N) = 1
+  /-- The rectangular matrix associated with a site and physical index. -/
+  tensor : ∀ k : Fin N, Fin d →
+    Matrix (Fin (bondDim k.castSucc)) (Fin (bondDim k.succ)) ℂ
+
+namespace Matrix
+
+variable {R : Type*} [Zero R] {a b : ℕ}
+
+/-- **Zero padding** of a rectangular `a × b` matrix to a `D × D` matrix: the entry `(α, β)` is
+`M α β` when `α < a` and `β < b`, and `0` otherwise. -/
+def zeroPad (D : ℕ) (M : Matrix (Fin a) (Fin b) R) : Matrix (Fin D) (Fin D) R :=
+  fun α β => if hα : α.val < a then if hβ : β.val < b then M ⟨α.val, hα⟩ ⟨β.val, hβ⟩ else 0
+    else 0
+
+/-- Inside the upper-left `a × b` corner the padded matrix has the entries of `M`. -/
+theorem zeroPad_apply_of_lt {D : ℕ} (M : Matrix (Fin a) (Fin b) R) {α β : Fin D}
+    (hα : α.val < a) (hβ : β.val < b) : zeroPad D M α β = M ⟨α.val, hα⟩ ⟨β.val, hβ⟩ := by
+  simp [zeroPad, hα, hβ]
+
+/-- Outside the upper-left `a × b` corner the padded matrix vanishes. -/
+theorem zeroPad_apply_eq_zero {D : ℕ} (M : Matrix (Fin a) (Fin b) R) {α β : Fin D}
+    (h : ¬(α.val < a ∧ β.val < b)) : zeroPad D M α β = 0 := by
+  unfold zeroPad
+  split_ifs with hα hβ
+  · exact absurd ⟨hα, hβ⟩ h
+  · rfl
+  · rfl
+
+end Matrix
+
+end
+
+section
+
+namespace Matrix
+
+variable {R : Type*} [Semiring R] {a b c D : ℕ}
+
+/-- Zero padding preserves a rectangular matrix product when the intermediate
+dimension is at most the padding dimension. The outer dimensions need not
+be bounded. Source: the minimal representation step in Section 5 of
+`docs/audits/2026-10-02_mpu_rank_two_circuits.tex`. -/
+theorem zeroPad_mul (X : Matrix (Fin a) (Fin b) R)
+    (Y : Matrix (Fin b) (Fin c) R) (hb : b ≤ D) :
+    zeroPad D (X * Y) = zeroPad D X * zeroPad D Y := by
+  ext i j
+  by_cases hi : i.val < a
+  · by_cases hj : j.val < c
+    · rw [zeroPad_apply_of_lt _ hi hj, Matrix.mul_apply, Matrix.mul_apply]
+      rw [Fin.sum_castLE_extend_zero _ hb]
+      apply Finset.sum_congr rfl
+      intro k _
+      by_cases hk : k.val < b
+      · simp [zeroPad, hi, hj, hk]
+      · simp [zeroPad, hi, hk]
+    · simp [zeroPad, Matrix.mul_apply, hj]
+  · simp [zeroPad, Matrix.mul_apply, hi]
+
+/-- Applying a zero-padded rectangular matrix to a zero-padded vector gives
+the zero padding of their product. Source: the minimal representation step
+in Section 5 of `docs/audits/2026-10-02_mpu_rank_two_circuits.tex`. -/
+theorem zeroPad_mulVec (X : Matrix (Fin a) (Fin b) R) (v : Fin b → R) (hb : b ≤ D) :
+    zeroPad D X *ᵥ (fun j : Fin D ↦ if h : j.val < b then v ⟨j.val, h⟩ else 0) =
+      fun i : Fin D ↦ if h : i.val < a then (X *ᵥ v) ⟨i.val, h⟩ else 0 := by
+  ext i
+  by_cases hi : i.val < a
+  · simp only [zeroPad, hi, dite_true, mulVec, dotProduct]
+    rw [Fin.sum_castLE_extend_zero _ hb]
+    apply Finset.sum_congr rfl
+    intro j _
+    by_cases hj : j.val < b <;> simp [hj]
+  · simp [zeroPad, mulVec, dotProduct, hi]
+
+end Matrix
+
+end
+
+end VaryingBondOBC
 
 section EquivReindexMap
 

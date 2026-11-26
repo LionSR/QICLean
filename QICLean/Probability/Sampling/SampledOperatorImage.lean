@@ -25,6 +25,10 @@ the corrected exponent `2 * dim(T)` and net scale documented in
 It also contains the following results.
 
 * `Submodule.finrank_sampledWordImage_le_cubic`: the cubic bound for an actual sampled word image.
+
+Moved from TNLean,
+`TNLean/MPS/AreaLaw/LowEnergyAlgorithm/IntervalTrimming/IntervalSampledImage.lean` at commit
+`021ba0bd19` (Apache-2.0).
 -/
 
 section SampledOperatorImage
@@ -148,3 +152,61 @@ lemma finrank_sampledWordImage_le_cubic {D s : ℕ} (hD : 2 ≤ D) (hs : 1 ≤ s
 end Submodule
 
 end SampledWordImageBounds
+
+section
+
+
+open scoped TensorProduct
+
+open MeasureTheory
+
+section
+
+/-- A measurable fixed-input Haar event certifies the actual word image when
+the words improve one target `Thi` into a possibly different target `Tlo`.
+The sample is taken for viability for `Thi`; its word image is viable for
+`Tlo`. This is the nested form of the merge analysis of ALVV,
+arXiv:1602.08828v2, `l:rs`, lines 530–558, and `l:er`, lines 597–622, used
+for the two low-energy windows of Theorem `t:alg2`, lines 1869–1878.
+No adaptive measurability or physical existence of the family is asserted. -/
+lemma Submodule.exists_measurable_sampledWordImage_event_of_nested
+    {M E iota : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M]
+    [FiniteDimensional ℂ M] [NormedAddCommGroup E] [InnerProductSpace ℂ E]
+    [FiniteDimensional ℂ E] [Fintype iota]
+    (F : iota → M →L[ℂ] M) (Thi Tlo : Submodule ℂ (M ⊗[ℂ] E)) (Delta : ℝ)
+    (himprove : ∀ (a : ℕ) (S : Submodule ℂ M) (delta : ℝ),
+      Submodule.IsViable delta S Thi → delta < 1 →
+      Submodule.IsViable (Delta ^ a / (1 - delta) ^ 2)
+        (⨆ w : Fin a → iota, S.map (List.ofFn (fun j ↦ F (w j))).prod.toLinearMap) Tlo)
+    (power s : ℕ) (hs : 1 ≤ s) (W : Submodule ℂ M) (hW : W ≠ ⊥)
+    {delta : ℝ} (hviable : Submodule.IsViable delta W Thi) (hdelta : delta < 1) :
+    let q := Module.finrank ℂ W
+    let c := (1 - delta) * (min s q : ℕ) / (8 * q)
+    let eta : ℝ := if q ≤ s then 0 else
+      (1 + 2 / Real.sqrt ((1 - delta) * (s : ℝ) / (8 * q))) ^
+        (2 * Module.finrank ℂ Thi) * q * Real.exp (-(s / 16 : ℝ))
+    ∃ Good : Set (Matrix.unitaryGroup (Fin q) ℂ),
+      MeasurableSet Good ∧ Matrix.unitaryHaar (Fin q) Goodᶜ ≤ ENNReal.ofReal eta ∧
+      1 - ENNReal.ofReal eta ≤ Matrix.unitaryHaar (Fin q) Good ∧
+      ∀ U ∈ Good,
+        Module.finrank ℂ (Submodule.sampledWordImage F power s W U) ≤
+          Fintype.card iota ^ power * min s q ∧
+        Submodule.IsViable (Delta ^ power / c ^ 2)
+          (Submodule.sampledWordImage F power s W U) Tlo := by
+  intro q c eta
+  have hq : 1 ≤ q := Submodule.one_le_finrank_iff.mpr hW
+  have hqR : (0 : ℝ) < q := by exact_mod_cast (by omega : 0 < q)
+  have hnR : (0 : ℝ) < (min s q : ℕ) := by exact_mod_cast (by omega : 0 < min s q)
+  have hc : 0 < c := by dsimp only [c]; positivity
+  obtain ⟨Good, hGood, hbad, hprob, hsample⟩ :=
+    Submodule.exists_measurable_randomSubspace_min_event (stdOrthonormalBasis ℂ W) s
+      hviable hdelta.le
+  refine ⟨Good, hGood, hbad, hprob, ?_⟩
+  intro U hU
+  refine ⟨Submodule.finrank_sampledWordImage_le F power s W U, ?_⟩
+  have hfiltered := himprove power _ (1 - c) (hsample U hU) (by linarith)
+  simpa only [Submodule.sampledWordImage, sub_sub_cancel] using hfiltered
+
+end
+
+end

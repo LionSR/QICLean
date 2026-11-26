@@ -1,0 +1,522 @@
+/-
+Copyright (c) 2026 QICLean contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: QICLean contributors
+-/
+import Mathlib.Algebra.Star.Subalgebra
+import Mathlib.LinearAlgebra.Basis.VectorSpace
+import Mathlib.LinearAlgebra.Dimension.Free
+import QICLean.Algebra.Kronecker.CommutingDecomposition
+import QICLean.Algebra.Matrix.KroneckerEmbed
+import QICLean.Algebra.Kronecker.SupportAlgebra
+import QICLean.Algebra.Kronecker.TensorMap
+import QICLean.Algebra.MatrixAlgebra.SkolemNoetherUnitary
+import QICLean.Algebra.OperatorSchmidt.Basic
+import QICLean.Algebra.StarSubalgebra.CommutingProduct
+
+/-!
+# Commutants and transport of bipartite support algebras
+
+The commutant characterizations of the left and right support algebras of a bipartite
+star-subalgebra, their behaviour under the Kronecker embeddings and under a reindexing of the
+factors, and the commutation of overlapping support algebras, as used in the
+Schumacher--Werner and GNVW index construction (arXiv:0910.3675v2, Lemma 7).
+
+**Local fix (star-closed input):** The printed statement of GNVW Lemma 7 says only
+"subalgebra". Coefficient generation, containment and leastness hold for arbitrary algebra
+input; the commutant characterizations need involution closure, so the input is a
+`StarSubalgebra` throughout. Schumacher--Werner, quant-ph/0405174, lines 1161--1171, derive
+adjoint closure of the support algebra from adjoint closure of its input; the GNVW application
+supplies this hypothesis at arXiv:0910.3675v2, lines 1251--1265.
+
+**Scope restriction (full matrix factors):** Every declaration here takes full complex matrix
+factors, whereas the corrected GNVW Lemma 7 permits arbitrary finite-dimensional
+$C^*$-algebra factors.
+
+## Main results
+
+* `Matrix.left_kronecker_embed_mem_centralizer_iff` and
+  `Matrix.right_kronecker_embed_mem_centralizer_iff` give the two commutant characterizations.
+* `Matrix.leftKroneckerEmbed_sup_rightKroneckerEmbed_toSubmodule`: canonical coordinates for
+  products of commuting matrix factors.
+* `Matrix.leftSupportAlgebra_range_leftKroneckerEmbed` and its three companions compute the
+  support algebras of embedded factors.
+* `Matrix.leftSupportAlgebra_map_matrixReindexStarAlgEquiv`: transport along a reindexing.
+* `Matrix.supportAlgebras_commute_of_overlappingLifts_commute`: commutation of overlapping support
+  algebras.
+
+Moved from TNLean, `TNLean/QCA/StarSubalgebra/BipartiteSupportAlgebra.lean`,
+`TNLean/QCA/StarSubalgebra/KroneckerSupportAlgebra.lean`,
+`TNLean/QCA/StarSubalgebra/SupportAlgebraReindex.lean`,
+`TNLean/QCA/SupportAlgebra/SupportAlgebraCovariance.lean` at commit `021ba0bd19` (Apache-2.0).
+-/
+
+section BipartiteSupportAlgebra
+
+open scoped BigOperators Kronecker
+
+namespace Matrix
+
+variable {m n : Type*} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n]
+
+/-- Left Kronecker commutation is equivalent to commutation with every first-factor coefficient.
+
+This is the coefficientwise commutator expansion used in the proof of GNVW Lemma `lem:spp`,
+arXiv:0910.3675v2, lines 1197--1208. Compare Schumacher--Werner Lemma `sppcomm`,
+quant-ph/0405174, lines 1174--1194. -/
+theorem commute_left_kronecker_embed_iff (B : Matrix m m ℂ)
+    (X : Matrix (m × n) (m × n) ℂ) :
+    Commute (leftKroneckerEmbed (n := n) B) X ↔
+      ∀ i j : n, Commute B (bipartiteSlice X i j) := by
+  constructor
+  · intro h i j
+    rw [commute_iff_eq]
+    ext a b
+    have hab := congrArg (fun Y : Matrix (m × n) (m × n) ℂ ↦ Y (a, i) (b, j)) h.eq
+    simpa [leftKroneckerEmbed_apply, Matrix.mul_apply, bipartiteSlice,
+      Fintype.sum_prod_type, Matrix.one_apply] using hab
+  · intro h
+    rw [commute_iff_eq]
+    ext ⟨a, i⟩ ⟨b, j⟩
+    have hab := congrArg (fun Y : Matrix m m ℂ ↦ Y a b) (h i j).eq
+    simpa [leftKroneckerEmbed_apply, Matrix.mul_apply, bipartiteSlice,
+      Fintype.sum_prod_type, Matrix.one_apply] using hab
+
+/-- Right Kronecker commutation is equivalent to commutation with every second-factor coefficient.
+
+This is the symmetric coefficientwise commutator expansion of GNVW Lemma `lem:spp`,
+arXiv:0910.3675v2, lines 1197--1208. Compare Schumacher--Werner Lemma `sppcomm`,
+quant-ph/0405174, lines 1174--1194. -/
+theorem commute_right_kronecker_embed_iff (B : Matrix n n ℂ)
+    (X : Matrix (m × n) (m × n) ℂ) :
+    Commute (rightKroneckerEmbed (m := m) B) X ↔
+      ∀ i j : m, Commute B (operatorBlock X i j) := by
+  constructor
+  · intro h i j
+    rw [commute_iff_eq]
+    ext a b
+    have hab := congrArg (fun Y : Matrix (m × n) (m × n) ℂ ↦ Y (i, a) (j, b)) h.eq
+    simpa [rightKroneckerEmbed_apply, Matrix.mul_apply, operatorBlock,
+      Fintype.sum_prod_type, Matrix.one_apply] using hab
+  · intro h
+    rw [commute_iff_eq]
+    ext ⟨i, a⟩ ⟨j, b⟩
+    have hab := congrArg (fun Y : Matrix n n ℂ ↦ Y a b) (h i j).eq
+    simpa [rightKroneckerEmbed_apply, Matrix.mul_apply, operatorBlock,
+      Fintype.sum_prod_type, Matrix.one_apply] using hab
+
+private theorem mem_left_support_algebra_centralizer_iff
+    (A : StarSubalgebra ℂ (Matrix (m × n) (m × n) ℂ)) (B : Matrix m m ℂ) :
+    B ∈ (leftSupportAlgebra A : Set (Matrix m m ℂ)).centralizer ↔
+      ∀ ⦃X⦄, X ∈ A → ∀ i j : n, Commute B (bipartiteSlice X i j) := by
+  constructor
+  · intro h X hX i j
+    exact (Set.mem_centralizer_iff.mp h _ (bipartite_slice_mem_left_support_algebra A hX i j)).symm
+  · intro h
+    rw [Set.mem_centralizer_iff]
+    intro C hC
+    have hstar : star (leftCoefficientSet A) ⊆ leftCoefficientSet A := by
+      intro D hD
+      rw [Set.mem_star] at hD
+      obtain ⟨X, hX, i, j, hDX⟩ := hD
+      refine ⟨Xᴴ, A.star_mem' hX, j, i, ?_⟩
+      rw [bipartiteSlice_conjTranspose, ← star_eq_conjTranspose, hDX, star_star]
+    have hgenerators : leftCoefficientSet A ∪ star (leftCoefficientSet A) ⊆
+        (Subalgebra.centralizer ℂ {B} : Set (Matrix m m ℂ)) := by
+      intro D hD
+      change D ∈ ({B} : Set (Matrix m m ℂ)).centralizer
+      rw [Set.mem_centralizer_iff]
+      intro E hE
+      rw [Set.mem_singleton_iff.mp hE]
+      have hcoeff : D ∈ leftCoefficientSet A :=
+        (Set.mem_union _ _ _).mp hD |>.elim id (fun hDstar ↦ hstar hDstar)
+      obtain ⟨X, hX, i, j, rfl⟩ := hcoeff
+      exact (h hX i j).eq
+    have hle : (leftSupportAlgebra A).toSubalgebra ≤ Subalgebra.centralizer ℂ {B} := by
+      rw [leftSupportAlgebra, StarAlgebra.adjoin_toSubalgebra]
+      exact Algebra.adjoin_le hgenerators
+    have hCB : C ∈ ({B} : Set (Matrix m m ℂ)).centralizer := hle hC
+    exact (Set.mem_centralizer_iff.mp hCB B (Set.mem_singleton B)).symm
+
+private theorem mem_right_support_algebra_centralizer_iff
+    (A : StarSubalgebra ℂ (Matrix (m × n) (m × n) ℂ)) (B : Matrix n n ℂ) :
+    B ∈ (rightSupportAlgebra A : Set (Matrix n n ℂ)).centralizer ↔
+      ∀ ⦃X⦄, X ∈ A → ∀ i j : m, Commute B (operatorBlock X i j) := by
+  constructor
+  · intro h X hX i j
+    exact (Set.mem_centralizer_iff.mp h _ (operator_block_mem_right_support_algebra A hX i j)).symm
+  · intro h
+    rw [Set.mem_centralizer_iff]
+    intro C hC
+    have hstar : star (rightCoefficientSet A) ⊆ rightCoefficientSet A := by
+      intro D hD
+      rw [Set.mem_star] at hD
+      obtain ⟨X, hX, i, j, hDX⟩ := hD
+      refine ⟨Xᴴ, A.star_mem' hX, j, i, ?_⟩
+      rw [operatorBlock_conjTranspose, ← star_eq_conjTranspose, hDX, star_star]
+    have hgenerators : rightCoefficientSet A ∪ star (rightCoefficientSet A) ⊆
+        (Subalgebra.centralizer ℂ {B} : Set (Matrix n n ℂ)) := by
+      intro D hD
+      change D ∈ ({B} : Set (Matrix n n ℂ)).centralizer
+      rw [Set.mem_centralizer_iff]
+      intro E hE
+      rw [Set.mem_singleton_iff.mp hE]
+      have hcoeff : D ∈ rightCoefficientSet A :=
+        (Set.mem_union _ _ _).mp hD |>.elim id (fun hDstar ↦ hstar hDstar)
+      obtain ⟨X, hX, i, j, rfl⟩ := hcoeff
+      exact (h hX i j).eq
+    have hle : (rightSupportAlgebra A).toSubalgebra ≤ Subalgebra.centralizer ℂ {B} := by
+      rw [rightSupportAlgebra, StarAlgebra.adjoin_toSubalgebra]
+      exact Algebra.adjoin_le hgenerators
+    have hCB : C ∈ ({B} : Set (Matrix n n ℂ)).centralizer := hle hC
+    exact (Set.mem_centralizer_iff.mp hCB B (Set.mem_singleton B)).symm
+
+/-- The left Kronecker embedding of a matrix commutes with the original bipartite algebra exactly
+when the matrix commutes with the left support algebra.
+
+This is the commutant characterization in GNVW Lemma `lem:spp`, arXiv:0910.3675v2,
+lines 1192--1208. The proof is the source's coefficientwise commutator expansion; compare
+Schumacher--Werner, quant-ph/0405174, lines 1174--1194.
+-/
+theorem left_kronecker_embed_mem_centralizer_iff
+    (A : StarSubalgebra ℂ (Matrix (m × n) (m × n) ℂ)) (B : Matrix m m ℂ) :
+    leftKroneckerEmbed (n := n) B ∈ (A : Set _).centralizer ↔
+      B ∈ (leftSupportAlgebra A : Set _).centralizer := by
+  rw [mem_left_support_algebra_centralizer_iff]
+  constructor
+  · intro h X hX
+    have hcomm := (Set.mem_centralizer_iff.mp h X hX).symm
+    exact (commute_left_kronecker_embed_iff B X).mp hcomm
+  · intro h X hX
+    exact ((commute_left_kronecker_embed_iff B X).mpr (h hX)).eq.symm
+
+/-- The right Kronecker embedding of a matrix commutes with the original bipartite algebra
+exactly when the matrix commutes with the right support algebra.
+
+This is the symmetric commutant characterization of GNVW Lemma `lem:spp`,
+arXiv:0910.3675v2, lines 1192--1208; compare Schumacher--Werner,
+quant-ph/0405174, lines 1174--1194.
+-/
+theorem right_kronecker_embed_mem_centralizer_iff
+    (A : StarSubalgebra ℂ (Matrix (m × n) (m × n) ℂ)) (B : Matrix n n ℂ) :
+    rightKroneckerEmbed (m := m) B ∈ (A : Set _).centralizer ↔
+      B ∈ (rightSupportAlgebra A : Set _).centralizer := by
+  rw [mem_right_support_algebra_centralizer_iff]
+  constructor
+  · intro h X hX
+    have hcomm := (Set.mem_centralizer_iff.mp h X hX).symm
+    exact (commute_right_kronecker_embed_iff B X).mp hcomm
+  · intro h X hX
+    exact ((commute_right_kronecker_embed_iff B X).mpr (h hX)).eq.symm
+
+end Matrix
+
+end BipartiteSupportAlgebra
+
+section CommutingStarSubalgebraKronecker
+
+open scoped Kronecker
+
+namespace Matrix
+
+variable {m n : Type*} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n]
+
+private theorem leftKroneckerEmbed_mul_rightKroneckerEmbed
+    (A : Matrix m m ℂ) (B : Matrix n n ℂ) :
+    leftKroneckerEmbed (n := n) A * rightKroneckerEmbed (m := m) B = A ⊗ₖ B := by
+  rw [leftKroneckerEmbed_apply, rightKroneckerEmbed_apply, ← mul_kronecker_mul,
+    mul_one, one_mul]
+
+private theorem rightKroneckerEmbed_mul_leftKroneckerEmbed
+    (A : Matrix m m ℂ) (B : Matrix n n ℂ) :
+    rightKroneckerEmbed (m := m) B * leftKroneckerEmbed (n := n) A = A ⊗ₖ B := by
+  rw [leftKroneckerEmbed_apply, rightKroneckerEmbed_apply, ← mul_kronecker_mul,
+    one_mul, mul_one]
+
+private theorem left_right_kronecker_commute
+    (S : StarSubalgebra ℂ (Matrix m m ℂ)) (T : StarSubalgebra ℂ (Matrix n n ℂ)) :
+    ∀ a : S.map (leftKroneckerEmbed (n := n)),
+      ∀ b : T.map (rightKroneckerEmbed (m := m)),
+        Commute (a : Matrix (m × n) (m × n) ℂ) (b : Matrix (m × n) (m × n) ℂ) := by
+  intro a b
+  obtain ⟨A, _, hA⟩ := StarSubalgebra.mem_map.mp a.2
+  obtain ⟨B, _, hB⟩ := StarSubalgebra.mem_map.mp b.2
+  change (a : Matrix (m × n) (m × n) ℂ) * b = b * a
+  rw [← hA, ← hB, leftKroneckerEmbed_mul_rightKroneckerEmbed,
+    rightKroneckerEmbed_mul_leftKroneckerEmbed]
+
+private theorem left_right_kronecker_mul_toSubmodule
+    (S : StarSubalgebra ℂ (Matrix m m ℂ)) (T : StarSubalgebra ℂ (Matrix n n ℂ)) :
+    (S.map (leftKroneckerEmbed (n := n))).toSubmodule *
+        (T.map (rightKroneckerEmbed (m := m))).toSubmodule =
+      kroneckerSubmodule S.toSubmodule T.toSubmodule := by
+  apply le_antisymm
+  · rw [Submodule.mul_le]
+    intro X hX Y hY
+    obtain ⟨A, hA, hAX⟩ := StarSubalgebra.mem_map.mp hX
+    obtain ⟨B, hB, hBY⟩ := StarSubalgebra.mem_map.mp hY
+    rw [← hAX, ← hBY, leftKroneckerEmbed_mul_rightKroneckerEmbed]
+    exact Submodule.apply_mem_map₂ Matrix.kroneckerBilinear hA hB
+  · rw [kroneckerSubmodule, Submodule.map₂_le]
+    intro A hA B hB
+    change A ⊗ₖ B ∈
+      (S.map (leftKroneckerEmbed (n := n))).toSubmodule *
+        (T.map (rightKroneckerEmbed (m := m))).toSubmodule
+    rw [← leftKroneckerEmbed_mul_rightKroneckerEmbed]
+    exact Submodule.mul_mem_mul (StarSubalgebra.mem_map.mpr ⟨A, hA, rfl⟩)
+      (StarSubalgebra.mem_map.mpr ⟨B, hB, rfl⟩)
+
+/-- In canonical bipartite coordinates, the join of the left and right embedded factors has
+underlying vector space equal to the Kronecker-product span. This is the coordinate identity used
+for the commuting support algebras in GNVW, arXiv:0910.3675v2, lines 1270--1308. -/
+theorem leftKroneckerEmbed_sup_rightKroneckerEmbed_toSubmodule
+    (S : StarSubalgebra ℂ (Matrix m m ℂ)) (T : StarSubalgebra ℂ (Matrix n n ℂ)) :
+    (S.map (leftKroneckerEmbed (n := n)) ⊔
+        T.map (rightKroneckerEmbed (m := m))).toSubmodule =
+      kroneckerSubmodule S.toSubmodule T.toSubmodule := by
+  cases isEmpty_or_nonempty m with
+  | inl _ =>
+      apply Submodule.ext
+      intro X
+      have hX : X = 0 := Subsingleton.elim _ _
+      subst X
+      simp
+  | inr hm =>
+      let _ : Nonempty m := hm
+      cases isEmpty_or_nonempty n with
+      | inl _ =>
+          apply Submodule.ext
+          intro X
+          have hX : X = 0 := Subsingleton.elim _ _
+          subst X
+          simp
+      | inr hn =>
+          let _ : Nonempty n := hn
+          rw [StarSubalgebra.sup_toSubmodule_eq_mul _ _ (left_right_kronecker_commute S T)]
+          exact left_right_kronecker_mul_toSubmodule S T
+
+end Matrix
+
+end CommutingStarSubalgebraKronecker
+
+section OverlappingSupportAlgebra
+
+namespace Matrix
+
+variable {a b c : Type*}
+
+variable [Fintype a] [Fintype b] [Fintype c]
+
+variable [DecidableEq a] [DecidableEq b] [DecidableEq c]
+
+/-- If star-subalgebras on two overlapping pairs of full complex matrix factors
+commute after their natural three-factor lifts, then their support algebras on the
+common factor commute elementwise.
+
+This is the full-matrix, star-closed specialization of Schumacher--Werner Lemma
+`sppcomm`, quant-ph/0405174, lines 1174--1194, and GNVW Lemma `sppcomm`,
+arXiv:0910.3675v2, lines 1221--1246. The MPU application is
+arXiv:1703.09188, lines 2300--2306 and 2313--2334. -/
+theorem supportAlgebras_commute_of_overlappingLifts_commute
+    (A₁ : StarSubalgebra ℂ (Matrix (a × b) (a × b) ℂ))
+    (A₂ : StarSubalgebra ℂ (Matrix (b × c) (b × c) ℂ))
+    (hComm : ∀ ⦃X⦄, X ∈ A₁ → ∀ ⦃Y⦄, Y ∈ A₂ →
+      leftOverlappingLift X * rightOverlappingLift Y =
+      rightOverlappingLift Y * leftOverlappingLift X) :
+    ∀ R ∈ rightSupportAlgebra A₁, ∀ L ∈ leftSupportAlgebra A₂,
+      R * L = L * R := by
+  have hRight :
+      rightSupportAlgebra A₁ ≤
+        StarSubalgebra.centralizer ℂ (leftCoefficientSet A₂) := by
+    rw [rightSupportAlgebra, StarAlgebra.adjoin_le_iff]
+    rintro R ⟨X, hX, i, i', rfl⟩
+    change operatorBlock X i i' ∈
+      StarSubalgebra.centralizer ℂ (leftCoefficientSet A₂)
+    rw [StarSubalgebra.mem_centralizer_iff]
+    rintro L ⟨Y, hY, k, k', rfl⟩
+    constructor
+    · exact (middleSlices_commute_of_overlappingLifts_commute
+        X Y (hComm hX hY) i i' k k').symm
+    · exact (middleSlices_commute_of_overlappingLifts_commute
+        X Yᴴ (hComm hX (A₂.star_mem' hY)) i i' k' k).symm
+  have hLeft :
+      leftSupportAlgebra A₂ ≤
+        StarSubalgebra.centralizer ℂ (rightSupportAlgebra A₁ : Set (Matrix b b ℂ)) := by
+    rw [leftSupportAlgebra, StarAlgebra.adjoin_le_iff]
+    rintro L ⟨Y, hY, k, k', rfl⟩
+    change bipartiteSlice Y k k' ∈
+      StarSubalgebra.centralizer ℂ (rightSupportAlgebra A₁ : Set (Matrix b b ℂ))
+    rw [StarSubalgebra.mem_centralizer_iff]
+    intro R hR
+    constructor
+    · exact ((StarSubalgebra.mem_centralizer_iff ℂ).mp (hRight hR)
+        (bipartiteSlice Y k k') ⟨Y, hY, k, k', rfl⟩).1.symm
+    · exact ((StarSubalgebra.mem_centralizer_iff ℂ).mp
+        (hRight ((rightSupportAlgebra A₁).star_mem' hR))
+        (bipartiteSlice Y k k') ⟨Y, hY, k, k', rfl⟩).1.symm
+  intro R hR L hL
+  exact ((StarSubalgebra.mem_centralizer_iff ℂ).mp (hLeft hL) R hR).1
+
+end Matrix
+
+end OverlappingSupportAlgebra
+
+namespace Matrix
+
+variable {m n : Type*} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n]
+
+/-- The left support of the full left tensor factor is the whole first
+matrix algebra; GNVW, arXiv:0910.3675v2, shift example after RR2x. -/
+theorem leftSupportAlgebra_range_leftKroneckerEmbed [Nonempty n] :
+    leftSupportAlgebra (leftKroneckerEmbed (m := m) (n := n)).range = ⊤ := by
+  classical
+  let j : n := Classical.choice inferInstance
+  apply eq_top_iff.mpr
+  intro A _
+  have hcoeff : bipartiteSlice (leftKroneckerEmbed (n := n) A) j j = A := by
+    ext i k
+    simp [bipartiteSlice_apply, leftKroneckerEmbed_apply, kroneckerMap_apply]
+  rw [← hcoeff]
+  have hA : leftKroneckerEmbed (n := n) A ∈
+      (leftKroneckerEmbed (m := m) (n := n)).range := ⟨A, rfl⟩
+  exact bipartite_slice_mem_left_support_algebra
+    (leftKroneckerEmbed (m := m) (n := n)).range hA j j
+
+/-- The right support of the full left tensor factor consists of scalars;
+GNVW, arXiv:0910.3675v2, shift example after RR2x. -/
+theorem rightSupportAlgebra_range_leftKroneckerEmbed :
+    rightSupportAlgebra (leftKroneckerEmbed (m := m) (n := n)).range = ⊥ := by
+  apply eq_bot_iff.mpr
+  apply (right_support_algebra_le_iff _ _).mpr
+  intro X hX i j
+  obtain ⟨A, rfl⟩ := hX
+  rw [StarSubalgebra.mem_bot]
+  refine ⟨A i j, ?_⟩
+  ext k l
+  simp [Algebra.algebraMap_eq_smul_one, operatorBlock_apply, leftKroneckerEmbed_apply,
+    kroneckerMap_apply, smul_apply, smul_eq_mul]
+
+/-- The left support of the full right tensor factor consists of scalars;
+GNVW, arXiv:0910.3675v2, inverse orientation of the shift example. -/
+theorem leftSupportAlgebra_range_rightKroneckerEmbed :
+    leftSupportAlgebra (rightKroneckerEmbed (m := m) (n := n)).range = ⊥ := by
+  apply eq_bot_iff.mpr
+  apply (left_support_algebra_le_iff _ _).mpr
+  intro X hX i j
+  obtain ⟨A, rfl⟩ := hX
+  rw [StarSubalgebra.mem_bot]
+  refine ⟨A i j, ?_⟩
+  ext k l
+  simp [Algebra.algebraMap_eq_smul_one, bipartiteSlice_apply, rightKroneckerEmbed_apply,
+    kroneckerMap_apply, smul_apply, smul_eq_mul, mul_comm]
+
+/-- The right support of the full right tensor factor is the whole second
+matrix algebra; GNVW, arXiv:0910.3675v2, inverse orientation of the shift example. -/
+theorem rightSupportAlgebra_range_rightKroneckerEmbed [Nonempty m] :
+    rightSupportAlgebra (rightKroneckerEmbed (m := m) (n := n)).range = ⊤ := by
+  classical
+  let i : m := Classical.choice inferInstance
+  apply eq_top_iff.mpr
+  intro A _
+  have hcoeff : operatorBlock (rightKroneckerEmbed (m := m) A) i i = A := by
+    ext j k
+    simp [operatorBlock_apply, rightKroneckerEmbed_apply, kroneckerMap_apply]
+  rw [← hcoeff]
+  have hA : rightKroneckerEmbed (m := m) A ∈
+      (rightKroneckerEmbed (m := m) (n := n)).range := ⟨A, rfl⟩
+  exact operator_block_mem_right_support_algebra
+    (rightKroneckerEmbed (m := m) (n := n)).range hA i i
+
+end Matrix
+
+namespace Matrix
+
+variable {m n m' n' : Type*} [Fintype m] [Fintype n] [Fintype m'] [Fintype n']
+  [DecidableEq m] [DecidableEq n] [DecidableEq m'] [DecidableEq n']
+
+/-- The least left support algebra is independent of independent
+coordinate choices on its two finite factors. Source context:
+arXiv:1703.09188, Appendix support factors, lines 2322–2334. -/
+theorem leftSupportAlgebra_map_matrixReindexStarAlgEquiv
+    (A : StarSubalgebra ℂ (Matrix (m × n) (m × n) ℂ)) (e : m ≃ m') (f : n ≃ n') :
+    leftSupportAlgebra (A.map (matrixReindexStarAlgEquiv (e.prodCongr f)).toStarAlgHom) =
+      (leftSupportAlgebra A).map (matrixReindexStarAlgEquiv e).toStarAlgHom := by
+  apply le_antisymm
+  · apply (left_support_algebra_le_iff _ _).mpr
+    intro X hX i j
+    obtain ⟨Y, hY, rfl⟩ := hX
+    change bipartiteSlice (Matrix.reindex (e.prodCongr f) (e.prodCongr f) Y) i j ∈ _
+    rw [bipartiteSlice_reindex_prod]
+    exact ⟨_, bipartite_slice_mem_left_support_algebra A hY (f.symm i) (f.symm j), rfl⟩
+  · apply StarSubalgebra.map_le_iff_le_comap.mpr
+    apply (left_support_algebra_le_iff _ _).mpr
+    intro X hX i j
+    change (matrixReindexStarAlgEquiv e) (bipartiteSlice X i j) ∈
+      leftSupportAlgebra (A.map (matrixReindexStarAlgEquiv (e.prodCongr f)).toStarAlgHom)
+    have h := bipartite_slice_mem_left_support_algebra
+      (A.map (matrixReindexStarAlgEquiv (e.prodCongr f)).toStarAlgHom)
+      (show (matrixReindexStarAlgEquiv (e.prodCongr f)) X ∈
+        A.map (matrixReindexStarAlgEquiv (e.prodCongr f)).toStarAlgHom from ⟨X, hX, rfl⟩)
+      (f i) (f j)
+    change bipartiteSlice (Matrix.reindex (e.prodCongr f) (e.prodCongr f) X) (f i) (f j) ∈ _ at h
+    simp only [bipartiteSlice_reindex_prod, Equiv.symm_apply_apply] at h
+    exact h
+
+end Matrix
+
+section
+
+open scoped BigOperators Kronecker
+
+namespace Matrix
+
+variable {m n : Type*} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n]
+
+/-- A first-factor coefficient of a bipartite matrix, tensored with the identity of the second
+factor, is the sum of the compressions of that matrix by the matrix units of the second factor:
+\[
+  X_{ij}\otimes\mathbf 1=\sum_k(\mathbf 1\otimes e_{ki})\,X\,(\mathbf 1\otimes e_{jk}).
+\]
+
+This is the coefficient family of Schumacher--Werner, quant-ph/0405174, lines 1137--1169,
+rewritten so that each coefficient is a sum of products inside the ambient algebra. Neither that
+paper nor GNVW, arXiv:0910.3675v2, lines 1188--1191, displays the identity separately. -/
+theorem leftKroneckerEmbed_bipartiteSlice_eq_sum
+    (X : Matrix (m × n) (m × n) ℂ) (i j : n) :
+    leftKroneckerEmbed (n := n) (bipartiteSlice X i j) =
+      ∑ k : n, rightKroneckerEmbed (m := m) (single k i (1 : ℂ)) * X *
+        rightKroneckerEmbed (m := m) (single j k (1 : ℂ)) := by
+  ext p q
+  obtain ⟨a, u⟩ := p
+  obtain ⟨b, v⟩ := q
+  rw [Matrix.sum_apply]
+  simp only [leftKroneckerEmbed_apply, rightKroneckerEmbed_apply, Matrix.mul_apply,
+    Matrix.kroneckerMap_apply, Fintype.sum_prod_type, Matrix.one_apply, Matrix.single_apply,
+    bipartiteSlice_apply]
+  simp [ite_and, eq_comm, mul_comm]
+
+/-- A second-factor coefficient of a bipartite matrix, tensored with the identity of the first
+factor, is the sum of the compressions of that matrix by the matrix units of the first factor:
+\[
+  \mathbf 1\otimes X_{ij}=\sum_k(e_{ki}\otimes\mathbf 1)\,X\,(e_{jk}\otimes\mathbf 1).
+\]
+
+This is the symmetric counterpart of `Matrix.leftKroneckerEmbed_bipartiteSlice_eq_sum` for the
+coefficient family of GNVW, arXiv:0910.3675v2, lines 1211--1219. -/
+theorem rightKroneckerEmbed_operatorBlock_eq_sum
+    (X : Matrix (m × n) (m × n) ℂ) (i j : m) :
+    rightKroneckerEmbed (m := m) (operatorBlock X i j) =
+      ∑ k : m, leftKroneckerEmbed (n := n) (single k i (1 : ℂ)) * X *
+        leftKroneckerEmbed (n := n) (single j k (1 : ℂ)) := by
+  ext p q
+  obtain ⟨a, u⟩ := p
+  obtain ⟨b, v⟩ := q
+  rw [Matrix.sum_apply]
+  simp only [leftKroneckerEmbed_apply, rightKroneckerEmbed_apply, Matrix.mul_apply,
+    Matrix.kroneckerMap_apply, Fintype.sum_prod_type, Matrix.one_apply, Matrix.single_apply,
+    operatorBlock_apply]
+  simp [ite_and, eq_comm, mul_comm]
+
+end Matrix
+
+end

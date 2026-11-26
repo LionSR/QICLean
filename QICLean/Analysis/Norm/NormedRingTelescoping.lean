@@ -8,6 +8,11 @@ import Mathlib.Analysis.Normed.Ring.Basic
 import Mathlib.Algebra.Group.Idempotent
 import Mathlib.Tactic.NoncommRing
 import Mathlib.Tactic.Positivity
+import Mathlib.Analysis.CStarAlgebra.Matrix
+import Mathlib.Analysis.Matrix.Order
+import Mathlib.LinearAlgebra.Matrix.Kronecker
+import Mathlib.Analysis.InnerProductSpace.Basic
+import Mathlib.Topology.Algebra.Module.FiniteDimension
 
 /-!
 # Telescoping bounds for perturbed ordered products
@@ -42,6 +47,9 @@ Moved from TNLean, `TNLean/Algebra/NormedRingTelescoping.lean` at commit `49b78e
 
 * arXiv:2103.13367, Supplemental Material, proof of the classification theorem.
 * arXiv:2307.01696, Supplemental Material, eq. (S9) and Lemma 1'(i).
+
+Moved from TNLean, `TNLean/MPS/Preparation/BlockSum/OverlappingBlockStates.lean` at commit
+`021ba0bd19` (Apache-2.0).
 -/
 
 /-- The telescoping identity for two ordered products in a ring:
@@ -205,3 +213,53 @@ theorem le_mul_of_le_mul_exp_of_le {C B v y : ℝ} (hC : 0 ≤ C) (hB : 0 ≤ B)
       _ ≤ (C * Real.exp C + B) * y := by nlinarith [Real.exp_pos C]
   · have : 0 ≤ C * Real.exp C * y := by positivity
     nlinarith
+
+section
+
+open scoped Matrix Kronecker ComplexOrder MatrixOrder BigOperators InnerProductSpace
+
+open Matrix
+
+
+open scoped Matrix.Norms.L2Operator in
+/-- **Telescoping for the trace of a product.** For a finite index type there is `K ≥ 0` such
+that for every matrix `E` whose powers have norm at most `c` and all matrices `X_0, …, X_{M-1}`
+within `δ` of `E`, `|Tr(X_0 ⋯ X_{M-1}) - Tr E^M| ≤ K c² (M δ) e^{c M δ}`.
+
+arXiv:2103.13367, Supplemental Material, eqs. `final_eq` to `finished`, for a product of
+different matrices (`norm_prod_range_sub_pow_le_of_forall_norm_pow_le`). -/
+theorem Matrix.exists_norm_trace_prod_ofFn_sub_trace_pow_le (κ : Type*) [Fintype κ]
+    [DecidableEq κ] :
+    ∃ K : ℝ, 0 ≤ K ∧ ∀ (E : Matrix κ κ ℂ) (c : ℝ), (∀ n : ℕ, ‖E ^ n‖ ≤ c) →
+      ∀ (M : ℕ) (X : Fin M → Matrix κ κ ℂ) (δ : ℝ), (∀ k, ‖X k - E‖ ≤ δ) →
+        ‖Matrix.trace (List.ofFn X).prod - Matrix.trace (E ^ M)‖ ≤
+          K * c ^ 2 * (M * δ) * Real.exp (c * (M * δ)) := by
+  set trL := LinearMap.toContinuousLinearMap (Matrix.traceLinearMap κ ℂ ℂ)
+  refine ⟨‖trL‖, norm_nonneg _, fun E c hE M X δ hX => ?_⟩
+  rcases Nat.eq_zero_or_pos M with rfl | hM
+  · simp
+  have hc : 0 ≤ c := (norm_nonneg _).trans (hE 0)
+  have hδ : 0 ≤ δ := (norm_nonneg _).trans (hX ⟨0, hM⟩)
+  set Y : ℕ → Matrix κ κ ℂ := fun n => if h : n < M then X ⟨n, h⟩ else E
+  have hY : ∀ n, ‖Y n - E‖ ≤ δ := fun n => by
+    simp only [Y]
+    split_ifs with h
+    · exact hX _
+    · rw [sub_self, norm_zero]; exact hδ
+  have hprod : List.ofFn X = (List.range M).map Y := by
+    refine List.ext_getElem (by simp) fun i h1 _ => ?_
+    have hi : i < M := by simpa using h1
+    simp [Y, hi]
+  have htel := norm_prod_range_sub_pow_le_of_forall_norm_pow_le hE hY M
+  have hgeom := one_add_pow_sub_one_le_mul_exp (mul_nonneg hc hδ) M
+  have htr : ‖Matrix.trace (List.ofFn X).prod - Matrix.trace (E ^ M)‖ ≤
+      ‖trL‖ * ‖(List.ofFn X).prod - E ^ M‖ := by
+    rw [← Matrix.trace_sub]
+    exact trL.le_opNorm _
+  rw [hprod] at htr ⊢
+  calc _ ≤ ‖trL‖ * ‖((List.range M).map Y).prod - E ^ M‖ := htr
+    _ ≤ ‖trL‖ * (c * ((1 + c * δ) ^ M - 1)) := by gcongr
+    _ ≤ ‖trL‖ * (c * (M * (c * δ) * Real.exp (M * (c * δ)))) := by gcongr
+    _ = ‖trL‖ * c ^ 2 * (M * δ) * Real.exp (c * (M * δ)) := by ring_nf
+
+end
