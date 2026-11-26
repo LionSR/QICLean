@@ -10,6 +10,7 @@ import Mathlib.LinearAlgebra.Pi
 import Mathlib.Analysis.Complex.Basic
 import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 import Mathlib.LinearAlgebra.FiniteDimensional.Basic
+import Mathlib.Analysis.InnerProductSpace.Basic
 
 /-!
 # Spanning families indexed by the dimension bound
@@ -162,7 +163,6 @@ end
 
 section
 
-open scoped BigOperators TensorProduct InnerProductSpace Matrix.Norms.L2Operator
 
 section
 

@@ -162,8 +162,8 @@ private lemma polarPosInv_mul_polarPos (M : Matrix ι κ ℂ) :
 /-- The Gram matrix is fixed by the support projector: `Mᴴ M Π = Mᴴ M`. -/
 private lemma gram_mul_polarSupport (M : Matrix ι κ ℂ) :
     Mᴴ * M * polarSupport M = Mᴴ * M := by
-  conv_lhs => rw [← cfc_id' ℝ (Mᴴ * M) (isHermitian_conjTranspose_mul_self M)]
-  conv_rhs => rw [← cfc_id' ℝ (Mᴴ * M) (isHermitian_conjTranspose_mul_self M)]
+  conv_lhs => rw [← cfc_id' ℝ (Mᴴ * M) (isHermitian_conjTranspose_mul_self M).isSelfAdjoint]
+  conv_rhs => rw [← cfc_id' ℝ (Mᴴ * M) (isHermitian_conjTranspose_mul_self M).isSelfAdjoint]
   rw [polarSupport, ← cfc_mul _ _ (Mᴴ * M) (continuousOn_spectrum _ _)
     (continuousOn_spectrum _ _)]
   refine cfc_congr fun x _ => ?_
@@ -242,7 +242,7 @@ theorem conjTranspose_polarIso_mul_polarIso (M : Matrix ι κ ℂ) :
   have hQ : (polarPosInv M)ᴴ = polarPosInv M :=
     (cfc_predicate (fun x : ℝ => (Real.sqrt x)⁻¹) (Mᴴ * M) : IsSelfAdjoint _)
   rw [polarIso, conjTranspose_mul, hQ, Matrix.mul_assoc, ← Matrix.mul_assoc Mᴴ]
-  conv_lhs => rw [← cfc_id' ℝ (Mᴴ * M) (isHermitian_conjTranspose_mul_self M)]
+  conv_lhs => rw [← cfc_id' ℝ (Mᴴ * M) (isHermitian_conjTranspose_mul_self M).isSelfAdjoint]
   rw [polarPosInv, ← cfc_mul _ _ (Mᴴ * M) (continuousOn_spectrum _ _)
     (continuousOn_spectrum _ _), ← cfc_mul _ _ (Mᴴ * M) (continuousOn_spectrum _ _)
     (continuousOn_spectrum _ _), polarSupport]
