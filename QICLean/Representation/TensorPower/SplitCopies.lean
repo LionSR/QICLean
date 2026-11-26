@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Representation.Partition.Alternant
 import QICLean.Representation.TensorPower.SiteOperators
-import QICLean.Representation.Character.Branching
+import QICLean.Representation.Permutation.JointIsotypic
 
 /-!
 # Splitting `m + r` copies into the first `m` and the last `r`

@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Analysis.FunctionalCalculus.MatrixPowers
-import QICLean.Analysis.Norm.NeumannInverse
+import QICLean.Analysis.Calculus.NeumannInverse
 import QICLean.Analysis.Resolvent.FunctionalCalculus
 import QICLean.Channel.Positive.NPositiveIntegral
 import Mathlib.Analysis.Calculus.FDeriv.Mul

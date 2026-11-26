@@ -14,4 +14,3 @@ import QICLean.Channel.Peripheral.Spectrum.Conjugation
 import QICLean.Channel.Peripheral.Spectrum.RankOnePositiveProjection
 import QICLean.Channel.Peripheral.Spectrum.SpectralRadius
 import QICLean.Channel.Peripheral.Spectrum.Spectrum
-import QICLean.Channel.Peripheral.Spectrum.UnitalKraus

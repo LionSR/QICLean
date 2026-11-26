@@ -7,7 +7,7 @@ import QICLean.Channel.Peripheral.Cycles.DensityBlockFacePermutation
 import QICLean.Channel.Peripheral.Cycles.MatchedBlockEndomorphism
 import QICLean.Channel.Schwarz.AbstractMultiplicativeDomain
 import QICLean.Algebra.Unitary.MatrixUnitaryBetween
-import QICLean.Channel.Determinant.PositiveInverse
+import QICLean.Channel.Peripheral.Asymptotic.PositiveInverse
 
 /-!
 # Schwarz inequalities on Wolf's matched density blocks

@@ -58,10 +58,6 @@ theorem coeff_inv_of_mem_center {α : Type*} [Finite α]
     (Equiv.Perm.isConj_iff_cycleType_eq.mpr (Equiv.Perm.cycleType_inv σ).symm)
   rw [← hc, coeff_conj_of_mem_center ha]
 
-theorem centralIdem_mem_center {G : Type*} [Group G] [Fintype G] (l : IrrepLabel G) :
-    centralIdem l ∈ Subalgebra.center ℂ (MonoidAlgebra ℂ G) :=
-  Subalgebra.mem_center_iff.mpr fun b => (centralIdem_mul_comm l b).symm
-
 end IrrepLabel
 
 namespace TensorPower

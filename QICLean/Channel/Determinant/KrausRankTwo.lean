@@ -6,7 +6,7 @@ Authors: QICLean contributors
 import QICLean.Spectral.Jordan.UnitarySchurTriangularization
 import QICLean.Channel.Determinant.Basic
 import QICLean.Channel.KrausMap.KrausRank
-import QICLean.Channel.TransferMatrix
+import QICLean.Channel.TransferMatrix.Basic
 import Mathlib.Analysis.SpecificLimits.Basic
 import Mathlib.LinearAlgebra.Matrix.Block
 import Mathlib.LinearAlgebra.Matrix.Kronecker

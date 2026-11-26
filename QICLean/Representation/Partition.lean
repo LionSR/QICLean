@@ -9,7 +9,6 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Representation.Partition
 
 import QICLean.Representation.Partition.Alternant
-import QICLean.Representation.Partition.HookDimension
 import QICLean.Representation.Partition.HookFormula
 import QICLean.Representation.Partition.HookRecursion
 import QICLean.Representation.Partition.PartitionCount

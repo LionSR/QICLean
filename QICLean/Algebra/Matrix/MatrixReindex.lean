@@ -20,6 +20,15 @@ Simultaneous reindexing of rows and columns gives a star-algebra equivalence.
 Its underlying map is `Matrix.reindex`; inversion and composition agree with
 those of the index equivalences.
 
+## Main definitions
+
+* `Matrix.reindexStarAlgEquiv`: simultaneous reindexing as a star-algebra
+  equivalence.
+* `Matrix.reindexEndomorphism`: a matrix endomorphism carried along a
+  reindexing.
+* `Matrix.equivReindexMap`: simultaneous reindexing along an equivalence as a
+  complex-linear map between matrix spaces.
+
 Moved from TNLean, `TNLean/MPS/Operator/Product/DirectSum.lean` at commit `021ba0bd19` (Apache-2.0).
 
 Moved from TNLean, `TNLean/MPS/Tensor/VaryingBond/VaryingBondOBC.lean` at commit `021ba0bd19`
@@ -271,3 +280,23 @@ end Matrix
 end
 
 end VaryingBondOBC
+
+section EquivReindexMap
+
+/-!
+# Reindexing as a linear map between matrix spaces
+-/
+
+namespace Matrix
+
+/-- Reindex both matrix coordinates along an equivalence of index sets.
+This is the basis relabeling used to regroup tensor factors and shift
+subspins in arXiv:1606.00608, Appendix C.2, lines 1521--1522, 1535--1540,
+1547, and 1555--1559. -/
+def equivReindexMap {α β : Type*} (e : α ≃ β) :
+    Matrix α α ℂ →ₗ[ℂ] Matrix β β ℂ :=
+  (Matrix.reindexLinearEquiv ℂ ℂ e e).toLinearMap
+
+end Matrix
+
+end EquivReindexMap

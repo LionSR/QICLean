@@ -8,6 +8,4 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Channel.PerronFrobenius
 
-import QICLean.Channel.PerronFrobenius.Existence
-import QICLean.Channel.PerronFrobenius.Normalization
 import QICLean.Channel.PerronFrobenius.SpectralRadiusEigenvector

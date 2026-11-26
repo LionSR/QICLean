@@ -5,7 +5,7 @@ Authors: TNLean contributors
 -/
 import QICLean.Channel.FixedPoint.DirectSum.DirectSumKraus
 import QICLean.Channel.ConditionalExpectation.RightFactorConditionalExpectation
-import QICLean.Channel.ConditionalExpectation.PositiveConditionalExpectationDirectSum
+import QICLean.Channel.Positive.PositiveConditionalExpectationDirectSum
 
 /-!
 # Coordinate direct-sum conditional expectation

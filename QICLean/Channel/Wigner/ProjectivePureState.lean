@@ -6,7 +6,7 @@ Authors: TNLean contributors
 import Mathlib.LinearAlgebra.Projectivization.Basic
 import QICLean.Algebra.Combinatorics.FinSum
 import QICLean.Algebra.Hermitian.OrthogonalProjection
-import QICLean.Channel.WolfProps
+import QICLean.Channel.KrausMap.WolfProps
 import QICLean.Spectral.Eigenvalue.HermitianSpectrumMultiplicity
 
 /-!
