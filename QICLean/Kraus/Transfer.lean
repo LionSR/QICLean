@@ -13,6 +13,7 @@ import Mathlib.Basic.Complex.BigOperators
 import Mathlib.LinearAlgebra.Matrix.Trace
 import QICLean.Analysis.FunctionalCalculus.MatrixSqrt
 import QICLean.Channel.TransferMatrix
+import Mathlib.LinearAlgebra.Matrix.IsDiag
 
 /-!
 # Transfer maps of finite Kraus families

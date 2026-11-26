@@ -270,7 +270,6 @@ open scoped Matrix Kronecker ComplexOrder MatrixOrder BigOperators NNReal ENNRea
 
 open Matrix
 
-open Kraus (blockTensor)
 
 section
 

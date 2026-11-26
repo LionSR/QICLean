@@ -519,7 +519,6 @@ end IsPositiveMap
 
 section
 
-open Kraus (blockTensor)
 
 open scoped Matrix
 

@@ -48,7 +48,6 @@ section
 
 open scoped Matrix BigOperators ComplexOrder Kronecker
 
-open ManyBody
 
 namespace Matrix
 
@@ -77,7 +76,6 @@ section
 
 open scoped Matrix MatrixOrder ComplexOrder Matrix.Norms.L2Operator
 
-open ManyBody
 
 namespace Matrix
 

@@ -21,6 +21,9 @@ The kernel comparisons are moved from TNLean,
 with no change to the statements. The gap transfer through a one-sided comparison is moved from
 TNLean, `TNLean/MPS/ParentHamiltonian/Gap/Comparison/OpenRangeComparison.lean` at commit
 `600676ccac`, without its unused hypothesis `0 < γ`.
+
+Moved from TNLean, `TNLean/MPS/ParentHamiltonian/Gap/Spectator/BoundedProjectionDeformation.lean`
+at commit `021ba0bd19` (Apache-2.0).
 -/
 
 open scoped InnerProductSpace ComplexOrder
