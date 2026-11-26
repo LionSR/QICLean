@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Channel.Schwarz.KadisonSchwarz
-import QICLean.Channel.Schwarz.PositiveOnAbelian.Consequences
+import QICLean.Channel.Schwarz.PositiveOnAbelian.Basic
 
 /-!
 # Schwarz inequality for normal operators

@@ -25,7 +25,7 @@ Corollary 6.7 of *Quantum Channels & Operations* (Wolf 2012) takes $\rho$ to be 
 *maximum-rank* fixed-point density matrix and conjugates the full fixed-point set of $T$.
 For a fixed point of maximal support the corner restriction $Q X Q = X$ is vacuous: there
 is a positive semidefinite fixed point whose support projection absorbs every fixed point
-(`Kraus.exists_maximalSupport_fixedPoint` in `QICLean.Channel.FixedPoint.Weighted.MaximalSupport`),
+(`Kraus.exists_maximalSupport_fixedPoint` in `QICLean.Channel.FixedPoint.Weighted.MaximalRank`),
 and at such a fixed point the conjugation below reaches the full fixed-point set
 (`Kraus.exists_maximalSupport_weightedCorner_sqrt_eq`). The statements below take an
 arbitrary positive semidefinite fixed point, so for a non-maximal choice of $\rho$ they
@@ -335,7 +335,7 @@ a positive semidefinite fixed point whose support projection absorbs every fixed
 exists (`Kraus.exists_maximalSupport_fixedPoint`), and at such a fixed point the
 conjugation reaches the full fixed-point set
 (`Kraus.exists_maximalSupport_weightedCorner_sqrt_eq`), both in
-`QICLean.Channel.FixedPoint.Weighted.MaximalSupport`. -/
+`QICLean.Channel.FixedPoint.Weighted.MaximalRank`. -/
 noncomputable def weightedCornerFixedPointsStarSubalgebra
     (K : Fin d → Mat) (h_tp : IsTP K) {ρ : Mat} (hρ_psd : ρ.PosSemidef)
     (hρ_fix : map K ρ = ρ) :
@@ -438,7 +438,7 @@ root taken on the support of $\rho$.
 
 The source's corollary takes a maximum-rank fixed point, for which the support condition
 on $X$ is automatic by the maximal-support property
-(`Kraus.exists_maximalSupport_fixedPoint` in `QICLean.Channel.FixedPoint.Weighted.MaximalSupport`);
+(`Kraus.exists_maximalSupport_fixedPoint` in `QICLean.Channel.FixedPoint.Weighted.MaximalRank`);
 at such a fixed point the conjugation reaches the full fixed-point set without the
 support hypothesis (`Kraus.exists_maximalSupport_weightedCorner_sqrt_eq`). -/
 theorem exists_weightedCorner_sqrt_eq_of_fixedPoint

@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Entropy.Renyi.RankLowerBound
+import QICLean.Entropy.Renyi.Tail
 import QICLean.ManyBody.Entropy.Cut.RegionTraceNorm
 import Lean.Elab.Command
 import Lean.Util.CollectAxioms

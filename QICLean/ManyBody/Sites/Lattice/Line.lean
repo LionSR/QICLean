@@ -5,7 +5,6 @@ Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Sites.Lattice.Chain
 import QICLean.ManyBody.Sites.Lattice.ChainCut
-import QICLean.ManyBody.Sites.Lattice.PathGraph
 import QICLean.ManyBody.Sites.GraphBall
 import QICLean.Algebra.Combinatorics.IntegerHasseGraph
 import QICLean.Algebra.Combinatorics.GraphDistanceTransport

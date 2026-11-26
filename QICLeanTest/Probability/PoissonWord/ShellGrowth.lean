@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Probability.PoissonWord.ShellGrowth
+import QICLean.Probability.PoissonWord.WeightedGrowth
 
 /-! Empty event families and empty initial support for the constructed shell dynamics. -/
 

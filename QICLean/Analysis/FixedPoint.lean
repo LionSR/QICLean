@@ -10,5 +10,4 @@ Authors: QICLean contributors
 
 import QICLean.Analysis.FixedPoint.BrouwerProduct
 import QICLean.Analysis.FixedPoint.CompactConvexFixedPoint
-import QICLean.Analysis.FixedPoint.CompactRetractFixedPoint
 import QICLean.Analysis.FixedPoint.DensityRetract

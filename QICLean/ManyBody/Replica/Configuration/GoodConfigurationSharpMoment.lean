@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Replica.Configuration.GoodConfigurationMergeMoment
 import QICLean.Analysis.Real.FiniteExponentialRetainedMass
-import QICLean.Representation.TensorPower.PhysicalMergeHolder
+import QICLean.Representation.TensorPower.CompatiblePhysicalLabel
 import QICLean.ManyBody.Replica.Configuration.PhysicalSingletonDensity
 import QICLean.Representation.SchurWeyl.IidSchurSignedMoments
 

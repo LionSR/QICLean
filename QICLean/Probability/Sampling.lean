@@ -10,15 +10,9 @@ Authors: QICLean contributors
 
 import QICLean.Probability.Sampling.CompressionSampling
 import QICLean.Probability.Sampling.IntervalSamplingSchedule
-import QICLean.Probability.Sampling.NestedSamplingNaturalParameters
 import QICLean.Probability.Sampling.SampledOperatorImage
-import QICLean.Probability.Sampling.SampledWordImageBounds
-import QICLean.Probability.Sampling.ViableHalfSampling
 import QICLean.Probability.Sampling.ViableSubspaceBootstrap
-import QICLean.Probability.Sampling.ViableSubspaceDyadicBootstrap
 import QICLean.Probability.Sampling.ViableSubspaceMinimum
-import QICLean.Probability.Sampling.ViableSubspaceNestedCountSampling
 import QICLean.Probability.Sampling.ViableSubspaceNestedSampling
 import QICLean.Probability.Sampling.ViableSubspaceRandomSampling
 import QICLean.Probability.Sampling.ViableSubspaceSampleOrFull
-import QICLean.Probability.Sampling.ViableSubspaceSamplingEvent

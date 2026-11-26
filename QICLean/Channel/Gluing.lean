@@ -8,8 +8,6 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Channel.Gluing
 
-import QICLean.Channel.Gluing.BoundaryDensityMinimizer
 import QICLean.Channel.Gluing.BoundaryDensitySelection
 import QICLean.Channel.Gluing.BoundaryGluing
-import QICLean.Channel.Gluing.LeadingEigenvector
 import QICLean.Channel.Gluing.LeadingEigenvectorBounds

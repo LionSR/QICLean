@@ -6,8 +6,8 @@ Authors: QICLean contributors
 import QICLean.ManyBody.Replica.Configuration.FiveFactorAuxiliaryCoordinates
 import QICLean.Analysis.Exponential.InvariantExponentialComparison
 import QICLean.Representation.Replica.GoodAuxiliaryLabelBound
-import QICLean.Representation.YoungSubgroup.GoodAuxiliaryPairCompression
-import QICLean.ManyBody.Replica.Label.SubsystemLabelCommutation
+import QICLean.Representation.YoungSubgroup.GroupedLabelEntropy
+import QICLean.ManyBody.Replica.Label.GroupedLabelSymmetricSupport
 
 /-!
 # Joint auxiliary removal for the actual good-copy expectation

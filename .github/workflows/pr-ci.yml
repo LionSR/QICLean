@@ -284,7 +284,7 @@ jobs:
             QICLean.Analysis.Optimization.HermitianMatrixCone \
             QICLean.Analysis.Order.LowEnergyPerturbation \
             QICLean.Spectral.Radius.PowerDecay \
-            QICLean.Channel.OrderedCP \
+            QICLean.Channel.Dilation.OrderedCP \
             QICLean.Channel.Peripheral.Asymptotic.RecurrentInverse \
             QICLean.Channel.Semigroup.Basic \
             QICLean.Channel.Semigroup.LindbladForm.TraceBridge \
@@ -306,7 +306,7 @@ jobs:
               "QICLean/Analysis/Optimization/HermitianMatrixCone.lean",
               "QICLean/Analysis/Order/LowEnergyPerturbation.lean",
               "QICLean/Spectral/Radius/PowerDecay.lean",
-              "QICLean/Channel/OrderedCP.lean",
+              "QICLean/Channel/Dilation/OrderedCP.lean",
               "QICLean/Channel/Peripheral/Asymptotic/RecurrentInverse.lean",
               "QICLean/Channel/Semigroup/Basic.lean",
               "QICLean/Channel/Semigroup/LindbladForm/TraceBridge.lean",

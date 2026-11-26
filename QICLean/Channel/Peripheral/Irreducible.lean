@@ -11,12 +11,10 @@ Authors: QICLean contributors
 import QICLean.Channel.Peripheral.Irreducible.AbstractEigenvectors
 import QICLean.Channel.Peripheral.Irreducible.ClosureFixedPointKraus
 import QICLean.Channel.Peripheral.Irreducible.CornerRestriction
-import QICLean.Channel.Peripheral.Irreducible.CyclicDecomposition
 import QICLean.Channel.Peripheral.Irreducible.CyclicGroupKraus
 import QICLean.Channel.Peripheral.Irreducible.CyclicProjections
 import QICLean.Channel.Peripheral.Irreducible.GroupStructure
 import QICLean.Channel.Peripheral.Irreducible.IrreducibleChannel
-import QICLean.Channel.Peripheral.Irreducible.IrreducibleSchwarz
 import QICLean.Channel.Peripheral.Irreducible.LetterShift
 import QICLean.Channel.Peripheral.Irreducible.PeripheralUnitary
 import QICLean.Channel.Peripheral.Irreducible.SchwarzCovariance

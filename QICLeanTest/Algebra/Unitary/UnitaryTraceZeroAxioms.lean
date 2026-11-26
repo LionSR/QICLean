@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Algebra.Unitary.UnitaryTraceZero
+import QICLean.Algebra.Unitary.MatrixUnitaryBetween
 
 /-! # Axiom guards for permutation matrices and vanishing unitary trace pairings -/
 

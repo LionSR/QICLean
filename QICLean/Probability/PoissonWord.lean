@@ -9,8 +9,6 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Probability.PoissonWord
 
 import QICLean.Probability.PoissonWord.Basic
-import QICLean.Probability.PoissonWord.ContractionWordAppend
-import QICLean.Probability.PoissonWord.ExpectedOmission
 import QICLean.Probability.PoissonWord.IndependentCounts
 import QICLean.Probability.PoissonWord.Insertion
 import QICLean.Probability.PoissonWord.InsertionWeight
@@ -22,12 +20,9 @@ import QICLean.Probability.PoissonWord.PoissonWordAppend
 import QICLean.Probability.PoissonWord.PoissonWordCounts
 import QICLean.Probability.PoissonWord.PoissonWordMarked
 import QICLean.Probability.PoissonWord.PoissonWordOmissionBound
-import QICLean.Probability.PoissonWord.PoissonWordTelescope
 import QICLean.Probability.PoissonWord.RealOccupation
 import QICLean.Probability.PoissonWord.Relabel
 import QICLean.Probability.PoissonWord.Semigroup
-import QICLean.Probability.PoissonWord.ShellGrowth
-import QICLean.Probability.PoissonWord.SpatialGrowth
 import QICLean.Probability.PoissonWord.Thinning
 import QICLean.Probability.PoissonWord.UniformOrder
 import QICLean.Probability.PoissonWord.WeightedGrowth

@@ -7,6 +7,7 @@ import QICLean.Representation.YoungSubgroup.GroupedCopies
 import QICLean.Representation.Permutation.MergeExponential
 import QICLean.ManyBody.Replica.Metric.Similarity
 import QICLean.Representation.Permutation.TrivialLabel
+import QICLean.Spectral.Projection.ProjectionIntertwiner
 
 /-!
 # Signed subgroup labels on the simultaneous symmetric subspace
@@ -26,7 +27,17 @@ September 24, 2026, `07-comparators.tex`, lines 454--480,
 `comparator:whole-inverse`; complementary labels are Lemma 6.1(2) in
 `05-replicas.tex`, lines 168--181, revision
 `adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
+
+It also contains the following results.
+
+* `TensorPower.subsystemLabelCommutation_decidableEqConfig`,
+  `TensorPower.commute_subgroup_labelObservables_of_subset_or_disjoint`: central observables of
+  nested subsystems after restricting the copy action.
+* `TensorPower.spectralProjectionGE_labelDeficit_mul_symProj_of_partition`: nonnegative label
+  support for a partition of arbitrary finite factors.
 -/
+
+section GroupedLabelSymmetricSupport
 
 noncomputable section
 open Matrix PermutationRepresentation
@@ -168,3 +179,140 @@ theorem commute_good_labelObservable_bad_symProj
       (IrrepLabel.centralIdem ell) (MonoidAlgebra.single τ (1 : ℂ))
 
 end TensorPower
+
+end
+
+end GroupedLabelSymmetricSupport
+
+section SubsystemLabelCommutation
+
+/-!
+## Central observables of nested subsystems after restricting the copy action
+
+Restrict both subsystem actions along the same homomorphism of copy
+permutation groups. Central label observables still commute when one
+subsystem contains the other or the subsystems are disjoint. The
+homomorphism need not be injective, and the local spaces may be empty.
+
+Source: *A two-dimensional area law from a global spectral gap*,
+September 24, 2026, Lemma 6.1(2), `05-replicas.tex`, lines 101–103,
+and `07-comparators.tex`, lines 481–508, `comparator:good-auxiliary`
+and `comparator:merge-decomposition`, revision
+`adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
+-/
+
+noncomputable section
+open Matrix PermutationRepresentation
+
+namespace TensorPower
+
+local instance subsystemLabelCommutation_decidableEqConfig
+    {V : Type*} [Fintype V] [DecidableEq V] (ι : V → Type*)
+    [∀ v, Fintype (ι v)] [∀ v, DecidableEq (ι v)] (k : ℕ) :
+    DecidableEq (Config k ι) := Fintype.decidablePiFintype
+
+/-- Central label observables of nested or disjoint subsystems commute
+under the same restricted copy action. No injectivity of the restriction
+or nonempty local-space hypothesis is needed.
+
+Source: area-law manuscript, Lemma 6.1(2), `05-replicas.tex`, lines 101–103;
+its restriction to good copies is used in `07-comparators.tex`, lines 481–508. -/
+theorem commute_subgroup_labelObservables_of_subset_or_disjoint
+    {V : Type*} [Fintype V] [DecidableEq V]
+    (ι : V → Type*) [∀ v, Fintype (ι v)] [∀ v, DecidableEq (ι v)]
+    {m k : ℕ} (θ : Equiv.Perm (Fin m) →* Equiv.Perm (Fin k))
+    (S T : Finset V) (hST : S ⊆ T ∨ Disjoint S T)
+    (f g : IrrepLabel (Equiv.Perm (Fin m)) → ℝ) :
+    Commute (labelObservable ((subsystemPerm k ι S).comp θ) f)
+      (labelObservable ((subsystemPerm k ι T).comp θ) g) := by
+  rcases hST with hST | hST
+  · rw [labelObservable_eq_groupAlgebraRep, labelObservable_eq_groupAlgebraRep]
+    apply commute_groupAlgebraRep_of_eq_mul
+      ((subsystemPerm k ι S).comp θ) ((subsystemPerm k ι (T \ S)).comp θ)
+      ((subsystemPerm k ι T).comp θ) _ _ (sum_smul_centralIdem_mem_center f)
+    · intro σ
+      change subsystemPerm k ι T (θ σ) = _
+      conv_lhs => rw [← Finset.union_sdiff_of_subset hST]
+      exact subsystemPerm_union k ι Finset.disjoint_sdiff (θ σ)
+    · exact fun σ τ => commute_subsystemPerm_of_disjoint k ι
+        Finset.disjoint_sdiff (θ σ) (θ τ)
+  · exact commute_labelObservable_of_commute _ _
+      (fun σ τ => commute_subsystemPerm_of_disjoint k ι hST (θ σ) (θ τ)) f g
+
+end TensorPower
+
+end
+
+end SubsystemLabelCommutation
+
+section SymmetricSupport
+
+/-!
+## Nonnegative label support for a partition of arbitrary finite factors
+
+The conclusion concerns simultaneous symmetry of all coordinate factors.
+It requires neither nonempty coordinate factors nor a cutoff or a vector.
+
+### References
+
+OpenAI, *A two-dimensional area law from a global spectral gap*, September
+24, 2026, revision `adc7f1241b42e322a6451854ab7e4b4c146bf78a`:
+`05-replicas.tex`, Lemma 6.1(2–3), lines 99–115.
+-/
+
+set_option relaxedAutoImplicit false
+
+open scoped ComplexOrder
+
+open Matrix PermutationRepresentation
+
+namespace TensorPower
+
+variable {V : Type*} [Fintype V] [DecidableEq V]
+  (ι : V → Type*) [∀ v, Fintype (ι v)] [∀ v, DecidableEq (ι v)]
+
+/-- For a disjoint cover of all one-copy factors, the logarithmic label
+deficit has nonnegative spectral support on simultaneous symmetric copies.
+OpenAI, `05-replicas.tex`, Lemma 6.1(2–3), lines 99–115.
+-/
+theorem spectralProjectionGE_labelDeficit_mul_symProj_of_partition
+    (k : ℕ) (P Y F : Finset V)
+    (hPY : Disjoint P Y) (hPF : Disjoint P F) (hYF : Disjoint Y F)
+    (hcover : P ∪ Y ∪ F = Finset.univ) :
+    spectralProjectionGE
+      (labelEntropy (subsystemPerm k ι P) +
+        labelEntropy (subsystemPerm k ι F) -
+        labelEntropy (subsystemPerm k ι Y)) 0 *
+      symProj (copyPerm ((v : V) → ι v) k) =
+        symProj (copyPerm ((v : V) → ι v) k) := by
+  let D := labelEntropy (subsystemPerm k ι P) +
+    labelEntropy (subsystemPerm k ι F) -
+    labelEntropy (subsystemPerm k ι (P ∪ F))
+  have hD : D.PosSemidef := posSemidef_mergeDeficit
+    (commute_subsystemPerm_of_disjoint k ι hPF) (subsystemPerm_union k ι hPF)
+  have hY_PF : Disjoint Y (P ∪ F) :=
+    Finset.disjoint_union_right.mpr ⟨hPY.symm, hYF⟩
+  have hfull : Y ∪ (P ∪ F) = Finset.univ := by
+    simpa only [Finset.union_assoc, Finset.union_left_comm Y P F] using hcover
+  have hYS := labelEntropy_mul_symProj_union ι k Y (P ∪ F) hY_PF
+  rw [hfull, subsystemPerm_univ k ι] at hYS
+  have hcomm : ∀ A : Finset V,
+      Commute (labelEntropy (subsystemPerm k ι A))
+        (symProj (copyPerm ((v : V) → ι v) k)) := fun A => by
+    simpa only [subsystemPerm_univ k ι, labelEntropy] using
+      commute_labelObservable_symProj_of_subset ι k A Finset.univ
+        (Finset.subset_univ A) (fun l => Real.log l.dim)
+  have hDS : Commute D (symProj (copyPerm ((v : V) → ι v) k)) :=
+    ((hcomm P).add_left (hcomm F)).sub_left (hcomm (P ∪ F))
+  have hHS :
+      (labelEntropy (subsystemPerm k ι P) + labelEntropy (subsystemPerm k ι F) -
+        labelEntropy (subsystemPerm k ι Y)) * symProj (copyPerm ((v : V) → ι v) k) =
+      symProj (copyPerm ((v : V) → ι v) k) * D := by
+    simpa only [D, Matrix.sub_mul, hYS] using hDS.eq
+  exact Matrix.spectralProjectionGE_zero_mul_of_intertwine
+    (((isHermitian_labelObservable _ _).add (isHermitian_labelObservable _ _)).sub
+      (isHermitian_labelObservable _ _)) hD _ hHS
+
+end TensorPower
+
+end SymmetricSupport

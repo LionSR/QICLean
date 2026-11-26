@@ -16,7 +16,8 @@ exponential of `s ad_H` is conjugation by `e^{sH}`:
 `exp(s ad_H)(O) = e^{sH} O e^{-sH}` (the Hadamard formula).
 
 `GaussianFilter.commutatorCLM` and `GaussianFilter.commutatorCLM_apply` are moved unchanged
-from `QICLean/Spectral/Filter/Gaussian/CommutatorSeries.lean`; the Hadamard formula is moved
+from the Gaussian commutator series, now in
+`QICLean/Spectral/Filter/Gaussian/MatrixIntegral.lean`; the Hadamard formula is moved
 from TNLean, `TNLean/Algebra/ExpConjugation.lean` at commit `e41c3b63`, where it was private.
 
 ## Main definitions

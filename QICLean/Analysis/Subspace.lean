@@ -13,6 +13,5 @@ import QICLean.Analysis.Subspace.ViableSubspace
 import QICLean.Analysis.Subspace.ViableSubspaceCoordinates
 import QICLean.Analysis.Subspace.ViableSubspaceErrorReduction
 import QICLean.Analysis.Subspace.ViableSubspaceMeasurable
-import QICLean.Analysis.Subspace.ViableSubspaceSharpTensorReduction
 import QICLean.Analysis.Subspace.ViableSubspaceTensor
 import QICLean.Analysis.Subspace.ViableSubspaceTensorTransport

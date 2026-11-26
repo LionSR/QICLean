@@ -6,7 +6,6 @@ Authors: QICLean contributors
 import QICLean.Algebra.Combinatorics.FinSum
 import QICLean.ManyBody.Entropy.RegionStrongSubadditivity
 import QICLean.ManyBody.Entropy.RegionEntropyInequalities
-import QICLean.ManyBody.Entropy.QuditRegionEntropy
 import QICLean.ManyBody.Sites.Lattice.Line
 import Mathlib.Algebra.Order.BigOperators.Group.Finset
 import QICLean.ManyBody.Entropy.RegionEntropy

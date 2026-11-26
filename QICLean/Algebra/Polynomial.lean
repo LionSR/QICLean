@@ -13,7 +13,6 @@ import QICLean.Algebra.Polynomial.ConstantPowerSums
 import QICLean.Algebra.Polynomial.FiniteMonomialInterpolation
 import QICLean.Algebra.Polynomial.IntegerGridInterpolation
 import QICLean.Algebra.Polynomial.MatrixPolynomialDegree
-import QICLean.Algebra.Polynomial.MatrixPolynomialParameter
 import QICLean.Algebra.Polynomial.NewtonGirard
 import QICLean.Algebra.Polynomial.OrderedPolynomialGaps
 import QICLean.Algebra.Polynomial.PowerSumSecondDifference

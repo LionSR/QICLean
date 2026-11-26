@@ -10,7 +10,7 @@ import QICLean.Algebra.Matrix.TraceFormDuality
 import QICLean.Channel.Irreducible.Ergodicity
 import QICLean.Channel.Peripheral.Irreducible.IrreducibleChannel
 import QICLean.Kraus.Injectivity
-import QICLean.Kraus.TracePairing
+import QICLean.Kraus.Transfer
 import Mathlib.Analysis.Complex.Basic
 import Mathlib.Basic.Complex.BigOperators
 import Mathlib.LinearAlgebra.Matrix.Trace

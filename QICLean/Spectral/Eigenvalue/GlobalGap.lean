@@ -6,7 +6,7 @@ Authors: QICLean contributors
 import Mathlib.Analysis.InnerProductSpace.Positive
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import QICLean.Analysis.Projection.PhaseError
-import QICLean.Analysis.Norm.MatrixToEuclideanRankOne
+import QICLean.Analysis.Norm.ApproximateProjector
 
 /-!
 # Global spectral gaps and phase-minimized vector error

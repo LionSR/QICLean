@@ -19,7 +19,6 @@ import QICLean.Analysis.Isometry.IsometricDomainExtension
 import QICLean.Analysis.Isometry.OrthogonalComplexStructure
 import QICLean.Analysis.Isometry.PolarUnitaryCorrection
 import QICLean.Analysis.Isometry.PositiveProjectionCompression
-import QICLean.Analysis.Isometry.ProjectionIntertwiningNorm
 import QICLean.Analysis.Isometry.RestoringOperators
 import QICLean.Analysis.Isometry.RestoringVectors
 import QICLean.Analysis.Isometry.SkewUnitaryNormalForm

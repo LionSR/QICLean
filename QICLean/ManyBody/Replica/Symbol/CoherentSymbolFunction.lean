@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Representation.Coherent.SymbolLimit
+import QICLean.Representation.Coherent.Symbol
 import QICLean.ManyBody.Replica.Symbol.RegionPowerSymbol
 import Mathlib.Topology.ContinuousMap.Weierstrass
 

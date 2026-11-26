@@ -3,9 +3,9 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Entropy.Typical.IidSurprisalMomentExponential
+import QICLean.Entropy.Typical.IidSurprisal
 import QICLean.Representation.Replica.PermutationCovariance
-import QICLean.Representation.Permutation.SchurLabelMomentBounds
+import QICLean.Representation.Permutation.SchurLabelMoments
 import QICLean.Algebra.Kronecker.KroneckerFactorPositivity
 
 /-!

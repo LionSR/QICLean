@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Hamiltonian.GroundSpace
 import QICLean.ManyBody.Hamiltonian.Models
-import QICLean.Spectral.Perturbation.OverlapEnergy
+import QICLean.Spectral.Perturbation.GapPerturbation
 
 /-!
 # Range-one Hamiltonians on the chain

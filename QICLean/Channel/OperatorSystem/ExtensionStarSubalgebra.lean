@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Channel.OperatorSystem.ExtensionDirectSum
-import QICLean.Channel.ConditionalExpectation.StarSubalgebraConditionalExpectation
+import QICLean.Channel.ConditionalExpectation.DirectSumConditionalExpectation
 
 /-!
 # Extending completely positive maps into matrix star subalgebras

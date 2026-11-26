@@ -17,14 +17,12 @@ import QICLean.ManyBody.Replica.Configuration.GoodConfigurationMergeMoment
 import QICLean.ManyBody.Replica.Configuration.GoodConfigurationMergeTransport
 import QICLean.ManyBody.Replica.Configuration.GoodConfigurationPairMarginal
 import QICLean.ManyBody.Replica.Configuration.GoodConfigurationProduct
-import QICLean.ManyBody.Replica.Configuration.GoodConfigurationRegionalMoment
 import QICLean.ManyBody.Replica.Configuration.GoodConfigurationSharpMoment
 import QICLean.ManyBody.Replica.Configuration.GoodConfigurationSingletonMoment
 import QICLean.ManyBody.Replica.Configuration.GoodCopyDensity
 import QICLean.ManyBody.Replica.Configuration.GoodCopyFactorization
 import QICLean.ManyBody.Replica.Configuration.GoodPairMarginal
 import QICLean.ManyBody.Replica.Configuration.GoodPhysicalExponential
-import QICLean.ManyBody.Replica.Configuration.GoodPhysicalSupport
 import QICLean.ManyBody.Replica.Configuration.GroupedConfigurationTransport
 import QICLean.ManyBody.Replica.Configuration.JointAuxiliaryExponential
 import QICLean.ManyBody.Replica.Configuration.JointDensity
@@ -33,4 +31,3 @@ import QICLean.ManyBody.Replica.Configuration.PhysicalSingletonDensity
 import QICLean.ManyBody.Replica.Configuration.PhysicalSingletonEntropy
 import QICLean.ManyBody.Replica.Configuration.RegionalFiveFactorCoordinates
 import QICLean.ManyBody.Replica.Configuration.RegionalPhysicalMarginals
-import QICLean.ManyBody.Replica.Configuration.TwoMergeMoment

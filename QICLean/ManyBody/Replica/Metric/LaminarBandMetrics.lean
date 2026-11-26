@@ -3,7 +3,6 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.ManyBody.Replica.Label.SubsystemLabelCommutation
 import QICLean.ManyBody.Replica.Label.GroupedLabelSymmetricSupport
 import QICLean.Analysis.FunctionalCalculus.MatrixPowers
 import Mathlib.Algebra.BigOperators.Group.List.Lemmas

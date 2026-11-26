@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Replica.Symbol.MarkedStar
-import QICLean.ManyBody.Entropy.Cut.RegionUnion
+import QICLean.ManyBody.Entropy.Filter.Optimizer
 import QICLean.ManyBody.Entropy.RegionEntropy
 import QICLean.Analysis.FunctionalCalculus.TraceCFC
 import QICLean.Analysis.FunctionalCalculus.OrthogonalResolutionCfc

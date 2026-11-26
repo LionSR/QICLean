@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Channel.OperatorMean.LeafStates
+import QICLean.Channel.OperatorMean.TreeDerivative
 import QICLean.Channel.OperatorMean.BlockDiagonal
 import QICLean.Analysis.Calculus.SinhRatioShift
 import QICLean.Analysis.Exponential.HermitianUnitaryPath

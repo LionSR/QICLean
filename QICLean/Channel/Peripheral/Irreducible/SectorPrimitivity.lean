@@ -5,7 +5,7 @@ Authors: TNLean contributors
 -/
 import QICLean.Channel.Irreducible.Basic
 import QICLean.Channel.Peripheral.Irreducible.CornerRestriction
-import QICLean.Channel.Peripheral.Spectrum.PeriodicityRemoval
+import QICLean.Channel.Peripheral.Spectrum.Spectrum
 
 /-!
 # Sector dynamics for cyclic decompositions

@@ -7,6 +7,9 @@ import Mathlib.Analysis.MeanInequalities
 import Mathlib.Order.Interval.Finset.Fin
 import QICLean.Analysis.FunctionalCalculus.TraceCFC
 import Mathlib.Analysis.Matrix.PosDef
+import QICLean.Spectral.Eigenvalue.TailTraceNorm
+import QICLean.Analysis.TraceNorm.RectangularTraceNormAlgebra
+import QICLean.Entropy.Renyi.Defs
 
 /-!
 # Rényi bounds for ordered spectral tails
@@ -16,7 +19,17 @@ The proof bounds the power sum directly at a cutoff weight and applies weighted 
 It does not require the extremizing distribution asserted in the source proof.
 All logarithms are natural. The logarithmic estimate requires a positive tail; the
 power estimate also includes zero tails. Order zero is treated separately by rank.
+
+It also contains the following results.
+
+* `Entropy.log_card_bound_of_renyi_mass`, `Entropy.renyi_mass_sub_error_le_log_card`: Rényi entropy
+  and concentration on a finite set.
+* `Matrix.PosSemidef.renyiEntropy_add_log_error_le_log_rank`,
+  `Matrix.PosSemidef.renyiEntropy_add_log_error_le_log_rank_of_rectangularTraceNorm`: Rényi lower
+  bounds for low-rank approximation.
 -/
+
+section Tail
 
 open scoped BigOperators ComplexOrder
 
@@ -197,3 +210,168 @@ theorem eigenvalue_tail_eq_zero_of_rank_le (hρ : ρ.PosSemidef) {D : ℕ}
     hρ.isHermitian.eigenvalues₀_antitone (hrank ▸ hD)
 
 end Matrix.PosSemidef
+
+end Tail
+
+section MassBound
+
+/-!
+## Rényi entropy and concentration on a finite set
+
+For order greater than one, a set carrying mass at least `1 - δ` must have
+large cardinality if the Rényi entropy is large. All logarithms are natural.
+
+Source: Schuch, Wolf, Verstraete and Cirac, arXiv:0705.0292v2,
+`paper_v2.tex`, lines 333–345. The displayed lower bound in the source has an
+incorrect plus sign before the absolute logarithm; the preceding power-sum
+inequality gives the minus sign proved here.
+
+**Local fix (error-term sign):** the correction is documented in TNLean's
+[Rényi bond-dimension sign note](https://github.com/LionSR/TNLean/commit/ebf04b6495d29691ddefac5c85dd70ca6ba3bad6#diff-83cdf7e9f9eb1a229f1f7c212c73baa355968807efb4cef898c364519490b75a).
+-/
+
+open scoped BigOperators
+
+namespace Entropy
+
+/-- A finite set carrying mass at least `1 - δ` has the cardinality required by
+the Rényi power sum of order `α > 1`. Normalization of the entire family is
+unnecessary. Source: Schuch–Wolf–Verstraete–Cirac, arXiv:0705.0292v2,
+lines 333–345, with the corrected sign of the error term. -/
+theorem log_card_bound_of_renyi_mass {ι : Type*} [Fintype ι]
+    (p : ι → ℝ) (hp : ∀ i, 0 ≤ p i) (s : Finset ι) {D : ℕ}
+    (hD : 0 < D) (hcard : s.card ≤ D) {α δ : ℝ} (hα : 1 < α)
+    (hδ : δ < 1) (hmass : 1 - δ ≤ ∑ i ∈ s, p i) :
+    Real.log (∑ i, p i ^ α) / (1 - α) +
+      α / (α - 1) * Real.log (1 - δ) ≤ Real.log D := by
+  have ha : 0 < α := lt_trans zero_lt_one hα
+  have hd : (0 : ℝ) < D := Nat.cast_pos.mpr hD
+  have ht : 0 < 1 - δ := sub_pos.mpr hδ
+  have hj := Real.rpow_sum_le_const_mul_sum_rpow_of_nonneg s (f := p) hα.le
+    (fun i _ ↦ hp i)
+  have hpow : (1 - δ) ^ α ≤ (D : ℝ) ^ (α - 1) * ∑ i, p i ^ α := by
+    refine (Real.rpow_le_rpow ht.le hmass ha.le).trans (hj.trans ?_)
+    apply mul_le_mul
+    · exact Real.rpow_le_rpow (Nat.cast_nonneg _) (by exact_mod_cast hcard)
+        (sub_nonneg.mpr hα.le)
+    · exact Finset.sum_le_univ_sum_of_nonneg (fun i ↦ Real.rpow_nonneg (hp i) α)
+    · exact Finset.sum_nonneg (fun i _ ↦ Real.rpow_nonneg (hp i) α)
+    · positivity
+  have hsum : 0 < ∑ i, p i ^ α := by
+    have hprod : 0 < (D : ℝ) ^ (α - 1) * ∑ i, p i ^ α :=
+      (Real.rpow_pos_of_pos ht α).trans_le hpow
+    exact pos_of_mul_pos_right hprod (Real.rpow_nonneg hd.le _)
+  have hlog := Real.log_le_log (Real.rpow_pos_of_pos ht α) hpow
+  rw [Real.log_rpow ht, Real.log_mul (by positivity) hsum.ne',
+    Real.log_rpow hd] at hlog
+  rw [show 1 - α = -(α - 1) by ring, div_neg, div_mul_eq_mul_div, ← neg_div,
+    ← add_div]
+  apply (div_le_iff₀ (sub_pos.mpr hα)).mpr
+  linarith
+
+/-- The corrected absolute-logarithm form of the Rényi cardinality bound.
+Source: Schuch–Wolf–Verstraete–Cirac, arXiv:0705.0292v2, lines 333–345. -/
+theorem renyi_mass_sub_error_le_log_card {ι : Type*} [Fintype ι]
+    (p : ι → ℝ) (hp : ∀ i, 0 ≤ p i) (s : Finset ι) {D : ℕ}
+    (hD : 0 < D) (hcard : s.card ≤ D) {α δ : ℝ} (hα : 1 < α)
+    (hδ0 : 0 ≤ δ) (hδ1 : δ < 1) (hmass : 1 - δ ≤ ∑ i ∈ s, p i) :
+    Real.log (∑ i, p i ^ α) / (1 - α) -
+      α / (α - 1) * |Real.log (1 - δ)| ≤ Real.log D := by
+  have hlog : Real.log (1 - δ) ≤ 0 :=
+    Real.log_nonpos (sub_pos.mpr hδ1).le (by linarith)
+  simpa only [abs_of_nonpos hlog, mul_neg, sub_neg_eq_add] using
+    log_card_bound_of_renyi_mass p hp s hD hcard hα hδ1 hmass
+
+end Entropy
+
+end MassBound
+
+section RankLowerBound
+
+/-!
+## Rényi lower bounds for low-rank approximation
+
+The order-greater-than-one bound in SWVC08, arXiv:0705.0292v2, lines 333–345,
+with the corrected sign of the logarithmic error term. Only the original
+positive matrix is normalized; the Hermitian approximant may have arbitrary trace.
+
+**Local fix (error-term sign):** the correction is documented in TNLean’s
+[Rényi bond-dimension sign note](https://github.com/LionSR/TNLean/commit/ebf04b6495d29691ddefac5c85dd70ca6ba3bad6#diff-83cdf7e9f9eb1a229f1f7c212c73baa355968807efb4cef898c364519490b75a).
+-/
+
+open scoped ComplexOrder
+
+namespace Matrix
+
+/-- A low-rank approximation in full trace norm forces a lower bound on its
+rank budget. Source: SWVC08, arXiv:0705.0292v2, Eq. (eps-lower) and lines 333–345,
+with the corrected sign of the error term. -/
+theorem PosSemidef.renyiEntropy_add_log_error_le_log_rank
+    {n D : ℕ} {ρ σ : Matrix (Fin n) (Fin n) ℂ}
+    (hρ : ρ.PosSemidef) (hρ1 : ρ.trace = 1) (hσ : σ.IsHermitian)
+    (hrank : σ.rank ≤ D) {α δ : ℝ} (hα : 1 < α) (hδ : δ < 1)
+    (herror : traceNorm (ρ - σ) ≤ δ) :
+    renyiEntropy ρ hρ.isHermitian α + α / (α - 1) * Real.log (1 - δ) ≤ Real.log D := by
+  have htail := (hρ.sum_descEigenvalue_tail_le_traceNorm hσ hrank).trans herror
+  let p := hρ.isHermitian.eigenvalues₀
+  have hdesc (i : Fin (Fintype.card (Fin n))) :
+      hρ.isHermitian.descEigenvalue i.val = p i := by
+    simp only [IsHermitian.descEigenvalue, dite_eq_left i.isLt, p]
+  have hp (i) : 0 ≤ p i := by
+    rw [← hdesc i]
+    exact hρ.descEigenvalue_nonneg i.val
+  let e : Fin (Fintype.card (Fin n)) ≃ Fin n :=
+    Fintype.equivOfCardEq (Fintype.card_fin _)
+  have hsum : ∑ i, p i = 1 := by
+    simpa only [← Equiv.sum_comp e, IsHermitian.eigenvalues, e,
+      Equiv.symm_apply_apply, p] using posSemidef_trace_one_eigenvalues_sum_one hρ hρ1
+  have htail' : ∑ i ∈ Finset.univ.filter (fun i : Fin (Fintype.card (Fin n)) =>
+      D ≤ i.val), p i ≤ δ := by
+    simp_rw [← hdesc, Finset.sum_filter]
+    rw [Fin.sum_univ_eq_sum_range (fun j => if D ≤ j then hρ.isHermitian.descEigenvalue j else 0)]
+    have hset : (Finset.range n).filter (fun j => D ≤ j) = Finset.Ico D n := by
+      ext j
+      simp [and_comm]
+    simpa only [Fintype.card_fin, ← Finset.sum_filter, hset] using htail
+  let s := Finset.univ.filter (fun i : Fin (Fintype.card (Fin n)) => i.val < D)
+  have hsplit := Finset.sum_filter_add_sum_filter_not Finset.univ
+    (fun i : Fin (Fintype.card (Fin n)) => i.val < D) p
+  have hmass : 1 - δ ≤ ∑ i ∈ s, p i := by
+    simp only [not_lt, hsum] at hsplit
+    dsimp only [s]
+    linarith
+  have hcard : s.card ≤ D := by
+    simpa only [s, Fin.card_filter_val_lt] using (min_le_right (Fintype.card (Fin n)) D)
+  have hD : 0 < D := by
+    by_contra h
+    have hzero : D = 0 := by omega
+    simp only [s, hzero, Nat.not_lt_zero, Finset.filter_false, Finset.sum_empty] at hmass
+    linarith
+  have hbound := Entropy.log_card_bound_of_renyi_mass p hp s hD hcard hα hδ hmass
+  simpa only [renyiEntropy, ite_eq_right (show α ≠ 0 by linarith), ite_eq_right (ne_of_gt hα),
+    hρ.isHermitian.trace_cfc_eq_sum_eigenvalues₀, p, div_eq_mul_inv, mul_comm] using hbound
+
+/-- The Rényi rank lower bound for an arbitrary finite index set, measured in
+full trace norm. Source: SWVC08, arXiv:0705.0292v2, Eq. (eps-lower) and
+lines 333–345, with the corrected sign of the error term. -/
+theorem PosSemidef.renyiEntropy_add_log_error_le_log_rank_of_rectangularTraceNorm
+    {ι : Type*} [Fintype ι] [DecidableEq ι] {D : ℕ} {ρ σ : Matrix ι ι ℂ}
+    (hρ : ρ.PosSemidef) (hρ1 : ρ.trace = 1) (hσ : σ.IsHermitian)
+    (hrank : σ.rank ≤ D) {α δ : ℝ} (hα : 1 < α) (hδ : δ < 1)
+    (herror : rectangularTraceNorm (ρ - σ) ≤ δ) :
+    renyiEntropy ρ hρ.isHermitian α + α / (α - 1) * Real.log (1 - δ) ≤ Real.log D := by
+  let e := Fintype.equivFin ι
+  have hr := hρ.submatrix e.symm
+  have he : traceNorm (ρ.submatrix e.symm e.symm - σ.submatrix e.symm e.symm) ≤ δ := by
+    change rectangularTraceNorm (reindex e e (ρ - σ)) ≤ δ
+    simpa only [rectangularTraceNorm_reindex] using herror
+  have hb := hr.renyiEntropy_add_log_error_le_log_rank
+    (by simpa only [trace_submatrix_equiv] using hρ1) (hσ.submatrix e.symm)
+    (by simpa only [rank_submatrix] using hrank) hα hδ he
+  simpa only [renyiEntropy, ite_eq_right (show α ≠ 0 by linarith),
+    ite_eq_right (ne_of_gt hα), ← IsHermitian.cfc_eq, cfc_submatrix_equiv hρ.isHermitian _ e,
+    trace_submatrix_equiv] using hb
+
+end Matrix
+
+end RankLowerBound

@@ -9,7 +9,6 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.ManyBody.Replica.CompressedSite
 
 import QICLean.ManyBody.Replica.CompressedSite.CompressedTypicalAuxiliaryCoordinates
-import QICLean.ManyBody.Replica.CompressedSite.CompressedTypicalExponential
 import QICLean.ManyBody.Replica.CompressedSite.CompressedTypicalExponentialDomination
 import QICLean.ManyBody.Replica.CompressedSite.CompressedTypicalLabelMass
 import QICLean.ManyBody.Replica.CompressedSite.CompressedTypicalLabelSequence

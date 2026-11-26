@@ -6,7 +6,7 @@ Authors: QICLean contributors
 import QICLean.ManyBody.Dynamics.Interaction
 import QICLean.ManyBody.Sites.PairSwap
 import QICLean.ManyBody.Sites.PlaceAlong
-import QICLean.ManyBody.Sites.SitewiseProduct
+import QICLean.ManyBody.Sites.Support
 import QICLean.ManyBody.Sites.Twirl
 import QICLean.Spectral.Gap.DoubledSystemGap
 import QICLean.Analysis.Norm.KroneckerOperatorNorm
@@ -42,7 +42,7 @@ every index type, every family of supports and every family of basis types:
 
 The doubled interaction is the one description of two copies of `Φ`: the two copies of every
 site are paired into one site, and the exchange of the copies is `ManyBody.pairSwapOp`. The
-interaction `Φ.sum Ψ` of `QICLean.ManyBody.Dynamics.InteractionSum` is that of two systems side
+interaction `Φ.sum Ψ` of `QICLean.ManyBody.Dynamics.Interaction` is that of two systems side
 by side on the sites `V ⊕ V`.
 
 These generalize TNLean's operations on the chain, domain and plane models (TNLean commit

@@ -6,7 +6,7 @@ Authors: QICLean contributors
 import QICLean.Analysis.FunctionalCalculus.MatrixSqrt
 import QICLean.Channel.Schwarz.PositiveMapProperties
 import QICLean.Channel.TransferMatrix
-import QICLean.Channel.Wigner.SpectrumPreserver
+import QICLean.Channel.Wigner.Rigidity
 import Mathlib.LinearAlgebra.Matrix.Rank
 
 /-!

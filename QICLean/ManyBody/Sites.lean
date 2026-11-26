@@ -40,12 +40,10 @@ import QICLean.ManyBody.Sites.Relabel
 import QICLean.ManyBody.Sites.ReplicaSwap
 import QICLean.ManyBody.Sites.SiteAction
 import QICLean.ManyBody.Sites.SiteOscillation
-import QICLean.ManyBody.Sites.SitewiseProduct
 import QICLean.ManyBody.Sites.SpectatorSiteExpectation
 import QICLean.ManyBody.Sites.Subregion
 import QICLean.ManyBody.Sites.SumSites
 import QICLean.ManyBody.Sites.Support
-import QICLean.ManyBody.Sites.SupportedComplementProduct
 import QICLean.ManyBody.Sites.SupportedDecomposition
 import QICLean.ManyBody.Sites.SupportedUnitary
 import QICLean.ManyBody.Sites.SystemUpdate

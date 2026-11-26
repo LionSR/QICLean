@@ -10,8 +10,6 @@ Authors: QICLean contributors
 
 import QICLean.Channel.Wigner.ProjectiveCarrierBridge
 import QICLean.Channel.Wigner.ProjectivePureState
-import QICLean.Channel.Wigner.PureStateCharpoly
 import QICLean.Channel.Wigner.Rigidity
-import QICLean.Channel.Wigner.SpectrumPreserver
 import QICLean.Channel.Wigner.TwoPureStateCharpoly
 import QICLean.Channel.Wigner.Upstream

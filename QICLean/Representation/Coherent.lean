@@ -14,5 +14,4 @@ import QICLean.Representation.Coherent.MarkedSymbol
 import QICLean.Representation.Coherent.Measure
 import QICLean.Representation.Coherent.Resolution
 import QICLean.Representation.Coherent.Symbol
-import QICLean.Representation.Coherent.SymbolLimit
 import QICLean.Representation.Coherent.UniformHusimi

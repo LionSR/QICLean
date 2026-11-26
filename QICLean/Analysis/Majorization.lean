@@ -8,7 +8,6 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Analysis.Majorization
 
-import QICLean.Analysis.Majorization.Birkhoff
 import QICLean.Analysis.Majorization.DensityMatrixMajorization
 import QICLean.Analysis.Majorization.DoublySubstochastic
 import QICLean.Analysis.Majorization.KyFanDominance

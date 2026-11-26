@@ -18,7 +18,6 @@ import QICLean.Analysis.TraceInequality.SICPOVMBound
 import QICLean.Analysis.TraceInequality.SchattenVariational
 import QICLean.Analysis.TraceInequality.TraceCompression
 import QICLean.Analysis.TraceInequality.TraceHolder
-import QICLean.Analysis.TraceInequality.TraceHolderMulti
 import QICLean.Analysis.TraceInequality.TraceHolderSchatten
 import QICLean.Analysis.TraceInequality.TraceMulBound
 import QICLean.Analysis.TraceInequality.TracePurity

@@ -5,9 +5,9 @@ Authors: TNLean contributors
 -/
 import QICLean.Analysis.FunctionalCalculus.MatrixSqrt
 import QICLean.Channel.FixedPoint.Weighted.AbstractCornerFixedPoints
-import QICLean.Channel.FixedPoint.Stationary.AbstractMaximalRank
+import QICLean.Channel.FixedPoint.Stationary.MaximalSupportBasic
 import QICLean.Channel.FixedPoint.Weighted.WeightedCornerFixedPoints
-import QICLean.Channel.FixedPoint.DensityBlock.FixedPointDensityBlocks
+import QICLean.Channel.FixedPoint.DensityBlock.SupportCompressedDensityBlocks
 
 /-!
 # Weighted fixed points of positive maps

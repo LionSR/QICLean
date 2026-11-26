@@ -15,6 +15,5 @@ import QICLean.Channel.FixedPoint.Weighted.CornerAlgebra
 import QICLean.Channel.FixedPoint.Weighted.CornerBlockForm
 import QICLean.Channel.FixedPoint.Weighted.CornerFixedPoints
 import QICLean.Channel.FixedPoint.Weighted.MaximalRank
-import QICLean.Channel.FixedPoint.Weighted.MaximalSupport
 import QICLean.Channel.FixedPoint.Weighted.WeightedCornerFixedPoints
 import QICLean.Channel.FixedPoint.Weighted.WeightedFixedPoints

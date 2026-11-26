@@ -10,8 +10,6 @@ Authors: QICLean contributors
 
 import QICLean.ManyBody.Replica.BandMetric.Energy
 import QICLean.ManyBody.Replica.BandMetric.EntropyGain
-import QICLean.ManyBody.Replica.BandMetric.FiniteFamily
-import QICLean.ManyBody.Replica.BandMetric.Integrated
 import QICLean.ManyBody.Replica.BandMetric.IntegratedEntropy
 import QICLean.ManyBody.Replica.BandMetric.LeafMeasure
 import QICLean.ManyBody.Replica.BandMetric.MoveEntropy
@@ -19,8 +17,6 @@ import QICLean.ManyBody.Replica.BandMetric.OldLeafIntegral
 import QICLean.ManyBody.Replica.BandMetric.Prerequisites
 import QICLean.ManyBody.Replica.BandMetric.Proposition
 import QICLean.ManyBody.Replica.BandMetric.RelativePinBound
-import QICLean.ManyBody.Replica.BandMetric.RootCompression
-import QICLean.ManyBody.Replica.BandMetric.RootMetricFloor
 import QICLean.ManyBody.Replica.BandMetric.Setup
 import QICLean.ManyBody.Replica.BandMetric.SplitEntropy
 import QICLean.ManyBody.Replica.BandMetric.SplitSkewBound

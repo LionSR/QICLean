@@ -6,7 +6,7 @@ Authors: QICLean contributors
 import QICLean.Circuit.Party.Compression.SourceSampling.Samples
 import QICLean.Probability.Gaussian.GlobalBranchLaw
 import QICLean.Probability.Gaussian.ProductSourceTransport
-import QICLean.Probability.Concentration.MatrixTraceNormIntegrability
+import QICLean.Probability.Concentration.WeightedSourceError
 
 /-!
 # The Gaussian law of the sources of a source circuit

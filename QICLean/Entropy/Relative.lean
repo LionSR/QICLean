@@ -9,13 +9,11 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Entropy.Relative
 
 import QICLean.Entropy.Relative.EffectRelativeEntropy
-import QICLean.Entropy.Relative.EntropyReindex
 import QICLean.Entropy.Relative.KleinInequality
 import QICLean.Entropy.Relative.LiebTraceExponential
 import QICLean.Entropy.Relative.MarginalPhaseSupport
 import QICLean.Entropy.Relative.PauliDissipation
 import QICLean.Entropy.Relative.Relations
-import QICLean.Entropy.Relative.RelativeEntropyAncillaAdditivity
 import QICLean.Entropy.Relative.RelativeEntropyConvexity
 import QICLean.Entropy.Relative.RelativeEntropyDataProcessing
 import QICLean.Entropy.Relative.RelativeEntropyUnitaryInvariance
@@ -24,7 +22,6 @@ import QICLean.Entropy.Relative.RootFidelityRelativeEntropy
 import QICLean.Entropy.Relative.SupportIntegral
 import QICLean.Entropy.Relative.SupportLeftRightQuadratic
 import QICLean.Entropy.Relative.SupportLeftRightRelativeModular
-import QICLean.Entropy.Relative.SupportRelativeEntropyEquality
 import QICLean.Entropy.Relative.SupportRelativeEntropyGap
 import QICLean.Entropy.Relative.SupportRelativeModular
 import QICLean.Entropy.Relative.SupportSourceDefect

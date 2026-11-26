@@ -6,7 +6,7 @@ Authors: Sirui Lu
 import QICLean.Analysis.Norm.FrobeniusHilbert
 import QICLean.Analysis.TraceNorm.TraceNormAbs
 import QICLean.Channel.Positive.TraceNormContractionCoefficient
-import QICLean.Analysis.TraceNorm.Frobenius
+import QICLean.Analysis.TraceNorm.Variational
 import QICLean.Channel.Peripheral.Projection.CesaroRecurrence
 import QICLean.Channel.Peripheral.Asymptotic.SchurAsymptoticConvergence
 

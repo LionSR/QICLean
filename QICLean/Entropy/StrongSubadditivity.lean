@@ -9,7 +9,6 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Entropy.StrongSubadditivity
 
 import QICLean.Entropy.StrongSubadditivity.Basic
-import QICLean.Entropy.StrongSubadditivity.EntropyMarkovForward
 import QICLean.Entropy.StrongSubadditivity.EntropyMarkovReverse
 import QICLean.Entropy.StrongSubadditivity.EqualitySeparability
 import QICLean.Entropy.StrongSubadditivity.MarkovChain

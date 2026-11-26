@@ -5,7 +5,7 @@ Authors: TNLean contributors
 -/
 import QICLean.Channel.Peripheral.Irreducible.ClosureFixedPointKraus
 import QICLean.Channel.Peripheral.Irreducible.AbstractEigenvectors
-import QICLean.Channel.Peripheral.Spectrum.CyclicGroup
+import QICLean.Channel.Peripheral.Spectrum.Spectrum
 import QICLean.Channel.Schwarz.MultiplicativeDomainFull
 
 /-!

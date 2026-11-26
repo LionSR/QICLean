@@ -6,6 +6,7 @@ Authors: QICLean contributors
 import QICLean.Probability.PoissonWord.Basic
 import Mathlib.Data.List.OfFn
 import Mathlib.Data.Set.Card
+import QICLean.Spectral.Gap.ContractionWordDecay
 
 /-!
 # Concatenation of finite words
@@ -14,7 +15,14 @@ Concatenation is associative with the empty word as identity. Its fiber over
 a word of length `m` consists of precisely the `m + 1` prefix/suffix splits.
 The equivalence `appendFiberEquiv` constructs every split and proves uniqueness;
 no finiteness assumption on the alphabet is needed.
+
+It also contains the following results.
+
+* `Matrix.contractionWord_append`, `Matrix.contractionWord_word_append`: chronological products
+  under word concatenation.
 -/
+
+section PoissonWordAppend
 
 namespace PoissonWord
 
@@ -143,3 +151,42 @@ lemma append_eq_iff (u v w : Word ι) :
     exact append_take_drop w k
 
 end PoissonWord
+
+end PoissonWordAppend
+
+section ContractionWordAppend
+
+/-!
+## Chronological products under word concatenation
+
+The factors from the later word act on the left. This algebraic identity
+connects the append law of finite words with chronological square-root products;
+it requires no commutation, positivity, spectral gap, or clock process.
+-/
+
+namespace Matrix
+
+variable {n ι : Type*} [Fintype n] [DecidableEq n]
+
+/-- Appending a later tuple multiplies its chronological product on the left. -/
+theorem contractionWord_append (k : ι → Matrix n n ℂ) {a b : ℕ}
+    (u : Fin a → ι) (v : Fin b → ι) :
+    contractionWord k (a + b) (Fin.append u v) =
+      contractionWord k b v * contractionWord k a u := by
+  induction v using Fin.snocInduction with
+  | elim0 => simp
+  | @snoc b v i ih =>
+    rw [Fin.append_snoc]
+    change contractionWord k ((a + b) + 1) (Fin.snoc (Fin.append u v) i) =
+      contractionWord k (b + 1) (Fin.snoc v i) * contractionWord k a u
+    rw [contractionWord_snoc, contractionWord_snoc, ih, mul_assoc]
+
+/-- The literal word append map has the same latest-factor-on-the-left convention. -/
+theorem contractionWord_word_append (k : ι → Matrix n n ℂ) (u v : PoissonWord.Word ι) :
+    contractionWord k (PoissonWord.append u v).1 (PoissonWord.append u v).2 =
+      contractionWord k v.1 v.2 * contractionWord k u.1 u.2 :=
+  contractionWord_append k u.2 v.2
+
+end Matrix
+
+end ContractionWordAppend

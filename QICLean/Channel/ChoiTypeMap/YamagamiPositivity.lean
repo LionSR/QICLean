@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Analysis.CyclicInequality.SingularBoundary
 import QICLean.Analysis.CyclicInequality.ForwardMatrix
-import QICLean.Analysis.CyclicInequality.RegularBoundary
+import QICLean.Analysis.CyclicInequality.CyclicReciprocal
 import QICLean.Channel.ChoiTypeMap.Positivity
 import Mathlib.Topology.Sequences
 

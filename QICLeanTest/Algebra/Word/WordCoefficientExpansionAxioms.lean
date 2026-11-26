@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Algebra.Word.WordCoefficientExpansion
+import QICLean.Algebra.Word.WordMultiplicity
 
 /-! # Axiom check and empty-alphabet and zero-power applications -/
 

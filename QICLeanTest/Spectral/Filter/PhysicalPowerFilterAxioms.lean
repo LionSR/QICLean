@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Spectral.Filter.PhysicalPowerFilter
+import QICLean.Spectral.Filter.PhysicalPowerFilterLowerGap
 
 /-!
 # Axiom check and a two-level example for the physical power estimate

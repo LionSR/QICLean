@@ -24,7 +24,7 @@ then word products of a (longer) fixed length span all matrices.
 
 The required rank-one operators are constructed from the source's
 eigenvalue/Fitting decomposition in
-`QICLean.Kraus.Wielandt.RectangularSpan.EventualFullness`.
+`QICLean.Kraus.Wielandt.RectangularSpan.Universality`.
 -/
 
 open scoped Matrix

@@ -97,14 +97,14 @@ Theorem~6.14 of Ref.~\cite{Wolf2012Quantum}: the map $S$ is positive and trace
 preserving, and $S^*$ satisfies the Schwarz inequality.\footnote{Formal
 declaration:
 \leanid{IsPositiveMap.exists_fixedPoints_densityBlocks_with_zero} in
-\doclink{QICLean/Channel/FixedPoint/DensityBlock/FixedPointDensityBlocks}.}
+\doclink{QICLean/Channel/FixedPoint/DensityBlock/SupportCompressedDensityBlocks}.}
 
 The completed source-facing assembly for Theorem~6.16 exposes both
 orientations. Its recurrent-projection component passes the adjoint orientation
 to the fixed-point theorem, while its block-classification component retains
 the orientation for the original map.\footnote{Formal declaration:
 \leanid{IsPositiveMap.exists_wolfTheorem616} in
-\doclink{QICLean/Channel/Peripheral/Cycles/StructureOfCycles}. It preserves the exact
+\doclink{QICLean/Channel/Peripheral/Cycles/DensityBlockSchwarz}. It preserves the exact
 zero-extended density-block membership form and proves the output-indexed
 unitary action in source Equation~(6.68) of
 Ref.~\cite{Wolf2012Quantum}.}

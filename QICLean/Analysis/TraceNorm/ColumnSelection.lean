@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Analysis.Norm.MatrixToEuclidean
-import QICLean.Analysis.TraceNorm.Frobenius
+import QICLean.Analysis.TraceNorm.Variational
 import QICLean.Analysis.TraceNorm.RectangularTraceNormAlgebra
 import Mathlib.Analysis.SpecialFunctions.Complex.Arg
 

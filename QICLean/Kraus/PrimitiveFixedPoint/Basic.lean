@@ -6,6 +6,8 @@ Authors: QICLean contributors
 import QICLean.Channel.FixedPoint.MeanErgodic.FixedPointProjection
 import QICLean.Channel.Schwarz.Basic
 import Mathlib.Analysis.Normed.Operator.CompleteCodomain
+import QICLean.Channel.KrausMap.KrausMap
+import QICLean.Channel.Peripheral.Spectrum.Spectrum
 
 /-!
 # Primitive fixed points of finite Kraus families
@@ -34,12 +36,16 @@ matrix-product-state wrapper.
 
 The peripheral-spectrum and irreducibility consequences are kept in separate downstream
 modules so that this basic layer has the smallest useful dependency surface.
+* `Kraus.HasComplementaryFixedPointGap.isPrimitive`: peripheral primitivity from a complementary
+  fixed-point gap.
 -/
 
 open scoped Matrix Matrix.Norms.Operator ComplexOrder BigOperators
 open Matrix
 
 namespace Kraus
+
+section Basic
 
 /-- A finite Kraus family has a complementary fixed-point gap at $\rho$ if it is
 trace-preserving, $\rho$ is a nonzero positive-semidefinite fixed point, and the complement
@@ -156,5 +162,37 @@ theorem HasComplementaryFixedPointGap.complement_pow_tendsto_zero
     Filter.Tendsto (fun n ↦ Ê ^ n) Filter.atTop (nhds 0) :=
   _root_.pow_tendsto_zero_of_spectralRadius_lt_one _
     hP.complementary_transfer_map_gap
+
+end Basic
+
+section Peripheral
+
+/-!
+## Peripheral primitivity from a complementary fixed-point gap
+
+This module connects the finite-Kraus complementary-gap predicate to the channel-level
+peripheral-spectrum notion of primitivity. If $E_K-P_\rho$ has spectral radius below one,
+then every one-modulus eigenvalue of $E_K$ is equal to one.
+
+### Main declaration
+
+* `Kraus.HasComplementaryFixedPointGap.isPrimitive`: complementary fixed-point gap implies
+  peripheral-spectrum primitivity of `Kraus.mapLM K`.
+-/
+
+variable {d D : ℕ} [NeZero D]
+variable {K : Fin d → Matrix (Fin D) (Fin D) ℂ}
+variable {ρ : Matrix (Fin D) (Fin D) ℂ}
+
+/-- A complementary fixed-point gap makes the finite Kraus map primitive in the
+peripheral-spectrum sense: one is its unique eigenvalue of norm one. -/
+theorem HasComplementaryFixedPointGap.isPrimitive
+    (hP : HasComplementaryFixedPointGap K ρ) :
+    _root_.IsPrimitive (mapLM K) :=
+  _root_.isPrimitive_of_compl_eigenvalues_lt_one
+    (mapLM K) ρ hP.fixedPoint_is_fixed hP.fixedPoint_ne_zero hP.trace_ne_zero
+    (isChannel_mapLM K hP.norm).tp hP.complement_eigenvalue_norm_lt_one
+
+end Peripheral
 
 end Kraus

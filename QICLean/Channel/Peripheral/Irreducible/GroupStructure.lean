@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Analysis.Order.ComplexPhasePositivity
-import QICLean.Channel.Peripheral.Irreducible.CyclicDecomposition
+import QICLean.Channel.Peripheral.Irreducible.PeripheralUnitary
 import Mathlib.RingTheory.RootsOfUnity.Basic
 import Mathlib.GroupTheory.SpecificGroups.Cyclic
 import Mathlib.Analysis.Matrix.Spectrum

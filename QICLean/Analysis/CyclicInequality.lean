@@ -12,7 +12,6 @@ import QICLean.Analysis.CyclicInequality.CyclicReciprocal
 import QICLean.Analysis.CyclicInequality.FiniteCoordinateNowosad
 import QICLean.Analysis.CyclicInequality.ForwardMatrix
 import QICLean.Analysis.CyclicInequality.Recursion
-import QICLean.Analysis.CyclicInequality.RegularBoundary
 import QICLean.Analysis.CyclicInequality.SingularBoundary
 import QICLean.Analysis.CyclicInequality.TwoMaxima
 import QICLean.Analysis.CyclicInequality.Yamagami

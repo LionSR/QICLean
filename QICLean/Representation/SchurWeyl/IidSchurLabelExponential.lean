@@ -5,8 +5,8 @@ Authors: QICLean contributors
 -/
 import QICLean.Representation.Replica.PermutationCovariance
 import QICLean.Analysis.FunctionalCalculus.CfcLogAdditive
-import QICLean.Entropy.Typical.IidSurprisalExponential
-import QICLean.Representation.Permutation.SchurLabelTails
+import QICLean.Entropy.Typical.IidSurprisal
+import QICLean.Representation.Permutation.SchurSurprisal
 
 /-!
 # Exponential Schur-label tails for independent copies

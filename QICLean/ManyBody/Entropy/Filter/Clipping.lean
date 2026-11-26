@@ -6,7 +6,7 @@ Authors: QICLean contributors
 import QICLean.ManyBody.Entropy.Filter.Stationarity
 import QICLean.Analysis.Optimization.FloorKKT
 import QICLean.Analysis.Real.LogClipping
-import QICLean.Spectral.Eigenvalue.CommutingHermitian
+import QICLean.Spectral.Eigenvalue.MatrixSpectralDecomp
 import Mathlib.Analysis.SpecialFunctions.Pow.Deriv
 import Mathlib.Analysis.Calculus.Deriv.Prod
 

@@ -6,7 +6,7 @@ Authors: QICLean contributors
 import QICLean.Circuit.Party.Compression.CorrectedSources.Partition
 import QICLean.Circuit.Party.Compression.SourceReplacement.CorrectedTerm
 import QICLean.Circuit.Party.Original.Density
-import QICLean.Channel.Schmidt.SchmidtFrames
+import QICLean.Channel.Schmidt.Decomposition
 
 /-!
 # Schmidt frames of the product of crossing sources

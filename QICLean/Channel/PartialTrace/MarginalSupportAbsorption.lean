@@ -8,6 +8,7 @@ import QICLean.Analysis.FunctionalCalculus.CfcKronecker
 import QICLean.Analysis.Support.MarginalSupport
 import QICLean.Analysis.Support.Compression
 import QICLean.Algebra.PartialTrace
+import QICLean.Algebra.Matrix.MatrixRankBaseChange
 
 /-!
 # Support projectors of bipartite marginals
@@ -43,12 +44,16 @@ form is a specialization of the other on the product index \(L\times R\).
   analogous formula for the marginal obtained by tracing the left factor.
 * `Matrix.PosSemidef.marginalSupport_compression_marginals_posDef`: both
   compressed marginals are positive definite.
+* `Matrix.PosSemidef.rank_le_rank_partialTraceRight_mul_rank_partialTraceLeft`: rank of a positive
+  operator and its marginals.
 
 ## References
 
 * arXiv:1606.00608, Appendix D.2, lines 2225--2235: the bipartite state
   identity and the support-projector absorption identity.
 -/
+
+section MarginalSupportAbsorption
 
 open scoped Matrix ComplexOrder Kronecker
 open Matrix Finset
@@ -459,3 +464,44 @@ theorem PosSemidef.marginalSupport_compression_marginals_posDef
 end FiniteMarginalSupport
 
 end Matrix
+
+end MarginalSupportAbsorption
+
+section MarginalRank
+
+/-!
+## Rank of a positive operator and its marginals
+
+The rank of a bipartite positive semidefinite operator is at most the product
+of the ranks of its two marginals. This follows from containment of its support
+in the tensor product of the marginal supports. No normalization or nonempty
+index type is required.
+-/
+
+open scoped Kronecker ComplexOrder
+
+namespace Matrix
+
+/-- The rank of a positive semidefinite bipartite operator is bounded by the
+product of the ranks of its marginals, including zero-dimensional factors. -/
+theorem PosSemidef.rank_le_rank_partialTraceRight_mul_rank_partialTraceLeft
+    {L R : Type*} [Fintype L] [Fintype R]
+    {ρ : Matrix (L × R) (L × R) ℂ} (hρ : ρ.PosSemidef) :
+    ρ.rank ≤ (Matrix.partialTraceRight ρ).rank * (Matrix.partialTraceLeft ρ).rank := by
+  classical
+  let ω := Matrix.partialTraceRight ρ ⊗ₖ Matrix.partialTraceLeft ρ
+  have hk : LinearMap.ker ω.mulVecLin ≤
+      LinearMap.ker ρ.mulVecLin := by
+    intro v hv
+    exact hρ.productMarginals_kernel_le v hv
+  have hd := Submodule.finrank_mono hk
+  have hρdim := ρ.mulVecLin.finrank_range_add_finrank_ker
+  have hωdim := ω.mulVecLin.finrank_range_add_finrank_ker
+  rw [← rank_kronecker]
+  change Module.finrank ℂ (LinearMap.range ρ.mulVecLin) ≤
+    Module.finrank ℂ (LinearMap.range ω.mulVecLin)
+  omega
+
+end Matrix
+
+end MarginalRank

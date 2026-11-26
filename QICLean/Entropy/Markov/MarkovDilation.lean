@@ -10,4 +10,3 @@ Authors: QICLean contributors
 
 import QICLean.Entropy.Markov.MarkovDilation.AmbientBlockAction
 import QICLean.Entropy.Markov.MarkovDilation.Basic
-import QICLean.Entropy.Markov.MarkovDilation.SectorAction

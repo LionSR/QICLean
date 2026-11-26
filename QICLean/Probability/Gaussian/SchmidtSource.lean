@@ -7,7 +7,7 @@ These are original integration proofs using the existing QICLean Schmidt theorem
 and Mathlib; no upstream OpenAI Lean proof text is reused in this file.
 The imported Gaussian foundation retains its source and modification notices.
 -/
-import QICLean.Channel.Schmidt.SchmidtFrames
+import QICLean.Channel.Schmidt.Decomposition
 import QICLean.Probability.Gaussian.ProductSourceTransport
 
 /-!

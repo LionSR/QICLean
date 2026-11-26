@@ -17,15 +17,10 @@ import QICLean.ManyBody.Replica.Metric.Lift
 import QICLean.ManyBody.Replica.Metric.MarkedRatio
 import QICLean.ManyBody.Replica.Metric.MarkedRatioInverse
 import QICLean.ManyBody.Replica.Metric.Metric
-import QICLean.ManyBody.Replica.Metric.PinnedLeafExpectation
-import QICLean.ManyBody.Replica.Metric.PinnedTreeExpectation
 import QICLean.ManyBody.Replica.Metric.RegionalReplicaMetric
 import QICLean.ManyBody.Replica.Metric.RegionalReplicaMetricRegions
 import QICLean.ManyBody.Replica.Metric.RelativePinAlgebra
 import QICLean.ManyBody.Replica.Metric.Similarity
 import QICLean.ManyBody.Replica.Metric.StarFunction
 import QICLean.ManyBody.Replica.Metric.SymmetricBandCommute
-import QICLean.ManyBody.Replica.Metric.SymmetricBandLabelPreservation
-import QICLean.ManyBody.Replica.Metric.SymmetricMeanTreeProduct
 import QICLean.ManyBody.Replica.Metric.SymmetricMetricFloor
-import QICLean.ManyBody.Replica.Metric.WholeInverse

@@ -17,7 +17,6 @@ import QICLean.Circuit.Core.Dimension
 import QICLean.Circuit.Core.GateSum
 import QICLean.Circuit.Core.Layer
 import QICLean.Circuit.Core.LayerDual
-import QICLean.Circuit.Core.LayerEntry
 import QICLean.Circuit.Core.LightCone
 import QICLean.Circuit.Core.LocalGate
 import QICLean.Circuit.Core.Map

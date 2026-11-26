@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Algebra.OperatorSchmidt.PrescribedFactors
+import QICLean.Algebra.OperatorSchmidt.Basic
 
 /-!
 # Applications and axiom checks for operator Schmidt factor selection

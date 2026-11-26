@@ -10,7 +10,4 @@ Authors: QICLean contributors
 
 import QICLean.Kraus.Wielandt.RankOne.BoundedWord
 import QICLean.Kraus.Wielandt.RankOne.Construction
-import QICLean.Kraus.Wielandt.RankOne.Element
-import QICLean.Kraus.Wielandt.RankOne.Extraction
-import QICLean.Kraus.Wielandt.RankOne.ExtractionFull
 import QICLean.Kraus.Wielandt.RankOne.Products

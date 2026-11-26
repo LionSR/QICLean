@@ -12,6 +12,8 @@ import Mathlib.LinearAlgebra.Matrix.Kronecker
 import Mathlib.Analysis.Matrix.PosDef
 import Mathlib.LinearAlgebra.Matrix.Permutation
 import Mathlib.LinearAlgebra.Matrix.ConjTranspose
+import Mathlib.Analysis.Matrix.Spectrum
+import Mathlib.GroupTheory.Perm.Fin
 
 /-!
 # Isometries and unitaries between finite coordinate spaces
@@ -52,7 +54,13 @@ lines 534--605.
   a Gram dressing whose matrix has a right inverse.
 * `Matrix.isUnitaryBetween_iff_mem_unitaryGroup` identifies the square case with
   Mathlib's unitary group.
+* `Matrix.card_le_mul_of_sum_conjTranspose_mul_eq_one`: dimension bound for a family of matrices
+  with `∑ Aᵢᴴ Aᵢ = 1`.
+* `Matrix.IsHermitian.exists_unitary_trace_mul_eq_zero`: a unitary with zero trace pairing against a
+  Hermitian matrix.
 -/
+
+section MatrixUnitaryBetween
 
 namespace Matrix
 
@@ -562,3 +570,81 @@ theorem commute_of_isometric_intertwine
 end Matrix
 
 end IsometricIntertwiningCommute
+
+end MatrixUnitaryBetween
+
+section StackedIsometryCard
+
+/-!
+## Dimension bound for a family of matrices with `∑ Aᵢᴴ Aᵢ = 1`
+
+If `A_0, …, A_{d-1}` are `a × b` complex matrices with `∑_i A_i^† A_i = 1`, then
+the stacked `(a d) × b` matrix has orthonormal columns, so `b ≤ a d`.
+
+Moved from TNLean, `TNLean/Algebra/StackedIsometryCard.lean` at commit `49b78ed821`
+(Apache-2.0).
+
+### Main results
+
+* `Matrix.card_le_mul_of_sum_conjTranspose_mul_eq_one` — the bound `b ≤ a d`.
+-/
+
+open scoped Matrix
+
+namespace Matrix
+
+/-- If `A_0, …, A_{d-1}` are `a × b` matrices with `∑_i A_i^† A_i = 1`, then
+`b ≤ a d`: the stacked `(a d) × b` matrix has orthonormal columns. -/
+theorem card_le_mul_of_sum_conjTranspose_mul_eq_one {d a b : ℕ}
+    (A : Fin d → Matrix (Fin a) (Fin b) ℂ) (hA : ∑ i, (A i)ᴴ * A i = 1) : b ≤ a * d := by
+  let S : Matrix (Fin a × Fin d) (Fin b) ℂ := Matrix.of fun x β => A x.2 x.1 β
+  have hS : Sᴴ * S = 1 := by
+    rw [← hA]
+    ext β β'
+    simp only [S, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.sum_apply, Matrix.of_apply]
+    rw [Fintype.sum_prod_type, Finset.sum_comm]
+  simpa using Matrix.IsIsometry.card_le S hS
+
+end Matrix
+
+end StackedIsometryCard
+
+section UnitaryTraceZero
+
+/-!
+## A unitary with zero trace pairing against a Hermitian matrix
+
+Every complex Hermitian matrix of dimension at least two has zero trace pairing with some unitary
+matrix. In an orthonormal eigenbasis, a cyclic permutation has zero diagonal.
+-/
+
+namespace Matrix.IsHermitian
+
+variable {n : Type*} [Fintype n]
+
+open scoped Classical in
+/-- A complex Hermitian matrix in dimension at least two has zero trace pairing with a unitary
+matrix. -/
+theorem exists_unitary_trace_mul_eq_zero {A : Matrix n n ℂ} (hA : A.IsHermitian)
+    (hn : 2 ≤ Fintype.card n) :
+    ∃ U : Matrix.unitaryGroup n ℂ, (A * (U : Matrix n n ℂ)).trace = 0 := by
+  classical
+  let e := Fintype.equivFin n
+  let σ : Equiv.Perm n := (e.trans (finRotate (Fintype.card n))).trans e.symm
+  have hσ (i : n) : σ i ≠ i := by
+    have h := Equiv.Perm.mem_support.mp (show e i ∈ (finRotate (Fintype.card n)).support by
+      rw [support_finRotate_of_le hn]
+      exact Finset.mem_univ _)
+    simpa only [σ, Equiv.trans_apply, ne_eq, Equiv.symm_apply_eq] using h
+  let P : Matrix.unitaryGroup n ℂ := ⟨σ.permMatrix ℂ, σ.permMatrix_mem_unitaryGroup⟩
+  refine ⟨hA.eigenvectorUnitary * P * star hA.eigenvectorUnitary, ?_⟩
+  change (A * ((hA.eigenvectorUnitary : Matrix n n ℂ) * P *
+    (star hA.eigenvectorUnitary : Matrix n n ℂ))).trace = 0
+  rw [trace_mul_cycle', ← mul_assoc, ← mul_assoc,
+    ← Unitary.conjStarAlgAut_star_apply (S := ℂ) hA.eigenvectorUnitary A,
+    hA.conjStarAlgAut_star_eigenvectorUnitary]
+  simp [Matrix.trace, P, Equiv.Perm.permMatrix, Equiv.toPEquiv_apply, hσ]
+
+end Matrix.IsHermitian
+
+end UnitaryTraceZero

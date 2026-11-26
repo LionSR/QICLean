@@ -18,13 +18,9 @@ import QICLean.Channel.OperatorMean.FilteringIntertwine
 import QICLean.Channel.OperatorMean.GeometricMeanDerivativeIntertwine
 import QICLean.Channel.OperatorMean.Intertwine
 import QICLean.Channel.OperatorMean.LeafDerivative
-import QICLean.Channel.OperatorMean.LeafStateIntertwine
-import QICLean.Channel.OperatorMean.LeafStates
 import QICLean.Channel.OperatorMean.MeanDerivative
 import QICLean.Channel.OperatorMean.MeanTreeDerivativeIntertwine
-import QICLean.Channel.OperatorMean.MetricFloor
 import QICLean.Channel.OperatorMean.NormDerivative
 import QICLean.Channel.OperatorMean.PathDerivative
 import QICLean.Channel.OperatorMean.PowerDerivative
-import QICLean.Channel.OperatorMean.PowerDerivativeIntertwine
 import QICLean.Channel.OperatorMean.TreeDerivative

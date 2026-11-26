@@ -20,9 +20,17 @@ by their common total. The zero-total case is treated separately.
 The extreme-point rigidity proof adapts `Mathlib/Analysis/Convex/Birkhoff.lean` at
 commit `c55e6e786f49471c72fbddbec5415808896aec1e`, replacing stochastic entry bounds
 by substochastic entry bounds; the completion and partial-permutation arguments are new.
+
+It also contains the following results.
+
+* `TNLean.wolf_birkhoff_doublyStochastic_convexHull`,
+  `TNLean.wolf_birkhoff_extremePoints_doublyStochastic`: Birkhoff's theorem for doubly stochastic
+  matrices (Wolf Chapter 8).
 -/
 
 namespace TNLean
+
+section DoublySubstochastic
 
 open Finset Matrix
 
@@ -269,5 +277,53 @@ theorem wolf_birkhoff_extremePoints_doublySubstochastic {d : ℕ} :
     Set.extremePoints ℝ (doublySubstochastic (Fin d)) =
       {M : Matrix (Fin d) (Fin d) ℝ | IsPartialPermutation M} :=
   extremePoints_doublySubstochastic
+
+end DoublySubstochastic
+
+section Birkhoff
+
+/-!
+## Birkhoff's theorem for doubly stochastic matrices (Wolf Chapter 8)
+
+The doubly-stochastic half of Birkhoff's theorem: the set of `d × d`
+doubly stochastic matrices over `ℝ` is the convex hull of the `d × d`
+permutation matrices, and its extreme points are exactly the
+permutation matrices.
+
+Source: `Notes/WolfNoteTexSource/ch08_distance_measures.tex`, lines 263–266.
+
+The doubly-substochastic half, with partial permutation matrices as its extreme points,
+is proved in `QICLean/Analysis/Majorization/DoublySubstochastic.lean`.
+-/
+
+/--
+**Birkhoff's theorem** (Wolf Theorem 8.6, Chapter 8, lines 263–266).
+
+The set of `d × d` doubly stochastic matrices over `ℝ` equals the convex
+hull of the `d × d` permutation matrices.
+
+The doubly-substochastic counterpart is
+`wolf_birkhoff_doublySubstochastic_convexHull`.
+-/
+theorem wolf_birkhoff_doublyStochastic_convexHull {d : ℕ} :
+    (doublyStochastic ℝ (Fin d) : Set (Matrix (Fin d) (Fin d) ℝ)) =
+      convexHull ℝ {σ.permMatrix ℝ | σ : Equiv.Perm (Fin d)} :=
+  _root_.doublyStochastic_eq_convexHull_permMatrix
+
+/--
+**Birkhoff's theorem** (Wolf Theorem 8.6, Chapter 8, lines 263–266).
+
+The extreme points of the set of `d × d` doubly stochastic matrices over
+`ℝ` are exactly the `d × d` permutation matrices.
+
+The doubly-substochastic counterpart is
+`wolf_birkhoff_extremePoints_doublySubstochastic`.
+-/
+theorem wolf_birkhoff_extremePoints_doublyStochastic {d : ℕ} :
+    Set.extremePoints ℝ ((doublyStochastic ℝ (Fin d) : Set (Matrix (Fin d) (Fin d) ℝ))) =
+      {σ.permMatrix ℝ | σ : Equiv.Perm (Fin d)} :=
+  _root_.extremePoints_doublyStochastic
+
+end Birkhoff
 
 end TNLean

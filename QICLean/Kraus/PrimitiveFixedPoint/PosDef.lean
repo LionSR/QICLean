@@ -3,7 +3,7 @@ Copyright (c) 2025 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Channel.Irreducible.FixedPoint
+import QICLean.Channel.Irreducible.FixedPointUniqueness
 import QICLean.Kraus.CPPrimitive
 
 /-!

@@ -6,7 +6,7 @@ Authors: QICLean contributors
 import QICLean.Representation.SchurWeyl.HighLabelWindow
 import QICLean.ManyBody.Replica.CompressedSite.CompressedTypicalLabelMass
 import QICLean.ManyBody.Entropy.Typical.CompressedTypicalSiteCoordinates
-import QICLean.ManyBody.Replica.CompressedTypicalCommonBellVector
+import QICLean.ManyBody.Replica.CompressedTypicalCommonRetainedMass
 
 /-!
 # An auxiliary label sequence and common-cutoff Bell vectors

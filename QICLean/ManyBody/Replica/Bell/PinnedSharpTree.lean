@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Replica.Bell.PinnedSharpLeaf
-import QICLean.Analysis.OperatorMean.MeanTreeProjectionMultibandUpper
+import QICLean.Analysis.OperatorMean.MeanTreeProjectionUpper
 
 /-!
 # Terminal-weighted sharp bounds for the actual selected Bell postvector

@@ -12,8 +12,6 @@ import QICLean.Entropy.Typical.BellPin
 import QICLean.Entropy.Typical.BellPinPowers
 import QICLean.Entropy.Typical.Density
 import QICLean.Entropy.Typical.IidSurprisal
-import QICLean.Entropy.Typical.IidSurprisalExponential
-import QICLean.Entropy.Typical.IidSurprisalMomentExponential
 import QICLean.Entropy.Typical.PureCompression
 import QICLean.Entropy.Typical.PureState
 import QICLean.Entropy.Typical.Spectrum

@@ -4,8 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Replica.Bell.PinnedCompressedPowers
-import QICLean.Analysis.Isometry.ProjectionIntertwiningNorm
-import QICLean.ManyBody.Replica.Bell.SymmetricPinProjection
+import QICLean.Analysis.Isometry.IsometricDomainExtension
+import QICLean.ManyBody.Replica.Bell.InsertionSymmetry
 import QICLean.ManyBody.Replica.Metric.SymmetricBandCommute
 import QICLean.ManyBody.Replica.Metric.RegionalReplicaMetricRegions
 

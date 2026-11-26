@@ -9,7 +9,6 @@ import QICLean.Channel.Irreducible.Basic
 import QICLean.Channel.Irreducible.FromSpectral
 import QICLean.Channel.Peripheral.Spectrum.Spectrum
 import QICLean.Channel.Peripheral.Irreducible.IrreducibleChannel
-import QICLean.Channel.Peripheral.Spectrum.PeriodicityRemoval
 import QICLean.Channel.Peripheral.Irreducible.ClosureFixedPointKraus
 import QICLean.Channel.FixedPoint.MeanErgodic.Cesaro
 import QICLean.Channel.FixedPoint.MeanErgodic.FixedPointProjection

@@ -11,7 +11,6 @@ Authors: QICLean contributors
 import QICLean.Analysis.Support.Compression
 import QICLean.Analysis.Support.HermitianIntertwiner
 import QICLean.Analysis.Support.InverseSandwich
-import QICLean.Analysis.Support.LogJensen
 import QICLean.Analysis.Support.MarginalSupport
 import QICLean.Analysis.Support.MatrixFamilySupport
 import QICLean.Analysis.Support.MatrixFamilySupportProjection

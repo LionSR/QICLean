@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.ManyBody.Replica.BandMetric.FiniteFamily
+import QICLean.ManyBody.Replica.BandMetric.Transport
 
 /-! Require the replica-transport estimates at the named constants to use only standard
 axioms. -/

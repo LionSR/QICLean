@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Spectral.Eigenvalue.EuclideanEigenvectorBasis
 import QICLean.Spectral.Eigenvalue.GroundEnergyBounds
-import QICLean.Spectral.LowEnergy.OrderedSpectralSpan
+import QICLean.Spectral.Eigenvalue.HermitianExtremalEigenvalues
 import QICLean.Spectral.LowEnergy.RelativeLowEnergyCloseness
 import QICLean.Spectral.LowEnergy.WeightedLowRestriction
 import QICLean.Analysis.Order.WeylMonotonicity

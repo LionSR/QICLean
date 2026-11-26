@@ -12,5 +12,4 @@ import QICLean.Probability.Concentration.IndependentCovariance
 import QICLean.Probability.Concentration.MatrixBernstein
 import QICLean.Probability.Concentration.MatrixCumulantSubadditivity
 import QICLean.Probability.Concentration.MatrixSecondMoment
-import QICLean.Probability.Concentration.MatrixTraceNormIntegrability
 import QICLean.Probability.Concentration.WeightedSourceError

@@ -21,15 +21,12 @@ import QICLean.Kraus.PrimitiveFixedPoint.Assembly
 import QICLean.Kraus.PrimitiveFixedPoint.Basic
 import QICLean.Kraus.PrimitiveFixedPoint.FromPeripheral
 import QICLean.Kraus.PrimitiveFixedPoint.Irreducible
-import QICLean.Kraus.PrimitiveFixedPoint.Peripheral
 import QICLean.Kraus.PrimitiveFixedPoint.PosDef
-import QICLean.Kraus.PrimitiveFixedPoint.Uniqueness
 import QICLean.Kraus.ProjectionTriangularTrace
 import QICLean.Kraus.RectangularChain
 import QICLean.Kraus.Stochastic
 import QICLean.Kraus.Tactic
 import QICLean.Kraus.TraceFactorGauge
-import QICLean.Kraus.TracePairing
 import QICLean.Kraus.Transfer
 import QICLean.Kraus.Wielandt
 import QICLean.Kraus.Word

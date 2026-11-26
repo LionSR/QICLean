@@ -15,7 +15,6 @@ import QICLean.Representation.Replica.ExcitationSymmetry
 import QICLean.Representation.Replica.GoodAuxiliaryLabelBound
 import QICLean.Representation.Replica.GoodAuxiliaryMarginal
 import QICLean.Representation.Replica.LowDefectProjection
-import QICLean.Representation.Replica.MarginalSymmetry
 import QICLean.Representation.Replica.PermutationCovariance
 import QICLean.Representation.Replica.ReplicaRatio
 import QICLean.Representation.Replica.SchurLabelCommutation

@@ -17,8 +17,6 @@ import QICLean.Algebra.StarSubalgebra.IntertwinerIsometry
 import QICLean.Algebra.StarSubalgebra.IrreducibleDecomp
 import QICLean.Algebra.StarSubalgebra.Isotypic
 import QICLean.Algebra.StarSubalgebra.IsotypicDecomp
-import QICLean.Algebra.StarSubalgebra.IsotypicFactorization
-import QICLean.Algebra.StarSubalgebra.Schur
 import QICLean.Algebra.StarSubalgebra.Semisimple
 import QICLean.Algebra.StarSubalgebra.SimpleModule
 import QICLean.Algebra.StarSubalgebra.Spatial

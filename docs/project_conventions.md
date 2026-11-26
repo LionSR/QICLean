@@ -63,7 +63,7 @@ There are no sanctioned axiom declarations in this repository; any new
 `axiom` declaration is a blocker. Historically,
 `hayashi_ssa_equality_characterization_forward` in
 `QICLean/Axioms/Entropy.lean` was sanctioned for issue #632 / gate #236. It is
-now a theorem proved in `QICLean/Entropy/StrongSubadditivity/EntropyMarkovForward.lean`; the
+now a theorem proved in `QICLean/Entropy/StrongSubadditivity/MarkovChain.lean`; the
 compatibility module was relocated to
 `QICLean/Entropy/StrongSubadditivity/MarkovChain.lean`, which retains the
 established public name. The reverse direction is proved in

@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Spectral.Projection.ShiftedDensityTruncation
 import QICLean.Spectral.Eigenvalue.GroundEnergyBounds
-import QICLean.Spectral.Eigenvalue.CommutingHermitian
+import QICLean.Spectral.Eigenvalue.MatrixSpectralDecomp
 import QICLean.Analysis.FunctionalCalculus.CfcConjugation
 import Mathlib.Analysis.InnerProductSpace.Positive
 import Mathlib.Topology.Algebra.Module.ContinuousLinearMap.Restrict

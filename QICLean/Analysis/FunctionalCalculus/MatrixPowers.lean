@@ -7,6 +7,7 @@ import QICLean.Analysis.FunctionalCalculus.CfcLogAdditive
 import QICLean.Analysis.FunctionalCalculus.MatrixSqrt
 import QICLean.Analysis.Order.PosSemidefCommute
 import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.Rpow.Order
+import QICLean.Analysis.FunctionalCalculus.CfcConjugation
 
 /-!
 # Real powers of positive definite matrices
@@ -29,7 +30,11 @@ commuting positive definite matrices.
   commuting positive definite `A` and `B`.
 * `Matrix.MeanTree.posDef_listProd_ofFn` — an ordered product of pairwise commuting
   positive definite matrices is positive definite.
+* `Matrix.PosSemidef.rpow_intertwine`: rectangular intertwining of real matrix powers.
+* `Matrix.cfc_log_listProd_ofFn`: the logarithm of an ordered commuting product.
 -/
+
+section MatrixPowers
 
 open scoped Matrix ComplexOrder MatrixOrder Matrix.Norms.L2Operator
 
@@ -153,3 +158,94 @@ theorem posDef_listProd_ofFn {K : ℕ} {D : Fin K → Matrix n n ℂ} (hD : ∀ 
 end MeanTree
 
 end Matrix
+
+end MatrixPowers
+
+section RealPowerIntertwine
+
+/-!
+## Rectangular intertwining of real matrix powers
+
+The finite-dimensional functional calculus transports every real power
+along a rectangular intertwiner of positive semidefinite matrices.
+
+For a negative exponent, the power is zero on the kernel. No inverse on
+that kernel is asserted.
+
+### References
+
+* OpenAI, *A two-dimensional area law from a global spectral gap*, September
+  24, 2026, `06-transport.tex`, lines 17–22 and 157–172, revision
+  `adc7f1241b42e322a6451854ab7e4b4c146bf78a`: functional-calculus identities
+  used in the geometric mean and its derivative.
+-/
+
+open scoped Matrix ComplexOrder MatrixOrder Matrix.Norms.L2Operator
+
+namespace Matrix
+
+variable {n m : Type*} [Fintype n] [DecidableEq n] [Fintype m] [DecidableEq m]
+
+/-- Every real power transports along a rectangular intertwiner of positive
+semidefinite matrices, with the spectral convention on the kernel. Auxiliary
+to the geometric-mean calculations of OpenAI's area-law manuscript,
+`06-transport.tex`, lines 17–22 and 157–172. -/
+theorem PosSemidef.rpow_intertwine
+    {A : Matrix n n ℂ} {B : Matrix m m ℂ}
+    (hA : A.PosSemidef) (hB : B.PosSemidef) (J : Matrix n m ℂ)
+    (hAJ : A * J = J * B) (s : ℝ) : A ^ s * J = J * B ^ s := by
+  simpa only [CFC.rpow_eq_cfc_real hA.nonneg, CFC.rpow_eq_cfc_real hB.nonneg] using
+    ConditionalMovement.QuantumSSA.cfc_intertwine
+      hA.isHermitian hB.isHermitian J hAJ (fun x : ℝ ↦ x ^ s)
+
+end Matrix
+
+end RealPowerIntertwine
+
+section CfcLogListProduct
+
+/-!
+## The logarithm of an ordered commuting product
+
+The logarithm of an ordered finite product of pairwise commuting positive
+definite matrices is the sum of their logarithms. This includes the empty
+product and repeated matrix values.
+
+Source: OpenAI, *A two-dimensional area law from a global spectral gap*,
+September 24, 2026, 06-transport.tex, transport:relative-factorization,
+Lemma 7.1, and the band decomposition in 07-comparators.tex,
+comparator:sharp-jensen, revision
+adc7f1241b42e322a6451854ab7e4b4c146bf78a.
+-/
+
+noncomputable section
+
+open scoped BigOperators Matrix ComplexOrder MatrixOrder Matrix.Norms.L2Operator
+
+namespace Matrix
+
+variable {m : Type*} [Fintype m] [DecidableEq m]
+
+/-- The logarithm of an ordered product of pairwise commuting positive
+definite matrices is the sum of the logarithms.
+Source: 06-transport.tex, transport:relative-factorization, Lemma 7.1. -/
+theorem cfc_log_listProd_ofFn {K : ℕ} {X : Fin K → Matrix m m ℂ}
+    (hX : ∀ g, (X g).PosDef)
+    (hXX : ∀ g g', g ≠ g' → Commute (X g) (X g')) :
+    CFC.log (List.ofFn X).prod = ∑ g, CFC.log (X g) := by
+  induction K with
+  | zero => simp
+  | succ K ih =>
+    rw [List.ofFn_succ, List.prod_cons, Fin.sum_univ_succ,
+      (hX 0).cfc_log_mul (Matrix.MeanTree.posDef_listProd_ofFn (fun g => hX _)
+        (fun g g' h => hXX _ _ (fun h' => h (Fin.succ_injective _ h'))))
+        (Commute.list_prod_right _ _ fun y hy => by
+          obtain ⟨g, rfl⟩ := List.mem_ofFn.mp hy
+          exact hXX _ _ (Fin.succ_ne_zero g).symm),
+      ih (fun g => hX _) (fun g g' h => hXX _ _ (fun h' => h (Fin.succ_injective _ h')))]
+
+end Matrix
+
+end
+
+end CfcLogListProduct

@@ -8,9 +8,7 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Spectral.Gap
 
-import QICLean.Spectral.Gap.BoundedCongruenceGap
 import QICLean.Spectral.Gap.CodimensionOneGap
-import QICLean.Spectral.Gap.CompactKernelGap
 import QICLean.Spectral.Gap.ContractionWordDecay
 import QICLean.Spectral.Gap.ContractionWordDecaySpectator
 import QICLean.Spectral.Gap.DoubledSystemGap
@@ -21,9 +19,7 @@ import QICLean.Spectral.Gap.FiniteRangeKnabe
 import QICLean.Spectral.Gap.IsometricCompressionGap
 import QICLean.Spectral.Gap.IsometricConjugationGap
 import QICLean.Spectral.Gap.IsometricGapTransfer
-import QICLean.Spectral.Gap.OrthogonalKernelGap
 import QICLean.Spectral.Gap.PositiveComparisonGap
-import QICLean.Spectral.Gap.PositiveGapTransfer
 import QICLean.Spectral.Gap.PositiveGapUniqueness
 import QICLean.Spectral.Gap.ReducingProjectionGap
 import QICLean.Spectral.Gap.SeparatedQuadraticForms

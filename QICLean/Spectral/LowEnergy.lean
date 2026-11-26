@@ -9,21 +9,16 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Spectral.LowEnergy
 
 import QICLean.Spectral.LowEnergy.Basis
-import QICLean.Spectral.LowEnergy.CenteredGroundOperator
 import QICLean.Spectral.LowEnergy.ChebyshevViability
-import QICLean.Spectral.LowEnergy.ChebyshevWordPower
 import QICLean.Spectral.LowEnergy.Cluster
 import QICLean.Spectral.LowEnergy.Coordinates
 import QICLean.Spectral.LowEnergy.DominantEigenvector
 import QICLean.Spectral.LowEnergy.ExponentialWeightRestriction
 import QICLean.Spectral.LowEnergy.HierarchicalProjection
 import QICLean.Spectral.LowEnergy.HierarchyLevels
-import QICLean.Spectral.LowEnergy.OrderedSpectralSpan
 import QICLean.Spectral.LowEnergy.RelativeLowEnergyCloseness
-import QICLean.Spectral.LowEnergy.RitzGroundSpace
 import QICLean.Spectral.LowEnergy.RitzGroundSpaceCloseness
 import QICLean.Spectral.LowEnergy.ShiftedLowEnergyCoordinates
-import QICLean.Spectral.LowEnergy.SoftTruncationLowRestriction
 import QICLean.Spectral.LowEnergy.StateCount
 import QICLean.Spectral.LowEnergy.WeightedLowRestriction
 import QICLean.Spectral.LowEnergy.WindowExtraction

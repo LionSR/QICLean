@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.Parameter.PolynomialFilterLogCount
+import QICLean.Analysis.Parameter.PolynomialFilterCounts
 import QICLean.Analysis.Real.LogPowerAbsorption
 import Mathlib.Analysis.Asymptotics.Lemmas
 import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics

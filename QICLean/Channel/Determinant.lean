@@ -8,7 +8,6 @@ import QICLean.Channel.Determinant.Bound
 import QICLean.Channel.Determinant.ChoiBound
 import QICLean.Channel.Determinant.Composition
 import QICLean.Channel.Determinant.HilbertSchmidt
-import QICLean.Channel.Determinant.HeisenbergDual
 import QICLean.Channel.Determinant.KrausRankTwo
 import QICLean.Channel.Determinant.PositiveExtremality
 import QICLean.Channel.Determinant.PositiveInverse
@@ -33,9 +32,8 @@ The division follows the same organization as the earlier `Full/` and
 * `QICLean.Channel.Determinant.Composition` — Wolf Eq. (6.22), its exact
   algebraic equality split, and determinant monotonicity under composition.
 * `QICLean.Channel.Determinant.HilbertSchmidt` — spectral and Hilbert--Schmidt
-  auxiliary lemmas for the rigidity argument.
-* `QICLean.Channel.Determinant.HeisenbergDual` — Heisenberg-dual
-  multiplicativity from determinant saturation.
+  auxiliary lemmas for the rigidity argument, and Heisenberg-dual multiplicativity from
+  determinant saturation.
 * `QICLean.Channel.Determinant.KrausRankTwo` — Wolf's nonnegative-determinant
   proposition for completely positive maps of Kraus rank at most two.
 * `QICLean.Channel.Determinant.PositiveExtremality` — Wolf Theorem 6.1 for
