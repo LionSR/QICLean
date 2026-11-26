@@ -300,7 +300,6 @@ Hilbert--Schmidt square.
 
 \begin{theorem}[Exterior contractions and discarded registers]
     \label{thm:random_exterior_contraction}
-    \lean{Matrix.l2_opNorm_kronecker_one_le}
     \lean{Matrix.trace_partialTraceRight_conjTranspose_mul}
     \lean{Matrix.rectangularTraceNorm_mul_conjTranspose_le}
     \lean{Matrix.rectangularTraceNorm_partialTraceRight_le}
@@ -322,7 +321,7 @@ Hilbert--Schmidt square.
 \end{theorem}
 
 \begin{proof}\leanok
-    \uses{thm:random_trace_duality}
+    \uses{thm:random_trace_duality, thm:root_channel}
     Pull a physical test contraction $M$ back to
     $\widetilde K^\dagger(M\otimes\Id)K$. Its operator norm is at most one,
     since tensoring with the identity preserves that norm bound.

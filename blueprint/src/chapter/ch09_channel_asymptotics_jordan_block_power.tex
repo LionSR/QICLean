@@ -42,7 +42,7 @@
     \label{thm:jordan_block_power_norm}
     \lean{Matrix.l2_opNorm_jordanBlock_pow_bounds,
       Matrix.le_l2_opNorm_jordanBlock_pow, Matrix.l2_opNorm_jordanBlock_pow_le,
-      Matrix.norm_apply_le_l2_opNorm, Matrix.conjTranspose_nilpotentShift_mul_self,
+      Matrix.conjTranspose_nilpotentShift_mul_self,
       Matrix.l2_opNorm_nilpotentShift_le_one,
       Matrix.l2_opNorm_nilpotentShift_pow_le_one}
     \leanok
@@ -61,7 +61,7 @@
 
 \begin{proof}
     \leanok
-    \uses{lem:jordan_block_power}
+    \uses{lem:jordan_block_power, thm:trace_norm_entries}
     By Lemma~\ref{lem:jordan_block_power} the power $J_{D}(\lambda)^{n}$ is the
     Toeplitz matrix $\sum_{k}\binom{n}{k}\lambda^{n-k}N^{k}$, whose first row
     carries the entries $\lambda^{n-k}\binom{n}{k}$.  Since

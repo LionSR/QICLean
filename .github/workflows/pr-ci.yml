@@ -719,9 +719,11 @@ jobs:
           BLUEPRINT_SYNC_FETCH_DEPS: '1'
         run: python3 scripts/blueprint_lean_sync.py --root . --update-lean-decls
 
+      # Each Lean declaration is tagged in exactly one blueprint entry; any other
+      # entry about the same declaration cites the owner through \uses.
       - name: Check blueprint and Lean source stay in sync
         if: steps.lean-decls.outcome == 'success'
-        run: python3 scripts/blueprint_lean_sync.py --root . --ci
+        run: python3 scripts/blueprint_lean_sync.py --root . --ci --report-duplicate-tags
 
       - name: Fetch PR base ref for diff
         id: fetch-base-ref

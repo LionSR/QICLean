@@ -612,11 +612,8 @@ For $0<s<1/2$ let $g_s(z)=\sinh(sz)/\sinh(z/2)$ with $g_s(0)=2s$, and
 $m_s(u)=\sin(2\pi s)/(\cosh(2\pi u)+\cos(2\pi s))$.
 
 \begin{lemma}[The two Fourier multipliers]\label{lem:sinh_ratio_fourier}
-    \lean{Complex.integral_exp_mul_sinhRatioDensity, Real.sinhRatioDensity_pos,
-      Real.integral_sinhRatioDensity, Real.continuous_sinhRatio,
-      Real.exp_sub_one_div_two_sinh, Real.exp_neg_sub_one_div_two_sinh,
-      Complex.integral_exp_mul_qPlus, Complex.integral_exp_mul_qMinus,
-      Complex.norm_sinhRatioDensity_shift_le}
+    \lean{Complex.integral_exp_mul_sinhRatioDensity,
+      Complex.integral_exp_mul_qPlus, Complex.integral_exp_mul_qMinus}
     \leanok
     \uses{lem:sinh_ratio_density_elementary, lem:rectangle_simple_poles}
     For real $z$,

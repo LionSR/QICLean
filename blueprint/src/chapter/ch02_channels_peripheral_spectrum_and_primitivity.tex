@@ -143,9 +143,7 @@
 
 \begin{theorem}[Positive trace-preserving maps have unit spectral radius]
     \label{thm:positive_tp_spectral_radius}
-    \lean{IsPositiveMap.eigenvalue_norm_le_one_of_tracePreserving,
-        IsPositiveMap.eigenvalue_one_exists_of_tracePreserving,
-        IsPositiveMap.spectralRadius_eq_one_of_tracePreserving}
+    \lean{IsPositiveMap.spectralRadius_eq_one_of_tracePreserving}
     \leanok
     \uses{def:positive_map, def:trace_preserving}
     Let $D\geq1$, and let $T:\MN{D}\to\MN{D}$ be positive and
@@ -679,11 +677,11 @@ preservation by the weighted-trace argument in
 
 \begin{theorem}[Irreducibility under conjugate transposition]%
     \label{thm:irreducible_conjtranspose_family}
-    \lean{Kraus.isIrreducibleMap_mapLM_conjTranspose}
     \leanok
-    \uses{def:kraus_map, def:irreducible_cp}
+    \uses{def:kraus_map, def:irreducible_cp, thm:kraus_conjTranspose_irreducible}
     If the Kraus map associated with $(K_i)_i$ is irreducible, then so is the
-    Kraus map associated with $(K_i^\dagger)_i$.
+    Kraus map associated with $(K_i^\dagger)_i$. This is
+    Theorem~\ref{thm:kraus_conjTranspose_irreducible}.
 \end{theorem}
 
 \begin{theorem}[Peripheral spectrum under conjugate transposition]%

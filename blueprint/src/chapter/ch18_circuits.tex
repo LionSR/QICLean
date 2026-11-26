@@ -1527,12 +1527,13 @@ are embedded.
 
 \begin{definition}[Product-formula circuit]
     \label{def:circuits_product_formula}
-    \lean{QuantumCircuit.Geometry.ofSupports, SimpleGraph.overlapGraph,
+    \lean{QuantumCircuit.Geometry.ofSupports,
         QuantumCircuit.colourClass, QuantumCircuit.colourOrder,
         QuantumCircuit.colourSweeps, QuantumCircuit.productLayer,
         QuantumCircuit.productCircuit}
     \leanok
-    \uses{def:circuits_geometry, def:circuits_of_cells, lem:circuits_seq}
+    \uses{def:circuits_geometry, def:circuits_of_cells, lem:circuits_seq,
+        def:hastings_cluster_of_terms}
     Let $(T_k)_{k\in K}$ be a finite family of regions. The geometry of the family
     has the cells $T_k$, each of cost $1$. Its overlap graph joins distinct indices
     whose regions meet, and a colouring $c$ of it with $m$ colours has colour classes
