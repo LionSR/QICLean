@@ -61,6 +61,21 @@ preservation, and the backward light cone.
     $\{0\}$, and for $N=2$ both cells are $\{0,1\}$.
 \end{definition}
 
+\begin{definition}[The geometry of all finite sets of sites]
+    \label{def:circuits_subsets_geometry}
+    \lean{QuantumCircuit.Geometry.subsets, QuantumCircuit.Geometry.subsets_cell,
+        QuantumCircuit.Geometry.subsets_cost, QuantumCircuit.Geometry.subsets_cost_empty,
+        QuantumCircuit.Geometry.subsets_cost_singleton,
+        QuantumCircuit.Geometry.subsets_cost_of_two_le_card,
+        QuantumCircuit.Geometry.subsets_cost_pos_iff, QuantumCircuit.Geometry.subsets_cost_le_one}
+    \leanok
+    \uses{def:circuits_geometry}
+    For a set of sites $S$, the geometry of all finite sets of sites has a cell $D$
+    with sites $D$ for every finite set $D\subseteq S$. A cell of one site costs $0$,
+    and every other cell, the empty cell included, costs $1$. Thus every cell costs
+    at most $1$, and a cell has positive cost exactly when it is not a single site.
+\end{definition}
+
 \begin{lemma}[Neighbourhoods on the ring]
     \label{lem:circuits_ring_neighbourhood}
     \lean{QuantumCircuit.Geometry.neighbourhood_ring,
@@ -159,6 +174,69 @@ preservation, and the backward light cone.
     At a site outside $C_b$ the entry of the identity is $1$ when the two
     configurations agree there and $0$ otherwise; the product of these entries is
     the condition in the formula for the entries of a placed matrix.
+\end{proof}
+
+\begin{definition}[A layer changing the system on one cell or at one site]
+    \label{def:circuits_gate_at}
+    \lean{QuantumCircuit.Layer.gateAt, QuantumCircuit.Layer.free_gateAt_iff,
+        QuantumCircuit.Layer.gateAt_eq_single, QuantumCircuit.Layer.onsiteOpAt,
+        QuantumCircuit.Layer.IsIdentityAt, QuantumCircuit.Layer.isIdentityAt_of_op_eq,
+        QuantumCircuit.Layer.IsStep, QuantumCircuit.Layer.isStep_gateAt,
+        QuantumCircuit.Layer.isStep_ofOnsite, QuantumCircuit.Layer.isStep_onsiteOpAt,
+        QuantumCircuit.Circuit.IsSequential, QuantumCircuit.Circuit.IsSequential.append,
+        QuantumCircuit.Circuit.IsSequential.comp, QuantumCircuit.Circuit.isSequential_ofLayer}
+    \leanok
+    \uses{def:circuits_layer, lem:circuits_layer_single, def:circuits_circuit}
+    Let $b$ be a cell and let $Y$ agree with $X$ outside $C_b$. For a gate $g$ on
+    $C_b$ from $X$ to $Y$, the layer of $g$ on $b$ has the single cell $b$ with the gate
+    $g$, and at every site $s\notin C_b$ the onsite family consisting of the matrix of
+    the identification $X_s=Y_s$; the sites met by no cell are those outside $C_b$.
+    When $Y=X$ it is the layer of one gate of Lemma~\ref{lem:circuits_layer_single}.
+    For a site $s_0$, a system $Y$ agreeing with $X$ at every site $s\neq s_0$, and a
+    matrix $A$ from $\C^{X_{s_0}}$ to $\C^{Y_{s_0}}$, the layer of $A$ at $s_0$ has no
+    cell, the onsite family $\{A\}$ at $s_0$ and the identification at every other site.
+
+    A layer acts as the identity at a site $s$ met by no cell when $Y_s=X_s$ and every
+    member of its onsite family at $s$ is the identity matrix; this holds when the onsite
+    family at $s$ consists of identity matrices. A layer is one step when it has no cell,
+    or one cell and acts as the identity at every site met by no cell. The layer of one
+    gate on a cell, a layer of onsite families only, and the layer of one matrix at one
+    site are one step. A circuit is sequential when every layer of every branch is one
+    step; this passes to a circuit with continuations attached when it holds for the
+    circuit and every continuation, hence to compositions, and the circuit of one layer
+    that is one step is sequential.
+\end{definition}
+
+\begin{lemma}[Kraus operators and costs of a layer changing the system]
+    \label{lem:circuits_gate_at}
+    \lean{QuantumCircuit.Layer.kraus_gateAt, QuantumCircuit.Layer.kraus_onsiteOpAt,
+        QuantumCircuit.Layer.forall_gateAt, QuantumCircuit.Layer.forall_onsiteOpAt,
+        QuantumCircuit.Layer.gateCount_gateAt, QuantumCircuit.Layer.meets_gateAt,
+        QuantumCircuit.Layer.gateCount_onsiteOpAt, QuantumCircuit.Layer.meets_onsiteOpAt}
+    \leanok
+    \uses{def:circuits_gate_at, def:sites_place_between, def:circuits_costs,
+        def:circuits_layer}
+    In the notation of Definition~\ref{def:circuits_gate_at}, the Kraus operator of the
+    layer of $g$ on $b$ at an outcome $\omega$ of $g$ is the placement $M\otimes1$ between
+    $X$ and $Y$, on $C_b$, of the matrix $M$ of $g$ at $\omega$. The Kraus operator of the
+    layer of $A$ at $s_0$ is the placement between $X$ and $Y$, on $\{s_0\}$, of $A$ read
+    on the configurations of $\{s_0\}$. Let $P$ be a property of finite Kraus families
+    that holds for every family $\{1\}$. If $P$ holds for the gate $g$, as interpreted, it
+    holds locally on the layer of $g$ on $b$; if $P$ holds for $\{A\}$, it holds locally on
+    the layer of $A$ at $s_0$. The layer of $g$ on $b$ has gate count $c_b$, and it meets a
+    site $s$ once if $s\in C_b$ and $c_b>0$, and not at all otherwise. The layer of $A$ at
+    $s_0$ has gate count $0$ and meets no site.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:circuits_layer_single, def:sites_place_between}
+    The entry of the Kraus operator at $(y,x)$ is the entry of $M$ at the parts of $y$ and
+    $x$ on $C_b$ times the product over the sites $s\notin C_b$ of the entries of the
+    identifications, which is $1$ exactly when $y$ and $x$ agree outside $C_b$; this is the
+    entry of $M\otimes1$ in Definition~\ref{def:sites_place_between}. For the layer at
+    $s_0$, split off the factor at $s_0$ from the product over all sites. A family
+    consisting of the matrix of the identification $X_s=Y_s$ is the family $\{1\}$ after
+    relabelling, so $P$ holds for it. The layer of $g$ has the single cell $b$, so its
+    weights are those of $b$, and the layer at $s_0$ has no cell.
 \end{proof}
 
 \begin{lemma}[A layer is the tensor product of its local maps]
@@ -650,6 +728,102 @@ and each Kraus operator is a product of local entries over the blocks.
     sum over the branches.
 \end{proof}
 
+\begin{definition}[Circuits with one branch]
+    \label{def:circuits_single}
+    \lean{QuantumCircuit.GateFamily.UniqueOutcome,
+        QuantumCircuit.GateFamily.UniqueOutcome.outcome,
+        QuantumCircuit.GateFamily.UniqueOutcome.eq_outcome,
+        QuantumCircuit.Circuit.IsSingle, QuantumCircuit.Circuit.isSingle_done,
+        QuantumCircuit.Circuit.IsSingle.nonempty_unique_index,
+        QuantumCircuit.Circuit.isSingle_iff_forall, QuantumCircuit.Circuit.IsSingle.append,
+        QuantumCircuit.Circuit.IsSingle.comp, QuantumCircuit.Circuit.isSingle_ofLayer}
+    \leanok
+    \uses{def:circuits_local, lem:circuits_unique_branch, def:circuits_gate_family}
+    A gate family has one outcome per gate when every gate has exactly one outcome;
+    every outcome of such a gate is then that outcome. A circuit is single when every
+    gate of every layer on every branch has exactly one outcome and every onsite family
+    exactly one member. Equivalently, the property of having exactly one member holds
+    locally on the circuit. The empty circuit is single, a single circuit has exactly one
+    branch, being single passes to a circuit with continuations attached when it holds
+    for the circuit and every continuation, hence to compositions, and the circuit of one
+    layer of a gate family with one outcome per gate is single when every onsite family of
+    the layer has one member.
+\end{definition}
+
+\begin{theorem}[The operator of a circuit with one branch]
+    \label{thm:circuits_single_op}
+    \lean{QuantumCircuit.Circuit.singleOp, QuantumCircuit.Circuit.singleOp_eq_kraus,
+        QuantumCircuit.Circuit.singleOp_done, QuantumCircuit.Circuit.singleOp_step,
+        QuantumCircuit.Circuit.singleOp_ofLayer, QuantumCircuit.Circuit.singleOp_comp,
+        QuantumCircuit.Circuit.norm_singleOp_le_one,
+        KrausFamily.isTraceNonincreasing_iff_norm_le_one,
+        KrausFamily.isTraceNonincreasing_single_iff}
+    \leanok
+    \uses{def:circuits_single, def:circuits_circuit, def:circuits_local}
+    The operator $K_c$ of a single circuit $c$ is the Kraus operator of its branch; it is
+    the Kraus operator at any branch. The empty circuit has the operator $1$. A circuit
+    starting with a layer $L$ has the operator $K_{c_i}K_{L,i}$ for any outcome $i$ of $L$,
+    where $c_i$ is the continuation; the circuit of one layer has the operator $K_{L,i}$.
+    For single circuits $c$ from $X$ to $Y$ and $c'$ from $Y$ to $Z$, the composition has
+    the operator $K_{c'}K_c$. A finite Kraus family with exactly one member $V$ is
+    trace-nonincreasing if and only if $\lVert V\rVert\le1$. Consequently, if every gate and
+    onsite family of a single circuit is trace-nonincreasing, then $\lVert K_c\rVert\le1$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:circuits_unique_branch, thm:circuits_composition, thm:circuits_tni}
+    Since there is one branch, its Kraus operator does not depend on the choice of a
+    branch, and the formulas follow from those for the Kraus operators of a step and of a
+    composition. A family $\{V\}$ is trace-nonincreasing exactly when $V^\dagger V\le1$,
+    that is $\lVert V\rVert^2=\lVert V^\dagger V\rVert\le1$. A circuit whose gates and
+    onsite families are trace-nonincreasing has a trace-nonincreasing family of Kraus
+    operators, which for a single circuit has the one member $K_c$.
+\end{proof}
+
+\begin{definition}[Conditions on the gates of a circuit]
+    \label{def:circuits_forall_gate}
+    \lean{QuantumCircuit.Circuit.ForallGate', QuantumCircuit.Circuit.ForallGate,
+        QuantumCircuit.Circuit.ForallGate'.append, QuantumCircuit.Circuit.ForallGate'.comp,
+        QuantumCircuit.Circuit.ForallGate.append, QuantumCircuit.Circuit.ForallGate.comp}
+    \leanok
+    \uses{def:circuits_circuit}
+    A condition on gates holds on a circuit when every gate of every layer on every branch
+    satisfies it. The condition may refer to the gate alone, or also to the finite basis
+    sets of its systems. Either form passes to a circuit with continuations attached when
+    it holds on the circuit and every continuation, and hence to compositions.
+\end{definition}
+
+\begin{lemma}[The cells along a branch]
+    \label{lem:circuits_gate_cells}
+    \lean{QuantumCircuit.Circuit.gateCells, QuantumCircuit.Circuit.gateSites,
+        QuantumCircuit.Circuit.sum_gateCells_le,
+        QuantumCircuit.Circuit.sum_gateCells_eq_of_isUnbranched,
+        QuantumCircuit.Circuit.gateCount_eq_total_sum,
+        QuantumCircuit.Circuit.participation_eq_total_sum,
+        QuantumCircuit.Circuit.sum_cost_gateCells_le,
+        QuantumCircuit.Circuit.sum_cost_gateCells_eq_of_isUnbranched,
+        QuantumCircuit.Circuit.participation_eq_of_isUnbranched}
+    \leanok
+    \uses{def:circuits_costs, def:circuits_local}
+    The cells along a branch $p$ of a circuit are listed layer by layer, and so are their
+    sets of sites. For a weight $w$ of cells, the total weight of the cells along $p$ is at
+    most the cost of the circuit for the layer cost $L\mapsto\sum_{b\in L}w(b)$, with
+    equality when the circuit is unbranched. The gate count is this cost for $w(b)=c_b$,
+    and the participation of a site $s$ is this cost for the weight that is $1$ on cells of
+    positive cost containing $s$ and $0$ otherwise. Hence the costs of the cells along any
+    branch add up to at most the gate count, and to the gate count for an unbranched
+    circuit, whose participation of $s$ is the number of cells of positive cost containing
+    $s$ along any branch.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:circuits_costs}
+    Induction on the circuit. For a circuit starting with a layer $L$, the weight along
+    $(i,q)$ is the weight of $L$ plus the weight along $q$ in the continuation after $i$,
+    which by induction is at most the cost of that continuation and hence at most the
+    largest cost of a continuation. In an unbranched circuit all continuations after $L$
+    are the same circuit, so the largest cost is attained. The gate count and the
+    participation are, by definition, the costs for these layer weights.
+\end{proof}
+
 \begin{theorem}[Backward light cone of a circuit]
     \label{thm:circuits_light_cone}
     \lean{QuantumCircuit.Circuit.dual_mem_supportedOperators_lightCone,
@@ -922,6 +1096,74 @@ are embedded.
     Induction on the circuit, along the bijection of branches.
 \end{proof}
 
+\begin{definition}[Maps of layers on a domain]
+    \label{def:circuits_map_layers_on}
+    \lean{QuantumCircuit.Circuit.ForallLayer, QuantumCircuit.Circuit.ForallLayer.append,
+        QuantumCircuit.Circuit.ForallLayer.comp, QuantumCircuit.Circuit.forallLayer_true,
+        QuantumCircuit.LayerMapOn, QuantumCircuit.LayerMap.toLayerMapOn,
+        QuantumCircuit.Circuit.mapLayersOn, QuantumCircuit.Circuit.mapIndexEquivOn,
+        QuantumCircuit.Circuit.mapLayersOn_congr}
+    \leanok
+    \uses{def:circuits_layer_map, def:circuits_layer, def:circuits_local}
+    A condition on layers holds on a circuit when every layer on every branch satisfies it.
+    It passes to a circuit with continuations attached, when it holds on the circuit and on
+    every continuation, and to compositions; the condition satisfied by every layer holds on
+    every circuit. A map of layers on a domain, from the circuits on $V$ with geometry
+    $\Gamma$ and gate family $G$ to those on $V'$ with $\Gamma'$ and $G'$, is a map of
+    systems $X\mapsto X'$ together with a condition on layers, its domain, and for every
+    layer $L$ from $X$ to $Y$ in the domain a layer $L'$ from $X'$ to $Y'$ with a bijection
+    between the Kraus indices of $L'$ and of $L$. A map of layers is a map of layers on the
+    domain of all layers. The image of a circuit all of whose layers lie in the domain
+    replaces every layer by its image, the continuation of an index of $L'$ being the image
+    of the continuation of the corresponding index of $L$; the branches of the image are in
+    bijection with those of the circuit, and equal circuits have equal images.
+\end{definition}
+
+\begin{theorem}[What moves with a map of layers on a domain]
+    \label{thm:circuits_map_layers_on}
+    \lean{QuantumCircuit.Circuit.kraus_mapLayersOn, QuantumCircuit.Circuit.mapLayersOn_comp,
+        QuantumCircuit.Circuit.isUnbranched_mapLayersOn,
+        QuantumCircuit.Circuit.isSingle_mapLayersOn,
+        QuantumCircuit.Circuit.forall_mapLayersOn,
+        QuantumCircuit.Circuit.forallGate'_mapLayersOn,
+        QuantumCircuit.Circuit.total_mapLayersOn,
+        QuantumCircuit.Circuit.mapLayersOn_toLayerMapOn}
+    \leanok
+    \uses{def:circuits_map_layers_on, def:circuits_costs, def:circuits_local,
+        def:circuits_single, def:circuits_forall_gate}
+    Let a map of layers on a domain be given, and consider circuits all of whose layers lie
+    in the domain.
+    \begin{enumerate}
+        \item Let $\Phi$ map the matrices between the configurations of any two systems $X$
+              and $Z$ to matrices between the configurations of $X'$ and $Z'$, with
+              $\Phi(1)=1$ and $\Phi(AB)=\Phi(A)\Phi(B)$. If every Kraus operator of the
+              image of a layer in the domain is $\Phi$ of the corresponding Kraus operator
+              of the layer, then along corresponding branches $K'_p=\Phi(K_p)$.
+        \item The image of a composition is the composition of the images, and the image
+              of an unbranched circuit is unbranched.
+        \item If the image of every layer in the domain whose gates have one outcome each
+              and whose onsite families have one member each has the same property, the
+              image of a single circuit is single.
+        \item A local property, or a condition on gates, holding on the image of every
+              layer in the domain on which it holds, holds on the image of every circuit on
+              which it holds; the condition on the gates of the image may differ from the
+              condition on the gates of the circuit.
+        \item If costs $f$ and $f'$ of layers satisfy $f'(L')=f(L)$ for every layer $L$ in
+              the domain, the cost $f'$ of the image of a circuit is its cost $f$.
+        \item On the domain of all layers, the image along a map of layers is the image of
+              Definition~\ref{def:circuits_layer_map}.
+    \end{enumerate}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:circuits_circuit, thm:circuits_composition, def:circuits_costs}
+    Induction on the circuit, along the bijection of branches. For a circuit starting with a
+    layer $L$ and a branch $(i,q)$ of the image, the Kraus operator is
+    $K'_{q}K'_{L',i}=\Phi(K_{q'})\Phi(K_{L,i})=\Phi(K_{q'}K_{L,i})$ by the induction
+    hypothesis and multiplicativity, where $q'$ corresponds to $q$; the empty circuit uses
+    $\Phi(1)=1$. For the cost, the largest cost of a continuation of the image is the largest
+    cost of a continuation of the circuit, reindexed along the bijection of Kraus indices.
+\end{proof}
+
 \begin{definition}[Morphisms of geometries]
     \label{def:circuits_geometry_hom}
     \lean{QuantumCircuit.Geometry.Hom, QuantumCircuit.Geometry.Hom.biUnion_map,
@@ -1134,6 +1376,53 @@ are embedded.
     \end{align}
     Equal Kraus operators up to the identification of the configurations give equal maps up
     to it.
+\end{proof}
+
+\begin{definition}[Coarsening a circuit]
+    \label{def:circuits_coarsen_circuit}
+    \lean{QuantumCircuit.Circuit.Coarsenable, QuantumCircuit.Circuit.coarsen,
+        QuantumCircuit.Circuit.coarsenIndexEquiv, QuantumCircuit.Circuit.AtMostOneCell}
+    \leanok
+    \uses{thm:circuits_coarsen, def:circuits_circuit, def:sites_block}
+    Let $f:V\to V'$ group the sites of a geometry $\Gamma$ into the sites of a geometry
+    $\Gamma'$, and assign to every cell $b$ of $\Gamma$ a cell $\bar b$ of $\Gamma'$. A
+    circuit of plain gates on $\Gamma$ is coarsenable along $f$ and $b\mapsto\bar b$ when
+    every layer on every branch satisfies the hypotheses of
+    Theorem~\ref{thm:circuits_coarsen}: $f(C_b)\subseteq C_{\bar b}$ for every cell $b$
+    of the layer, and $\bar b_1$, $\bar b_2$ are disjoint for cells $b_1$, $b_2$ of the
+    layer whenever $\bar b_1\neq\bar b_2$. The coarsened circuit, from the blocked system
+    of $X$ to that of $Z$ on $\Gamma'$, replaces every layer $L$ by the layer $L'$ on the
+    cells $\bar b$ constructed in the proof of Theorem~\ref{thm:circuits_coarsen}, the
+    continuation after an outcome of $L'$ being the coarsened continuation after the
+    corresponding outcome of $L$. Its branches are in bijection with those of the circuit.
+    A circuit has at most one cell per layer when every layer on every branch has at most
+    one cell.
+\end{definition}
+
+\begin{theorem}[Kraus operators of a coarsened circuit]
+    \label{thm:circuits_coarsen_circuit}
+    \lean{QuantumCircuit.Circuit.kraus_coarsen,
+        QuantumCircuit.Circuit.coarsenable_of_atMostOneCell}
+    \leanok
+    \uses{def:circuits_coarsen_circuit, def:sites_block, def:circuits_subsets_geometry}
+    Let $c$ be a circuit of plain gates from $X$ to $Z$, coarsenable along $f$ and
+    $b\mapsto\bar b$. The Kraus operator of a branch of the coarsened circuit is the Kraus
+    operator of the corresponding branch $p$ of $c$, read on the blocks:
+    $K'_{p}(z,w)=K_p(z,w)$ in the identification of the configurations of the blocked
+    systems with those of $Z$ and $X$. A circuit of plain gates with at most one cell per
+    layer is coarsenable onto the geometry of all finite sets of sites of $V'$, along $f$,
+    with every cell $b$ covered by $f(C_b)$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:circuits_coarsen, def:circuits_circuit}
+    Induction on the circuit. The empty circuit has the Kraus operator $1$, which read on
+    the blocks is $1$. For a circuit starting with a layer $L$, the Kraus operator of the
+    coarsened circuit along $(i',q)$ is the Kraus operator of the coarsened continuation
+    along $q$ times that of $L'$ at $i'$; by the induction hypothesis and the proof of
+    Theorem~\ref{thm:circuits_coarsen} both are the corresponding operators of $c$ read on
+    the blocks, and reading on the blocks commutes with products. For the last statement
+    $f(C_b)$ covers itself, and two cells of a layer with at most one cell are equal, so
+    their covering cells are equal.
 \end{proof}
 
 \section{Sums of gate families, oracle calls and measurement}

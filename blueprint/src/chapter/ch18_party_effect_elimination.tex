@@ -1,0 +1,519 @@
+\section{Elimination of pair effects}
+\label{sec:party_effect_elimination}
+
+This section proves the part of \cite[Lemma~5.1]{OpenAI2026PolynomialPEPS}
+that does not refer to parties. A monomial is written as a chain of
+contractions and pair effects on finite basis sets, each pair effect is
+replaced by the cyclic insertion into its own stack of $m$ pair registers,
+and the replaced gate is compared with the original gate followed by a
+fixed normalized vector. The pieces of a chain are arbitrary contractions
+here; the statement about circuits on parties, whose pieces are local
+contractions, is Theorem~\ref{thm:party_pair_effect_elimination}.
+
+Throughout, $X,Y,S,\alpha,\beta,\iota$ denote finite sets. A matrix
+$F\in\C^{Y\times X}$, with rows indexed by $Y$, is read as a map
+$\C^X\to\C^Y$, and $\lVert F\rVert$ is its operator norm for the Euclidean
+norms. We write $\mathbf 1_X$ for the identity matrix of $\C^X$,
+$\C^{X\times Y}=\C^X\otimes\C^Y$ for products of basis sets, and
+$\alpha^m$ for the set of maps $\{0,\dots,m-1\}\to\alpha$. For
+$\eta\in\C^\alpha$, the tensor power $\eta^{\otimes m}\in\C^{\alpha^m}$
+has coefficients $\eta^{\otimes m}_f=\prod_{j=0}^{m-1}\eta_{f(j)}$, and
+$e_*$ is the unit vector of a one-point set.
+
+\subsection{Preparations, effects and insertion matrices}
+\label{sec:party_effect_matrices}
+
+\begin{definition}[Preparation and effect matrices]
+    \label{def:party_effect_matrices}
+    \lean{Matrix.effectMatrix, Matrix.effectMatrix_apply,
+        Matrix.prepMatrix_apply, Matrix.prepMatrix_mul_apply,
+        Matrix.prepMatrix_prodComm_mul_apply, Matrix.prepMatrix_eq_submatrix,
+        Matrix.reindex_symm_prepMatrix,
+        Matrix.toEuclideanLin_prepMatrix_prodComm,
+        Matrix.conjTranspose_mul_prepMatrix, Matrix.norm_prepMatrix_le,
+        Matrix.norm_prepMatrix, Matrix.effectMatrix_eq_conjTranspose,
+        Matrix.conjTranspose_prepMatrix,
+        Matrix.toEuclideanLin_effectMatrix_vecKron,
+        Matrix.norm_effectMatrix_le}
+    \leanok
+    \uses{def:construction_idle_gates, lem:kronecker_vectors}
+    Let $e:M\to\alpha\times N$ be a bijection of finite sets and
+    $v\in\C^\alpha$. The preparation of $v$ along $e$ is the matrix
+    $J_e(v)\in\C^{M\times N}$ with $J_e(v)_{y,x}=v_a$ if $e(y)=(a,x)$ and
+    $J_e(v)_{y,x}=0$ otherwise
+    (Definition~\ref{def:construction_idle_gates}). It maps $|x\rangle$ to
+    $v\otimes|x\rangle$, read in the basis $M$ through $e$. For $e$ the
+    identity of $\alpha\times N$ it is $|v\rangle\otimes\mathbf 1_N$, and
+    for the exchange $N\times\alpha\to\alpha\times N$ it is
+    $\mathbf 1_N\otimes|v\rangle$. For $\eta\in\C^\iota$, the effect
+    $\langle\eta|\otimes\mathbf 1_S\in\C^{S\times(\iota\times S)}$ has
+    entries
+    $(\langle\eta|\otimes\mathbf 1_S)_{s,(i,s')}=\overline{\eta_i}\,\delta_{ss'}$.
+
+    These matrices have the following properties.
+    \begin{enumerate}
+        \item If $e(y)=(a,x)$, then $(J_e(v)A)_{y,z}=v_aA_{x,z}$ for every
+              matrix $A$ with rows indexed by $N$. In particular
+              $((\mathbf 1_N\otimes|v\rangle)A)_{(x,a),z}=v_aA_{x,z}$, and
+              $(\mathbf 1_N\otimes|v\rangle)u=u\otimes v$ for
+              $u\in\C^N$.
+        \item $J_e(v)$ is $|v\rangle\otimes\mathbf 1_N$ with its rows read
+              through $e$. For a bijection $g:L\to M$, the matrix $J_e(v)$
+              with its rows read through $g$ is $J_{e\circ g}(v)$.
+        \item $J_e(v)^*J_e(v)=\lVert v\rVert^2\,\mathbf 1_N$. Hence
+              $\lVert J_e(v)\rVert\le\lVert v\rVert$, with equality when
+              $N$ is nonempty.
+        \item $\langle\eta|\otimes\mathbf 1_S
+                  =(|\eta\rangle\otimes\mathbf 1_S)^*$, and for a bijection
+              $e:M\to\iota\times S$ the adjoint $J_e(\eta)^*$ is
+              $\langle\eta|\otimes\mathbf 1_S$ with its columns read through
+              $e$. The effect sends $h\otimes v$ to
+              $\langle\eta,h\rangle\,v$, and
+              $\lVert\langle\eta|\otimes\mathbf 1_S\rVert\le1$ when
+              $\lVert\eta\rVert=1$.
+    \end{enumerate}
+\end{definition}
+
+\begin{theorem}[Operator norm of a finite tensor product]
+    \label{thm:party_pi_kronecker_norm}
+    \lean{Matrix.l2_opNorm_piKronecker_le, Matrix.l2_opNorm_piKronecker_le_one,
+        Matrix.piKronecker_eq_reindex_kronecker}
+    \leanok
+    \uses{def:elementary_finite_tensor_product}
+    Let $\nu$ be a finite set and let $K_k\in\C^{I_k\times J_k}$ for
+    $k\in\nu$. For every $v\in\nu$, the tensor product $\bigotimes_kK_k$ is
+    $K_v\otimes\bigotimes_{j\neq v}K_j$, the index products split at $v$.
+    Moreover
+    \begin{align}
+        \Bigl\lVert\bigotimes_{k\in\nu}K_k\Bigr\rVert
+        \le\prod_{k\in\nu}\lVert K_k\rVert,
+        \notag
+    \end{align}
+    so a tensor product of contractions is a contraction.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:detailed_balance_tensor_norm}
+    The splitting compares entries: both sides have entry
+    $\prod_k(K_k)_{x_k,y_k}$. The bound follows by induction on the
+    number of elements of $\nu$. For $\nu$ empty the tensor product is the
+    $1\times1$ identity, read along a bijection, and has norm at most $1$.
+    Otherwise split off one $v\in\nu$; relabelling rows and columns does not
+    increase the operator norm, and
+    $\lVert A\otimes B\rVert\le\lVert A\rVert\,\lVert B\rVert$ with the
+    induction hypothesis for $\nu\setminus\{v\}$ gives the bound.
+\end{proof}
+
+\begin{definition}[Insertion matrices]
+    \label{def:party_insertion_matrices}
+    \lean{CyclicInsertion.insertAtMatrix, CyclicInsertion.cyclicInsertionMatrix,
+        CyclicInsertion.idealInsertionMatrix, CyclicInsertion.insertAtMatrix_apply,
+        CyclicInsertion.idealInsertionMatrix_apply,
+        CyclicInsertion.cyclicInsertionMatrix_eq_sum,
+        CyclicInsertion.insertAtMatrix_eq_insertNth}
+    \leanok
+    \uses{def:peps_cyclic_insertion, def:party_effect_matrices}
+    Let $\eta\in\C^\iota$ and let $\kappa$ be a finite set. For $k\in\kappa$,
+    the insertion matrix $I_k\in\C^{\iota^\kappa\times\iota}$ is the matrix
+    of the insertion of Definition~\ref{def:peps_cyclic_insertion}, which
+    places its input at position $k$ and $\eta$ at every other position:
+    \begin{align}
+        (I_k)_{f,i}=\delta_{f(k),i}\prod_{j\neq k}\eta_{f(j)}.
+        \notag
+    \end{align}
+    For $m\in\N$, the cyclic and ideal insertion matrices
+    $T_m,P_m\in\C^{\iota^m\times\iota}$ are the matrices of the cyclic
+    insertion and of $|\eta^{\otimes m}\rangle\langle\eta|$. Thus
+    $(P_m)_{f,i}=\eta^{\otimes m}_f\,\overline{\eta_i}$, and for $m\ge1$
+    \begin{align}
+        T_m=\frac1m\sum_{k=0}^{m-1}I_k.
+        \notag
+    \end{align}
+    For $\kappa=\{0,\dots,n\}$, the insertion $I_k$ is the preparation
+    $\mathbf 1_\iota\otimes|\eta^{\otimes n}\rangle$ followed by the
+    relabelling that reads $(i,f)\in\iota\times\iota^n$ as the
+    configuration with $i$ at position $k$ and the values of $f$, in
+    order, at the other positions \cite[proof of
+        Lemma~5.1]{OpenAI2026PolynomialPEPS}.
+\end{definition}
+
+\begin{theorem}[Norms of the insertion matrices]
+    \label{thm:party_insertion_matrix_norms}
+    \lean{CyclicInsertion.norm_cyclicInsertionMatrix_sub_ideal_le,
+        CyclicInsertion.norm_insertAtMatrix_le_one,
+        CyclicInsertion.norm_cyclicInsertionMatrix_le_one}
+    \leanok
+    \uses{def:party_insertion_matrices}
+    Let $\eta\in\C^\iota$ be a unit vector. Then $\lVert I_k\rVert\le1$
+    for every position $k$, $\lVert T_m\rVert\le1$ for every $m\in\N$, and
+    for $m\ge1$
+    \begin{align}
+        \lVert T_m-P_m\rVert\le\frac1{\sqrt m}.
+        \notag
+    \end{align}
+    This is the one-effect estimate in the proof of
+    \cite[Lemma~5.1]{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:peps_cyclic_insertion_basic, thm:peps_one_effect_estimate}
+    The operator norm of a matrix equals the operator norm of the linear map
+    it represents. Each insertion of a unit vector is an isometry, and the
+    bounds for $T_m$ and $T_m-P_m$ are
+    Lemmas~\ref{thm:peps_cyclic_insertion_basic}
+    and~\ref{thm:peps_one_effect_estimate}.
+\end{proof}
+
+\subsection{Effect chains and the telescoping bound}
+\label{sec:party_effect_chains}
+
+\begin{definition}[Effect chain]
+    \label{def:party_effect_chain}
+    \lean{QuantumCircuit.Party.EffectChain, QuantumCircuit.Party.EffectChain.eval,
+        QuantumCircuit.Party.EffectChain.effectCount,
+        QuantumCircuit.Party.EffectChain.IsAllowed,
+        QuantumCircuit.Party.EffectChain.stackIndex,
+        QuantumCircuit.Party.EffectChain.stackVector}
+    \leanok
+    \uses{def:party_effect_matrices}
+    Effect chains from $X$ to $Y$ are defined inductively. A matrix
+    $F\in\C^{Y\times X}$ is an effect chain with no effect. If $\alpha,\beta,S$
+    are finite sets, $F\in\C^{((\alpha\times\beta)\times S)\times X}$,
+    $\eta\in\C^{\alpha\times\beta}$ and $M'$ is an effect chain from $S$ to
+    $Y$, then $(F,\eta,M')$ is an effect chain from $X$ to $Y$: it applies
+    $F$, which ends with a pair register $\alpha\times\beta$ in front of a
+    spectator register $S$, contracts the pair register with $\langle\eta|$,
+    and continues with $M'$. An effect chain $M$ with $n$ effects is thus
+    given by pieces $F_0,\dots,F_n$ and pair vectors
+    $\eta_i\in\C^{\alpha_i\times\beta_i}$ with spectator registers $S_i$,
+    and its matrix is
+    \begin{align}
+        \operatorname{ev}(M)
+        =F_n(\langle\eta_n|\otimes\mathbf 1_{S_n})F_{n-1}\cdots
+        F_1(\langle\eta_1|\otimes\mathbf 1_{S_1})F_0\in\C^{Y\times X},
+        \label{eq:party_effect_chain}
+    \end{align}
+    defined by $\operatorname{ev}(F)=F$ and
+    $\operatorname{ev}(F,\eta,M')
+        =\operatorname{ev}(M')(\langle\eta|\otimes\mathbf 1_S)F$. We write
+    $n(M)=n$ for its number of effects. The chain is allowed if
+    $\lVert F_i\rVert\le1$ and $\lVert\eta_i\rVert=1$ for all $i$
+    \cite[Section~5.1]{OpenAI2026PolynomialPEPS}.
+
+    For $m\in\N$, the stack registers of $M$ form the set
+    $\Sigma_m(M)=(\alpha_1\times\beta_1)^m\times\bigl(\cdots\times
+        ((\alpha_n\times\beta_n)^m\times\{*\})\bigr)$, one stack of $m$ pair
+    registers for each effect occurrence, and their ideal content is
+    $\Gamma_m(M)=\eta_1^{\otimes m}\otimes\cdots\otimes\eta_n^{\otimes m}
+        \otimes e_*$.
+\end{definition}
+
+\begin{definition}[Replaced effect chain]
+    \label{def:party_effect_chain_replacement}
+    \lean{QuantumCircuit.Party.EffectChain.replace,
+        QuantumCircuit.Party.EffectChain.replaceTerm}
+    \leanok
+    \uses{def:party_effect_chain, def:party_insertion_matrices}
+    Let $M$ be an effect chain from $X$ to $Y$ and $m\in\N$. The replaced
+    chain $R_m(M)\in\C^{(Y\times\Sigma_m(M))\times X}$ is defined by
+    $R_m(F)=(\mathbf 1_Y\otimes|e_*\rangle)F$ and
+    \begin{align}
+        R_m(F,\eta,M')=\Pi\bigl[(\mathbf 1_{(\alpha\times\beta)^m}\otimes
+                              R_m(M'))(T_m\otimes\mathbf 1_S)F\bigr],
+        \label{eq:party_replace}
+    \end{align}
+    where $T_m$ is the cyclic insertion matrix of $\eta$ and $\Pi$ reads
+    $(\alpha\times\beta)^m\times(Y\times\Sigma_m(M'))$ as
+    $Y\times\bigl((\alpha\times\beta)^m\times\Sigma_m(M')\bigr)
+        =Y\times\Sigma_m(M)$. Each effect $\langle\eta_i|$ is thus replaced
+    by the cyclic insertion into its own stack, and the stack stays idle
+    afterwards \cite[proof of Lemma~5.1]{OpenAI2026PolynomialPEPS}.
+
+    For $\kappa:\{0,\dots,n(M)-1\}\to\{0,\dots,m-1\}$, the term
+    $R_{m,\kappa}(M)$ is defined in the same way, with the insertion matrix
+    $I_{\kappa(0)}$ of $\eta$ in place of $T_m$ and the term of $M'$ at
+    $(\kappa(1),\dots,\kappa(n(M)-1))$ in place of $R_m(M')$. It applies no
+    pair bra: it composes the pieces $F_i$ with insertions, which are
+    preparations of copies of $\eta_i$ followed by relabellings of the
+    stack registers (Definition~\ref{def:party_insertion_matrices}).
+\end{definition}
+
+\begin{theorem}[Contractivity of effect chains]
+    \label{thm:party_effect_chain_contraction}
+    \lean{QuantumCircuit.Party.EffectChain.norm_eval_le_one,
+        QuantumCircuit.Party.EffectChain.norm_stackVector,
+        QuantumCircuit.Party.EffectChain.norm_replace_le_one,
+        QuantumCircuit.Party.EffectChain.norm_replaceTerm_le_one}
+    \leanok
+    \uses{def:party_effect_chain_replacement}
+    Let $M$ be an allowed effect chain and $m\in\N$. Then
+    $\lVert\operatorname{ev}(M)\rVert\le1$,
+    $\lVert\Gamma_m(M)\rVert=1$, $\lVert R_m(M)\rVert\le1$, and
+    $\lVert R_{m,\kappa}(M)\rVert\le1$ for every $\kappa$.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{def:party_effect_matrices, thm:party_insertion_matrix_norms,
+        lem:kronecker_vectors, thm:detailed_balance_tensor_norm,
+        def:construction_idle_gates}
+    By induction on the chain. The operator norm is submultiplicative,
+    $\lVert\langle\eta|\otimes\mathbf 1_S\rVert\le1$ for a unit vector
+    $\eta$, the vectors $\eta^{\otimes m}$ and $e_*$ are unit vectors and
+    $\lVert x\otimes y\rVert=\lVert x\rVert\,\lVert y\rVert$, tensoring with
+    an identity and relabelling rows do not increase the operator norm, and
+    $\lVert T_m\rVert\le1$ and $\lVert I_k\rVert\le1$ by
+    Theorem~\ref{thm:party_insertion_matrix_norms}.
+\end{proof}
+
+\begin{theorem}[Telescoping bound for one monomial]
+    \label{thm:party_effect_chain_replace}
+    \lean{QuantumCircuit.Party.EffectChain.norm_replace_sub_le,
+        QuantumCircuit.Party.EffectChain.prepMatrix_mul_eval_effect}
+    \leanok
+    \uses{def:party_effect_chain_replacement}
+    Let $m\ge1$ and let $M$ be an allowed effect chain from $X$ to $Y$ with
+    $n$ effects. Then
+    \begin{align}
+        \bigl\lVert R_m(M)-(\mathbf 1_Y\otimes|\Gamma_m(M)\rangle)
+        \operatorname{ev}(M)\bigr\rVert\le\frac n{\sqrt m}.
+        \label{eq:party_chain_error}
+    \end{align}
+    For every effect chain $M=(F,\eta,M')$, allowed or not, the ideal
+    augmentation replaces the first effect by $P_m$:
+    \begin{align}
+        (\mathbf 1_Y\otimes|\Gamma_m(M)\rangle)\operatorname{ev}(M)
+        =\Pi\bigl[(\mathbf 1_{(\alpha\times\beta)^m}\otimes
+                (\mathbf 1_Y\otimes|\Gamma_m(M')\rangle)\operatorname{ev}(M'))
+                (P_m\otimes\mathbf 1_S)F\bigr],
+        \label{eq:party_chain_ideal}
+    \end{align}
+    with $\Pi$ as in~(\ref{eq:party_replace}). This is the telescoping step
+    in the proof of \cite[Lemma~5.1]{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{def:party_effect_matrices, thm:party_effect_chain_contraction,
+        thm:party_insertion_matrix_norms, thm:detailed_balance_tensor_norm,
+        def:construction_idle_gates}
+    The identity~(\ref{eq:party_chain_ideal}) compares entries, using
+    $(P_m)_{f,i}=\eta^{\otimes m}_f\overline{\eta_i}$. The bound is proved
+    by induction on the chain; for a chain without effects both sides
+    of~(\ref{eq:party_chain_error}) vanish. For $M=(F,\eta,M')$ write
+    $A=R_m(M')$ and
+    $B=(\mathbf 1_Y\otimes|\Gamma_m(M')\rangle)\operatorname{ev}(M')$. By
+    (\ref{eq:party_replace}) and~(\ref{eq:party_chain_ideal}), the
+    difference in~(\ref{eq:party_chain_error}) is
+    \begin{align}
+        \Pi\Bigl[\bigl((\mathbf 1\otimes(A-B))(T_m\otimes\mathbf 1_S)
+               +(\mathbf 1\otimes B)((T_m-P_m)\otimes\mathbf 1_S)\bigr)F\Bigr].
+        \notag
+    \end{align}
+    The induction hypothesis gives $\lVert A-B\rVert\le(n-1)/\sqrt m$,
+    Theorem~\ref{thm:party_effect_chain_contraction} gives
+    $\lVert B\rVert\le1$, and Theorem~\ref{thm:party_insertion_matrix_norms}
+    gives $\lVert T_m\rVert\le1$ and
+    $\lVert T_m-P_m\rVert\le1/\sqrt m$. With $\lVert F\rVert\le1$ the norm
+    is at most $(n-1)/\sqrt m+1/\sqrt m$.
+\end{proof}
+
+\begin{theorem}[Expansion of a replaced chain]
+    \label{thm:party_effect_chain_expansion}
+    \lean{QuantumCircuit.Party.EffectChain.replace_eq_sum}
+    \leanok
+    \uses{def:party_effect_chain_replacement}
+    Let $m\ge1$ and let $M$ be an effect chain with $n$ effects. Then
+    \begin{align}
+        R_m(M)=\frac1{m^n}\sum_{\kappa}R_{m,\kappa}(M),
+        \notag
+    \end{align}
+    the sum over all $\kappa:\{0,\dots,n-1\}\to\{0,\dots,m-1\}$
+    \cite[proof of Lemma~5.1]{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{def:party_insertion_matrices}
+    By induction on the chain. For $M=(F,\eta,M')$, substitute
+    $T_m=m^{-1}\sum_kI_k$ and the expansion of $R_m(M')$
+    into~(\ref{eq:party_replace}), expand by bilinearity of the tensor
+    product and linearity of the relabelling $\Pi$, and index the double
+    sum over $(k,\kappa')$ by the single map $\kappa$ with $\kappa(0)=k$
+    and $(\kappa(1),\dots,\kappa(n-1))=\kappa'$.
+\end{proof}
+
+\subsection{Gate expansions and the replaced gate}
+\label{sec:party_gate_expansions}
+
+\begin{definition}[Gate expansion, inventory and replaced gate]
+    \label{def:party_gate_expansion}
+    \lean{QuantumCircuit.Party.GateExpansion,
+        QuantumCircuit.Party.GateExpansion.gate,
+        QuantumCircuit.Party.GateExpansion.gate_eq_sum,
+        QuantumCircuit.Party.GateExpansion.inventory,
+        QuantumCircuit.Party.GateExpansion.inventoryVector,
+        QuantumCircuit.Party.GateExpansion.replaceGate,
+        QuantumCircuit.Party.GateExpansion.termList,
+        QuantumCircuit.Party.prodPrependEquiv}
+    \leanok
+    \uses{def:party_effect_chain_replacement}
+    A gate expansion from $X$ to $Y$ is a finite list
+    $L=((c_1,M_1),\dots,(c_K,M_K))$ of coefficients $c_\xi\in\C$ and effect
+    chains $M_\xi$ from $X$ to $Y$; its gate is
+    $G=\sum_\xi c_\xi\operatorname{ev}(M_\xi)$
+    \cite[Lemma~5.1]{OpenAI2026PolynomialPEPS}. For $m\in\N$, its inventory
+    is $\mathrm{Inv}_m(L)=\Sigma_m(M_1)\times\bigl(\cdots\times
+        (\Sigma_m(M_K)\times\{*\})\bigr)$, the stacks of every effect
+    occurrence of every monomial, and its ideal content is the vector
+    $\Gamma_m=\Gamma_m(M_1)\otimes\cdots\otimes\Gamma_m(M_K)\otimes e_*$.
+
+    The replaced gate
+    $G'_m\in\C^{(Y\times\mathrm{Inv}_m(L))\times X}$ is $0$ for the empty
+    list, and for a list $(c,M)$ followed by $L$ it is
+    \begin{align}
+        G'_m=c\,\Psi\bigl[(\mathbf 1_{Y\times\Sigma_m(M)}\otimes
+                        |\Gamma_m(L)\rangle)R_m(M)\bigr]
+        +\Pi'\bigl[(\mathbf 1_{Y\times\mathrm{Inv}_m(L)}\otimes
+                 |\Gamma_m(M)\rangle)G'_m(L)\bigr],
+        \label{eq:party_replace_gate}
+    \end{align}
+    where $\Psi$ reads $(Y\times\Sigma_m(M))\times\mathrm{Inv}_m(L)$ and
+    $\Pi'$ reads $(Y\times\mathrm{Inv}_m(L))\times\Sigma_m(M)$ as
+    $Y\times(\Sigma_m(M)\times\mathrm{Inv}_m(L))$. Thus in the branch of
+    each monomial its effects are replaced by cyclic insertions, the stacks
+    of all other monomials are prepared in their ideal contents
+    $\Gamma_m(M_{\xi'})$, and every branch has the output register
+    $Y\times\mathrm{Inv}_m(L)$ \cite[proof of
+        Lemma~5.1]{OpenAI2026PolynomialPEPS}.
+
+    The term list of $L$ is the list of pairs (coefficient, matrix) that is
+    empty for the empty list and, for $(c,M)$ followed by $L$, consists of
+    the pairs
+    $\bigl(c\,m^{-n(M)},\Psi[(\mathbf 1\otimes|\Gamma_m(L)\rangle)
+            R_{m,\kappa}(M)]\bigr)$ for all $\kappa$, followed by the pairs
+    $\bigl(c',\Pi'[(\mathbf 1\otimes|\Gamma_m(M)\rangle)Q]\bigr)$ for the
+    pairs $(c',Q)$ of the term list of $L$.
+\end{definition}
+
+\begin{theorem}[Elimination of normalized pair effects without parties]
+    \label{thm:party_replace_gate}
+    \lean{QuantumCircuit.Party.pairEffectElimination,
+        QuantumCircuit.Party.GateExpansion.norm_inventoryVector,
+        QuantumCircuit.Party.GateExpansion.norm_replaceGate_sub_le,
+        QuantumCircuit.Party.GateExpansion.replaceGate_eq_sum_termList,
+        QuantumCircuit.Party.GateExpansion.length_termList_le,
+        QuantumCircuit.Party.GateExpansion.sum_norm_coeff_termList,
+        QuantumCircuit.Party.GateExpansion.norm_term_le_one}
+    \leanok
+    \uses{def:party_gate_expansion}
+    Let $G=\sum_\xi c_\xi\operatorname{ev}(M_\xi)$ be a gate expansion into
+    $K$ allowed effect chains, each with at most $r$ effects, and let
+    $m\ge1$. Then $\lVert\Gamma_m\rVert=1$,
+    \begin{align}
+        \bigl\lVert G'_m-(\mathbf 1_Y\otimes|\Gamma_m\rangle)G\bigr\rVert
+        \le\frac r{\sqrt m}\sum_\xi|c_\xi|,
+        \label{eq:party_gate_error}
+    \end{align}
+    and $G'_m=\sum c\,Q$, the sum over the pairs $(c,Q)$ of the term list.
+    The term list has at most $Km^r$ pairs, the sum of the absolute values
+    of its coefficients is $\sum_\xi|c_\xi|$, and each of its matrices $Q$
+    satisfies $\lVert Q\rVert\le1$. The expansion of $G'_m$ holds for every
+    gate expansion and every $m$; the normalization of $\Gamma_m$ and the
+    contractivity of the terms need only that the chains are allowed.
+
+    These are the error, count and coefficient-sum clauses of
+    \cite[Lemma~5.1]{OpenAI2026PolynomialPEPS}, the last with equality where
+    the source states an upper bound. The pieces of the chains are arbitrary
+    contractions and $G$ need not be a contraction. The clauses of the
+    source about parties (the expansion of $G'_m$ uses only local
+    contractions and normalized pair sources, and its additional registers
+    are owned by the original participating parties) concern circuits on
+    parties and are the content of
+    Theorem~\ref{thm:party_pair_effect_elimination}; two normalized pair
+    vectors combine into one by Lemma~\ref{thm:peps_pair_combine}.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:party_effect_chain_replace, thm:party_effect_chain_expansion,
+        thm:party_effect_chain_contraction, def:party_effect_matrices,
+        lem:kronecker_vectors}
+    Every clause is proved by induction on the list. The vector $\Gamma_m$
+    is a tensor product of the unit vectors $\Gamma_m(M_\xi)$ of
+    Theorem~\ref{thm:party_effect_chain_contraction}. For the error, the
+    two terms of~(\ref{eq:party_replace_gate}) give
+    \begin{align}
+        G'_m-(\mathbf 1\otimes|\Gamma_m\rangle)G
+         & =c\,\Psi\bigl[(\mathbf 1\otimes|\Gamma_m(L)\rangle)
+                       \bigl(R_m(M)-(\mathbf 1\otimes|\Gamma_m(M)\rangle)
+                       \operatorname{ev}(M)\bigr)\bigr]
+        \notag                                                                        \\
+         & \quad+\Pi'\bigl[(\mathbf 1\otimes|\Gamma_m(M)\rangle)
+                         \bigl(G'_m(L)-(\mathbf 1\otimes|\Gamma_m(L)\rangle)G(L)\bigr)
+                         \bigr].
+        \notag
+    \end{align}
+    The preparations of unit vectors are contractions, so
+    Theorem~\ref{thm:party_effect_chain_replace} bounds the first term by
+    $|c|\,n(M)/\sqrt m\le|c|\,r/\sqrt m$ and the induction hypothesis
+    bounds the second. The expansion follows from
+    Theorem~\ref{thm:party_effect_chain_expansion} and linearity. A
+    monomial with $n\le r$ effects contributes $m^n\le m^r$ pairs, each with
+    coefficient of absolute value $|c|m^{-n}$, so their absolute values sum
+    to $|c|$. Each matrix of the term list is a preparation of a unit vector
+    applied to a term $R_{m,\kappa}(M)$ or to an earlier matrix, hence a
+    contraction by Theorem~\ref{thm:party_effect_chain_contraction}.
+\end{proof}
+
+\begin{definition}[Stack length for a target error]
+    \label{def:party_stack_length}
+    \lean{QuantumCircuit.Party.stackLength,
+        QuantumCircuit.Party.stackLength_ne_zero,
+        QuantumCircuit.Party.stackLength_spec}
+    \leanok
+    For $r\in\N$ and real numbers $S$ and $\delta>0$, the stack length is
+    \begin{align}
+        m(r,S,\delta)=\bigl\lceil(rS/\delta)^2\bigr\rceil+1.
+        \notag
+    \end{align}
+    It satisfies $m(r,S,\delta)\ge1$, and if $S\ge0$ then
+    $rS/\sqrt{m(r,S,\delta)}\le\delta$, since
+    $rS/\delta\le\sqrt{m(r,S,\delta)}$. It depends only on $r$, $S$ and
+    $\delta$ \cite[proof of Theorem~5.2]{OpenAI2026PolynomialPEPS}.
+\end{definition}
+
+\begin{theorem}[Rescaling the replaced gate]
+    \label{thm:party_replace_gate_rescaled}
+    \lean{QuantumCircuit.Party.GateExpansion.replaceGate_rescaled,
+        QuantumCircuit.Party.GateExpansion.replaceGate_rescaled_stackLength}
+    \leanok
+    \uses{def:party_gate_expansion, def:party_stack_length}
+    Let $G=\sum_\xi c_\xi\operatorname{ev}(M_\xi)$ be a gate expansion into
+    allowed effect chains, each with at most $r$ effects, such that
+    $\lVert G\rVert\le1$, and write
+    $B_m=(\mathbf 1_Y\otimes|\Gamma_m\rangle)G$. If $m\ge1$ and
+    $\delta\ge(r/\sqrt m)\sum_\xi|c_\xi|$, then
+    \begin{align}
+        \lVert G'_m-B_m\rVert               & \le\delta,   &
+        \lVert G'_m\rVert                   & \le1+\delta,
+        \notag                                               \\
+        \lVert(1+\delta)^{-1}G'_m\rVert     & \le1,        &
+        \lVert(1+\delta)^{-1}G'_m-B_m\rVert & \le2\delta.
+        \notag
+    \end{align}
+    If $\delta>0$ and $\sum_\xi|c_\xi|\le S$, the stack length
+    $m=m(r,S,\delta)$ satisfies $\lVert G'_m-B_m\rVert\le\delta$,
+    $\lVert(1+\delta)^{-1}G'_m\rVert\le1$ and
+    $\lVert(1+\delta)^{-1}G'_m-B_m\rVert\le2\delta$. This is the reduction
+    to source-only gates in the proof of
+    \cite[Theorem~5.2]{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:party_replace_gate, lem:rescaled_contraction,
+        def:party_stack_length, def:party_effect_matrices}
+    The matrix $B_m$ is a contraction, as the preparation of the unit
+    vector $\Gamma_m$ applied to $G$. The bound~(\ref{eq:party_gate_error})
+    gives $\lVert G'_m-B_m\rVert\le\delta$, and
+    Lemma~\ref{lem:rescaled_contraction} gives the other three bounds. For
+    $m=m(r,S,\delta)$,
+    $(r/\sqrt m)\sum_\xi|c_\xi|\le rS/\sqrt m\le\delta$ by
+    Definition~\ref{def:party_stack_length}.
+\end{proof}

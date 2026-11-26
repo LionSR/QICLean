@@ -1,0 +1,675 @@
+\section{Stacks of pair registers and the elimination of pair effects}
+\label{sec:party_effect_stacks}
+
+This section proves the statements about parties in the elimination of
+normalized pair effects \cite[Lemma~5.1]{OpenAI2026PolynomialPEPS}. Every effect
+occurrence of a monomial receives its own stack of $m$ pair registers, owned by
+the two endpoint parties of the effect; a circuit of pair sources and pair
+effects is rewritten, by one recursion on the circuit, as an effect chain whose
+replaced terms are words of local contractions and normalized pair sources. For a
+weighted gate this gives the elimination theorem on parties, all clauses of the
+manuscript's lemma except the combination of sources on one pair of parties.
+
+Throughout, $P$ is a set of parties, a system $X$ is a family of finite basis
+sets $X_s$, $s\in P$, with configurations $X_P=\prod_sX_s$, and the operator of a
+circuit $c$ from $X$ to $Y$ is the matrix $\mathrm{op}(c)\in\C^{Y_P\times X_P}$
+of Definition~\ref{def:party_circuit}. The circuit $c$ followed by $c'$ is
+written $c'\circ c$, so $\mathrm{op}(c'\circ c)=\mathrm{op}(c')\,\mathrm{op}(c)$.
+For distinct parties $p\ne q$ and finite sets $A,B$, the system $T^{pq}_{A,B}$ has
+the basis $A\times T_p$ at $p$, the basis $B\times T_q$ at $q$ and $T_s$ at every
+other party (Definition~\ref{def:party_add_pair}); its configurations are
+identified with $(A\times B)\times T_P$. For a finite set $\alpha$ and $n\in\N$
+write $\alpha^n$ for the maps $\Fin{n}\to\alpha$.
+
+\subsection{Stacks of pair registers}
+\label{sec:party_stacks}
+
+\begin{definition}[Circuits beside fresh factors at two parties]
+    \label{def:party_lift_pair}
+    \lean{QuantumCircuit.Party.PartyCircuit.liftPair,
+        QuantumCircuit.Party.PartyCircuit.isAllowed_liftPair,
+        QuantumCircuit.Party.PartyCircuit.gateCells_liftPair,
+        QuantumCircuit.Party.PartyCircuit.gateCount_liftPair,
+        QuantumCircuit.Party.Word.framePairs,
+        QuantumCircuit.Party.Word.isAllowed_framePairs,
+        QuantumCircuit.Party.Word.sources_framePairs,
+        QuantumCircuit.Party.Word.gateCount_framePairs}
+    \leanok
+    \uses{def:party_circuit, def:party_add_pair, def:party_gate_frame,
+        def:party_relabel, def:party_allowed, def:party_gate_counts, def:party_word}
+    Let $p\ne q$ and let $A,B$ be finite sets. For a circuit $c$ from $S$ to $T$, the
+    circuit $c$ beside the fresh factors $A$ at $p$ and $B$ at $q$ is the circuit
+    from $S^{pq}_{A,B}$ to $T^{pq}_{A,B}$ that reads every basis of $S^{pq}_{A,B}$
+    as the product of the factor $A$, $B$ or a one-point set with the basis of
+    $S$, runs $c$ framed by these factors, and reads the bases back. It has the gate
+    cells and the gate count of $c$. For an interpretation compatible with framing,
+    with one outcome per gate, and a condition on gates that passes from a gate to
+    its framed gates, it is allowed when $c$ is.
+
+    For $n\in\N$ and a word $w$ from $S$ to $T$, the word beside a stack of $n$ pair
+    registers on $p,q$ with pair basis $\alpha\times\beta$ is $w$ beside the fresh
+    factors $\alpha^n$ at $p$ and $\beta^n$ at $q$. It is allowed when $w$ is, and
+    it has the pair sources and the gate count of $w$.
+\end{definition}
+
+\begin{theorem}[Operators beside fresh factors]
+    \label{thm:party_op_lift_pair}
+    \lean{QuantumCircuit.Party.PartyCircuit.op_liftPair,
+        QuantumCircuit.Party.Word.op_framePairs,
+        QuantumCircuit.Party.Word.op_liftPair_mul_op_sourceAt}
+    \leanok
+    \uses{def:party_lift_pair, def:party_stack_system, def:party_pair_gates}
+    For an interpretation compatible with framing, with one outcome per gate, the
+    operator of a circuit $c$ beside the fresh factors $A$ at $p$ and $B$ at $q$ is
+    $1_{A\times B}\otimes\mathrm{op}(c)$, read along the identifications of the
+    configurations of $S^{pq}_{A,B}$ and $T^{pq}_{A,B}$ with $(A\times B)\times S_P$
+    and $(A\times B)\times T_P$. In particular a word beside a stack of $n$ pair
+    registers has the operator $1_{(\alpha\times\beta)^n}\otimes\mathrm{op}(w)$, the
+    stack configurations read as in Definition~\ref{def:party_stack_system}. If
+    $\sigma_\eta^S$ denotes the pair source preparing
+    $\eta\in\C^{\alpha\times\beta}$ on fresh factors in front of the bases of $p$ and
+    $q$ of $S$, then for every word $c$ from $S$ to $T$
+    \begin{align}
+        \mathrm{op}(\tilde c)\,\mathrm{op}(\sigma_\eta^S)
+         & =\mathrm{op}(\sigma_\eta^T)\,\mathrm{op}(c),
+        \notag
+    \end{align}
+    where $\tilde c$ is $c$ beside the fresh factors $\alpha$ at $p$ and $\beta$ at
+    $q$ \cite[Section~5]{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:party_op_frame, def:party_relabel, thm:party_word_op}
+    The operator of a composition is the product of the operators; the two
+    relabellings are the permutation matrices of the identifications of bases, and
+    the framed circuit has the operator $1\otimes\mathrm{op}(c)$ by
+    Theorem~\ref{thm:party_op_frame}. Comparing entries gives the first identity,
+    and the second is its case $A=\alpha^n$, $B=\beta^n$. The operator of the pair
+    source is the preparation $x\mapsto\eta\otimes x$; both sides of the last
+    identity have the entry $\eta_{(a,b)}\,\mathrm{op}(c)_{yx}$ at the output
+    configuration $((a,b),y)$ and the input $x$.
+\end{proof}
+
+\begin{definition}[Stacks of pair registers]
+    \label{def:party_stack_system}
+    \lean{QuantumCircuit.Party.stackSys, QuantumCircuit.Party.stackSys_of_ne,
+        QuantumCircuit.Party.stackConfigEquiv, QuantumCircuit.Party.stackZeroEquiv,
+        QuantumCircuit.Party.pairSourceOf, QuantumCircuit.Party.stackSource}
+    \leanok
+    \uses{def:party_add_pair, def:party_pair_gates, def:sites_config}
+    Let $p\ne q$, let $\alpha,\beta$ be finite sets and $n\in\N$. The system $T$ with
+    a stack of $n$ pair registers on $p,q$ is $T^{pq}_{\alpha^n,\beta^n}$; at every
+    party other than $p$ and $q$ it has the basis of $T$. Its configurations are
+    identified with $(\alpha\times\beta)^n\times T_P$, the stack configuration
+    $j\mapsto(a_j,b_j)$ collecting the factor $a\in\alpha^n$ at $p$ and
+    $b\in\beta^n$ at $q$. For $n=0$ every basis of the stacked system is identified
+    with the corresponding basis of $T$. For $\eta\in\C^{\alpha\times\beta}$, the
+    pair source with endpoints $p,q$, fresh factors $\alpha,\beta$ and vector $\eta$
+    is the occurrence $(p,q,\eta)$; its gate from $T^{pq}_{\alpha^n,\beta^n}$ to
+    $T^{pq}_{\alpha^{n+1},\beta^{n+1}}$ on the cell $\{p,q\}$ prepares $\eta$ at
+    position $0$ of the stack, reading $a\in\alpha^{n+1}$ as
+    $(a_0,(a_1,\dots,a_n))$ and likewise at $q$ \cite[Lemma~5.1]{OpenAI2026PolynomialPEPS}.
+\end{definition}
+
+\begin{definition}[Preparation of a stack]
+    \label{def:party_prep_word}
+    \lean{QuantumCircuit.Party.Word.prepWord,
+        QuantumCircuit.Party.Word.isAllowed_prepWord,
+        QuantumCircuit.Party.Word.sources_prepWord,
+        QuantumCircuit.Party.Word.sourceCount_prepWord,
+        QuantumCircuit.Party.Word.usesOnly_prepWord}
+    \leanok
+    \uses{def:party_stack_system, def:party_word, def:party_relabel}
+    The preparation of $n$ copies of $\eta\in\C^{\alpha\times\beta}$ on $p,q$ is the
+    word from $T$ to $T^{pq}_{\alpha^n,\beta^n}$ defined by induction on $n$: for
+    $n=0$ it is the relabelling of the bases, and for $n+1$ it is the preparation of
+    $n$ copies followed by the pair source preparing $\eta$ at position $0$. Its pair
+    sources are $n$ copies of $(p,q,\eta)$, so it has $n$ sources; it uses only the
+    parties $p$ and $q$, and it is allowed when $\lVert\eta\rVert=1$.
+\end{definition}
+
+\begin{theorem}[The prepared stack]
+    \label{thm:party_op_prep_word}
+    \lean{QuantumCircuit.Party.Word.op_prepWord}
+    \leanok
+    \uses{def:party_prep_word, def:party_effect_matrices}
+    Read along the identification of the configurations of
+    $T^{pq}_{\alpha^n,\beta^n}$ with $(\alpha\times\beta)^n\times T_P$, the
+    preparation of $n$ copies of $\eta$ has the operator
+    $x\mapsto\eta^{\otimes n}\otimes x$
+    \cite[Lemma~5.1]{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{def:party_relabel, thm:party_word_op, def:party_effect_matrices}
+    By induction on $n$. For $n=0$ the relabelling has the permutation matrix of
+    the identification of bases. For $n+1$, the operator of the pair source is the
+    preparation of $\eta$ in front of its input, and the entries of the product
+    match since
+    $\eta^{\otimes(n+1)}(f)=\eta(f_0)\,\eta^{\otimes n}(f_1,\dots,f_n)$.
+\end{proof}
+
+\begin{definition}[Insertion words]
+    \label{def:party_insertion_word}
+    \lean{QuantumCircuit.Party.Word.insEquiv, QuantumCircuit.Party.Word.insWord,
+        QuantumCircuit.Party.Word.isAllowed_insWord,
+        QuantumCircuit.Party.Word.sources_insWord,
+        QuantumCircuit.Party.Word.usesOnly_insWord}
+    \leanok
+    \uses{def:party_prep_word, def:party_pair_gates, def:party_relabel}
+    Let $g$ be a pair effect from $Z$ to $Y$ on the endpoints $p\ne q$, with pair
+    basis $\alpha\times\beta$ and vector $\eta$, so that $Z_p=\alpha\times Y_p$ and
+    $Z_q=\beta\times Y_q$ up to the identifications of $g$. For $m\ge1$ and
+    $k\in\Fin{m}$, the insertion word of $g$ at position $k$ is the word from $Z$ to
+    $Y^{pq}_{\alpha^m,\beta^m}$ that prepares $m-1$ copies of $\eta$ on $p,q$ and
+    then relabels the bases: at $p$ the basis
+    $\alpha^{m-1}\times(\alpha\times Y_p)$ becomes $\alpha^m\times Y_p$, the factor
+    $\alpha$ removed by $g$ going to position $k$ of the stack and the prepared
+    copies to the other positions in order, and likewise at $q$. It is allowed when
+    $\lVert\eta\rVert=1$, its pair sources are $m-1$ copies of $(p,q,\eta)$, and it
+    uses only $p$ and $q$ \cite[Lemma~5.1]{OpenAI2026PolynomialPEPS}.
+\end{definition}
+
+\begin{theorem}[The insertion word is the insertion map]
+    \label{thm:party_op_insertion_word}
+    \lean{QuantumCircuit.Party.Word.op_insWord}
+    \leanok
+    \uses{def:party_insertion_word, def:party_insertion_matrices,
+        def:peps_cyclic_insertion}
+    Read along the identification $Z_P\cong(\alpha\times\beta)\times Y_P$ of the pair
+    effect $g$ and the identification of the configurations of
+    $Y^{pq}_{\alpha^m,\beta^m}$ with $(\alpha\times\beta)^m\times Y_P$, the insertion
+    word of $g$ at position $k$ has the operator $I_k\otimes1_{Y_P}$, where
+    $I_k:\C^{\alpha\times\beta}\to(\C^{\alpha\times\beta})^{\otimes m}$ places its
+    input in factor $k$ and $\eta$ in the other factors
+    \cite[Lemma~5.1]{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:party_op_prep_word, def:party_relabel, def:party_insertion_matrices}
+    The operator is the permutation matrix of the relabelling times the operator
+    $x\mapsto\eta^{\otimes(m-1)}\otimes x$ of Theorem~\ref{thm:party_op_prep_word}.
+    The insertion $I_k$ is the preparation of $\eta^{\otimes(m-1)}$ behind its input
+    followed by the relabelling $(i,f)\mapsto f'$, where $f'$ has $i$ at position $k$
+    and $f$ at the other positions in order. Comparing entries at $p$, at $q$ and at
+    the other parties proves the identity.
+\end{proof}
+
+\subsection{The stacks of a list of effects}
+\label{sec:party_effect_stack_lists}
+
+For a pair-source occurrence $e$ with endpoints $p_e\ne q_e$, fresh factors
+$\alpha_e,\beta_e$ and vector $\eta_e$, write $T^m_e$ for $T$ with a stack of $m$ pair
+registers on $p_e,q_e$ with pair basis $\alpha_e\times\beta_e$.
+
+\begin{definition}[Output stacks of a list of effects]
+    \label{def:party_effect_stack}
+    \lean{QuantumCircuit.Party.stackApp, QuantumCircuit.Party.stackIdx,
+        QuantumCircuit.Party.stackAppEquiv, QuantumCircuit.Party.stackIdxVector,
+        QuantumCircuit.Party.norm_stackIdxVector, QuantumCircuit.Party.prepStack,
+        QuantumCircuit.Party.frameStack, QuantumCircuit.Party.isAllowed_prepStack,
+        QuantumCircuit.Party.sources_prepStack,
+        QuantumCircuit.Party.isAllowed_frameStack,
+        QuantumCircuit.Party.sources_frameStack}
+    \leanok
+    \uses{def:party_stack_system, def:party_prep_word, def:party_lift_pair,
+        lem:kronecker_vectors}
+    Let $E=(e_1,\dots,e_\ell)$ be a list of pair-source occurrences and $m\in\N$. The
+    stacks of $E$ in front of $T$ form the system $T^m_E$, defined by $T^m_{()}=T$ and
+    $T^m_{eE'}=(T^m_{E'})^m_e$, the first effect outermost. The stack
+    configurations of $E$ are
+    $J_m(E)=\prod_{i=1}^\ell(\alpha_{e_i}\times\beta_{e_i})^m$, in the order of the
+    list, and the configurations of $T^m_E$ are identified with $T_P\times J_m(E)$.
+    The ideal content of the stacks is
+    \begin{align}
+        \Gamma_m(E)
+         & =\eta_{e_1}^{\otimes m}\otimes\cdots\otimes\eta_{e_\ell}^{\otimes m}
+        \in\C^{J_m(E)},
+        \label{eq:party_stack_content}
+    \end{align}
+    the unit vector of the one-point set for the empty list; it is a unit vector
+    when every $\eta_{e_i}$ is. The preparation of the stacks is the word from $T$ to
+    $T^m_E$ that prepares, for $E=eE'$, the stacks of $E'$ and then $m$ copies of
+    $\eta_e$ on $p_e,q_e$. It is allowed when every $\eta_{e_i}$ is normalized, and
+    its pair sources are $m$ copies of $(p_{e_1},q_{e_1},\eta_{e_1})$, then $m$
+    copies of the next occurrence, and so on. A word $w$ from $S$ to $T$ beside the
+    stacks of $E$ is the word from $S^m_E$ to $T^m_E$ obtained by placing $w$ beside
+    the stack of every occurrence in turn; it is allowed when $w$ is and has the pair
+    sources of $w$ \cite[Lemma~5.1]{OpenAI2026PolynomialPEPS}.
+\end{definition}
+
+\begin{theorem}[Operators of the stacks]
+    \label{thm:party_op_effect_stack}
+    \lean{QuantumCircuit.Party.op_prepStack, QuantumCircuit.Party.op_frameStack}
+    \leanok
+    \uses{def:party_effect_stack, def:party_effect_matrices}
+    Read along the identification of the configurations of $T^m_E$ with
+    $T_P\times J_m(E)$, the preparation of the stacks of $E$ has the operator
+    $x\mapsto x\otimes\Gamma_m(E)$, and a word $w$ beside the stacks of $E$ has the
+    operator $\mathrm{op}(w)\otimes1_{J_m(E)}$.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:party_op_prep_word, thm:party_op_lift_pair}
+    By induction on the list $E$. For $E=eE'$ the operator of the preparation is
+    the operator $y\mapsto\eta_e^{\otimes m}\otimes y$ of
+    Theorem~\ref{thm:party_op_prep_word} times $x\mapsto x\otimes\Gamma_m(E')$,
+    and $\Gamma_m(eE')=\eta_e^{\otimes m}\otimes\Gamma_m(E')$. The operator of a
+    word beside the stack of $e$ is $1\otimes\mathrm{op}(w')$ by
+    Theorem~\ref{thm:party_op_lift_pair}, with $w'$ the word beside the stacks of
+    $E'$; comparing entries gives both identities.
+\end{proof}
+
+\begin{theorem}[Ownership and dimensions of the stacks]
+    \label{thm:party_stack_ownership}
+    \lean{QuantumCircuit.Party.stackApp_of_forall_ne,
+        QuantumCircuit.Party.card_stackApp}
+    \leanok
+    \uses{def:party_effect_stack}
+    At a party $s$ that is no endpoint of an occurrence of $E$, the stacked system
+    $T^m_E$ has the basis $T_s$. At every party $s$,
+    \begin{align}
+        \lvert(T^m_E)_s\rvert
+         & =\lvert T_s\rvert\prod_{e\in E}
+        \lvert\alpha_e\rvert^{m[s=p_e]}\,\lvert\beta_e\rvert^{m[s=q_e]},
+        \notag
+    \end{align}
+    where $[s=p]$ is $1$ if $s=p$ and $0$ otherwise
+    \cite[Lemma~5.1]{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{def:party_stack_system, def:party_add_pair}
+    By induction on $E$: a stack changes no basis outside its endpoints, and it
+    multiplies the dimension at $p_e$ by $\lvert\alpha_e\rvert^m$ and that at $q_e$
+    by $\lvert\beta_e\rvert^m$.
+\end{proof}
+
+\subsection{The chain form of a circuit of pair sources and pair effects}
+\label{sec:party_chain_form}
+
+A circuit of pair sources and pair effects is a circuit whose gates are pair
+sources and pair effects (Definition~\ref{def:party_pair_gates}); a monomial is
+such a circuit on the parties of a cell. An effect chain
+$F_nE_n\cdots E_1F_0$ is as in Definition~\ref{def:party_effect_chain}.
+
+\begin{definition}[The chain form]
+    \label{def:party_chain_form}
+    \lean{QuantumCircuit.Party.ChainForm, QuantumCircuit.Party.ChainForm.ofWord,
+        QuantumCircuit.Party.ChainCont, QuantumCircuit.Party.chainFormAux,
+        QuantumCircuit.Party.chainFormAux_comp, QuantumCircuit.Party.chainFormAux_done,
+        QuantumCircuit.Party.chainFormAux_localOp,
+        QuantumCircuit.Party.chainFormAux_localOps,
+        QuantumCircuit.Party.chainFormAux_source,
+        QuantumCircuit.Party.chainFormAux_effect,
+        QuantumCircuit.Party.PairEffectGate.toChain,
+        QuantumCircuit.Party.Word.thenEffect,
+        QuantumCircuit.Party.PairEffectGate.op_toChain,
+        QuantumCircuit.Party.Monomial.chainForm,
+        QuantumCircuit.Party.Monomial.toEffectChain,
+        QuantumCircuit.Party.Monomial.chainEffects,
+        QuantumCircuit.Party.Monomial.stackEquiv,
+        QuantumCircuit.Party.Monomial.replaceWord}
+    \leanok
+    \uses{def:party_effect_chain, def:party_effect_stack, def:party_insertion_word,
+        def:party_lift_pair, def:party_pair_gates, def:party_word}
+    A chain form from $X$ to $W$ consists of an effect chain $C$ from $X_P$ to $W_P$,
+    a list $E$ of pair-source occurrences (its effects), for every $m$ a bijection
+    between the stack registers of $C$ and the stack configurations $J_m(E)$, and for
+    every $m$ and every $\kappa:\Fin{n}\to\Fin{m}$, $n$ the number of effects of $C$,
+    a word $R_{m,\kappa}$ from $X$ to $W^m_E$. The chain form of a word $w$ has the
+    chain $\mathrm{op}(w)$ without effects and the word $w$ itself. A completion rule
+    $k$ from $Y$ to $W$ assigns a chain form $k(v)$ from $X$ to $W$ to every word $v$
+    from any system $X$ to $Y$.
+
+    For a circuit $c$ of pair sources and pair effects from $Z$ to $Y$, a completion
+    rule $k$ from $Y$ to $W$ and a word $w$ from $X$ to $Z$, the chain form
+    $\Phi(c,k)(w)$ is defined by recursion on $c$
+    \cite[Lemma~5.1]{OpenAI2026PolynomialPEPS}.
+    \begin{itemize}
+        \item The empty circuit gives $k(w)$; a local operation, local operations at
+              every party, or a pair source $h$ give $k(h\circ w)$.
+        \item A pair effect $g$ on $p\ne q$ with pair basis $\alpha\times\beta$ and
+              vector $\eta$ closes the current piece: let $k(\emptyset)$ be the
+              completion of the empty word on $Y$, with chain $C'$, effects $E'$ and
+              words $R'$. The chain of $\Phi(c,k)(w)$ is $C'E_gF$, where $F$ is
+              $\mathrm{op}(w)$ read along $Z_P\cong(\alpha\times\beta)\times Y_P$ and
+              $E_g$ is the effect of $\eta$; its effects are $(p,q,\eta)$ followed by
+              $E'$, its stack registers are identified factor by factor, and its
+              words are $R_{m,\kappa}=\tilde R'_{m,\kappa'}\circ\iota_{\kappa_0}\circ
+                  w$, where $\iota_{\kappa_0}$ is the insertion word of $g$ at
+              position $\kappa_0$, $\kappa'$ is $\kappa$ without its first value, and
+              $\tilde R'_{m,\kappa'}$ is $R'_{m,\kappa'}$ beside the new stack.
+        \item A composition $c'\circ c$ gives $\Phi(c,\Phi(c',k))$.
+    \end{itemize}
+    One pair effect is a circuit of pair sources and pair effects with the operator
+    of the pair effect, and for a word $w$, a pair effect $g$ and a circuit $c$ the
+    circuit $c\circ g\circ w$ is the word, then the effect, then $c$.
+
+    The chain form of a monomial $M$ from $X$ to $Y$ is $\Phi(M,k_0)(\emptyset)$,
+    where $k_0$ assigns to a word its chain form. Its chain $C_M$, its effects $E_M$
+    and its words $R^M_{m,\kappa}$, from $X$ to $Y^m_{E_M}$, are the effect chain,
+    the effects and the replacement words of $M$. Composing with the bijection of
+    stack registers identifies the configurations of $T^m_{E_M}$ with $T_P$ times
+    the stack registers of $C_M$.
+\end{definition}
+
+\begin{theorem}[Invariants of the chain form]
+    \label{thm:party_chain_form_invariants}
+    \lean{QuantumCircuit.Party.eval_chainFormAux,
+        QuantumCircuit.Party.isAllowed_chainFormAux,
+        QuantumCircuit.Party.isAllowed_replaceWord_chainFormAux,
+        QuantumCircuit.Party.stackVector_chainFormAux,
+        QuantumCircuit.Party.op_replaceWord_chainFormAux,
+        QuantumCircuit.Party.chainFormAux_toChain,
+        QuantumCircuit.Party.Monomial.effects_chainFormAux,
+        QuantumCircuit.Party.Monomial.effectCount_chainFormAux,
+        QuantumCircuit.Party.Monomial.sourceCount_replaceWord_chainFormAux}
+    \leanok
+    \uses{def:party_chain_form, def:party_allowed, def:party_word,
+        def:party_effect_chain_replacement}
+    Let $c$ be a circuit of pair sources and pair effects from $Z$ to $Y$ and $k$ a
+    completion rule from $Y$ to $W$. Each of the following holds for every word $w$
+    into $Z$ when the corresponding hypothesis on $k$ holds for every word $v$ into
+    $Y$.
+    \begin{enumerate}
+        \item If the chain of $k(v)$ evaluates to $R\,\mathrm{op}(v)$ for a fixed
+              matrix $R$, the chain of $\Phi(c,k)(w)$ evaluates to
+              $R\,\mathrm{op}(c)\,\mathrm{op}(w)$.
+        \item Let $c$ be allowed. If the chain of $k(v)$ is allowed for allowed
+              $v$, the chain of $\Phi(c,k)(w)$ is allowed for allowed $w$. If every
+              word $R_{m,\kappa}$ of $k(v)$ is allowed for allowed $v$, every word
+              $R_{m,\kappa}$ of $\Phi(c,k)(w)$ is allowed for allowed $w$.
+        \item If the ideal content of the stacks of the chain of $k(v)$, read along
+              its bijection of stack registers, is $\Gamma_m$ of its effects, the
+              same holds for $\Phi(c,k)(w)$.
+        \item If every word $R_{m,\kappa}$ of $k(v)$ has the operator of the term
+              of the replaced chain of $k(v)$ with insertion positions $\kappa$, read
+              along the identification of the configurations of $W^m_E$ with $W_P$
+              times the stack registers, the same holds for $\Phi(c,k)(w)$.
+        \item If $c$ is a word, then $\Phi(c,k)(w)=k(w')$ for a word $w'$ with
+              $\mathrm{op}(w')=\mathrm{op}(c)\,\mathrm{op}(w)$, with the pair sources
+              of $c$ followed by those of $w$, and allowed when $c$ and $w$ are.
+        \item Let $c$ be a monomial. If the effects of $k(v)$ are a fixed list
+              $E$, the effects of $\Phi(c,k)(w)$ are those of $c$ followed by $E$; if
+              the chain of $k(v)$ has $n$ effects, the chain of $\Phi(c,k)(w)$ has
+              those of $c$ plus $n$; if every $R_{m,\kappa}$ of $k(v)$ has as many
+              sources as $v$ plus $N$, every $R_{m,\kappa}$ of $\Phi(c,k)(w)$ has
+              as many sources as $w$, plus those of $c$, plus $m-1$ for every effect
+              of $c$, plus $N$.
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{def:party_word, def:party_pair_gates, thm:party_op_contraction,
+        def:party_insertion_word, def:party_lift_pair, thm:party_op_insertion_word,
+        thm:party_op_lift_pair, def:party_effect_chain,
+        def:party_effect_chain_replacement, thm:party_word_op}
+    Each statement is proved by induction on $c$, a composition $c'\circ c''$ using
+    the statement for $c''$ completed by $\Phi(c',k)$. A local operation or a pair
+    source joins the current word, whose operator is unchanged when it is read as a
+    circuit of pair sources and pair effects. For a pair effect $g$, the effect
+    matrix $E_g=\bra{\eta}\otimes1$ is the operator of $g$, so the chain evaluates
+    to $R\,E_g\,\mathrm{op}(w)$; the piece $F$ is a contraction by
+    Theorem~\ref{thm:party_op_contraction}; the insertion word and the word beside
+    the stack are allowed, have $m-1$ and $N$ further sources, and have the
+    operators $I_{\kappa_0}\otimes1$ and $1\otimes\mathrm{op}(R'_{m,\kappa'})$ by
+    Theorems~\ref{thm:party_op_insertion_word} and~\ref{thm:party_op_lift_pair},
+    which is the recursive formula of the replaced term after regrouping the stack
+    configurations.
+\end{proof}
+
+\begin{theorem}[Monomials as effect chains]
+    \label{thm:party_monomial_chain}
+    \lean{QuantumCircuit.Party.Monomial.eval_toEffectChain,
+        QuantumCircuit.Party.Monomial.isAllowed_toEffectChain,
+        QuantumCircuit.Party.Monomial.chainEffects_eq,
+        QuantumCircuit.Party.Monomial.effectCount_toEffectChain,
+        QuantumCircuit.Party.Monomial.effectParties_eq,
+        QuantumCircuit.Party.Monomial.norm_vector_of_mem_chainEffects,
+        QuantumCircuit.Party.Monomial.toEffectChain_toChain,
+        QuantumCircuit.Party.Monomial.toEffectChain_thenEffect,
+        QuantumCircuit.Party.Monomial.chainEffects_thenEffect,
+        QuantumCircuit.Party.Monomial.isAllowed_thenEffect}
+    \leanok
+    \uses{def:party_chain_form, def:party_allowed, def:party_pair_gates}
+    For a monomial $M$ from $X$ to $Y$, the chain $C_M$ evaluates to $\mathrm{op}(M)$
+    and has as many effects as $M$; the effects $E_M$ of the chain form are the pair
+    effects of $M$ in chronological order, so their endpoints are those of the pair
+    effects of $M$. If $M$ is allowed, then $C_M$ is allowed and every vector of
+    $E_M$ is normalized. A word $w$ read as a monomial has the chain
+    $\mathrm{op}(w)$. For a word $w$ from $X$ to $Z$, a pair effect $g$ from $Z$ to
+    $Y$ with vector $\eta$ and a monomial $c$ from $Y$ to $W$, the chain of
+    $c\circ g\circ w$ is $C_cE_gF$ with $F$ the operator of $w$ read along the
+    configurations of $g$, its effects are $g$ followed by $E_c$, and the circuit
+    $c\circ g\circ w$ is allowed when $w$ and $c$ are allowed and
+    $\lVert\eta\rVert=1$
+    \cite[Lemma~5.1]{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:party_chain_form_invariants, thm:party_op_contraction,
+        def:party_pair_gates}
+    Apply Theorem~\ref{thm:party_chain_form_invariants} with the completion $k_0$,
+    for which the chain of $k_0(v)$ is $\mathrm{op}(v)$, has no effect, and is
+    allowed for allowed $v$ by Theorem~\ref{thm:party_op_contraction}: the first
+    statement with $R=1$, the second, and the sixth with $E$ empty and $n=0$.
+    Normalization of the effects of an allowed monomial is part of allowedness.
+    The chains of a word and of $c\circ g\circ w$ follow from the fifth statement;
+    the operator of a pair effect has norm at most $\lVert\eta\rVert$.
+\end{proof}
+
+\begin{theorem}[The replaced terms of a monomial are source-only]
+    \label{thm:party_monomial_replaced_terms}
+    \lean{QuantumCircuit.Party.Monomial.isAllowed_replaceWord,
+        QuantumCircuit.Party.Monomial.op_replaceWord,
+        QuantumCircuit.Party.Monomial.sourceCount_replaceWord,
+        QuantumCircuit.Party.Monomial.isAllowed_prepStack,
+        QuantumCircuit.Party.Monomial.op_prepStack,
+        QuantumCircuit.Party.Monomial.stackApp_of_notMem_effectParties}
+    \leanok
+    \uses{def:party_chain_form, def:party_effect_chain_replacement,
+        def:party_effect_stack}
+    Let $M$ be a monomial from $X$ to $Y$ with $n$ pair effects and $s_M$ pair
+    sources, let $m\in\N$ and $\kappa:\Fin{n}\to\Fin{m}$. Read along the
+    identification of the configurations of $Y^m_{E_M}$ with $Y_P$ times the stack
+    registers of $C_M$, the word $R^M_{m,\kappa}$ has as operator the term of the
+    replaced chain $C_M$ with insertion positions $\kappa$. It has
+    $s_M+n(m-1)$ pair sources, and it is allowed when $M$ is. The preparation of the
+    stacks of $E_M$ in front of $T$ has the operator $x\mapsto x\otimes\Gamma$,
+    where $\Gamma$ is the ideal content of the stacks of $C_M$; it is allowed when
+    $M$ is. At a party that is no endpoint of a pair effect of $M$, the system
+    $T^m_{E_M}$ has the basis of $T$ \cite[Lemma~5.1]{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:party_chain_form_invariants, thm:party_monomial_chain,
+        thm:party_op_effect_stack, thm:party_stack_ownership, def:party_effect_stack}
+    For the completion $k_0$, the word of a chain without effects is $v$ itself, and
+    the replaced term of the chain $\mathrm{op}(v)$ is $\mathrm{op}(v)$ followed by
+    the preparation of the unit vector of the one-point set. The fourth, second and
+    sixth statements of Theorem~\ref{thm:party_chain_form_invariants} give the
+    operator, allowedness and the source count. The operator of the preparation
+    follows from Theorem~\ref{thm:party_op_effect_stack} and the third statement,
+    its allowedness from the normalization of $E_M$
+    (Theorem~\ref{thm:party_monomial_chain}), and the ownership from
+    Theorem~\ref{thm:party_stack_ownership}, since the endpoints of $E_M$ are those
+    of the pair effects of $M$.
+\end{proof}
+
+\subsection{Elimination of pair effects for a weighted gate}
+\label{sec:party_weighted_elimination}
+
+Let $D$ be a cell and $L=((c_1,M_1),\dots,(c_K,M_K))$ a list of coefficients
+$c_\xi\in\C$ and monomials $M_\xi$ from $A$ to $B$ on the parties of $D$, such as the
+terms of a weighted gate (Definition~\ref{def:party_weighted_gate}). Gate
+expansions, their inventory, their ideal vector, the replaced gate and its term
+list are those of Definition~\ref{def:party_gate_expansion}.
+
+\begin{definition}[The gate expansion of a weighted gate]
+    \label{def:party_weighted_expansion}
+    \lean{QuantumCircuit.Party.WeightedGate.toGate,
+        QuantumCircuit.Party.WeightedGate.length_toGate,
+        QuantumCircuit.Party.WeightedGate.map_norm_toGate,
+        QuantumCircuit.Party.WeightedGate.mem_toGate,
+        QuantumCircuit.Party.WeightedGate.gate_toGate,
+        QuantumCircuit.Party.WeightedGate.ev_eq_gate_toGate,
+        QuantumCircuit.Party.WeightedGate.isAllowed_toGate}
+    \leanok
+    \uses{def:party_gate_expansion, def:party_chain_form, def:party_weighted_gate}
+    The gate expansion $\mathcal G_L$ of $L$ is the list of pairs $(c_\xi,C_{M_\xi})$.
+    It has $K$ terms, with the absolute values $\lvert c_\xi\rvert$, every term is
+    $(c,C_M)$ for a term $(c,M)$ of $L$, and its gate is
+    $G=\sum_\xi c_\xi\,\mathrm{op}(M_\xi)$; in particular the matrix of a weighted
+    gate is the gate of the expansion of its terms. When every $M_\xi$ is allowed,
+    every chain of $\mathcal G_L$ is allowed.
+\end{definition}
+
+\begin{definition}[The output system of the replaced gate and its words]
+    \label{def:party_replaced_gate_output}
+    \lean{QuantumCircuit.Party.WeightedGate.gateOut,
+        QuantumCircuit.Party.WeightedGate.gateEquiv,
+        QuantumCircuit.Party.WeightedGate.prepGate,
+        QuantumCircuit.Party.WeightedGate.isAllowed_prepGate,
+        QuantumCircuit.Party.WeightedGate.wordList,
+        QuantumCircuit.Party.WeightedGate.isAllowed_wordList}
+    \leanok
+    \uses{def:party_weighted_expansion, def:party_chain_form, def:party_effect_stack,
+        def:party_gate_expansion}
+    Let $m\in\N$. The output system $B^m_L$ of the replaced gate is $B$ for the empty
+    list and $(B^m_{L'})^m_{E_M}$ for $L=(c,M)L'$: the stacks of all effect
+    occurrences of all monomials in front of $B$. Its configurations are identified
+    with $B_P$ times the inventory of $\mathcal G_L$, one monomial at a time by the
+    identifications of Definition~\ref{def:party_chain_form}. The preparation word
+    $\pi_L$ from $B$ to $B^m_L$ is empty for the empty list and, for $L=(c,M)L'$, is
+    $\pi_{L'}$ followed by the preparation of the stacks of $E_M$; it is allowed when
+    every monomial is. The word list of the empty list is empty. The word list of
+    $L=(c,M)L'$ consists of the pairs of the first kind
+    $(c\,m^{-n_M},\tilde\pi_{L'}\circ R^M_{m,\kappa})$, one for every
+    $\kappa:\Fin{n_M}\to\Fin{m}$, with $n_M$ the number of effects of $C_M$ and
+    $\tilde\pi_{L'}$ the word $\pi_{L'}$ beside the stacks of $E_M$, followed by the
+    pairs of the second kind $(c',\rho\circ w')$, one for every term $(c',w')$ of the
+    word list of $L'$, with $\rho$ the preparation of the stacks of $E_M$ in front of
+    $B^m_{L'}$. When every monomial is allowed, every word of the list is allowed
+    \cite[Lemma~5.1]{OpenAI2026PolynomialPEPS}.
+\end{definition}
+
+\begin{theorem}[The replaced gate on parties]
+    \label{thm:party_replaced_gate_words}
+    \lean{QuantumCircuit.Party.WeightedGate.op_prepGate,
+        QuantumCircuit.Party.WeightedGate.termList_toGate,
+        QuantumCircuit.Party.WeightedGate.isSourceOnly_termList,
+        QuantumCircuit.Party.WeightedGate.gateOut_of_forall_ne,
+        QuantumCircuit.Party.WeightedGate.card_gateOut}
+    \leanok
+    \uses{def:party_replaced_gate_output, def:party_gate_expansion, def:party_word}
+    Read along the identification of the configurations of $B^m_L$ with $B_P$ times
+    the inventory, the preparation word $\pi_L$ has the operator
+    $x\mapsto x\otimes\Gamma_m$, with $\Gamma_m$ the ideal vector of $\mathcal G_L$,
+    and the term list of the replaced gate of $\mathcal G_L$ is, term by term, the
+    list of pairs $(c,\mathrm{op}(w))$ for the terms $(c,w)$ of the word list. When
+    every monomial is allowed, every term of the term list, read on $B^m_L$, is
+    source-only. At a party $s\in D$ that is no endpoint of a pair effect of any
+    monomial of $L$, the basis of $B^m_L$ is $B_s$, and at every party $s$
+    \begin{align}
+        \lvert(B^m_L)_s\rvert
+         & =\lvert B_s\rvert\prod_{\xi=1}^K\prod_{e}
+        \lvert\alpha_e\rvert^{m[s=p_e]}\,\lvert\beta_e\rvert^{m[s=q_e]},
+        \notag
+    \end{align}
+    the inner product over the pair effects $e$ of $M_\xi$
+    \cite[Lemma~5.1]{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:party_monomial_replaced_terms, thm:party_op_effect_stack,
+        thm:party_stack_ownership, thm:party_monomial_chain,
+        def:party_replaced_gate_output}
+    By induction on $L$. For $L=(c,M)L'$ the operator of $\pi_L$ is the product of
+    the operator $x\mapsto x\otimes\Gamma_{m}(C_M)$ of the preparation of the stacks
+    of $E_M$ (Theorem~\ref{thm:party_monomial_replaced_terms}) and that of
+    $\pi_{L'}$. A pair of the first kind has the
+    operator $(\mathrm{op}(\pi_{L'})\otimes1)\,\mathrm{op}(R^M_{m,\kappa})$ by
+    Theorem~\ref{thm:party_op_effect_stack}, which is the replaced term of $C_M$
+    followed by the preparation of the ideal vector of $\mathcal G_{L'}$, the term of
+    the term list; a pair of the second kind is a term of $L'$ followed by the
+    preparation of the ideal content of the stacks of $C_M$. Allowed words give
+    source-only terms. Ownership and dimensions follow from
+    Theorems~\ref{thm:party_monomial_replaced_terms}
+    and~\ref{thm:party_stack_ownership}, since the effects $E_M$ are the pair
+    effects of $M$.
+\end{proof}
+
+\begin{theorem}[Elimination of normalized pair effects on parties]
+    \label{thm:party_pair_effect_elimination}
+    \lean{QuantumCircuit.Party.WeightedGate.partyPairEffectElimination}
+    \leanok
+    \uses{def:party_replaced_gate_output, def:party_weighted_expansion,
+        def:party_gate_expansion, def:party_word}
+    Let $m\ge1$ and $r\in\N$, and let every monomial $M_\xi$ of $L$ be allowed and have
+    at most $r$ pair effects. Let $G=\sum_\xi c_\xi\,\mathrm{op}(M_\xi)$ be the gate
+    of $\mathcal G_L$, let $G'_m$
+    be the replaced gate of $\mathcal G_L$ and $\Gamma_m$ its ideal vector. Then
+    $\lVert\Gamma_m\rVert=1$, the allowed word $\pi_L$ prepares $\Gamma_m$, read
+    along the identification of the configurations of $B^m_L$ with $B_P$ times the
+    inventory, and
+    \begin{align}
+        \lVert G'_m-G\otimes\ket{\Gamma_m}\rVert
+         & \le\frac{r}{\sqrt m}\sum_{\xi=1}^K\lvert c_\xi\rvert.
+        \label{eq:party_elimination_error}
+    \end{align}
+    Read along the same identification, $G'_m=\sum_{(c,w)}c\,\mathrm{op}(w)$ over
+    the word list, every word of the list is allowed, and every term of the term
+    list is source-only. The word list has at most $Km^r$ terms and the absolute sum
+    $\sum_{(c,w)}\lvert c\rvert$ of its coefficients equals
+    $\sum_\xi\lvert c_\xi\rvert$. At every party of $D$ that is no endpoint of a
+    pair effect of any monomial, the output system $B^m_L$ of $G'_m$ has the basis of
+    $B$.
+\end{theorem}
+
+This covers \cite[Lemma~5.1]{OpenAI2026PolynomialPEPS} on parties: the
+error~(\ref{eq:party_elimination_error}), the expansion of the replaced gate into
+local contractions and normalized pair sources, the bound $Km^r$ on the number of
+monomials, the coefficient sum, here with equality, and the ownership of the
+additional registers by the endpoint parties of the eliminated effects, which are
+parties of the cell. The hypothesis that $G$ is a contraction is not used. The last
+clause of the manuscript's lemma, that all sources on one pair of parties may be
+combined into one normalized pair source, is not part of this theorem; for two pair
+vectors the norm of the combined vector is Lemma~\ref{thm:peps_pair_combine}.
+
+\begin{proof}\leanok
+    \uses{thm:party_replace_gate, def:party_weighted_expansion,
+        thm:party_monomial_chain, thm:party_replaced_gate_words,
+        def:party_replaced_gate_output}
+    Every chain of $\mathcal G_L$ is allowed and has as many effects as its monomial
+    (Theorem~\ref{thm:party_monomial_chain}), so Theorem~\ref{thm:party_replace_gate}
+    applies to $\mathcal G_L$: it gives the norm of $\Gamma_m$, the
+    error~(\ref{eq:party_elimination_error}), the expansion of $G'_m$ into the term
+    list, the bound on its length and the coefficient sum, since $\mathcal G_L$ has
+    $K$ terms with the coefficients of $L$. Theorem~\ref{thm:party_replaced_gate_words}
+    rewrites the term list as the word list and gives the preparation of
+    $\Gamma_m$, source-only terms and ownership, and
+    Definition~\ref{def:party_replaced_gate_output} gives that the words are
+    allowed.
+\end{proof}
+
+\begin{definition}[Rescaling a weighted gate]
+    \label{def:party_rescale}
+    \lean{QuantumCircuit.Party.WeightedGate.rescale,
+        QuantumCircuit.Party.WeightedGate.monomials_rescale,
+        QuantumCircuit.Party.WeightedGate.sum_norm_rescale_le,
+        QuantumCircuit.Party.WeightedGate.ev_rescale,
+        QuantumCircuit.Party.WeightedGate.gate_toGate_rescale,
+        QuantumCircuit.Party.WeightedGate.isAllowed_rescale}
+    \leanok
+    \uses{def:party_weighted_gate, def:party_weighted_expansion,
+        lem:rescaled_contraction}
+    For $\delta\in\R$, the rescaling of a weighted gate multiplies every coefficient
+    by $(1+\delta)^{-1}$, with $0^{-1}=0$, and keeps the ordered list of monomials.
+    Its matrix, and the gate of the expansion of its terms, are $(1+\delta)^{-1}$
+    times those of the gate; it is allowed when the gate is, and for $\delta\ge0$
+    its absolute coefficient sum is at most that of the gate. By
+    Lemma~\ref{lem:rescaled_contraction}, a gate of norm at most $1+\delta$ thus
+    becomes a contraction, as in the proof of
+    \cite[Theorem~5.2]{OpenAI2026PolynomialPEPS}.
+\end{definition}
