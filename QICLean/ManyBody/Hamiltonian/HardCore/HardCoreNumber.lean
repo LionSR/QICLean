@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Sites.PlacedConfiguration
-import QICLean.ManyBody.Sites.PlaceAlong
+import QICLean.ManyBody.Sites.Placement.PlaceAlong
 import QICLean.Algebra.Matrix.MatrixAux
 import QICLean.Analysis.Norm.MatrixToEuclidean
 import Mathlib.Analysis.CStarAlgebra.Projection

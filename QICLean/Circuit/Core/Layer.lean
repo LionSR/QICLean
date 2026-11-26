@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Channel.KrausMap.KrausFamily
 import QICLean.Circuit.Geometry.Basic
-import QICLean.ManyBody.Sites.Placement
+import QICLean.ManyBody.Sites.Placement.Basic
 
 /-!
 # Gate families and layers
