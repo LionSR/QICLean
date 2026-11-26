@@ -668,12 +668,12 @@ section
 
 open scoped Matrix.Norms.L2Operator
 
-open ManyBody
-    (ChainSupport DomainSupport DomainSupport.toChainSupport DomainSupport.toChainSupport_injective IsDomainSupport boundaryEdges interval sitePos ChainInteraction DomainInteraction)
+open ManyBody (ChainSupport DomainSupport DomainSupport.toChainSupport
+  DomainSupport.toChainSupport_injective IsDomainSupport boundaryEdges interval sitePos
+  ChainInteraction DomainInteraction)
 
 open ManyBody (IsGapped groundSpace)
 
-open ManyBody (regionEntropy_eq_zero_of_localDimension_one)
 
 section
 

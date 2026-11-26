@@ -431,8 +431,10 @@ end ManyBody
 
 section
 
-open ManyBody
-    (ChainSupport DomainSupport DomainSupport.toChainSupport DomainSupport.toChainSupport_injective IsChainSupport IsDomainSupport boundaryEdges exists_sitePos_eq interval mem_boundaryEdges mem_interval sitePos sitePos_mem val_eq_add_one_of_sitePos_eq_add_one DomainInteraction)
+open ManyBody (ChainSupport DomainSupport DomainSupport.toChainSupport
+  DomainSupport.toChainSupport_injective IsChainSupport IsDomainSupport boundaryEdges
+  exists_sitePos_eq interval mem_boundaryEdges mem_interval sitePos sitePos_mem
+  val_eq_add_one_of_sitePos_eq_add_one DomainInteraction)
 
 open Matrix
 
