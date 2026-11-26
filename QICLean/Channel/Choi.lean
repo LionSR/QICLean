@@ -16,5 +16,4 @@ import QICLean.Channel.Choi.MatrixSylvesterBound
 import QICLean.Channel.Choi.OperatorNormFrobenius
 import QICLean.Channel.Choi.Rectangular
 import QICLean.Channel.Choi.RectangularChoi
-import QICLean.Channel.Choi.Residual
 import QICLean.Channel.Choi.TraceNormNet

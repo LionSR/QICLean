@@ -3,7 +3,7 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Algebra.Matrix.MatrixAux
+import QICLean.Algebra.Matrix.EntrywiseConjugation
 import QICLean.Channel.Peripheral.Spectrum.Spectrum
 import Mathlib.Analysis.Matrix.Normed
 
@@ -24,7 +24,7 @@ anti-linearly.
 
 The transport `entrywiseConjTransport` and its ring automorphism
 `entrywiseConjTransportRingEquiv` are defined in
-`QICLean.Algebra.Matrix.MatrixAux`.
+`QICLean.Algebra.Matrix.EntrywiseConjugation`.
 
 ## Main results
 

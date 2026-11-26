@@ -2332,3 +2332,6 @@ QICLean.Representation.Permutation.MergeMoment QICLean.Representation.TensorPowe
 # Algebra and Analysis: the Kronecker embeddings to Matrix; the Neumann bound to Calculus.
 QICLean.Algebra.Kronecker.KroneckerEmbed QICLean.Algebra.Matrix.KroneckerEmbed
 QICLean.Analysis.Norm.NeumannInverse QICLean.Analysis.Calculus.NeumannInverse
+# The residual of a Choi-minorized channel is a statement about Kraus maps and the
+# trace-preserving completion, so it follows them to KrausMap.
+QICLean.Channel.Choi.Residual QICLean.Channel.KrausMap.ChoiResidual

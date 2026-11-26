@@ -8,6 +8,7 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Channel.KrausMap
 
+import QICLean.Channel.KrausMap.ChoiResidual
 import QICLean.Channel.KrausMap.CompletelyPositiveClosure
 import QICLean.Channel.KrausMap.ConditionNumberInterpolation
 import QICLean.Channel.KrausMap.KrausAction

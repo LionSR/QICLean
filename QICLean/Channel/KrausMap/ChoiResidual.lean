@@ -6,6 +6,7 @@ Authors: QICLean contributors
 import QICLean.Channel.Choi.RectangularChoi
 import QICLean.Analysis.TraceInequality.MatrixTraceInequalities
 import QICLean.Channel.Choi.Doeblin
+import QICLean.Channel.KrausMap.SupportCompletion
 
 /-!
 # Rectangular Choi residual estimates
