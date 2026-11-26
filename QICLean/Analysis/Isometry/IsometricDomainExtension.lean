@@ -248,13 +248,10 @@ section
 
 open Matrix
 
-open MPSChainTensor (eval)
 
 open scoped BigOperators ComplexOrder
 
-open QuantumCircuit
 
-open Kraus (blockPhysDim decodeBlockEquiv)
 
 namespace Matrix
 

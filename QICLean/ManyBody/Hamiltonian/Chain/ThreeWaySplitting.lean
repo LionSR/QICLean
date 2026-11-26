@@ -287,7 +287,6 @@ open scoped Matrix.Norms.L2Operator
 
 section
 
-open Hastings
 
 section ChainParts
 
@@ -329,7 +328,6 @@ open scoped Matrix.Norms.L2Operator InnerProductSpace
 
 section
 
-open Hastings
 
 variable {L q R : ℕ} {J : ℝ}
 
