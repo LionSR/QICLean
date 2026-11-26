@@ -8,4 +8,12 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.ManyBody.Dynamics.ChannelWord
 
+import QICLean.ManyBody.Dynamics.ChannelWord.ComponentOscillation
+import QICLean.ManyBody.Dynamics.ChannelWord.ExponentialShells
+import QICLean.ManyBody.Dynamics.ChannelWord.GroundVectors
+import QICLean.ManyBody.Dynamics.ChannelWord.LocalOscillation
 import QICLean.ManyBody.Dynamics.ChannelWord.LocalRootChannel
+import QICLean.ManyBody.Dynamics.ChannelWord.Observables
+import QICLean.ManyBody.Dynamics.ChannelWord.OmittedAnchorTail
+import QICLean.ManyBody.Dynamics.ChannelWord.ShellOscillation
+import QICLean.ManyBody.Dynamics.ChannelWord.WeightedRow

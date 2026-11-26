@@ -11,6 +11,7 @@ Authors: QICLean contributors
 import QICLean.ManyBody.Dynamics
 import QICLean.ManyBody.Entropy
 import QICLean.ManyBody.Hamiltonian
+import QICLean.ManyBody.PoissonWord
 import QICLean.ManyBody.Replica
 import QICLean.ManyBody.Sites
 import QICLean.ManyBody.Subspace
