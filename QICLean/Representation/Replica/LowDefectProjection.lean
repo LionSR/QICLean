@@ -6,6 +6,7 @@ Authors: QICLean contributors
 import QICLean.Representation.Replica.PermutationCovariance
 import QICLean.Representation.Replica.ExcitationCompression
 import QICLean.Representation.Permutation.TrivialLabel
+import QICLean.Algebra.PartialTrace
 
 /-!
 # The low-defect projection in the two original auxiliary sectors
@@ -57,18 +58,6 @@ end TensorPower
 
 namespace Matrix
 
-private theorem starProjection_tensor
-    {n m : Type*} [Fintype n] [Fintype m]
-    {P : Matrix n n ℂ} {Q : Matrix m m ℂ}
-    (hP : IsStarProjection P) (hQ : IsStarProjection Q) :
-    IsStarProjection (P ⊗ₖ Q) := by
-  refine ⟨?_, ?_⟩
-  · change (P ⊗ₖ Q) * (P ⊗ₖ Q) = P ⊗ₖ Q
-    rw [← mul_kronecker_mul, hP.isIdempotentElem.eq, hQ.isIdempotentElem.eq]
-  · change (P ⊗ₖ Q)ᴴ = P ⊗ₖ Q
-    rw [conjTranspose_kronecker, hP.isSelfAdjoint.isHermitian.eq,
-      hQ.isSelfAdjoint.isHermitian.eq]
-
 private theorem starProjection_closedCutoff
     {n : Type*} [Fintype n] [DecidableEq n]
     {D : Matrix n n ℂ} (hD : D.IsHermitian) (b : ℝ) :
@@ -112,7 +101,7 @@ private theorem lowDefect_factors (Ω : A → ℂ) (hΩ : ‖WithLp.toLp 2 Ω‖
       Commute Q L ∧ Commute Q S ∧ Commute L S := by
   classical
   intro Q L S
-  have hQ : IsStarProjection Q := starProjection_tensor
+  have hQ : IsStarProjection Q := isStarProjection_kronecker
     (starProjection_closedCutoff (posSemidef_replicaDefectCount Ω hΩ k).isHermitian _)
     (IsStarProjection.one _)
   have hC : IsStarProjection (labelProj (copyPerm C k) ellC) :=
@@ -120,7 +109,7 @@ private theorem lowDefect_factors (Ω : A → ℂ) (hΩ : ‖WithLp.toLp 2 Ω‖
   have hR : IsStarProjection (labelProj (copyPerm R k) ellR) :=
     ⟨labelProj_mul_self _ _, (isHermitian_labelProj _ _).isSelfAdjoint⟩
   have hL : IsStarProjection L :=
-    starProjection_tensor (IsStarProjection.one _) (starProjection_tensor hC hR)
+    isStarProjection_kronecker (IsStarProjection.one _) (isStarProjection_kronecker hC hR)
   have hQL : Commute Q L := by
     change Q * L = L * Q
     simp only [Q, L, ← mul_kronecker_mul, one_mul, mul_one]

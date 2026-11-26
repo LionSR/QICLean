@@ -242,3 +242,37 @@ theorem norm_liftProd_trial_ge {m : ℕ} {X : Finset V} (T : ℕ → Finset V)
     _ ≤ _ := norm_toEuclideanLin_le_of_proj hQh hQ _
 
 end Entropy
+
+section
+open Matrix
+open scoped Kronecker ComplexOrder InnerProductSpace Matrix.Norms.L2Operator
+namespace Matrix
+
+/-- The squared distance by which an orthogonal projection moves a vector is its squared
+norm minus the expectation of the projection: `‖P ψ - ψ‖² = ‖ψ‖² - Re tr(|ψ⟩⟨ψ| P)`. -/
+theorem norm_projection_mulVec_sub_sq {ι : Type*} [Fintype ι]
+    {P : Matrix ι ι ℂ} (hP : IsStarProjection P) (ψ : EuclideanSpace ℂ ι) :
+    ‖WithLp.toLp 2 (P *ᵥ ψ.ofLp) - ψ‖ ^ 2 =
+      ‖ψ‖ ^ 2 - (vecMulVec ψ.ofLp (star ψ.ofLp) * P).trace.re := by
+  classical
+  have hY : (1 - P)ᴴ * (1 - P) = 1 - P := by
+    rw [conjTranspose_sub, conjTranspose_one, ← star_eq_conjTranspose,
+      hP.isSelfAdjoint.star_eq, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_sub,
+      Matrix.mul_one, hP.isIdempotentElem.eq, sub_self, sub_zero]
+  have h1P : toEuclideanLin (1 - P) ψ = ψ - toEuclideanLin P ψ := by
+    ext i
+    simp [toLpLin_apply]
+  have hv : WithLp.toLp 2 (P *ᵥ ψ.ofLp) - ψ = -toEuclideanLin (1 - P) ψ := by
+    rw [h1P, neg_sub, toLpLin_apply]
+  have htr : (vecMulVec ψ.ofLp (star ψ.ofLp) * P).trace = ⟪ψ, toEuclideanLin P ψ⟫_ℂ := by
+    rw [EuclideanSpace.inner_eq_star_dotProduct, toLpLin_apply]
+    simp only [trace, diag, mul_apply, vecMulVec_apply, dotProduct, mulVec, Pi.star_apply,
+      Finset.sum_mul]
+    rw [Finset.sum_comm]
+    exact Finset.sum_congr rfl fun i _ ↦ Finset.sum_congr rfl fun j _ ↦ by ring
+  rw [hv, norm_neg, Entropy.norm_toEuclideanLin_sq, hY, h1P, htr, inner_sub_right,
+    Complex.sub_re, inner_self_eq_norm_sq_to_K]
+  norm_cast
+
+end Matrix
+end

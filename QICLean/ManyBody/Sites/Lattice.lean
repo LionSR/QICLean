@@ -17,6 +17,7 @@ import QICLean.ManyBody.Sites.Lattice.IntegerRectangle
 import QICLean.ManyBody.Sites.Lattice.Line
 import QICLean.ManyBody.Sites.Lattice.Plane
 import QICLean.ManyBody.Sites.Lattice.Rectangle
+import QICLean.ManyBody.Sites.Lattice.RectangleChildren
 import QICLean.ManyBody.Sites.Lattice.RectangleColumns
 import QICLean.ManyBody.Sites.Lattice.Ring
 import QICLean.ManyBody.Sites.Lattice.RingBlocks
