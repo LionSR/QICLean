@@ -14,6 +14,7 @@ import QICLean.Analysis.Support.InverseSandwich
 import QICLean.Analysis.Support.MarginalSupport
 import QICLean.Analysis.Support.MatrixFamilySupport
 import QICLean.Analysis.Support.MatrixFamilySupportProjection
+import QICLean.Analysis.Support.PSDConeFace
 import QICLean.Analysis.Support.Power
 import QICLean.Analysis.Support.ProjectionOrder
 import QICLean.Analysis.Support.ReducedProjection

@@ -7,6 +7,7 @@ import QICLean.Entropy.VonNeumann.VonNeumannEntropySpectralTail
 import QICLean.ManyBody.Entropy.Filter.SchmidtPinning
 import QICLean.Entropy.Conditional.ConditionalEntropy
 import QICLean.Entropy.VonNeumann.Bipartite
+import QICLean.Entropy.StrongSubadditivity.Basic
 import QICLean.ManyBody.Sites.RegionState
 import QICLean.ManyBody.Sites.Relabel
 import QICLean.ManyBody.Dynamics.Interaction

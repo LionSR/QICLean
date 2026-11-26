@@ -12,7 +12,7 @@ import QICLean.Channel.Determinant.Bound
 import QICLean.Channel.FixedPoint.Stationary.StationaryStates
 import QICLean.Channel.Peripheral.Projection.CesaroRecurrence
 import QICLean.Channel.Peripheral.Projection.SpectralProjection
-import QICLean.Channel.TransferMatrix
+import QICLean.Channel.TransferMatrix.Basic
 import QICLean.Analysis.Norm.L2OpNormReindex
 
 /-!

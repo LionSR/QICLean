@@ -4,7 +4,6 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Channel.Irreducible.Similarity
-import QICLean.Channel.Irreducible.SpectralRadius
 import QICLean.Channel.KrausMap.KrausGauge
 import QICLean.Channel.Irreducible.InvariantProjection
 
@@ -12,7 +11,16 @@ import QICLean.Channel.Irreducible.InvariantProjection
 # Irreducibility under Kraus gauge transformations
 
 Positive-definite TP gauging acts on the associated Kraus map by an invertible similarity.
-Consequently it preserves map primitivity and irreducibility of the finite matrix family.
+Consequently it preserves irreducibility of the finite matrix family.  The invariance of
+primitivity, a property of the peripheral spectrum, is
+`Kraus.isPrimitive_mapLM_tpGauge_iff` in `QICLean.Channel.Peripheral.Spectrum.Conjugation`.
+
+## Main statements
+
+* `Kraus.mapLM_tpGauge_eq_similarityMap`: the map of a TP-gauged family is a similarity
+  transform of the original map.
+* `Kraus.isIrreducibleFamily_tpGauge_of_isIrreducibleMap`,
+  `Kraus.isIrreducibleFamily_tpGauge_iff`: TP gauging preserves irreducibility.
 -/
 
 open scoped Matrix BigOperators ComplexOrder MatrixOrder
@@ -57,19 +65,6 @@ lemma mapLM_tpGauge_eq_similarityMap
             simp [similarityMap, mapLM_apply, S, hS_inv_inv, hS_inv_herm',
               Matrix.mul_assoc]
   exact congrFun (congrFun hcalc i) j
-
-/-- Positive-definite TP gauging preserves peripheral-spectrum primitivity. -/
-lemma isPrimitive_mapLM_tpGauge_iff
-    (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
-    (σ : Matrix (Fin D) (Fin D) ℂ)
-    (hσ : σ.PosDef) :
-    _root_.IsPrimitive (mapLM (tpGauge K σ)) ↔
-      _root_.IsPrimitive (mapLM K) := by
-  set S : Matrix (Fin D) (Fin D) ℂ := CFC.sqrt σ
-  have hS_det : S.det ≠ 0 := by
-    exact (Matrix.PosDef.isUnit_det_cfc_sqrt hσ).ne_zero
-  rw [mapLM_tpGauge_eq_similarityMap K σ hσ]
-  exact IsPrimitive.similarityMap_iff S⁻¹ (by simpa [Matrix.det_nonsing_inv] using hS_det) _
 
 /-- TP gauging preserves family irreducibility when the original Kraus map is irreducible. -/
 lemma isIrreducibleFamily_tpGauge_of_isIrreducibleMap

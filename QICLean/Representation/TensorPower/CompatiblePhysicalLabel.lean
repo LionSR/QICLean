@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Representation.Permutation.MergeExponential
+import QICLean.Representation.TensorPower.SchurLabelCommutation
 import QICLean.Spectral.Projection.ProjectionIntertwiner
 import Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Commute
 import QICLean.Analysis.TraceInequality.WeightedTraceHolder

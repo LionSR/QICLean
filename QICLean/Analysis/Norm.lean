@@ -25,7 +25,6 @@ import QICLean.Analysis.Norm.MatrixKroneckerContraction
 import QICLean.Analysis.Norm.MatrixL2Contraction
 import QICLean.Analysis.Norm.MatrixOperatorSpace
 import QICLean.Analysis.Norm.MatrixToEuclidean
-import QICLean.Analysis.Norm.NeumannInverse
 import QICLean.Analysis.Norm.NormedRingTelescoping
 import QICLean.Analysis.Norm.OperatorNormConvergence
 import QICLean.Analysis.Norm.OrderedIdempotentTracePerturbation

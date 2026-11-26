@@ -8,17 +8,22 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Representation.SchurWeyl
 
+import QICLean.Representation.SchurWeyl.BranchProbability
 import QICLean.Representation.SchurWeyl.BranchingPieri
+import QICLean.Representation.SchurWeyl.Casimir
 import QICLean.Representation.SchurWeyl.ColumnAntisymmetrizer
 import QICLean.Representation.SchurWeyl.Commutant
 import QICLean.Representation.SchurWeyl.ExteriorPieri
 import QICLean.Representation.SchurWeyl.HighLabelWindow
 import QICLean.Representation.SchurWeyl.HighestWeight
+import QICLean.Representation.SchurWeyl.HookDimension
 import QICLean.Representation.SchurWeyl.IidSchurLabelExponential
 import QICLean.Representation.SchurWeyl.IidSchurSignedMoments
+import QICLean.Representation.SchurWeyl.JucysRecursion
 import QICLean.Representation.SchurWeyl.Labels
 import QICLean.Representation.SchurWeyl.Lift
 import QICLean.Representation.SchurWeyl.SchurLabelEstimates
 import QICLean.Representation.SchurWeyl.SchurSectorMass
+import QICLean.Representation.SchurWeyl.StarOperator
 import QICLean.Representation.SchurWeyl.WeylCharacter
 import QICLean.Representation.SchurWeyl.WeylDimension

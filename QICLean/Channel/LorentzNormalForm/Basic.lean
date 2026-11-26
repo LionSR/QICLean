@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Channel.Basic
-import QICLean.Channel.TransferMatrix
+import QICLean.Channel.TransferMatrix.Basic
 import QICLean.Channel.Choi.Jamiolkowski
 import QICLean.Channel.Choi.Rectangular
 import QICLean.Analysis.Support.MarginalSupport

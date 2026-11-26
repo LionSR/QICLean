@@ -9,9 +9,7 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Entropy.MutualInformation
 
 import QICLean.Entropy.MutualInformation.Basic
-import QICLean.Entropy.MutualInformation.DataProcessing
 import QICLean.Entropy.MutualInformation.EffectMutualInformation
-import QICLean.Entropy.MutualInformation.MutualInformation
 import QICLean.Entropy.MutualInformation.OperatorSchmidt
 import QICLean.Entropy.MutualInformation.PhysicalBuffer
 import QICLean.Entropy.MutualInformation.PhysicalBufferOverlap

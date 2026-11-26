@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Representation.Permutation.SchurSurprisal
-import QICLean.Representation.Replica.SchurLabelCommutation
+import QICLean.Representation.TensorPower.SchurLabelCommutation
 import QICLean.ManyBody.Entropy.Filter.SchmidtPinning
 
 /-! # A common Schur cutoff on the symmetric subspace

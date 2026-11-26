@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Replica.RelativePinCompensator
 import QICLean.ManyBody.Replica.Metric.RelativePinAlgebra
-import QICLean.Representation.Permutation.MergeMoment
+import QICLean.Representation.TensorPower.MergeMoment
 import QICLean.ManyBody.Entropy.Filter.Stationarity
 
 /-!

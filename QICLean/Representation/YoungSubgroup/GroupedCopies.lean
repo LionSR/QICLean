@@ -39,15 +39,6 @@ open MonoidAlgebra Matrix Module
 
 namespace PermutationRepresentation
 
-theorem exists_mulVec_ne_zero {X : Type*} [Fintype X] {M : Matrix X X ℂ}
-    (h : M ≠ 0) : ∃ x, M *ᵥ x ≠ 0 := by
-  classical
-  by_contra! hx
-  apply h
-  ext i j
-  have := congrFun (hx (Pi.single j 1)) i
-  simpa [mulVec_single_one] using this
-
 variable {G H₁ H₂ X : Type*} [Group G] [Fintype G] [Group H₁] [Fintype H₁] [Group H₂]
   [Fintype H₂] [Fintype X] [DecidableEq X]
   (φ : G →* Equiv.Perm X) {ι₁ : H₁ →* G} {ι₂ : H₂ →* G}
