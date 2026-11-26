@@ -922,6 +922,74 @@ are embedded.
     Induction on the circuit, along the bijection of branches.
 \end{proof}
 
+\begin{definition}[Maps of layers on a domain]
+    \label{def:circuits_map_layers_on}
+    \lean{QuantumCircuit.Circuit.ForallLayer, QuantumCircuit.Circuit.ForallLayer.append,
+        QuantumCircuit.Circuit.ForallLayer.comp, QuantumCircuit.Circuit.forallLayer_true,
+        QuantumCircuit.LayerMapOn, QuantumCircuit.LayerMap.toLayerMapOn,
+        QuantumCircuit.Circuit.mapLayersOn, QuantumCircuit.Circuit.mapIndexEquivOn,
+        QuantumCircuit.Circuit.mapLayersOn_congr}
+    \leanok
+    \uses{def:circuits_layer_map, def:circuits_layer, def:circuits_local}
+    A condition on layers holds on a circuit when every layer on every branch satisfies it.
+    It passes to a circuit with continuations attached, when it holds on the circuit and on
+    every continuation, and to compositions; the condition satisfied by every layer holds on
+    every circuit. A map of layers on a domain, from the circuits on $V$ with geometry
+    $\Gamma$ and gate family $G$ to those on $V'$ with $\Gamma'$ and $G'$, is a map of
+    systems $X\mapsto X'$ together with a condition on layers, its domain, and for every
+    layer $L$ from $X$ to $Y$ in the domain a layer $L'$ from $X'$ to $Y'$ with a bijection
+    between the Kraus indices of $L'$ and of $L$. A map of layers is a map of layers on the
+    domain of all layers. The image of a circuit all of whose layers lie in the domain
+    replaces every layer by its image, the continuation of an index of $L'$ being the image
+    of the continuation of the corresponding index of $L$; the branches of the image are in
+    bijection with those of the circuit, and equal circuits have equal images.
+\end{definition}
+
+\begin{theorem}[What moves with a map of layers on a domain]
+    \label{thm:circuits_map_layers_on}
+    \lean{QuantumCircuit.Circuit.kraus_mapLayersOn, QuantumCircuit.Circuit.mapLayersOn_comp,
+        QuantumCircuit.Circuit.isUnbranched_mapLayersOn,
+        QuantumCircuit.Circuit.isSingle_mapLayersOn,
+        QuantumCircuit.Circuit.forall_mapLayersOn,
+        QuantumCircuit.Circuit.forallGate'_mapLayersOn,
+        QuantumCircuit.Circuit.total_mapLayersOn,
+        QuantumCircuit.Circuit.mapLayersOn_toLayerMapOn}
+    \leanok
+    \uses{def:circuits_map_layers_on, def:circuits_costs, def:circuits_local,
+        def:circuits_single, def:circuits_forall_gate}
+    Let a map of layers on a domain be given, and consider circuits all of whose layers lie
+    in the domain.
+    \begin{enumerate}
+        \item Let $\Phi$ map the matrices between the configurations of any two systems $X$
+              and $Z$ to matrices between the configurations of $X'$ and $Z'$, with
+              $\Phi(1)=1$ and $\Phi(AB)=\Phi(A)\Phi(B)$. If every Kraus operator of the
+              image of a layer in the domain is $\Phi$ of the corresponding Kraus operator
+              of the layer, then along corresponding branches $K'_p=\Phi(K_p)$.
+        \item The image of a composition is the composition of the images, and the image
+              of an unbranched circuit is unbranched.
+        \item If the image of every layer in the domain whose gates have one outcome each
+              and whose onsite families have one member each has the same property, the
+              image of a single circuit is single.
+        \item A local property, or a condition on gates, holding on the image of every
+              layer in the domain on which it holds, holds on the image of every circuit on
+              which it holds; the condition on the gates of the image may differ from the
+              condition on the gates of the circuit.
+        \item If costs $f$ and $f'$ of layers satisfy $f'(L')=f(L)$ for every layer $L$ in
+              the domain, the cost $f'$ of the image of a circuit is its cost $f$.
+        \item On the domain of all layers, the image along a map of layers is the image of
+              Definition~\ref{def:circuits_layer_map}.
+    \end{enumerate}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:circuits_circuit, thm:circuits_composition, def:circuits_costs}
+    Induction on the circuit, along the bijection of branches. For a circuit starting with a
+    layer $L$ and a branch $(i,q)$ of the image, the Kraus operator is
+    $K'_{q}K'_{L',i}=\Phi(K_{q'})\Phi(K_{L,i})=\Phi(K_{q'}K_{L,i})$ by the induction
+    hypothesis and multiplicativity, where $q'$ corresponds to $q$; the empty circuit uses
+    $\Phi(1)=1$. For the cost, the largest cost of a continuation of the image is the largest
+    cost of a continuation of the circuit, reindexed along the bijection of Kraus indices.
+\end{proof}
+
 \begin{definition}[Morphisms of geometries]
     \label{def:circuits_geometry_hom}
     \lean{QuantumCircuit.Geometry.Hom, QuantumCircuit.Geometry.Hom.biUnion_map,
@@ -1134,6 +1202,53 @@ are embedded.
     \end{align}
     Equal Kraus operators up to the identification of the configurations give equal maps up
     to it.
+\end{proof}
+
+\begin{definition}[Coarsening a circuit]
+    \label{def:circuits_coarsen_circuit}
+    \lean{QuantumCircuit.Circuit.Coarsenable, QuantumCircuit.Circuit.coarsen,
+        QuantumCircuit.Circuit.coarsenIndexEquiv, QuantumCircuit.Circuit.AtMostOneCell}
+    \leanok
+    \uses{thm:circuits_coarsen, def:circuits_circuit, def:sites_block}
+    Let $f:V\to V'$ group the sites of a geometry $\Gamma$ into the sites of a geometry
+    $\Gamma'$, and assign to every cell $b$ of $\Gamma$ a cell $\bar b$ of $\Gamma'$. A
+    circuit of plain gates on $\Gamma$ is coarsenable along $f$ and $b\mapsto\bar b$ when
+    every layer on every branch satisfies the hypotheses of
+    Theorem~\ref{thm:circuits_coarsen}: $f(C_b)\subseteq C_{\bar b}$ for every cell $b$
+    of the layer, and $\bar b_1$, $\bar b_2$ are disjoint for cells $b_1$, $b_2$ of the
+    layer whenever $\bar b_1\neq\bar b_2$. The coarsened circuit, from the blocked system
+    of $X$ to that of $Z$ on $\Gamma'$, replaces every layer $L$ by the layer $L'$ on the
+    cells $\bar b$ constructed in the proof of Theorem~\ref{thm:circuits_coarsen}, the
+    continuation after an outcome of $L'$ being the coarsened continuation after the
+    corresponding outcome of $L$. Its branches are in bijection with those of the circuit.
+    A circuit has at most one cell per layer when every layer on every branch has at most
+    one cell.
+\end{definition}
+
+\begin{theorem}[Kraus operators of a coarsened circuit]
+    \label{thm:circuits_coarsen_circuit}
+    \lean{QuantumCircuit.Circuit.kraus_coarsen,
+        QuantumCircuit.Circuit.coarsenable_of_atMostOneCell}
+    \leanok
+    \uses{def:circuits_coarsen_circuit, def:sites_block, def:circuits_subsets_geometry}
+    Let $c$ be a circuit of plain gates from $X$ to $Z$, coarsenable along $f$ and
+    $b\mapsto\bar b$. The Kraus operator of a branch of the coarsened circuit is the Kraus
+    operator of the corresponding branch $p$ of $c$, read on the blocks:
+    $K'_{p}(z,w)=K_p(z,w)$ in the identification of the configurations of the blocked
+    systems with those of $Z$ and $X$. A circuit of plain gates with at most one cell per
+    layer is coarsenable onto the geometry of all finite sets of sites of $V'$, along $f$,
+    with every cell $b$ covered by $f(C_b)$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:circuits_coarsen, def:circuits_circuit}
+    Induction on the circuit. The empty circuit has the Kraus operator $1$, which read on
+    the blocks is $1$. For a circuit starting with a layer $L$, the Kraus operator of the
+    coarsened circuit along $(i',q)$ is the Kraus operator of the coarsened continuation
+    along $q$ times that of $L'$ at $i'$; by the induction hypothesis and the proof of
+    Theorem~\ref{thm:circuits_coarsen} both are the corresponding operators of $c$ read on
+    the blocks, and reading on the blocks commutes with products. For the last statement
+    $f(C_b)$ covers itself, and two cells of a layer with at most one cell are equal, so
+    their covering cells are equal.
 \end{proof}
 
 \section{Sums of gate families, oracle calls and measurement}

@@ -1030,3 +1030,174 @@ and the basis bounds below are the corrected statements under
     \ref{thm:hastings_low_energy_example_truncated} gives the statements
     for $M_i$.
 \end{proof}
+
+\section{Hard-core qubits and the positive quadratic lift}
+\label{sec:low_energy_hard_core}
+
+The counterexample to (oibu) on trees \cite{gap:hastings05_tree_basis_counterexample}
+uses hard-core qubits: no bosonic commutation relation holds, and the
+many-body estimates below are derived from the qubit lowerings and the
+particle number alone. This section proves the particle-number identity, the
+positivity of the quadratic lift of a coefficient matrix, and the resulting
+energy bound on the sectors with at least two particles; the tree incidence
+matrix and its one-particle bound are not part of these statements.
+
+\begin{definition}[Qubit lowering and particle number]
+    \label{def:hardcore_number}
+    \lean{ManyBody.HardCore.qubitLowering, ManyBody.HardCore.lowering,
+        ManyBody.HardCore.numberOperator, ManyBody.HardCore.occupation,
+        ManyBody.HardCore.IsParticleSector}
+    \leanok
+    \uses{def:sites_place_at}
+    Let $\iota$ be a finite set of sites, each carrying a qubit with occupation basis
+    $\{0,1\}$. The lowering of a qubit is $a=\ketbra{0}{1}$, and the lowering $a_v$ at
+    the site $v$ is $a$ placed at $v$. The particle number is
+    $N=\sum_{v\in\iota}a_v^\dagger a_v$, and the occupation of a configuration
+    $\sigma\in\{0,1\}^\iota$ is $|\sigma|=\sum_v\sigma_v$. A vector $\varphi$ lies in the
+    sector of $m$ particles if $N\varphi=m\varphi$.
+\end{definition}
+
+\begin{lemma}[The particle number counts occupied qubits]
+    \label{lem:hardcore_number_diagonal}
+    \lean{ManyBody.HardCore.qubitLowering_number, ManyBody.HardCore.lowering_number,
+        ManyBody.HardCore.numberOperator_eq_diagonal,
+        ManyBody.HardCore.isStarProjection_lowering_number,
+        ManyBody.HardCore.norm_lowering_le_one, ManyBody.HardCore.norm_lowering_apply_le}
+    \leanok
+    \uses{def:hardcore_number}
+    One has $a^\dagger a=\operatorname{diag}(0,1)$, and $a_v^\dagger a_v$ is the diagonal
+    matrix with entries $\sigma_v$; it is an orthogonal projection. Hence
+    $N=\operatorname{diag}(|\sigma|)$. Every lowering is a contraction:
+    $\lVert a_v\rVert\le1$ and $\lVert a_v\varphi\rVert\le\lVert\varphi\rVert$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:sites_place_at}
+    The first identity is a computation of $2\times2$ matrices. Placement at a site is
+    multiplicative and compatible with adjoints, so $a_v^\dagger a_v$ is
+    $\operatorname{diag}(0,1)$ placed at $v$, the diagonal matrix with entries
+    $\sigma_v$. These entries are $0$ or $1$, so it is a self-adjoint idempotent, and
+    summing over $v$ gives $N$. A projection has norm at most $1$, and
+    $\lVert a_v\rVert^2=\lVert a_v^\dagger a_v\rVert$.
+\end{proof}
+
+\begin{lemma}[The sector identity]
+    \label{lem:hardcore_sector_identity}
+    \lean{ManyBody.HardCore.re_inner_numberOperator,
+        ManyBody.HardCore.sum_norm_lowering_sq_of_sector}
+    \leanok
+    \uses{def:hardcore_number}
+    For every vector $\varphi$, $\operatorname{Re}\braket{\varphi}{N\varphi}
+    =\sum_v\lVert a_v\varphi\rVert^2$. If $\varphi$ lies in the sector of $m$
+    particles, then $\sum_v\lVert a_v\varphi\rVert^2=m\lVert\varphi\rVert^2$.
+\end{lemma}
+\begin{proof}\leanok
+    Expand $N$ as the sum of the $a_v^\dagger a_v$ and use
+    $\braket{\varphi}{a_v^\dagger a_v\varphi}=\lVert a_v\varphi\rVert^2$. In the sector,
+    $\braket{\varphi}{N\varphi}=m\lVert\varphi\rVert^2$.
+\end{proof}
+
+\begin{definition}[Quadratic lift and collective modes]
+    \label{def:hardcore_quadratic_lift}
+    \lean{ManyBody.HardCore.quadraticLift, ManyBody.HardCore.modeOperator}
+    \leanok
+    Let $(s_u)_{u\in\iota}$ be a finite family of square complex matrices of the same
+    size. The quadratic lift through $s$ is the linear map
+    $A\mapsto\Lambda_s(A)=\sum_{u,v\in\iota}A_{uv}\,s_u^\dagger s_v$ from the matrices
+    indexed by $\iota$. For $w\in\C^\iota$, the lowering of the collective mode $w$ is
+    $s(w)=\sum_vw_vs_v$.
+\end{definition}
+
+\begin{theorem}[The quadratic lift preserves positivity]
+    \label{thm:hardcore_quadratic_lift_positive}
+    \lean{ManyBody.HardCore.quadraticLift_outer, ManyBody.HardCore.quadraticLift_gram,
+        ManyBody.HardCore.posSemidef_quadraticLift, ManyBody.HardCore.quadraticLift_one}
+    \leanok
+    \uses{def:hardcore_quadratic_lift}
+    For every family $s$ one has $\Lambda_s(\bar w\,w^{\mathsf T})=s(w)^\dagger s(w)$,
+    and, for a rectangular matrix $D$ with rows $D_k$,
+    $\Lambda_s(D^\dagger D)=\sum_ks(D_k)^\dagger s(D_k)$. Consequently
+    $\Lambda_s(A)\ge0$ whenever $A\ge0$. The lift of the identity is
+    $\Lambda_s(1)=\sum_vs_v^\dagger s_v$.
+\end{theorem}
+\begin{proof}\leanok
+    The first identity is the expansion of $s(w)^\dagger s(w)$ as a double sum. Writing
+    $D^\dagger D=\sum_k\overline{D_k}\,D_k^{\mathsf T}$ and using linearity gives the
+    second. A positive semidefinite $A$ is $B^\dagger B$ for some $B$, and then
+    $\Lambda_s(A)$ is a sum of operators $X^\dagger X$. The last identity is the
+    definition at $A_{uv}=\delta_{uv}$.
+\end{proof}
+
+\begin{theorem}[A one-particle gap lifts to a many-body inequality]
+    \label{thm:hardcore_quadratic_lift_gap}
+    \lean{ManyBody.HardCore.quadraticLift_gap}
+    \leanok
+    \uses{def:hardcore_quadratic_lift}
+    Let $A$ be a matrix indexed by $\iota$, $w\in\C^\iota$ and $\delta\in\R$. If
+    $A-\delta\,(1-\bar w\,w^{\mathsf T})\ge0$, then
+    \begin{align*}
+        \Lambda_s(A)-\delta\Bigl(\sum_vs_v^\dagger s_v-s(w)^\dagger s(w)\Bigr)\ge0 .
+    \end{align*}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:hardcore_quadratic_lift_positive}
+    Apply the positivity of the lift to $A-\delta(1-\bar w\,w^{\mathsf T})$ and expand by
+    linearity with $\Lambda_s(1)=\sum_vs_v^\dagger s_v$ and
+    $\Lambda_s(\bar w\,w^{\mathsf T})=s(w)^\dagger s(w)$.
+\end{proof}
+
+\begin{lemma}[A concentrated mode on sectors of several particles]
+    \label{lem:hardcore_mode_bound}
+    \lean{ManyBody.HardCore.norm_mode_apply_le, ManyBody.HardCore.norm_mode_apply_sq_le,
+        ManyBody.HardCore.norm_hardCoreMode_apply_sq_le}
+    \leanok
+    \uses{def:hardcore_quadratic_lift, def:hardcore_number}
+    Let $s$ be a finite family of square matrices, $w\in\C^\iota$ with
+    $\sum_i|w_i|^2=1$, and $r\in\iota$ with $\sum_{i\neq r}|w_i|^2\le1/64$. Let $m\ge2$,
+    and let $\varphi$ satisfy $\lVert s_r\varphi\rVert\le\lVert\varphi\rVert$ and
+    $\sum_i\lVert s_i\varphi\rVert^2=m\lVert\varphi\rVert^2$. Then
+    \begin{align*}
+        \lVert s(w)\varphi\rVert & \le\tfrac78\sqrt m\,\lVert\varphi\rVert, &
+        \lVert s(w)\varphi\rVert^2 & \le\tfrac{49}{64}\,m\,\lVert\varphi\rVert^2 .
+    \end{align*}
+    In particular the second bound holds for the qubit lowerings $s_i=a_i$ and every
+    $\varphi$ in the sector of $m\ge2$ particles.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:hardcore_number_diagonal, lem:hardcore_sector_identity}
+    Split $s(w)\varphi=w_rs_r\varphi+\sum_{i\neq r}w_is_i\varphi$. The first term has
+    norm at most $\lVert\varphi\rVert$, since $|w_r|\le1$. By the triangle and
+    Cauchy--Schwarz inequalities the second has norm at most
+    $\tfrac18\cdot\sqrt m\,\lVert\varphi\rVert$. Thus
+    $\lVert s(w)\varphi\rVert\le(1+\sqrt m/8)\lVert\varphi\rVert$, and
+    $1+\sqrt m/8\le\tfrac78\sqrt m$ because $\sqrt m\ge4/3$. Squaring gives the second
+    bound. For the qubit lowerings, Lemma~\ref{lem:hardcore_number_diagonal} gives
+    $\lVert a_r\varphi\rVert\le\lVert\varphi\rVert$ and
+    Lemma~\ref{lem:hardcore_sector_identity} gives the sector identity.
+\end{proof}
+
+\begin{theorem}[The energy bound on sectors of several particles]
+    \label{thm:hardcore_sector_energy}
+    \lean{ManyBody.HardCore.hardCore_sector_energy_ge}
+    \leanok
+    \uses{def:hardcore_number, def:hardcore_quadratic_lift}
+    Let $A$ be a matrix indexed by $\iota$ and $w\in\C^\iota$ with
+    $A-\tfrac{49}{64}(1-\bar w\,w^{\mathsf T})\ge0$, $\sum_i|w_i|^2=1$ and
+    $\sum_{i\neq r}|w_i|^2\le1/64$ for some $r\in\iota$. If $\varphi$ lies in the sector
+    of $m\ge2$ particles, then
+    \begin{align*}
+        \tfrac{735}{2048}\lVert\varphi\rVert^2
+        \le\operatorname{Re}\braket{\varphi}{\Lambda_a(A)\varphi},
+    \end{align*}
+    where $\Lambda_a$ is the quadratic lift through the qubit lowerings.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:hardcore_quadratic_lift_gap, lem:hardcore_mode_bound,
+        lem:hardcore_sector_identity}
+    By Theorem~\ref{thm:hardcore_quadratic_lift_gap} with $\delta=49/64$ and
+    Lemma~\ref{lem:hardcore_sector_identity},
+    $\operatorname{Re}\braket{\varphi}{\Lambda_a(A)\varphi}\ge\tfrac{49}{64}\bigl(
+    m\lVert\varphi\rVert^2-\lVert a(w)\varphi\rVert^2\bigr)$. By
+    Lemma~\ref{lem:hardcore_mode_bound} the right side is at least
+    $\tfrac{49}{64}\cdot\tfrac{15}{64}\,m\lVert\varphi\rVert^2\ge
+    \tfrac{735}{2048}\lVert\varphi\rVert^2$ for $m\ge2$.
+\end{proof}
