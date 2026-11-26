@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Algebra.Matrix.MatrixReindex
 import QICLean.Channel.FixedPoint.DirectSum.ExtremeDensityStates
-import QICLean.Channel.FixedPoint.DensityBlock.FixedPointDensityBlocks
+import QICLean.Channel.FixedPoint.DensityBlock.SupportCompressedDensityBlocks
 
 /-!
 # Density-block coordinates on the peripheral image

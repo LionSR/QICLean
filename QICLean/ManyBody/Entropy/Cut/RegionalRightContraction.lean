@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Algebra.OperatorSchmidt.OperatorRightContraction
 import QICLean.ManyBody.Sites.ThreeRegion.Cut
-import QICLean.Algebra.OperatorSchmidt.Reindex
+import QICLean.Algebra.OperatorSchmidt.Basic
 
 /-!
 # Right contractions of regional operators

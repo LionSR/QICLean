@@ -6,7 +6,7 @@ Authors: QICLean contributors
 import QICLean.Analysis.Real.CappedGeometricSum
 import QICLean.Entropy.VonNeumann.Entropy
 import QICLean.Entropy.Classical.ProbabilityEntropyRankTails
-import QICLean.Channel.Schmidt.AGSPGeneralTails
+import QICLean.Channel.Schmidt.AGSPGeometricTails
 
 /-!
 # A corrected general approximate-projector entropy estimate

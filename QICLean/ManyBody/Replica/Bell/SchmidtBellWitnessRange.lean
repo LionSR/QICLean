@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Replica.Bell.SchmidtBellWitnessCoordinates
 import QICLean.Representation.Permutation.PermutationRepresentation
-import QICLean.Representation.Permutation.SchurLabelCutoff
+import QICLean.Representation.Permutation.SchurSurprisal
 
 /-!
 # The common Bell witness in the original physical coordinates

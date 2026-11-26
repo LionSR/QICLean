@@ -7,7 +7,7 @@ import Mathlib.Algebra.BigOperators.Group.Finset.Powerset
 import Mathlib.Analysis.Calculus.MeanValue
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import QICLean.Analysis.Exponential.TraceExponentialPerturbation
-import QICLean.Analysis.TraceInequality.TraceHolderMulti
+import QICLean.Analysis.TraceInequality.TraceHolderSchatten
 
 /-!
 # Alternating sums of shifted exponentials

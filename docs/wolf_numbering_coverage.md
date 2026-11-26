@@ -919,7 +919,7 @@ The surrounding complexity prose at source lines 80–83 is not formalized.
 ### Corollary 5.1 (entropic operator inequality), Equation 5.33 — FORMALIZED
 
 - `IsPositiveMap.entropic_jensen` in
-  `QICLean/Channel/Schwarz/EntropicJensen.lean` proves the exact source statement:
+  `QICLean/Channel/Schwarz/OperatorConvexity.lean` proves the exact source statement:
   for a positive unital map `T : M_d → M_d'` and every PSD `ρ`,
   `T ρ * CFC.log (T ρ) ≤ T (ρ * CFC.log ρ)`.
 - `IsPositiveMap.entropic_jensen_subunital` proves the same conclusion under
@@ -975,7 +975,7 @@ The complete-environment tally above records the historical August audit.
 
 - `Matrix.IsHermitian.trace_cfc_le_trace_cfc_of_le` and
   `Matrix.IsHermitian.re_trace_cfc_le_re_trace_cfc_of_le` in
-  `QICLean/Channel/Schwarz/MonotoneTraceFunctions.lean` prove
+  `QICLean/Channel/Schwarz/UnitaryComparison.lean` prove
   `tr f(A) ≤ tr f(B)` for Hermitian `A ≤ B` and `f` non-decreasing on an
   order-connected set containing both spectra ✓
 - Wolf additionally assumes that `I` is open and `f` is continuously
@@ -1515,11 +1515,11 @@ the central correction index
 * Resolved paper-gap: `docs/paper-gaps/wolf_ch6_spectral_radius_eigenvalue.tex`
 
 Uses Brouwer's fixed-point theorem on density matrices (proved in
-`QICLean.Channel.FixedPoint.Stationary.BrouwerDensityMatrices`).
+`QICLean.Channel.FixedPoint.Stationary.StationaryStates`).
 
 #### Wolf Proposition 6.6 (Similarity preserving irreducibility) — FORMALIZED
 
-* Scalar case: `isIrreducibleMap_smul` — `QICLean.Channel.Irreducible.Scaling`
+* Scalar case: `isIrreducibleMap_smul` — `QICLean.Channel.Irreducible.Similarity`
 * Similarity case: `isIrreducibleMap_similarity` — `QICLean.Channel.Irreducible.Similarity`
 * Full Wolf form `T' = c C⁻¹ T(C · C†) C⁻†`:
   `isIrreducibleMap_full_similarity` (and the stronger
@@ -1531,7 +1531,7 @@ Uses Brouwer's fixed-point theorem on density matrices (proved in
 #### Wolf Theorem 6.6 (Peripheral spectrum of irreducible Schwarz maps) — FORMALIZED
 
 * `SchwarzMap.wolf_theorem_6_6` —
-  `QICLean.Channel.Peripheral.Irreducible.IrreducibleSchwarz`: all four source clauses for
+  `QICLean.Channel.Peripheral.Irreducible.AbstractEigenvectors`: all four source clauses for
   a positive unital irreducible Schwarz map, including `1 ≤ m ≤ D²`, the
   canonical phase `exp (2πi/m)`, one-dimensional peripheral eigenspaces,
   all unitary power identities, and mutually orthogonal cyclic spectral
@@ -1712,7 +1712,7 @@ In `QICLean.Channel.FixedPoint.Algebra.AbstractAlgebra`:
 
 The downstream Schrödinger-picture density-block classification and its
 complementary zero summand are completed in
-`QICLean.Channel.FixedPoint.DensityBlock.FixedPointDensityBlocks`.
+`QICLean.Channel.FixedPoint.DensityBlock.SupportCompressedDensityBlocks`.
 
 In `QICLean.Channel.FixedPoint.Algebra.Algebra`:
 
@@ -1754,13 +1754,13 @@ In `QICLean.Channel.FixedPoint.Algebra.Algebra`:
   real inner-product spaces.
 * `CompactConvex.metricProjection_lipschitzWith` — the reusable metric-projection
   step: projection onto a nonempty compact convex set is 1-Lipschitz.
-* `brouwer_fixedPoint_densityMatrices` — `QICLean.Channel.FixedPoint.Stationary.BrouwerDensityMatrices`
+* `brouwer_fixedPoint_densityMatrices` — `QICLean.Channel.FixedPoint.Stationary.StationaryStates`
   (density-matrix specialization; kernel-checked).
 * `Brouwer (vendored Gametheory library)` — exact import citation: Brouwer for the
   standard simplex (LionSR/Brouwer library).
 * `exists_fixedPoint_closedCube` — `QICLean.Analysis.FixedPoint.BrouwerProduct`;
   extends Brouwer to closed cubes.
-* `fixedPoint_of_compact_retract` — `QICLean.Analysis.FixedPoint.CompactRetractFixedPoint`;
+* `fixedPoint_of_compact_retract` — `QICLean.Analysis.FixedPoint.CompactConvexFixedPoint`;
   extends Brouwer to compact retracts of finite-dimensional real normed spaces.
 * The former general compact-convex paper gap is resolved by metric projection;
   see `docs/paper-gaps/wolf_brouwer_general_compact_convex.tex`.
@@ -1904,7 +1904,7 @@ In `QICLean.Channel.FixedPoint.DensityBlock.FullSupportBlockRetraction`:
   fixed-point star-algebra and has the weighted partial-trace block form of
   Wolf Equation (1.40).
 
-In `QICLean.Channel.FixedPoint.DensityBlock.TraceAdjointDensityBlocks`:
+In `QICLean.Channel.FixedPoint.DensityBlock.SupportCompressedDensityBlocks`:
 
 * `IsPositiveMap.exists_block_densities_of_meanErgodicProjection` — under the
   same full-support hypotheses, the mean-ergodic projection has the
@@ -1928,7 +1928,7 @@ In `QICLean.Algebra.Unitary.MatrixGramUnitary`:
   to an ambient unitary that identifies every compressed matrix with one
   complementary zero block followed by that matrix.
 
-In `QICLean.Channel.FixedPoint.DensityBlock.FixedPointDensityBlocks`:
+In `QICLean.Channel.FixedPoint.DensityBlock.SupportCompressedDensityBlocks`:
 
 * `IsPositiveMap.exists_fixedPoints_densityBlocks_with_zero` — for every
   positive trace-preserving matrix endomorphism whose trace adjoint satisfies
@@ -1984,7 +1984,7 @@ whole direct-sum algebras.  This remaining boundary is recorded in
 
 #### Wolf Corollary 6.7 (weighted fixed-point star-algebra) — FORMALIZED
 
-In `QICLean.Channel.FixedPoint.Stationary.AbstractMaximalRank`:
+In `QICLean.Channel.FixedPoint.Stationary.MaximalSupportBasic`:
 
 * `IsPositiveMap.maximalSupport_of_maximalRank` — for a positive
   trace-preserving map and every positive semidefinite fixed point `ρ` whose
@@ -2295,7 +2295,7 @@ is false under the single printed hypothesis.
   calculation supplies the missing equality of `m_k`.
 
 * The final source-facing assembly lives in
-  `QICLean.Channel.Peripheral.Cycles.StructureOfCycles`:
+  `QICLean.Channel.Peripheral.Cycles.DensityBlockSchwarz`:
   - `Matrix.DirectSumFacePermutation.exists_reindexedUnitaryBlockAction`
     applies the positive-invertible Schwarz classification to each matched
     endomorphism, sets Wolf's output-to-input permutation to
@@ -2427,7 +2427,7 @@ entries below therefore state both levels explicitly.
 The doubly stochastic half is packaged by
 `TNLean.wolf_birkhoff_doublyStochastic_convexHull` and
 `TNLean.wolf_birkhoff_extremePoints_doublyStochastic` in
-`QICLean.Analysis.Majorization.Birkhoff`.
+`QICLean.Analysis.Majorization.DoublySubstochastic`.
 
 The doubly substochastic half is proved in
 `QICLean.Analysis.Majorization.DoublySubstochastic`:

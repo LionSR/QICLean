@@ -9,11 +9,8 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Channel.KoashiImoto
 
 import QICLean.Channel.KoashiImoto.CommonInvariantAlgebra
-import QICLean.Channel.KoashiImoto.FamilyFixedPointBlockForm
-import QICLean.Channel.KoashiImoto.FiniteRealization
 import QICLean.Channel.KoashiImoto.JointSupport
 import QICLean.Channel.KoashiImoto.MeanErgodicProjection
 import QICLean.Channel.KoashiImoto.NormalizedFamilyBlockForm
 import QICLean.Channel.KoashiImoto.PooledKrausFamily
 import QICLean.Channel.KoashiImoto.PreservingBlockAction
-import QICLean.Channel.KoashiImoto.SingleWitness

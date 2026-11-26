@@ -5,7 +5,7 @@ Authors: TNLean contributors
 -/
 import QICLean.Channel.KrausMap.KrausRank
 import QICLean.Channel.LorentzNormalForm.Basic
-import QICLean.Channel.KrausMap.SingleKraus
+import QICLean.Channel.KrausMap.SingleKrausPositivity
 import Mathlib.FieldTheory.IsAlgClosed.Basic
 import Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup.Basic
 

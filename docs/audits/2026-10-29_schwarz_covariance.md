@@ -114,7 +114,7 @@ Passed checks:
   values: **56,948 declarations**, **50 opaque definitions**, no unsafe
   declarations, and only those three standard foundations.
 - The new module's repository import closure has **85 modules**, is acyclic,
-  and has one direct import, `QICLean.Channel.Peripheral.Irreducible.IrreducibleSchwarz`.
+  and has one direct import, `QICLean.Channel.Peripheral.Irreducible.AbstractEigenvectors`.
   A prohibited-proof-token source scan of all 85 modules found no violations.
 - Concrete non-TP regression using the dependency's proved map
   `T(X) = ((9/25) X₀₀ + (16/25) X₁₁) I`. The source capstone applies to this

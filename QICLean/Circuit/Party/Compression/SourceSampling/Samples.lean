@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Circuit.Party.Compression.SourceReplacement.Density
 import QICLean.Analysis.TensorProduct.ProductSource
-import QICLean.Channel.Schmidt.SchmidtFrames
+import QICLean.Channel.Schmidt.Decomposition
 
 /-!
 # Gaussian sample points of the sources of a source circuit

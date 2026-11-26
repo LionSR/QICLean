@@ -6,7 +6,7 @@ Authors: QICLean contributors
 import QICLean.ManyBody.Replica.Metric.Similarity
 import QICLean.ManyBody.Replica.Symbol.RegionPowerSymbol
 import QICLean.ManyBody.Replica.Metric.StarFunction
-import QICLean.Representation.Coherent.SymbolLimit
+import QICLean.Representation.Coherent.Symbol
 import QICLean.ManyBody.Replica.Symbol.CoherentSymbolFunction
 import Mathlib.Topology.ContinuousMap.Weierstrass
 

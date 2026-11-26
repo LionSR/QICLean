@@ -8,6 +8,9 @@ import QICLean.ManyBody.Entropy.Filter.SchmidtPinning
 import QICLean.Entropy.Conditional.ConditionalEntropy
 import QICLean.Entropy.VonNeumann.Bipartite
 import QICLean.ManyBody.Sites.RegionState
+import QICLean.ManyBody.Sites.Relabel
+import QICLean.ManyBody.Dynamics.Interaction
+import QICLean.ManyBody.Hamiltonian.KroneckerSum
 
 /-!
 # Entropies of regions and strong subadditivity
@@ -30,6 +33,12 @@ where `S(X | T) = S(X ∪ T) - S(T)`.
   mutual information.
 * `Entropy.regionEntropy_ssa`: strong subadditivity for regions.
 * `Entropy.regionEntropy_cond_anti`: conditioning on a larger region.
+* `ManyBody.auxiliaryPair_regionEntropyIdentity`, `ManyBody.auxiliaryPair_pre_nonneg`: the entropy
+  cancellation in the auxiliary-pair comparison.
+* `ManyBody.regionMutualInformation_relabel`: regional mutual information under bijections of tensor
+  factors.
+* `ManyBody.Interaction.entropy_eq_zero_of_forall_subset_or_disjoint`: zero entropy across a cut
+  that splits no term.
 
 ## References
 
@@ -42,6 +51,8 @@ where `S(X | T) = S(X ∪ T) - S(T)`.
 
 Independently written from the manuscript; no upstream Lean proof text is reused.
 -/
+
+section RegionEntropy
 
 open scoped BigOperators Matrix ComplexOrder
 
@@ -404,3 +415,247 @@ theorem regionMutualInformation_comm (ψ : EuclideanSpace ℂ ((v : V) → β v)
   ring
 
 end ManyBody
+
+end RegionEntropy
+
+namespace ManyBody
+
+section AuxiliaryPairEntropy
+
+/-!
+## The entropy cancellation in the auxiliary-pair comparison
+
+For a pure vector on a physical partition `X, U, Y, V`, the two regional
+entropy expressions occurring before and after the Bell projection differ
+by an exact sum of mutual informations. Pure-complement equality proves
+this cancellation. For a unit vector, the pre-comparison expression is
+nonnegative by subadditivity.
+
+OpenAI, *A two-dimensional area law from a global spectral gap* (September 24,
+2026), `07-comparators.tex`, lines 176–203, `comparator:entropy-identity`, at
+commit `adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
+All entropies are those of the actual regional reduced matrices.
+
+Independently formalized; no upstream Lean proof text reused.
+-/
+
+variable {ι : Type*} [Fintype ι] [DecidableEq ι]
+variable (β : ι → Type*) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
+private theorem entropy_partition (ψ : EuclideanSpace ℂ ((v : ι) → β v))
+    (R T : Finset ι) (hd : Disjoint R T) (hc : R ∪ T = Finset.univ) :
+    regionEntropy ψ R = regionEntropy ψ T := by
+  have hi : IsCompl R T := IsCompl.of_eq (Finset.disjoint_iff_inter_eq_empty.mp hd) hc
+  rw [← hi.compl_eq, regionEntropy_compl]
+/-- The exact physical entropy cancellation in the auxiliary-pair comparison.
+OpenAI area-law manuscript, `07-comparators.tex`, lines 176–203,
+`comparator:entropy-identity`. The expressions are evaluated on the same actual
+pure vector; no normalization is needed for this balanced identity. -/
+theorem auxiliaryPair_regionEntropyIdentity (ψ : EuclideanSpace ℂ ((v : ι) → β v))
+    (X U Y V : Finset ι)
+    (hXU : Disjoint X U) (hXY : Disjoint X Y) (hXV : Disjoint X V)
+    (hUY : Disjoint U Y) (hUV : Disjoint U V) (hYV : Disjoint Y V)
+    (hc : X ∪ U ∪ Y ∪ V = Finset.univ) :
+    2 * regionEntropy ψ X +
+      (regionEntropy ψ (X ∪ U) + regionEntropy ψ V - regionEntropy ψ Y) -
+      (regionEntropy ψ U + regionEntropy ψ (U ∪ Y) - regionEntropy ψ Y) =
+        regionMutualInformation ψ X V + regionMutualInformation ψ X (Y ∪ V) := by
+  have hXU_YV : regionEntropy ψ (X ∪ U) = regionEntropy ψ (Y ∪ V) := by
+    apply entropy_partition β ψ
+    · simp only [Finset.disjoint_union_left, Finset.disjoint_union_right]
+      exact ⟨⟨hXY, hUY⟩, ⟨hXV, hUV⟩⟩
+    · simpa only [Finset.union_assoc] using hc
+  have hUY_XV : regionEntropy ψ (U ∪ Y) = regionEntropy ψ (X ∪ V) := by
+    apply entropy_partition β ψ
+    · simp only [Finset.disjoint_union_left, Finset.disjoint_union_right]
+      exact ⟨⟨hXU.symm, hXY.symm⟩, ⟨hUV, hYV⟩⟩
+    · simpa only [Finset.union_assoc, Finset.union_left_comm, Finset.union_comm] using hc
+  have hU_XYV : regionEntropy ψ U = regionEntropy ψ (X ∪ (Y ∪ V)) := by
+    apply entropy_partition β ψ
+    · simp only [Finset.disjoint_union_right]
+      exact ⟨hXU.symm, hUY, hUV⟩
+    · simpa only [Finset.union_assoc, Finset.union_left_comm, Finset.union_comm] using hc
+  unfold regionMutualInformation
+  rw [hXU_YV, hUY_XV, hU_XYV]
+  ring
+
+/-- Nonnegativity of the physical pre-comparison entropy expression.
+OpenAI area-law manuscript, `07-comparators.tex`, lines 176–187,
+`comparator:sharp-lower`. Pure-complement equality turns this expression into
+mutual information of the disjoint regions `X ∪ U` and `V`. -/
+theorem auxiliaryPair_pre_nonneg (ψ : EuclideanSpace ℂ ((v : ι) → β v)) (hψ : ‖ψ‖ = 1)
+    (X U Y V : Finset ι) (hXY : Disjoint X Y) (hXV : Disjoint X V)
+    (hUY : Disjoint U Y) (hUV : Disjoint U V) (hYV : Disjoint Y V)
+    (hc : X ∪ U ∪ Y ∪ V = Finset.univ) :
+    0 ≤ regionEntropy ψ (X ∪ U) + regionEntropy ψ V
+        - regionEntropy ψ Y := by
+  have hcompl : regionEntropy ψ ((X ∪ U) ∪ V) = regionEntropy ψ Y := by
+    apply entropy_partition β ψ
+    · simp only [Finset.disjoint_union_left]
+      exact ⟨⟨hXY, hUY⟩, hYV.symm⟩
+    · simpa only [Finset.union_assoc, Finset.union_left_comm, Finset.union_comm] using hc
+  have hsub := regionEntropy_union_le β ψ hψ (X ∪ U) V
+    (Finset.disjoint_union_left.mpr ⟨hXV, hUV⟩)
+  rw [hcompl] at hsub
+  linarith
+
+end AuxiliaryPairEntropy
+
+section RelabelMutualInformation
+
+/-!
+## Regional mutual information under bijections of tensor factors
+
+A bijection `e` of the sites, together with bijections of the basis labels, carries regions `D`
+and `T` to regions `D'` and `T'`. The mutual information of `D'` and `T'` in the transported
+vector is the mutual information of `D` and `T` in the original vector: each of the three
+regional entropies is invariant (`ManyBody.regionEntropy_relabel`). No normalization or
+disjointness is assumed.
+
+This is TNLean's `ManyBody.regionMutualInformation_relabelSites`
+(`Lattice/SiteRelabelEntropy`, at commit `707a50e56c`), stated for the transport
+`ManyBody.relabelVector`.
+
+### Main results
+
+* `ManyBody.regionMutualInformation_relabel`.
+-/
+
+variable {V V' : Type*} [Fintype V] [DecidableEq V] [Fintype V'] [DecidableEq V']
+  {X : V → Type*} {X' : V' → Type*} [∀ v, Fintype (X v)] [∀ v, Fintype (X' v)]
+  [∀ v, DecidableEq (X v)] [∀ v, DecidableEq (X' v)]
+
+/-- **Mutual information is invariant under relabelling.** If `e` carries `D` to `D'` and `T`
+to `T'`, the mutual information of `D'` and `T'` in the transported vector is the mutual
+information of `D` and `T`. -/
+theorem regionMutualInformation_relabel (D T : Finset V) (D' T' : Finset V') (e : V ≃ V')
+    (hD : ∀ v, v ∈ D ↔ e v ∈ D') (hT : ∀ v, v ∈ T ↔ e v ∈ T') (f : ∀ v, X v ≃ X' (e v))
+    (Ω : EuclideanSpace ℂ (Config X)) :
+    regionMutualInformation (relabelVector e f Ω) D' T' = regionMutualInformation Ω D T := by
+  have hU (v : V) : v ∈ D ∪ T ↔ e v ∈ D' ∪ T' := by
+    rw [Finset.mem_union, Finset.mem_union, hD, hT]
+  rw [regionMutualInformation, regionMutualInformation, regionEntropy_relabel D D' e hD f,
+    regionEntropy_relabel T T' e hT f, regionEntropy_relabel (D ∪ T) (D' ∪ T') e hU f]
+
+end RelabelMutualInformation
+
+end ManyBody
+
+section ZeroEntropy
+
+/-!
+## Zero entropy across a cut that splits no term
+
+Let an interaction of Hermitian terms, each supported inside a region `B` or outside it, have a
+gapped Hamiltonian, with positive gap and ground space the line through a unit vector `Ω`. In
+the coordinates of the cut along `B` the Hamiltonian is `H_B ⊗ 1 + 1 ⊗ H_{Bᶜ}`, so `Ω` is a
+product vector across the cut and `S_Ω(B) = 0`. No geometry of the sites enters.
+
+Moved from TNLean, `TNLean/Lattice/ZeroEntropy.lean` at commit `e41c3b63`, restated for an
+interaction on an arbitrary family of local alphabets.
+
+### Main results
+
+* `ManyBody.Interaction.entropy_eq_zero_of_forall_subset_or_disjoint` — zero entropy across a
+  cut that splits no term.
+
+### References
+
+* OpenAI, *A two-dimensional area law from a global spectral gap*, September 24, 2026,
+  Section 2, `01-preliminaries.tex`, lines 116–134 (Lemma 2.2).
+* TNLean note, *A one-dimensional area law and matrix product state approximation from a
+  global gap*, `part1_arealaw.tex`, Section 2 (`sec:setting`), first reduction.
+-/
+
+open Matrix
+open scoped Kronecker
+
+namespace ManyBody.Interaction
+
+variable {V : Type*} [Fintype V] [DecidableEq V] {X : V → Type*} [∀ v, Fintype (X v)]
+  [∀ v, DecidableEq (X v)] {ι : Type*} [Fintype ι] {S : ι → Finset V}
+
+/-- **Zero entropy across a cut that splits no term.** Let the terms of an interaction be
+Hermitian and each supported inside the region `B` or outside it, and let its Hamiltonian be
+gapped at `E₀` with positive gap and ground space the line through the unit vector `Ω`. Then
+`S_Ω(B) = 0`. Two-dimensional area law, `01-preliminaries.tex`, lines 116–134 (Lemma 2.2). -/
+theorem entropy_eq_zero_of_forall_subset_or_disjoint {Φ : Interaction X S}
+    (hherm : ∀ i, (Φ.term i).IsHermitian) {E₀ Δ : ℝ} (hΔ : 0 < Δ)
+    {Ω : EuclideanSpace ℂ (Config X)} (hΩ : ‖Ω‖ = 1) (hgs : IsGapped Φ.hamiltonian E₀ Δ)
+    (hspan : groundSpace Φ.hamiltonian E₀ = Submodule.span ℂ {Ω}) {B : Finset V}
+    (hsplit : ∀ i, S i ⊆ B ∨ Disjoint (S i) B) :
+    ManyBody.regionEntropy Ω B = 0 := by
+  classical
+  set c := cutEquiv X B
+  obtain ⟨x₀⟩ : Nonempty (Config X) := by
+    by_contra h
+    rw [not_nonempty_iff] at h
+    have : Ω = 0 := by
+      apply WithLp.ofLp_injective 2
+      funext x
+      exact isEmptyElim x
+    simp [this] at hΩ
+  set s := Finset.univ.filter fun i ↦ S i ⊆ B
+  set Hin := ∑ i ∈ s, Φ.term i
+  set Hout := ∑ i ∈ Finset.univ.filter (fun i ↦ ¬ S i ⊆ B), Φ.term i
+  have hH : Φ.hamiltonian = Hin + Hout := (Finset.sum_filter_add_sum_filter_not _ _ _).symm
+  have hin : Hin ∈ supportedOperators X B :=
+    sum_mem fun i hi ↦ supportedOperators_mono (Finset.mem_filter.mp hi).2 (Φ.mem i)
+  have hout : Hout ∈ supportedOperators X Bᶜ := by
+    refine sum_mem fun i hi ↦ supportedOperators_mono ?_ (Φ.mem i)
+    exact Finset.subset_compl_iff_disjoint_right.mpr
+      ((hsplit i).resolve_left (Finset.mem_filter.mp hi).2)
+  have hsumH (t : Finset ι) : (∑ i ∈ t, Φ.term i).IsHermitian :=
+    (isSelfAdjoint_sum _ fun i _ ↦ (hherm i).isSelfAdjoint).isHermitian
+  obtain ⟨K, hK⟩ := exists_eq_place_of_mem_supportedOperators hin
+  obtain ⟨L, hL⟩ := exists_eq_one_kronecker_of_mem_supportedOperators (D := B)
+    disjoint_compl_left hout
+  have hA : Hin = (K ⊗ₖ (1 : Matrix (ComplConfig X B) (ComplConfig X B) ℂ)).submatrix c c := by
+    simp [hK, place, reindex_apply, c]
+  have hKherm : K.IsHermitian := by
+    have hK' : (K ⊗ₖ (1 : Matrix (ComplConfig X B) (ComplConfig X B) ℂ)).IsHermitian := by
+      have := (hsumH s).submatrix c.symm
+      rwa [show ∑ i ∈ s, Φ.term i = Hin from rfl, hA, submatrix_submatrix,
+        Equiv.self_comp_symm, submatrix_id_id] at this
+    refine IsHermitian.ext fun i j ↦ ?_
+    simpa only [kroneckerMap_apply, one_apply_eq, mul_one] using
+      hK'.apply (i, (c x₀).2) (j, (c x₀).2)
+  have hLherm : L.IsHermitian := by
+    have hL' : ((1 : Matrix (RegionConfig X B) (RegionConfig X B) ℂ) ⊗ₖ L).IsHermitian := by
+      have := (hsumH (Finset.univ.filter fun i ↦ ¬ S i ⊆ B)).submatrix c.symm
+      rwa [show ∑ i ∈ Finset.univ.filter (fun i ↦ ¬ S i ⊆ B), Φ.term i = Hout from rfl, hL,
+        submatrix_submatrix, Equiv.self_comp_symm, submatrix_id_id] at this
+    refine IsHermitian.ext fun i j ↦ ?_
+    simpa only [kroneckerMap_apply, one_apply_eq, one_mul] using
+      hL'.apply ((c x₀).1, i) ((c x₀).1, j)
+  have hcut : Φ.hamiltonian.submatrix c.symm c.symm =
+      K ⊗ₖ (1 : Matrix (ComplConfig X B) (ComplConfig X B) ℂ) +
+        (1 : Matrix (RegionConfig X B) (RegionConfig X B) ℂ) ⊗ₖ L := by
+    rw [hH, hA, hL]
+    ext i j
+    simp [c]
+  have hgs' := (isGapped_submatrix_iff c.symm).mpr hgs
+  have hspan' := groundSpace_submatrix_eq_span c.symm hspan
+  rw [hcut] at hgs' hspan'
+  have hn' : ‖LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ c.symm.symm Ω‖ = 1 :=
+    (LinearIsometryEquiv.norm_map _ _).trans hΩ
+  obtain ⟨-, -, u, w, -, hprod, -, -⟩ :=
+    exists_isGapped_factors_of_kronecker_sum hKherm hLherm hΔ hn' hgs' hspan'
+  have hΩc : ∀ p, Ω (c.symm p) = u p.1 * w p.2 := fun p ↦ by
+    simpa [LinearIsometryEquiv.piLpCongrLeft_apply, Equiv.piCongrLeft'] using hprod p
+  have hρ : regionState Ω B =
+      vecMulVec (WithLp.ofLp u) fun b ↦ star (u b) * ∑ y, w y * star (w y) := by
+    ext a b
+    simp only [regionState_eq_partialTraceRight_cutVector, partialTraceRight_apply,
+      vecMulVec_apply, Pi.star_apply,
+      Finset.mul_sum]
+    refine Finset.sum_congr rfl fun y _ ↦ ?_
+    rw [hΩc, hΩc, star_mul']
+    ring
+  refine vonNeumannEntropy_eq_zero_of_rank_le_one (regionState_posSemidef B Ω)
+    (by rw [trace_regionState, hΩ]; simp) ?_
+  rw [hρ]
+  exact rank_vecMulVec_le _ _
+
+end ManyBody.Interaction
+
+end ZeroEntropy

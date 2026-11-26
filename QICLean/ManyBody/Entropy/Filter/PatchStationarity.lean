@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Analysis.FunctionalCalculus.CfcConjugation
-import QICLean.Spectral.Eigenvalue.CommutingHermitian
+import QICLean.Spectral.Eigenvalue.MatrixSpectralDecomp
 import QICLean.Analysis.TraceInequality.PatchRegulator
 import QICLean.Analysis.Order.PosSemidefCommute
 import QICLean.Analysis.FunctionalCalculus.ShiftedDensityCommutation

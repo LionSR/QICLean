@@ -15,14 +15,11 @@ import QICLean.ManyBody.Replica.LowDefect.ComponentInverseSharp
 import QICLean.ManyBody.Replica.LowDefect.ComponentInverseSharpUniform
 import QICLean.ManyBody.Replica.LowDefect.InverseRoughCompression
 import QICLean.ManyBody.Replica.LowDefect.LowDefectCoordinateCovariance
-import QICLean.ManyBody.Replica.LowDefect.LowDefectRoughLowerPin
 import QICLean.ManyBody.Replica.LowDefect.LowDefectSharpCompression
-import QICLean.ManyBody.Replica.LowDefect.LowDefectSharpLowerPin
 import QICLean.ManyBody.Replica.LowDefect.LowDefectSymmetricCoordinates
 import QICLean.ManyBody.Replica.LowDefect.RegionalLowDefectLowerPin
 import QICLean.ManyBody.Replica.LowDefect.RegionalLowDefectMass
 import QICLean.ManyBody.Replica.LowDefect.RegionalLowDefectProductMass
 import QICLean.ManyBody.Replica.LowDefect.RegionalLowDefectProjection
 import QICLean.ManyBody.Replica.LowDefect.RegionalRoughLowerNorm
-import QICLean.ManyBody.Replica.LowDefect.RegionalRoughLowerThree
 import QICLean.ManyBody.Replica.LowDefect.RegionalSharpLowerNorm

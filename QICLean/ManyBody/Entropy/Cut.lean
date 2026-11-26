@@ -15,8 +15,6 @@ import QICLean.ManyBody.Entropy.Cut.RegionRank
 import QICLean.ManyBody.Entropy.Cut.RegionSplit
 import QICLean.ManyBody.Entropy.Cut.RegionTensorSplitting
 import QICLean.ManyBody.Entropy.Cut.RegionTraceNorm
-import QICLean.ManyBody.Entropy.Cut.RegionUnion
-import QICLean.ManyBody.Entropy.Cut.RegionalOperatorCoordinates
 import QICLean.ManyBody.Entropy.Cut.RegionalRightContraction
 import QICLean.ManyBody.Entropy.Cut.RegionalViability
 import QICLean.ManyBody.Entropy.Cut.RightLocalLift

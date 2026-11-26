@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Algebra.Hermitian.MatrixSandwichIntertwine
 import QICLean.Channel.OperatorMean.TreeDerivative
-import QICLean.Analysis.OperatorMean.MeanTreeIntertwine
+import QICLean.Analysis.OperatorMean.FiniteTree
 import QICLean.Channel.OperatorMean.GeometricMeanDerivativeIntertwine
 
 /-!

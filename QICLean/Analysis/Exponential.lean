@@ -14,7 +14,6 @@ import QICLean.Analysis.Exponential.HermitianProductFormula
 import QICLean.Analysis.Exponential.HermitianUnitaryPath
 import QICLean.Analysis.Exponential.InvariantExponentialComparison
 import QICLean.Analysis.Exponential.KroneckerExponential
-import QICLean.Analysis.Exponential.MandatoryExponentialNorm
 import QICLean.Analysis.Exponential.MatrixBernsteinInputs
 import QICLean.Analysis.Exponential.MatrixCommutator
 import QICLean.Analysis.Exponential.MatrixFilter

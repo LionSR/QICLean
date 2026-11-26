@@ -8,11 +8,9 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Channel.Schmidt
 
-import QICLean.Channel.Schmidt.AGSPGeneralTails
 import QICLean.Channel.Schmidt.AGSPGeometricTails
 import QICLean.Channel.Schmidt.Decomposition
 import QICLean.Channel.Schmidt.FilterConjugation
-import QICLean.Channel.Schmidt.FilterNormalization
 import QICLean.Channel.Schmidt.MaximalOverlap
 import QICLean.Channel.Schmidt.NPositivitySpectralCriterion
 import QICLean.Channel.Schmidt.NormalizedApproximation
@@ -21,8 +19,6 @@ import QICLean.Channel.Schmidt.ProductOverlapPurity
 import QICLean.Channel.Schmidt.PureApproximationSpectralTail
 import QICLean.Channel.Schmidt.PureMarginalApproximation
 import QICLean.Channel.Schmidt.Rank
-import QICLean.Channel.Schmidt.RankAction
-import QICLean.Channel.Schmidt.SchmidtFrames
 import QICLean.Channel.Schmidt.SchmidtTilt
 import QICLean.Channel.Schmidt.SurprisalMoment
 import QICLean.Channel.Schmidt.Threshold

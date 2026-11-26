@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Channel.Schmidt.RankAction
+import QICLean.Channel.Schmidt.Rank
 
 /-!
 # Axiom check and boundary cases for Schmidt rank after an operator acts

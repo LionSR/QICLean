@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Sites.Placement
 import QICLean.Algebra.Unitary.MatrixUnitaryBetween
-import QICLean.ManyBody.Sites.SitewiseProduct
+import QICLean.ManyBody.Sites.Support
 import QICLean.Spectral.Gap.DoubledSystemGap
 
 /-!

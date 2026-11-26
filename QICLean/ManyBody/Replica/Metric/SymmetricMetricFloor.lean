@@ -3,13 +3,12 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.ManyBody.Replica.Metric.WholeInverse
-import QICLean.ManyBody.Replica.Label.SymmetricSupport
+import QICLean.ManyBody.Replica.Metric.GroupedInverse
+import QICLean.ManyBody.Replica.Label.GroupedLabelSymmetricSupport
 import QICLean.Representation.Permutation.TrivialLabel
 import QICLean.Analysis.Order.FloorPin
 import QICLean.Spectral.Projection.ExponentialDrop
 import QICLean.ManyBody.Replica.Metric.DisjointMetricPositivity
-import QICLean.ManyBody.Replica.Label.GroupedLabelSymmetricSupport
 import QICLean.Analysis.FunctionalCalculus.ProjectionCfcUpperBound
 import QICLean.Analysis.Order.InverseCompressionLowerPin
 

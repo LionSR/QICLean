@@ -8,7 +8,6 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Analysis.Projection
 
-import QICLean.Analysis.Projection.ApproximateBasisImage
 import QICLean.Analysis.Projection.CommutingProjectionProduct
 import QICLean.Analysis.Projection.DetectabilityLemma
 import QICLean.Analysis.Projection.Geometry
@@ -22,11 +21,8 @@ import QICLean.Analysis.Projection.PhaseError
 import QICLean.Analysis.Projection.PosSemidefSupport
 import QICLean.Analysis.Projection.ProductOverlapReplacement
 import QICLean.Analysis.Projection.ProjectedPositiveEnergy
-import QICLean.Analysis.Projection.ProjectedTrialSpaceEnergy
 import QICLean.Analysis.Projection.ProjectionProductDefect
-import QICLean.Analysis.Projection.QuadraticBounds
 import QICLean.Analysis.Projection.RegionalEnergyCalibration
-import QICLean.Analysis.Projection.Residual
 import QICLean.Analysis.Projection.SupportedRangeProjector
 import QICLean.Analysis.Projection.SweepContraction
 import QICLean.Analysis.Projection.TwoProjectionAngleBlock

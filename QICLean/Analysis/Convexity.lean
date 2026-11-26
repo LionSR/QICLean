@@ -9,7 +9,6 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Analysis.Convexity
 
 import QICLean.Analysis.Convexity.ConvexHullCompact
-import QICLean.Analysis.Convexity.DiagonalJensen
 import QICLean.Analysis.Convexity.LiebIntegrandConcave
 import QICLean.Analysis.Convexity.LiebOperatorConcave
 import QICLean.Analysis.Convexity.LiebOperatorIntegral

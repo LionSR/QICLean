@@ -26,12 +26,10 @@ import QICLean.Analysis.FunctionalCalculus.OrthogonalResolutionCfc
 import QICLean.Analysis.FunctionalCalculus.PhaseContinuity
 import QICLean.Analysis.FunctionalCalculus.ProjectionCfcUpperBound
 import QICLean.Analysis.FunctionalCalculus.ProjectionCompressionCfc
-import QICLean.Analysis.FunctionalCalculus.RealPowerIntertwine
 import QICLean.Analysis.FunctionalCalculus.ShiftedDensityCommutation
 import QICLean.Analysis.FunctionalCalculus.ShiftedDensityPowers
 import QICLean.Analysis.FunctionalCalculus.SpectralFunUnique
 import QICLean.Analysis.FunctionalCalculus.SpectralKronecker
-import QICLean.Analysis.FunctionalCalculus.SpectralPhase
 import QICLean.Analysis.FunctionalCalculus.SpectralPowers
 import QICLean.Analysis.FunctionalCalculus.SpectralQuadraticForm
 import QICLean.Analysis.FunctionalCalculus.SqrtHolder

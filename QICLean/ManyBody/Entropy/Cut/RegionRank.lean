@@ -3,8 +3,8 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Entropy.VonNeumann.PureMarginalRank
-import QICLean.Channel.PartialTrace.MarginalRank
+import QICLean.Entropy.VonNeumann.Bipartite
+import QICLean.Channel.PartialTrace.MarginalSupportAbsorption
 import QICLean.ManyBody.Entropy.RegionEntropy
 import QICLean.ManyBody.Entropy.SupportedMarginalTails
 import QICLean.Entropy.Surprisal.FilterMoment

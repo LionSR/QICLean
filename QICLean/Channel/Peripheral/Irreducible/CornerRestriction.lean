@@ -5,7 +5,6 @@ Authors: TNLean contributors
 -/
 import QICLean.Algebra.Hermitian.CornerCompression
 import QICLean.Channel.Peripheral.Spectrum.Spectrum
-import QICLean.Channel.Peripheral.Spectrum.PeriodicityRemoval
 import QICLean.Channel.Schwarz.Basic
 import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
 

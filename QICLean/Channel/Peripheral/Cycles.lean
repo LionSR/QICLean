@@ -16,5 +16,3 @@ import QICLean.Channel.Peripheral.Cycles.DensityBlockSchwarz
 import QICLean.Channel.Peripheral.Cycles.DirectSumFacePermutation
 import QICLean.Channel.Peripheral.Cycles.MatchedBlockEndomorphism
 import QICLean.Channel.Peripheral.Cycles.MultiCycleDecomposition
-import QICLean.Channel.Peripheral.Cycles.PureStateFace
-import QICLean.Channel.Peripheral.Cycles.StructureOfCycles

@@ -11,11 +11,7 @@ Authors: QICLean contributors
 import QICLean.Channel.Peripheral.Spectrum.AdjointSpectrum
 import QICLean.Channel.Peripheral.Spectrum.AntilinearConjugation
 import QICLean.Channel.Peripheral.Spectrum.Conjugation
-import QICLean.Channel.Peripheral.Spectrum.CyclicGroup
-import QICLean.Channel.Peripheral.Spectrum.PeriodicityRemoval
-import QICLean.Channel.Peripheral.Spectrum.Powers
 import QICLean.Channel.Peripheral.Spectrum.RankOnePositiveProjection
 import QICLean.Channel.Peripheral.Spectrum.SpectralRadius
 import QICLean.Channel.Peripheral.Spectrum.Spectrum
-import QICLean.Channel.Peripheral.Spectrum.TransferMatrix
 import QICLean.Channel.Peripheral.Spectrum.UnitalKraus

@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Spectral.Filter.Gaussian.SpectralGap
-import QICLean.Spectral.Filter.PowerSpectralFilter
+import QICLean.Spectral.Filter.GroundSpaceAffineFilter
 
 /-! # Axiom guards for power approximations and the global-gap ground projection -/
 

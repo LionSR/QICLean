@@ -14,7 +14,6 @@ import QICLean.Representation.TensorPower.InjectionAverage
 import QICLean.Representation.TensorPower.InjectionProduct
 import QICLean.Representation.TensorPower.PairMergeDeficit
 import QICLean.Representation.TensorPower.PairMergeMoment
-import QICLean.Representation.TensorPower.PhysicalMergeHolder
 import QICLean.Representation.TensorPower.ReplicaMeanIdentityExtension
 import QICLean.Representation.TensorPower.Rpow
 import QICLean.Representation.TensorPower.SiteOperators

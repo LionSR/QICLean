@@ -11,7 +11,7 @@ import QICLean.Analysis.Norm.FrobeniusHilbert
 import QICLean.Analysis.FunctionalCalculus.CfcConjugation
 import QICLean.Entropy.VonNeumann.Entropy
 import QICLean.Analysis.Support.Compression
-import QICLean.Analysis.Support.LogJensen
+import QICLean.Analysis.FunctionalCalculus.SpectralQuadraticForm
 import Mathlib.LinearAlgebra.Matrix.Vec
 
 /-!

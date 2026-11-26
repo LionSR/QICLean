@@ -13,7 +13,6 @@ import QICLean.Analysis.Topology.ContinuousIdempotentFrames
 import QICLean.Analysis.Topology.ConvexWeightsCompactness
 import QICLean.Analysis.Topology.GramMatrixLI
 import QICLean.Analysis.Topology.KroneckerLocalSection
-import QICLean.Analysis.Topology.KroneckerPathLifting
 import QICLean.Analysis.Topology.MatrixGroupJoined
 import QICLean.Analysis.Topology.MatrixRankClosed
 import QICLean.Analysis.Topology.MatrixTracePowerContinuity

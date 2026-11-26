@@ -39,7 +39,7 @@ approval. No merge-readiness claim follows from it.
   fetched successfully before building. No Mathlib Lean source module was
   rebuilt. Building the text-linter executable compiled native objects from
   cached generated C artifacts.
-- Targeted `lake build QICLean.Channel.Schwarz.EntropicJensen` passed.
+- Targeted `lake build QICLean.Channel.Schwarz.OperatorConvexity` passed.
 - Production and permanent test elaboration passed with standard Mathlib
   linters and warnings treated as errors.
 - `QICLeanTest/EntropicJensen.lean` guards both public theorems' axioms and

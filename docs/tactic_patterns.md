@@ -431,7 +431,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   the observables as functions of this joint resolution, and prove matrix
   order from scalar inequalities on its nonzero components.
 - **Seen:** `TensorPower.copyPerm_groupedCopies_labelEntropy_bounds` in
-  `QICLean/Representation/YoungSubgroup/GoodAuxiliaryLabelEntropy.lean`, as well as `TensorPower.groupedCopies_labelEntropy_bounds` in
+  `QICLean/Representation/YoungSubgroup/GroupedLabelEntropy.lean`, as well as `TensorPower.groupedCopies_labelEntropy_bounds` in
   `QICLean/Representation/YoungSubgroup/GroupedLabelEntropy.lean` and
   `PermutationRepresentation.supportProj_mul_labelEntropy_mul_supportProj_le`
   in `QICLean/Representation/Permutation/SchurSurprisal.lean`.
@@ -778,7 +778,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   coordinates. Nonvanishing on the whole space forces nonvanishing on the
   moving coordinates.
 - **Seen:** The private entry proof in
-  `QICLean/Representation/YoungSubgroup/BadCopyLabelDimension.lean`; one mathematical
+  `QICLean/Representation/YoungSubgroup/GroupedCopies.lean`; one mathematical
   consumer in one file.
 - **Abstraction:** Reuse the existing permutation-entry and group-algebra
   formulas. The ensuing dimension estimate uses the existing
@@ -795,7 +795,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   matrix order inequality, then use Hermiticity, idempotence and the
   actual central-observable eigenvalue identity to simplify the result.
 - **Seen:** `TensorPower.copyPerm_groupedGood_labelEntropy_compression` in
-  `QICLean/Representation/YoungSubgroup/GoodAuxiliaryLabelCompression.lean`; one new
+  `QICLean/Representation/YoungSubgroup/GroupedLabelEntropy.lean`; one new
   mathematical consumer. The existing support-compression arguments in
   `SchurSurprisal.lean` also use the same Mathlib conjugation theorem.
 - **Abstraction:** Reuse the Mathlib conjugation theorem and the existing
@@ -1115,7 +1115,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   enumeration, apply its proved product formula, and use a fixed tensor vector
   to show support in the physical symmetric subspace.
 - **Seen:** `Matrix.symProj_mul_replicaExcitationComponent_goodAuxiliary_density`
-  in `QICLean/ManyBody/Replica/Configuration/GoodPhysicalSupport.lean`; one consumer.
+  in `QICLean/ManyBody/Replica/Configuration/GoodConfigurationDensity.lean`; one consumer.
 - **Abstraction:** Reuse `partialTraceRight_submatrix_prod_equiv`,
   `Equiv.prod_comp`, `symProj_mulVec_of_mem`, `mul_vecMulVec` and
   `mul_kronecker_mul`. No new tactic or parallel marginal is introduced.
@@ -1360,7 +1360,7 @@ projector, the defect cutoff, and the original auxiliary labels.
   prefix, and a full suffix as the corresponding list drop.
 - **Seen:** The consecutive-difference calculation and both endpoint
   calculations in `PoissonWord.foldl_sub_partitionWords_fst_eq_sum`, in
-  `QICLean/Probability/PoissonWord/PoissonWordTelescope.lean`; three occurrences in one file.
+  `QICLean/Probability/PoissonWord/Partition.lean`; three occurrences in one file.
 - **Abstraction:** Reuse `ofFn_partitionWords_fst`, `ofFn_take`, and `ofFn_drop`
   with `simp only`. A further lemma or simp set is deferred until the pattern
   also occurs in a second file.

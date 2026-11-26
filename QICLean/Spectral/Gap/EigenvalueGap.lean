@@ -3,10 +3,16 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Spectral.Gap.PositiveGapTransfer
 import QICLean.Spectral.Eigenvalue.EuclideanEigenvectorBasis
 import QICLean.Analysis.Order.LowEnergyPerturbation
-import QICLean.Spectral.Gap.OrthogonalKernelGap
+import Mathlib.Analysis.InnerProductSpace.Projection.FiniteDimensional
+import Mathlib.Analysis.Normed.Group.Basic
+import QICLean.Analysis.Topology.CompactUniformBounds
+import QICLean.Spectral.Perturbation.KernelGapPerturbation
+import Mathlib.Analysis.InnerProductSpace.Orthogonal
+import Mathlib.Analysis.Normed.Module.FiniteDimension
+import Mathlib.Analysis.InnerProductSpace.Positive
+import Mathlib.Analysis.InnerProductSpace.Spectrum
 
 /-!
 # The gap above the kernel in eigenvalue, quadratic and norm form
@@ -49,7 +55,200 @@ norm-form hypothesis replaced by the eigenvalue form. The operator form of the g
 TNLean, `TNLean/MPS/ParentHamiltonian/ParentInteraction/FiniteIntervalGapComparison.lean` and
 `TNLean/MPS/ParentHamiltonian/Gap/Comparison/IntervalGapTransport.lean` at commit `600676ccac`;
 its eigenvalue-form direction is proved through the quadratic form.
+* `LinearEquiv.ker_adjoint_congruence`,
+  `LinearMap.IsPositive.norm_gap_adjoint_congruence_of_inverse_bound`: spectral gaps under bounded
+  invertible congruences.
+* `IsCompact.exists_uniform_norm_lower_bound_on_tail`,
+  `ContinuousLinearMap.exists_uniform_norm_gap_of_compact`: uniform norm gaps on compact parameter
+  sets.
+* `LinearMap.exists_pos_mul_norm_le_of_mem_orthogonal_ker`, `Nat.exists_pos_forall_of_eventually`:
+  norm gaps on the orthogonal complement of a kernel.
+* `LinearMap.IsPositive.re_inner_ge_of_norm_gap`, `LinearMap.IsPositive.norm_gap_of_le_of_ker_eq`:
+  transfer of gaps through positive-operator comparison.
 -/
+
+section OrthogonalKernelGap
+
+/-!
+## Norm gaps on the orthogonal complement of a kernel
+
+A linear map \(f\) on a finite-dimensional inner product space is injective on
+\((\ker f)^\perp\), hence bounded below there: there is \(\delta>0\) with
+\(\delta\|v\|\le\|fv\|\) for every \(v\in(\ker f)^\perp\).
+
+For a sequence of such maps, a lower bound that holds with one constant from
+some index on extends to every index: the finitely many earlier indices each
+have their own positive constant, and one takes the minimum.
+
+Moved from TNLean, `TNLean/Algebra/OrthogonalKernelGap.lean` at
+commit `414a18fb88`, with no change to the statements.
+
+### Main declarations
+
+* `LinearMap.exists_pos_mul_norm_le_of_mem_orthogonal_ker`: the positive lower
+  bound on the orthogonal complement of the kernel.
+* `Nat.exists_pos_forall_of_eventually`: an eventual positive constant for a
+  downward-closed property, combined with a positive constant at each index,
+  gives one positive constant at every index.
+-/
+
+namespace LinearMap
+
+/-- A linear map on a finite-dimensional inner product space is bounded below on
+the orthogonal complement of its kernel: there is \(\delta>0\) with
+\(\delta\|v\|\le\|fv\|\) for all \(v\in(\ker f)^\perp\). -/
+theorem exists_pos_mul_norm_le_of_mem_orthogonal_ker {𝕜 E F : Type*} [RCLike 𝕜]
+    [NormedAddCommGroup E] [InnerProductSpace 𝕜 E] [FiniteDimensional 𝕜 E]
+    [NormedAddCommGroup F] [NormedSpace 𝕜 F] (f : E →ₗ[𝕜] F) :
+    ∃ δ : ℝ, 0 < δ ∧ ∀ v ∈ (LinearMap.ker f)ᗮ, δ * ‖v‖ ≤ ‖f v‖ := by
+  have hi : Function.Injective (f.domRestrict (LinearMap.ker f)ᗮ) :=
+    LinearMap.injective_domRestrict_iff.mpr (Submodule.orthogonal_disjoint _).symm
+  obtain ⟨K, hK, hbound⟩ := (f.domRestrict (LinearMap.ker f)ᗮ).exists_antilipschitzWith
+    (LinearMap.ker_eq_bot.mpr hi)
+  refine ⟨(K : ℝ)⁻¹, inv_pos.mpr (by exact_mod_cast hK), fun v hv ↦ ?_⟩
+  exact (inv_mul_le_iff₀ (show 0 < (K : ℝ) by exact_mod_cast hK)).mpr
+    (ZeroHomClass.bound_of_antilipschitz _ hbound ⟨v, hv⟩)
+
+end LinearMap
+
+/-- Let \(P(N,\gamma)\) be a property of an index \(N\) and a constant \(\gamma\)
+that is closed under decreasing \(\gamma\). If \(P(N,\delta)\) holds for all
+\(N\ge M\) with one \(\delta>0\), and each index has some positive constant, then
+one positive constant works at every index. -/
+theorem Nat.exists_pos_forall_of_eventually {P : ℕ → ℝ → Prop}
+    (hmono : ∀ N {γ δ : ℝ}, γ ≤ δ → P N δ → P N γ)
+    (hfix : ∀ N, ∃ η : ℝ, 0 < η ∧ P N η) {M : ℕ} {δ : ℝ} (hδ : 0 < δ)
+    (hev : ∀ N, M ≤ N → P N δ) :
+    ∃ γ : ℝ, 0 < γ ∧ ∀ N, P N γ := by
+  induction M generalizing δ with
+  | zero => exact ⟨δ, hδ, fun N ↦ hev N (Nat.zero_le N)⟩
+  | succ M ih =>
+    obtain ⟨η, hη, hM⟩ := hfix M
+    refine ih (lt_min hδ hη) fun N hN ↦ ?_
+    rcases eq_or_lt_of_le hN with rfl | hN
+    · exact hmono _ (min_le_right δ η) hM
+    · exact hmono _ (min_le_left δ η) (hev N hN)
+
+end OrthogonalKernelGap
+
+section PositiveGapTransfer
+
+/-!
+## Transfer of gaps through positive-operator comparison
+
+A finite-dimensional spectral argument transfers a known gap from a positive
+operator to a larger positive operator with the same kernel.
+
+### Main results
+
+* `LinearMap.IsPositive.re_inner_ge_of_norm_gap` converts a norm gap on the
+  orthogonal complement of the kernel into a quadratic-form lower bound.
+* `LinearMap.IsPositive.norm_gap_of_le_of_ker_eq` transfers a norm gap through
+  Loewner domination when the kernels agree.
+-/
+
+open scoped InnerProductSpace
+
+namespace LinearMap.IsPositive
+
+variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
+  [FiniteDimensional ℂ E]
+
+/-- For a positive operator, a norm lower bound on the orthogonal complement
+of its kernel implies the same quadratic-form lower bound. -/
+theorem re_inner_ge_of_norm_gap {P : E →ₗ[ℂ] E} (hP : P.IsPositive)
+    {γ : ℝ} (_hγ : 0 ≤ γ)
+    (hGap : ∀ v ∈ (LinearMap.ker P)ᗮ, γ * ‖v‖ ≤ ‖P v‖)
+    (v : E) (hv : v ∈ (LinearMap.ker P)ᗮ) :
+    γ * ‖v‖ ^ 2 ≤ (⟪P v, v⟫_ℂ).re := by
+  classical
+  let n := Module.finrank ℂ E
+  let b := hP.isSymmetric.eigenvectorBasis rfl
+  let μ := hP.isSymmetric.eigenvalues rfl
+  have hμ : ∀ i, 0 ≤ μ i := hP.nonneg_eigenvalues rfl
+  have hμGap : ∀ i, μ i = 0 ∨ γ ≤ μ i := by
+    intro i
+    by_cases hi : μ i = 0
+    · exact Or.inl hi
+    · right
+      have hbi : b i ∈ (LinearMap.ker P)ᗮ := by
+        intro w hw
+        rw [LinearMap.mem_ker] at hw
+        have horth := hP.isSymmetric w (b i)
+        rw [hw, inner_zero_left, hP.isSymmetric.apply_eigenvectorBasis rfl,
+          inner_smul_right] at horth
+        exact (mul_eq_zero.mp horth.symm).resolve_left (Complex.ofReal_ne_zero.mpr hi)
+      have h := hGap (b i) hbi
+      rw [hP.isSymmetric.apply_eigenvectorBasis rfl, norm_smul,
+        OrthonormalBasis.norm_eq_one] at h
+      have h' : γ ≤ |μ i| := by
+        simpa only [RCLike.norm_ofReal, mul_one] using h
+      rwa [abs_of_nonneg (hμ i)] at h'
+  have hv_sq : ‖v‖ ^ 2 = ∑ i, ‖(b.repr v) i‖ ^ 2 := by
+    rw [← b.repr.norm_map v, EuclideanSpace.norm_sq_eq]
+  have hPv : P v = ∑ i, ((μ i : ℂ) * (b.repr v) i) • b i := by
+    nth_rw 1 [← b.sum_repr v]
+    rw [map_sum]
+    apply Finset.sum_congr rfl
+    intro i hi
+    rw [map_smul, hP.isSymmetric.apply_eigenvectorBasis rfl, smul_smul]
+    congr 1
+    exact mul_comm _ _
+  have hquad : (⟪P v, v⟫_ℂ).re =
+      ∑ i, μ i * ‖(b.repr v) i‖ ^ 2 := by
+    rw [hPv, sum_inner, Complex.re_sum]
+    apply Finset.sum_congr rfl
+    intro i hi
+    rw [inner_smul_left, b.repr_apply_apply, map_mul, Complex.conj_ofReal]
+    rw [mul_assoc]
+    rw [← Complex.normSq_eq_conj_mul_self]
+    rw [Complex.sq_norm]
+    simp
+  rw [hv_sq, hquad, Finset.mul_sum]
+  apply Finset.sum_le_sum
+  intro i hi
+  rcases hμGap i with hzero | hbound
+  · have hcoeff : (b.repr v) i = 0 := by
+      rw [b.repr_apply_apply]
+      exact Submodule.inner_right_of_mem_orthogonal
+        (by
+          rw [LinearMap.mem_ker, hP.isSymmetric.apply_eigenvectorBasis rfl]
+          change (μ i : ℂ) • b i = 0
+          simp [hzero]) hv
+    simp [hcoeff]
+  · exact mul_le_mul_of_nonneg_right hbound (sq_nonneg _)
+
+/-- An operator \(Q\) inherits the norm gap of a positive operator \(P\)
+when \(P \leq Q\) in Loewner order and their kernels agree. -/
+theorem norm_gap_of_le_of_ker_eq {P Q : E →ₗ[ℂ] E}
+    (hP : P.IsPositive) {γ : ℝ} (hγ : 0 ≤ γ)
+    (hPQ : P ≤ Q) (hker : LinearMap.ker P = LinearMap.ker Q)
+    (hGap : ∀ v ∈ (LinearMap.ker P)ᗮ, γ * ‖v‖ ≤ ‖P v‖) :
+    ∀ v ∈ (LinearMap.ker Q)ᗮ, γ * ‖v‖ ≤ ‖Q v‖ := by
+  intro v hv
+  have hvP : v ∈ (LinearMap.ker P)ᗮ := by simpa [hker] using hv
+  have henergyP := hP.re_inner_ge_of_norm_gap hγ hGap v hvP
+  have henergyPQ : (⟪P v, v⟫_ℂ).re ≤ (⟪Q v, v⟫_ℂ).re := by
+    have hnonneg := hPQ.re_inner_nonneg_left v
+    simpa [sub_apply, inner_sub_left] using hnonneg
+  have hinnerNorm : (⟪Q v, v⟫_ℂ).re ≤ ‖Q v‖ * ‖v‖ :=
+    @re_inner_le_norm ℂ E _ _ _ (Q v) v
+  by_cases hv0 : v = 0
+  · simp [hv0]
+  · have hvpos : 0 < ‖v‖ := norm_pos_iff.mpr hv0
+    have hmul : γ * ‖v‖ * ‖v‖ ≤ ‖Q v‖ * ‖v‖ := by
+      calc
+        γ * ‖v‖ * ‖v‖ = γ * ‖v‖ ^ 2 := by ring
+        _ ≤ (⟪P v, v⟫_ℂ).re := henergyP
+        _ ≤ (⟪Q v, v⟫_ℂ).re := henergyPQ
+        _ ≤ ‖Q v‖ * ‖v‖ := hinnerNorm
+    exact le_of_mul_le_mul_right hmul hvpos
+
+end LinearMap.IsPositive
+
+end PositiveGapTransfer
+
+section EigenvalueGap
 
 open scoped BigOperators InnerProductSpace ComplexOrder
 
@@ -332,3 +531,195 @@ theorem mul_norm_sq_le_re_inner_of_spectral_gap
   · exact mul_le_mul_of_nonneg_right hj (sq_nonneg _)
 
 end Matrix.IsHermitian
+
+end EigenvalueGap
+
+section BoundedCongruenceGap
+
+/-!
+## Spectral gaps under bounded invertible congruences
+
+Let \(P\) be positive with gap \(\delta\) above its kernel, and let
+\(e\) be an invertible linear map satisfying
+\(\lVert e^{-1}w\rVert \le C\lVert w\rVert\).
+Then \(e^*Pe\) is positive, its kernel is \(e^{-1}(\ker P)\), and
+its gap is at least \(\delta/C^2\).
+
+The constant depends only on the inverse bound. In particular, a deformation
+supported on a bounded number of sites can use this estimate once its inverse
+bound has been established independently of the size of the system.
+
+Moved from TNLean, `TNLean/MPS/ParentHamiltonian/Martingale/BoundedCongruenceGap.lean` at
+commit `414a18fb88`, with no change to the statements.
+-/
+
+open scoped InnerProductSpace
+
+variable {E F : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
+  [FiniteDimensional ℂ E] [NormedAddCommGroup F] [InnerProductSpace ℂ F]
+  [FiniteDimensional ℂ F]
+
+/-- Invertible congruence pulls back the kernel, without requiring positivity. -/
+theorem LinearEquiv.ker_adjoint_congruence (e : E ≃ₗ[ℂ] F) (P : F →ₗ[ℂ] F) :
+    LinearMap.ker (e.toLinearMap.adjoint ∘ₗ P ∘ₗ e.toLinearMap) =
+      (LinearMap.ker P).comap e.toLinearMap := by
+  ext v
+  change e.toLinearMap.adjoint (P (e v)) = 0 ↔ P (e v) = 0
+  constructor
+  · intro hv
+    apply (inner_self_eq_zero (𝕜 := ℂ)).mp
+    calc
+      ⟪P (e v), P (e v)⟫_ℂ =
+          ⟪e.toLinearMap.adjoint (P (e v)), e.symm (P (e v))⟫_ℂ := by
+        rw [LinearMap.adjoint_inner_left]
+        simp
+      _ = 0 := by rw [hv, inner_zero_left]
+  · intro hv
+    simp [hv]
+
+namespace LinearMap.IsPositive
+
+/-- A bounded inverse loses at most a factor \(C^2\) in a positive
+operator's norm gap under congruence. The kernel in the conclusion is the
+actual kernel of \(e^*Pe\). -/
+theorem norm_gap_adjoint_congruence_of_inverse_bound
+    {P : F →ₗ[ℂ] F} (hP : P.IsPositive) (e : E ≃ₗ[ℂ] F)
+    {δ C : ℝ} (hδ : 0 ≤ δ) (hC : 0 < C)
+    (hInverse : ∀ w : F, ‖e.symm w‖ ≤ C * ‖w‖)
+    (hGap : ∀ w ∈ (LinearMap.ker P)ᗮ, δ * ‖w‖ ≤ ‖P w‖) :
+    ∀ v ∈ (LinearMap.ker (e.toLinearMap.adjoint ∘ₗ P ∘ₗ e.toLinearMap))ᗮ,
+      (δ / C ^ 2) * ‖v‖ ≤ ‖(e.toLinearMap.adjoint ∘ₗ P ∘ₗ e.toLinearMap) v‖ := by
+  intro v hv
+  let Q := e.toLinearMap.adjoint ∘ₗ P ∘ₗ e.toLinearMap
+  let w := (LinearMap.ker P)ᗮ.starProjection (e v)
+  let u := e.symm ((LinearMap.ker P).starProjection (e v))
+  have hproj : P ((LinearMap.ker P).starProjection (e v)) = 0 :=
+    LinearMap.mem_ker.mp (Submodule.starProjection_apply_mem _ _)
+  have hu : u ∈ LinearMap.ker Q := by
+    rw [show LinearMap.ker Q = (LinearMap.ker P).comap e.toLinearMap from
+      e.ker_adjoint_congruence P]
+    change P (e u) = 0
+    simpa only [u, e.apply_symm_apply] using hproj
+  have horth : ⟪v, u⟫_ℂ = 0 :=
+    Submodule.inner_left_of_mem_orthogonal hu hv
+  have hdecomp : e.symm w = v - u := by
+    simp only [w, u, Submodule.starProjection_orthogonal_val, map_sub,
+      e.symm_apply_apply]
+  have hnorm : ‖v‖ ≤ C * ‖w‖ := calc
+    ‖v‖ ≤ ‖v - u‖ := by
+      have hsq : ‖v - u‖ ^ 2 = ‖v‖ ^ 2 + ‖u‖ ^ 2 := by
+        simpa only [horth, RCLike.zero_re, mul_zero, sub_zero] using
+          norm_sub_sq (𝕜 := ℂ) v u
+      nlinarith [norm_nonneg (v - u), norm_nonneg v, sq_nonneg ‖u‖]
+    _ = ‖e.symm w‖ := congrArg norm hdecomp.symm
+    _ ≤ C * ‖w‖ := hInverse w
+  have hnormSq : ‖v‖ ^ 2 ≤ C ^ 2 * ‖w‖ ^ 2 := by
+    simpa only [mul_pow] using pow_le_pow_left₀ (norm_nonneg v) hnorm 2
+  have henergy : (⟪Q v, v⟫_ℂ).re = (⟪P w, w⟫_ℂ).re := by
+    change (⟪e.toLinearMap.adjoint (P (e v)), v⟫_ℂ).re = _
+    rw [LinearMap.adjoint_inner_left]
+    change (⟪P (e v), e v⟫_ℂ).re = (⟪P w, w⟫_ℂ).re
+    simp only [w, Submodule.starProjection_orthogonal_val, map_sub, hproj,
+      sub_zero, hP.isSymmetric (e v)]
+  have hquadratic : (δ / C ^ 2) * ‖v‖ ^ 2 ≤ ‖Q v‖ * ‖v‖ := calc
+    (δ / C ^ 2) * ‖v‖ ^ 2 ≤ (δ / C ^ 2) * (C ^ 2 * ‖w‖ ^ 2) :=
+      mul_le_mul_of_nonneg_left hnormSq (by positivity)
+    _ = δ * ‖w‖ ^ 2 := by field_simp [ne_of_gt hC]
+    _ ≤ (⟪P w, w⟫_ℂ).re := hP.re_inner_ge_of_norm_gap hδ hGap w
+      (Submodule.starProjection_apply_mem _ _)
+    _ = (⟪Q v, v⟫_ℂ).re := henergy.symm
+    _ ≤ ‖Q v‖ * ‖v‖ := re_inner_le_norm (𝕜 := ℂ) _ _
+  by_cases hv0 : v = 0
+  · simp [hv0]
+  · exact (mul_le_mul_iff_left₀ (norm_pos_iff.mpr hv0)).mp
+      (by simpa only [pow_two, mul_assoc, mul_comm, mul_left_comm] using hquadratic)
+
+end LinearMap.IsPositive
+
+end BoundedCongruenceGap
+
+section CompactKernelGap
+
+/-!
+## Uniform norm gaps on compact parameter sets
+
+Locally uniform norm lower bounds, valid for every length beyond a threshold, have one positive
+constant and one threshold over a compact parameter set. A continuous family of operators on a
+finite-dimensional Hilbert space has a uniform positive lower norm bound away from its kernels on
+a compact parameter set, provided the orthogonal kernel projections are continuous. Positivity
+and self-adjointness are unnecessary for these norm estimates. Both are the compactness step of
+the gap argument in arXiv:1010.3732, Appendix A, lines 2575--2578; the matrix form of the second
+statement is `IsCompact.exists_uniform_isGapped`.
+
+Moved from TNLean, `TNLean/Algebra/CompactGapBounds.lean` and
+`TNLean/Algebra/CompactKernelGap.lean` at commit `414a18fb88`, with no change to the statements.
+
+### Main results
+
+* `IsCompact.exists_uniform_norm_lower_bound_on_tail` — locally uniform norm lower bounds beyond
+  a threshold are uniform on a compact set.
+* `ContinuousLinearMap.exists_uniform_norm_gap_of_compact` — a uniform norm gap away from the
+  kernels on a compact parameter set.
+-/
+
+open scoped Topology
+
+namespace IsCompact
+
+/-- Locally uniform norm lower bounds on a tail have one positive constant
+and one threshold over a compact parameter set. This specializes the compactness
+step of arXiv:1010.3732, Appendix A; linearity is unnecessary. -/
+theorem exists_uniform_norm_lower_bound_on_tail
+    {X : Type*} [TopologicalSpace X] {S : Set X} (hS : IsCompact S)
+    {E F : ℕ → Type*} [∀ N, SeminormedAddCommGroup (E N)]
+    [∀ N, SeminormedAddCommGroup (F N)]
+    (H : X → ∀ N : ℕ, E N → F N) (V : X → ∀ N : ℕ, Set (E N))
+    (hlocal : ∀ x ∈ S, ∃ δ : ℝ, 0 < δ ∧ ∃ N₀ : ℕ,
+      ∀ᶠ y in 𝓝 x, ∀ N : ℕ, N₀ ≤ N → ∀ v ∈ V y N, δ * ‖v‖ ≤ ‖H y N v‖) :
+    ∃ δ : ℝ, 0 < δ ∧ ∃ N₀ : ℕ, ∀ x ∈ S, ∀ N : ℕ, N₀ ≤ N →
+      ∀ v ∈ V x N, δ * ‖v‖ ≤ ‖H x N v‖ := by
+  apply hS.exists_uniform_pos_nat_bounds
+    (fun δ N₀ x => ∀ N : ℕ, N₀ ≤ N → ∀ v ∈ V x N, δ * ‖v‖ ≤ ‖H x N v‖)
+  · intro δ δ' N₀ x hle hgap N hN v hv
+    exact (mul_le_mul_of_nonneg_right hle (norm_nonneg v)).trans (hgap N hN v hv)
+  · intro δ N₀ N₁ x hle hgap N hN
+    exact hgap N (hle.trans hN)
+  · exact hlocal
+
+end IsCompact
+
+namespace ContinuousLinearMap
+
+/-- Continuous operators with continuous orthogonal kernel projections have a
+uniform positive norm gap on compact parameter sets. The pointwise gaps follow
+from finite dimensionality. Source: arXiv:1010.3732, Appendix A, lines 2575--2578,
+for the application to finite-window parent Hamiltonians. -/
+theorem exists_uniform_norm_gap_of_compact
+    {X E : Type*} [TopologicalSpace X]
+    [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E]
+    (H : X → E →L[ℂ] E) (hH : Continuous H)
+    (hK : Continuous fun x => (LinearMap.ker (H x).toLinearMap).starProjection)
+    {S : Set X} (hS : IsCompact S) :
+    ∃ δ : ℝ, 0 < δ ∧ ∀ x ∈ S,
+      ∀ v ∈ (LinearMap.ker (H x).toLinearMap)ᗮ, δ * ‖v‖ ≤ ‖H x v‖ := by
+  suffices ∃ δ : ℝ, 0 < δ ∧ ∃ N : ℕ, ∀ x ∈ S,
+      ∀ v ∈ (LinearMap.ker (H x).toLinearMap)ᗮ, δ * ‖v‖ ≤ ‖H x v‖ by
+    obtain ⟨δ, hδ, _, hgap⟩ := this
+    exact ⟨δ, hδ, hgap⟩
+  apply hS.exists_uniform_pos_nat_bounds
+    (fun δ _ x => ∀ v ∈ (LinearMap.ker (H x).toLinearMap)ᗮ,
+      δ * ‖v‖ ≤ ‖H x v‖)
+  · exact fun hle hgap v hv =>
+      (mul_le_mul_of_nonneg_right hle (norm_nonneg v)).trans (hgap v hv)
+  · exact fun _ hgap => hgap
+  · intro x _hx
+    obtain ⟨γ, hγ, hgap⟩ :=
+      (H x).toLinearMap.exists_pos_mul_norm_le_of_mem_orthogonal_ker
+    refine ⟨γ / 2, half_pos hγ, 0, ?_⟩
+    apply eventually_norm_gap_on_orthogonal H
+      (fun y => LinearMap.ker (H y).toLinearMap)
+      hH.continuousAt hK.continuousAt le_rfl hγ (half_lt_self hγ) hgap
+
+end ContinuousLinearMap
+
+end CompactKernelGap

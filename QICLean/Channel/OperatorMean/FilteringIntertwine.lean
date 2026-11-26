@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Channel.OperatorMean.Defs
-import QICLean.Analysis.FunctionalCalculus.RealPowerIntertwine
+import QICLean.Analysis.FunctionalCalculus.MatrixPowers
 import QICLean.Algebra.Matrix.MatrixAux
 
 /-!

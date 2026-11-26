@@ -6,7 +6,7 @@ Authors: QICLean contributors
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Order
 import Mathlib.Analysis.Matrix.Order
-import QICLean.Analysis.Norm.MatrixToEuclideanRankOne
+import Mathlib.Analysis.InnerProductSpace.PiL2
 
 /-!
 # Approximate projectors
@@ -40,6 +40,7 @@ Estimates for operators that approximate an orthogonal projection in operator no
 * `Matrix.norm_toEuclideanCLM_sub_self_le_of_posSemidef`: a positive contraction `O` with
   `1 − ε ≤ ‖O Ψ‖` for a unit vector `Ψ` satisfies `‖O Ψ − Ψ‖ ≤ √(2ε)`.
 * `Matrix.norm_inner_sub_le_of_projector_factorization`: the correlation bound.
+* `Matrix.toEuclideanLin_vecMulVec_star_self_apply`: rank-one matrices acting on Euclidean space.
 
 ## References
 
@@ -47,6 +48,37 @@ Estimates for operators that approximate an orthogonal projection in operator no
   `law16.tex`: Lemma 1, lines 246–267; proof of Lemma 2, lines 317–331, eq. `hg`; Lemma 3,
   lines 627–692; note added, lines 916–925 (the displayed bound at lines 919–920).
 -/
+
+section MatrixToEuclideanRankOne
+
+/-!
+## Rank-one matrices acting on Euclidean space
+
+The rank-one matrix `|Ω⟩⟨Ω| = vecMulVec Ω (star Ω)` acts on Euclidean space by
+`ψ ↦ ⟨Ω, ψ⟩ Ω`.
+
+### Main results
+
+* `Matrix.toEuclideanLin_vecMulVec_star_self_apply`: `|Ω⟩⟨Ω| ψ = ⟨Ω, ψ⟩ Ω`.
+-/
+
+open scoped InnerProductSpace
+
+namespace Matrix
+
+variable {n : Type*} [Fintype n] [DecidableEq n]
+
+/-- The rank-one matrix `|Ω⟩⟨Ω|` acts by `ψ ↦ ⟨Ω, ψ⟩ Ω`. -/
+theorem toEuclideanLin_vecMulVec_star_self_apply (Ω ψ : EuclideanSpace ℂ n) :
+    toEuclideanLin (vecMulVec (WithLp.ofLp Ω) (star (WithLp.ofLp Ω))) ψ = ⟪Ω, ψ⟫_ℂ • Ω := by
+  rw [← InnerProductSpace.symm_toEuclideanLin_rankOne, LinearEquiv.apply_symm_apply]
+  exact InnerProductSpace.rankOne_apply Ω Ω ψ
+
+end Matrix
+
+end MatrixToEuclideanRankOne
+
+section ApproximateProjector
 
 section
 
@@ -463,3 +495,5 @@ theorem norm_inner_sub_le_of_projector_factorization {Ω : EuclideanSpace ℂ n}
 end Matrix
 
 end
+
+end ApproximateProjector

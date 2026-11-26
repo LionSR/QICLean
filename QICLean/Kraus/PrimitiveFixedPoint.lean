@@ -5,7 +5,6 @@ Authors: QICLean contributors
 -/
 
 import QICLean.Kraus.PrimitiveFixedPoint.Basic
-import QICLean.Kraus.PrimitiveFixedPoint.Peripheral
 import QICLean.Kraus.PrimitiveFixedPoint.Irreducible
 import QICLean.Kraus.PrimitiveFixedPoint.FromPeripheral
 

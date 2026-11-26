@@ -8,14 +8,14 @@ import QICLean.Spectral.Eigenvalue.MatrixReindexEuclidean
 import QICLean.ManyBody.Replica.LowDefect.RegionalLowDefectProjection
 import QICLean.ManyBody.Replica.LowDefect.RegionalRoughLowerNorm
 import QICLean.ManyBody.Replica.LowDefect.RegionalSharpLowerNorm
-import QICLean.ManyBody.Entropy.AuxiliaryPairEntropy
+import QICLean.ManyBody.Entropy.RegionEntropy
 import QICLean.Entropy.Typical.PureCompression
 import QICLean.Entropy.Typical.Density
 import QICLean.ManyBody.Replica.CompressedSite.CompressedTypicalLabelMass
 import QICLean.ManyBody.Replica.Configuration.RegionalFiveFactorCoordinates
 import QICLean.ManyBody.Replica.Bell.PrevectorRoughUpper
 import QICLean.ManyBody.Replica.Bell.PrevectorSharpUpper
-import QICLean.ManyBody.Replica.Metric.SymmetricMeanTreeProduct
+import QICLean.ManyBody.Replica.Metric.SymmetricBandCommute
 import QICLean.Channel.OperatorMean.TreeDerivative
 
 /-!

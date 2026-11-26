@@ -8,9 +8,5 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Representation.YoungSubgroup
 
-import QICLean.Representation.YoungSubgroup.BadCopyLabelDimension
-import QICLean.Representation.YoungSubgroup.GoodAuxiliaryLabelCompression
-import QICLean.Representation.YoungSubgroup.GoodAuxiliaryLabelEntropy
-import QICLean.Representation.YoungSubgroup.GoodAuxiliaryPairCompression
 import QICLean.Representation.YoungSubgroup.GroupedCopies
 import QICLean.Representation.YoungSubgroup.GroupedLabelEntropy

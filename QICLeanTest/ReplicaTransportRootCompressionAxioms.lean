@@ -3,9 +3,9 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.ManyBody.Replica.BandMetric.RootCompression
+import QICLean.ManyBody.Replica.BandMetric.Energy
 import QICLean.ManyBody.Replica.Bell.PinnedCompressedPowers
-import QICLean.ManyBody.Replica.Metric.SymmetricMeanTreeProduct
+import QICLean.ManyBody.Replica.Metric.SymmetricBandCommute
 import Lean.Elab.Command
 import Lean.Util.CollectAxioms
 

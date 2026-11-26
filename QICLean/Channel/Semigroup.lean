@@ -17,7 +17,6 @@ import QICLean.Channel.Semigroup.KossakowskiForm
 import QICLean.Channel.Semigroup.KossakowskiRank
 import QICLean.Channel.Semigroup.LindbladForm
 import QICLean.Channel.Semigroup.LindbladForm.Basic
-import QICLean.Channel.Semigroup.LindbladForm.ChoiCCP
 import QICLean.Channel.Semigroup.LindbladForm.EulerStep
 import QICLean.Channel.Semigroup.LindbladForm.GKSLTheorem
 import QICLean.Channel.Semigroup.LindbladForm.TraceBridge

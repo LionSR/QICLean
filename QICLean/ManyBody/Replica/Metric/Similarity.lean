@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Replica.Metric.MarkedRatioInverse
 import QICLean.ManyBody.Replica.SiteOp
-import QICLean.ManyBody.Entropy.Cut.RegionUnion
+import QICLean.ManyBody.Entropy.Filter.Optimizer
 import QICLean.Analysis.Order.PosSemidefCommute
 
 /-!

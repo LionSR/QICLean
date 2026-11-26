@@ -10,7 +10,7 @@ import QICLean.Analysis.FunctionalCalculus.MatrixSqrt
 import QICLean.Channel.KrausMap.KrausCPTP
 import QICLean.Channel.Schmidt.MaximalOverlap
 import QICLean.Channel.POVM.Basic
-import QICLean.Channel.KrausMap.SingleKraus
+import QICLean.Channel.KrausMap.SingleKrausPositivity
 import QICLean.Algebra.Kronecker.TensorMap
 
 /-!

@@ -9,7 +9,6 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Analysis.TraceNorm
 
 import QICLean.Analysis.TraceNorm.ColumnSelection
-import QICLean.Analysis.TraceNorm.Frobenius
 import QICLean.Analysis.TraceNorm.OptimizedPureStateTraceError
 import QICLean.Analysis.TraceNorm.PowerBound
 import QICLean.Analysis.TraceNorm.PureStateTraceDistance

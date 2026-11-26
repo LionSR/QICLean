@@ -6,6 +6,8 @@ Authors: QICLean contributors
 import QICLean.ManyBody.Replica.Bell.InsertionCoordinates
 import QICLean.ManyBody.Replica.AddedSite.TensorInsertionNorm
 import QICLean.ManyBody.Replica.AddedSite.TensorInsertionSymmetry
+import QICLean.Representation.Permutation.TrivialLabel
+import QICLean.Algebra.Hermitian.OrthogonalProjection
 
 /-!
 # Norm, copy symmetry, and the retained auxiliary label in physical Bell coordinates
@@ -22,6 +24,11 @@ is bundled with the physical X coordinates, whereas R remains an exterior
 site. No equality between these coordinate sets, supplied intertwining,
 symmetry, or nonempty-coordinate hypothesis is used. Zero copies are included.
 
+It also contains the following results.
+
+* `TensorPower.isStarProjection_bellInsertion_symProj`: the symmetric projection after the actual
+  Bell insertion.
+
 ## References
 
 * OpenAI, *A two-dimensional area law from a global spectral gap*,
@@ -31,6 +38,8 @@ symmetry, or nonempty-coordinate hypothesis is used. Zero copies are included.
 -/
 
 open Matrix PermutationRepresentation
+
+section InsertionSymmetry
 
 universe u
 
@@ -177,3 +186,76 @@ theorem labelObservable_mul_bellInsertion_auxiliary (k : ℕ)
   exact Matrix.submatrix_mul _ _ e id id Function.bijective_id
 
 end TensorPower
+
+end
+
+end InsertionSymmetry
+
+section SymmetricPinProjection
+
+/-!
+## The symmetric projection after the actual Bell insertion
+
+Insert a unit Bell-coordinate vector by the specified tensor-power insertion
+in the original physical coordinates. Conjugating the exterior symmetry
+projection by this actual isometry gives an orthogonal projection on the
+original coordinate space. The two auxiliary coordinate types remain
+distinct, and zero copies are included.
+
+The assertion is obtained from the existing finite-group symmetry projection
+and the existing conjugation theorem for star projections. It introduces no
+new range construction or hypothesis asserting that the insertion is an
+isometry.
+
+### References
+
+* OpenAI, *A two-dimensional area law from a global spectral gap*,
+  September 24, 2026, `07-comparators.tex`, lines 283–308,
+  `comparator:pinned-metric`, at revision
+  `adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
+
+-/
+
+universe u
+
+noncomputable section
+
+namespace TensorPower
+
+variable {V : Type u} [Fintype V] [DecidableEq V]
+variable (β : V → Type u) (X : Finset V) (C R : Type u)
+variable [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
+variable [Fintype C] [DecidableEq C] [Fintype R] [DecidableEq R]
+
+omit [DecidableEq C] in
+/-- The literal Bell insertion carries the exterior symmetric projection to
+an orthogonal projection in the original physical coordinates. Its isometry
+property is derived from the unit norm of the inserted vector.
+
+Source: area-law manuscript, `07-comparators.tex`, lines 283–308,
+`comparator:pinned-metric`. -/
+theorem isStarProjection_bellInsertion_symProj (k : ℕ)
+    (b : (ManyBody.RegionConfig β X × C) → ℂ) (hb : ‖WithLp.toLp 2 b‖ = 1) :
+    let e := bellInsertionCopyEquiv β X C R k
+    let J := (addedSiteInsertion (ManyBody.compressedSiteSpace β X R)
+      (ManyBody.RegionConfig β X × C) k b).submatrix e id
+    let Pe := symProj (copyPerm
+      ((v : Option {v // v ∉ X}) → ManyBody.compressedSiteSpace β X R v) k)
+    IsStarProjection (J * Pe * Jᴴ) := by
+  intro e J Pe
+  have hJ : Jᴴ * J = 1 := isIsometry_bellInsertion β X C R k b hb
+  have hU : Jᴴ * (Jᴴ)ᴴ = 1 := by
+    simpa only [Matrix.conjTranspose_conjTranspose] using hJ
+  simpa only [Matrix.conjTranspose_conjTranspose] using
+    IsStarProjection.conjTranspose_mul_mul_of_mul_conjTranspose_eq_one
+      ((exists_labelProj_eq_symProj (G := Equiv.Perm (Fin k))
+        (X := Config k (ManyBody.compressedSiteSpace β X R))).elim (fun l hl ↦
+          Eq.mp (congrArg IsStarProjection (hl (copyPerm
+            ((v : Option {v // v ∉ X}) → ManyBody.compressedSiteSpace β X R v) k)))
+            ⟨labelProj_mul_self _ l, (isHermitian_labelProj _ l).isSelfAdjoint⟩)) Jᴴ hU
+
+end TensorPower
+
+end
+
+end SymmetricPinProjection

@@ -9,13 +9,8 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Analysis.OperatorMean
 
 import QICLean.Analysis.OperatorMean.FiniteTree
-import QICLean.Analysis.OperatorMean.GeometricMeanIntertwine
 import QICLean.Analysis.OperatorMean.MeanTreeExponentialLowerNorm
-import QICLean.Analysis.OperatorMean.MeanTreeIntertwine
 import QICLean.Analysis.OperatorMean.MeanTreeLogFloorExp
-import QICLean.Analysis.OperatorMean.MeanTreeMultibandLowerNorm
-import QICLean.Analysis.OperatorMean.MeanTreeProjectionLogBound
-import QICLean.Analysis.OperatorMean.MeanTreeProjectionMultibandUpper
 import QICLean.Analysis.OperatorMean.MeanTreeProjectionSectors
 import QICLean.Analysis.OperatorMean.MeanTreeProjectionUpper
 import QICLean.Analysis.OperatorMean.MeanTreeUniformExpectation

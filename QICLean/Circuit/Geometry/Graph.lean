@@ -6,7 +6,6 @@ Authors: QICLean contributors
 import Mathlib.Combinatorics.SimpleGraph.Metric
 import QICLean.Circuit.Geometry.Basic
 import QICLean.ManyBody.Sites.Lattice.Chain
-import QICLean.ManyBody.Sites.Lattice.PathGraph
 
 /-!
 # The geometry of the edges of a graph, and windows of a chain

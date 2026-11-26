@@ -4,7 +4,6 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Analysis.Projection.ProjectedPositiveEnergy
-import QICLean.Analysis.Projection.ProjectedTrialSpaceEnergy
 import QICLean.Spectral.Eigenvalue.RitzCompression
 import QICLean.Analysis.Subspace.ViableSubspace
 import QICLean.Analysis.Order.LowEnergyPerturbation

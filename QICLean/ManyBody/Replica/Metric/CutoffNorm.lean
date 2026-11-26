@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Replica.Metric.Similarity
-import QICLean.Representation.Permutation.SchurLabelTails
+import QICLean.Representation.Permutation.SchurSurprisal
 
 /-!
 # Replica metrics on a Schur-label cutoff

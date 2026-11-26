@@ -13,7 +13,6 @@ import QICLean.Algebra.Module.CommonFixedSubmodule
 import QICLean.Algebra.Module.CoveringMatching
 import QICLean.Algebra.Module.DirectSumBlockDiagonal
 import QICLean.Algebra.Module.FinSpanOfFinrank
-import QICLean.Algebra.Module.FlagBlockTriangular
 import QICLean.Algebra.Module.MultilinearSelectedSum
 import QICLean.Algebra.Module.QuadraticFormRadical
 import QICLean.Algebra.Module.Subquotient

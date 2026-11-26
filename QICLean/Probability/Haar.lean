@@ -11,5 +11,4 @@ Authors: QICLean contributors
 import QICLean.Probability.Haar.NativeRankUnitarySampling
 import QICLean.Probability.Haar.Projection
 import QICLean.Probability.Haar.RankUnitaryProductHaar
-import QICLean.Probability.Haar.RankUnitaryUniformSampling
 import QICLean.Probability.Haar.UnitaryHaar

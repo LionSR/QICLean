@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Replica.LowDefect.RegionalLowDefectMass
-import QICLean.ManyBody.Replica.Metric.SymmetricBandLabelPreservation
+import QICLean.ManyBody.Replica.Metric.SymmetricBandCommute
 import QICLean.ManyBody.Replica.Metric.RegionalReplicaMetricRegions
 
 /-!

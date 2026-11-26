@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Entropy.Conditional.Collision
-import QICLean.Analysis.FunctionalCalculus.SpectralPhase
+import QICLean.Analysis.FunctionalCalculus.SpectralPowers
 
 /-!
 # Conditional phase continuity

@@ -12,7 +12,6 @@ import QICLean.Channel.Irreducible.AdjointFamily
 import QICLean.Channel.Irreducible.Basic
 import QICLean.Channel.Irreducible.CollatzWielandt
 import QICLean.Channel.Irreducible.Ergodicity
-import QICLean.Channel.Irreducible.FixedPoint
 import QICLean.Channel.Irreducible.FixedPointUniqueness
 import QICLean.Channel.Irreducible.FromSpectral
 import QICLean.Channel.Irreducible.Growth
@@ -27,7 +26,6 @@ import QICLean.Channel.Irreducible.KrausSetup
 import QICLean.Channel.Irreducible.PerronFrobenius
 import QICLean.Channel.Irreducible.PositiveMapErgodicity
 import QICLean.Channel.Irreducible.PositiveMapSpectralCharacterization
-import QICLean.Channel.Irreducible.Scaling
 import QICLean.Channel.Irreducible.Similarity
 import QICLean.Channel.Irreducible.SpectralRadius
 import QICLean.Channel.Irreducible.StationarySupport

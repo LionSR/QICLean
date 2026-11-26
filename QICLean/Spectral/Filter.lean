@@ -8,7 +8,6 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Spectral.Filter
 
-import QICLean.Spectral.Filter.ChebyshevGroundFilter
 import QICLean.Spectral.Filter.ChebyshevSpectralFilter
 import QICLean.Spectral.Filter.ChebyshevSpectralProjector
 import QICLean.Spectral.Filter.DensityPowerIteration
@@ -18,17 +17,12 @@ import QICLean.Spectral.Filter.ExponentialWeights
 import QICLean.Spectral.Filter.FilterLocality
 import QICLean.Spectral.Filter.Gaussian
 import QICLean.Spectral.Filter.GroundSpaceAffineFilter
-import QICLean.Spectral.Filter.PhaseNormalization
-import QICLean.Spectral.Filter.PhysicalPowerFilter
 import QICLean.Spectral.Filter.PhysicalPowerFilterLowerGap
 import QICLean.Spectral.Filter.PositiveReplacement
-import QICLean.Spectral.Filter.PowerSpectralFilter
 import QICLean.Spectral.Filter.ShiftedPowerDerivative
 import QICLean.Spectral.Filter.ShiftedSoftHardTruncation
-import QICLean.Spectral.Filter.SoftHardTruncation
 import QICLean.Spectral.Filter.SoftTruncationAccuracy
 import QICLean.Spectral.Filter.SoftTruncationCoercivity
-import QICLean.Spectral.Filter.SoftTruncationCommutingFamily
 import QICLean.Spectral.Filter.SoftTruncationHardResidual
 import QICLean.Spectral.Filter.SoftTruncationHeatExpansion
 import QICLean.Spectral.Filter.SoftTruncationHighProjection

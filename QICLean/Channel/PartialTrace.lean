@@ -14,7 +14,6 @@ import QICLean.Channel.PartialTrace.ConditionalSkewSetup
 import QICLean.Channel.PartialTrace.ConditionalSkewStrip
 import QICLean.Channel.PartialTrace.MarginalPhaseFaithful
 import QICLean.Channel.PartialTrace.MarginalPhaseSetup
-import QICLean.Channel.PartialTrace.MarginalRank
 import QICLean.Channel.PartialTrace.MarginalSupportAbsorption
 import QICLean.Channel.PartialTrace.PartialTrace
 import QICLean.Channel.PartialTrace.PartialTraceDomination

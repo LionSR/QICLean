@@ -5,7 +5,6 @@ Authors: QICLean contributors
 -/
 import Mathlib.Tactic.Abel
 import QICLean.Analysis.Calculus.CauchyTransform
-import QICLean.Spectral.Filter.Gaussian.CommutatorSeries
 import QICLean.Spectral.Filter.Gaussian.MatrixIntegral
 import QICLean.Spectral.Filter.PositiveReplacement
 import QICLean.ManyBody.Dynamics.HeisenbergEvolution

@@ -191,8 +191,8 @@
     "GaussianFilter.gaussian_error_bounds_of_parameter_constants": "QICLean/Analysis/Parameter/ParameterChoice.lean",
     "GaussianFilter.exists_gaussian_parameters": "QICLean/Analysis/Parameter/ParameterChoice.lean",
     "GaussianFilter.exists_gaussian_parameters_of_polynomial_exponent": "QICLean/Analysis/Parameter/ParameterChoice.lean",
-    "GaussianFilter.exists_uniform_truncated_ground_estimate": "QICLean/Spectral/Filter/Gaussian/UniformGroundEstimate.lean",
-    "GaussianFilter.exists_uniform_physicalBuffer_filter": "QICLean/Entropy/MutualInformation/PhysicalBufferUniform.lean"
+    "GaussianFilter.exists_uniform_truncated_ground_estimate": "QICLean/Spectral/Filter/Gaussian/GroundEstimate.lean",
+    "GaussianFilter.exists_uniform_physicalBuffer_filter": "QICLean/Entropy/MutualInformation/PhysicalBuffer.lean"
   },
   "statement_count": 38,
   "proof_count": 33,

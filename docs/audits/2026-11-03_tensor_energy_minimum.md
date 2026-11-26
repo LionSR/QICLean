@@ -15,7 +15,7 @@ The positive dimension of S is proved from w; it is not an extra premise.
 The two public results are
 `Submodule.exists_unit_re_inner_le_of_tensor_energy` and
 `Submodule.exists_compression_min_eigenvalue_le_of_tensor_energy` in
-`QICLean/Spectral/Eigenvalue/TensorEnergyMinimum.lean`.
+`QICLean/Spectral/Eigenvalue/CompressionEnergyBounds.lean`.
 
 ## Argument and scope
 

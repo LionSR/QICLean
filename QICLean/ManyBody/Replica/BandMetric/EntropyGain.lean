@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.Logarithm.CfcLogListProduct
+import QICLean.Analysis.FunctionalCalculus.MatrixPowers
 import QICLean.ManyBody.Replica.Symbol.CoherentLog
 import QICLean.ManyBody.Replica.BandMetric.Prerequisites
 import QICLean.ManyBody.Replica.BandMetric.States

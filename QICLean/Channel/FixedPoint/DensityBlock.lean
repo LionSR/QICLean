@@ -8,7 +8,5 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Channel.FixedPoint.DensityBlock
 
-import QICLean.Channel.FixedPoint.DensityBlock.FixedPointDensityBlocks
 import QICLean.Channel.FixedPoint.DensityBlock.FullSupportBlockRetraction
 import QICLean.Channel.FixedPoint.DensityBlock.SupportCompressedDensityBlocks
-import QICLean.Channel.FixedPoint.DensityBlock.TraceAdjointDensityBlocks

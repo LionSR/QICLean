@@ -9,7 +9,6 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Circuit.Geometry
 
 import QICLean.Circuit.Geometry.Basic
-import QICLean.Circuit.Geometry.Block
 import QICLean.Circuit.Geometry.Graph
 import QICLean.Circuit.Geometry.Hom
 import QICLean.Circuit.Geometry.Port

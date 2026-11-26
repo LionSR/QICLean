@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Sirui Lu
 -/
 import QICLean.ManyBody.Replica.BandMetric.SymmetricMetricFloor
-import QICLean.Channel.OperatorMean.MetricFloor
+import QICLean.Channel.OperatorMean.NormDerivative
 import Lean.Elab.Command
 import Lean.Util.CollectAxioms
 

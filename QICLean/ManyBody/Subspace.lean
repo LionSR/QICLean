@@ -10,8 +10,6 @@ Authors: QICLean contributors
 
 import QICLean.ManyBody.Subspace.ReferenceFilterTrimming
 import QICLean.ManyBody.Subspace.RegionalTensorMerge
-import QICLean.ManyBody.Subspace.RegionalTensorMergeMeasurable
 import QICLean.ManyBody.Subspace.Sampling
-import QICLean.ManyBody.Subspace.TerminalFamilyReferenceTrimming
 import QICLean.ManyBody.Subspace.Trimming
 import QICLean.ManyBody.Subspace.TrimmingInvariance

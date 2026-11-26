@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Kraus.PrimitiveFixedPoint.Basic
 import QICLean.Channel.KrausMap.KrausMap
-import QICLean.Channel.Irreducible.FixedPoint
+import QICLean.Channel.Irreducible.FixedPointUniqueness
 import QICLean.Channel.Irreducible.FromSpectral
 import QICLean.Channel.Irreducible.InvariantProjection
 

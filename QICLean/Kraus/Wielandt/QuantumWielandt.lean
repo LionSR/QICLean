@@ -7,7 +7,7 @@ import QICLean.Spectral.Eigenvalue.NonzeroTraceEigenvalue
 import QICLean.Kraus.Wielandt.PrimitiveCriterion
 import QICLean.Kraus.Blocking
 import QICLean.Kraus.Wielandt.Inequality.EigenvectorSpreading
-import QICLean.Kraus.Wielandt.RectangularSpan.EventualFullness
+import QICLean.Kraus.Wielandt.RectangularSpan.Universality
 import QICLean.Kraus.Wielandt.SpanGrowth.InvertibleWordSpan
 import QICLean.Kraus.Wielandt.SpanGrowth.NonzeroTraceProduct
 

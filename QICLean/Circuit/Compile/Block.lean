@@ -6,7 +6,7 @@ Authors: QICLean contributors
 import QICLean.Circuit.Compile.Encoding
 import QICLean.Circuit.Core.Coarsen
 import QICLean.Circuit.Core.Substitute
-import QICLean.Circuit.Geometry.Block
+import QICLean.Circuit.Geometry.Hom
 
 /-!
 # Blocking protocols

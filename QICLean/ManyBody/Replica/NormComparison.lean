@@ -10,4 +10,3 @@ Authors: QICLean contributors
 
 import QICLean.ManyBody.Replica.NormComparison.Bounds
 import QICLean.ManyBody.Replica.NormComparison.Data
-import QICLean.ManyBody.Replica.NormComparison.Statement

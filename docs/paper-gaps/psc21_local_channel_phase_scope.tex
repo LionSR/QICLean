@@ -93,7 +93,7 @@ on one port qudit of each of two neighbouring sites, a protocol of depth $T$
 is realised in depth $2kT$ on the registers encoded in the data
 qudits.\footnote{Formal declaration:
     \leanid{QuantumCircuit.IsBoundedProtocol.exists_portRing} in
-    \doclink{QICLean/Circuit/Compile/PortProtocol}.} The factor $2k$ is
+    \doclink{QICLean/Circuit/Compile/PortCode}.} The factor $2k$ is
 formalization-side. The inclusion between the two asymptotic conversion
 relations is not proved here: it also needs the bound on the bases along the
 protocols of the enlarged-site model.
@@ -131,7 +131,7 @@ product with an environment vector.\footnote{Formal declarations:
     \leanid{QuantumCircuit.Circuit.isUnitaryDilation} in
     \doclink{QICLean/Circuit/Compile/Dilation} and
     \leanid{QuantumCircuit.IsBoundedProtocol.exists_portRing} in
-    \doclink{QICLean/Circuit/Compile/PortProtocol}.} Once
+    \doclink{QICLean/Circuit/Compile/PortCode}.} Once
 those source-model depth bounds are established, the contraction of the
 trace norm supplies the same error estimate.
 

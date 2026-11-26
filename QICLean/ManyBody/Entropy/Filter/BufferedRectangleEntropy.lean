@@ -6,9 +6,9 @@ Authors: QICLean contributors
 import QICLean.ManyBody.Sites.Lattice.IntegerRectangle
 import QICLean.ManyBody.Sites.Lattice.RectangleColumns
 import QICLean.ManyBody.Entropy.Typical.PlaneMarginalTails
-import QICLean.ManyBody.Entropy.QuditRegionEntropy
+import QICLean.ManyBody.Entropy.RegionEntropyInequalities
 import QICLean.ManyBody.Entropy.RegionEntropy
-import QICLean.ManyBody.Entropy.Cut.RegionUnion
+import QICLean.ManyBody.Entropy.Filter.Optimizer
 import QICLean.ManyBody.Entropy.Filter.BufferDiscount
 import QICLean.Analysis.Real.HarmonicWeights
 import QICLean.Entropy.Surprisal.TailRadiusWeights

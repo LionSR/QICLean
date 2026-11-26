@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Channel.Schwarz.EntropicJensen
+import QICLean.Channel.Schwarz.OperatorConvexity
 
 /-! Axiom and singular-boundary regressions for Wolf Equation (5.33). -/
 

@@ -15,6 +15,5 @@ import QICLean.Entropy.MutualInformation.MutualInformation
 import QICLean.Entropy.MutualInformation.OperatorSchmidt
 import QICLean.Entropy.MutualInformation.PhysicalBuffer
 import QICLean.Entropy.MutualInformation.PhysicalBufferOverlap
-import QICLean.Entropy.MutualInformation.PhysicalBufferUniform
 import QICLean.Entropy.MutualInformation.ProductMarginals
 import QICLean.Entropy.MutualInformation.PurificationSplitting

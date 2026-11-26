@@ -10,7 +10,6 @@ Authors: QICLean contributors
 
 import QICLean.ManyBody.Dynamics.BoundedDegreeImaginaryTime
 import QICLean.ManyBody.Dynamics.CommutatorRecursion
-import QICLean.ManyBody.Dynamics.ComponentLocality
 import QICLean.ManyBody.Dynamics.DisjointRelativeEvolution
 import QICLean.ManyBody.Dynamics.GraphGrowth
 import QICLean.ManyBody.Dynamics.GraphLocalization
@@ -18,7 +17,6 @@ import QICLean.ManyBody.Dynamics.GraphPropagation
 import QICLean.ManyBody.Dynamics.HeisenbergEvolution
 import QICLean.ManyBody.Dynamics.Interaction
 import QICLean.ManyBody.Dynamics.InteractionOperations
-import QICLean.ManyBody.Dynamics.InteractionSum
 import QICLean.ManyBody.Dynamics.MetricGraph
 import QICLean.ManyBody.Dynamics.ProductFormula
 import QICLean.ManyBody.Dynamics.ProjectedRelativeEvolution

@@ -47,6 +47,8 @@ existence of splitting data of error at most `L^{-p}`,
   `QuantumCircuit.Party.Sheet.exists_exchangeWord_of_splittingData`.
 * `QuantumCircuit.Party.Sheet.op_renameWord`, `QuantumCircuit.Party.Sheet.op_correctionWord`,
   `QuantumCircuit.Party.Sheet.exchangeOp_eq`.
+* `QuantumCircuit.Party.Sheet.twoConfigEquiv_symm_permCongr_pairSwap`: the swap `F_Y` read on
+  the configurations of the two sheets before and after an exchange is the renaming.
 
 ## References
 
@@ -312,7 +314,7 @@ noncomputable def renameWord :
 
 omit [Fintype P] in
 /-- The swap `F_Y` read on the two sheets before and after the exchange is the renaming. -/
-private theorem twoConfigEquiv_symm_permCongr_pairSwap
+theorem twoConfigEquiv_symm_permCongr_pairSwap
     (y : Config fun p ↦ (swapIn S₁ S₂ Y).system q p × (swapIn S₂ S₁ Y).system q p) :
     (twoConfigEquiv q S₁ S₂).symm ((Equiv.arrowProdEquivProdArrow ι _ _).permCongr
         (pairSwap (X := fun _ : ι ↦ Fin q) Y) (twoConfigEquiv q _ _ y)) =

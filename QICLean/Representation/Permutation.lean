@@ -8,7 +8,6 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Representation.Permutation
 
-import QICLean.Representation.Permutation.CentralLabelFunction
 import QICLean.Representation.Permutation.CommutantDimension
 import QICLean.Representation.Permutation.FiniteGroupCommutant
 import QICLean.Representation.Permutation.IsotypicDimension
@@ -19,10 +18,7 @@ import QICLean.Representation.Permutation.MergeExponential
 import QICLean.Representation.Permutation.MergeMoment
 import QICLean.Representation.Permutation.PermutationRepresentation
 import QICLean.Representation.Permutation.RegularBlocking
-import QICLean.Representation.Permutation.SchurLabelCutoff
-import QICLean.Representation.Permutation.SchurLabelMomentBounds
 import QICLean.Representation.Permutation.SchurLabelMoments
-import QICLean.Representation.Permutation.SchurLabelTails
 import QICLean.Representation.Permutation.SchurSurprisal
 import QICLean.Representation.Permutation.SignedPermutationSpan
 import QICLean.Representation.Permutation.TrivialLabel

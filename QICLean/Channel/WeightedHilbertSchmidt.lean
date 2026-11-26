@@ -10,7 +10,7 @@ import QICLean.Channel.Choi.RectangularChoi
 import QICLean.Analysis.Isometry.CoisometricCompression
 import QICLean.Analysis.FunctionalCalculus.MatrixSqrt
 import QICLean.Channel.Peripheral.Spectrum.UnitalKraus
-import QICLean.Channel.KrausMap.SingleKraus
+import QICLean.Channel.KrausMap.SingleKrausPositivity
 import QICLean.Analysis.Support.Compression
 
 import Mathlib.Analysis.InnerProductSpace.Adjoint

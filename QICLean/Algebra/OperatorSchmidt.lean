@@ -10,17 +10,8 @@ Authors: QICLean contributors
 
 import QICLean.Algebra.OperatorSchmidt.Basic
 import QICLean.Algebra.OperatorSchmidt.Bounds
-import QICLean.Algebra.OperatorSchmidt.CommutingPolynomialSchmidtRank
 import QICLean.Algebra.OperatorSchmidt.LocalPolynomialSchmidtRank
 import QICLean.Algebra.OperatorSchmidt.MatrixFactorExchange
 import QICLean.Algebra.OperatorSchmidt.MonomialEvaluationSchmidtRank
-import QICLean.Algebra.OperatorSchmidt.OneMarkerWeightedSchmidtRank
 import QICLean.Algebra.OperatorSchmidt.OperatorRightContraction
-import QICLean.Algebra.OperatorSchmidt.OperatorSchmidtCut
-import QICLean.Algebra.OperatorSchmidt.PrescribedFactors
-import QICLean.Algebra.OperatorSchmidt.Realignment
-import QICLean.Algebra.OperatorSchmidt.Reindex
-import QICLean.Algebra.OperatorSchmidt.Submatrix
-import QICLean.Algebra.OperatorSchmidt.TripartitePolynomialSchmidtRank
-import QICLean.Algebra.OperatorSchmidt.TwoCuts
 import QICLean.Algebra.OperatorSchmidt.WeightedFrequencySchmidtRank

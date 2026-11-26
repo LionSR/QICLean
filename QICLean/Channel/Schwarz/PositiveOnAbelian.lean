@@ -5,7 +5,6 @@ Authors: TNLean contributors
 -/
 import QICLean.Channel.Schwarz.PositiveOnAbelian.Basic
 import QICLean.Channel.Schwarz.PositiveOnAbelian.Characterization
-import QICLean.Channel.Schwarz.PositiveOnAbelian.Consequences
 
 /-!
 # Positive maps on commuting / abelian matrix domains

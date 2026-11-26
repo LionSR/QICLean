@@ -23,7 +23,6 @@ import QICLean.Channel.Determinant.Basic
 import QICLean.Channel.Determinant.Bound
 import QICLean.Channel.Determinant.ChoiBound
 import QICLean.Channel.Determinant.Composition
-import QICLean.Channel.Determinant.HeisenbergDual
 import QICLean.Channel.Determinant.HilbertSchmidt
 import QICLean.Channel.Determinant.KrausRankTwo
 import QICLean.Channel.Determinant.PositiveExtremality

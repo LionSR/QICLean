@@ -3,8 +3,8 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Entropy.Relative.EntropyReindex
-import QICLean.Entropy.Renyi.MarginalSupportWhitenedChoi
+import QICLean.Entropy.Relative.RelativeEntropyUnitaryInvariance
+import QICLean.Entropy.Renyi.SupportCompressedEntropy
 import QICLean.Entropy.VonNeumann.Entropy
 import QICLean.Entropy.MutualInformation.ProductMarginals
 import QICLean.Entropy.MutualInformation.Basic

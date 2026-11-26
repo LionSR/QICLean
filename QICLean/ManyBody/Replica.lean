@@ -14,7 +14,6 @@ import QICLean.ManyBody.Replica.BandMetric
 import QICLean.ManyBody.Replica.Bell
 import QICLean.ManyBody.Replica.CompressedPhysicalMatchedCutoffs
 import QICLean.ManyBody.Replica.CompressedSite
-import QICLean.ManyBody.Replica.CompressedTypicalCommonBellVector
 import QICLean.ManyBody.Replica.CompressedTypicalCommonRetainedMass
 import QICLean.ManyBody.Replica.Configuration
 import QICLean.ManyBody.Replica.EtaForms

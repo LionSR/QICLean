@@ -7,6 +7,9 @@ import QICLean.ManyBody.Sites.Config
 import Mathlib.Algebra.Star.Subalgebra
 import Mathlib.Analysis.Complex.Basic
 import Mathlib.LinearAlgebra.Matrix.ConjTranspose
+import Mathlib.LinearAlgebra.Matrix.Kronecker
+import QICLean.Analysis.Projection.DetectabilityLemma
+import Mathlib.Analysis.CStarAlgebra.Matrix
 
 /-!
 # Operators supported on a region
@@ -37,6 +40,9 @@ and every operator is supported on every region.
 * `ManyBody.supportedOperators_mono`, `ManyBody.supportedOperators_univ`.
 * `ManyBody.diagonal_mem_supportedOperators` — a diagonal matrix reading only the sites of `D` is
   supported on `D`.
+* `ManyBody.reindex_kronecker_mem_supportedOperators`: two systems on the same sites, paired at
+  every site.
+* `QuantumCircuit.mem_supportedOperators_complementProd`: support of ordered complementary products.
 
 ## Implementation notes
 
@@ -44,6 +50,8 @@ and every operator is supported on every region.
 decidability assumptions that the algebra structure of the matrices needs. It is the carrier
 of the subalgebra and has no interface of its own.
 -/
+
+section Support
 
 open Matrix
 
@@ -271,3 +279,116 @@ noncomputable abbrev cutOperator (D : Finset V) (A : Matrix (Config X) (Config X
   reindex (cutEquiv X D) (cutEquiv X D) A
 
 end ManyBody
+
+end Support
+
+section SitewiseProduct
+
+/-!
+## Two systems on the same sites, paired at every site
+
+Two systems `X` and `Y` on the same sites `V` give the system with basis `X v × Y v` at the site
+`v`. Its configurations are pairs of configurations of the two systems, along
+`Equiv.arrowProdEquivProdArrow`, so an operator `A` on the first system and `B` on the second give
+the operator `A ⊗ B` on the paired system. If `A` is supported on `S` and `B` on `T`, then
+`A ⊗ B` is supported on `S ∪ T`. No basis type need be nonempty.
+
+Generalizes TNLean's `QuantumCircuit.reindex_kronecker_mem_supportedOperators`
+(`TNLean/Circuit/SitewiseTensorSupport.lean` at commit `414a18fb88`), which pairs the
+alphabets `Fin d` and `Fin e` into `Fin (d * e)`; there the pairing of the alphabets is a
+relabelling of the basis at every site.
+
+### Main results
+
+* `ManyBody.reindex_kronecker_mem_supportedOperators` — the support of `A ⊗ B`.
+-/
+
+open Matrix
+open scoped Kronecker
+
+namespace ManyBody
+
+variable {V : Type*} [Fintype V] [DecidableEq V] {X Y : V → Type*} [∀ v, Fintype (X v)]
+  [∀ v, DecidableEq (X v)] [∀ v, Fintype (Y v)] [∀ v, DecidableEq (Y v)]
+
+/-- **The support of a paired product.** If `A` is supported on `S` and `B` on `T`, then
+`A ⊗ B`, an operator on the system with basis `X v × Y v` at every site `v`, is supported on
+`S ∪ T`. -/
+theorem reindex_kronecker_mem_supportedOperators {S T : Finset V}
+    {A : Matrix (Config X) (Config X) ℂ} {B : Matrix (Config Y) (Config Y) ℂ}
+    (hA : A ∈ supportedOperators X S) (hB : B ∈ supportedOperators Y T) :
+    reindex (Equiv.arrowProdEquivProdArrow V X Y).symm (Equiv.arrowProdEquivProdArrow V X Y).symm
+        (A ⊗ₖ B) ∈ supportedOperators (fun v ↦ X v × Y v) (S ∪ T) := by
+  have hentry (σ τ : (v : V) → X v × Y v) :
+      reindex (Equiv.arrowProdEquivProdArrow V X Y).symm
+          (Equiv.arrowProdEquivProdArrow V X Y).symm (A ⊗ₖ B) σ τ =
+        A (fun v ↦ (σ v).1) (fun v ↦ (τ v).1) * B (fun v ↦ (σ v).2) (fun v ↦ (τ v).2) := by
+    simp
+  refine ⟨fun σ τ ⟨v, hv, hne⟩ ↦ ?_, fun σ τ σ' τ' h1 h2 h3 h4 ↦ ?_⟩
+  · rw [Finset.mem_union, not_or] at hv
+    rw [hentry]
+    by_cases h : (σ v).1 = (τ v).1
+    · rw [apply_eq_zero_of_mem_supportedOperators hB hv.2 fun h' ↦ hne (Prod.ext h h'), mul_zero]
+    · rw [apply_eq_zero_of_mem_supportedOperators hA hv.1 h, zero_mul]
+  · have hcases (v : V) : (σ v = σ' v ∧ τ v = τ' v) ∨ (σ v = τ v ∧ σ' v = τ' v) := by
+      by_cases hST : v ∈ S ∪ T
+      · exact Or.inl ⟨h1 v hST, h2 v hST⟩
+      · exact Or.inr ⟨h3 v hST, h4 v hST⟩
+    rw [hentry, hentry,
+      hA.apply_eq (fun v hv ↦ by rw [h1 v (Finset.mem_union_left T hv)])
+        (fun v hv ↦ by rw [h2 v (Finset.mem_union_left T hv)])
+        (fun v _ ↦ by rcases hcases v with ⟨h, h'⟩ | ⟨h, h'⟩ <;> simp [h, h']),
+      hB.apply_eq (fun v hv ↦ by rw [h1 v (Finset.mem_union_right S hv)])
+        (fun v hv ↦ by rw [h2 v (Finset.mem_union_right S hv)])
+        (fun v _ ↦ by rcases hcases v with ⟨h, h'⟩ | ⟨h, h'⟩ <;> simp [h, h'])]
+
+end ManyBody
+
+end SitewiseProduct
+
+section SupportedComplementProduct
+
+/-!
+## Support of ordered complementary products
+
+For operators `h_k`, the ordered product `(1 - h_{n-1}) ⋯ (1 - h_0)` of their complements
+(`ContinuousLinearMap.complementProd`) is supported on every region on which all the `h_k` are
+supported. No commutativity, projection or positivity assumption is needed. This is the support
+argument for the regional parity products in ALVV, arXiv:1602.08828v2, `thm:FF-tH`,
+lines 1543–1568.
+
+Moved from TNLean, `TNLean/Circuit/SupportedComplementProduct.lean` at commit `49b78ed821`
+(Apache-2.0). Changes: any finite set of sites with any basis at every site, in place of one
+local dimension `q`.
+-/
+
+open ManyBody
+
+namespace QuantumCircuit
+
+variable {V : Type*} [Fintype V] [DecidableEq V] {X : V → Type*} [∀ v, Fintype (X v)]
+  [∀ v, DecidableEq (X v)]
+
+local notation "T" => Matrix.toEuclideanCLM (𝕜 := ℂ) (n := Config X)
+
+/-- An ordered complementary product belongs to the same supported-operator algebra as each
+selected term. ALVV, arXiv:1602.08828v2, `def:FF-tH` and `thm:FF-tH`, lines 1467–1487 and
+1543–1568. -/
+theorem mem_supportedOperators_complementProd
+    (h : ℕ → EuclideanSpace ℂ (Config X) →L[ℂ] EuclideanSpace ℂ (Config X))
+    (S : Finset V) (n : ℕ)
+    (hh : ∀ k, k < n → (T).symm (h k) ∈ supportedOperators X S) :
+    (T).symm (ContinuousLinearMap.complementProd h n) ∈ supportedOperators X S := by
+  induction n with
+  | zero =>
+    simpa only [ContinuousLinearMap.complementProd_zero, map_one] using
+      (one_mem (supportedOperators X S))
+  | succ n ih =>
+    rw [ContinuousLinearMap.complementProd_succ, map_mul, map_sub, map_one]
+    exact mul_mem
+      (sub_mem (one_mem (supportedOperators X S))
+        (hh n (Nat.lt_succ_self n))) (ih fun k hk ↦ hh k (Nat.lt_succ_of_lt hk))
+
+end QuantumCircuit
+
+end SupportedComplementProduct

@@ -6,7 +6,7 @@ Authors: QICLean contributors
 import Mathlib.Data.Finset.SymmDiff
 import Mathlib.Data.Fintype.BigOperators
 import Mathlib.Logic.Equiv.Basic
-import QICLean.Algebra.OperatorSchmidt.Reindex
+import QICLean.Algebra.OperatorSchmidt.Basic
 
 /-!
 # Operator Schmidt rank across two finite partitions

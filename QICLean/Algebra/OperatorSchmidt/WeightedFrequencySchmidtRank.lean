@@ -3,9 +3,14 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Algebra.OperatorSchmidt.TripartitePolynomialSchmidtRank
+import QICLean.Algebra.OperatorSchmidt.LocalPolynomialSchmidtRank
 import QICLean.Algebra.OperatorSchmidt.MonomialEvaluationSchmidtRank
 import QICLean.Algebra.Word.TwoMarkerWordCoefficients
+import QICLean.Algebra.Polynomial.CommutingPolynomialGaps
+import QICLean.Algebra.OperatorSchmidt.Bounds
+import Mathlib.LinearAlgebra.Finsupp.LinearCombination
+import QICLean.Algebra.Word.WordMultiplicity
+import QICLean.Algebra.Word.OneMarkerFullCounts
 
 /-!
 # Weighted frequency sums of tripartite operators
@@ -23,6 +28,12 @@ Empty frequency slices and factors of dimension zero are included.
 AKLV's exponent-tuple count, as recorded in
 `docs/paper-gaps/aklv13_interpolation_and_word_count.tex`.
 
+It also contains the following results.
+
+* `Matrix.operatorSchmidtRank_coeff_pow_C_add_C_mul_X_le`: operator Schmidt rank of a commuting-gap
+  coefficient.
+* `Matrix.operatorSchmidtRank_sum_smul_one_marker_counts_le`: one-marker weighted frequency sums.
+
 ## References
 
 Supporting algebra for AKLV, arXiv:1301.1162v1, Lemma 4.2 (`l:agsp`),
@@ -38,7 +49,7 @@ open scoped BigOperators Kronecker
 
 namespace Matrix
 
-
+section WeightedFrequencySchmidtRank
 
 open Classical in
 /-- A weighted sum of the original full-frequency coefficients on one fixed
@@ -186,5 +197,188 @@ theorem operatorSchmidtRank_middle_sum_smul_full_counts_le
     simpa only [hT, Finset.sum_empty, Finset.card_empty, zero_mul] using
       operatorSchmidtRank_sum_le (∅ : Finset (ι → ℕ))
         (fun α ↦ weight α • (coefficient α).reindex e e)
+
+end WeightedFrequencySchmidtRank
+
+section CommutingPolynomialSchmidtRank
+
+/-!
+## Operator Schmidt rank of a commuting-gap coefficient
+
+For commuting bipartite operators `A` and `B` whose ranks are at most one,
+and an operator `T` of rank at most `r`, the coefficient of degree `k` in
+`(C (A + B) + C T * X)^(m + k)` has operator Schmidt rank at most
+`choose (m + 2 * k + 1) (2 * k + 1) * r^k`.
+
+The coefficient belongs to the span of the ordered commuting-gap forms.
+Every form has `k` distinguished factors and hence rank at most `r^k`.
+Subadditivity and the scalar rank inequality bound the whole coefficient by
+this common rank bound times the size of the indexed family.
+
+Supporting algebra for AKLV, arXiv:1301.1162v1, Lemma l:agsp,
+lines 604–617 and 646–657. The Hamiltonian coefficient identification,
+local supports, and geometric movement of the chain cut are separate steps.
+
+**Local fix (count):** The count includes the additional `+1` omitted in the source.
+See `docs/paper-gaps/aklv13_interpolation_and_word_count.tex`:
+https://sirui-lu.com/QICLean/paper-gaps/aklv13_interpolation_and_word_count.pdf.
+-/
+
+private theorem rank_one_le {l n : Type*} [Fintype l] [Finite n]
+    [DecidableEq (l × n)] : operatorSchmidtRank (1 : Matrix (l × n) (l × n) ℂ) ≤ 1 := by
+  classical
+  exact operatorSchmidtRank_le_of_hasOperatorSchmidtDecomposition
+    ⟨fun _ : Fin 1 ↦ (1 : Matrix l l ℂ), fun _ : Fin 1 ↦ (1 : Matrix n n ℂ),
+      by ext i j; simp [Matrix.one_apply]⟩
+
+private theorem rank_pow_le_one {l n : Type*} [Fintype l] [Fintype n]
+    [DecidableEq (l × n)] (A : Matrix (l × n) (l × n) ℂ)
+    (hA : operatorSchmidtRank A ≤ 1) (a : ℕ) : operatorSchmidtRank (A ^ a) ≤ 1 := by
+  induction a with
+  | zero => simpa only [pow_zero] using (rank_one_le (l := l) (n := n))
+  | succ a ih =>
+    rw [pow_succ]
+    exact (operatorSchmidtRank_mul_le _ _).trans (Nat.mul_le_mul ih hA)
+
+private theorem rank_commuting_gap_form_le {l n : Type*} [Fintype l] [Fintype n]
+    [DecidableEq (l × n)] (A B T : Matrix (l × n) (l × n) ℂ)
+    (hA : operatorSchmidtRank A ≤ 1) (hB : operatorSchmidtRank B ≤ 1)
+    {r : ℕ} (hT : operatorSchmidtRank T ≤ r)
+    (k : ℕ) (d : Fin (k + 1) × Bool → ℕ) :
+    operatorSchmidtRank
+      ((List.ofFn (fun j : Fin k ↦
+        A ^ d (j.castSucc, false) * B ^ d (j.castSucc, true) * T)).prod *
+        (A ^ d (Fin.last k, false) * B ^ d (Fin.last k, true))) ≤ r ^ k := by
+  induction k with
+  | zero =>
+    simpa only [List.ofFn_zero, List.prod_nil, one_mul, pow_zero, Nat.one_mul] using
+      (operatorSchmidtRank_mul_le (A ^ d (Fin.last 0, false))
+        (B ^ d (Fin.last 0, true))).trans
+        (Nat.mul_le_mul (rank_pow_le_one A hA _) (rank_pow_le_one B hB _))
+  | succ k ih =>
+    rw [List.ofFn_succ, List.prod_cons, mul_assoc]
+    have hfirst : operatorSchmidtRank
+        (A ^ d (0, false) * B ^ d (0, true) * T) ≤ r := by
+      simpa only [Nat.one_mul] using
+        (operatorSchmidtRank_mul_le (A ^ d (0, false) * B ^ d (0, true)) T).trans
+          (Nat.mul_le_mul
+            ((operatorSchmidtRank_mul_le (A ^ d (0, false)) (B ^ d (0, true))).trans
+              (Nat.mul_le_mul (rank_pow_le_one A hA _) (rank_pow_le_one B hB _))) hT)
+    refine (operatorSchmidtRank_mul_le _ _).trans ?_
+    simpa only [pow_succ', Fin.castSucc_zero, Fin.castSucc_succ, Fin.succ_last] using
+      Nat.mul_le_mul hfirst (ih (fun jb ↦ d (jb.1.succ, jb.2)))
+
+/-- The operator Schmidt rank of a distinguished-letter coefficient with commuting
+gap factors whose ranks are at most one. Supporting algebra for AKLV, arXiv:1301.1162v1,
+Lemma l:agsp, lines 604–617 and 646–657. The exponent-tuple count uses the
+correction in docs/paper-gaps/aklv13_interpolation_and_word_count.tex. -/
+theorem operatorSchmidtRank_coeff_pow_C_add_C_mul_X_le
+    {l n : Type*} [Fintype l] [Fintype n] [DecidableEq (l × n)]
+    (A B T : Matrix (l × n) (l × n) ℂ)
+    (hAB : Commute A B)
+    (hA : operatorSchmidtRank A ≤ 1)
+    (hB : operatorSchmidtRank B ≤ 1)
+    {r : ℕ} (hT : operatorSchmidtRank T ≤ r) (m k : ℕ) :
+    operatorSchmidtRank
+      (((Polynomial.C (A + B) + Polynomial.C T * Polynomial.X) ^ (m + k)).coeff k) ≤
+        (m + 2 * k + 1).choose (2 * k + 1) * r ^ k := by
+  let E := Finset.piAntidiag (Finset.univ : Finset (Fin (k + 1) × Bool)) m
+  let G : E → Matrix (l × n) (l × n) ℂ := fun d ↦
+    (List.ofFn (fun j : Fin k ↦
+      A ^ d.val (j.castSucc, false) * B ^ d.val (j.castSucc, true) * T)).prod *
+      (A ^ d.val (Fin.last k, false) * B ^ d.val (Fin.last k, true))
+  have hspan :
+      ((Polynomial.C (A + B) + Polynomial.C T * Polynomial.X) ^ (m + k)).coeff k ∈
+        Submodule.span ℂ (Set.range G) :=
+    Polynomial.coeff_pow_C_add_C_mul_X_mem_span_commuting_gaps (𝕜 := ℂ) A B T hAB m k
+  obtain ⟨c, hc⟩ := (Submodule.mem_span_range_iff_exists_fun ℂ).mp hspan
+  rw [← hc]
+  refine (operatorSchmidtRank_sum_le Finset.univ (fun d ↦ c d • G d)).trans ?_
+  calc
+    _ ≤ ∑ _ : E, r ^ k := Finset.sum_le_sum fun d _ ↦
+      (operatorSchmidtRank_smul_le (c d) (G d)).trans
+        (rank_commuting_gap_form_le A B T hA hB hT k d.val)
+    _ = _ := by simp [E, Finset.card_piAntidiag_univ_fin_prod_bool]
+
+end CommutingPolynomialSchmidtRank
+
+section OneMarkerWeightedSchmidtRank
+
+/-!
+## One-marker weighted frequency sums
+
+The actual ordered-word coefficient family on one distinguished frequency slice has
+a common interpolation and commuting-gap rank bound. Arbitrary scalar weights are
+allowed, including selected subsums. No independence or nonvanishing of operator
+coefficients is assumed.
+
+**Local fix (count):** The stars-and-bars factor retains the additional `+1` missing
+from AKLV's printed count, as recorded in
+`docs/paper-gaps/aklv13_interpolation_and_word_count.tex`:
+https://sirui-lu.com/QICLean/paper-gaps/aklv13_interpolation_and_word_count.pdf.
+
+Supporting algebra for AKLV, arXiv:1301.1162v1, Lemma 4.2 (`l:agsp`),
+source lines 626--662. The local tensor form is explicit in this algebraic auxiliary;
+its derivation from physical supports and movement to the central chain cut are
+separate statements.
+-/
+
+open Classical in
+/-- A weighted sum of the actual one-marker frequency coefficients has one interpolation
+cardinality factor and the corrected commuting-gap bound. AKLV, arXiv:1301.1162v1,
+Lemma 4.2 (`l:agsp`), lines 626--662. Zero and dependent coefficient operators are included. -/
+theorem operatorSchmidtRank_sum_smul_one_marker_counts_le
+    {ι l n : Type*} [Fintype ι] [Fintype l] [Fintype n]
+    (H : ι → Matrix (l × n) (l × n) ℂ)
+    (HL : ι → Matrix l l ℂ) (HR : ι → Matrix n n ℂ)
+    (hlocal : ∀ a, H a = HL a ⊗ₖ (1 : Matrix n n ℂ) +
+      (1 : Matrix l l ℂ) ⊗ₖ HR a)
+    (T : Matrix (l × n) (l × n) ℂ) {r : ℕ} (hT : operatorSchmidtRank T ≤ r)
+    (m k : ℕ) :
+    let E := Finset.piAntidiag (Finset.univ : Finset ι) m
+    let coefficient : E → Matrix (l × n) (l × n) ℂ := fun α ↦
+      WordMultiplicity.oneMarkerCoefficient H T m k α.val
+    ∀ weight : E → ℂ, operatorSchmidtRank (∑ α : E, weight α • coefficient α) ≤
+      E.card * ((m + 2 * k + 1).choose (2 * k + 1) * r ^ k) := by
+  intro E coefficient weight
+  let residual : E → (ι →₀ ℕ) := fun α ↦ Finsupp.equivFunOnFinite.symm α.val
+  have hinj : Set.InjOn residual (Finset.univ : Finset E) := by
+    intro α _ β _ h
+    apply Subtype.ext
+    exact Finsupp.equivFunOnFinite.symm.injective h
+  have hmonomial (z : ι → ℂ) (α : E) :
+      MvPolynomial.eval z (MvPolynomial.monomial (residual α) (1 : ℂ)) =
+        ∏ a, z a ^ α.val a := by
+    rw [MvPolynomial.eval_monomial, one_mul,
+      Finsupp.prod_fintype _ _ (fun _ ↦ pow_zero _)]
+    rfl
+  apply (show operatorSchmidtRank (∑ α : E, weight α • coefficient α) ≤
+      (Finset.univ : Finset E).card *
+        ((m + 2 * k + 1).choose (2 * k + 1) * r ^ k) from ?_).trans_eq
+    (by simp only [Finset.card_univ, Fintype.card_coe])
+  apply operatorSchmidtRank_sum_smul_le_of_injective_monomial_evaluations
+    Finset.univ residual hinj coefficient weight
+  intro z
+  let A := (∑ a, z a • HL a) ⊗ₖ (1 : Matrix n n ℂ)
+  let B := (1 : Matrix l l ℂ) ⊗ₖ (∑ a, z a • HR a)
+  have hD : (∑ a, z a • H a) = A + B := by
+    simp only [hlocal]
+    ext ⟨x, u⟩ ⟨y, v⟩
+    simp [A, B, Matrix.sum_apply, Finset.sum_add_distrib, Finset.mul_sum,
+      mul_assoc, mul_comm, mul_left_comm]
+  have hAB : Commute A B := by
+    change A * B = B * A
+    dsimp only [A, B]
+    simp only [← mul_kronecker_mul, mul_one, one_mul]
+  have hgenerate := Polynomial.coeff_pow_sum_smul_add_C_mul_X_eq_sum_counts H T z m k
+  have hrank := operatorSchmidtRank_coeff_pow_C_add_C_mul_X_le A B T hAB
+    (operatorSchmidtRank_kronecker_le_one _ _) (operatorSchmidtRank_kronecker_le_one _ _) hT m k
+  change ((Polynomial.C (∑ a, z a • H a) + Polynomial.C T * Polynomial.X) ^
+    (m + k)).coeff k = ∑ α : E, (∏ a, z a ^ α.val a) • coefficient α at hgenerate
+  simp only [hmonomial]
+  rw [← hgenerate, hD]
+  exact hrank
+
+end OneMarkerWeightedSchmidtRank
 
 end Matrix

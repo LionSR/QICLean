@@ -137,17 +137,24 @@ def read_map(path: Path = MAP_PATH) -> ModuleMap:
     if duplicate:
         raise ValueError(f"two modules are moved to {sorted(duplicate)}")
     # A later entry may move a module from the name an earlier entry gave it (the order
-    # inside a layer, decided after the first moves were applied). Compose the chains,
-    # so that every old name, first or intermediate, leads to the final module.
-    def final(name: str) -> str:
+    # inside a layer, decided after the first moves were applied), or merge a module that
+    # an earlier entry moved. Compose the chains, so that every old name, first or
+    # intermediate, leads to the final module; a chain through a merge is a merge.
+    def final(name: str) -> tuple[str, bool]:
         path = [name]
-        while path[-1] in result.moves:
-            path.append(result.moves[path[-1]])
+        merged = False
+        while path[-1] in result.moves or path[-1] in result.merges:
+            merged = merged or path[-1] in result.merges
+            path.append(result.moves.get(path[-1]) or result.merges[path[-1]])
             if path[-1] in path[:-1]:
                 raise ValueError(f"the map moves modules in a cycle: {' -> '.join(path)}")
-        return path[-1]
-    result.moves = {old: final(new) for old, new in result.moves.items()}
-    result.merges = {old: final(new) for old, new in result.merges.items()}
+        return path[-1], merged
+    moves: dict[str, str] = {}
+    merges = {old: final(new)[0] for old, new in result.merges.items()}
+    for old, new in result.moves.items():
+        target, merged = final(new)
+        (merges if merged else moves)[old] = target
+    result.moves, result.merges = moves, merges
     chained = set(result.renames.values()) & set(result.renames)
     if chained:
         raise ValueError(f"new names that are also old names: {sorted(chained)}")

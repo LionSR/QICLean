@@ -3,10 +3,8 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Spectral.Gap.CompactKernelGap
-import QICLean.Spectral.Perturbation.KernelGapPerturbation
 import QICLean.Spectral.Gap.EigenvalueGap
-import QICLean.Spectral.Gap.PositiveGapTransfer
+import QICLean.Spectral.Perturbation.KernelGapPerturbation
 import QICLean.Spectral.Gap.PositiveComparisonGap
 import QICLean.Analysis.Norm.MatrixToEuclidean
 import QICLean.Analysis.Support.InverseSandwich

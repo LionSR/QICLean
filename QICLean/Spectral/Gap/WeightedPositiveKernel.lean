@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import Mathlib.Analysis.InnerProductSpace.Positive
-import QICLean.Spectral.Gap.PositiveGapTransfer
+import QICLean.Spectral.Gap.EigenvalueGap
 
 /-!
 # Weighted sums of positive operators

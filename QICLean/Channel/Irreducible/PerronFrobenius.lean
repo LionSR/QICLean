@@ -6,7 +6,7 @@ Authors: TNLean contributors
 import QICLean.Channel.Irreducible.FixedPointUniqueness
 import QICLean.Channel.Irreducible.Growth.OneStep
 import QICLean.Channel.Irreducible.KrausSetup
-import QICLean.Channel.Irreducible.Scaling
+import QICLean.Channel.Irreducible.Similarity
 
 /-!
 # Irreducible CP Perron–Frobenius theory (Wolf Theorem 6.3, items 2–3)

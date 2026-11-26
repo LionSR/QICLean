@@ -6,7 +6,7 @@ Authors: QICLean contributors
 import QICLean.Analysis.Norm.KroneckerOperatorNorm
 import QICLean.Channel.PartialTrace.Blocks
 import QICLean.Channel.PartialTrace.BasisInvariance
-import QICLean.Probability.Concentration.MatrixTraceNormIntegrability
+import QICLean.Probability.Concentration.WeightedSourceError
 import QICLean.Probability.Gaussian.ProductSourceTransport
 import Lean.Elab.Command
 import Lean.Util.CollectAxioms

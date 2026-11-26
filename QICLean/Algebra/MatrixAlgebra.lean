@@ -9,8 +9,6 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Algebra.MatrixAlgebra
 
 import QICLean.Algebra.MatrixAlgebra.BlockPermutation
-import QICLean.Algebra.MatrixAlgebra.Burnside
-import QICLean.Algebra.MatrixAlgebra.CornerSkolemNoether
 import QICLean.Algebra.MatrixAlgebra.MatrixAlgHomCentralizer
 import QICLean.Algebra.MatrixAlgebra.MatrixAlgebraCoordinates
 import QICLean.Algebra.MatrixAlgebra.MatrixFamilyAction

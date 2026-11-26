@@ -10,6 +10,5 @@ Authors: QICLean contributors
 
 import QICLean.Channel.POVM.Basic
 import QICLean.Channel.POVM.QuantumSteering
-import QICLean.Channel.POVM.RankOneNaimark
 import QICLean.Channel.POVM.SIC
 import QICLean.Channel.POVM.Uniqueness
