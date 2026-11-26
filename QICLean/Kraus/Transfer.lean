@@ -12,7 +12,7 @@ import QICLean.Algebra.Matrix.MatrixTracePairing
 import Mathlib.Basic.Complex.BigOperators
 import Mathlib.LinearAlgebra.Matrix.Trace
 import QICLean.Analysis.FunctionalCalculus.MatrixSqrt
-import QICLean.Channel.TransferMatrix
+import QICLean.Channel.TransferMatrix.Basic
 import Mathlib.LinearAlgebra.Matrix.IsDiag
 
 /-!

@@ -7,7 +7,7 @@ import Mathlib.Algebra.Star.Subalgebra
 import Mathlib.LinearAlgebra.Basis.VectorSpace
 import Mathlib.LinearAlgebra.Dimension.Free
 import QICLean.Algebra.Kronecker.CommutingDecomposition
-import QICLean.Algebra.Kronecker.KroneckerEmbed
+import QICLean.Algebra.Matrix.KroneckerEmbed
 import QICLean.Algebra.Kronecker.SupportAlgebra
 import QICLean.Algebra.Kronecker.TensorMap
 import QICLean.Algebra.MatrixAlgebra.SkolemNoetherUnitary
