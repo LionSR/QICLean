@@ -33,7 +33,7 @@ of 2026-11-21) are not repeated here; where this record cites one, it says so.
 
 | Layer | Modules | Subdirectories | Largest directory (modules at one level) | Objects |
 |---|---:|---:|---|---|
-| `Algebra` | 201 | 16 | `Combinatorics` (37) | matrices over a ring, reindexing, rank, Kronecker products, polynomials, words, star subalgebras, the partial trace |
+| `Algebra` | 202 | 16 | `Combinatorics` (37) | matrices over a ring, reindexing, rank, Kronecker products, polynomials, words, star subalgebras, the partial trace |
 | `Analysis` | 355 | 28 | `Real` (39) | norms, the Loewner order, functional calculus, exponentials and logarithms, convexity, scalar real analysis |
 | `Spectral` | 119 | 10 | `Eigenvalue` (32) | eigenvalues, gaps, spectral projections, filters and low-energy subspaces of one matrix |
 | `Channel` | 356 | 45 | `Schwarz` (29) | linear maps between matrix algebras: positive, completely positive and Schwarz maps, Choi matrices, Kraus representations, transfer matrices, dilations, fixed points and peripheral spectra |
@@ -92,7 +92,7 @@ The imports now point down, but a module can still sit above its objects when
 one lemma of its proof needs a higher layer. The inventory of 2026-11-21 listed
 155 modules in a layer other than that of their statements, and 200 modules that
 hold declarations of two layers. Those lists predate #1217 and #1183, which moved
-more than a hundred declarations and 78 modules, so they are an upper bound and
+more than a hundred declarations and 79 modules, so they are an upper bound and
 must be read again before a batch uses them. The check cannot see a module filed too
 high; finding one needs a reading of its statements.
 
@@ -143,7 +143,7 @@ The dependency direction allows a split: the single-system layers import
 neither `ManyBody` nor `Circuit`, `ManyBody` does not import `Circuit`, and the
 layers check enforces all three. The smallest boundary that builds on its own is
 `ManyBody` together with `Circuit` (586 modules) above the eight single-system
-layers (1,358 modules). `ManyBody` uses all eight, `Representation`, `Analysis`
+layers (1,359 modules). `ManyBody` uses all eight, `Representation`, `Analysis`
 and `Spectral` most of all. `Circuit` uses `ManyBody/Sites` and the matrix and
 channel layers.
 

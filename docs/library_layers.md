@@ -137,11 +137,11 @@ the order inside a layer (#1183); aggregators are generated.
 
 | Directory | Modules | Holds |
 |---|---|---|
-| `Algebra` | 201 | `PartialTrace` (partial traces of matrices on product index types) at the top level |
+| `Algebra` | 202 | `PartialTrace` (partial traces of matrices on product index types) at the top level |
 | `Algebra/Combinatorics` | 37 | finite sums, counts, `Fin` and `ZMod` index bookkeeping, finite graphs |
 | `Algebra/Hermitian` | 11 | Hermitian, positive semidefinite and projection matrices without norms |
 | `Algebra/Kronecker` | 13 | Kronecker products, tensor maps, overlapping lifts on three factors |
-| `Algebra/Matrix` | 30 | entries, reindexing, rank, ranges, traces, Minkowski-selfadjoint matrices, the unital Kronecker embeddings $A \mapsto A \otimes 1$ and $B \mapsto 1 \otimes B$ |
+| `Algebra/Matrix` | 31 | entries, reindexing, rank, ranges, traces, Minkowski-selfadjoint matrices, the unital Kronecker embeddings $A \mapsto A \otimes 1$ and $B \mapsto 1 \otimes B$ |
 | `Algebra/MatrixAlgebra` | 10 | homomorphisms of full matrix algebras: Skolem–Noether, Burnside, centralizers |
 | `Algebra/Nilpotent` | 4 | nilpotent subspaces and nilpotent matrices |
 | `Algebra/OperatorSchmidt` | 7 | the operator Schmidt decomposition and its rank |
@@ -187,7 +187,7 @@ the order inside a layer (#1183); aggregators are generated.
 | `Spectral/Projection` | 6 | spectral projections and cutoffs |
 | `Spectral/Radius` | 5 | spectral radius and power decay |
 | `Channel` | 356 | 2 top-level modules: the definitions of positive, completely positive and trace-preserving maps and their general properties, and complete positivity on C⋆-matrices |
-| `Channel/Choi` | 10 | Choi and Jamiołkowski matrices, Doeblin minorization, decomposition into completely positive maps, a net of the trace-norm ball |
+| `Channel/Choi` | 9 | Choi and Jamiołkowski matrices, Doeblin minorization, decomposition into completely positive maps, a net of the trace-norm ball |
 | `Channel/ConditionalExpectation` | 2 | conditional expectations onto subalgebras |
 | `Channel/Convexity` | 7 | Lieb concavity and convexity proved with positive maps, the operator Jensen inequality |
 | `Channel/Dilation` | 15 | Stinespring and environment dilations, open systems |
@@ -199,7 +199,7 @@ the order inside a layer (#1183); aggregators are generated.
 | `Channel/FixedPoint/DirectSum` | 8 | maps on finite direct sums of matrix algebras and their fixed points |
 | `Channel/FixedPoint/Weighted` | 9 | fixed points in corners and with weights, canonical gauges, maximal supports of Kraus maps |
 | `Channel/Gluing` | 3 | gluing states across a tripartite cut |
-| `Channel/KrausMap` | 23 | maps given by Kraus families: CPTP, rank, freedom and its corollaries, gauges, closure, trace-preserving completion, ordered intervals of rectangular channels, interpolation and the condition number |
+| `Channel/KrausMap` | 24 | maps given by Kraus families: CPTP, rank, freedom and its corollaries, gauges, closure, trace-preserving completion, ordered intervals of rectangular channels, interpolation and the condition number |
 | `Channel/Measurement` | 4 | effects and instruments |
 | `Channel/OperatorMean` | 16 | derivatives of operator means, which are n-positive maps, and transport along mean trees |
 | `Channel/OperatorSystem` | 4 | operator systems and their extensions |
@@ -287,7 +287,7 @@ moves and two test files) into subdirectories by object. The import-only module
 `Channel.Peripheral.CyclicDecomposition` was deleted; its six modules are now in
 `Channel/Peripheral/Irreducible`, whose aggregator replaces it. The import ratchet reads the recorded entries of its base revision under the moves of
 the map, so that moving a module renames its entries instead of adding new ones.
-The last section of the map moves 42 modules and records two removed modules of
+The last section of the map moves 43 modules and records two removed modules of
 `Channel/PerronFrobenius` as merged into `Channel/Irreducible/KrausSetup`; these are the
 repairs of the last imports against the order inside a layer (below).
 
