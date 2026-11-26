@@ -55,14 +55,16 @@ def AllWordCompression (A : Fin n → Matrix (Fin d) (Fin d) ℂ) (B : Fin n →
 
 /-- A compression identity checked up to word length `N`, including the empty word through
 `W V = 1`. -/
-def WordCompressionUpTo (A : Fin n → Matrix (Fin d) (Fin d) ℂ) (B : Fin n → Matrix (Fin D) (Fin D) ℂ)
+def WordCompressionUpTo (A : Fin n → Matrix (Fin d) (Fin d) ℂ) (B : Fin n → Matrix (Fin D)
+    (Fin D) ℂ)
     (V : Matrix (Fin D) (Fin d) ℂ) (W : Matrix (Fin d) (Fin D) ℂ) (N : ℕ) : Prop :=
   W * V = 1 ∧
     ∀ w : List (Fin n), 1 ≤ w.length → w.length ≤ N →
       W * evalWord B w * V = evalWord A w
 
 /-- Existence of a finite word-compression certificate up to length `N`. -/
-def HasWordCompressionUpTo (A : Fin n → Matrix (Fin d) (Fin d) ℂ) (B : Fin n → Matrix (Fin D) (Fin D) ℂ) (N : ℕ) : Prop :=
+def HasWordCompressionUpTo (A : Fin n → Matrix (Fin d) (Fin d) ℂ) (B : Fin n → Matrix (Fin D)
+    (Fin D) ℂ) (N : ℕ) : Prop :=
   ∃ (V : Matrix (Fin D) (Fin d) ℂ) (W : Matrix (Fin d) (Fin D) ℂ),
     WordCompressionUpTo A B V W N
 
@@ -90,7 +92,8 @@ lemma image_mem_reachableSpan (B : Fin n → Matrix (Fin D) (Fin D) ℂ) (V : Ma
     V *ᵥ x ∈ reachableSpan B V L := by
   simpa using mem_reachableSpan B V (L := L) (w := []) (by simp) x
 
-lemma mulVec_mem_reachableSpan_succ (B : Fin n → Matrix (Fin D) (Fin D) ℂ) (V : Matrix (Fin D) (Fin d) ℂ)
+lemma mulVec_mem_reachableSpan_succ (B : Fin n → Matrix (Fin D) (Fin D) ℂ) (V : Matrix (Fin D)
+    (Fin d) ℂ)
     (i : Fin n) {L : ℕ} {y : Fin D → ℂ} (hy : y ∈ reachableSpan B V L) :
     B i *ᵥ y ∈ reachableSpan B V (L + 1) := by
   induction hy using Submodule.span_induction with
@@ -180,7 +183,8 @@ private lemma stoppedIndex_eq_succ (B : Fin n → Matrix (Fin D) (Fin D) ℂ)
 /-- Data saying that `A` occurs as an invariant subquotient of `B`.  The map `q` is defined only
 on the invariant subspace `R`; the definition makes no choice of an invariant ambient
 complement. -/
-structure InvariantSubquotient (A : Fin n → Matrix (Fin d) (Fin d) ℂ) (B : Fin n → Matrix (Fin D) (Fin D) ℂ) where
+structure InvariantSubquotient (A : Fin n → Matrix (Fin d) (Fin d) ℂ) (B : Fin n → Matrix (Fin D)
+    (Fin D) ℂ) where
   R : Submodule ℂ (Fin D → ℂ)
   invariant : ∀ i : Fin n, ∀ x ∈ R, B i *ᵥ x ∈ R
   q : R →ₗ[ℂ] (Fin d → ℂ)
@@ -189,12 +193,14 @@ structure InvariantSubquotient (A : Fin n → Matrix (Fin d) (Fin d) ℂ) (B : F
     q ⟨B i *ᵥ x, invariant i x x.property⟩ = A i *ᵥ q x
 
 /-- Existence of an invariant subquotient carrying the word representation of `A`. -/
-def HasInvariantSubquotient (A : Fin n → Matrix (Fin d) (Fin d) ℂ) (B : Fin n → Matrix (Fin D) (Fin D) ℂ) : Prop :=
+def HasInvariantSubquotient (A : Fin n → Matrix (Fin d) (Fin d) ℂ) (B : Fin n → Matrix (Fin D)
+    (Fin D) ℂ) : Prop :=
   Nonempty (InvariantSubquotient A B)
 
 namespace InvariantSubquotient
 
-variable {A : Fin n → Matrix (Fin d) (Fin d) ℂ} {B : Fin n → Matrix (Fin D) (Fin D) ℂ} (Q : InvariantSubquotient A B)
+variable {A : Fin n → Matrix (Fin d) (Fin d) ℂ} {B : Fin n → Matrix (Fin D) (Fin D) ℂ}
+  (Q : InvariantSubquotient A B)
 
 lemma evalWord_mem (w : List (Fin n)) (x : Q.R) :
     evalWord B w *ᵥ x ∈ Q.R := by

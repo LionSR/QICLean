@@ -7,6 +7,7 @@ import Mathlib.Data.Fin.Basic
 import Mathlib.Logic.Equiv.Fin.Rotate
 import Mathlib.Data.Nat.Order.Lemmas
 import Mathlib.Data.List.Rotate
+import Mathlib.Data.List.OfFn
 
 /-!
 # Induction on finite cyclic indices and on natural-number intervals
@@ -102,9 +103,7 @@ theorem eq_of_forall_succ_eq_of_mem_Icc {α : Sort*} {a n i j : ℕ}
 
 section
 
-open scoped Matrix ComplexOrder BigOperators
 
-open Matrix Finset
 
 /-- `List.ofFn` precomposed with `finRotate` is the one-step list rotation. A
 general fact about `List.ofFn`, `finRotate`, and `List.rotate`. -/

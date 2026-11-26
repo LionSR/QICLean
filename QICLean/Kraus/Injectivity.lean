@@ -265,9 +265,26 @@ namespace Kraus
 
 variable {d D : ℕ}
 
+/-- The linear combination map for an injective tensor is surjective. -/
+theorem IsInjective.linearCombination_surjective {A : Fin d → Matrix (Fin D) (Fin D) ℂ}
+    (hA : Kraus.IsInjective A) :
+    Function.Surjective (Fintype.linearCombination ℂ A) :=
+  (span_range_eq_top_iff_surjective_fintypeLinearCombination ℂ A).mp hA.span_eq_top
+
+/-- The linear combination map over all length-`N` words is surjective for an
+`N`-block-injective tensor. -/
+theorem IsNBlkInjective.linearCombination_surjective {A : Fin d → Matrix (Fin D) (Fin D) ℂ} {N : ℕ}
+    (hA : Kraus.IsNBlkInjective A N) :
+    Function.Surjective
+      (Fintype.linearCombination ℂ
+        (fun σ : Fin N → Fin d => Kraus.evalWord A (List.ofFn σ))) :=
+  (span_range_eq_top_iff_surjective_fintypeLinearCombination ℂ
+    (fun σ : Fin N → Fin d => Kraus.evalWord A (List.ofFn σ))).mp hA
+
 /-- An injective tensor has a linear right inverse: a linear map
 `Ψ : M_D(ℂ) → ℂ^d` such that `Φ ∘ Ψ = id`, where `Φ` is the linear combination map. -/
-theorem IsInjective.exists_rightInverse {A : Fin d → Matrix (Fin D) (Fin D) ℂ} (hA : Kraus.IsInjective A) :
+theorem IsInjective.exists_rightInverse {A : Fin d → Matrix (Fin D) (Fin D) ℂ}
+    (hA : Kraus.IsInjective A) :
     ∃ Ψ : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] (Fin d → ℂ),
       ∀ X, Fintype.linearCombination ℂ A (Ψ X) = X := by
   obtain ⟨Ψ, hΨ⟩ := (Fintype.linearCombination ℂ A).exists_rightInverse_of_surjective

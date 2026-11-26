@@ -5,6 +5,9 @@ Authors: QICLean contributors
 -/
 import Mathlib.Data.ZMod.Basic
 import Mathlib.Data.Int.Basic
+import Mathlib.Algebra.Group.TypeTags.Finite
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Data.Fintype.Prod
 
 /-!
 # Integer equality below a cyclic modulus
@@ -102,7 +105,6 @@ end Finset
 
 section
 
-open scoped Matrix Kronecker
 
 namespace Multiplicative
 

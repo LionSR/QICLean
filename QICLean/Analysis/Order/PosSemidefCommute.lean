@@ -229,7 +229,6 @@ theorem apply_projection_compression_eq (f : E →ₚ[ℂ] ℂ) (p X : E)
 
 end PositiveLinearMap
 
-open SpinChain
 
 end
 
@@ -237,7 +236,6 @@ section QuasiLocalGroundStateSupport
 
 open scoped ComplexOrder
 
-open ManyBody.Interaction (chainTranslates)
 
 namespace PositiveLinearMap
 
@@ -269,7 +267,6 @@ theorem apply_projection_eq_one_of_le_of_apply_eq_zero
 
 end PositiveLinearMap
 
-open SpinChain
 
 open scoped Matrix MatrixOrder Matrix.Norms.L2Operator ComplexOrder Topology
 

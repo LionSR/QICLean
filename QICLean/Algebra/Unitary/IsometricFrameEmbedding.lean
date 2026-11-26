@@ -9,6 +9,7 @@ import Mathlib.Logic.Equiv.Fin.Basic
 import Mathlib.LinearAlgebra.UnitaryGroup
 import QICLean.Algebra.Unitary.MatrixUnitaryBetween
 import Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup.Defs
+import Mathlib.Analysis.Matrix.Order
 
 /-!
 # Embedding a space while replacing its occupied frame
@@ -401,7 +402,6 @@ open scoped BigOperators Matrix ComplexOrder MatrixOrder
 
 open Matrix
 
-open Kraus (blockPhysDim blockTensor evalWord_blockTensor)
 
 namespace Matrix
 

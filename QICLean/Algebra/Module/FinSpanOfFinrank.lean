@@ -7,6 +7,7 @@ import Mathlib.LinearAlgebra.Dimension.Constructions
 import Mathlib.LinearAlgebra.FiniteDimensional.Defs
 import Mathlib.LinearAlgebra.Basis.VectorSpace
 import Mathlib.LinearAlgebra.Pi
+import Mathlib.Analysis.Complex.Basic
 
 /-!
 # Spanning families indexed by the dimension bound

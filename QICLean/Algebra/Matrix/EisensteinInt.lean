@@ -4,6 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import Mathlib.Analysis.Real.Sqrt
+import Mathlib.Analysis.SpecialFunctions.Complex.Circle
+import Mathlib.Tactic.LinearCombination
 
 /-!
 # The ring of Eisenstein integers

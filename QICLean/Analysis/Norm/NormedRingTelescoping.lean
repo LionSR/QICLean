@@ -8,6 +8,11 @@ import Mathlib.Analysis.Normed.Ring.Basic
 import Mathlib.Algebra.Group.Idempotent
 import Mathlib.Tactic.NoncommRing
 import Mathlib.Tactic.Positivity
+import Mathlib.Analysis.CStarAlgebra.Matrix
+import Mathlib.Analysis.Matrix.Order
+import Mathlib.LinearAlgebra.Matrix.Kronecker
+import Mathlib.Analysis.InnerProductSpace.Basic
+import Mathlib.Topology.Algebra.Module.FiniteDimension
 
 /-!
 # Telescoping bounds for perturbed ordered products
@@ -215,7 +220,6 @@ open scoped Matrix Kronecker ComplexOrder MatrixOrder BigOperators InnerProductS
 
 open Matrix
 
-open Kraus (blockTensor)
 
 open scoped Matrix.Norms.L2Operator in
 /-- **Telescoping for the trace of a product.** For a finite index type there is `K ≥ 0` such

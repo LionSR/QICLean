@@ -7,6 +7,7 @@ import Mathlib.Data.Matrix.Block
 import Mathlib.Basic.Complex.Basic
 import Mathlib.LinearAlgebra.Matrix.Kronecker
 import Mathlib.Algebra.BigOperators.Fin
+import Mathlib.Analysis.Complex.Order
 
 /-!
 # Dependent block-diagonal matrices

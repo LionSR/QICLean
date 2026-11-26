@@ -6,6 +6,8 @@ Authors: TNLean contributors
 import Mathlib.Basic.Complex.Basic
 import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.LinearAlgebra.Matrix.ConjTranspose
+import Mathlib.Analysis.Matrix.Order
+import Mathlib.Algebra.Star.Pi
 
 /-!
 # Rank-one matrix sandwiches

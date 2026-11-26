@@ -3,6 +3,11 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
+import Mathlib.Analysis.Complex.Order
+import Mathlib.Analysis.Complex.Basic
+import Mathlib.LinearAlgebra.UnitaryGroup
+import Mathlib.LinearAlgebra.Matrix.Hermitian
+import Mathlib.LinearAlgebra.Matrix.Trace
 
 /-!
 # Strong and weak symmetries of matrix product density operators
@@ -64,7 +69,7 @@ Moved from TNLean, `TNLean/MPS/Operator/Fusion/DensityOperatorSymmetry.lean` at 
 
 section
 
-open scoped Matrix ComplexOrder BigOperators
+open scoped Matrix ComplexOrder
 
 namespace Matrix
 

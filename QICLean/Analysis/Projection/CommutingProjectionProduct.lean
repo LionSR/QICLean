@@ -145,7 +145,6 @@ section
 
 open scoped BigOperators InnerProductSpace
 
-open FrustrationFree.NestedGroundProjections
 
 namespace LinearMap
 

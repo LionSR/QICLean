@@ -4,6 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import Mathlib.LinearAlgebra.Matrix.Hermitian
+import Mathlib.Data.Matrix.Mul
+import Mathlib.LinearAlgebra.Matrix.Trace
 
 /-!
 # Sandwich transport along an intertwiner of Hermitian matrices
@@ -54,7 +56,7 @@ end Matrix
 
 section
 
-open scoped Matrix Kronecker
+open scoped Matrix
 
 namespace Matrix
 

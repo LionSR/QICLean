@@ -8,6 +8,8 @@ import Mathlib.LinearAlgebra.Matrix.Rank
 import Mathlib.LinearAlgebra.TensorProduct.Matrix
 import Mathlib.RingTheory.Flat.Basic
 import Mathlib.LinearAlgebra.BilinearForm.Orthogonal
+import Mathlib.Analysis.Complex.Basic
+import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 
 /-!
 # Matrix rank under scalar extension

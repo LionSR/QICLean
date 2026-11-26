@@ -10,6 +10,7 @@ import Mathlib.RingTheory.MatrixAlgebra
 import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 import Mathlib.Data.Matrix.PEquiv
 import Mathlib.LinearAlgebra.Matrix.Reindex
+import Mathlib.Analysis.Complex.Order
 
 /-!
 # Unital Kronecker homomorphisms of complex matrix algebras

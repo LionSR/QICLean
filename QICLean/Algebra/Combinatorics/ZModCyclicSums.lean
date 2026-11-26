@@ -10,6 +10,7 @@ import Mathlib.Order.Interval.Finset.Nat
 import Mathlib.Tactic.Abel
 import Mathlib.Tactic.LinearCombination
 import Mathlib.Tactic.Module
+import Mathlib.RingTheory.RootsOfUnity.Complex
 
 /-!
 # Cyclic sums over `ZMod`
@@ -361,7 +362,6 @@ end ZModCyclicSums
 
 section PeriodExistence
 
-open scoped Matrix BigOperators ComplexOrder MatrixOrder Matrix.Norms.Operator Kraus
 
 /-- The powers of a primitive `m`-th root of unity in `ℂ` are exactly the
 solutions of `μ ^ m = 1`. -/

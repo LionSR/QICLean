@@ -5,6 +5,8 @@ Authors: QICLean contributors
 -/
 import QICLean.Representation.Character.Twirl
 import Mathlib.LinearAlgebra.Dual.Lemmas
+import QICLean.Representation.Character.SemiRegular
+import QICLean.Representation.Character.TensorProduct
 
 /-!
 # Semi-regularity and faithful group-algebra actions

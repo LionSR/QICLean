@@ -6,6 +6,8 @@ Authors: QICLean contributors
 import Mathlib.Basic.Complex.Basic
 import Mathlib.LinearAlgebra.Matrix.ConjTranspose
 import Mathlib.Data.Matrix.Mul
+import Mathlib.Analysis.Complex.Order
+import Mathlib.LinearAlgebra.Matrix.Kronecker
 
 /-!
 # Entrywise identities for rectangular matrix isometries and coisometries

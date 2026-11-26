@@ -9,6 +9,8 @@ import Mathlib.Algebra.Star.StarProjection
 import Mathlib.LinearAlgebra.UnitaryGroup
 import Mathlib.Tactic.NoncommRing
 import Mathlib.LinearAlgebra.Matrix.Reindex
+import Mathlib.Analysis.Matrix.Order
+import Mathlib.LinearAlgebra.Matrix.Kronecker
 
 /-!
 # A unitary dilation of a partial isometry

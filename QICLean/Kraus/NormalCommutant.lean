@@ -238,13 +238,9 @@ namespace Kraus
 
 variable {d D : ℕ}
 
-/-- The linear combination map for an injective tensor is surjective. -/
-theorem IsInjective.linearCombination_surjective {A : Fin d → Matrix (Fin D) (Fin D) ℂ} (hA : Kraus.IsInjective A) :
-    Function.Surjective (Fintype.linearCombination ℂ A) :=
-  (span_range_eq_top_iff_surjective_fintypeLinearCombination ℂ A).mp hA.span_eq_top
-
 /-- For an injective tensor, any matrix can be decomposed in the spanning set. -/
-theorem IsInjective.exists_decomposition {A : Fin d → Matrix (Fin D) (Fin D) ℂ} (hA : Kraus.IsInjective A)
+theorem IsInjective.exists_decomposition {A : Fin d → Matrix (Fin D) (Fin D) ℂ}
+    (hA : Kraus.IsInjective A)
     (X : Matrix (Fin D) (Fin D) ℂ) :
     ∃ c : Fin d → ℂ, X = ∑ i, c i • A i := by
   obtain ⟨c, hc⟩ := hA.linearCombination_surjective X
@@ -253,7 +249,8 @@ theorem IsInjective.exists_decomposition {A : Fin d → Matrix (Fin D) (Fin D) �
 /-- Noncomputable decomposition map: a choice of right inverse for the linear combination map.
 For an injective tensor `A`, `decompositionMap A hA` is a linear map
 `M_D(ℂ) → ℂ^d` such that `∑ i, (decompositionMap A hA X) i • A i = X`. -/
-noncomputable def decompositionMap {A : Fin d → Matrix (Fin D) (Fin D) ℂ} (hA : Kraus.IsInjective A) :
+noncomputable def decompositionMap {A : Fin d → Matrix (Fin D) (Fin D) ℂ}
+    (hA : Kraus.IsInjective A) :
     Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] (Fin d → ℂ) :=
   (hA.exists_rightInverse).choose
 
@@ -268,16 +265,6 @@ theorem decompositionMap_sum {A : Fin d → Matrix (Fin D) (Fin D) ℂ} (hA : Kr
     ∑ i, decompositionMap hA X i • A i = X := by
   have := decompositionMap_spec hA X
   rwa [Fintype.linearCombination_apply] at this
-
-/-- The linear combination map over all length-`N` words is surjective for an
-`N`-block-injective tensor. -/
-theorem IsNBlkInjective.linearCombination_surjective {A : Fin d → Matrix (Fin D) (Fin D) ℂ} {N : ℕ}
-    (hA : Kraus.IsNBlkInjective A N) :
-    Function.Surjective
-      (Fintype.linearCombination ℂ
-        (fun σ : Fin N → Fin d => Kraus.evalWord A (List.ofFn σ))) :=
-  (span_range_eq_top_iff_surjective_fintypeLinearCombination ℂ
-    (fun σ : Fin N → Fin d => Kraus.evalWord A (List.ofFn σ))).mp hA
 
 end Kraus
 

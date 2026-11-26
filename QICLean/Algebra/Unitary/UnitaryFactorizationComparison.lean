@@ -4,6 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import Mathlib.LinearAlgebra.UnitaryGroup
+import Mathlib.Analysis.Complex.Order
+import Mathlib.LinearAlgebra.Matrix.Hermitian
 
 /-!
 # Comparison of unitary factorizations
@@ -108,7 +110,6 @@ section
 
 open scoped Matrix BigOperators ComplexOrder
 
-open (changePhysicalBasis)
 
 /-- A unitary matrix squaring to the identity is Hermitian. -/
 theorem Matrix.isHermitian_of_mem_unitaryGroup_of_mul_self_eq_one {n : Type*} [Fintype n]

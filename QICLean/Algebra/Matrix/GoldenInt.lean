@@ -6,6 +6,8 @@ Authors: QICLean contributors
 import Mathlib.Analysis.Real.Sqrt
 import Mathlib.NumberTheory.Real.GoldenRatio
 import Mathlib.RingTheory.AdjoinRoot
+import Mathlib.Analysis.SpecialFunctions.Complex.Circle
+import Mathlib.Tactic.LinearCombination
 
 /-!
 # Golden integers: the ring `ℤ[σ]` with `σ = φ^{-1/2}`

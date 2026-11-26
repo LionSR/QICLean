@@ -7,6 +7,9 @@ import Mathlib.Analysis.Normed.Module.Basic
 import Mathlib.Analysis.Complex.Basic
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Linarith
+import Mathlib.Analysis.Matrix.Order
+import Mathlib.LinearAlgebra.Matrix.Kronecker
+import Mathlib.Analysis.InnerProductSpace.Basic
 
 /-!
 # Distance after normalization near a unit vector
@@ -73,7 +76,6 @@ section
 
 open scoped Matrix Kronecker ComplexOrder MatrixOrder BigOperators NNReal ENNReal InnerProductSpace
 
-open Kraus (blockTensor)
 
 /-- For two unit vectors, the deficit of the real inner product is half their
 squared distance. This project identity underlies the second-order refinement
