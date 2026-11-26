@@ -15,8 +15,6 @@ map agrees with the original map on matrices supported by the projection.
 
 ## Main definitions
 
-* `Matrix.tracePrepareMap`: discard a matrix and prepare a fixed matrix with
-  the same trace when the fixed matrix has trace one.
 * `Matrix.supportComplementMap`: measure the weight outside a projection and
   prepare a fixed matrix.
 * `Matrix.supportCompletion`: add the complementary term to a map supported
@@ -24,6 +22,9 @@ map agrees with the original map on matrices supported by the projection.
 
 ## Main results
 
+* `Matrix.tracePrepareMap_isKrausCPTP`: discarding a matrix and preparing a
+  density matrix is trace-preserving and completely positive; the map
+  `Matrix.tracePrepareMap` itself is defined in `QICLean.Algebra.PartialTrace`.
 * `Matrix.supportCompletion_isKrausCPTP`: the completed map is trace-preserving
   and completely positive.
 * `Matrix.supportCompletion_apply_of_supported`: the completed map agrees with
@@ -45,31 +46,6 @@ namespace Matrix
 
 variable {α β : Type*} [Fintype α] [DecidableEq α]
   [Fintype β] [DecidableEq β]
-
-/-- The trace-and-prepare map sends `X` to `trace X • ρ`.
-
-It is expressed as state preparation, interchange of the two tensor factors,
-and partial trace.  This factorization supplies its rectangular Kraus form
-without any nonemptiness assumption on either index type. -/
-def tracePrepareMap (ρ : Matrix β β ℂ) :
-    Matrix α α ℂ →ₗ[ℂ] Matrix β β ℂ :=
-  (partialTraceRightLM (α := β) (β := α)).comp
-    ((equivReindexMap (Equiv.prodComm α β)).comp (preparationMap ρ))
-
-/-- The trace-and-prepare map has the formula `X ↦ trace X • ρ`. -/
-@[simp]
-theorem tracePrepareMap_apply (ρ : Matrix β β ℂ) (X : Matrix α α ℂ) :
-    tracePrepareMap ρ X = Matrix.trace X • ρ := by
-  classical
-  ext b c
-  change (∑ a, X a a * ρ b c) = (∑ a, X a a) * ρ b c
-  rw [Finset.sum_mul]
-
-/-- The output trace of the trace-and-prepare map is the product of the input
-trace and the trace of the prepared matrix. -/
-theorem tracePrepareMap_trace (ρ : Matrix β β ℂ) (X : Matrix α α ℂ) :
-    Matrix.trace (tracePrepareMap ρ X) = Matrix.trace X * Matrix.trace ρ := by
-  rw [tracePrepareMap_apply, Matrix.trace_smul, smul_eq_mul]
 
 /-- Trace-and-prepare is completely positive when the prepared matrix is
 positive semidefinite. -/

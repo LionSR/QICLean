@@ -7,6 +7,7 @@ import Mathlib.LinearAlgebra.Matrix.Kronecker
 import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.Analysis.Matrix.PosDef
 import Mathlib.Basic.Complex.Basic
+import QICLean.Algebra.Matrix.MatrixReindex
 import QICLean.Algebra.Unitary.MatrixIsometryEntries
 
 /-!
@@ -75,6 +76,12 @@ Proposition 2.1) and for reduced states on contiguous tensor factors.
   `Matrix.traceAC_ABC_isHermitian`: tripartite partial traces preserve Hermiticity
 * `Matrix.PosSemidef.traceLeft`, `Matrix.PosSemidef.traceRight`: bipartite partial
   traces preserve positive semidefiniteness
+* `Matrix.preparationMap`: the state-preparation map `X ↦ X ⊗ ρ`
+* `Matrix.tracePrepareMap`: discard a matrix and prepare a fixed matrix,
+  `X ↦ tr(X) • ρ`, written as preparation, interchange of the two factors and
+  partial trace
+* `Matrix.tracePrepareMap_apply`, `Matrix.tracePrepareMap_trace`: its formula
+  and its output trace
 
 ## References
 
@@ -860,3 +867,54 @@ theorem partialTraceRight_vecMulVec_tensorPurification [Fintype BT] [Fintype BE]
 end TensorPurification
 
 end Matrix
+
+noncomputable section
+
+namespace Matrix
+
+section TracePrepare
+
+/-- The state-preparation map $X\mapsto X\otimes\rho$.  This is the
+elementary operation used to adjoin the positive neighboring operators in
+the maps $\mathcal T_1$ and $\mathcal S_1$ of arXiv:1606.00608,
+Appendix C.2, lines 1527--1533 and 1551--1555. -/
+def preparationMap {α β : Type*} [Fintype α] [DecidableEq α]
+    [Fintype β] [DecidableEq β] (ρ : Matrix β β ℂ) :
+    Matrix α α ℂ →ₗ[ℂ] Matrix (α × β) (α × β) ℂ where
+  toFun X := Matrix.kroneckerMap (· * ·) X ρ
+  map_add' X Y := Matrix.add_kronecker X Y ρ
+  map_smul' c X := Matrix.smul_kronecker c X ρ
+
+variable {α β : Type*} [Fintype α] [DecidableEq α]
+  [Fintype β] [DecidableEq β]
+
+/-- The trace-and-prepare map sends `X` to `trace X • ρ`.
+
+It is expressed as state preparation, interchange of the two tensor factors,
+and partial trace.  This factorization supplies its rectangular Kraus form
+without any nonemptiness assumption on either index type. -/
+def tracePrepareMap (ρ : Matrix β β ℂ) :
+    Matrix α α ℂ →ₗ[ℂ] Matrix β β ℂ :=
+  (partialTraceRightLM (α := β) (β := α)).comp
+    ((equivReindexMap (Equiv.prodComm α β)).comp (preparationMap ρ))
+
+/-- The trace-and-prepare map has the formula `X ↦ trace X • ρ`. -/
+@[simp]
+theorem tracePrepareMap_apply (ρ : Matrix β β ℂ) (X : Matrix α α ℂ) :
+    tracePrepareMap ρ X = Matrix.trace X • ρ := by
+  classical
+  ext b c
+  change (∑ a, X a a * ρ b c) = (∑ a, X a a) * ρ b c
+  rw [Finset.sum_mul]
+
+/-- The output trace of the trace-and-prepare map is the product of the input
+trace and the trace of the prepared matrix. -/
+theorem tracePrepareMap_trace (ρ : Matrix β β ℂ) (X : Matrix α α ℂ) :
+    Matrix.trace (tracePrepareMap ρ X) = Matrix.trace X * Matrix.trace ρ := by
+  rw [tracePrepareMap_apply, Matrix.trace_smul, smul_eq_mul]
+
+end TracePrepare
+
+end Matrix
+
+end

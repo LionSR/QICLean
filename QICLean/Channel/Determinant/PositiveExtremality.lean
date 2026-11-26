@@ -3,30 +3,57 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Algebra.Matrix.MatrixTracePairing
+import QICLean.Algebra.Matrix.MatrixAux
 import QICLean.Channel.Determinant.ChoiBound
 import QICLean.Channel.Determinant.Composition
-import QICLean.Channel.Determinant.HilbertSchmidt
 import QICLean.Channel.Determinant.UnitaryCharacterization
-import QICLean.Channel.Peripheral.Projection.CesaroRecurrence
-import QICLean.Channel.Peripheral.Spectrum.AntilinearConjugation
-import QICLean.Channel.PSDConeAutomorphism.RankPreservation
+import QICLean.Channel.Schwarz.AbstractMultiplicativeDomain
+import QICLean.Channel.TransferMatrix
 import Mathlib.GroupTheory.Perm.Cycle.Type
 import Mathlib.LinearAlgebra.Matrix.Permutation
 
 /-!
-# Determinant extremality for positive trace-preserving maps
+# Determinants of positive trace-preserving maps and of transposition
 
-This file formalizes the saturation step in Wolf Theorem 6.1 for positive
-trace-preserving maps.  If `‖det T‖ = 1`, all eigenvalues are peripheral, so
-Wolf's Dirichlet recurrent powers converge to the identity.  Surjectivity of
-`T` then shows that its inverse is positive, equivalently that `T` maps the
-positive-semidefinite cone onto itself.  Wolf Proposition 3.6 and its existing
-Wigner-theorem proof classify such cone automorphisms; trace preservation
-normalizes the implementing matrix to a unitary.
+This file formalizes the parts of Wolf Theorem 6.1 for positive
+trace-preserving maps that need only the determinant: the determinant of a
+Hermiticity-preserving map is real, so that of a positive trace-preserving map
+lies in `[-1, 1]`; ordinary transposition has determinant
+`(-1)^(d(d-1)/2)`, of modulus one; and the transpose-conjugation branch
+saturates the determinant bound.
 
-The determinant sign of ordinary transposition, and hence the parity clause in
-Wolf Theorem 6.1(3), are kept separate from this modulus-one classification.
+It also develops the inverse-map interface needed for Wolf's corollary on
+positive invertible maps.  The inverse of a bijective trace-preserving map is
+trace preserving, positivity of that inverse is equivalent to the original
+positive map carrying the positive-semidefinite cone onto itself, and the
+determinant bounds for a map and its positive inverse force determinant
+modulus one.  Ordinary transposition, even after an outer unitary
+conjugation, is not a Schwarz map in matrix dimension at least two; in
+dimension one it is the identity.
+
+The determinant-saturation classification (Wolf Theorem 6.1(2) and (3)) and
+the positive-invertible-map corollary need the recurrence of the peripheral
+projection and Wolf Proposition 3.6; they are in
+`QICLean.Channel.Determinant.PositiveInverse`.
+
+## Main results
+
+* `ChannelDeterminant.Internal.channelDet_transposeLinearMapComplex`: the
+  determinant of ordinary transposition.
+* `ChannelDeterminant.Internal.channelDet_transposeLinearMapComplex_eq_neg_one_iff`:
+  transposition has determinant `-1` exactly when `⌊d/2⌋` is odd.
+* `ChannelDeterminant.Internal.channelDet_star_eq_of_map_conjTranspose`: the
+  determinant of a Hermiticity-preserving map is real.
+* `ChannelDeterminant.Internal.exists_real_channelDet_mem_Icc_of_positive_tracePreserving`:
+  Wolf Theorem 6.1(1).
+* `ChannelDeterminant.Internal.channelDet_norm_eq_one_of_unitaryChannel_comp_transpose`:
+  the transpose branch saturates the determinant bound.
+* `ChannelDeterminant.Internal.inverseOfBijective_isPositiveMap_iff_mapsPSDConeOnto`:
+  positivity of the inverse is surjectivity on the positive-semidefinite cone.
+* `ChannelDeterminant.Internal.channelDet_norm_eq_one_of_inverseOfBijective_isPositiveMap`:
+  a positive inverse forces determinant modulus one.
+* `ChannelDeterminant.Internal.unitaryChannel_comp_transpose_not_isSchwarzMap`:
+  the transpose branch is not Schwarz in matrix dimension at least two.
 
 ## References
 
@@ -34,7 +61,7 @@ Wolf Theorem 6.1(3), are kept separate from this modulus-one classification.
 
 ## Tags
 
-quantum channel, positive map, determinant, recurrence, Wigner theorem
+quantum channel, positive map, determinant, transposition, inverse
 -/
 
 open scoped Matrix ComplexOrder MatrixOrder
@@ -44,38 +71,6 @@ variable {d : ℕ}
 
 local notation "MatrixAlg" => ChannelDeterminant.Internal.MatrixAlg
 local notation "MatrixEnd" => ChannelDeterminant.Internal.MatrixEnd
-
-namespace Module.End
-
-/-- If every eigenvalue of a finite-dimensional complex endomorphism has
-modulus one, its peripheral spectral subspace is the whole space. -/
-theorem peripheralSubspace_eq_top_of_all_eigenvalues_norm_one
-    {V : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
-    (T : Module.End ℂ V)
-    (h : ∀ μ : ℂ, T.HasEigenvalue μ → ‖μ‖ = 1) :
-    T.peripheralSubspace = ⊤ := by
-  have hset : peripheralEigenvalues T = {μ | T.HasEigenvalue μ} := by
-    ext μ
-    constructor
-    · exact fun hμ ↦ hμ.1
-    · exact fun hμ ↦ ⟨hμ, h μ hμ⟩
-  rw [peripheralSubspace, hset, T.iSup_maxGenEigenspace_hasEigenvalue_eq_top]
-
-/-- Under the same phase-spectrum hypothesis, the peripheral spectral
-projection is the identity. -/
-theorem peripheralProjection_eq_one_of_all_eigenvalues_norm_one
-    {V : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
-    (T : Module.End ℂ V)
-    (h : ∀ μ : ℂ, T.HasEigenvalue μ → ‖μ‖ = 1) :
-    T.peripheralProjection = 1 := by
-  apply LinearMap.ext
-  intro X
-  simpa only [Module.End.one_apply] using T.peripheralProjection_apply_of_mem
-    (show X ∈ T.peripheralSubspace by
-      rw [T.peripheralSubspace_eq_top_of_all_eigenvalues_norm_one h]
-      exact Submodule.mem_top)
-
-end Module.End
 
 namespace ChannelDeterminant
 
@@ -265,121 +260,6 @@ theorem exists_real_channelDet_mem_Icc_of_positive_tracePreserving
       channelDet_norm_le_one_of_positive_tracePreserving hPos hTP
   exact ⟨r, (abs_le.mp habs), hr⟩
 
-private theorem pow_posSemidef_of_isPositiveMap
-    {T : MatrixEnd d} (hPos : IsPositiveMap T)
-    {X : MatrixAlg d} (hX : X.PosSemidef) (m : ℕ) :
-    ((T ^ m) X).PosSemidef := by
-  induction m with
-  | zero => simpa using hX
-  | succ m ih =>
-      rw [pow_succ', Module.End.mul_eq_comp, LinearMap.comp_apply]
-      exact hPos _ ih
-
-/-- The recurrent-power/positive-inverse step in Wolf Theorem 6.1(2).
-
-For a positive trace-preserving `T` with determinant of modulus one, every
-eigenvalue is peripheral.  The recurrent powers therefore converge to the
-identity.  Applying the positive maps `T ^ (n_i - 1)` to a positive target and
-passing to the closed positive-semidefinite cone shows that its unique
-preimage under `T` is positive.
-
-Source: `Notes/WolfNoteTexSource/ch06_spectral_properties.tex`, lines 369--380. -/
-theorem mapsPSDConeOnto_of_channelDet_norm_eq_one [NeZero d]
-    {T : MatrixEnd d} (hPos : IsPositiveMap T) (hTP : IsTracePreservingMap T)
-    (hdet : ‖channelDet T‖ = 1) :
-    MapsPSDConeOnto T := by
-  have hdet0 : channelDet T ≠ 0 := by
-    intro h0
-    rw [h0, norm_zero] at hdet
-    exact zero_ne_one hdet
-  have hbij : Function.Bijective T :=
-    (channelDet_ne_zero_iff_bijective T).mp hdet0
-  have hall : ∀ μ : ℂ, Module.End.HasEigenvalue T μ → ‖μ‖ = 1 :=
-    channel_all_eigenvalues_norm_one_of_positive_tracePreserving hPos hTP hdet
-  have hprojection : Module.End.peripheralProjection T = 1 :=
-    Module.End.peripheralProjection_eq_one_of_all_eigenvalues_norm_one T hall
-  refine ⟨hPos, ?_⟩
-  intro A hA
-  obtain ⟨X, hTX⟩ := hbij.2 A
-  refine ⟨X, ?_, hTX⟩
-  obtain ⟨n, hnmono, hn0, hn⟩ :=
-    hPos.exists_strictMono_tendsto_pow_peripheralProjection hTP
-  have hlim : Filter.Tendsto (fun i : ℕ ↦ (T ^ n i) X) Filter.atTop (nhds X) := by
-    simpa only [hprojection, Module.End.one_apply] using hn X
-  exact Matrix.posSemidef_is_closed.mem_of_tendsto hlim
-    (Filter.Eventually.of_forall fun i ↦ by
-      have hni : 0 < n i := lt_of_lt_of_le hn0 (hnmono.monotone (Nat.zero_le i))
-      obtain ⟨k, hk⟩ := Nat.exists_eq_succ_of_ne_zero hni.ne'
-      rw [hk, pow_succ, Module.End.mul_apply, hTX]
-      exact pow_posSemidef_of_isPositiveMap hPos hA k)
-
-private theorem conjTranspose_mul_self_eq_one_of_tracePreserving_conj
-    {T : MatrixEnd d} (hTP : IsTracePreservingMap T) {Y : MatrixAlg d}
-    (hconj : ∀ X, T X = Y * X * Yᴴ) :
-    Yᴴ * Y = 1 := by
-  refine sub_eq_zero.mp ((Matrix.trace_mul_right_eq_zero_iff
-    (M := Yᴴ * Y - 1)).1 ?_)
-  intro X
-  rw [Matrix.sub_mul, Matrix.trace_sub, one_mul]
-  apply sub_eq_zero.mpr
-  calc
-    Matrix.trace ((Yᴴ * Y) * X) = Matrix.trace (Y * X * Yᴴ) := by
-      simpa only [Matrix.mul_assoc] using (Matrix.trace_mul_cycle Y X Yᴴ).symm
-    _ = Matrix.trace (T X) := congrArg Matrix.trace (hconj X).symm
-    _ = Matrix.trace X := hTP X
-
-private theorem conjTranspose_mul_self_eq_one_of_tracePreserving_transposeConj
-    {T : MatrixEnd d} (hTP : IsTracePreservingMap T) {Y : MatrixAlg d}
-    (htranspose : ∀ X, T X = Y * Xᵀ * Yᴴ) :
-    Yᴴ * Y = 1 := by
-  refine sub_eq_zero.mp ((Matrix.trace_mul_right_eq_zero_iff
-    (M := Yᴴ * Y - 1)).1 ?_)
-  intro X
-  rw [Matrix.sub_mul, Matrix.trace_sub, one_mul]
-  apply sub_eq_zero.mpr
-  calc
-    Matrix.trace ((Yᴴ * Y) * X) = Matrix.trace (Y * X * Yᴴ) := by
-      simpa only [Matrix.mul_assoc] using (Matrix.trace_mul_cycle Y X Yᴴ).symm
-    _ = Matrix.trace (T Xᵀ) := by
-      simpa only [Matrix.transpose_transpose] using
-        congrArg Matrix.trace (htranspose Xᵀ).symm
-    _ = Matrix.trace Xᵀ := hTP Xᵀ
-    _ = Matrix.trace X := Matrix.trace_transpose X
-
-/-- **Wolf Theorem 6.1(2), positive trace-preserving forward direction.**
-
-Determinant saturation makes `T` a positive-cone automorphism by the recurrent
-power argument.  The existing formalization of Wolf Proposition 3.6 (whose
-classification step uses the project's Wigner theorem) gives conjugation or
-transpose-conjugation by an invertible matrix.  Trace preservation makes that
-matrix unitary. -/
-theorem exists_unitary_or_transpose_of_channelDet_norm_eq_one [NeZero d]
-    {T : MatrixEnd d} (hPos : IsPositiveMap T) (hTP : IsTracePreservingMap T)
-    (hdet : ‖channelDet T‖ = 1) :
-    ∃ U : Matrix.unitaryGroup (Fin d) ℂ,
-      T = unitaryChannel U ∨
-      T = (unitaryChannel U).comp (Matrix.transposeLinearMapComplex (Fin d)) := by
-  have hcone : MapsPSDConeOnto T :=
-    mapsPSDConeOnto_of_channelDet_norm_eq_one hPos hTP hdet
-  obtain ⟨Y, _hY, hconj | htranspose⟩ :=
-    hPos.exists_isUnit_det_conj_or_transpose_of_preserves_hermitian_rank
-      (fun H hH ↦ hcone.rank_eq_of_isHermitian hH)
-  · have hYY : Yᴴ * Y = 1 :=
-      conjTranspose_mul_self_eq_one_of_tracePreserving_conj hTP hconj
-    let U : Matrix.unitaryGroup (Fin d) ℂ :=
-      ⟨Y, Matrix.mem_unitaryGroup_iff'.2 (by
-        simpa only [Matrix.star_eq_conjTranspose] using hYY)⟩
-    refine ⟨U, Or.inl (LinearMap.ext fun X ↦ ?_)⟩
-    simpa only [unitaryChannel, LinearMap.coe_mk, AddHom.coe_mk, U] using hconj X
-  · have hYY : Yᴴ * Y = 1 :=
-      conjTranspose_mul_self_eq_one_of_tracePreserving_transposeConj hTP htranspose
-    let U : Matrix.unitaryGroup (Fin d) ℂ :=
-      ⟨Y, Matrix.mem_unitaryGroup_iff'.2 (by
-        simpa only [Matrix.star_eq_conjTranspose] using hYY)⟩
-    refine ⟨U, Or.inr (LinearMap.ext fun X ↦ ?_)⟩
-    change T X = Y * Xᵀ * Yᴴ
-    exact htranspose X
-
 /-- Ordinary matrix transposition has determinant of modulus one.  This is the
 modulus-only consequence of its being a linear involution; the exact sign is
 the separate parity computation in Wolf Theorem 6.1(3). -/
@@ -407,80 +287,272 @@ theorem channelDet_norm_eq_one_of_unitaryChannel_comp_transpose
   rw [channelDet_comp, channelDet_unitary_eq_one, one_mul,
     channelDet_transpose_norm_eq_one]
 
-/-- **Wolf Theorem 6.1(2), positive trace-preserving form.**
+/-- The inverse linear map of a bijective endomorphism of the matrix algebra. -/
+noncomputable def inverseOfBijective (T : MatrixEnd d)
+    (hT : Function.Bijective T) : MatrixEnd d :=
+  (LinearEquiv.ofBijective T hT).symm.toLinearMap
 
-For `d > 0`, a positive trace-preserving map has determinant of modulus one
-exactly when it is unitary conjugation or unitary conjugation after ordinary
-matrix transposition.  The `NeZero d` assumption is the explicit Lean form of
-Wolf's positive matrix-dimension convention.
+@[simp]
+theorem apply_inverseOfBijective (T : MatrixEnd d)
+    (hT : Function.Bijective T) (X : MatrixAlg d) :
+    T (inverseOfBijective T hT X) = X := by
+  exact (LinearEquiv.ofBijective T hT).apply_symm_apply X
 
-Source: `Notes/WolfNoteTexSource/ch06_spectral_properties.tex`, lines 351--400. -/
-theorem channelDet_norm_eq_one_iff_exists_unitary_or_transpose_of_positive_tracePreserving
-    [NeZero d] {T : MatrixEnd d}
-    (hPos : IsPositiveMap T) (hTP : IsTracePreservingMap T) :
-    ‖channelDet T‖ = 1 ↔
-      ∃ U : Matrix.unitaryGroup (Fin d) ℂ,
-        T = unitaryChannel U ∨
-        T = (unitaryChannel U).comp (Matrix.transposeLinearMapComplex (Fin d)) := by
-  constructor
-  · exact exists_unitary_or_transpose_of_channelDet_norm_eq_one hPos hTP
-  · rintro ⟨U, rfl | rfl⟩
-    · exact channelDet_norm_eq_one_of_unitaryChannel U
-    · exact channelDet_norm_eq_one_of_unitaryChannel_comp_transpose U
+@[simp]
+theorem inverseOfBijective_apply (T : MatrixEnd d)
+    (hT : Function.Bijective T) (X : MatrixAlg d) :
+    inverseOfBijective T hT (T X) = X := by
+  exact (LinearEquiv.ofBijective T hT).symm_apply_apply X
 
-/-- **Wolf Theorem 6.1(3).**  For a positive trace-preserving map in positive
-matrix dimension, determinant `-1` occurs exactly for a unitary conjugation
-after ordinary transposition in a dimension for which `⌊d/2⌋` is odd.
+@[simp]
+theorem comp_inverseOfBijective (T : MatrixEnd d)
+    (hT : Function.Bijective T) :
+    T.comp (inverseOfBijective T hT) = 1 := by
+  apply LinearMap.ext
+  intro X
+  exact apply_inverseOfBijective T hT X
 
-Source: `Notes/WolfNoteTexSource/ch06_spectral_properties.tex`, lines 358--406. -/
-theorem channelDet_eq_neg_one_iff_exists_unitary_transpose_of_positive_tracePreserving
-    [NeZero d] {T : MatrixEnd d}
-    (hPos : IsPositiveMap T) (hTP : IsTracePreservingMap T) :
-    channelDet T = -1 ↔
-      Odd (d / 2) ∧ ∃ U : Matrix.unitaryGroup (Fin d) ℂ,
-        T = (unitaryChannel U).comp (Matrix.transposeLinearMapComplex (Fin d)) := by
-  constructor
-  · intro hdet
-    have hnorm : ‖channelDet T‖ = 1 := by rw [hdet, norm_neg, norm_one]
-    obtain ⟨U, hunitary | htranspose⟩ :=
-      exists_unitary_or_transpose_of_channelDet_norm_eq_one hPos hTP hnorm
-    · have hone : channelDet T = 1 := by
-        rw [hunitary, channelDet_unitary_eq_one]
-      rw [hdet] at hone
-      exact (by norm_num at hone)
-    · have htransposeDet :
-          channelDet (Matrix.transposeLinearMapComplex (Fin d)) = -1 := by
-        rw [htranspose, channelDet_comp, channelDet_unitary_eq_one, one_mul] at hdet
-        exact hdet
-      exact ⟨channelDet_transposeLinearMapComplex_eq_neg_one_iff.mp htransposeDet,
-        U, htranspose⟩
-  · rintro ⟨hodd, U, rfl⟩
-    rw [channelDet_comp, channelDet_unitary_eq_one, one_mul,
-      channelDet_transposeLinearMapComplex_eq_neg_one_iff.mpr hodd]
+@[simp]
+theorem inverseOfBijective_comp (T : MatrixEnd d)
+    (hT : Function.Bijective T) :
+    (inverseOfBijective T hT).comp T = 1 := by
+  apply LinearMap.ext
+  intro X
+  exact inverseOfBijective_apply T hT X
 
-/-- **Wolf Theorem 6.1(3), determinant-one converse in the odd-parity
-dimensions.**  If `⌊d/2⌋` is odd, the transpose branch has determinant
-`-1`; hence a positive trace-preserving map has determinant `1` exactly when it
-is a unitary conjugation. -/
-theorem channelDet_eq_one_iff_exists_unitary_of_positive_tracePreserving_of_odd
-    [NeZero d] {T : MatrixEnd d}
+/-- The inverse of a bijective trace-preserving linear map is trace
+preserving.  This is the observation immediately following Wolf's positive
+invertible-map corollary.
+
+Source: `Notes/WolfNoteTexSource/ch06_spectral_properties.tex`, lines 423--426. -/
+theorem inverseOfBijective_isTracePreservingMap
+    {T : MatrixEnd d} (hT : Function.Bijective T)
+    (hTP : IsTracePreservingMap T) :
+    IsTracePreservingMap (inverseOfBijective T hT) := by
+  intro X
+  have htrace := hTP (inverseOfBijective T hT X)
+  rw [apply_inverseOfBijective] at htrace
+  exact htrace.symm
+
+/-- A positive bijection with positive inverse maps the positive-semidefinite
+cone onto itself. -/
+theorem mapsPSDConeOnto_of_inverseOfBijective_isPositiveMap
+    {T : MatrixEnd d} (hT : Function.Bijective T)
+    (hPos : IsPositiveMap T)
+    (hInvPos : IsPositiveMap (inverseOfBijective T hT)) :
+    MapsPSDConeOnto T := by
+  refine ⟨hPos, ?_⟩
+  intro A hA
+  exact ⟨inverseOfBijective T hT A, hInvPos A hA,
+    apply_inverseOfBijective T hT A⟩
+
+/-- If a bijective linear map carries the positive-semidefinite cone onto
+itself, then its inverse is positive. -/
+theorem inverseOfBijective_isPositiveMap_of_mapsPSDConeOnto
+    {T : MatrixEnd d} (hT : Function.Bijective T)
+    (hCone : MapsPSDConeOnto T) :
+    IsPositiveMap (inverseOfBijective T hT) := by
+  intro A hA
+  obtain ⟨X, hX, hTX⟩ := hCone.2 A hA
+  have hInv : inverseOfBijective T hT A = X := by
+    apply hT.1
+    rw [apply_inverseOfBijective, hTX]
+  rwa [hInv]
+
+/-- For a positive bijection, positivity of the inverse is exactly
+surjectivity on the positive-semidefinite cone. -/
+theorem inverseOfBijective_isPositiveMap_iff_mapsPSDConeOnto
+    {T : MatrixEnd d} (hT : Function.Bijective T)
+    (hPos : IsPositiveMap T) :
+    IsPositiveMap (inverseOfBijective T hT) ↔ MapsPSDConeOnto T :=
+  ⟨mapsPSDConeOnto_of_inverseOfBijective_isPositiveMap hT hPos,
+    inverseOfBijective_isPositiveMap_of_mapsPSDConeOnto hT⟩
+
+/-- The determinant-bounds step in Wolf's positive-invertible-map
+corollary.  If a positive trace-preserving bijection has positive inverse,
+then both determinant moduli are at most one, while multiplicativity says
+their product is one. -/
+theorem channelDet_norm_eq_one_of_inverseOfBijective_isPositiveMap
+    {T : MatrixEnd d} (hT : Function.Bijective T)
     (hPos : IsPositiveMap T) (hTP : IsTracePreservingMap T)
-    (hodd : Odd (d / 2)) :
-    channelDet T = 1 ↔
-      ∃ U : Matrix.unitaryGroup (Fin d) ℂ, T = unitaryChannel U := by
-  constructor
-  · intro hdet
-    have hnorm : ‖channelDet T‖ = 1 := by rw [hdet, norm_one]
-    obtain ⟨U, hunitary | htranspose⟩ :=
-      exists_unitary_or_transpose_of_channelDet_norm_eq_one hPos hTP hnorm
-    · exact ⟨U, hunitary⟩
-    · have hneg : channelDet T = -1 := by
-        rw [htranspose, channelDet_comp, channelDet_unitary_eq_one, one_mul,
-          channelDet_transposeLinearMapComplex_eq_neg_one_iff.mpr hodd]
-      rw [hdet] at hneg
-      exact (by norm_num at hneg)
-  · rintro ⟨U, rfl⟩
-    exact channelDet_unitary_eq_one U
+    (hInvPos : IsPositiveMap (inverseOfBijective T hT)) :
+    ‖channelDet T‖ = 1 := by
+  have hInvTP : IsTracePreservingMap (inverseOfBijective T hT) :=
+    inverseOfBijective_isTracePreservingMap hT hTP
+  have hdetMul :
+      channelDet T * channelDet (inverseOfBijective T hT) = 1 := by
+    rw [← channelDet_comp, comp_inverseOfBijective, channelDet_id]
+  have hnormMul :
+      ‖channelDet T‖ * ‖channelDet (inverseOfBijective T hT)‖ = 1 := by
+    rw [← norm_mul, hdetMul, norm_one]
+  have hTle : ‖channelDet T‖ ≤ 1 :=
+    channelDet_norm_le_one_of_positive_tracePreserving hPos hTP
+  have hInvLe : ‖channelDet (inverseOfBijective T hT)‖ ≤ 1 :=
+    channelDet_norm_le_one_of_positive_tracePreserving hInvPos hInvTP
+  nlinarith [norm_nonneg (channelDet T),
+    norm_nonneg (channelDet (inverseOfBijective T hT))]
+
+private theorem unitaryChannel_comp_inv
+    (U : Matrix.unitaryGroup (Fin d) ℂ) :
+    (unitaryChannel U).comp (unitaryChannel U⁻¹) = 1 := by
+  have hUUInv : (U : MatrixAlg d) * (U⁻¹ : Matrix.unitaryGroup (Fin d) ℂ) = 1 :=
+    congrArg Subtype.val (mul_inv_cancel U)
+  have hUInvStarUStar :
+      ((U⁻¹ : Matrix.unitaryGroup (Fin d) ℂ) : MatrixAlg d)ᴴ *
+          (U : MatrixAlg d)ᴴ = 1 := by
+    rw [← Matrix.conjTranspose_mul, hUUInv, Matrix.conjTranspose_one]
+  apply LinearMap.ext
+  intro X
+  change (U : MatrixAlg d) *
+      (((U⁻¹ : Matrix.unitaryGroup (Fin d) ℂ) : MatrixAlg d) * X *
+        ((U⁻¹ : Matrix.unitaryGroup (Fin d) ℂ) : MatrixAlg d)ᴴ) *
+      (U : MatrixAlg d)ᴴ = X
+  rw [show (U : MatrixAlg d) *
+      (((U⁻¹ : Matrix.unitaryGroup (Fin d) ℂ) : MatrixAlg d) * X *
+        ((U⁻¹ : Matrix.unitaryGroup (Fin d) ℂ) : MatrixAlg d)ᴴ) *
+      (U : MatrixAlg d)ᴴ =
+        ((U : MatrixAlg d) *
+          ((U⁻¹ : Matrix.unitaryGroup (Fin d) ℂ) : MatrixAlg d)) * X *
+          (((U⁻¹ : Matrix.unitaryGroup (Fin d) ℂ) : MatrixAlg d)ᴴ *
+            (U : MatrixAlg d)ᴴ) by simp only [Matrix.mul_assoc],
+    hUUInv, hUInvStarUStar, Matrix.one_mul, Matrix.mul_one]
+
+/-- The inverse of unitary conjugation is conjugation by the inverse unitary. -/
+theorem inverseOfBijective_unitaryChannel
+    (U : Matrix.unitaryGroup (Fin d) ℂ)
+    (hU : Function.Bijective (unitaryChannel U)) :
+    inverseOfBijective (unitaryChannel U) hU = unitaryChannel U⁻¹ := by
+  apply LinearMap.ext
+  intro X
+  apply hU.1
+  rw [apply_inverseOfBijective]
+  symm
+  simpa only [LinearMap.comp_apply, Module.End.one_apply] using
+    LinearMap.congr_fun (unitaryChannel_comp_inv U) X
+
+/-- The inverse of `Ad U` after ordinary transposition is ordinary
+transposition after `Ad U⁻¹`; the reversed composition order is essential. -/
+theorem inverseOfBijective_unitaryChannel_comp_transpose
+    (U : Matrix.unitaryGroup (Fin d) ℂ)
+    (hU : Function.Bijective ((unitaryChannel U).comp
+      (Matrix.transposeLinearMapComplex (Fin d)))) :
+    inverseOfBijective
+        ((unitaryChannel U).comp (Matrix.transposeLinearMapComplex (Fin d))) hU =
+      (Matrix.transposeLinearMapComplex (Fin d)).comp (unitaryChannel U⁻¹) := by
+  apply LinearMap.ext
+  intro X
+  apply hU.1
+  rw [apply_inverseOfBijective]
+  have hInv := LinearMap.congr_fun (unitaryChannel_comp_inv U) X
+  symm
+  change unitaryChannel U
+    (((unitaryChannel U⁻¹ X)ᵀ)ᵀ) = X
+  simpa only [Matrix.transpose_transpose, LinearMap.comp_apply,
+    Module.End.one_apply] using hInv
+
+/-- The inverse of a unitary conjugation is positive.  The proof uses the
+explicit inverse standard form. -/
+theorem inverseOfBijective_unitaryChannel_isPositiveMap
+    (U : Matrix.unitaryGroup (Fin d) ℂ)
+    (hU : Function.Bijective (unitaryChannel U)) :
+    IsPositiveMap (inverseOfBijective (unitaryChannel U) hU) := by
+  rw [inverseOfBijective_unitaryChannel U hU]
+  exact unitaryChannel_isPositiveMap U⁻¹
+
+/-- The inverse of unitary conjugation after ordinary transposition is
+positive.  This is Wolf's transpose branch, which must not be removed by
+strengthening the statement to complete positivity. -/
+theorem inverseOfBijective_unitaryChannel_comp_transpose_isPositiveMap
+    (U : Matrix.unitaryGroup (Fin d) ℂ)
+    (hU : Function.Bijective ((unitaryChannel U).comp
+      (Matrix.transposeLinearMapComplex (Fin d)))) :
+    IsPositiveMap (inverseOfBijective
+      ((unitaryChannel U).comp (Matrix.transposeLinearMapComplex (Fin d))) hU) := by
+  rw [inverseOfBijective_unitaryChannel_comp_transpose U hU]
+  intro X hX
+  exact Matrix.transposeLinearMapComplex_isPositiveMap _
+    (unitaryChannel_isPositiveMap U⁻¹ X hX)
+
+/-- Ordinary matrix transposition is not a Schwarz map in matrix dimension at
+least two.
+
+For the matrix unit \(A=E_{01}\), the Schwarz defect of transposition is
+\(E_{11}-E_{00}\), whose \(00\)-entry is negative.
+
+Source: Wolf Theorem 6.16, proof line 1663 of
+`Notes/WolfNoteTexSource/ch06_spectral_properties.tex`. -/
+theorem transposeLinearMapComplex_not_isSchwarzMap (hd : 2 ≤ d) :
+    ¬ IsSchwarzMap (Matrix.transposeLinearMapComplex (Fin d)) := by
+  classical
+  let i : Fin d := ⟨0, by omega⟩
+  let j : Fin d := ⟨1, by omega⟩
+  intro hSchwarz
+  have hDefect := hSchwarz (Matrix.single i j 1)
+  have hDiag := hDefect.diag_nonneg (i := i)
+  norm_num [Matrix.transposeLinearMapComplex, Matrix.single,
+    Matrix.conjTranspose, Matrix.mul_apply, i, j] at hDiag
+
+/-- Removing an outer unitary conjugation from a Schwarz map preserves the
+Schwarz property of the inner map.
+
+The proof conjugates the Schwarz defect back by \(U^\dagger\); this is the
+order-automorphism step used to show that unitary conjugation cannot repair
+the transpose defect in Wolf Theorem 6.16. -/
+theorem isSchwarzMap_of_unitaryChannel_comp
+    (U : Matrix.unitaryGroup (Fin d) ℂ) {E : MatrixEnd d}
+    (hE : IsSchwarzMap ((unitaryChannel U).comp E)) :
+    IsSchwarzMap E := by
+  have hStarU : (U : MatrixAlg d)ᴴ * U = 1 := by
+    simpa only [Matrix.star_eq_conjTranspose] using
+      Matrix.UnitaryGroup.star_mul_self U
+  have hCancel (X : MatrixAlg d) :
+      (U : MatrixAlg d)ᴴ * ((U : MatrixAlg d) * X) = X := by
+    rw [← Matrix.mul_assoc, hStarU, Matrix.one_mul]
+  intro A
+  have hDefect := hE A
+  have hBack := hDefect.conjTranspose_mul_mul_same (U : MatrixAlg d)
+  have hEq :
+      (U : MatrixAlg d)ᴴ *
+          (((unitaryChannel U).comp E) (Aᴴ * A) -
+            ((unitaryChannel U).comp E) Aᴴ *
+              ((unitaryChannel U).comp E) A) *
+          (U : MatrixAlg d) =
+        E (Aᴴ * A) - E Aᴴ * E A := by
+    simp only [LinearMap.comp_apply, unitaryChannel, LinearMap.coe_mk,
+      AddHom.coe_mk, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc,
+      hCancel, hStarU, Matrix.mul_one]
+  rw [hEq] at hBack
+  exact hBack
+
+/-- Unitary conjugation after ordinary transposition is not a Schwarz map in
+matrix dimension at least two.
+
+This is the standard-form branch excluded at Wolf Theorem 6.16, proof
+line 1663. -/
+theorem unitaryChannel_comp_transpose_not_isSchwarzMap (hd : 2 ≤ d)
+    (U : Matrix.unitaryGroup (Fin d) ℂ) :
+    ¬ IsSchwarzMap ((unitaryChannel U).comp
+      (Matrix.transposeLinearMapComplex (Fin d))) := by
+  intro hSchwarz
+  exact transposeLinearMapComplex_not_isSchwarzMap hd
+    (isSchwarzMap_of_unitaryChannel_comp U hSchwarz)
+
+/-- In matrix dimension one, ordinary transposition is the identity, so
+unitary conjugation after transposition collapses to the unitary branch.
+
+This packages the one-dimensional case tacitly included in Wolf Theorem 6.16,
+proof lines 1660--1663. -/
+theorem unitaryChannel_comp_transpose_fin_one
+    (U : Matrix.unitaryGroup (Fin 1) ℂ) :
+    (unitaryChannel U).comp (Matrix.transposeLinearMapComplex (Fin 1)) =
+      unitaryChannel U := by
+  apply LinearMap.ext
+  intro X
+  simp only [LinearMap.comp_apply]
+  congr 1
+  ext i j
+  rw [show i = j from Subsingleton.elim i j]
+  simp [Matrix.transposeLinearMapComplex]
 
 end Internal
 

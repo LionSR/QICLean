@@ -10,14 +10,13 @@ import QICLean.Channel.Determinant.Composition
 import QICLean.Channel.Determinant.HilbertSchmidt
 import QICLean.Channel.Determinant.KrausRankTwo
 import QICLean.Channel.Determinant.PositiveExtremality
-import QICLean.Channel.Determinant.PositiveInverse
 import QICLean.Channel.Determinant.UnitaryCharacterization
 
 /-!
 # Determinants of quantum channels
 
 Thin module assembling the determinant development for quantum channels from
-ten focused sub-modules.
+eight focused sub-modules.
 
 The division follows the same organization as the earlier `Full/` and
 `Growth/` developments:
@@ -36,11 +35,9 @@ The division follows the same organization as the earlier `Full/` and
   determinant saturation.
 * `QICLean.Channel.Determinant.KrausRankTwo` — Wolf's nonnegative-determinant
   proposition for completely positive maps of Kraus rank at most two.
-* `QICLean.Channel.Determinant.PositiveExtremality` — Wolf Theorem 6.1 for
-  positive trace-preserving maps, including reality, saturation, and the
-  transposition sign.
-* `QICLean.Channel.Determinant.PositiveInverse` — Wolf's positive-invertible-map
-  corollary, including trace preservation and positivity of the inverse.
+* `QICLean.Channel.Determinant.PositiveExtremality` — Wolf Theorem 6.1(1) for
+  positive trace-preserving maps, the determinant and sign of transposition,
+  and the inverse-map interface of Wolf's positive-invertible-map corollary.
 * `QICLean.Channel.Determinant.UnitaryCharacterization` — Wolf Theorem 6.1(2)
   for CPTP maps.
 
@@ -57,21 +54,19 @@ The division follows the same organization as the earlier `Full/` and
 * `channelDet_norm_comp_le_of_positive_tracePreserving` — the inequality in
   Wolf's determinant-monotonicity corollary.
 * `channelDet_norm_le_one_of_positive_tracePreserving` — Wolf Theorem 6.1(1).
-* `channelDet_norm_eq_one_iff_exists_unitary_or_transpose_of_positive_tracePreserving`
-  — Wolf Theorem 6.1(2) for positive trace-preserving maps.
 * `ChannelDeterminant.Internal.channelDet_transposeLinearMapComplex` — the
   exact determinant of ordinary transposition in Wolf Theorem 6.1(3).
-* `ChannelDeterminant.Internal.wolfPositiveInvertibleMaps` — positivity of the
-  inverse exactly for unitary conjugation and transpose-conjugation.
-* `ChannelDeterminant.Internal.wolfPositiveInvertibleSchwarzMaps` — the
-  Schwarz refinement used in Wolf Theorem 6.16, where the transpose branch is
-  excluded (and collapses to the unitary branch in dimension one).
 * `channelDet_norm_eq_one_iff_exists_unitaryChannel` — Wolf Theorem 6.1(2)
   for CPTP maps.
 * `IsKrausCP.channelDet_nonneg_of_choiRank_le_two` — nonnegativity for
   completely positive maps of Kraus rank at most two.
 * `norm_channelDet_le_choiPurity_rpow` — Wolf Eq. (6.27), the Choi bound
   `|det T| ≤ tr[τ† τ]^{d²/2}` for an arbitrary linear map.
+
+Wolf Theorem 6.1(2) and (3) for positive trace-preserving maps and Wolf's
+positive-invertible-map corollary need the recurrence of the peripheral
+projection and Wolf Proposition 3.6; they are in
+`QICLean.Channel.Determinant.PositiveInverse`.
 
 ## References
 

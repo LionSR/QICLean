@@ -33,6 +33,7 @@ of the labels of `S_k` with partitions.
 * `IrrepLabel G` — the finite type of labels.
 * `IrrepLabel.dim l` — the dimension `d_λ` of the irreducible representation `λ`.
 * `IrrepLabel.centralIdem l` — the central idempotent `e_λ ∈ ℂ[G]`.
+* `IrrepLabel.centralIdem_mem_center` — `e_λ` lies in the center of `ℂ[G]`.
 * `IrrepLabel.matrixUnit l i j` — the matrix units of the `λ` factor.
 * `IrrepLabel.invStar_centralIdem` — `e_λ` is fixed by the involution `g ↦ g⁻¹`.
 -/
@@ -130,6 +131,10 @@ theorem centralIdem_mul_comm (l : IrrepLabel G) (a : MonoidAlgebra ℂ G) :
   by_cases h : l' = l
   · subst h; simp
   · simp [h]
+
+theorem centralIdem_mem_center {G : Type*} [Group G] [Fintype G] (l : IrrepLabel G) :
+    centralIdem l ∈ Subalgebra.center ℂ (MonoidAlgebra ℂ G) :=
+  Subalgebra.mem_center_iff.mpr fun b => (centralIdem_mul_comm l b).symm
 
 theorem centralIdem_ne_zero (l : IrrepLabel G) : centralIdem l ≠ 0 := by
   intro h

@@ -31,6 +31,10 @@ from two Lagrange-interpolation identities for distinct nodes `t_1, …, t_q`:
 * `Partition.sum_mul_prod_sub_one_div` — the first interpolation identity.
 * `Partition.sum_prod_add_one_div` — the second interpolation identity.
 * `Partition.hookFormula_eq_sum_remove`, `Partition.sum_hookFormula_add`.
+* `Partition.hookFormula_nonneg_of_antitone`, `Partition.strictAnti_shiftedPart`,
+  `Partition.hookFormula_update_sub_nonneg`,
+  `Partition.hookFormula_update_add_nonneg` — the shifted parts of a partition strictly
+  decrease, and the dimension formula stays nonnegative after removing or adding a box.
 -/
 
 open Finset Polynomial
@@ -552,5 +556,59 @@ theorem hookFormula_eq_of_le {N : ℕ} (h : q ≤ N) (p : Fin N → ℕ)
     conv_lhs => rw [hsnoc]
     rw [hookFormula_snoc, ih _ fun a ha => hp _ (by simpa using ha)]
     congr 1
+
+/-! ### Nonnegativity of the dimension formula after moving one box -/
+
+theorem hookFormula_nonneg_of_antitone {p : Fin q → ℕ} (h : Antitone (shiftedPart p)) :
+    0 ≤ hookFormula p := by
+  unfold hookFormula
+  refine div_nonneg (mul_nonneg (by positivity) (prod_nonneg fun ij hij => ?_))
+    (prod_nonneg fun _ _ => by positivity)
+  have : shiftedPart p ij.2 ≤ shiftedPart p ij.1 := h (mem_filter.mp hij).2.le
+  have : (shiftedPart p ij.2 : ℝ) ≤ shiftedPart p ij.1 := by exact_mod_cast this
+  linarith
+
+theorem strictAnti_shiftedPart {p : Fin q → ℕ} (hp : Antitone p) : StrictAnti (shiftedPart p) :=
+  fun a b hab => by
+    have := shiftedPart_sub_ge hp hab
+    have h : ((shiftedPart p b + 1 : ℕ) : ℝ) ≤ shiftedPart p a := by push_cast; linarith
+    exact_mod_cast h
+
+theorem hookFormula_update_sub_nonneg {p : Fin q → ℕ} (hp : Antitone p) (i : Fin q) :
+    0 ≤ hookFormula (Function.update p i (p i - 1)) := by
+  by_cases hpi : p i = 0
+  · rw [hpi, zero_tsub, ← hpi, Function.update_eq_self]
+    exact (hookFormula_pos hp).le
+  refine hookFormula_nonneg_of_antitone fun a b hab => ?_
+  have hs := strictAnti_shiftedPart hp
+  rw [shiftedPart_update]
+  simp only [Function.update_apply]
+  have hli : p i - 1 + (q - 1 - i) = shiftedPart p i - 1 := by simp [shiftedPart]; omega
+  rw [hli]
+  rcases hab.lt_or_eq with hab | rfl
+  · have := hs hab
+    split_ifs with h1 h2 h2
+    · subst h1; subst h2; exact absurd hab (lt_irrefl _)
+    · subst h1; have := hs hab; omega
+    · subst h2; omega
+    · exact this.le
+  · rfl
+
+theorem hookFormula_update_add_nonneg {p : Fin q → ℕ} (hp : Antitone p) (i : Fin q) :
+    0 ≤ hookFormula (Function.update p i (p i + 1)) := by
+  refine hookFormula_nonneg_of_antitone fun a b hab => ?_
+  have hs := strictAnti_shiftedPart hp
+  rw [shiftedPart_update]
+  simp only [Function.update_apply]
+  have hli : p i + 1 + (q - 1 - i) = shiftedPart p i + 1 := by simp [shiftedPart]; omega
+  rw [hli]
+  rcases hab.lt_or_eq with hab | rfl
+  · have := hs hab
+    split_ifs with h1 h2 h2
+    · subst h1; subst h2; exact absurd hab (lt_irrefl _)
+    · subst h1; omega
+    · subst h2; have := hs hab; omega
+    · exact this.le
+  · rfl
 
 end Partition

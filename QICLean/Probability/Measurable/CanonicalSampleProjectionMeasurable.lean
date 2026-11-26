@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Probability.Measurable.MatrixRangeFrameMeasurable
-import QICLean.Probability.Sampling.ViableSubspaceRandomSampling
+import QICLean.Probability.Haar.Projection
 
 /-!
 # A joint Borel projector for the existing canonical-frame sampler

@@ -8,7 +8,7 @@ import QICLean.Channel.Irreducible.CollatzWielandt
 import QICLean.Channel.Irreducible.Similarity
 import QICLean.Algebra.Hermitian.MaximallyMixed
 import QICLean.Channel.Peripheral.Spectrum.SpectralRadius
-import QICLean.Channel.PerronFrobenius.Existence
+import QICLean.Channel.FixedPoint.Stationary.StationaryStates
 import QICLean.Channel.SupportCompletion
 
 /-!

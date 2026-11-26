@@ -5,7 +5,7 @@ Authors: TNLean contributors
 -/
 import QICLean.Algebra.Matrix.MatrixAux
 import QICLean.Channel.Irreducible.Growth.KernelDescent
-import QICLean.Channel.Semigroup.ReducibleQDS.GeneratorCompression
+import QICLean.Analysis.Norm.MatrixOperatorSpace
 import Mathlib.Analysis.Normed.Algebra.Exponential
 import Mathlib.Analysis.Matrix.Order
 
@@ -24,10 +24,10 @@ The proof strategy is:
    `growth_posDef_of_irreducible` as the certificate.
 2. Pass to the limit using closure of the PSD cone and strict positivity of the
    quadratic form along the series.
-3. Convert the equivalence: given exponential positivity, use
-   `semigroup_preserves_compression_of_generator` to turn any nontrivial
-   invariant projection `P` into a unit compression of $\exp(E)(P)$, forcing
-   $P = 1$.
+3. Convert the equivalence: given exponential positivity, an invariant
+   corner $P M_D P$ contains every term $E^n(P)$ of the exponential series, so
+   $\exp(E)(P)$ is a unit compressed by any nontrivial invariant projection
+   `P`, forcing $P = 1$.
 
 ## Main statements
 
@@ -365,25 +365,43 @@ theorem irreducible_of_exp_posDef_forall
   by_cases hP0 : P = 0
   · exact Or.inl hP0
   · have hP_psd : P.PosSemidef := isOrthogonalProjection_posSemidef hP
-    have hsemigroup_inv :
-        ∀ t : ℝ, 0 ≤ t → ∀ X : Matrix (Fin D) (Fin D) ℂ,
-          P * expSemigroup E t (P * X * P) * P = expSemigroup E t (P * X * P) :=
-      semigroup_preserves_compression_of_generator hP (by
-        intro X
-        exact hP_inv X)
-    have hP_exp_pd : (expSemigroup E 1 P).PosDef := by
-      change ((endEquiv (D := D) (expSemigroup E 1)) P).PosDef
-      rw [expSemigroup_toCLM E 1]
-      simpa [expSemigroupCLM, Complex.ofReal_one] using hExp 1 zero_lt_one P hP_psd hP0
+    -- Every power of `E` maps `P` into the invariant corner `P M_D P`.
+    have hiter : ∀ n : ℕ, P * ((E ^ n) P) * P = (E ^ n) P := by
+      intro n
+      induction n with
+      | zero =>
+          rw [pow_zero]
+          change P * P * P = P
+          rw [hP.2, hP.2]
+      | succ n ih =>
+          rw [pow_succ']
+          change P * E ((E ^ n) P) * P = E ((E ^ n) P)
+          have h := hP_inv ((E ^ n) P)
+          rwa [ih] at h
+    have hpow : ∀ n : ℕ,
+        (((endEquiv (D := D)) (((1 : ℝ) : ℂ) • E)) ^ n) P = (E ^ n) P := by
+      intro n
+      rw [endEquiv_pow_apply, Complex.ofReal_one, one_smul]
+    let compress : Matrix (Fin D) (Fin D) ℂ →L[ℂ] Matrix (Fin D) (Fin D) ℂ :=
+      LinearMap.toContinuousLinearMap
+        ((LinearMap.mulLeft ℂ P).comp (LinearMap.mulRight ℂ P))
+    have hcompress : ∀ M : Matrix (Fin D) (Fin D) ℂ, compress M = P * M * P := fun M => by
+      simp [compress, Matrix.mul_assoc]
+    -- The exponential series is preserved term by term by the compression.
     have hcompress_at_one :
-        P * expSemigroup E 1 P * P = expSemigroup E 1 P := by
-      simpa only [mul_one, hP.2] using hsemigroup_inv 1 zero_le_one 1
-    have h_exp_zero_on_compl :
-        (1 - P) * expSemigroup E 1 P = 0 := by
+        P * (NormedSpace.exp ((endEquiv (D := D)) (((1 : ℝ) : ℂ) • E))) P * P =
+          (NormedSpace.exp ((endEquiv (D := D)) (((1 : ℝ) : ℂ) • E))) P := by
+      rw [← hcompress, exp_apply_eq_tsum_terms,
+        compress.map_tsum (exp_apply_terms_summable _ _)]
+      refine tsum_congr fun n => ?_
+      rw [map_smul, hcompress, hpow, hiter]
+    have hP_exp_pd := hExp 1 zero_lt_one P hP_psd hP0
+    generalize (NormedSpace.exp ((endEquiv (D := D)) (((1 : ℝ) : ℂ) • E))) P = M
+      at hP_exp_pd hcompress_at_one
+    have h_exp_zero_on_compl : (1 - P) * M = 0 := by
       calc
-        (1 - P) * expSemigroup E 1 P
-            = (1 - P) * (P * expSemigroup E 1 P * P) := by rw [hcompress_at_one]
-        _ = ((1 - P) * P) * (expSemigroup E 1 P * P) := by simp [Matrix.mul_assoc]
+        (1 - P) * M = (1 - P) * (P * M * P) := by rw [hcompress_at_one]
+        _ = ((1 - P) * P) * (M * P) := by simp [Matrix.mul_assoc]
         _ = 0 := by rw [IsIdempotentElem.one_sub_mul_self hP.2, Matrix.zero_mul]
     have h_compl_eq_zero : 1 - P = 0 := by
       rcases Matrix.PosDef.isUnit hP_exp_pd with ⟨U, hU⟩

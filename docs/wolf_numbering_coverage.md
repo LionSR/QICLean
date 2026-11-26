@@ -1113,6 +1113,10 @@ Perron–Frobenius theorem, are indexed separately in
 
 #### Wolf Proposition 6.1 (Spectral radius of positive maps) — FORMALIZED
 
+The Russo--Dye estimate, Equations (6.2) and (6.3) and the unital case are in
+`QICLean.Channel.Peripheral.Spectrum.UnitalKraus`; the trace-preserving fixed point
+and spectral radius are in `QICLean.Channel.Peripheral.Spectrum.SpectralRadius`.
+
 * `IsPositiveMap.norm_apply_le_norm_map_one_mul_norm` — the sharp
   Russo--Dye estimate `‖T(X)‖∞ ≤ ‖T(1)‖∞ ‖X‖∞` for every positive
   matrix map, using the matrix C*-operator norm.
@@ -1508,7 +1512,7 @@ the central correction index
   `spectralRadius_le_of_upperCollatzWielandtFeasible_of_posDef`, and passes to
   a compactness limit.
 * `exists_posSemidef_eigenvector` and `exists_posSemidef_eigenvector_general`
-  — `QICLean.Channel.PerronFrobenius.Existence`: weaker existence results that
+  — `QICLean.Channel.FixedPoint.Stationary.StationaryStates`: weaker existence results that
   do not identify the eigenvalue with the spectral radius.
 * `exists_wolfTheorem63_of_irreducible_positive` — the irreducible case with a
   positive-definite eigenvector (Theorem 6.3).
@@ -1790,7 +1794,7 @@ Additionally:
 * Via Cesàro: `IsChannel.exists_posSemidef_fixedPoint` —
   `QICLean.Channel.FixedPoint.MeanErgodic.Cesaro`.
 * Via Brouwer (linear): `exists_posSemidef_eigenvector` —
-  `QICLean.Channel.PerronFrobenius.Existence`.
+  `QICLean.Channel.FixedPoint.Stationary.StationaryStates`.
 
 #### Wolf Proposition 6.8 (Positive fixed-points) — FORMALIZED
 

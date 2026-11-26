@@ -5,6 +5,7 @@ Authors: TNLean contributors
 -/
 import QICLean.Representation.Permutation.MergeDimensions
 import QICLean.Representation.Permutation.CommutantDimension
+import QICLean.Representation.TensorPower.Action
 
 /-!
 # Conditional merge probabilities and the merge moment
@@ -30,6 +31,8 @@ probability of `ν` is `tr(π^ν P) / tr P`, with `tr P ≥ d_λ d_μ` when `P �
 
 * `PermutationRepresentation.trace_mul_trace_eq` — the trace factorization.
 * `PermutationRepresentation.merge_conditional_le` — the conditional probability bound.
+* `TensorPower.merge_dim_le` — the merge dimension inequalities `d_ν ≤ d_λ d_μ` and
+  `d_λ ≤ d_ν d_μ` for disjoint subsystems.
 * `TensorPower.merge_moment_le` — **Lemma 6.1(3)**, the merge moment.
 -/
 
@@ -439,5 +442,29 @@ theorem merge_moment_le (Q : Finset F) {ρ : Matrix (Config k ι) (Config k ι) 
   refine (merge_moment_le_sum_multiplicity hcomm (copyPerm_eq_mul_compl Q) hρ htr hρQ hρE
     hb).trans ?_
   exact_mod_cast sum_multiplicity_le _ k
+
+end TensorPower
+
+/-! ## Merge dimensions for disjoint subsystems -/
+
+namespace TensorPower
+
+open PermutationRepresentation
+
+variable {F : Type*} [Fintype F] [DecidableEq F] {ι : F → Type*} [∀ f, Fintype (ι f)]
+  [∀ f, DecidableEq (ι f)] {k : ℕ}
+
+/-- **Lemma 6.1(3), merge dimensions** (`05-replicas.tex`, lines 105–111, equation
+`replicas:merge-dimensions`): if `Q, E` are disjoint and their labels `λ, μ` are compatible
+with the label `ν` on `QE`, then `d_ν ≤ d_λ d_μ` and `d_λ ≤ d_ν d_μ`. -/
+theorem merge_dim_le {Q E : Finset F} (hQE : Disjoint Q E)
+    {l μ ν : IrrepLabel (Equiv.Perm (Fin k))}
+    (hP : labelProj (subsystemPerm k ι Q) l * labelProj (subsystemPerm k ι E) μ *
+      labelProj (subsystemPerm k ι (Q ∪ E)) ν ≠ 0) :
+    ν.dim ≤ l.dim * μ.dim ∧ l.dim ≤ ν.dim * μ.dim :=
+  ⟨dim_le_mul_dim_of_compatible (commute_subsystemPerm_of_disjoint k ι hQE)
+    (subsystemPerm_union k ι hQE) hP,
+   dim_le_mul_dim_of_compatible' (commute_subsystemPerm_of_disjoint k ι hQE)
+    (subsystemPerm_union k ι hQE) hP⟩
 
 end TensorPower
