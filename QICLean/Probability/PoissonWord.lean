@@ -9,6 +9,7 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Probability.PoissonWord
 
 import QICLean.Probability.PoissonWord.Basic
+import QICLean.Probability.PoissonWord.ContractionWord
 import QICLean.Probability.PoissonWord.IndependentCounts
 import QICLean.Probability.PoissonWord.Insertion
 import QICLean.Probability.PoissonWord.InsertionWeight

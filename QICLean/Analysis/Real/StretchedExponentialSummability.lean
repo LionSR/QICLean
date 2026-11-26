@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import Mathlib.Analysis.PSeries
 import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 /-!
 # Polynomial moments and tails of stretched exponentials
@@ -96,5 +97,154 @@ theorem tsum_nat_pow_mul_exp_neg_mul_rpow_tail_le (p : ℕ) {c α r : ℝ}
           apply exp_le_exp.mpr
           exact mul_le_mul_of_nonpos_left hrn (by linarith)
     _ = _ := tsum_mul_right
+
+end Real
+
+open scoped Nat
+
+namespace Real
+
+/-- The bound `2^k max {1, m! / b^m}`, `m = ⌈k / α⌉`, on `(u + 1)^k e^{-b u^α}` for `u ≥ 0`.
+Source: area law, `03-quasilocal.tex`, lines 457–478. -/
+noncomputable def stretchedPolynomialBound (b α : ℝ) (k : ℕ) : ℝ :=
+  2 ^ k * max 1 ((⌈(k : ℝ) / α⌉₊)! / b ^ ⌈(k : ℝ) / α⌉₊)
+
+theorem stretchedPolynomialBound_nonneg (b α : ℝ) (k : ℕ) :
+    0 ≤ stretchedPolynomialBound b α k :=
+  mul_nonneg (by positivity) (zero_le_one.trans (le_max_left _ _))
+
+/-- **Stretched exponentials beat polynomials, with an explicit bound**: for `b, α > 0`,
+`k : ℕ` and `u ≥ 0`, `(u + 1)^k e^{-b u^α} ≤ stretchedPolynomialBound b α k`. -/
+theorem one_add_pow_mul_exp_neg_rpow_le {b α : ℝ} (hb : 0 < b) (hα : 0 < α) (k : ℕ) {u : ℝ}
+    (hu : 0 ≤ u) : (u + 1) ^ k * Real.exp (-(b * u ^ α)) ≤ stretchedPolynomialBound b α k := by
+  unfold stretchedPolynomialBound
+  set m : ℕ := ⌈(k : ℝ) / α⌉₊
+  have hm : (k : ℝ) ≤ α * m := by
+    have := Nat.le_ceil ((k : ℝ) / α)
+    rw [div_le_iff₀ hα] at this; linarith
+  have he : 0 < Real.exp (-(b * u ^ α)) := Real.exp_pos _
+  rcases le_total u 1 with h1 | h1
+  · have : (u + 1) ^ k ≤ 2 ^ k := pow_le_pow_left₀ (by linarith) (by linarith) k
+    have he1 : Real.exp (-(b * u ^ α)) ≤ 1 :=
+      Real.exp_le_one_iff.mpr (by have := Real.rpow_nonneg hu α; nlinarith)
+    calc (u + 1) ^ k * Real.exp (-(b * u ^ α)) ≤ 2 ^ k * 1 :=
+          mul_le_mul this he1 he.le (by positivity)
+      _ ≤ 2 ^ k * max 1 (m ! / b ^ m) := by gcongr; exact le_max_left _ _
+  · have hu0 : 0 < u := by linarith
+    -- `(b u^α)^m / m! ≤ e^{b u^α}`.
+    have hy : 0 ≤ b * u ^ α := by positivity
+    have hfac := Real.pow_div_factorial_le_exp _ hy m
+    have hpow : (b * u ^ α) ^ m = b ^ m * u ^ (α * m) := by
+      rw [mul_pow, ← Real.rpow_natCast (u ^ α), ← Real.rpow_mul hu]
+    have huk : (u + 1) ^ k ≤ 2 ^ k * u ^ (α * m) := by
+      calc (u + 1) ^ k ≤ (2 * u) ^ k := pow_le_pow_left₀ (by linarith) (by linarith) k
+        _ = 2 ^ k * u ^ (k : ℝ) := by rw [mul_pow, Real.rpow_natCast]
+        _ ≤ 2 ^ k * u ^ (α * m) := by
+            gcongr
+    have hupos : 0 < u ^ (α * m) := Real.rpow_pos_of_pos hu0 _
+    have hbm : 0 < b ^ m := pow_pos hb m
+    have hexp : Real.exp (-(b * u ^ α)) ≤ m ! / (b ^ m * u ^ (α * m)) := by
+      rw [Real.exp_neg, le_div_iff₀ (by positivity), ← hpow, inv_mul_le_iff₀ (Real.exp_pos _)]
+      rw [div_le_iff₀ (by positivity : (0 : ℝ) < m !)] at hfac
+      linarith
+    calc (u + 1) ^ k * Real.exp (-(b * u ^ α))
+        ≤ 2 ^ k * u ^ (α * m) * (m ! / (b ^ m * u ^ (α * m))) :=
+          mul_le_mul huk hexp he.le (by positivity)
+      _ = 2 ^ k * (m ! / b ^ m) := by field_simp
+      _ ≤ 2 ^ k * max 1 (m ! / b ^ m) := by gcongr; exact le_max_right _ _
+
+/-- **Stretched exponentials beat polynomials**: for `b, α > 0` and `k : ℕ` there is `M`
+with `(u + 1)^k e^{-b u^α} ≤ M` for all `u ≥ 0`. -/
+theorem exists_one_add_pow_mul_exp_neg_rpow_le {b α : ℝ} (hb : 0 < b) (hα : 0 < α) (k : ℕ) :
+    ∃ M : ℝ, 0 ≤ M ∧ ∀ u : ℝ, 0 ≤ u → (u + 1) ^ k * Real.exp (-(b * u ^ α)) ≤ M :=
+  ⟨_, stretchedPolynomialBound_nonneg b α k, fun _ hu => one_add_pow_mul_exp_neg_rpow_le hb hα k hu⟩
+
+/-- The constant `A = 16 M ∑_d (d + 1)^{-2}`, `M = stretchedPolynomialBound (c / 2) α 4`, of
+the volume-free series (`eq:quasilocal-volume-free`, `03-quasilocal.tex`, lines 457–478). -/
+noncomputable def shellSeriesConstant (c α : ℝ) : ℝ :=
+  16 * stretchedPolynomialBound (c / 2) α 4 * ∑' d : ℕ, 1 / ((d : ℝ) + 1) ^ 2
+
+theorem shellSeriesConstant_nonneg (c α : ℝ) : 0 ≤ shellSeriesConstant c α :=
+  mul_nonneg (mul_nonneg (by norm_num) (stretchedPolynomialBound_nonneg _ _ _))
+    (tsum_nonneg fun _ => by positivity)
+
+/-- **The volume-free series, with an explicit constant** (`eq:quasilocal-volume-free`,
+`03-quasilocal.tex`, lines 457–478): for `c, α > 0`, every `r₀` and every `N`,
+`∑_{d < N} (d + 1)² e^{-c max {r₀, ⌊d/2⌋}^α} ≤ shellSeriesConstant c α · e^{-(c/2) r₀^α}`. -/
+theorem sum_shell_le {c α : ℝ} (hc : 0 < c) (hα : 0 < α) (r₀ N : ℕ) :
+    ∑ d ∈ Finset.range N, ((d : ℝ) + 1) ^ 2 *
+        Real.exp (-(c * ((max r₀ (d / 2) : ℕ) : ℝ) ^ α)) ≤
+      shellSeriesConstant c α * Real.exp (-(c / 2 * (r₀ : ℝ) ^ α)) := by
+  unfold shellSeriesConstant
+  set M := stretchedPolynomialBound (c / 2) α 4
+  have hM : 0 ≤ M := stretchedPolynomialBound_nonneg _ _ _
+  have hMb : ∀ u : ℝ, 0 ≤ u → (u + 1) ^ 4 * Real.exp (-(c / 2 * u ^ α)) ≤ M :=
+    fun _ hu => one_add_pow_mul_exp_neg_rpow_le (half_pos hc) hα 4 hu
+  have hsum : Summable fun d : ℕ => 1 / ((d : ℝ) + 1) ^ 2 := by
+    have := (summable_nat_add_iff 1).mpr (Real.summable_one_div_nat_pow.mpr one_lt_two)
+    simpa using this
+  set S := ∑' d : ℕ, 1 / ((d : ℝ) + 1) ^ 2
+  have hS : 0 ≤ S := tsum_nonneg fun d : ℕ => (by positivity : (0 : ℝ) ≤ 1 / ((d : ℝ) + 1) ^ 2)
+  have hterm : ∀ d : ℕ, ((d : ℝ) + 1) ^ 2 * Real.exp (-(c * ((max r₀ (d / 2) : ℕ) : ℝ) ^ α)) ≤
+      Real.exp (-(c / 2 * (r₀ : ℝ) ^ α)) * (16 * M * (1 / ((d : ℝ) + 1) ^ 2)) := by
+    intro d
+    set u : ℕ := d / 2
+    have hmax : ((r₀ : ℝ) ^ α + (u : ℝ) ^ α) / 2 ≤ ((max r₀ u : ℕ) : ℝ) ^ α := by
+      have h1 : (r₀ : ℝ) ^ α ≤ ((max r₀ u : ℕ) : ℝ) ^ α :=
+        Real.rpow_le_rpow (by positivity) (by exact_mod_cast le_max_left _ _) hα.le
+      have h2 : (u : ℝ) ^ α ≤ ((max r₀ u : ℕ) : ℝ) ^ α :=
+        Real.rpow_le_rpow (by positivity) (by exact_mod_cast le_max_right _ _) hα.le
+      linarith
+    have hexp : Real.exp (-(c * ((max r₀ u : ℕ) : ℝ) ^ α)) ≤
+        Real.exp (-(c / 2 * (r₀ : ℝ) ^ α)) * Real.exp (-(c / 2 * (u : ℝ) ^ α)) := by
+      rw [← Real.exp_add]
+      refine Real.exp_le_exp.mpr ?_
+      nlinarith
+    have hdu : (d : ℝ) + 1 ≤ 2 * ((u : ℝ) + 1) := by
+      have : d ≤ 2 * u + 1 := by omega
+      have : (d : ℝ) ≤ 2 * u + 1 := by exact_mod_cast this
+      linarith
+    have hd0 : 0 < (d : ℝ) + 1 := by positivity
+    have hpoly : ((d : ℝ) + 1) ^ 4 * Real.exp (-(c / 2 * (u : ℝ) ^ α)) ≤ 16 * M := by
+      have h4 : ((d : ℝ) + 1) ^ 4 ≤ 16 * ((u : ℝ) + 1) ^ 4 := by
+        calc ((d : ℝ) + 1) ^ 4 ≤ (2 * ((u : ℝ) + 1)) ^ 4 :=
+              pow_le_pow_left₀ hd0.le hdu 4
+          _ = 16 * ((u : ℝ) + 1) ^ 4 := by ring
+      calc ((d : ℝ) + 1) ^ 4 * Real.exp (-(c / 2 * (u : ℝ) ^ α))
+          ≤ 16 * ((u : ℝ) + 1) ^ 4 * Real.exp (-(c / 2 * (u : ℝ) ^ α)) :=
+            mul_le_mul_of_nonneg_right h4 (Real.exp_pos _).le
+        _ ≤ 16 * M := by
+            rw [mul_assoc]; exact mul_le_mul_of_nonneg_left (hMb u (by positivity)) (by norm_num)
+    have hE := Real.exp_pos (-(c / 2 * (r₀ : ℝ) ^ α))
+    calc ((d : ℝ) + 1) ^ 2 * Real.exp (-(c * ((max r₀ u : ℕ) : ℝ) ^ α))
+        ≤ ((d : ℝ) + 1) ^ 2 * (Real.exp (-(c / 2 * (r₀ : ℝ) ^ α)) *
+            Real.exp (-(c / 2 * (u : ℝ) ^ α))) := by gcongr
+      _ = Real.exp (-(c / 2 * (r₀ : ℝ) ^ α)) *
+            (((d : ℝ) + 1) ^ 4 * Real.exp (-(c / 2 * (u : ℝ) ^ α)) / ((d : ℝ) + 1) ^ 2) := by
+          field_simp
+      _ ≤ Real.exp (-(c / 2 * (r₀ : ℝ) ^ α)) * (16 * M / ((d : ℝ) + 1) ^ 2) := by gcongr
+      _ = Real.exp (-(c / 2 * (r₀ : ℝ) ^ α)) * (16 * M * (1 / ((d : ℝ) + 1) ^ 2)) := by ring
+  calc ∑ d ∈ Finset.range N, ((d : ℝ) + 1) ^ 2 *
+          Real.exp (-(c * ((max r₀ (d / 2) : ℕ) : ℝ) ^ α))
+      ≤ ∑ d ∈ Finset.range N, Real.exp (-(c / 2 * (r₀ : ℝ) ^ α)) *
+          (16 * M * (1 / ((d : ℝ) + 1) ^ 2)) := Finset.sum_le_sum fun d _ => hterm d
+    _ = Real.exp (-(c / 2 * (r₀ : ℝ) ^ α)) * (16 * M) *
+          ∑ d ∈ Finset.range N, 1 / ((d : ℝ) + 1) ^ 2 := by
+        rw [Finset.mul_sum]; refine Finset.sum_congr rfl fun d _ => by ring
+    _ ≤ Real.exp (-(c / 2 * (r₀ : ℝ) ^ α)) * (16 * M) * S := by
+        gcongr
+        exact hsum.sum_le_tsum _ fun d _ => by positivity
+    _ = 16 * M * S * Real.exp (-(c / 2 * (r₀ : ℝ) ^ α)) := by ring
+
+/-- **The volume-free series** (`eq:quasilocal-volume-free`, `03-quasilocal.tex`,
+lines 457–478): for `0 < α ≤ 1` and `c > 0` there is `A ≥ 0`, depending only on `c` and
+`α`, such that for every `r₀` and every finite range of distances,
+`∑_{d < N} (d + 1)² e^{-c max {r₀, ⌊d/2⌋}^α} ≤ A e^{-(c/2) r₀^α}`. -/
+theorem exists_sum_shell_le {c α : ℝ} (hc : 0 < c) (hα : 0 < α) :
+    ∃ A : ℝ, 0 ≤ A ∧ ∀ r₀ N : ℕ,
+      ∑ d ∈ Finset.range N, ((d : ℝ) + 1) ^ 2 *
+          Real.exp (-(c * ((max r₀ (d / 2) : ℕ) : ℝ) ^ α)) ≤
+        A * Real.exp (-(c / 2 * (r₀ : ℝ) ^ α)) :=
+  ⟨_, shellSeriesConstant_nonneg c α, sum_shell_le hc hα⟩
 
 end Real

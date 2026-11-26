@@ -9,10 +9,12 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Analysis.Projection
 
 import QICLean.Analysis.Projection.CommutingProjectionProduct
+import QICLean.Analysis.Projection.CoordinateRangeProjector
 import QICLean.Analysis.Projection.DetectabilityLemma
 import QICLean.Analysis.Projection.Geometry
 import QICLean.Analysis.Projection.HermitianFactorRepair
 import QICLean.Analysis.Projection.InjectiveRangeProjector
+import QICLean.Analysis.Projection.IsometricProjectorTransport
 import QICLean.Analysis.Projection.MatrixStarProjection
 import QICLean.Analysis.Projection.MeanErgodic
 import QICLean.Analysis.Projection.OverlapMatrix

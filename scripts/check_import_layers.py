@@ -56,6 +56,7 @@ LAYERS: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("manybody_entropy", ("QICLean.ManyBody.Entropy",)),
     ("subspace", ("QICLean.ManyBody.Subspace",)),
     ("replica", ("QICLean.ManyBody.Replica",)),
+    ("poisson_word", ("QICLean.ManyBody.PoissonWord",)),
     ("gate", ("QICLean.Circuit.Gate",)),
     ("party_probability", (
         "QICLean.Circuit.Party.Compression.SourceSampling.Law",
@@ -88,7 +89,7 @@ LAYERS: tuple[tuple[str, tuple[str, ...]], ...] = (
 # moved from the single-system directories and keep their recorded forwarders.
 NEW_LAYERS = frozenset({
     "sites", "dynamics", "hamiltonian", "gate", "circuit", "party", "algorithm", "model",
-    "compile", "protocol", "simulation", "party_probability"
+    "compile", "protocol", "simulation", "party_probability", "poisson_word"
 })
 # Matrices of one system, maps between matrix algebras, and the systems of one or two
 # parties that the many-body layers build on.
@@ -116,6 +117,9 @@ ALLOWED: dict[str, frozenset[str]] = {
     "replica": SINGLE_SYSTEM | {
         "probability", "representation", "sites", "dynamics", "hamiltonian", "manybody_entropy"
     },
+    # Poisson words of local channels on a many-body system: the Poisson clocks of
+    # Probability with the sites, evolutions and Hamiltonians they act on.
+    "poisson_word": SINGLE_SYSTEM | {"probability", "sites", "dynamics", "hamiltonian"},
     "gate": MATRIX,
     "circuit": MATRIX | CHANNEL | {"sites", "gate"},
     "party": MATRIX | CHANNEL | {"sites", "gate", "circuit"},

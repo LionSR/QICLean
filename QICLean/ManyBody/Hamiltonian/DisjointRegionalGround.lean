@@ -8,7 +8,7 @@ import QICLean.Algebra.Matrix.MatrixAux
 import QICLean.Spectral.Filter.EnergyTruncation
 import QICLean.Spectral.Eigenvalue.GroundEnergyBounds
 import QICLean.ManyBody.Hamiltonian.KroneckerSum
-import QICLean.ManyBody.Sites.Placement
+import QICLean.ManyBody.Sites.Placement.Basic
 
 /-!
 # Common ground vectors on disjoint regions

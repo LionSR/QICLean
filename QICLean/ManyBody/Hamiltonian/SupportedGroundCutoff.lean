@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Sites.Twirl
-import QICLean.ManyBody.Sites.ProductOperatorTrace
+import QICLean.ManyBody.Sites.Product.ProductOperatorTrace
 import QICLean.Spectral.Eigenvalue.HermitianExtremalEigenvalues
 import QICLean.Spectral.Filter.PositiveReplacement
 import QICLean.Analysis.FunctionalCalculus.TraceCFC

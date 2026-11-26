@@ -40,6 +40,7 @@ flowchart BT
   ME["ManyBody/Entropy<br/>entropy of regions, filters on regions, regional typical states"]
   MS["ManyBody/Subspace<br/>viable subspaces of a many-body system and their sampling"]
   MR["ManyBody/Replica<br/>copies of a many-body system: metrics, labels, Bell insertions"]
+  MP["ManyBody/PoissonWord<br/>Poisson words of local channels on a many-body system"]
   C["Circuit<br/>docs/import_structure.md"]
   AL --> AN --> SP --> CH --> KR --> EN --> PR --> RE
   EN --> S
@@ -48,6 +49,8 @@ flowchart BT
   ME --> MR
   PR --> MS
   RE --> MR
+  S --> MP
+  PR --> MP
   CH --> C
   S --> C
 ```
@@ -57,7 +60,10 @@ before it. `ManyBody/Sites` and the layers above it may import the
 single-system layers up to `Entropy` (matrices, channels and entropy of one or
 two systems, as in the TNLean architecture); `ManyBody/Subspace` adds
 `Probability`, `ManyBody/Replica` adds `Probability` and `Representation`.
-Subspaces and replicas are siblings. The circuit layers are unchanged: they may
+Subspaces and replicas are siblings. `ManyBody/PoissonWord` may import `ManyBody/Sites`,
+`Dynamics`, `Hamiltonian` and `Probability`: it holds the words of local channels on a
+many-body system driven by Poisson clocks (the layer `poisson_word` of
+`scripts/check_import_layers.py`). The circuit layers are unchanged: they may
 import the matrix layers (`Algebra`, `Analysis`, `Spectral`), the channel
 layers (`Channel`, `Kraus`) and `ManyBody/Sites`. One exception: the party layer
 `Circuit/Party` may import `Probability` only in modules of
@@ -79,6 +85,7 @@ party module, including the deterministic sampling modules, stays below
 | `ManyBody/Entropy` | entropy and information of regions, filters supported on regions, typical states of regions, cuts of the regional tensor product | single systems up to Entropy, Sites, Dynamics, Hamiltonian |
 | `ManyBody/Subspace` | viable subspaces of a many-body system, their trimming and sampling | as ManyBody/Entropy, with Probability and ManyBody/Entropy |
 | `ManyBody/Replica` | copies of a many-body system: replica metrics, labels of subsystems, Bell insertions, band metrics | as ManyBody/Entropy, with Probability, Representation and ManyBody/Entropy |
+| `ManyBody/PoissonWord` | words of local channels on a many-body system under Poisson clocks: their thinning, omission of far events, spatial growth and local constraint products | single systems up to Entropy, Probability, Sites, Dynamics, Hamiltonian |
 
 ### Kraus and Channel
 
