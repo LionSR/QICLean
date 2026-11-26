@@ -35,7 +35,6 @@ support absorption, and the resulting support-product identities.
   forms.
 * `TripartiteDecorrelation.supportProducts_eq`
 * `TripartiteDecorrelation.range_mul_eq_inter`
-* `TripartiteDecorrelation.hermitian_idempotent_eq_of_range_eq`
 
 ## References
 
@@ -669,35 +668,5 @@ theorem range_mul_eq_inter
     rw [Matrix.toLin'_mul, LinearMap.comp_apply,
       (LinearMap.IsIdempotentElem.mem_range_iff hT).mp hv.2,
       (LinearMap.IsIdempotentElem.mem_range_iff hS).mp hv.1]
-
-/-- Hermitian idempotent matrices with the same range are equal.
-
-This is the uniqueness fact used to identify the projector onto the
-ground-space intersection in arXiv:1606.00608, Appendix D.2, Definition D.2,
-lines 2205--2218, with the product projector in lines 2279--2289. -/
-theorem hermitian_idempotent_eq_of_range_eq
-    {I : Type*} [Fintype I] [DecidableEq I]
-    (S T : Matrix I I ℂ)
-    (hSherm : S.IsHermitian) (hSidem : S * S = S)
-    (hTherm : T.IsHermitian) (hTidem : T * T = T)
-    (hrange : LinearMap.range (Matrix.toLin' S) =
-      LinearMap.range (Matrix.toLin' T)) :
-    S = T := by
-  have hS : IsIdempotentElem (Matrix.toLin' S) := by
-    rw [IsIdempotentElem, Module.End.mul_eq_comp, ← Matrix.toLin'_mul, hSidem]
-  have hT : IsIdempotentElem (Matrix.toLin' T) := by
-    rw [IsIdempotentElem, Module.End.mul_eq_comp, ← Matrix.toLin'_mul, hTidem]
-  have hST : S * T = T := by
-    apply Matrix.toLin'.injective
-    rw [Matrix.toLin'_mul]
-    exact (LinearMap.IsIdempotentElem.comp_eq_right_iff hS _).2 hrange.symm.le
-  have hTS : T * S = S := by
-    apply Matrix.toLin'.injective
-    rw [Matrix.toLin'_mul]
-    exact (LinearMap.IsIdempotentElem.comp_eq_right_iff hT _).2 hrange.le
-  have hTS' : T * S = T := by
-    have h := congrArg Matrix.conjTranspose hST
-    simpa only [Matrix.conjTranspose_mul, hSherm.eq, hTherm.eq] using h
-  exact hTS.symm.trans hTS'
 
 end TripartiteDecorrelation
