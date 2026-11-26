@@ -25,6 +25,8 @@ Instructions:
      `leanblueprint pdf`, `texra-blueprint bbl` then `texra-blueprint web`, and
      `python3 scripts/tenkz_blueprint_sweep.py --allow-empty`. The TeX stack is
      installed only when the blueprint job failed.
+     Run `python3 scripts/fetch_tenkz.py` first; the builds need the pinned
+     picture package.
 
    A failure that does not reproduce (an expired download, a runner outage, a
    timeout of the installer) is not a defect of the repository: change nothing

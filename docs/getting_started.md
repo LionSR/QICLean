@@ -189,14 +189,11 @@ shortened module path with the `QICLean/` prefix dropped — for example
   passed is skipped. Its build of `main` is the only writer of the Lean build
   cache that pull requests restore.
 - `nightly-fix.yml` — the agent loop behind the nightly run. When the run
-  fails on `main` it files (or updates) an issue labelled `nightly-failure`,
-  lets the agent repair the failure on the `nightly-fix` branch, opens a pull
-  request, and dispatches `nightly.yml` on that branch; a failed verification
-  starts another round (five at most), a passed one is reported on the pull
-  request, which a person then reviews and merges. The issue closes when the
-  nightly run passes on `main` again. Setting the repository variable
-  `CLAUDE_AUTO_FIX_ENABLED` to `false` stops the agent; the issue is still
-  filed.
+  fails, the agent repairs the failure on the `nightly-fix` branch; the
+  workflow pushes, opens a pull request, and dispatches `nightly.yml` on that
+  branch. A failed verification starts another round; a passed one shows as
+  a check on the pull request, which a person reviews and merges. Setting
+  the repository variable `CLAUDE_AUTO_FIX_ENABLED` to `false` turns it off.
 - `blueprint.yml` — compiles the blueprint (web and PDF) and deploys it from
   `main`; called by `nightly.yml`, or dispatched by hand for an immediate
   publication.
