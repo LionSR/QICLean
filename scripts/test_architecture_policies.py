@@ -18,7 +18,7 @@ from lean_import_syntax import strip_lean_comments
 class ImportLayerPolicyTests(unittest.TestCase):
     def test_layers_are_assigned_from_the_bottom_up(self) -> None:
         self.assertEqual(layers.layer_of("QICLean.Circuit.Gate.FinKronecker"), "gate")
-        self.assertEqual(layers.layer_of("QICLean.ManyBody.Sites.Placement"), "sites")
+        self.assertEqual(layers.layer_of("QICLean.ManyBody.Sites.Placement.Basic"), "sites")
         self.assertEqual(layers.layer_of("QICLean.ManyBody.Sites.PlacementNorm"), "sites")
         self.assertEqual(layers.layer_of("QICLean.ManyBody.Dynamics.Volterra"), "dynamics")
         self.assertEqual(layers.layer_of("QICLean.Circuit.LocalCircuit"), "circuit")
@@ -69,7 +69,7 @@ class ImportLayerPolicyTests(unittest.TestCase):
 
     def test_simulation_may_consume_circuits_and_many_body_layers(self) -> None:
         imports = ["QICLean.Algebra.Matrix.MatrixAux", "QICLean.Channel.Basic",
-                   "QICLean.ManyBody.Sites.Placement", "QICLean.Circuit.Gate.Basic",
+                   "QICLean.ManyBody.Sites.Placement.Basic", "QICLean.Circuit.Gate.Basic",
                    "QICLean.Circuit.ProductFormula", "QICLean.ManyBody.Dynamics.TruncatedEvolution",
                    "QICLean.ManyBody.Hamiltonian.Basic"]
         sources = {"QICLean.Circuit.Simulation.TruncatedProductFormula":
@@ -80,7 +80,7 @@ class ImportLayerPolicyTests(unittest.TestCase):
         target = "QICLean.Circuit.Simulation.TruncatedProductFormula"
         for importer in ["QICLean.Circuit.Core.Circuit", "QICLean.Circuit.ProductFormula",
                          "QICLean.Circuit.Algorithm.QFT", "QICLean.Circuit.Party.Basic",
-                         "QICLean.Circuit.Gate.Basic", "QICLean.ManyBody.Sites.Placement",
+                         "QICLean.Circuit.Gate.Basic", "QICLean.ManyBody.Sites.Placement.Basic",
                          "QICLean.ManyBody.Dynamics.HeisenbergEvolution",
                          "QICLean.ManyBody.Hamiltonian.Basic"]:
             for via in [target, "QICLean.Circuit.Simulation", "QICLean.Circuit"]:
@@ -121,7 +121,7 @@ class ImportLayerPolicyTests(unittest.TestCase):
 
     def test_model_compile_protocol_may_consume_lower_layers_in_order(self) -> None:
         lower = ["QICLean.Algebra.Matrix.MatrixAux", "QICLean.Channel.Basic",
-                 "QICLean.ManyBody.Sites.Placement", "QICLean.Circuit.Gate.Basic",
+                 "QICLean.ManyBody.Sites.Placement.Basic", "QICLean.Circuit.Gate.Basic",
                  "QICLean.Circuit.Core.Circuit"]
         for importer, extra in [
                 ("QICLean.Circuit.Model.Protocol", []),
@@ -136,7 +136,7 @@ class ImportLayerPolicyTests(unittest.TestCase):
     def test_model_compile_protocol_are_not_reverse_import_routes(self) -> None:
         lower = ["QICLean.Circuit.Core.Circuit", "QICLean.Circuit.ProductFormula",
                  "QICLean.Circuit.Algorithm.QFT", "QICLean.Circuit.Party.Basic",
-                 "QICLean.Circuit.Gate.Basic", "QICLean.ManyBody.Sites.Placement",
+                 "QICLean.Circuit.Gate.Basic", "QICLean.ManyBody.Sites.Placement.Basic",
                  "QICLean.ManyBody.Dynamics.HeisenbergEvolution",
                  "QICLean.ManyBody.Hamiltonian.Basic",
                  "QICLean.Circuit.Simulation.TruncatedProductFormula"]
@@ -173,10 +173,10 @@ class ImportLayerPolicyTests(unittest.TestCase):
 
     def test_upward_and_sideways_imports_are_violations(self) -> None:
         sources = {
-            "QICLean.Circuit.Gate.A": "import QICLean.ManyBody.Sites.Placement\ntheorem a : True := trivial\n",
-            "QICLean.ManyBody.Sites.Placement": "import QICLean.Circuit.Gate.A\ndef e := 0\n",
+            "QICLean.Circuit.Gate.A": "import QICLean.ManyBody.Sites.Placement.Basic\ntheorem a : True := trivial\n",
+            "QICLean.ManyBody.Sites.Placement.Basic": "import QICLean.Circuit.Gate.A\ndef e := 0\n",
             "QICLean.Circuit.LocalCircuit": (
-                "import QICLean.ManyBody.Sites.Placement\nimport QICLean.ManyBody.Hamiltonian.Basic\n"
+                "import QICLean.ManyBody.Sites.Placement.Basic\nimport QICLean.ManyBody.Hamiltonian.Basic\n"
                 "def c := 0\n"
             ),
             "QICLean.ManyBody.Hamiltonian.Basic": (
@@ -189,8 +189,8 @@ class ImportLayerPolicyTests(unittest.TestCase):
         self.assertEqual(
             layers.violations(sources),
             {
-                "QICLean.Circuit.Gate.A -> QICLean.ManyBody.Sites.Placement",
-                "QICLean.ManyBody.Sites.Placement -> QICLean.Circuit.Gate.A",
+                "QICLean.Circuit.Gate.A -> QICLean.ManyBody.Sites.Placement.Basic",
+                "QICLean.ManyBody.Sites.Placement.Basic -> QICLean.Circuit.Gate.A",
                 "QICLean.Circuit.LocalCircuit -> QICLean.ManyBody.Hamiltonian.Basic",
                 "QICLean.ManyBody.Hamiltonian.Basic -> QICLean.Representation.Defs",
                 "QICLean.Representation.Defs -> QICLean.ManyBody.Hamiltonian.Basic",

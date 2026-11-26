@@ -13,6 +13,7 @@ import QICLean.ManyBody.Replica.LowDefect.ComponentInverseRough
 import QICLean.ManyBody.Replica.LowDefect.ComponentInverseRoughUniform
 import QICLean.ManyBody.Replica.LowDefect.ComponentInverseSharp
 import QICLean.ManyBody.Replica.LowDefect.ComponentInverseSharpUniform
+import QICLean.ManyBody.Replica.LowDefect.GlobalSchmidtBell
 import QICLean.ManyBody.Replica.LowDefect.InverseRoughCompression
 import QICLean.ManyBody.Replica.LowDefect.LowDefectCoordinateCovariance
 import QICLean.ManyBody.Replica.LowDefect.LowDefectSharpCompression

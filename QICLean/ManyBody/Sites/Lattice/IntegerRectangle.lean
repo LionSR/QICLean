@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Sites.Lattice.SupDistance
+import Mathlib.Combinatorics.SimpleGraph.Density
 import QICLean.ManyBody.Sites.Lattice.SupportCounting
 import QICLean.ManyBody.Sites.Cut
 
@@ -340,5 +341,55 @@ theorem card_crossingTerms_rectRegion_le (hsafe : IsSafe Λ A D₀ Q) (hR : R < 
         gcongr
         omega
     _ = 8 * (R + 1) * μ * (Q₀.size + d) := by ring
+
+end ManyBody
+
+open scoped Matrix.Norms.L2Operator
+
+open ManyBody (AdmissibleSupport card_le_diamond_of_edist_le
+  latticeL1Distance_le_one_of_planeDomainGraph_adj planeDomainGraph)
+
+open ManyBody (card_admissibleSupport_containing_le)
+
+namespace ManyBody
+
+variable {Λ : Finset (ℤ × ℤ)}
+
+/-- **Ball count** (`eq:ball-count`, `01-preliminaries.tex`, lines 82–87): a graph ball of
+radius `d` in an induced domain has at most `1 + 2 d (d + 1) ≤ 2 (d + 1)²` sites. -/
+theorem card_graphBall_planeDomainGraph_le (x : ↥Λ) (d : ℕ) :
+    ((ManyBody.graphBall (planeDomainGraph Λ) x d).card : ℝ) ≤ 2 * ((d : ℝ) + 1) ^ 2 := by
+  have h := card_le_diamond_of_edist_le (G := planeDomainGraph Λ) Subtype.val
+    (ManyBody.graphBall (planeDomainGraph Λ) x d) Subtype.val_injective
+    (fun _ _ => latticeL1Distance_le_one_of_planeDomainGraph_adj) x d (fun y hy =>
+        ManyBody.mem_graphBall.mp hy)
+  have h' : ((ManyBody.graphBall (planeDomainGraph Λ) x d).card : ℝ) ≤ 1 + 2 * d * (d + 1) := by
+    exact_mod_cast h
+  nlinarith
+
+/-- **Anchor multiplicity**: if every label is anchored inside its support, at most `μ_R`
+labels share an anchor (`03-quasilocal.tex`, lines 30–33). -/
+theorem card_anchor_fiber_le {R : ℕ} (a : AdmissibleSupport Λ R → ↥Λ)
+    (ha : ∀ X, a X ∈ X.1) (x : ↥Λ) :
+    (Finset.univ.filter fun X => a X = x).card ≤ 2 ^ ((1 + 2 * R * (R + 1)) - 1) :=
+  (Finset.card_le_card fun X hX => by
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hX ⊢
+    exact hX ▸ ha X).trans (card_admissibleSupport_containing_le (R := R) x)
+
+/-- Ordered cut edges `(u, v)`, `u ∈ X`, `v ∉ X`, are no more numerous than the unordered
+edges of `∂_Λ X` (`03-quasilocal.tex`, line 436). -/
+theorem card_interedges_compl_le_card_edgeBoundary (X : Finset ↥Λ) :
+    ((planeDomainGraph Λ).interedges X Xᶜ).card ≤
+      (ManyBody.edgeBoundary (planeDomainGraph Λ) X).card := by
+  classical
+  refine Finset.card_le_card_of_injOn (fun p => s(p.1, p.2)) ?_ ?_
+  · intro p hp
+    simp only [Finset.mem_coe, SimpleGraph.mem_interedges_iff, Finset.mem_compl] at hp ⊢
+    exact ManyBody.mk_mem_edgeBoundary_iff.mpr ⟨hp.2.2, Or.inl ⟨hp.1, hp.2.1⟩⟩
+  · intro p hp p' hp' he
+    simp only [Finset.mem_coe, SimpleGraph.mem_interedges_iff, Finset.mem_compl] at hp hp'
+    rcases Sym2.eq_iff.mp he with ⟨h1, h2⟩ | ⟨h1, h2⟩
+    · exact Prod.ext h1 h2
+    · exact absurd (h1 ▸ hp.1) hp'.2.1
 
 end ManyBody

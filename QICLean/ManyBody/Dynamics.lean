@@ -9,6 +9,7 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.ManyBody.Dynamics
 
 import QICLean.ManyBody.Dynamics.BoundedDegreeImaginaryTime
+import QICLean.ManyBody.Dynamics.ChannelWord
 import QICLean.ManyBody.Dynamics.CommutatorRecursion
 import QICLean.ManyBody.Dynamics.DisjointRelativeEvolution
 import QICLean.ManyBody.Dynamics.GraphGrowth

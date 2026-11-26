@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Circuit.Gate.Controlled
 import QICLean.Circuit.Gate.TwoLevel
-import QICLean.ManyBody.Sites.PlaceAlong
+import QICLean.ManyBody.Sites.Placement.PlaceAlong
 
 /-!
 # Controlled one-site operations

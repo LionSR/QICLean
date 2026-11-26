@@ -11,12 +11,18 @@ Authors: QICLean contributors
 import QICLean.ManyBody.Sites.Lattice.Chain
 import QICLean.ManyBody.Sites.Lattice.ChainBlocks
 import QICLean.ManyBody.Sites.Lattice.ChainCut
+import QICLean.ManyBody.Sites.Lattice.ClosedSquare
 import QICLean.ManyBody.Sites.Lattice.Diamond
 import QICLean.ManyBody.Sites.Lattice.Edge
 import QICLean.ManyBody.Sites.Lattice.IntegerRectangle
+import QICLean.ManyBody.Sites.Lattice.LabelPaths
 import QICLean.ManyBody.Sites.Lattice.Line
+import QICLean.ManyBody.Sites.Lattice.NearestNeighborCrossing
+import QICLean.ManyBody.Sites.Lattice.NestedPatches
 import QICLean.ManyBody.Sites.Lattice.Plane
+import QICLean.ManyBody.Sites.Lattice.RangeNestedPatches
 import QICLean.ManyBody.Sites.Lattice.Rectangle
+import QICLean.ManyBody.Sites.Lattice.RectangleChildren
 import QICLean.ManyBody.Sites.Lattice.RectangleColumns
 import QICLean.ManyBody.Sites.Lattice.Ring
 import QICLean.ManyBody.Sites.Lattice.RingBlocks
@@ -24,4 +30,6 @@ import QICLean.ManyBody.Sites.Lattice.RingDistance
 import QICLean.ManyBody.Sites.Lattice.SnakeOrder
 import QICLean.ManyBody.Sites.Lattice.Square
 import QICLean.ManyBody.Sites.Lattice.SupDistance
+import QICLean.ManyBody.Sites.Lattice.SupportChainSeries
+import QICLean.ManyBody.Sites.Lattice.SupportColouring
 import QICLean.ManyBody.Sites.Lattice.SupportCounting

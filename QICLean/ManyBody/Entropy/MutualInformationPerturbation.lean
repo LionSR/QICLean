@@ -6,6 +6,7 @@ Authors: QICLean contributors
 import QICLean.Analysis.TraceNorm.PureStateTraceDistance
 import QICLean.Entropy.Conditional.ControlledContinuity
 import QICLean.ManyBody.Entropy.RegionStrongSubadditivity
+import QICLean.ManyBody.Hamiltonian.GroundSpace
 
 /-!
 # Mutual information near a state without correlations
@@ -314,3 +315,105 @@ end ManyBody
 end
 
 end RegionEntropyContinuity
+
+open scoped InnerProductSpace Matrix MatrixOrder ComplexOrder Matrix.Norms.L2Operator
+
+open ManyBody (IsGapped groundSpace)
+
+namespace ManyBody
+
+variable {V : Type*} [Fintype V] [DecidableEq V]
+variable (β : V → Type*) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
+
+/-- A unit vector with small excess energy has close marginals to the original
+unit ground vector. The left side is the full trace norm of the difference.
+The Hamiltonian and gap are those of the full system.
+
+Source: polynomial-PEPS Proposition 4.1, `03-patches.tex`, lines 320–365,
+`eq:patch-energy-bound`, `eq:patch-kappa-choice`, `eq:patch-marginal-closeness`,
+revision `adc7f1241b42e322a6451854ab7e4b4c146bf78a`. -/
+theorem re_trace_abs_regionState_sub_le_sqrt_energy
+    {H : Matrix ((v : V) → β v) ((v : V) → β v) ℂ}
+    {E₀ Δ : ℝ} {Ω φ : EuclideanSpace ℂ ((v : V) → β v)} (hH : H.IsHermitian)
+    (hΩ : ‖Ω‖ = 1) (hgap : IsGapped H E₀ Δ)
+    (hspan : groundSpace H E₀ = Submodule.span ℂ {Ω}) (hΔ : 0 < Δ)
+    (hφ : ‖φ‖ = 1) (R : Finset V) :
+    (CFC.abs (ManyBody.regionState φ R - ManyBody.regionState Ω R)).trace.re ≤
+      2 * Real.sqrt (((⟪φ, Matrix.toEuclideanLin H φ⟫_ℂ).re - E₀) / Δ) := by
+  refine (div_le_iff₀' (show (0 : ℝ) < 2 from zero_lt_two)).mp
+    ((ManyBody.traceDistance_regionState_le β φ Ω hφ hΩ R).trans
+      ((Matrix.traceDistance_vecMulVec_eq hφ hΩ).le.trans
+        (Real.sqrt_le_sqrt ((le_div_iff₀' hΔ).2 ?_))))
+  simpa only [hφ, one_pow, mul_one, norm_inner_symm (𝕜 := ℂ) Ω φ] using
+    Matrix.PosSemidef.gap_le (Ω := Ω) (hgap.posSemidef_sub_smul_one hH hΩ hspan) φ
+
+/-- An energy excess at most one 1024th of the original spectral gap gives
+full marginal trace norm at most one sixteenth. This is an auxiliary energy
+criterion, with no lower bound on any local dimension.
+
+Source: polynomial-PEPS Proposition 4.1, `03-patches.tex`, lines 339–365,
+`eq:patch-kappa-choice` and `eq:patch-marginal-closeness`; revision
+`adc7f1241b42e322a6451854ab7e4b4c146bf78a`. -/
+theorem re_trace_abs_regionState_sub_le_one_sixteenth_of_energy
+    {H : Matrix ((v : V) → β v) ((v : V) → β v) ℂ}
+    {E₀ Δ : ℝ} {Ω φ : EuclideanSpace ℂ ((v : V) → β v)} (hH : H.IsHermitian)
+    (hΩ : ‖Ω‖ = 1) (hgap : IsGapped H E₀ Δ)
+    (hspan : groundSpace H E₀ = Submodule.span ℂ {Ω}) (hΔ : 0 < Δ)
+    (hφ : ‖φ‖ = 1)
+    (henergy : (⟪φ, Matrix.toEuclideanLin H φ⟫_ℂ).re - E₀ ≤ Δ / 1024)
+    (R : Finset V) :
+    (CFC.abs (ManyBody.regionState φ R - ManyBody.regionState Ω R)).trace.re ≤ (1 / 16 : ℝ) := by
+  refine (re_trace_abs_regionState_sub_le_sqrt_energy β hH hΩ hgap hspan hΔ hφ R).trans
+    ((le_div_iff₀' (show (0 : ℝ) < 2 from zero_lt_two)).mp ?_)
+  norm_num [Real.sqrt_le_iff, div_le_iff₀' hΔ]
+  linarith
+
+end ManyBody
+
+section RegionalEntropyContinuity
+
+/-!
+## Regional entropy continuity on a finite lattice
+
+For two normalized vectors on the same finite lattice, the entropy change
+on a fixed region is bounded by the global trace distance and the number of
+sites in that region. The dimension factor is `1 + |A| log q`.
+
+The statement makes no geometric or Hamiltonian assumption and includes
+empty regions and local dimension one. Both vectors are supplied; the
+argument makes no further choice of state.
+
+Source: *A two-dimensional area law from a global spectral gap*, September 24,
+2026, Lemma 2.1 (`01-preliminaries.tex`, lines 33–46), as used in
+`08-scanner.tex`, lines 399–404, revision
+`adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
+
+The Lean proof follows the argument of Lemma 2.1 rather than transcribing its text.
+-/
+
+namespace ManyBody
+
+/-- Regional entropy continuity with the dimension of the actual region.
+Source: Lemma 2.1, `01-preliminaries.tex`, lines 33–46, and its application
+in `08-scanner.tex`, lines 399–404. -/
+theorem abs_regionEntropy_sub_le_sqrt_traceDistance_card
+    (Λ : Finset (ℤ × ℤ)) (q : ℕ)
+    (Ω Φ : EuclideanSpace ℂ (↥Λ → Fin q)) (hΩ : ‖Ω‖ = 1) (hΦ : ‖Φ‖ = 1)
+    (A : Finset ↥Λ) :
+    |ManyBody.regionEntropy Ω A - ManyBody.regionEntropy Φ A| ≤
+      4 * Real.sqrt (Matrix.traceDistance
+        (Matrix.vecMulVec Ω (star Ω)) (Matrix.vecMulVec Φ (star Φ))) *
+        (1 + (A.card : ℝ) * Real.log q) := by
+  have h := ManyBody.abs_regionEntropy_sub_le_sqrt_traceDistance
+    (fun _ : ↥Λ ↦ Fin q) Ω Φ hΩ hΦ A
+  have hdim :
+      (Fintype.card (ManyBody.RegionConfig (fun _ : ↥Λ ↦ Fin q) A) : ℝ) ≠ 0 :=
+    (Nat.cast_pos.mpr (Fintype.card_pos_iff.mpr
+      (Entropy.Matrix.PosSemidef.nonempty_of_trace_eq_one
+        (ManyBody.trace_regionState_eq_one hΩ (D := A))))).ne'
+  rw [Real.log_mul (Real.exp_ne_zero 1) hdim] at h
+  simpa [Nat.cast_pow, Real.log_pow] using h
+
+end ManyBody
+
+end RegionalEntropyContinuity

@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Sites.SupportedDecomposition
-import QICLean.ManyBody.Sites.Placement
+import QICLean.ManyBody.Sites.Placement.Basic
 import QICLean.Algebra.OperatorSchmidt.Basic
 
 /-!

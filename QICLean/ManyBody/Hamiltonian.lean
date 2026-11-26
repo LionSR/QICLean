@@ -11,8 +11,10 @@ Authors: QICLean contributors
 import QICLean.ManyBody.Hamiltonian.Chain
 import QICLean.ManyBody.Hamiltonian.ClusterExpansion
 import QICLean.ManyBody.Hamiltonian.CommutingParentHamiltonian
+import QICLean.ManyBody.Hamiltonian.Constraint
 import QICLean.ManyBody.Hamiltonian.DisjointRegionalGround
 import QICLean.ManyBody.Hamiltonian.FrustrationFree
+import QICLean.ManyBody.Hamiltonian.FrustrationFreeSweep
 import QICLean.ManyBody.Hamiltonian.GaussianFilter
 import QICLean.ManyBody.Hamiltonian.GaussianFilterLocality
 import QICLean.ManyBody.Hamiltonian.GaussianFilterMetric
@@ -34,8 +36,11 @@ import QICLean.ManyBody.Hamiltonian.LowEnergyCommutatorSum
 import QICLean.ManyBody.Hamiltonian.Martingale
 import QICLean.ManyBody.Hamiltonian.Models
 import QICLean.ManyBody.Hamiltonian.NegativeFrequency
+import QICLean.ManyBody.Hamiltonian.PlaneLocality
+import QICLean.ManyBody.Hamiltonian.PlaneLocalization
 import QICLean.ManyBody.Hamiltonian.PositiveTerm
 import QICLean.ManyBody.Hamiltonian.ProductBasisPenalty
+import QICLean.ManyBody.Hamiltonian.RectangleInteraction
 import QICLean.ManyBody.Hamiltonian.RingGaussianFilter
 import QICLean.ManyBody.Hamiltonian.SupportedGroundCutoff
 import QICLean.ManyBody.Hamiltonian.Translation

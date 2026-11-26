@@ -6,7 +6,7 @@ Authors: QICLean contributors
 import QICLean.Analysis.Exponential.HermitianProductFormula
 import QICLean.ManyBody.Dynamics.HeisenbergEvolution
 import QICLean.ManyBody.Dynamics.Interaction
-import QICLean.ManyBody.Sites.ProductForm
+import QICLean.ManyBody.Sites.Product.ProductForm
 
 /-!
 # Product formulas for an interaction
