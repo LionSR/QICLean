@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Analysis.Order.ProjectionQuadraticBound
 import QICLean.Analysis.Order.DensityMatrix
-import QICLean.Channel.SupportCompletion
+import QICLean.Channel.KrausMap.SupportCompletion
 import Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Order
 
 /-!

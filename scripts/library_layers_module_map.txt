@@ -2274,3 +2274,61 @@ QICLean.ManyBody.Sites.ProductForm QICLean.ManyBody.Sites.Product.ProductForm
 QICLean.ManyBody.Sites.Placement QICLean.ManyBody.Sites.Placement.Basic
 QICLean.ManyBody.Sites.PlaceAlong QICLean.ManyBody.Sites.Placement.PlaceAlong
 QICLean.ManyBody.Sites.PlaceAlongMonomial QICLean.ManyBody.Sites.Placement.PlaceAlongMonomial
+# Imports against the order inside a layer, the remaining entries (#1183, 2026-11-26).
+# Channel/Determinant: the classification of determinant-one positive maps goes up to the
+# peripheral asymptotics it is proved from; rank preservers to Wigner; positive retractions
+# to Positive; the operator Jensen inequality to Convexity.
+QICLean.Channel.Determinant.PositiveInverse QICLean.Channel.Peripheral.Asymptotic.PositiveInverse
+QICLean.Channel.PSDConeAutomorphism.RankPreserver QICLean.Channel.Wigner.RankPreserver
+QICLean.Channel.PSDConeAutomorphism.RankPreservation QICLean.Channel.Wigner.RankPreservation
+QICLean.Channel.PSDConeAutomorphism.FaceDimension QICLean.Analysis.Support.PSDConeFace
+QICLean.Channel.ConditionalExpectation.PositiveConditionalExpectation QICLean.Channel.Positive.PositiveConditionalExpectation
+QICLean.Channel.ConditionalExpectation.PositiveConditionalExpectationDirectSum QICLean.Channel.Positive.PositiveConditionalExpectationDirectSum
+QICLean.Channel.Schwarz.OperatorJensenIntegrands QICLean.Analysis.Resolvent.OperatorJensenIntegrands
+QICLean.Channel.Schwarz.OperatorJensenAux QICLean.Channel.Convexity.OperatorJensenAux
+QICLean.Channel.Schwarz.IntegralJensen QICLean.Channel.Convexity.IntegralJensen
+# Channel spectra: the Russo-Dye estimate to Schwarz; the Perron-Frobenius existence
+# results were moved into the fixed-point and irreducible modules and their files removed.
+QICLean.Channel.Peripheral.Spectrum.UnitalKraus QICLean.Channel.Schwarz.RussoDye
+QICLean.Channel.PerronFrobenius.Existence QICLean.Channel.Irreducible.KrausSetup merge
+QICLean.Channel.PerronFrobenius.Normalization QICLean.Channel.Irreducible.KrausSetup merge
+# The modules directly in Channel, other than the definitions of positive and completely
+# positive maps, go to the subdirectories of their objects; the transfer matrix gets its own.
+QICLean.Channel.TransferMatrix QICLean.Channel.TransferMatrix.Basic
+QICLean.Channel.NormalForm QICLean.Channel.TransferMatrix.NormalForm
+QICLean.Channel.SelfDual QICLean.Channel.TransferMatrix.SelfDual
+QICLean.Channel.DetailedBalance QICLean.Channel.TransferMatrix.DetailedBalance
+QICLean.Channel.WolfProps QICLean.Channel.KrausMap.WolfProps
+QICLean.Channel.SupportCompletion QICLean.Channel.KrausMap.SupportCompletion
+QICLean.Channel.OrderedRectangular QICLean.Channel.KrausMap.OrderedRectangular
+QICLean.Channel.CompletelyPositiveClosure QICLean.Channel.KrausMap.CompletelyPositiveClosure
+QICLean.Channel.ConditionNumberInterpolation QICLean.Channel.KrausMap.ConditionNumberInterpolation
+QICLean.Channel.CPDecomposition QICLean.Channel.Choi.CPDecomposition
+QICLean.Channel.TraceNormNet QICLean.Channel.Choi.TraceNormNet
+QICLean.Channel.WeightedHilbertSchmidt QICLean.Channel.Schwarz.WeightedHilbertSchmidt
+QICLean.Channel.Choi.WhitenedChoi QICLean.Channel.Schwarz.WhitenedChoi
+QICLean.Channel.Choi.SupportedMarginalChannel QICLean.Channel.Schwarz.SupportedMarginalChannel
+# Entropy: recovery at equality in strong subadditivity to Recovery; mutual-information
+# monotonicity and data processing to StrongSubadditivity.
+QICLean.Entropy.StrongSubadditivity.SSAEqualityDPI QICLean.Entropy.Recovery.SSAEqualityDPI
+QICLean.Entropy.StrongSubadditivity.SSAEqualityPetzRecovery QICLean.Entropy.Recovery.SSAEqualityPetzRecovery
+QICLean.Entropy.MutualInformation.MutualInformation QICLean.Entropy.StrongSubadditivity.MutualInformationMonotone
+QICLean.Entropy.MutualInformation.DataProcessing QICLean.Entropy.StrongSubadditivity.MutualInformationDataProcessing
+# Probability: sample projections to Haar, rank sampling to Sampling.
+QICLean.Probability.Measurable.CanonicalSampleProjectionMeasurable QICLean.Probability.Haar.CanonicalSampleProjectionMeasurable
+QICLean.Probability.Measurable.VariableRankSampleProjection QICLean.Probability.Haar.VariableRankSampleProjection
+QICLean.Probability.Haar.RankUnitaryProductHaar QICLean.Probability.Sampling.RankUnitaryProductHaar
+QICLean.Probability.Haar.NativeRankUnitarySampling QICLean.Probability.Sampling.NativeRankUnitarySampling
+# Representation: the hook dimension formula and the symmetric-group modules built on it to
+# SchurWeyl; irreducible labels to Permutation; tensor-power modules to TensorPower.
+QICLean.Representation.Partition.HookDimension QICLean.Representation.SchurWeyl.HookDimension
+QICLean.Representation.SymmetricGroup.Casimir QICLean.Representation.SchurWeyl.Casimir
+QICLean.Representation.SymmetricGroup.StarOperator QICLean.Representation.SchurWeyl.StarOperator
+QICLean.Representation.SymmetricGroup.JucysRecursion QICLean.Representation.SchurWeyl.JucysRecursion
+QICLean.Representation.SymmetricGroup.BranchProbability QICLean.Representation.SchurWeyl.BranchProbability
+QICLean.Representation.Character.IrrepLabels QICLean.Representation.Permutation.IrrepLabels
+QICLean.Representation.Replica.SchurLabelCommutation QICLean.Representation.TensorPower.SchurLabelCommutation
+QICLean.Representation.Permutation.MergeMoment QICLean.Representation.TensorPower.MergeMoment
+# Algebra and Analysis: the Kronecker embeddings to Matrix; the Neumann bound to Calculus.
+QICLean.Algebra.Kronecker.KroneckerEmbed QICLean.Algebra.Matrix.KroneckerEmbed
+QICLean.Analysis.Norm.NeumannInverse QICLean.Analysis.Calculus.NeumannInverse

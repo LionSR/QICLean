@@ -287,7 +287,7 @@ so that the cited formal statements are available from the main project import.
 #### Section 2.1 Representation corollaries (Propositions 2.2–2.4)
 
 * **Proposition 2.2** (decomposition into completely positive maps), in
-  `QICLean/Channel/CPDecomposition.lean`:
+  `QICLean/Channel/Choi/CPDecomposition.lean`:
   - `ChoiRectangular.exists_four_isKrausCP_complexCombination` — every linear
     map `M_d(ℂ) → M_{d'}(ℂ)` is a ℂ-linear combination of four CP maps ✓
   - `ChoiRectangular.exists_two_isKrausCP_realCombination_of_hermiticityPreserving`
@@ -1114,7 +1114,7 @@ Perron–Frobenius theorem, are indexed separately in
 #### Wolf Proposition 6.1 (Spectral radius of positive maps) — FORMALIZED
 
 The Russo--Dye estimate, Equations (6.2) and (6.3) and the unital case are in
-`QICLean.Channel.Peripheral.Spectrum.UnitalKraus`; the trace-preserving fixed point
+`QICLean.Channel.Schwarz.RussoDye`; the trace-preserving fixed point
 and spectral radius are in `QICLean.Channel.Peripheral.Spectrum.SpectralRadius`.
 
 * `IsPositiveMap.norm_apply_le_norm_map_one_mul_norm` — the sharp
@@ -2667,7 +2667,7 @@ not a deviation in hypotheses or conclusion. Partial progress on issue #45.
 ### Lemma “completely positive interpolation” (Equations 8.93–8.95) — FORMALIZED
 
 `Matrix.exists_isKrausCP_unital_map_smul_iff_conditionNumber_le` in
-`QICLean.Channel.ConditionNumberInterpolation` proves the full equivalence for
+`QICLean.Channel.KrausMap.ConditionNumberInterpolation` proves the full equivalence for
 positive definite `P ∈ M_d(ℂ)`, `P' ∈ M_{d'}(ℂ)`: a completely positive unital
 `T` with `T(P) = λ P'`, `λ > 0`, exists iff `κ(P) ≥ κ(P')`, where
 `Matrix.conditionNumber X = ‖X‖ ‖X⁻¹‖` uses the operator norm, as in the
@@ -2745,7 +2745,7 @@ therefore remains open.
 
 ### Proposition 8.5, “Jordan condition number and detailed balance” (Equation 8.110) — FORMALIZED
 
-In `QICLean.Channel.DetailedBalance`:
+In `QICLean.Channel.TransferMatrix.DetailedBalance`:
 
 * `transferMatrix_detailedBalance` translates `Σ T* = T Σ` to
   `Σ̂ T̂† = T̂ Σ̂`.

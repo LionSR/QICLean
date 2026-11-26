@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Channel.KrausMap.KrausRepresentation
-import QICLean.Channel.TransferMatrix
+import QICLean.Channel.TransferMatrix.Basic
 
 /-!
 # Self-dual channels (Wolf §2.3, Proposition 2.6)

@@ -4,10 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Spectral.Eigenvalue.HermitianExtremalEigenvalues
-import QICLean.Channel.PSDConeAutomorphism.FaceDimension
-import QICLean.Channel.PSDConeAutomorphism.RankPreserver
+import QICLean.Analysis.Support.PSDConeFace
+import QICLean.Channel.Wigner.RankPreserver
 import QICLean.Channel.Schwarz.PositiveMapProperties
-import QICLean.Channel.TransferMatrix
+import QICLean.Channel.TransferMatrix.Basic
 
 /-!
 # Rank preservation from surjectivity on the positive-semidefinite cone

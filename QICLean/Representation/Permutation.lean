@@ -10,12 +10,12 @@ Authors: QICLean contributors
 
 import QICLean.Representation.Permutation.CommutantDimension
 import QICLean.Representation.Permutation.FiniteGroupCommutant
+import QICLean.Representation.Permutation.IrrepLabels
 import QICLean.Representation.Permutation.IsotypicDimension
 import QICLean.Representation.Permutation.JointIsotypic
 import QICLean.Representation.Permutation.LabelProjectors
 import QICLean.Representation.Permutation.MergeDimensions
 import QICLean.Representation.Permutation.MergeExponential
-import QICLean.Representation.Permutation.MergeMoment
 import QICLean.Representation.Permutation.PermutationRepresentation
 import QICLean.Representation.Permutation.RegularBlocking
 import QICLean.Representation.Permutation.SchurLabelMoments

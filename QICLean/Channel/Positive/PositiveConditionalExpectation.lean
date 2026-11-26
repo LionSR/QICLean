@@ -5,7 +5,7 @@ Authors: TNLean contributors
 -/
 import QICLean.Spectral.Eigenvalue.HermitianExtremalEigenvalues
 import QICLean.Algebra.PartialTrace
-import QICLean.Channel.WolfProps
+import QICLean.Channel.KrausMap.WolfProps
 import QICLean.Algebra.Matrix.MatrixAux
 import QICLean.Algebra.Matrix.MatrixTracePairing
 import QICLean.Channel.Schwarz.TwoPositive

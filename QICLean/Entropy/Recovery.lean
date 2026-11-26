@@ -11,6 +11,8 @@ Authors: QICLean contributors
 import QICLean.Entropy.Recovery.HayashiMarkovStructure
 import QICLean.Entropy.Recovery.PetzEqualityPrerequisites
 import QICLean.Entropy.Recovery.PetzRecoverySupport
+import QICLean.Entropy.Recovery.SSAEqualityDPI
+import QICLean.Entropy.Recovery.SSAEqualityPetzRecovery
 import QICLean.Entropy.Recovery.WeylRelativeEntropyIntegral
 import QICLean.Entropy.Recovery.WeylSupportPetzRecovery
 import QICLean.Entropy.Recovery.WeylSupportRelativeEntropyEquality

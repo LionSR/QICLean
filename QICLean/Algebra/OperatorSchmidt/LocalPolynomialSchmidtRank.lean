@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Algebra.Polynomial.CommutingPolynomialGaps
-import QICLean.Algebra.Kronecker.KroneckerEmbed
+import QICLean.Algebra.Matrix.KroneckerEmbed
 import QICLean.Algebra.OperatorSchmidt.Bounds
 import Mathlib.Algebra.Polynomial.AlgebraMap
 import Mathlib.Algebra.Polynomial.Coeff

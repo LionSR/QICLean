@@ -8,7 +8,7 @@ import QICLean.Analysis.Norm.MatrixOperatorSpace
 import QICLean.Spectral.Radius.SpectralRadius
 import QICLean.Channel.Irreducible.CollatzWielandt
 import QICLean.Channel.Irreducible.Similarity
-import QICLean.Channel.Peripheral.Spectrum.UnitalKraus
+import QICLean.Channel.Schwarz.RussoDye
 import Mathlib.Algebra.Module.Equiv.Basic
 
 /-!

@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Analysis.FunctionalCalculus.MatrixCFCIntegral
-import QICLean.Channel.Schwarz.OperatorJensenAux
+import QICLean.Channel.Convexity.OperatorJensenAux
 import Mathlib.MeasureTheory.Integral.Bochner.ContinuousLinearMap
 
 /-!

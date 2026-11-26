@@ -66,7 +66,7 @@ The division follows the same organization as the earlier `Full/` and
 Wolf Theorem 6.1(2) and (3) for positive trace-preserving maps and Wolf's
 positive-invertible-map corollary need the recurrence of the peripheral
 projection and Wolf Proposition 3.6; they are in
-`QICLean.Channel.Determinant.PositiveInverse`.
+`QICLean.Channel.Peripheral.Asymptotic.PositiveInverse`.
 
 ## References
 

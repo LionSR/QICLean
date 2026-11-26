@@ -14,7 +14,7 @@ import Mathlib.FieldTheory.IsAlgClosed.Spectrum
 import Mathlib.Algebra.GCDMonoid.Finset
 import QICLean.Analysis.Norm.MatrixOperatorSpace
 import QICLean.Spectral.Eigenvalue.ShiftedTracePowerSpectrum
-import QICLean.Channel.TransferMatrix
+import QICLean.Channel.TransferMatrix.Basic
 
 /-!
 # Peripheral spectrum of quantum channels

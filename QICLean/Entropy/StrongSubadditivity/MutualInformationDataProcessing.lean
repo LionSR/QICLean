@@ -6,7 +6,7 @@ Authors: TNLean contributors
 import QICLean.Channel.KrausMap.LocalizedKrausCPTP
 import QICLean.Channel.Dilation.Stinespring
 import QICLean.Algebra.Kronecker.TensorMap
-import QICLean.Entropy.MutualInformation.MutualInformation
+import QICLean.Entropy.StrongSubadditivity.MutualInformationMonotone
 
 /-!
 # Data processing for bipartite mutual information

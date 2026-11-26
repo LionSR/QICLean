@@ -8,6 +8,7 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Channel.Choi
 
+import QICLean.Channel.Choi.CPDecomposition
 import QICLean.Channel.Choi.Doeblin
 import QICLean.Channel.Choi.Jamiolkowski
 import QICLean.Channel.Choi.JamiolkowskiSpectrum
@@ -16,3 +17,4 @@ import QICLean.Channel.Choi.OperatorNormFrobenius
 import QICLean.Channel.Choi.Rectangular
 import QICLean.Channel.Choi.RectangularChoi
 import QICLean.Channel.Choi.Residual
+import QICLean.Channel.Choi.TraceNormNet

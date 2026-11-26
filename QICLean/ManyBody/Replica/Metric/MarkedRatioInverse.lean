@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Replica.Metric.MarkedRatio
-import QICLean.Representation.Permutation.MergeMoment
+import QICLean.Representation.TensorPower.MergeMoment
 
 /-!
 # Inverse estimates for the marked ratio on symmetric vectors

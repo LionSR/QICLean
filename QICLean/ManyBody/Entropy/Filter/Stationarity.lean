@@ -6,7 +6,7 @@ Authors: QICLean contributors
 import QICLean.ManyBody.Entropy.SupportedMarginalTails
 import QICLean.Entropy.Surprisal.FilterMoment
 import QICLean.ManyBody.Sites.RegionState
-import QICLean.Algebra.Kronecker.KroneckerEmbed
+import QICLean.Algebra.Matrix.KroneckerEmbed
 import Mathlib.Analysis.SpecialFunctions.Exponential
 import Mathlib.Analysis.Complex.RealDeriv
 import Mathlib.Analysis.InnerProductSpace.Calculus

@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import Mathlib.Data.Finset.Pairwise
-import QICLean.Algebra.Kronecker.KroneckerEmbed
+import QICLean.Algebra.Matrix.KroneckerEmbed
 import QICLean.Channel.Dilation.Stinespring
 import QICLean.Circuit.Compile.Encoding
 import QICLean.Circuit.Core.LayerDual

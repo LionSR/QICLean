@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Representation.Coherent.MarkedSymbol
-import QICLean.Representation.SymmetricGroup.StarOperator
+import QICLean.Representation.SchurWeyl.StarOperator
 import QICLean.ManyBody.Entropy.SupportedMarginalTails
 import QICLean.Entropy.Surprisal.FilterMoment
 import QICLean.ManyBody.Sites.RegionState

@@ -149,33 +149,7 @@ MODULE_MAP_PATH = Path(__file__).resolve().parent / "library_layers_module_map.t
 # Existing imports against that order, as "importing module -> imported module". Never
 # add an entry: move the module to the subdirectory of its objects, or move the shared
 # declaration down.
-SUBLAYER_DEBT: frozenset[str] = frozenset({
-        "QICLean.Algebra.OperatorSchmidt.LocalPolynomialSchmidtRank -> QICLean.Algebra.Kronecker.KroneckerEmbed",
-        "QICLean.Analysis.Projection.InjectiveRangeProjector -> QICLean.Analysis.Norm.NeumannInverse",
-        "QICLean.Channel.Choi.Doeblin -> QICLean.Channel.SupportCompletion",
-        "QICLean.Channel.Choi.Rectangular -> QICLean.Channel.Basic",
-        "QICLean.Channel.Convexity.LiebConcavity -> QICLean.Channel.Schwarz.IntegralJensen",
-        "QICLean.Channel.Determinant.PositiveExtremality -> QICLean.Channel.PSDConeAutomorphism.RankPreservation",
-        "QICLean.Channel.Determinant.PositiveExtremality -> QICLean.Channel.Peripheral.Spectrum.AntilinearConjugation",
-        "QICLean.Channel.Determinant.PositiveExtremality -> QICLean.Channel.Peripheral.Projection.CesaroRecurrence",
-        "QICLean.Channel.FixedPoint.DensityBlock.FullSupportBlockRetraction -> QICLean.Channel.ConditionalExpectation.PositiveConditionalExpectationDirectSum",
-        "QICLean.Channel.Irreducible.Growth.Exponential -> QICLean.Channel.Semigroup.ReducibleQDS.GeneratorCompression",
-        "QICLean.Channel.Irreducible.KrausSetup -> QICLean.Channel.PerronFrobenius.Existence",
-        "QICLean.Channel.Irreducible.SpectralRadius -> QICLean.Channel.Peripheral.Spectrum.Conjugation",
-        "QICLean.Channel.Irreducible.SpectralRadius -> QICLean.Channel.Peripheral.Spectrum.SpectralRadius",
-        "QICLean.Channel.KrausMap.KrausRepresentation -> QICLean.Channel.Basic",
-        "QICLean.Channel.Peripheral.Spectrum.SpectralRadius -> QICLean.Channel.PerronFrobenius.Existence",
-        "QICLean.Channel.WeightedHilbertSchmidt -> QICLean.Channel.Peripheral.Spectrum.UnitalKraus",
-        "QICLean.Entropy.Markov.InvariantConditionalFamily -> QICLean.Entropy.StrongSubadditivity.SSAEqualityPetzRecovery",
-        "QICLean.Entropy.MutualInformation.MutualInformation -> QICLean.Entropy.StrongSubadditivity.Basic",
-        "QICLean.Entropy.VonNeumann.Bipartite -> QICLean.Entropy.StrongSubadditivity.Basic",
-        "QICLean.Probability.Measurable.CanonicalSampleProjectionMeasurable -> QICLean.Probability.Sampling.ViableSubspaceRandomSampling",
-        "QICLean.Representation.Partition.HookDimension -> QICLean.Representation.SchurWeyl.BranchingPieri",
-        "QICLean.Representation.Permutation.LabelProjectors -> QICLean.Representation.Character.IrrepLabels",
-        "QICLean.Representation.Permutation.MergeDimensions -> QICLean.Representation.Replica.SchurLabelCommutation",
-        "QICLean.Representation.Permutation.MergeDimensions -> QICLean.Representation.YoungSubgroup.GroupedCopies",
-        "QICLean.Representation.TensorPower.SplitCopies -> QICLean.Representation.Character.Branching",
-})
+SUBLAYER_DEBT: frozenset[str] = frozenset({})
 DEEP_ROOTS: frozenset[str] = frozenset({"ManyBody", "Circuit"})
 MUTUAL_DIRECTORIES: frozenset[str] = frozenset({})
 EXAMPLES_IMPORTS: frozenset[str] = frozenset({})

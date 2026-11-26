@@ -6,7 +6,7 @@ Authors: QICLean contributors
 import QICLean.Spectral.Jordan.ConditionNumber
 import QICLean.Analysis.Norm.KroneckerOperatorNorm
 import QICLean.Analysis.FunctionalCalculus.MatrixSqrt
-import QICLean.Channel.SelfDual
+import QICLean.Channel.TransferMatrix.SelfDual
 
 /-!
 # Detailed balance and transfer matrices

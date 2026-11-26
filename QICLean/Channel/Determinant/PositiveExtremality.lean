@@ -8,7 +8,7 @@ import QICLean.Channel.Determinant.ChoiBound
 import QICLean.Channel.Determinant.Composition
 import QICLean.Channel.Determinant.UnitaryCharacterization
 import QICLean.Channel.Schwarz.AbstractMultiplicativeDomain
-import QICLean.Channel.TransferMatrix
+import QICLean.Channel.TransferMatrix.Basic
 import Mathlib.GroupTheory.Perm.Cycle.Type
 import Mathlib.LinearAlgebra.Matrix.Permutation
 
@@ -34,7 +34,7 @@ dimension one it is the identity.
 The determinant-saturation classification (Wolf Theorem 6.1(2) and (3)) and
 the positive-invertible-map corollary need the recurrence of the peripheral
 projection and Wolf Proposition 3.6; they are in
-`QICLean.Channel.Determinant.PositiveInverse`.
+`QICLean.Channel.Peripheral.Asymptotic.PositiveInverse`.
 
 ## Main results
 

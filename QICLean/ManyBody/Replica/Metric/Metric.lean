@@ -7,7 +7,7 @@ import QICLean.Analysis.FunctionalCalculus.OrthogonalResolutionCfc
 import QICLean.Representation.Partition.ReplicaWeight
 import QICLean.ManyBody.Replica.Label.SubsystemTransport
 import QICLean.Representation.Permutation.SchurSurprisal
-import QICLean.Representation.Replica.SchurLabelCommutation
+import QICLean.Representation.TensorPower.SchurLabelCommutation
 
 /-!
 # The replica metrics

@@ -6,7 +6,7 @@ Authors: QICLean contributors
 import QICLean.Algebra.Matrix.MatrixTracePairing
 import QICLean.Channel.Determinant.PositiveExtremality
 import QICLean.Channel.Peripheral.Projection.CesaroRecurrence
-import QICLean.Channel.PSDConeAutomorphism.RankPreservation
+import QICLean.Channel.Wigner.RankPreservation
 
 /-!
 # Determinant saturation and positive invertible maps

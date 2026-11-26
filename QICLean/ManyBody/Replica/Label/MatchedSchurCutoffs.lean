@@ -5,6 +5,8 @@ Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Replica.Label.SubsystemLabelCoordinates
 import QICLean.Representation.Permutation.MergeDimensions
+import QICLean.Representation.TensorPower.MergeMoment
+import QICLean.Representation.TensorPower.SchurLabelCommutation
 import QICLean.Entropy.Surprisal.MarginalTails
 import Mathlib.Data.Finset.SymmDiff
 

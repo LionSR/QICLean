@@ -7,7 +7,7 @@ import QICLean.Analysis.Norm.MatrixOperatorSpace
 import QICLean.Channel.Determinant.Bound
 import QICLean.Channel.KrausMap.KrausMap
 import QICLean.Channel.FixedPoint.Stationary.StationaryStates
-import QICLean.Channel.Peripheral.Spectrum.UnitalKraus
+import QICLean.Channel.Schwarz.RussoDye
 import Mathlib.Analysis.Normed.Algebra.Spectrum
 import Mathlib.Topology.Algebra.Module.FiniteDimension
 
@@ -21,7 +21,7 @@ trace-preserving, then $1$ is an eigenvalue, the spectral radius is $1$, and
 all eigenvalues lie in the closed unit disk.
 
 The Russo--Dye estimate, Equations (6.2) and (6.3) and the unital case are in
-`QICLean.Channel.Peripheral.Spectrum.UnitalKraus`.  This file proves the
+`QICLean.Channel.Schwarz.RussoDye`.  This file proves the
 trace-preserving case: a positive trace-preserving map has a positive
 semidefinite fixed point, obtained from the Brouwer eigenvector
 `exists_posSemidef_eigenvector`, and its eigenvalues lie in the closed unit

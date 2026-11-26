@@ -7,7 +7,7 @@ import QICLean.Algebra.MatrixAlgebra.ScalarCommutant
 import QICLean.Algebra.StarSubalgebra.BlockForm
 import QICLean.Analysis.FunctionalCalculus.MatrixSqrt
 import QICLean.Channel.KrausMap.KrausCPTP
-import QICLean.Channel.ConditionalExpectation.PositiveConditionalExpectation
+import QICLean.Channel.Positive.PositiveConditionalExpectation
 import QICLean.Channel.Schwarz.PositiveMapProperties
 
 /-!

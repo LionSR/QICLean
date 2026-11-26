@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Channel.Choi.Residual
-import QICLean.Channel.OrderedRectangular
+import QICLean.Channel.KrausMap.OrderedRectangular
 import QICLean.Channel.FixedPoint.MeanErgodic.Cesaro
 
 /-!
