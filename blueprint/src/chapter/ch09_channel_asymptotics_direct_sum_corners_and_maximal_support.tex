@@ -267,14 +267,15 @@ that Loewner domination transfers the support.
 
 \begin{lemma}[The transfer map of a trace-preserving family is a channel]%
     \label{lem:kraus_map_is_channel}
-    \lean{Kraus.isChannel_mapLM}
     \leanok
     \uses{def:channel, def:tp_kraus}
     Let $K_0,\ldots,K_{d-1}$ be a trace-preserving Kraus family. The map
-    $E(X)=\sum_iK_iXK_i^\dagger$ is a quantum channel.
+    $E(X)=\sum_iK_iXK_i^\dagger$ is a quantum channel. This is
+    Theorem~\ref{thm:transfer_channel}.
 \end{lemma}
 
 \begin{proof}\leanok
+    \uses{thm:transfer_channel}
     The transfer-map formula is the finite Kraus map. Its Kraus form is
     completely positive, while the normalization
     $\sum_iK_i^\dagger K_i=\Id$ gives $\tr(E(X))=\tr(X)$. Hence $E$ is a

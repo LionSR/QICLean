@@ -482,8 +482,6 @@ and the basis bounds below are the corrected statements under
     \label{thm:hastings05_constructed_oibu}
     \lean{ManyBody.groundSpaceCompression,
         ManyBody.coe_groundSpaceCompression_apply,
-        LowEnergyBasis.isSelfAdjoint_subspaceCompression,
-        LowEnergyBasis.norm_subspaceCompression_commutator,
         ManyBody.exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le}
     \leanok
     \uses{thm:hastings05_constructed_ground_basis,thm:hastings05_oibu}
@@ -501,6 +499,7 @@ and the basis bounds below are the corrected statements under
     displayed conditioning as well as the geometric parameters.
 \end{lemma}
 \begin{proof}\leanok
+    \uses{thm:hastings05_orthogonal_basis_refinement}
     Each off-diagonal part is at most $n-1$ times its largest matrix entry.
     Apply Lemma~\ref{thm:hastings05_constructed_ground_basis}, exchange the
     sums over $i$ and $r$, and apply the commutator row sum of
@@ -805,7 +804,6 @@ and the basis bounds below are the corrected statements under
         LowEnergyBasis.exists_orthonormalBasis_uniform_weighted_kernel,
         ManyBody.sum_weight_list_graphDecayKernel_le,
         LowEnergyBasis.sqrtKernel_comp,
-        LowEnergyBasis.norm_subspaceCompression_le,
         ManyBody.exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le_uniform}
     \leanok
     \uses{thm:hastings05_recursive_uniform_basis,thm:hastings05_blecm_exp}
@@ -828,7 +826,8 @@ and the basis bounds below are the corrected statements under
     restricted form of (oibu)\cite{gap:hastings05_geometric_growth_scope}.
 \end{lemma}
 \begin{proof}\leanok
-    \uses{thm:hastings05_recursive_uniform_basis,thm:hastings05_blecm_exp,thm:hastings_gaussian_filtered_spectral}
+    \uses{thm:hastings05_recursive_uniform_basis,thm:hastings05_blecm_exp,thm:hastings_gaussian_filtered_spectral,
+        thm:hastings05_orthogonal_basis_refinement}
     Normalize the ground-space compressions by $\|h_i\|$, assigning zero to
     zero terms. Apply the recursive basis theorem, then restore the weights.
     Its anchor list has at most $n-1$ entries. Each matrix element is bounded

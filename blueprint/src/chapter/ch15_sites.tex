@@ -190,13 +190,11 @@ $\mathcal H_X=0$ and the statements below hold trivially.
 
 \begin{theorem}[Supported operators are spanned by product operators]
     \label{thm:sites_product_span}
-    \lean{ManyBody.supportedOperators_toSubmodule_eq_span, Matrix.piKronecker,
-        Matrix.piKronecker_apply, Matrix.piKronecker_mul, Matrix.piKronecker_one,
-        Matrix.conjTranspose_piKronecker, Matrix.piKronecker_mem_unitaryGroup,
-        ManyBody.piKronecker_mem_supportedOperators, ManyBody.place_single, Matrix.trace_piKronecker,
-        Matrix.piKronecker_basisInclusion}
+    \lean{ManyBody.supportedOperators_toSubmodule_eq_span,
+        ManyBody.piKronecker_mem_supportedOperators, ManyBody.place_single}
     \leanok
-    \uses{thm:sites_place_range, lem:sites_place_hom, def:gate_basis_inclusion}
+    \uses{thm:sites_place_range, lem:sites_place_hom, def:gate_basis_inclusion,
+        def:elementary_finite_tensor_product}
     The algebra $\mathcal A_D$ is the linear span of the product operators
     $\bigotimes_{v\in V}m_v$ with $m_v=1$ for every $v\notin D$. Product operators
     multiply sitewise, $(\bigotimes_vm_v)^*=\bigotimes_vm_v^*$, a product of
@@ -205,6 +203,8 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     product injection $(x_v)_v\mapsto(e_v(x_v))_v$.
 \end{theorem}
 \begin{proof}\leanok
+    \uses{lem:elementary_finite_tensor_product_algebra, lem:elementary_tensor_power_label_map,
+        lem:elementary_tensor_power_partial_isometry}
     The matrix element of $\bigotimes_vm_v$ at $(\sigma,\tau)$ is
     $\prod_v(m_v)_{\sigma_v\tau_v}$, and the factors at $v\notin D$ are
     $\delta_{\sigma_v\tau_v}$, so these operators are supported on $D$.
@@ -278,7 +278,7 @@ $\mathcal H_X=0$ and the statements below hold trivially.
 \begin{lemma}[Product operators across a cut and intertwined placements]
     \label{lem:sites_product_intertwine}
     \lean{ManyBody.reindex_cutEquiv_piKronecker, ManyBody.piKronecker_mul_place,
-        Matrix.piKronecker_eq_zero_iff, Matrix.piKronecker_ne_zero, ManyBody.piKronecker_eq_place,
+        ManyBody.piKronecker_eq_place,
         ManyBody.place_mul_piKronecker_eq_zero_iff}
     \leanok
     \uses{def:sites_config, def:sites_place, thm:sites_product_span}
@@ -298,6 +298,7 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     $(K\otimes1)\bigotimes_vm_v=0$ if and only if $Km_D=0$.
 \end{lemma}
 \begin{proof}\leanok
+    \uses{lem:elementary_finite_tensor_product_algebra}
     The matrix element of $\bigotimes_vm_v$ is the product over $V$ of the on-site
     elements, which splits into the products over $D$ and over $V\setminus D$. Then
     \[
@@ -788,7 +789,6 @@ $D$. This section places a matrix between two such systems.
         ManyBody.norm_regionExpectation_le, ManyBody.regionExpectation_zero,
         ManyBody.regionExpectation_add, ManyBody.regionExpectation_smul,
         ManyBody.regionExpectation_sub, ManyBody.isHermitian_regionExpectation,
-        ManyBody.regionExpectationLM, ManyBody.regionExpectationLM_apply,
         ManyBody.regionExpectationCLM, ManyBody.regionExpectationCLM_apply,
         ManyBody.regionExpectationLM_isKrausCPTP,
         ManyBody.norm_sub_regionExpectation_le_two_mul_norm_sub}
