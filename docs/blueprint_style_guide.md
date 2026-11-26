@@ -5,6 +5,7 @@ The blueprint links the mathematics to its Lean formalization. A reader should b
 
 ## General Principles
 1. **Blueprint ↔ Lean must match.** Every `\lean{X}` tag must correspond to an actual Lean declaration. Every proof sketch must match what the Lean proof actually does — not a hand-wavy version of it.
+   Each Lean declaration is tagged in exactly one blueprint entry: the entry of the chapter that defines the object, or, for a theorem, the entry whose statement is the Lean statement. Any other entry about the same declaration drops the tag and cites the owner through `\uses` (in the statement when the owner is needed to state it, in the proof when the argument relies on it). CI enforces this with `python3 scripts/blueprint_lean_sync.py --ci --report-duplicate-tags`.
 2. **Standalone documents.** `blueprint/` and `docs/slides/` have separate
    preambles, prose macros, bibliographies, and build entry points. They share
    only the repository-wide tensor-network language in `tex/tenkz/`; neither
