@@ -36,6 +36,8 @@ import QICLean.Algebra.Combinatorics.OrderedSetFunction
 import QICLean.Algebra.Combinatorics.OverlapGraph
 import QICLean.Algebra.Combinatorics.PathGraphConnected
 import QICLean.Algebra.Combinatorics.StoppedHalving
+import QICLean.Algebra.Combinatorics.SupportChain
+import QICLean.Algebra.Combinatorics.TimedPaths
 import QICLean.Algebra.Combinatorics.TupleEquiv
 import QICLean.Algebra.Combinatorics.TwoWindowCounts
 import QICLean.Algebra.Combinatorics.TwoWindowSum

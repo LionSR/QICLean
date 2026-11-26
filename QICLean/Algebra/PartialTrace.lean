@@ -918,3 +918,62 @@ end TracePrepare
 end Matrix
 
 end
+
+section
+open scoped Kronecker
+namespace Matrix
+
+section PartialTrace
+
+variable {α β : Type*} [Fintype α] [Fintype β] [DecidableEq β]
+
+/-- Conjugating the first factor commutes with the partial trace over the second:
+`tr₂((A ⊗ 1) M (B ⊗ 1)) = A tr₂(M) B`. -/
+theorem partialTraceRight_kronecker_one_mul_mul (A B : Matrix α α ℂ)
+    (M : Matrix (α × β) (α × β) ℂ) :
+    partialTraceRight ((A ⊗ₖ (1 : Matrix β β ℂ)) * M * (B ⊗ₖ (1 : Matrix β β ℂ))) =
+      A * partialTraceRight M * B := by
+  ext i j
+  simp only [partialTraceRight_apply, mul_apply, Fintype.sum_prod_type, kroneckerMap_apply,
+    one_apply, mul_ite, mul_one, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq,
+    Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte, Finset.sum_mul, Finset.mul_sum]
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun a _ ↦ ?_
+  rw [Finset.sum_comm]
+
+/-- The partial trace over the first factor is invariant under a similarity of that
+factor: `tr₁((A ⊗ 1) M (B ⊗ 1)) = tr₁(M)` when `B A = 1`. -/
+theorem partialTraceLeft_kronecker_one_conj [DecidableEq α] {A B : Matrix α α ℂ}
+    (hBA : B * A = 1) (M : Matrix (α × β) (α × β) ℂ) :
+    partialTraceLeft ((A ⊗ₖ (1 : Matrix β β ℂ)) * M * (B ⊗ₖ (1 : Matrix β β ℂ))) =
+      partialTraceLeft M := by
+  ext i j
+  simp only [partialTraceLeft_apply, mul_apply, Fintype.sum_prod_type, kroneckerMap_apply,
+    one_apply, mul_ite, mul_one, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq,
+    Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte, Finset.sum_mul]
+  calc ∑ k, ∑ x, ∑ y, A k y * M (y, i) (x, j) * B x k
+      = ∑ x, ∑ y, M (y, i) (x, j) * (B * A) x y := by
+        simp only [mul_apply, Finset.mul_sum]
+        rw [Finset.sum_comm]
+        refine Finset.sum_congr rfl fun x _ ↦ ?_
+        rw [Finset.sum_comm]
+        refine Finset.sum_congr rfl fun y _ ↦ Finset.sum_congr rfl fun k _ ↦ ?_
+        ring
+    _ = _ := by simp [hBA, one_apply]
+
+end PartialTrace
+
+/-- A Kronecker product of orthogonal projections is an orthogonal projection. -/
+theorem isStarProjection_kronecker {A B : Type*} [Fintype A] [Fintype B]
+    {P : Matrix A A ℂ} {Q : Matrix B B ℂ}
+    (hP : IsStarProjection P) (hQ : IsStarProjection Q) : IsStarProjection (P ⊗ₖ Q) where
+  isIdempotentElem := by
+    change (P ⊗ₖ Q) * (P ⊗ₖ Q) = P ⊗ₖ Q
+    rw [← mul_kronecker_mul, hP.isIdempotentElem.eq, hQ.isIdempotentElem.eq]
+  isSelfAdjoint := by
+    change (P ⊗ₖ Q)ᴴ = P ⊗ₖ Q
+    rw [conjTranspose_kronecker, show Pᴴ = P from hP.isSelfAdjoint,
+      show Qᴴ = Q from hQ.isSelfAdjoint]
+
+end Matrix
+end

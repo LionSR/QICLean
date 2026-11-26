@@ -14,6 +14,7 @@ of a theorem, determines its intended layer.
 | `ManyBody/Sites` | matrix foundations, single-system channels |
 | `ManyBody/Dynamics` | matrix foundations, channels, Sites |
 | `ManyBody/Hamiltonian` | matrix foundations, channels, Sites, Dynamics |
+| `ManyBody/PoissonWord` | matrix foundations, channels, Entropy, Probability, Sites, Dynamics, Hamiltonian |
 | `Circuit/Gate` | matrix foundations |
 | `Circuit` | matrix foundations, channels, Sites, Gates |
 | `Circuit/Party` | matrix foundations, channels, Sites, Gates, Circuits |
@@ -47,8 +48,8 @@ added for this layer; regression tests enforce both allowed and forbidden edges.
 Matrix foundations means `Algebra`, `Analysis`, `Spectral`; single-system
 channels means `Channel`, `Kraus`. `Sites`, `Dynamics` and `Hamiltonian` may
 also import `Entropy` (entropy of one or two systems). The single-system layers
-below, and the many-body layers `ManyBody/Entropy`, `ManyBody/Subspace` and
-`ManyBody/Replica` that hold the regional modules moved out of them, are
+below, and the many-body layers `ManyBody/Entropy`, `ManyBody/Subspace`,
+`ManyBody/Replica` and `ManyBody/PoissonWord` that hold the regional modules moved out of them, are
 described in `docs/library_layers.md`. Lower prerequisites remain available at
 higher layers. Specific prefixes own modules before the enclosing `Circuit`
 prefix does. Nothing below `Circuit/Model` (Core, Geometry, Gate, Party,

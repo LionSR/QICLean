@@ -2264,3 +2264,13 @@ QICLean.Spectral.LowEnergy.SoftTruncationLowRestriction QICLean.Spectral.LowEner
 QICLean.Spectral.Perturbation.BufferedSpectralNormPerturbation QICLean.Spectral.Perturbation.ClusterNormPerturbation merge
 QICLean.Spectral.Perturbation.GroundShiftSpectralComparison QICLean.Spectral.Perturbation.GroundEnergyResidual merge
 QICLean.Spectral.Perturbation.OverlapEnergy QICLean.Spectral.Perturbation.GapPerturbation merge
+
+# The product states and operators of ManyBody/Sites in their own subdirectory (PEPS move, 2026-11-26).
+QICLean.ManyBody.Sites.ProductFamily QICLean.ManyBody.Sites.Product.ProductFamily
+QICLean.ManyBody.Sites.ProductVector QICLean.ManyBody.Sites.Product.ProductVector
+QICLean.ManyBody.Sites.ProductOperatorTrace QICLean.ManyBody.Sites.Product.ProductOperatorTrace
+QICLean.ManyBody.Sites.ProductForm QICLean.ManyBody.Sites.Product.ProductForm
+# The placements of ManyBody/Sites in their own subdirectory (PEPS move, 2026-11-26).
+QICLean.ManyBody.Sites.Placement QICLean.ManyBody.Sites.Placement.Basic
+QICLean.ManyBody.Sites.PlaceAlong QICLean.ManyBody.Sites.Placement.PlaceAlong
+QICLean.ManyBody.Sites.PlaceAlongMonomial QICLean.ManyBody.Sites.Placement.PlaceAlongMonomial

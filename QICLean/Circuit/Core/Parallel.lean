@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Circuit.Core.Seq
-import QICLean.ManyBody.Sites.ProductFamily
+import QICLean.ManyBody.Sites.Product.ProductFamily
 import QICLean.ManyBody.Sites.RegionUnion
 
 /-!

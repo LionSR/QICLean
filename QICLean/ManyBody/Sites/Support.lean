@@ -19,7 +19,7 @@ is supported on a region `D` when it acts as the identity on the sites outside `
 entry between two configurations vanishes when they differ outside `D`, and otherwise depends
 only on their parts on `D`. The operators supported on `D` form a unital `*`-subalgebra
 `ManyBody.supportedOperators X D` of the matrix algebra, isomorphic to the matrix algebra of
-the region; the isomorphism is the placement of `QICLean.ManyBody.Sites.Placement`.
+the region; the isomorphism is the placement of `QICLean.ManyBody.Sites.Placement.Basic`.
 
 Statements about supported operators are written `A ∈ supportedOperators X D`. Closure under
 sums, scalar multiples, products, powers and adjoints is membership in a `*`-subalgebra

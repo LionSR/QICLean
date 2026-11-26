@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Analysis.ClusterExpansion.Temperature
 import QICLean.ManyBody.Hamiltonian.ClusterExpansion.Factorization
-import QICLean.ManyBody.Sites.ProductForm
+import QICLean.ManyBody.Sites.Product.ProductForm
 
 /-!
 # The truncated operator of an interaction in matrix product form

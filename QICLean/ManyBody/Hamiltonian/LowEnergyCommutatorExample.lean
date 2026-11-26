@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import Mathlib.Data.Nat.Dist
 import QICLean.ManyBody.Hamiltonian.LowEnergyCommutator
-import QICLean.ManyBody.Sites.PlaceAlong
+import QICLean.ManyBody.Sites.Placement.PlaceAlong
 
 /-!
 # Low-energy commutators need not vanish without translation invariance

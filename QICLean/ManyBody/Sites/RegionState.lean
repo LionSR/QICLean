@@ -206,3 +206,30 @@ theorem inner_cutOperator (B : Finset V) (Y : Matrix (∀ v, Fin (n v)) (∀ v, 
   rw [hv, ManyBody.cutOperator, reindex_apply, submatrix_mul_equiv, trace_submatrix_equiv]
 
 end Entropy
+
+section RegionalStates
+
+/-!
+## Regional entropy of a unit vector
+
+The regional state of a unit vector is a density matrix, so its regional entropy is
+nonnegative. The zero entropy of the empty and full regions is
+`ManyBody.regionEntropy_empty` and `ManyBody.regionEntropy_univ`.
+-/
+
+namespace ManyBody
+
+variable {V : Type*} [Fintype V] [DecidableEq V] {X : V → Type*} [∀ v, Fintype (X v)]
+  [∀ v, DecidableEq (X v)]
+
+/-- The regional entropy of a unit vector is nonnegative, for every region of every finite
+system of sites. Source: area-law `sec:prelim`, lines 10–25, entropy of normalized density
+operators. -/
+theorem regionEntropy_nonneg {Ω : EuclideanSpace ℂ (Config X)} (hΩ : ‖Ω‖ = 1) (D : Finset V) :
+    0 ≤ regionEntropy Ω D :=
+  vonNeumannEntropy_nonneg_of_posSemidef_trace_one (regionState_posSemidef D Ω)
+    (trace_regionState_eq_one hΩ (D := D))
+
+end ManyBody
+
+end RegionalStates

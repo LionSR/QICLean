@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Analysis.ClusterExpansion.Factorization
 import QICLean.ManyBody.Dynamics.Interaction
-import QICLean.ManyBody.Sites.Placement
+import QICLean.ManyBody.Sites.Placement.Basic
 
 /-!
 # The cluster expansion of an interaction: supports and commutation

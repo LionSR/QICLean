@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Circuit.Core.Qudit
 import QICLean.Circuit.Core.Parallel
-import QICLean.ManyBody.Sites.PlaceAlong
+import QICLean.ManyBody.Sites.Placement.PlaceAlong
 
 /-!
 # The quantum Fourier transform
