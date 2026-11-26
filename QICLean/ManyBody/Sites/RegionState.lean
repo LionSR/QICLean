@@ -11,6 +11,7 @@ import QICLean.Analysis.TraceNorm.TraceDistance
 import QICLean.Analysis.Norm.MatrixToEuclidean
 import QICLean.Channel.Schmidt.SurprisalMoment
 import QICLean.Spectral.Projection.ShiftedDensityTruncation
+import QICLean.Entropy.VonNeumann.SpectralTail
 
 /-!
 # Regional pure states and expectations
@@ -215,7 +216,6 @@ end Entropy
 
 section
 
-open ManyBody (interval interval_mono)
 
 section SequentialTruncation
 
@@ -223,7 +223,6 @@ open Matrix
 
 open scoped ComplexOrder InnerProductSpace Kronecker
 
-open ManyBody (cutMatrix)
 
 namespace Entropy
 
