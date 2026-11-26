@@ -28,6 +28,7 @@ import QICLean.Analysis.Real.GeometricOrderPolynomialBound
 import QICLean.Analysis.Real.HarmonicWeights
 import QICLean.Analysis.Real.IidTailThreshold
 import QICLean.Analysis.Real.InformationResetScalar
+import QICLean.Analysis.Real.IteratedPowerDepth
 import QICLean.Analysis.Real.LogClipping
 import QICLean.Analysis.Real.LogMoments
 import QICLean.Analysis.Real.LogPowerAbsorption
