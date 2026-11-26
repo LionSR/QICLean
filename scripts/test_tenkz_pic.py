@@ -40,7 +40,6 @@ sys.path.insert(0, str(_REPO_ROOT / "blueprint/src/Packages"))
 import tenkz_pic
 
 _PLACEHOLDER_WORKFLOWS = (
-    _REPO_ROOT / ".github/workflows/pr-ci.yml",
     _REPO_ROOT / ".github/workflows/blueprint.yml",
     _REPO_ROOT / ".github/workflows/docgen.yml",
 )

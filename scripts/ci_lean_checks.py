@@ -23,11 +23,17 @@ Commands
             file to a fresh overlay directory placed first on ``LEAN_PATH``, so
             a test may import another test.
 
-Pushes use the previous head as the base. When a dependency pin, the
-toolchain, this script or the workflow changes, ``strict`` checks every test
-file, and the changed production files are still built early and checked.
-Without a base revision (manual dispatch, an unfetchable base) ``strict``
-checks every test file and ``early`` does nothing; the full build covers it.
+The nightly run uses the last commit that passed it as the base. When a
+dependency pin, the toolchain, this script or a workflow changes, ``strict``
+checks every test file, and the changed production files are still built
+early and checked. Without a base revision (manual dispatch, an unfetchable
+base) ``strict`` checks every test file and ``early`` does nothing; the full
+build covers it.
+
+Pull requests run ``early`` and then ``strict --sources-only``: the early
+build has compiled what the changed production files import, so those files
+can be elaborated strictly without the full build, while the test files, whose
+imports reach the rest of the library, wait for the nightly run.
 """
 
 from __future__ import annotations
@@ -61,6 +67,7 @@ FULL_RUN_PATHS = (
     "lean-toolchain",
     "scripts/ci_lean_checks.py",
     ".github/workflows/pr-ci.yml",
+    ".github/workflows/nightly.yml",
 )
 
 # Keep aligned with EXCLUDED_TOP_LEVEL_DIRECTORIES in
@@ -336,6 +343,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--budget", type=int, default=0,
                         help="early: stop after this many seconds and leave the rest "
                              "to the root build (0 means no limit)")
+    parser.add_argument("--sources-only", action="store_true",
+                        help="strict: check the changed production files and no test file")
     args = parser.parse_args(argv)
 
     os.chdir(args.root)
@@ -357,6 +366,8 @@ def main(argv: list[str] | None = None) -> int:
         print("Building changed modules early:", *early, sep="\n  ", flush=True)
         return early_build(early, args.log, args.budget)
 
+    if args.sources_only:
+        tests = []
     print(f"Strict checks: {len(sources)} changed source file(s), {len(tests)} test file(s).",
           flush=True)
     failed = run_batch(sources, None, args.jobs, args.timeout)

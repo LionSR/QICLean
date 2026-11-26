@@ -3,6 +3,7 @@ name: Claude Provider Limit Guard
 on:
   workflow_run:
     workflows:
+      - Nightly Fix
       - PR Review
       - Issue Automation
     types: [completed]
@@ -34,6 +35,11 @@ jobs:
         run: |
           set -euo pipefail
           case "$WORKFLOW_NAME" in
+            "Nightly Fix")
+              switch_name="CLAUDE_AUTO_FIX_ENABLED"
+              until_name="CLAUDE_AUTO_FIX_DISABLED_UNTIL"
+              reason_name="CLAUDE_AUTO_FIX_DISABLE_REASON"
+              ;;
             "PR Review"|\
             "Issue Automation")
               switch_name="CLAUDE_REVIEW_ENABLED"
@@ -237,6 +243,10 @@ jobs:
             reenabled_any=true
           }
 
+          check_switch \
+            CLAUDE_AUTO_FIX_ENABLED \
+            CLAUDE_AUTO_FIX_DISABLED_UNTIL \
+            CLAUDE_AUTO_FIX_DISABLE_REASON
           check_switch \
             CLAUDE_REVIEW_ENABLED \
             CLAUDE_REVIEW_DISABLED_UNTIL \

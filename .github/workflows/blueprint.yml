@@ -9,39 +9,20 @@ name: Blueprint
 # them, so a deploy that published the links without the PDFs would leave
 # them dangling until the next scheduled docgen run.
 
+# It no longer runs on every push to main: nightly.yml calls it once a night,
+# as the blueprint half of the integration pipeline (pull requests check the
+# blueprint sources only), and it can be dispatched by hand for an immediate
+# publication.
+
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - '**.lean'
-      - 'lakefile.*'
-      - 'lean-toolchain'
-      - 'lake-manifest.json'
-      - 'blueprint/src/**'
-      - 'tenkz.toml'
-      - 'scripts/fetch_tenkz.py'
-      - 'scripts/tenkz_paths.py'
-      - 'scripts/tenkz_blueprint_sweep.py'
-      - 'scripts/test_tenkz_blueprint_sweep.py'
-      - 'scripts/test_tenkz_pic.py'
-      - 'docs/paper-gaps/**'
-      - 'texra-blueprint.toml'
-      # Trees the paper-gap reference check scans (texra-blueprint
-      # paper-gaps check); without these the check never runs
-      # on merge pushes that only touch a scanned file.
-      - 'docs/**/*.md'
-      - '.github/workflows/blueprint.yml'
-      - '.github/workflows/deploy-pages.yml'
-      - 'home_page/**'
-      - 'scripts/assemble-pages-site.sh'
-      - 'scripts/fetch-latest-artifact.sh'
-      - 'scripts/write_badges.py'
+  workflow_call:
   workflow_dispatch:
 
+# A run on another branch (a manual dispatch, or the nightly verification of a
+# repair branch) builds in its own group and never deploys.
 concurrency:
-  group: blueprint-build
-  cancel-in-progress: true
+  group: blueprint-build-${{ github.ref }}
+  cancel-in-progress: false
 
 permissions:
   contents: read
@@ -78,6 +59,21 @@ jobs:
           python3 scripts/test_tenkz_pic.py
           python3 scripts/test_tenkz_blueprint_sweep.py
 
+      # Advisory (continue-on-error), as it was in the pull-request job.
+      - name: Check LaTeX formatting (latexindent)
+        continue-on-error: true
+        timeout-minutes: 5
+        run: |
+          set -e
+          status=0
+          while IFS= read -r f; do
+            if ! latexindent -k -s -l blueprint/latexindent.yaml "$f" > /dev/null; then
+              echo "::warning file=$f::not formatted to blueprint/latexindent.yaml; run 'latexindent -l blueprint/latexindent.yaml -w -s \"$f\"' locally to fix"
+              status=1
+            fi
+          done < <(find blueprint/src -name '*.tex' -not -path '*/Packages/*')
+          exit $status
+
       - name: Check paper-gap references resolve
         run: texra-blueprint paper-gaps check
 
@@ -110,8 +106,11 @@ jobs:
           # the label checks below.
           texra-blueprint web 2>&1 | tee "$tmp_output_file"
 
+          # Pull requests no longer build the web pages, so this is where an
+          # unresolved label fails.
           if grep -q "^ERROR:" "$tmp_output_file"; then
-            echo "::warning::Blueprint has unresolved labels (see ERROR lines above)"
+            echo "::error::Blueprint has unresolved labels (see ERROR lines above)"
+            exit 1
           fi
           if grep -q "WARNING: File not found:" "$tmp_output_file"; then
             echo "::error::Blueprint has missing files (see WARNING lines above)"
@@ -148,7 +147,10 @@ jobs:
           source: home_page
           destination: site-blueprint/homepage
 
+      # deploy-pages.yml fetches the newest artifact of each name, so only
+      # main may publish site components.
       - name: Upload blueprint component
+        if: github.ref == 'refs/heads/main'
         uses: actions/upload-artifact@v4
         with:
           name: site-blueprint
@@ -156,6 +158,7 @@ jobs:
           retention-days: 30
 
       - name: Upload badges component
+        if: github.ref == 'refs/heads/main'
         uses: actions/upload-artifact@v4
         with:
           name: site-badges
@@ -165,6 +168,7 @@ jobs:
   deploy:
     name: Deploy Pages site
     needs: blueprint
+    if: github.ref == 'refs/heads/main'
     uses: ./.github/workflows/deploy-pages.yml
     permissions:
       contents: read

@@ -164,6 +164,26 @@ class SelectTest(unittest.TestCase):
         _, _, tests = self.select(None)
         self.assertEqual(len(tests), 5)
 
+    def test_sources_only_skips_every_test(self) -> None:
+        self.change("QICLean/Core.lean", "import Mathlib\n-- edit\n")
+        checked: list[list[str]] = []
+
+        def record(paths, overlay, jobs, timeout):
+            checked.append(list(paths))
+            return []
+
+        import os
+        from unittest import mock
+        cwd = Path.cwd()
+        try:
+            with mock.patch.object(ci, "run_batch", record):
+                code = ci.main(["strict", "--sources-only", "--base", self.base,
+                                "--root", str(self.root)])
+        finally:
+            os.chdir(cwd)
+        self.assertEqual(code, 0)
+        self.assertEqual([p for batch in checked for p in batch], ["QICLean/Core.lean"])
+
     def test_levels_respect_imports(self) -> None:
         _, _, tests = self.select(None)
         files = ci.lean_files(self.root)

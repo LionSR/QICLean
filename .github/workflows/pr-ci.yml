@@ -1,69 +1,13 @@
 name: PR CI
 
-# The pull-request pipeline: Lean build + style lint, blueprint lint and
-# Lean-blueprint sync, and the Lean module-policy guards. Adapted from
-# TNLean's pr-ci.yml: keeps the Lean build/lint/blueprint jobs and the
-# module-policy guards. The existing blueprint job also renders and audits
-# the pinned tenkz package; TNLean's package/corpus/RMP jobs stay upstream.
-#
-# One workflow means one completion event for the auto-fix dispatcher and
-# per-job change gating: Lean-only changes skip the TeX pipeline, while
-# blueprint changes also run the Lean build for compiled declaration checking.
+# The pull-request pipeline, kept light: every push to a pull request
+# compiles the Lean modules it changed (within a time budget), runs the style
+# linters and the source-level policy and blueprint checks, and nothing else.
+# The full library build, the test files, the compiled declaration check and
+# the blueprint web and PDF builds run once a night in nightly.yml, and
+# nightly-fix.yml repairs what they find. Adapted from TNLean's pr-ci.yml.
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - '**.lean'
-      - 'lakefile.*'
-      - 'lean-toolchain'
-      - 'lake-manifest.json'
-      - 'scripts/LintStyle.lean'
-      - 'scripts/nolints-style.txt'
-      - 'scripts/check_numbered_lean_files.py'
-      - 'scripts/check_oversized_lean_files.py'
-      - 'scripts/lean_import_syntax.py'
-      - 'scripts/test_lean_file_policies.py'
-      - 'scripts/check_import_layers.py'
-      - 'scripts/library_sublayers.json'
-      - 'scripts/check_pass_through_declarations.py'
-      - 'scripts/test_architecture_policies.py'
-      - 'scripts/test_issue_automation.cjs'
-      - '.github/workflows/issue-automation.yml'
-      - 'scripts/lake_build_hotspots.py'
-      - 'scripts/test_lake_build_hotspots.py'
-      - 'scripts/seed_lake_build.sh'
-      - 'scripts/test_seed_lake_build.sh'
-      - 'scripts/ci_lean_checks.py'
-      - 'scripts/test_ci_lean_checks.py'
-      - 'scripts/generate_import_aggregators.py'
-      - 'scripts/test_generate_import_aggregators.py'
-      - 'docs/ci-automation.md'
-      - 'docs/CONTRIBUTING.md'
-      - '.github/workflows/pr-ci.yml'
-      - '.github/workflows/blueprint.yml'
-      - '.github/workflows/docgen.yml'
-      - 'blueprint/src/**'
-      - 'tenkz.toml'
-      - 'scripts/fetch_tenkz.py'
-      - 'scripts/tenkz_paths.py'
-      - 'scripts/tenkz_blueprint_sweep.py'
-      - 'scripts/test_tenkz_blueprint_sweep.py'
-      - 'scripts/test_tenkz_pic.py'
-      - 'blueprint/.chktexrc'
-      - 'blueprint/latexindent.yaml'
-      - 'scripts/blueprint_lean_sync.py'
-      - 'scripts/test_blueprint_lean_sync.py'
-      - 'scripts/test_blueprint_web_render.py'
-      - 'scripts/check_reader_facing_prose.py'
-      - 'docs/paper-gaps/**'
-      - 'texra-blueprint.toml'
-      # Trees the paper-gap reference check scans (texra-blueprint
-      # paper-gaps check); without these the check never runs
-      # on merge pushes that only touch a scanned file.
-      - 'docs/**/*.md'
-      - 'LICENSE'
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
@@ -119,24 +63,17 @@ on:
       - 'LICENSE'
   workflow_dispatch:
 
-# A newer push to a pull request cancels the superseded run. A running main
-# build is never cancelled, so it finishes and saves its build cache; only
-# the newest pending main run is kept.
+# A newer push to a pull request cancels the superseded run.
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+  cancel-in-progress: true
 
-# Build-cache policy: the cache is saved only from main and restored
-# everywhere. Per-PR caches saved on every run evict a shared repository
-# cache budget within minutes, so main's entry never survives — this is the
-# same lesson TNLean's pr-ci.yml documents and this file inherits verbatim.
-# Mathlib and its dependencies are intentionally excluded from the cache:
-# `lake exe cache get` (run inside lean-action) restores them faster than a
-# GitHub cache of that size could.
-#
-# QICLean-specific: TNLean depends on this repository's build output, so a
-# release archive (`lake upload` on tagged commits) is the primary way
-# TNLean avoids recompiling QICLean from source; see docs/UPGRADE_RUNBOOK.md.
+# Build-cache policy: the cache is saved only by the nightly build of main
+# (nightly.yml) and restored everywhere. Per-PR caches saved on every run
+# evict a shared repository cache budget within minutes, so main's entry
+# never survives. Mathlib and its dependencies are intentionally excluded
+# from the cache: `lake exe cache get` (run inside lean-action) restores them
+# faster than a GitHub cache of that size could.
 env:
   BUILD_CACHE_PATHS: |
     .lake/build
@@ -144,7 +81,7 @@ env:
     .lake/packages/checkdecls/.lake/build
 
 jobs:
-  # Per-job change gating. Push and dispatch runs skip this and run every job.
+  # Per-job change gating. Dispatch runs skip this and run every job.
   changes:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
@@ -155,7 +92,6 @@ jobs:
       module_policy: ${{ steps.filter.outputs.module_policy }}
       blueprint: ${{ steps.filter.outputs.blueprint }}
       paper_gaps: ${{ steps.filter.outputs.paper_gaps }}
-      paper_gap_pdfs: ${{ steps.filter.outputs.paper_gap_pdfs }}
     steps:
       - uses: dorny/paths-filter@v3
         id: filter
@@ -194,7 +130,7 @@ jobs:
               - 'docs/CONTRIBUTING.md'
             blueprint:
               - '.github/workflows/pr-ci.yml'
-              # A toolchain/dependency upgrade must recheck compiled declarations and renders.
+              # A toolchain/dependency upgrade must recheck the blueprint declaration tags.
               - 'lean-toolchain'
               - 'lakefile.*'
               - 'lake-manifest.json'
@@ -214,14 +150,6 @@ jobs:
               - 'scripts/blueprint_lean_sync.py'
               - 'scripts/test_blueprint_lean_sync.py'
               - 'scripts/test_blueprint_web_render.py'
-            # PDF compilation is narrower than reference checking: ordinary
-            # Lean and Markdown edits must not install the TeX stack.
-            paper_gap_pdfs:
-              - 'docs/paper-gaps/**/*.tex'
-              - 'docs/paper-gaps/**/*.bib'
-              - 'texra-blueprint.toml'
-              - '.github/workflows/pr-ci.yml'
-              - '.github/workflows/blueprint.yml'
             # Everything the paper-gap reference check reads: the notes,
             # the trees it scans for references, and its configuration.
             paper_gaps:
@@ -236,16 +164,19 @@ jobs:
     if: |
       !cancelled() && (
         github.event_name != 'pull_request' ||
-        needs.changes.outputs.lean == 'true' ||
-        needs.changes.outputs.blueprint == 'true'
+        needs.changes.outputs.lean == 'true'
       )
     runs-on: ubuntu-latest
+    # The early build stops itself at its budget; this bound only catches a
+    # hung setup.
+    timeout-minutes: 60
 
     steps:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
+      # Read only: the nightly build of main saves this cache (nightly.yml).
       - name: Restore Lean build cache
         uses: actions/cache/restore@v4
         with:
@@ -263,81 +194,17 @@ jobs:
       - name: Require prebuilt Mathlib artifacts
         run: test -f .lake/packages/mathlib/.lake/build/lib/lean/Mathlib.olean
 
-      # Toolchain/Mathlib-revision lockstep guard: fails clean here instead
-      # of a confusing kernel error downstream in TNLean. See
-      # docs/UPGRADE_RUNBOOK.md §3. QICLean has no upstream dependency to
-      # check against (it is the leaf), so this step is a no-op placeholder
-      # documenting the invariant this repository must keep true for TNLean;
-      # TNLean's own pr-ci.yml carries the real comparison step.
-
-      # Keep the small RC-migration regressions independently observable before
-      # the full build reaches unrelated dependencies. This is additive: the
-      # root build and complete strict suite below remain mandatory.
-      - name: Check focused Mathlib migration regressions strictly
-        timeout-minutes: 30
-        run: |
-          set -eo pipefail
-          lake --fail-fast build \
-            QICLean.Algebra.Unitary.MatrixUnitaryBetween \
-            QICLean.Analysis.Optimization.ConicProgram \
-            QICLean.Analysis.CyclicInequality.Recursion \
-            QICLean.Analysis.Optimization.HermitianMatrixCone \
-            QICLean.Analysis.Order.LowEnergyPerturbation \
-            QICLean.Spectral.Radius.PowerDecay \
-            QICLean.Channel.Dilation.OrderedCP \
-            QICLean.Channel.Peripheral.Asymptotic.RecurrentInverse \
-            QICLean.Channel.Semigroup.Basic \
-            QICLean.Channel.Semigroup.LindbladForm.TraceBridge \
-            QICLean.Channel.Wigner.Rigidity \
-            QICLean.Entropy.Conditional.DoubleCurve \
-            QICLean.Probability.Gaussian.GaussianContraction \
-            QICLean.Probability.Gaussian.ProductSource \
-            QICLean.Probability.Gaussian.ProductSourceTransport \
-            QICLean.Probability.Gaussian.SchmidtSource \
-            QICLean.ManyBody.Replica.Symbol.CoherentMeasure
-          python3 - <<'PY'
-          import sys
-          sys.path.insert(0, "scripts")
-          from ci_lean_checks import run_batch
-          paths = [
-              "QICLean/Algebra/Unitary/MatrixUnitaryBetween.lean",
-              "QICLean/Analysis/Optimization/ConicProgram.lean",
-              "QICLean/Analysis/CyclicInequality/Recursion.lean",
-              "QICLean/Analysis/Optimization/HermitianMatrixCone.lean",
-              "QICLean/Analysis/Order/LowEnergyPerturbation.lean",
-              "QICLean/Spectral/Radius/PowerDecay.lean",
-              "QICLean/Channel/Dilation/OrderedCP.lean",
-              "QICLean/Channel/Peripheral/Asymptotic/RecurrentInverse.lean",
-              "QICLean/Channel/Semigroup/Basic.lean",
-              "QICLean/Channel/Semigroup/LindbladForm/TraceBridge.lean",
-              "QICLean/Channel/Wigner/Rigidity.lean",
-              "QICLean/Entropy/Conditional/DoubleCurve.lean",
-              "QICLean/Probability/Gaussian/GaussianContraction.lean",
-              "QICLean/Probability/Gaussian/ProductSource.lean",
-              "QICLean/Probability/Gaussian/ProductSourceTransport.lean",
-              "QICLean/Probability/Gaussian/SchmidtSource.lean",
-              "QICLean/ManyBody/Replica/Symbol/CoherentMeasure.lean",
-              "QICLeanTest/Entropy/Conditional/DoubleCurveInstances.lean",
-              "QICLeanTest/Probability/Gaussian/GaussianContraction.lean",
-              "QICLeanTest/GaussianProductSourceTransport.lean",
-              "QICLeanTest/Mathlib436Replacement.lean",
-              "QICLeanTest/Probability/Gaussian/SchmidtSource.lean",
-              "QICLeanTest/SemigroupNormable.lean",
-          ]
-          failed = run_batch(paths, None, jobs=3, timeout=240)
-          if failed:
-              print("Focused migration checks failed:", *failed, sep="\n  ")
-              sys.exit(1)
-          print("All focused migration checks passed.")
-          PY
-
-      # Build the changed production modules before the full library so a
-      # failure surfaces early. The build is a shortcut: past its budget it
-      # stops with a warning and the root build continues. Selection:
-      # scripts/ci_lean_checks.py (mirrors TNLean#9119).
+      # Build the changed production modules, logging the timings that the
+      # compilation-time gate below reads. Past its 15-minute budget (a cold
+      # cache after a pin change, or a change near the bottom of the import
+      # graph) the build stops with a warning and the nightly build covers
+      # the rest. Modules that import the changed ones are not rebuilt here
+      # at all: the nightly root build is their check. Selection:
+      # scripts/ci_lean_checks.py.
       - name: Build changed Lean modules early
+        id: early
         if: github.event_name == 'pull_request'
-        timeout-minutes: 30
+        timeout-minutes: 20
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
@@ -345,34 +212,27 @@ jobs:
           if ! git cat-file -e "$BASE_SHA^{commit}" 2>/dev/null; then
             git fetch --no-tags origin "$BASE_SHA" || BASE_SHA=""
           fi
-          python3 scripts/ci_lean_checks.py early --budget 1200 --log "$RUNNER_TEMP/lake-build.log"
-
-      - name: Build Lean project and capture timings
-        run: |
-          set -eo pipefail
-          {
-            lake build
-            lake build lint_style
-          } 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
-
-      # Elaborate changed production files and every affected test file
-      # (QICLeanTest/ and scripts/Tests/) with warnings as errors. A test is
-      # affected when it changed or its import closure contains a changed
-      # module; every test runs on manual dispatch and when a dependency pin,
-      # the toolchain, this workflow or the selection script changes. New
-      # modules and tests need no workflow edit. Selection:
-      # scripts/ci_lean_checks.py.
-      - name: Check changed Lean files and affected tests strictly
-        timeout-minutes: 60
-        env:
-          BASE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
-        run: |
-          set -eo pipefail
-          case "$BASE_SHA" in 0000000000000000000000000000000000000000) BASE_SHA="" ;; esac
-          if [ -n "$BASE_SHA" ] && ! git cat-file -e "$BASE_SHA^{commit}" 2>/dev/null; then
-            git fetch --no-tags origin "$BASE_SHA" || BASE_SHA=""
+          python3 scripts/ci_lean_checks.py early --budget 900 --log "$RUNNER_TEMP/lake-build.log" \
+            | tee "$RUNNER_TEMP/early-build.out"
+          if grep -q '^::warning::Early build stopped' "$RUNNER_TEMP/early-build.out"; then
+            echo "complete=false" >> "$GITHUB_OUTPUT"
           fi
-          python3 scripts/ci_lean_checks.py strict --jobs 3
+
+      # Elaborate the changed production files with warnings as errors. The
+      # early build has compiled their imports; when it stopped at its budget
+      # this step is skipped and the nightly run checks the files. The test
+      # files (QICLeanTest/ and scripts/Tests/) import the rest of the library
+      # and are checked by the nightly run. Selection:
+      # scripts/ci_lean_checks.py.
+      - name: Check changed Lean files strictly
+        if: github.event_name == 'pull_request' && steps.early.outputs.complete != 'false'
+        timeout-minutes: 30
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -eo pipefail
+          git cat-file -e "$BASE_SHA^{commit}" 2>/dev/null || git fetch --no-tags origin "$BASE_SHA"
+          python3 scripts/ci_lean_checks.py strict --sources-only --jobs 3
 
       - name: Check changed Lean compilation times
         id: compilation-time
@@ -385,6 +245,8 @@ jobs:
           # The default shell runs with -e: capture failures so this step
           # always succeeds and the enforcement step below reports them.
           timing_status=0
+          # No changed production module means no build log yet.
+          touch "$RUNNER_TEMP/lake-build.log"
           git fetch --no-tags origin \
             "+refs/heads/$BASE_REF_NAME:refs/remotes/origin/$BASE_REF_NAME" \
             || timing_status=$?
@@ -405,21 +267,14 @@ jobs:
             *) echo "result=error" >> "$GITHUB_OUTPUT" ;;
           esac
 
+      # The text-based linter reads sources only, so it needs its own small
+      # executable and no build of the library.
       - name: Run text-based style linter
-        run: lake exe lint_style --github
+        run: |
+          lake build lint_style
+          lake exe lint_style --github
 
-      # `checkdecls` imports QICLean modules to resolve every tagged
-      # declaration, so it must run after the project build rather than in
-      # a TeX-only job.
-      - name: Generate Blueprint Lean declaration list
-        run: python3 scripts/blueprint_lean_sync.py --root . --update-lean-decls
-
-      - name: Check Blueprint Lean declarations
-        timeout-minutes: 10
-        run: lake exe checkdecls blueprint/lean_decls
-
-      # Enforced last, so a timing failure still reports the lint and
-      # declaration checks above. Formerly a separate job that spent a
+      # Enforced last, so a timing failure still reports the lint above. Formerly a separate job that spent a
       # runner on reading this step's output.
       - name: Enforce changed-module timing limit
         if: github.event_name == 'pull_request'
@@ -437,13 +292,6 @@ jobs:
               exit 1
               ;;
           esac
-
-      - name: Save Lean build cache (main only)
-        if: success() && github.ref == 'refs/heads/main'
-        uses: actions/cache/save@v4
-        with:
-          path: ${{ env.BUILD_CACHE_PATHS }}
-          key: qiclean-build-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}
 
   file-length:
     name: Check Lean module policies
@@ -550,17 +398,17 @@ jobs:
           --base-ref "${{ github.event.before }}"
 
   blueprint:
-    name: Check blueprint compiles without errors
+    # Source-level checks only: prose patterns, LaTeX lint, the paper-gap
+    # references, and the agreement of the blueprint's declaration tags with
+    # the Lean sources. Nothing here compiles TeX; the web and PDF builds, the
+    # picture pipeline and the page tests run in nightly.yml.
+    name: Check blueprint sources
     needs: changes
     if: "!cancelled() && (github.event_name != 'pull_request' || needs.changes.result == 'success')"
-    # Pinned to 24.04: Playwright 1.55 has no Chromium for 26.04, and dvisvgm there drops TikZ
-    # ink. Return to ubuntu-latest once Playwright and the TeX toolchain support 26.04.
     runs-on: ubuntu-24.04
+    timeout-minutes: 20
     env:
       TEX_CHANGED: ${{ github.event_name != 'pull_request' || needs.changes.outputs.blueprint == 'true' }}
-      # Main publication already compiles these PDFs; add the same gate to
-      # relevant pull requests without expanding the full blueprint build.
-      PAPER_GAP_PDFS_CHANGED: ${{ github.event_name == 'pull_request' && needs.changes.outputs.paper_gap_pdfs == 'true' }}
       # The paper-gap reference check also runs when only the notes, the
       # Lean sources, the Markdown docs, or the configuration changed.
       PAPER_GAPS_CHANGED: ${{ github.event_name != 'pull_request' || needs.changes.outputs.paper_gaps == 'true' }}
@@ -600,13 +448,13 @@ jobs:
           fi
           echo "has_changed_lean=$has_changed_lean" >> "$GITHUB_OUTPUT"
 
-      - name: Install blueprint system dependencies
-        if: env.TEX_CHANGED == 'true' || env.PAPER_GAP_PDFS_CHANGED == 'true'
-        uses: texra-ai/lean-env-action/blueprint-system-deps@v1
-        with:
-          # Match publication's dsfont package set only for paper-gap PDFs.
-          cache-suffix: ${{ env.PAPER_GAP_PDFS_CHANGED == 'true' && 'web-v2' || 'web-v1' }}
-          extra-packages: ${{ env.PAPER_GAP_PDFS_CHANGED == 'true' && 'texlive-fonts-extra' || '' }}
+      # chktex alone, not the TeX distribution the nightly builds install.
+      - name: Install chktex
+        if: env.TEX_CHANGED == 'true'
+        timeout-minutes: 5
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends chktex
 
       # Also installed for paper-gap-only changes: the reference check
       # below runs the texra-blueprint CLI from this step's pip install.
@@ -616,17 +464,9 @@ jobs:
         with:
           extra-pip-packages: 'git+https://github.com/LionSR/texra-blueprint@v0.3.8'
 
-      - name: Fetch pinned tenkz package
-        if: env.TEX_CHANGED == 'true'
-        run: python3 scripts/fetch_tenkz.py
-
       - name: Check paper-gap references resolve
         if: env.TEX_CHANGED == 'true' || env.PAPER_GAPS_CHANGED == 'true'
         run: texra-blueprint paper-gaps check
-
-      - name: Build paper-gap PDFs
-        if: env.PAPER_GAP_PDFS_CHANGED == 'true'
-        run: texra-blueprint --root . paper-gaps build
 
       - name: Lint LaTeX (chktex)
         if: env.TEX_CHANGED == 'true'
@@ -634,78 +474,6 @@ jobs:
         run: |
           find . -name '*.tex' -not -path '*/Packages/*' -print0 \
             | xargs -0 -r chktex -q -l ../.chktexrc
-
-      - name: Check LaTeX formatting (latexindent)
-        if: env.TEX_CHANGED == 'true'
-        continue-on-error: true
-        timeout-minutes: 5
-        run: |
-          set -e
-          status=0
-          while IFS= read -r f; do
-            if ! latexindent -k -s -l blueprint/latexindent.yaml "$f" > /dev/null; then
-              echo "::warning file=$f::not formatted to blueprint/latexindent.yaml; run 'latexindent -l blueprint/latexindent.yaml -w -s \"$f\"' locally to fix"
-              status=1
-            fi
-          done < <(find blueprint/src -name '*.tex' -not -path '*/Packages/*')
-          exit $status
-
-      - name: Build blueprint bibliography
-        if: env.TEX_CHANGED == 'true'
-        run: texra-blueprint bbl
-
-      - name: Check tenkz picture pipeline
-        if: env.TEX_CHANGED == 'true'
-        run: |
-          python3 scripts/test_tenkz_pic.py
-          python3 scripts/test_tenkz_blueprint_sweep.py
-
-      - name: Build blueprint PDF
-        if: env.TEX_CHANGED == 'true'
-        run: leanblueprint pdf
-
-      # `leanblueprint pdf` copies print/print.bbl over src/web.bbl. The print
-      # build uses the `plain` style, whose `\bibitem{key}` carries no natbib
-      # optional label, and plasTeX would render every citation as "??".
-      - name: Regenerate the web bibliography
-        if: env.TEX_CHANGED == 'true'
-        run: texra-blueprint bbl
-
-      - name: Run texra-blueprint web and check for errors
-        if: env.TEX_CHANGED == 'true'
-        working-directory: blueprint
-        run: |
-          set -o pipefail
-          tmp_output_file="$(mktemp)"
-          # texra-blueprint web wraps leanblueprint web and fails when the
-          # renderer meets a command it does not know; the log is kept for
-          # the label checks below.
-          texra-blueprint web 2>&1 | tee "$tmp_output_file"
-          if grep -q "^ERROR:" "$tmp_output_file"; then
-            echo "::error::Blueprint has unresolved labels (see ERROR lines above)"
-            exit 1
-          fi
-          if grep -q "WARNING: File not found:" "$tmp_output_file"; then
-            echo "::warning::Blueprint has missing file references (see WARNING lines above)"
-          fi
-          if grep -R "tenkz SVG unavailable" web --include='*.html'; then
-            echo "::error::Blueprint contains unrendered tenkz SVG placeholders"
-            exit 1
-          fi
-
-      - name: Sweep tenkz blueprint event streams
-        if: env.TEX_CHANGED == 'true'
-        run: python3 scripts/tenkz_blueprint_sweep.py --allow-empty
-
-      # A zero exit status says the build ran, not that the pages read. This
-      # opens every generated page (via playwright/chromium) and measures
-      # what a reader would meet.
-      - name: Test generated blueprint pages
-        if: env.TEX_CHANGED == 'true'
-        run: |
-          python3 -m pip install --disable-pip-version-check playwright==1.55.0
-          python3 -m playwright install --with-deps chromium
-          python3 scripts/test_blueprint_web_render.py --web-root blueprint/web
 
       - name: Test Blueprint declaration scanner
         run: python3 scripts/test_blueprint_lean_sync.py

@@ -173,16 +173,33 @@ shortened module path with the `QICLean/` prefix dropped — for example
 
 **What CI runs**, under `.github/workflows/`:
 
-- `pr-ci.yml` — the main pipeline on pushes and pull requests: builds the
-  library and runs the text-based style linter, elaborates the changed Lean
-  files and every affected test strictly (selected by
+- `pr-ci.yml` — the light pipeline on every pull request: builds the Lean
+  modules the pull request changes (within a 15-minute budget) and elaborates
+  them strictly, runs the text-based style linter, checks that their
+  compilation times stay under the limit, enforces the module-length,
+  numbered-sequel-file and import-layer policies, checks that the generated
+  `QICLean.lean` aggregator is complete, and lints the blueprint sources
+  (prose patterns, `chktex`, paper-gap references, declaration tags). It does
+  not build the modules that import the changed ones, and it compiles no TeX.
+- `nightly.yml` — the integration pipeline, once a night on `main`: the root
+  `lake build`, every affected test file (selected by
   `scripts/ci_lean_checks.py`, so new modules and tests need no workflow
-  edit), checks that Lean compilation times for changed modules stay under
-  their limit, enforces module-length and numbered-sequel-file policies,
-  checks that the generated `QICLean.lean` aggregator is complete, and
-  compiles the blueprint (including its reader-facing prose checks).
-- `blueprint.yml` — compiles and deploys the blueprint (web and PDF) on
-  pushes to `main` that touch Lean or blueprint files.
+  edit), the compiled blueprint declaration check, the whole-repository
+  policies, and the blueprint build. A scheduled run on a commit that already
+  passed is skipped. Its build of `main` is the only writer of the Lean build
+  cache that pull requests restore.
+- `nightly-fix.yml` — the agent loop behind the nightly run. When the run
+  fails on `main` it files (or updates) an issue labelled `nightly-failure`,
+  lets the agent repair the failure on the `nightly-fix` branch, opens a pull
+  request, and dispatches `nightly.yml` on that branch; a failed verification
+  starts another round (five at most), a passed one is reported on the pull
+  request, which a person then reviews and merges. The issue closes when the
+  nightly run passes on `main` again. Setting the repository variable
+  `CLAUDE_AUTO_FIX_ENABLED` to `false` stops the agent; the issue is still
+  filed.
+- `blueprint.yml` — compiles the blueprint (web and PDF) and deploys it from
+  `main`; called by `nightly.yml`, or dispatched by hand for an immediate
+  publication.
 - `docgen.yml` — a weekly (and manually triggerable) full API-documentation
   build, which also refreshes the README status badges (sorry/axiom counts,
   Lean/Mathlib versions, and blueprint `\leanok` coverage).
