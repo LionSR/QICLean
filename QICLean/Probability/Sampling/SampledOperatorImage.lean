@@ -155,7 +155,6 @@ end SampledWordImageBounds
 
 section
 
-open ManyBody (interval)
 
 open scoped TensorProduct
 
