@@ -209,7 +209,6 @@ partial traces.
 \begin{theorem}[Spectral bound for a vectorized unital Kraus map]
     \label{thm:unital_kraus_frobenius_spectral_radius}
     \lean{IsKrausCP.spectralRadius_frobeniusEuclideanMap_le_one_of_map_one_eq_one}
-    \lean{spectralRadius_le_one_of_forall_eigenvalue_norm_le_one}
     \leanok
     \uses{thm:unital_kraus_eigenvalue_bound,
         def:frobenius_superoperator_transport}
@@ -221,7 +220,7 @@ partial traces.
 \begin{proof}
     \leanok
     \uses{thm:unital_kraus_eigenvalue_bound,
-        def:frobenius_superoperator_transport}
+        def:frobenius_superoperator_transport, thm:kraus_tp_spectral_radius_bound}
     A unital completely positive map is contractive in the matrix operator
     norm, so every eigenvalue has modulus at most one.  The spectral radius
     is the supremum of the eigenvalue moduli, so it is at most one as well,
@@ -935,14 +934,11 @@ extends to isometric mixing between different Kraus index spaces.
 
 \begin{remark}[Choi rank and minimal Kraus cardinality]
     \label{rem:choi_rank_eq_min_kraus_cardinality}
-    \lean{Channel.HasKrausCard, Channel.HasKrausRankLE, Channel.choiRank,
-        Channel.choiRank_le_of_hasKrausCard,
-        Channel.choiRank_le_of_hasKrausRankLE,
-        Channel.hasKrausCard_choiRank_of_cp,
+    \lean{Channel.choiRank_le_of_hasKrausRankLE,
         Channel.hasKrausRankLE_choiRank_of_cp,
         Channel.hasKrausRankLE_choiRank_of_cptp}
     \leanok
-    \uses{def:choi_matrix, def:cp_map}
+    \uses{def:choi_matrix, def:cp_map, def:kraus_rank_rect}
     If a completely positive map admits a Kraus representation with exactly $r$
     operators, then its Choi matrix is a sum of $r$ rank-one outer products.
     Consequently, $\rank(\tau_E) \le r$.
@@ -954,6 +950,7 @@ extends to isometric mixing between different Kraus index spaces.
 
 \begin{proof}
     \leanok
+    \uses{thm:kraus_rect_rank_minimal}
     For the forward implication, expand the Choi matrix using the Kraus formula
     and write $\tau_E = \sum_j v_j v_j^\dagger$ with one vector $v_j$ for each
     Kraus operator. The column space of this sum lies in the span of the $r$

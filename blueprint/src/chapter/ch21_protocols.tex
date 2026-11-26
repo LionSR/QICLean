@@ -185,7 +185,7 @@ measurement of an instrument followed by channels chosen by its outcome is a cha
 
 \begin{lemma}[Onsite channels]
     \label{lem:protocols_onsite}
-    \lean{Matrix.sum_piKronecker, ManyBody.map_prodFamily_piKronecker,
+    \lean{ManyBody.map_prodFamily_piKronecker,
         QuantumCircuit.Circuit.map_ofLayer_ofOnsite,
         QuantumCircuit.Circuit.map_ofLayer_ofOnsite_piKronecker,
         QuantumCircuit.Layer.lightCone_ofOnsite, QuantumCircuit.Layer.forall_ofOnsite}
@@ -199,7 +199,7 @@ measurement of an instrument followed by channels chosen by its outcome is a cha
     disjoint regions~\cite{Piroli2021LOCC}. It has a local property when every $K^s$ has it.
 \end{lemma}
 \begin{proof}\leanok
-    \uses{lem:circuits_layer_dual_mul}
+    \uses{lem:circuits_layer_dual_mul, lem:elementary_finite_tensor_product_algebra}
     A sum over the choices $j$ of an index at every site of $\bigotimes_vf_v(j_v)$ is
     $\bigotimes_v\sum_if_v(i)$, entrywise the expansion of a product of sums; apply it to
     $f_v(i)=K^v_i\sigma_vK_i^{v\dagger}$, since product operators multiply sitewise. The layer

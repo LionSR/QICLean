@@ -29,8 +29,7 @@ The scale and Taylor order remain independent.
 
 \begin{lemma}[Scalar residual comparison at an arbitrary hard cutoff]
     \label{lem:soft_hard_scalar_residual}
-    \lean{Real.monotoneOn_softTruncation,
-        Real.softTruncation_remainder_le_hard_remainder}
+    \lean{Real.softTruncation_remainder_le_hard_remainder}
     \leanok
     Let $t>0$ and $m\geq1$. The function $h_{m,t}$ is increasing on
     $[0,\infty)$. For $T,x\geq0$, set
@@ -44,6 +43,7 @@ The scale and Taylor order remain independent.
     \end{align}
 \end{lemma}
 \begin{proof}\leanok
+    \uses{thm:scalar_soft_truncation_monotone}
     Every term of the finite defining series is increasing for $x\geq0$.
     The soft truncation lies below its input. If $x\leq T$, its existing
     polynomial remainder bound is at most $E_{m,t}(T)$. If $x\geq T$,

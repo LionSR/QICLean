@@ -227,8 +227,7 @@ by one measurement, and bounds the trace distance below by the overlap.
 
 \begin{theorem}[Powers and traces of finite tensor products]
     \label{thm:testing_tensor_calculus}
-    \lean{Matrix.piKronecker_mul, Matrix.trace_piKronecker,
-        Matrix.piKronecker_apply, Matrix.piKronecker_posSemidef,
+    \lean{Matrix.piKronecker_posSemidef,
         Matrix.piKronecker_submatrix_cons, Matrix.rpow_piKronecker,
         Matrix.PosSemidef.smul_rpow, Matrix.PosSemidef.rpow_submatrix_equiv}
     \leanok
@@ -250,7 +249,7 @@ by one measurement, and bounds the trace distance below by the overlap.
 \end{theorem}
 \begin{proof}
     \leanok
-    \uses{thm:rpow_kronecker_possemidef}
+    \uses{thm:rpow_kronecker_possemidef, lem:elementary_finite_tensor_product_algebra}
     The entry formula $(\bigotimes_i A_i)_{x,y}=\prod_i(A_i)_{x_i,y_i}$
     gives multiplication and trace by distributing finite sums over products.
     Induct on the number of factors for powers. After separating the first

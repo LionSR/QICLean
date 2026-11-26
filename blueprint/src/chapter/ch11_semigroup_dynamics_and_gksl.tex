@@ -214,7 +214,7 @@
     \label{thm:continuousDynSemigroup_eq_exp_ch12}
     \lean{continuousDynSemigroup_eq_exp,
         continuousDynSemigroup_exists_real_complex_extension,
-        complexExpSemigroupCLM, expSemigroupCLM_add,
+        complexExpSemigroupCLM,
         expSemigroupCLM_neg_mul, expSemigroupCLM_mul_neg,
         complexExpSemigroupCLM_add, complexExpSemigroupCLM_neg_mul,
         complexExpSemigroupCLM_mul_neg,
@@ -235,6 +235,7 @@
 
 \begin{proof}
     \leanok
+    \uses{thm:expSemigroupCLM_add_ch12}
     Since $T_0 = \Id$ and $T$ is continuous, the integral
     $M_\varepsilon = \int_0^\varepsilon T_s\,ds$ is invertible for small
     $\varepsilon > 0$.
