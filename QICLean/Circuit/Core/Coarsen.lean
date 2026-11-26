@@ -6,7 +6,7 @@ Authors: QICLean contributors
 import QICLean.Circuit.Core.LayerDual
 import QICLean.Circuit.Core.Parallel
 import QICLean.ManyBody.Sites.Block
-import QICLean.ManyBody.Sites.ProductFamily
+import QICLean.ManyBody.Sites.Product.ProductFamily
 
 /-!
 # Coarsening a layer along blocks of sites

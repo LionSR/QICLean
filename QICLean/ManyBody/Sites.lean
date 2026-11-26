@@ -14,6 +14,7 @@ import QICLean.ManyBody.Sites.Config
 import QICLean.ManyBody.Sites.ConfigurationMap
 import QICLean.ManyBody.Sites.Cut
 import QICLean.ManyBody.Sites.CutMatrix
+import QICLean.ManyBody.Sites.Dyadic
 import QICLean.ManyBody.Sites.GraphBall
 import QICLean.ManyBody.Sites.GraphBoundary
 import QICLean.ManyBody.Sites.Hierarchy
@@ -28,10 +29,7 @@ import QICLean.ManyBody.Sites.PlaceAlong
 import QICLean.ManyBody.Sites.PlaceAlongMonomial
 import QICLean.ManyBody.Sites.PlacedConfiguration
 import QICLean.ManyBody.Sites.Placement
-import QICLean.ManyBody.Sites.ProductFamily
-import QICLean.ManyBody.Sites.ProductForm
-import QICLean.ManyBody.Sites.ProductOperatorTrace
-import QICLean.ManyBody.Sites.ProductVector
+import QICLean.ManyBody.Sites.Product
 import QICLean.ManyBody.Sites.RegionExpectation
 import QICLean.ManyBody.Sites.RegionMatrix
 import QICLean.ManyBody.Sites.RegionState

@@ -6,7 +6,7 @@ Authors: QICLean contributors
 import QICLean.Circuit.Party.Syntax.Gates
 import QICLean.Circuit.Party.Syntax.Relabel
 import QICLean.Circuit.Party.Syntax.UsesOnly
-import QICLean.ManyBody.Sites.ProductVector
+import QICLean.ManyBody.Sites.Product.ProductVector
 
 /-!
 # Source-only words
