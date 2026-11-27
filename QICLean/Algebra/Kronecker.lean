@@ -23,3 +23,4 @@ import QICLean.Algebra.Kronecker.PiTensorProductPhase
 import QICLean.Algebra.Kronecker.SupportAlgebra
 import QICLean.Algebra.Kronecker.SupportAlgebraCommutant
 import QICLean.Algebra.Kronecker.TensorMap
+import QICLean.Algebra.Kronecker.Vectors
