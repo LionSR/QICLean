@@ -276,7 +276,7 @@ open scoped Matrix BigOperators
 
 namespace Kraus
 
-variable {ι : Type*} [Fintype ι] {D : ℕ}
+variable {ι : Type*} [Finite ι] {D : ℕ}
 
 private def evalWordMarkedLast (A B : ι → Matrix (Fin D) (Fin D) ℂ) :
     List ι → Matrix (Fin D) (Fin D) ℂ
@@ -284,7 +284,7 @@ private def evalWordMarkedLast (A B : ι → Matrix (Fin D) (Fin D) ℂ) :
   | [i] => B i
   | i :: j :: w => A i * evalWordMarkedLast A B (j :: w)
 
-omit [Fintype ι] in
+omit [Finite ι] in
 private theorem ofFn_ne_nil_of_pos {N : ℕ} (hN : 0 < N) (σ : Fin N → ι) :
     List.ofFn σ ≠ [] := by
   intro h
@@ -292,7 +292,7 @@ private theorem ofFn_ne_nil_of_pos {N : ℕ} (hN : 0 < N) (σ : Fin N → ι) :
   simp only [List.length_ofFn, List.length_nil] at this
   omega
 
-omit [Fintype ι] in
+omit [Finite ι] in
 private theorem mul_evalWord_eq_mul_evalWordMarkedLast
     (A B : ι → Matrix (Fin D) (Fin D) ℂ)
     (hcross : ∀ i j, B i * A j = A i * B j) :
@@ -319,6 +319,7 @@ private theorem exists_factor_of_cross_mul_eq_of_isInjective
     {A B : ι → Matrix (Fin D) (Fin D) ℂ} (hA : Kraus.IsInjective A)
     (hcross : ∀ i j, B i * A j = A i * B j) :
     ∃ C : Matrix (Fin D) (Fin D) ℂ, ∀ i, B i = A i * C := by
+  have := Fintype.ofFinite ι
   let C : Matrix (Fin D) (Fin D) ℂ :=
     ∑ j, Kraus.decompositionMap hA 1 j • B j
   refine ⟨C, fun i ↦ ?_⟩
@@ -341,6 +342,7 @@ private theorem exists_factor_of_cross_mul_eq_of_isNBlkInjective
     (hNpos : 0 < N) (hA : Kraus.IsNBlkInjective A N)
     (hcross : ∀ i j, B i * A j = A i * B j) :
     ∃ C : Matrix (Fin D) (Fin D) ℂ, ∀ i, B i = A i * C := by
+  have := Fintype.ofFinite ι
   let C : Matrix (Fin D) (Fin D) ℂ :=
     ∑ σ : Fin N → ι, Kraus.blockDecompositionMap hA 1 σ •
       evalWordMarkedLast A B (List.ofFn σ)
@@ -367,6 +369,7 @@ private theorem eq_smul_of_factor_of_cross_mul_eq
     (hfactor : ∃ C : Matrix (Fin D) (Fin D) ℂ, ∀ i, B i = A i * C)
     (hcross : ∀ i j, B i * A j = A i * B j) :
     ∃ δ : ℂ, ∀ i, B i = δ • A i := by
+  have := Fintype.ofFinite ι
   obtain ⟨C, hC⟩ := hfactor
   have hcomm : ∀ j, C * A j = A j * C := by
     intro j
@@ -430,6 +433,7 @@ theorem IsInjective.eq_smul_of_cross_mul_eq
     {A B : ι → Matrix (Fin D) (Fin D) ℂ} (hA : Kraus.IsInjective A)
     (hcross : ∀ i j, B i * A j = A i * B j) :
     ∃ δ : ℂ, ∀ i, B i = δ • A i := by
+  have := Fintype.ofFinite ι
   apply eq_smul_of_factor_of_cross_mul_eq
     ⟨1, by omega, Kraus.isNBlkInjective_one_of_isInjective hA⟩
     (exists_factor_of_cross_mul_eq_of_isInjective hA hcross) hcross
@@ -445,6 +449,7 @@ theorem IsNormal.eq_smul_of_cross_mul_eq
     {A B : ι → Matrix (Fin D) (Fin D) ℂ} (hA : Kraus.IsNormal A)
     (hcross : ∀ i j, B i * A j = A i * B j) :
     ∃ δ : ℂ, ∀ i, B i = δ • A i := by
+  have := Fintype.ofFinite ι
   obtain ⟨N, hNpos, hN⟩ := hA
   exact eq_smul_of_factor_of_cross_mul_eq ⟨N, hNpos, hN⟩
     (exists_factor_of_cross_mul_eq_of_isNBlkInjective hNpos hN hcross) hcross

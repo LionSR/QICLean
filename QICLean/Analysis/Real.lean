@@ -10,7 +10,6 @@ Authors: QICLean contributors
 
 import QICLean.Analysis.Real.BellOverlapLogBound
 import QICLean.Analysis.Real.BernsteinScalar
-import QICLean.Analysis.Real.BetaHalfLine
 import QICLean.Analysis.Real.CappedGeometricSum
 import QICLean.Analysis.Real.ChebyshevFilter
 import QICLean.Analysis.Real.ComplexSqrt
@@ -20,13 +19,10 @@ import QICLean.Analysis.Real.EnergyWeightedPowerDecay
 import QICLean.Analysis.Real.EulerAngles
 import QICLean.Analysis.Real.ExcitationSubsetCounts
 import QICLean.Analysis.Real.ExplicitThresholds
-import QICLean.Analysis.Real.ExponentialGeometricTailOrder
-import QICLean.Analysis.Real.ExponentialSumWindow
 import QICLean.Analysis.Real.FiniteExponentialRetainedMass
 import QICLean.Analysis.Real.GammaRatio
 import QICLean.Analysis.Real.GeometricOrderPolynomialBound
 import QICLean.Analysis.Real.HarmonicWeights
-import QICLean.Analysis.Real.IidTailThreshold
 import QICLean.Analysis.Real.InformationResetScalar
 import QICLean.Analysis.Real.IteratedPowerDepth
 import QICLean.Analysis.Real.LogClipping

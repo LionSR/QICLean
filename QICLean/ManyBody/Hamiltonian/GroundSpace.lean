@@ -41,6 +41,8 @@ Mathlib's `Matrix.IsHermitian.mulVec_eigenvectorBasis`.
 
 * `ManyBody.mem_groundSpace_iff_mulVec` — membership as an equation of coordinate vectors.
 * `ManyBody.isGapped_iff_eigenvalues` — for Hermitian `H`, the gap in terms of the eigenvalues.
+* `ManyBody.isGapped_iff_spectrum`, `Matrix.hasEigenvalue_toEuclideanLin_iff_mem_spectrum` — the
+  gap in terms of the spectrum.
 * `ManyBody.IsGapped.posSemidef_sub_smul_one` — a gapped Hermitian matrix with ground space the
   line through a unit vector `Ω` satisfies `H - E₀ I ≥ Δ (I - |Ω⟩⟨Ω|)`, for any `Δ`.
 * `ManyBody.mulVec_eq_of_groundSpace_eq_span` — a vector spanning the ground space is an
@@ -80,6 +82,13 @@ theorem Matrix.IsHermitian.hasEigenvalue_toEuclideanLin_iff {n : Type*} [Fintype
   rw [Module.End.hasEigenvalue_iff_mem_spectrum, Matrix.spectrum_toLpLin,
     hH.spectrum_eq_image_range]
   simp [eq_comm]
+
+/-- The eigenvalues of a matrix, as an operator on the Euclidean space, are the points of its
+spectrum. -/
+theorem Matrix.hasEigenvalue_toEuclideanLin_iff_mem_spectrum {n : Type*} [Fintype n]
+    [DecidableEq n] {H : Matrix n n ℂ} {μ : ℂ} :
+    Module.End.HasEigenvalue (toEuclideanLin H) μ ↔ μ ∈ spectrum ℂ H := by
+  rw [← Matrix.spectrum_toLpLin (p := 2), Module.End.hasEigenvalue_iff_mem_spectrum]
 
 open scoped MatrixOrder in
 /-- A Hermitian matrix dominates any lower bound of its eigenvalues: if `a ≤ λₖ` for every
@@ -122,6 +131,14 @@ eigenvalue is real and at least `E₀ + Δ`. For `0 < Δ` this makes `E₀` the 
 def IsGapped (H : Matrix n n ℂ) (E₀ Δ : ℝ) : Prop :=
   groundSpace H E₀ ≠ ⊥ ∧
     ∀ μ : ℂ, Module.End.HasEigenvalue (toEuclideanLin H) μ → μ = E₀ ∨ ((E₀ + Δ : ℝ) : ℂ) ≤ μ
+
+/-- **The gap in spectral form.** `H` is gapped at `E₀` with gap `Δ` exactly when its ground
+space at `E₀` is nonzero and every point of its spectrum other than `E₀` is real and at least
+`E₀ + Δ`. -/
+theorem isGapped_iff_spectrum {H : Matrix n n ℂ} {E₀ Δ : ℝ} :
+    IsGapped H E₀ Δ ↔ groundSpace H E₀ ≠ ⊥ ∧
+      ∀ μ ∈ spectrum ℂ H, μ = E₀ ∨ ((E₀ + Δ : ℝ) : ℂ) ≤ μ := by
+  simp only [IsGapped, Matrix.hasEigenvalue_toEuclideanLin_iff_mem_spectrum]
 
 /-- For a Hermitian matrix, the gap condition in terms of its eigenvalues. Without the first
 conjunct the second is only a spectral lower bound. -/

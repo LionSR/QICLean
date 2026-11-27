@@ -9,6 +9,7 @@ import Mathlib.LinearAlgebra.Matrix.Rank
 import Mathlib.Tactic.Ring
 import Mathlib.Analysis.InnerProductSpace.JointEigenspace
 import Mathlib.LinearAlgebra.Eigenspace.Minpoly
+import Mathlib.Analysis.CStarAlgebra.Matrix
 
 /-!
 # Spectral decomposition lemmas for complex matrices
@@ -32,6 +33,7 @@ matrix to outer-product sums over its spectral data.
   spectral decomposition into unit rank-one eigenprojectors.
 * `Matrix.exists_unitary_diagonal_of_commute`: simultaneous diagonalization of commuting Hermitian
   matrices.
+* `Matrix.IsHermitian.toEuclideanCLM_eigenvectorBasis`: hermitian eigenvectors in Euclidean space.
 
 ## Implementation notes
 
@@ -40,6 +42,8 @@ The compact rank indexing is adapted from `LionSR/TNLean`,
 `6c340a425319a5438853fca437da18cd0a22450a`, with an isometric matrix
 factorization in place of individual unit-vector identities.
 -/
+
+section MatrixSpectralDecomp
 
 section MatrixSpectralDecomp
 
@@ -370,3 +374,38 @@ theorem exists_unitary_diagonal_of_commute {A B : Matrix n n ℂ} (hA : A.IsHerm
 end Matrix
 
 end CommutingHermitian
+
+end MatrixSpectralDecomp
+
+section EuclideanEigenvectorBasis
+
+/-!
+## Hermitian eigenvectors in Euclidean space
+
+The finite-dimensional spectral theorem gives an orthonormal eigenbasis of
+a Hermitian matrix. Its eigenvector equation is stated here for the
+continuous linear action on Euclidean space. This is the Euclidean form of
+`Matrix.IsHermitian.mulVec_eigenvectorBasis` in Mathlib's
+`Analysis/Matrix/Spectrum.lean`; it supplies the spectral coordinates used
+in ALVV, arXiv:1602.08828v2, Lemma `lem:hard-trunc`, lines 955–968.
+-/
+
+namespace Matrix.IsHermitian
+
+/-- A Hermitian matrix acts diagonally on its chosen Euclidean eigenbasis.
+This is Mathlib's spectral-theorem identity
+`Matrix.IsHermitian.mulVec_eigenvectorBasis`, expressed as a continuous
+linear map on Euclidean space. It is used in the low-energy comparisons
+of ALVV, arXiv:1602.08828v2, Lemma `lem:hard-trunc`, lines 955–968. -/
+theorem toEuclideanCLM_eigenvectorBasis
+    {𝕜 n : Type*} [RCLike 𝕜] [Fintype n] [DecidableEq n]
+    {A : Matrix n n 𝕜} (hA : A.IsHermitian) (j : n) :
+    Matrix.toEuclideanCLM (𝕜 := 𝕜) (n := n) A (hA.eigenvectorBasis j) =
+      (hA.eigenvalues j : 𝕜) • hA.eigenvectorBasis j := by
+  apply WithLp.ofLp_injective 2
+  simpa only [Matrix.ofLp_toEuclideanCLM, WithLp.ofLp_smul,
+    RCLike.real_smul_eq_coe_smul (K := 𝕜)] using hA.mulVec_eigenvectorBasis j
+
+end Matrix.IsHermitian
+
+end EuclideanEigenvectorBasis

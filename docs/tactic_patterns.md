@@ -375,7 +375,7 @@ only after at least three genuine occurrences across two files.
   `List.prod_hom_rel`, the same rectangular associativity calculation, and
   `List.map_ofFn`.
 - **Result:** `Matrix.listProd_ofFn_intertwine` in
-  `QICLean/Algebra/Matrix/OrderedMatrixAction.lean`, over an arbitrary semiring
+  `QICLean/Algebra/Matrix/MatrixCyclicPathSum.lean`, over an arbitrary semiring
   and arbitrary finite row and column index types.
 - **Consumers:** `ReplicaSymmetricMeanTreeProduct`,
   `BellPinnedCompressedPowers`, and `ReplicaTransport/RootCompression`.
@@ -710,7 +710,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   the projector across that pairing, then use idempotence, self-adjointness
   and the Euclidean norm identity.
 - **Seen:** The private `norm_sq_mulVec_eq_re_trace` calculation in
-  `QICLean/Channel/PartialTrace/PureTensorPower.lean`, and the local `hmass` calculation
+  `QICLean/Channel/PartialTrace/TensorPowerPartialTrace.lean`, and the local `hmass` calculation
   in `TensorPower.exists_labelProj_norm_mass_ge` on the separate
   `SchurSectorMass` contribution. These are two mathematical consumers.
 - **Abstraction:** The actual product marginal and projected-mass identities

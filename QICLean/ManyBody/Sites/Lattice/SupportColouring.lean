@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Sites.Product.RetainedProduct
 import QICLean.ManyBody.Sites.Lattice.IntegerRectangle
-import QICLean.Algebra.Combinatorics.GreedyColoring
+import QICLean.Algebra.Combinatorics.ConnectedSetCount
 import QICLean.Algebra.Combinatorics.OverlapGraph
 
 /-!

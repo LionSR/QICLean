@@ -141,12 +141,6 @@ private theorem one_kronecker_mulVec {A C : Type*} [Fintype A] [DecidableEq A]
   simp [mulVec, dotProduct, kroneckerMap_apply, Fintype.sum_prod_type,
     one_apply, ite_mul, Finset.sum_ite_eq]
 
-private theorem kronecker_one_mulVec {A C : Type*} [Fintype A]
-    [Fintype C] [DecidableEq C] (M : Matrix A A ℂ) (v : A × C → ℂ) (x : A × C) :
-    ((M ⊗ₖ (1 : Matrix C C ℂ)) *ᵥ v) x = (M *ᵥ fun a => v (a, x.2)) x.1 := by
-  simp [mulVec, dotProduct, kroneckerMap_apply, Fintype.sum_prod_type,
-    one_apply, mul_ite, Finset.sum_ite_eq]
-
 private theorem kronecker_permOp_mulVec {A C : Type*} [Fintype A] [DecidableEq A]
     [Fintype C] [DecidableEq C] {G : Type*} [Group G]
     (φ : G →* Equiv.Perm A) (γ : G →* Equiv.Perm C) (σ : G) (v : A × C → ℂ) :
@@ -156,9 +150,9 @@ private theorem kronecker_permOp_mulVec {A C : Type*} [Fintype A] [DecidableEq A
     (permOp φ σ ⊗ₖ (1 : Matrix C C ℂ)) *
       ((1 : Matrix A A ℂ) ⊗ₖ permOp γ σ) by
         rw [← mul_kronecker_mul, mul_one, one_mul], ← mulVec_mulVec]
-  ext x
-  rw [kronecker_one_mulVec, permOp_mulVec]
-  change (((1 : Matrix A A ℂ) ⊗ₖ permOp γ σ) *ᵥ v) ((φ σ)⁻¹ x.1, x.2) = _
+  ext ⟨a, c⟩
+  rw [kronecker_one_mulVec_apply, permOp_mulVec]
+  change (((1 : Matrix A A ℂ) ⊗ₖ permOp γ σ) *ᵥ v) ((φ σ)⁻¹ a, c) = _
   rw [one_kronecker_mulVec, permOp_mulVec]
   rfl
 

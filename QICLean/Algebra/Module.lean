@@ -16,4 +16,3 @@ import QICLean.Algebra.Module.FinSpanOfFinrank
 import QICLean.Algebra.Module.MultilinearSelectedSum
 import QICLean.Algebra.Module.QuadraticFormRadical
 import QICLean.Algebra.Module.Subquotient
-import QICLean.Algebra.Module.TraceInvariantSubmodule

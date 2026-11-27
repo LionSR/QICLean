@@ -16,7 +16,6 @@ import QICLean.Analysis.FunctionalCalculus.ContinuousProjectionFrames
 import QICLean.Analysis.FunctionalCalculus.FiniteKroneckerPowers
 import QICLean.Analysis.FunctionalCalculus.Interpolation
 import QICLean.Analysis.FunctionalCalculus.LeftPolar
-import QICLean.Analysis.FunctionalCalculus.MatrixCFCIntegral
 import QICLean.Analysis.FunctionalCalculus.MatrixPolar
 import QICLean.Analysis.FunctionalCalculus.MatrixPolarUniqueness
 import QICLean.Analysis.FunctionalCalculus.MatrixPowers

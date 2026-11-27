@@ -9,11 +9,9 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Algebra.Combinatorics
 
 import QICLean.Algebra.Combinatorics.BinaryCharacterSum
-import QICLean.Algebra.Combinatorics.BinomialFrequencySum
 import QICLean.Algebra.Combinatorics.CommonBufferLength
 import QICLean.Algebra.Combinatorics.ConnectedSetCount
 import QICLean.Algebra.Combinatorics.DependentProducts
-import QICLean.Algebra.Combinatorics.DependentSequence
 import QICLean.Algebra.Combinatorics.DirectedWalkCoboundary
 import QICLean.Algebra.Combinatorics.DyadicBlock
 import QICLean.Algebra.Combinatorics.EventuallyConstantCycleWeights
@@ -26,7 +24,6 @@ import QICLean.Algebra.Combinatorics.FinsetEnumeration
 import QICLean.Algebra.Combinatorics.GateIncidence
 import QICLean.Algebra.Combinatorics.GeneralizeDecide
 import QICLean.Algebra.Combinatorics.GraphDistanceTransport
-import QICLean.Algebra.Combinatorics.GreedyColoring
 import QICLean.Algebra.Combinatorics.HypercubePhasePotential
 import QICLean.Algebra.Combinatorics.IndexInduction
 import QICLean.Algebra.Combinatorics.IntegerHasseGraph

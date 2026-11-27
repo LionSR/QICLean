@@ -8,6 +8,7 @@ import Mathlib.Logic.Equiv.Fin.Rotate
 import Mathlib.Data.Nat.Order.Lemmas
 import Mathlib.Data.List.Rotate
 import Mathlib.Data.List.OfFn
+import Mathlib.Logic.Function.Basic
 
 /-!
 # Induction on finite cyclic indices and on natural-number intervals
@@ -28,7 +29,10 @@ at commit `49b78ed821` (Apache-2.0). Changes: the two files are merged.
 
 Moved from TNLean, `TNLean/MPS/Operator/DensityOperator/AreaLaw.lean` at commit `021ba0bd19`
 (Apache-2.0).
+* `Nat.exists_dependent_sequence`: sequences with prescribed successive relations.
 -/
+
+section IndexInduction
 
 /-- `finRotate` advances the value by one modulo `N`. -/
 theorem coe_finRotate_mod {N : ℕ} (i : Fin N) :
@@ -129,3 +133,30 @@ theorem coe_finRotate_pow {N : ℕ} (p : ℕ) (i : Fin N) :
     rw [Function.iterate_succ_apply', coe_finRotate_mod, ih, Nat.mod_add_mod, Nat.add_assoc]
 
 end
+
+end IndexInduction
+
+section DependentSequence
+
+/-!
+## Sequences with prescribed successive relations
+
+For a family of types indexed by the natural numbers, a chosen initial value
+and the existence of a successor at every value give one sequence satisfying
+all successive relations simultaneously.
+
+Moved from TNLean, `TNLean/Algebra/DependentSequence.lean` at commit `49b78ed821` (Apache-2.0).
+-/
+
+/-- A prescribed initial value extends to a dependent sequence whenever every
+value admits a successor satisfying the specified relation. -/
+theorem Nat.exists_dependent_sequence {X : Nat → Type*}
+    (R : ∀ i, X i → X (i + 1) → Prop) (x₀ : X 0)
+    (hR : ∀ i x, ∃ y, R i x y) :
+    ∃ f : (i : Nat) → X i, f 0 = x₀ ∧ ∀ i, R i (f i) (f (i + 1)) := by
+  classical
+  let next (i : Nat) (x : X i) : X (i + 1) := Classical.choose (hR i x)
+  let f : (i : Nat) → X i := Nat.rec x₀ next
+  exact ⟨f, rfl, fun i ↦ Classical.choose_spec (hR i (f i))⟩
+
+end DependentSequence

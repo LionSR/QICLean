@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import Mathlib.LinearAlgebra.Matrix.Kronecker
-import QICLean.Circuit.Gate.UnitaryExtension
+import QICLean.Circuit.Gate.PartialIsometryDilation
 import QICLean.Circuit.Model.Unitary
 import QICLean.ManyBody.Sites.Relabel
 
