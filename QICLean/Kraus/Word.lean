@@ -230,18 +230,18 @@ open scoped Matrix
 
 namespace Kraus
 
-variable {d D k : ℕ} (B : Fin d → Matrix (Fin D) (Fin D) ℂ)
+variable {ι : Type*} {D k : ℕ} (B : ι → Matrix (Fin D) (Fin D) ℂ)
   (W : Matrix (Fin k) (Fin D) ℂ) (V : Matrix (Fin D) (Fin k) ℂ)
 
 /-- A left-absorbing corner absorbs every nonempty word. -/
-theorem mul_evalWord_of_left_absorb (h : ∀ i, V * W * B i = B i) (w : List (Fin d))
+theorem mul_evalWord_of_left_absorb (h : ∀ i, V * W * B i = B i) (w : List ι)
     (hw : w ≠ []) : V * W * evalWord B w = evalWord B w := by
   obtain ⟨a, w, rfl⟩ := List.exists_cons_of_ne_nil hw
   rw [evalWord_cons, ← Matrix.mul_assoc, h]
 
 /-- A right-absorbing corner absorbs every nonempty word. -/
 theorem evalWord_mul_of_right_absorb (h : ∀ i, B i * (V * W) = B i) :
-    ∀ (w : List (Fin d)), w ≠ [] → evalWord B w * (V * W) = evalWord B w
+    ∀ (w : List ι), w ≠ [] → evalWord B w * (V * W) = evalWord B w
   | [], hw => absurd rfl hw
   | [a], _ => by rw [evalWord_cons, evalWord_nil, Matrix.mul_one, h]
   | a :: b :: w, _ => by
@@ -256,7 +256,7 @@ Source: arXiv:2011.12127, Section IV, `Papers/2011.12127/TN-Review-main.tex` lin
 (the block replacement of the canonical-form construction, in the case where one diagonal block
 carries the whole word). -/
 theorem evalWord_compress_of_left_absorb (h : ∀ i, V * W * B i = B i) :
-    ∀ (w : List (Fin d)), w ≠ [] →
+    ∀ (w : List ι), w ≠ [] →
       evalWord (fun i => W * B i * V) w = W * evalWord B w * V
   | [], hw => absurd rfl hw
   | [a], _ => by simp only [evalWord_cons, evalWord_nil, Matrix.mul_one]
@@ -274,7 +274,7 @@ corresponding word of `B`.
 
 Source: arXiv:2011.12127, Section IV, `Papers/2011.12127/TN-Review-main.tex` lines 1793–1797. -/
 theorem trace_evalWord_compress_of_left_absorb (h : ∀ i, V * W * B i = B i)
-    (w : List (Fin d)) (hw : w ≠ []) :
+    (w : List ι) (hw : w ≠ []) :
     Matrix.trace (evalWord (fun i => W * B i * V) w) = Matrix.trace (evalWord B w) := by
   rw [evalWord_compress_of_left_absorb B W V h w hw, Matrix.trace_mul_comm, ← Matrix.mul_assoc,
     mul_evalWord_of_left_absorb B W V h w hw]
@@ -284,7 +284,7 @@ every nonempty word satisfies `W B^{i₁} V ⋯ W B^{iₙ} V = W B^{i₁} ⋯ B^
 
 Source: arXiv:2011.12127, Section IV, `Papers/2011.12127/TN-Review-main.tex` lines 1793–1797. -/
 theorem evalWord_compress_of_right_absorb (h : ∀ i, B i * (V * W) = B i) :
-    ∀ (w : List (Fin d)), w ≠ [] →
+    ∀ (w : List ι), w ≠ [] →
       evalWord (fun i => W * B i * V) w = W * evalWord B w * V
   | [], hw => absurd rfl hw
   | [a], _ => by simp only [evalWord_cons, evalWord_nil, Matrix.mul_one]
@@ -301,7 +301,7 @@ corresponding word of `B`.
 
 Source: arXiv:2011.12127, Section IV, `Papers/2011.12127/TN-Review-main.tex` lines 1793–1797. -/
 theorem trace_evalWord_compress_of_right_absorb (h : ∀ i, B i * (V * W) = B i)
-    (w : List (Fin d)) (hw : w ≠ []) :
+    (w : List ι) (hw : w ≠ []) :
     Matrix.trace (evalWord (fun i => W * B i * V) w) = Matrix.trace (evalWord B w) := by
   rw [evalWord_compress_of_right_absorb B W V h w hw, Matrix.mul_assoc, Matrix.trace_mul_comm,
     Matrix.mul_assoc, evalWord_mul_of_right_absorb B W V h w hw]

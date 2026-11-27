@@ -9,7 +9,7 @@ import Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Order
 import Mathlib.Analysis.Matrix.Order
 import QICLean.Spectral.Eigenvalue.RitzCompression
 import QICLean.Analysis.Subspace.ViableSubspace
-import QICLean.Spectral.Eigenvalue.EuclideanEigenvectorBasis
+import QICLean.Spectral.Eigenvalue.MatrixSpectralDecomp
 
 /-!
 # Ritz extraction from a space close to the full ground space

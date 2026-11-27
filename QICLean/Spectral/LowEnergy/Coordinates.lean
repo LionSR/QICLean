@@ -8,7 +8,7 @@ import Mathlib.Analysis.Matrix.Spectrum
 import Mathlib.Data.Fin.Basic
 import Mathlib.Tactic
 import QICLean.Analysis.Order.LowEnergyPerturbation
-import QICLean.Spectral.Eigenvalue.EuclideanEigenvectorBasis
+import QICLean.Spectral.Eigenvalue.MatrixSpectralDecomp
 
 /-!
 # Closed spectral subspaces in isometric coordinates

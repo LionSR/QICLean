@@ -32,8 +32,9 @@ biconditional obtained by applying conjugate transposition twice.
 * `Kraus.IsNormal`: eventual block injectivity at some positive blocking length
 * `Kraus.isNormal_iff_eventually_isNBlkInjective`: normality is fullness of all
   sufficiently long word spans
-* `Kraus.isInjective_iff_wordSpan_one_eq_top`, `Kraus.isInjective_iff_injective_traceMap`:
-  injectivity as one-letter fullness and as injectivity of the trace map
+* `Kraus.isInjective_iff_isNBlkInjective_one`, `Kraus.isInjective_iff_injective_traceMap`:
+  injectivity as block injectivity at length one and as injectivity of the trace map;
+  `Kraus.IsInjective.eq_zero_of_forall_trace_mul_eq_zero`, its trace-pairing form
 
 Moved from TNLean, `TNLean/MPS/Tensor/Words/OneSidedInverse.lean` at commit `021ba0bd19`
 (Apache-2.0).
@@ -184,25 +185,17 @@ def IsNormal (A : ι → Matrix n n ℂ) : Prop :=
 @[simp] lemma isNormal_iff (A : ι → Matrix n n ℂ) :
     IsNormal A ↔ ∃ N, 0 < N ∧ IsNBlkInjective A N := Iff.rfl
 
+/-- Injectivity is block injectivity at length one: the span of the words of length one,
+which are the letters, is the full matrix algebra. -/
+theorem isInjective_iff_isNBlkInjective_one (A : ι → Matrix n n ℂ) :
+    IsInjective A ↔ IsNBlkInjective A 1 := by
+  rw [IsNBlkInjective, wordSpan_one]
+  rfl
+
 /-- Algebraic injectivity gives `1`-block injectivity. -/
 theorem isNBlkInjective_one_of_isInjective {A : ι → Matrix n n ℂ}
-    (h : IsInjective A) : IsNBlkInjective A 1 := by
-  unfold IsNBlkInjective
-  have hrange : (Set.range fun σ : Fin 1 → ι =>
-      Kraus.evalWord A (List.ofFn σ)) = Set.range A := by
-    ext M
-    simp only [Set.mem_range]
-    constructor
-    · rintro ⟨σ, hσ⟩
-      refine ⟨σ 0, ?_⟩
-      simpa only [List.ofFn_succ, List.ofFn_zero,
-        Kraus.evalWord_cons, Kraus.evalWord_nil, mul_one] using hσ
-    · rintro ⟨i, hi⟩
-      refine ⟨fun _ => i, ?_⟩
-      simpa only [List.ofFn_succ, List.ofFn_zero,
-        Kraus.evalWord_cons, Kraus.evalWord_nil, mul_one] using hi
-  rw [Kraus.wordSpan, hrange]
-  exact h
+    (h : IsInjective A) : IsNBlkInjective A 1 :=
+  (isInjective_iff_isNBlkInjective_one A).mp h
 
 /-- Algebraic injectivity (1-block) implies normality (eventual block injectivity).
 This is the trivial direction: injectivity is `IsNBlkInjective 1`. -/
@@ -287,12 +280,6 @@ theorem IsNormal.eventually_isNBlkInjective {A : ι → Matrix n n ℂ} (hA : Is
 
 /-! ### Characterizations of injectivity -/
 
-/-- Injectivity is fullness of the span of the words of length one. -/
-theorem isInjective_iff_wordSpan_one_eq_top (A : ι → Matrix n n ℂ) :
-    IsInjective A ↔ wordSpan A 1 = ⊤ := by
-  rw [wordSpan_one]
-  rfl
-
 omit [DecidableEq n] in
 /-- Injectivity in the trace-map form: the matrices `A i` span the full matrix algebra
 exactly when the map `X ↦ (tr (A i X))_i` from boundary matrices to coefficient vectors
@@ -348,6 +335,16 @@ theorem isInjective_iff_injective_traceMap (A : ι → Matrix n n ℂ) :
     rw [← htrace M, hX, Matrix.mul_zero, Matrix.trace_zero]
     rfl
 
+omit [DecidableEq n] in
+/-- The trace pairing against an injective family detects zero: a matrix `M` with
+`tr (M A i) = 0` for every `i` is zero. This is the forward direction of
+`isInjective_iff_injective_traceMap`, read through the cyclicity of the trace. -/
+theorem IsInjective.eq_zero_of_forall_trace_mul_eq_zero {A : ι → Matrix n n ℂ}
+    (hA : IsInjective A) {M : Matrix n n ℂ} (hM : ∀ i, (M * A i).trace = 0) : M = 0 :=
+  (isInjective_iff_injective_traceMap A).mp hA <| funext fun i => by
+    simp only [Matrix.mul_zero, Matrix.trace_zero]
+    rw [Matrix.trace_mul_comm, hM i]
+
 end Kraus
 
 section OneSidedInverse
@@ -356,29 +353,29 @@ open scoped Matrix BigOperators
 
 namespace Kraus
 
-variable {d D : ℕ}
+variable {ι : Type*} [Fintype ι] {D : ℕ}
 
 /-- The linear combination map for an injective tensor is surjective. -/
-theorem IsInjective.linearCombination_surjective {A : Fin d → Matrix (Fin D) (Fin D) ℂ}
+theorem IsInjective.linearCombination_surjective {A : ι → Matrix (Fin D) (Fin D) ℂ}
     (hA : Kraus.IsInjective A) :
     Function.Surjective (Fintype.linearCombination ℂ A) :=
   (span_range_eq_top_iff_surjective_fintypeLinearCombination ℂ A).mp hA.span_eq_top
 
 /-- The linear combination map over all length-`N` words is surjective for an
 `N`-block-injective tensor. -/
-theorem IsNBlkInjective.linearCombination_surjective {A : Fin d → Matrix (Fin D) (Fin D) ℂ} {N : ℕ}
+theorem IsNBlkInjective.linearCombination_surjective {A : ι → Matrix (Fin D) (Fin D) ℂ} {N : ℕ}
     (hA : Kraus.IsNBlkInjective A N) :
     Function.Surjective
       (Fintype.linearCombination ℂ
-        (fun σ : Fin N → Fin d => Kraus.evalWord A (List.ofFn σ))) :=
+        (fun σ : Fin N → ι => Kraus.evalWord A (List.ofFn σ))) :=
   (span_range_eq_top_iff_surjective_fintypeLinearCombination ℂ
-    (fun σ : Fin N → Fin d => Kraus.evalWord A (List.ofFn σ))).mp hA
+    (fun σ : Fin N → ι => Kraus.evalWord A (List.ofFn σ))).mp hA
 
 /-- An injective tensor has a linear right inverse: a linear map
 `Ψ : M_D(ℂ) → ℂ^d` such that `Φ ∘ Ψ = id`, where `Φ` is the linear combination map. -/
-theorem IsInjective.exists_rightInverse {A : Fin d → Matrix (Fin D) (Fin D) ℂ}
+theorem IsInjective.exists_rightInverse {A : ι → Matrix (Fin D) (Fin D) ℂ}
     (hA : Kraus.IsInjective A) :
-    ∃ Ψ : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] (Fin d → ℂ),
+    ∃ Ψ : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] (ι → ℂ),
       ∀ X, Fintype.linearCombination ℂ A (Ψ X) = X := by
   obtain ⟨Ψ, hΨ⟩ := (Fintype.linearCombination ℂ A).exists_rightInverse_of_surjective
     (LinearMap.range_eq_top.mpr hA.linearCombination_surjective)
@@ -390,36 +387,36 @@ length-`N` word products.
 This is the algebraic right inverse denoted by `Ω_u` in arXiv:1708.00029,
 Appendix A, equations `eq:Fu` and `eq:Omegauprop`, after specializing to a
 chosen sector tensor and an injective repetition length. -/
-theorem IsNBlkInjective.exists_rightInverse {A : Fin d → Matrix (Fin D) (Fin D) ℂ} {N : ℕ}
+theorem IsNBlkInjective.exists_rightInverse {A : ι → Matrix (Fin D) (Fin D) ℂ} {N : ℕ}
     (hA : Kraus.IsNBlkInjective A N) :
-    ∃ Ω : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] ((Fin N → Fin d) → ℂ),
+    ∃ Ω : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] ((Fin N → ι) → ℂ),
       ∀ X,
         Fintype.linearCombination ℂ
-          (fun σ : Fin N → Fin d => Kraus.evalWord A (List.ofFn σ)) (Ω X) = X := by
+          (fun σ : Fin N → ι => Kraus.evalWord A (List.ofFn σ)) (Ω X) = X := by
   obtain ⟨Ω, hΩ⟩ :=
     (Fintype.linearCombination ℂ
-      (fun σ : Fin N → Fin d => Kraus.evalWord A (List.ofFn σ))).exists_rightInverse_of_surjective
+      (fun σ : Fin N → ι => Kraus.evalWord A (List.ofFn σ))).exists_rightInverse_of_surjective
       (LinearMap.range_eq_top.mpr hA.linearCombination_surjective)
   exact ⟨Ω, fun X => by simpa using LinearMap.congr_fun hΩ X⟩
 
 /-- Noncomputable right inverse for the length-`N` word span of an
 `N`-block-injective tensor. -/
-noncomputable def blockDecompositionMap {A : Fin d → Matrix (Fin D) (Fin D) ℂ} {N : ℕ}
+noncomputable def blockDecompositionMap {A : ι → Matrix (Fin D) (Fin D) ℂ} {N : ℕ}
     (hA : Kraus.IsNBlkInjective A N) :
-    Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] ((Fin N → Fin d) → ℂ) :=
+    Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] ((Fin N → ι) → ℂ) :=
   (hA.exists_rightInverse).choose
 
-theorem blockDecompositionMap_spec {A : Fin d → Matrix (Fin D) (Fin D) ℂ} {N : ℕ}
+theorem blockDecompositionMap_spec {A : ι → Matrix (Fin D) (Fin D) ℂ} {N : ℕ}
     (hA : Kraus.IsNBlkInjective A N) (X : Matrix (Fin D) (Fin D) ℂ) :
     Fintype.linearCombination ℂ
-      (fun σ : Fin N → Fin d => Kraus.evalWord A (List.ofFn σ))
+      (fun σ : Fin N → ι => Kraus.evalWord A (List.ofFn σ))
       (blockDecompositionMap hA X) = X :=
   (hA.exists_rightInverse).choose_spec X
 
 @[simp]
-theorem blockDecompositionMap_sum {A : Fin d → Matrix (Fin D) (Fin D) ℂ} {N : ℕ}
+theorem blockDecompositionMap_sum {A : ι → Matrix (Fin D) (Fin D) ℂ} {N : ℕ}
     (hA : Kraus.IsNBlkInjective A N) (X : Matrix (Fin D) (Fin D) ℂ) :
-    ∑ σ : Fin N → Fin d,
+    ∑ σ : Fin N → ι,
       blockDecompositionMap hA X σ • Kraus.evalWord A (List.ofFn σ) = X := by
   have := blockDecompositionMap_spec hA X
   rwa [Fintype.linearCombination_apply] at this

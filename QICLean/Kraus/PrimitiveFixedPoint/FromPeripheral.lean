@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Channel.Peripheral.Irreducible.IrreducibleChannel
-import QICLean.Kraus.CPPrimitive
+import QICLean.Kraus.Transfer
 import QICLean.Channel.Irreducible.InvariantProjection
 import QICLean.Kraus.PrimitiveFixedPoint.Basic
 

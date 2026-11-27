@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.Real.BetaHalfLine
+import QICLean.Analysis.Real.GammaRatio
 import QICLean.Representation.Partition.Alternant
 import QICLean.Representation.Partition.ReplicaWeight
 import Mathlib.MeasureTheory.Integral.Pi

@@ -10,7 +10,6 @@ Authors: QICLean contributors
 
 import QICLean.Analysis.Optimization.ConicProgram
 import QICLean.Analysis.Optimization.DensitySimplex
-import QICLean.Analysis.Optimization.FloorKKT
 import QICLean.Analysis.Optimization.HermitianMatrixCone
 import QICLean.Analysis.Optimization.QuantumNeymanPearson
 import QICLean.Analysis.Optimization.SemidefiniteDuality

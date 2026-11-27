@@ -8,7 +8,7 @@ import QICLean.Spectral.Eigenvalue.RitzCompression
 import QICLean.Analysis.Subspace.ViableSubspace
 import QICLean.Analysis.Order.LowEnergyPerturbation
 import QICLean.Spectral.Eigenvalue.HermitianExtremalEigenvalues
-import QICLean.Spectral.Eigenvalue.EuclideanEigenvectorBasis
+import QICLean.Spectral.Eigenvalue.MatrixSpectralDecomp
 
 /-!
 # Extraction of a low-energy window from a close candidate space

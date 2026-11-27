@@ -9,8 +9,7 @@ import QICLean.ManyBody.Replica.Metric.RegionalReplicaMetric
 import QICLean.ManyBody.Replica.Configuration.RegionalFiveFactorCoordinates
 import QICLean.Analysis.Order.InverseCompressionLowerPin
 import QICLean.ManyBody.Replica.LowDefect.LowDefectSymmetricCoordinates
-import QICLean.ManyBody.Replica.LowDefect.LowDefectSharpCompression
-import QICLean.ManyBody.Replica.LowDefect.ComponentInverseGoodExpectation
+import QICLean.ManyBody.Replica.LowDefect.ComponentInverseSharp
 import QICLean.ManyBody.Replica.Configuration.GoodConfigurationExpectation
 import QICLean.ManyBody.Replica.Configuration.GoodPhysicalExponential
 import QICLean.Analysis.Real.ExcitationSubsetCounts

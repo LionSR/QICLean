@@ -26,17 +26,6 @@ namespace Matrix
 
 variable {n a : Type*} [Fintype n] [DecidableEq n] [Fintype a] [DecidableEq a]
 
-omit [DecidableEq n] in
-/-- An operator tensored with the spectator identity acts separately on each coordinate
-slice, including slices of entangled vectors. -/
-theorem kronecker_one_mulVec_apply_slice (A : Matrix n n ℂ)
-    (ξ : EuclideanSpace ℂ (n × a)) (i : n) (r : a) :
-    ((A ⊗ₖ (1 : Matrix a a ℂ)) *ᵥ ξ) (i, r) =
-      (A *ᵥ fun j => ξ (j, r)) i := by
-  classical
-  simp [Matrix.mulVec, dotProduct, Fintype.sum_prod_type, Matrix.kroneckerMap_apply,
-    Matrix.one_apply, mul_ite, ite_mul]
-
 omit [DecidableEq n] [DecidableEq a] in
 /-- The squared Euclidean norm is the sum of the squared norms of all spectator slices. -/
 theorem norm_sq_eq_sum_spectator_slices (ξ : EuclideanSpace ℂ (n × a)) :
@@ -53,7 +42,7 @@ theorem norm_sq_toEuclideanLin_kronecker_one_eq_sum (A : Matrix n n ℂ)
   change ‖WithLp.toLp 2 ((A ⊗ₖ (1 : Matrix a a ℂ)) *ᵥ ξ)‖ ^ 2 =
     ∑ r : a, ‖WithLp.toLp 2 (A *ᵥ fun i => ξ (i, r))‖ ^ 2
   simp only [EuclideanSpace.norm_sq_eq, Fintype.sum_prod_type]
-  simp_rw [kronecker_one_mulVec_apply_slice]
+  simp_rw [kronecker_one_mulVec_apply]
   exact Finset.sum_comm
 
 variable {ι : Type*} [Fintype ι]
@@ -142,7 +131,7 @@ theorem inner_spectatorSlice_excitedProjection_eq_zero {Ω : EuclideanSpace ℂ 
       toEuclideanLin (1 - vecMulVec (WithLp.ofLp Ω) (star (WithLp.ofLp Ω)))
         (WithLp.toLp 2 (fun i => ζ (i, r))) := by
     ext i
-    exact kronecker_one_mulVec_apply_slice _ ζ i r
+    exact kronecker_one_mulVec_apply _ _ i r
   rw [hs]
   exact inner_toEuclideanLin_one_sub_vecMulVec_eq_zero hΩ _
 

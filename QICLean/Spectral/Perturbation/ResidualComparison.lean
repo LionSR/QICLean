@@ -8,7 +8,7 @@ import Mathlib.Analysis.InnerProductSpace.Positive
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import QICLean.Spectral.Eigenvalue.GroundEnergyBounds
 import QICLean.Analysis.Order.LowEnergyPerturbation
-import QICLean.Spectral.Eigenvalue.EuclideanEigenvectorBasis
+import QICLean.Spectral.Eigenvalue.MatrixSpectralDecomp
 
 /-!
 # Directed spectral comparisons relative to the actual ground energies

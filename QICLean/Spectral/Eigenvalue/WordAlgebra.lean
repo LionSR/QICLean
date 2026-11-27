@@ -20,7 +20,6 @@ import Mathlib.Analysis.Complex.Polynomial.Basic
 import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 import Mathlib.RingTheory.Noetherian.Basic
 import QICLean.Algebra.Module.Subquotient
-import QICLean.Algebra.Module.TraceInvariantSubmodule
 
 /-!
 # The word algebra of a finite alphabet

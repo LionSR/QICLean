@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Spectral.Eigenvalue.EuclideanEigenvectorBasis
+import QICLean.Spectral.Eigenvalue.MatrixSpectralDecomp
 import QICLean.Analysis.Order.LowEnergyPerturbation
 import Mathlib.Analysis.InnerProductSpace.Projection.FiniteDimensional
 import Mathlib.Analysis.Normed.Group.Basic
@@ -44,6 +44,9 @@ bounded below by `Δ`.
   projection onto the orthogonal complement of the kernel; and `γ P ≤ H ≤ C P` for some
   `0 < γ` and `C` (`exists_pos_smul_orthogonal_ker_projection_le`,
   `exists_pos_le_smul_orthogonal_ker_projection`).
+* `LinearMap.IsPositive.smul_starProjection_orthogonal_le_iff` — for a positive operator that
+  annihilates a subspace `U`, the operator inequality `γ P ≤ H`, with `P` the orthogonal
+  projection onto `Uᗮ`, is the quadratic-form bound `γ ‖v‖² ≤ Re ⟨H v, v⟩` on `Uᗮ`.
 * `Matrix.IsHermitian.mul_norm_sq_le_re_inner_of_spectral_gap` — for a Hermitian matrix, a lower
   bound for every nonzero real point of the spectrum bounds the quadratic form on the orthogonal
   complement of the kernel. This is the spectral step used with detectability in ALVV,
@@ -54,7 +57,10 @@ The quadratic-form inequality `H² ≥ γ H` is moved from TNLean,
 norm-form hypothesis replaced by the eigenvalue form. The operator form of the gap is moved from
 TNLean, `TNLean/MPS/ParentHamiltonian/ParentInteraction/FiniteIntervalGapComparison.lean` and
 `TNLean/MPS/ParentHamiltonian/Gap/Comparison/IntervalGapTransport.lean` at commit `600676ccac`;
-its eigenvalue-form direction is proved through the quadratic form.
+its eigenvalue-form direction is proved through the quadratic form. Its version for a subspace
+annihilated by `H` is moved from TNLean,
+`TNLean/MPS/ParentHamiltonian/Gap/Filtration/SparseGroupedOpenGap.lean` at commit `6a5afb57c2`,
+with the converse added.
 * `LinearEquiv.ker_adjoint_congruence`,
   `LinearMap.IsPositive.norm_gap_adjoint_congruence_of_inverse_bound`: spectral gaps under bounded
   invertible congruences.
@@ -398,23 +404,40 @@ private theorem inner_eq_inner_orthogonal_ker_projection {H : E →ₗ[ℂ] E} (
   simp only [Submodule.starProjection_orthogonal_val, map_sub, sub_zero,
     hH.isSymmetric v, hproj]
 
-private theorem smul_orthogonal_ker_projection_le_of_re_inner {H : E →ₗ[ℂ] E}
-    (hH : H.IsPositive) {γ : ℝ}
-    (hq : ∀ v ∈ (LinearMap.ker H)ᗮ, γ * ‖v‖ ^ 2 ≤ (⟪H v, v⟫_ℂ).re) :
-    (γ : ℂ) • (LinearMap.ker H)ᗮ.starProjection.toLinearMap ≤ H := by
-  refine ⟨hH.isSymmetric.sub
-    ((LinearMap.ker H)ᗮ.starProjection_isSymmetric.smul (by simp)), ?_⟩
+/-- **The gap on the orthogonal complement of a subspace in operator form.** Let `H` be a
+positive operator that annihilates a subspace `U`. Then `γ P ≤ H` for the orthogonal projection
+`P` onto `Uᗮ` exactly when `γ ‖v‖² ≤ Re ⟨H v, v⟩` for every `v` orthogonal to `U`. For
+`U = ker H` this is the operator form of the gap above the kernel. -/
+theorem smul_starProjection_orthogonal_le_iff {H : E →ₗ[ℂ] E} (hH : H.IsPositive)
+    {U : Submodule ℂ E} (hU : U ≤ LinearMap.ker H) {γ : ℝ} :
+    (γ : ℂ) • Uᗮ.starProjection.toLinearMap ≤ H ↔
+      ∀ v ∈ Uᗮ, γ * ‖v‖ ^ 2 ≤ (⟪H v, v⟫_ℂ).re := by
+  constructor
+  · intro hLower v hv
+    have h := hLower.re_inner_nonneg_left v
+    have hv2 := inner_self_eq_norm_sq (𝕜 := ℂ) v
+    simp only [RCLike.re_eq_complex_re] at hv2
+    rw [LinearMap.sub_apply, LinearMap.smul_apply, ContinuousLinearMap.coe_coe,
+      Uᗮ.starProjection_eq_self_iff.mpr hv, inner_sub_left, inner_smul_left,
+      Complex.conj_ofReal] at h
+    simp only [RCLike.re_eq_complex_re, Complex.sub_re, Complex.mul_re, Complex.ofReal_re,
+      Complex.ofReal_im, zero_mul, sub_zero, hv2] at h
+    linarith
+  intro hq
+  refine ⟨hH.isSymmetric.sub (Uᗮ.starProjection_isSymmetric.smul (by simp)), ?_⟩
   intro v
-  have h := hq _ (Submodule.starProjection_apply_mem (LinearMap.ker H)ᗮ v)
-  have hnorm : (⟪(LinearMap.ker H)ᗮ.starProjection v, v⟫_ℂ).re =
-      ‖(LinearMap.ker H)ᗮ.starProjection v‖ ^ 2 :=
-    (Submodule.re_inner_starProjection_eq_normSq (𝕜 := ℂ) (LinearMap.ker H)ᗮ v)
-  change 0 ≤ (⟪H v - (γ : ℂ) • (LinearMap.ker H)ᗮ.starProjection v, v⟫_ℂ).re
-  simpa only [inner_sub_left, inner_smul_left, Complex.sub_re,
-    Complex.conj_ofReal, Complex.mul_re, Complex.ofReal_re,
-    Complex.ofReal_im, zero_mul, sub_zero,
-    hnorm,
-    inner_eq_inner_orthogonal_ker_projection hH v, sub_nonneg] using h
+  have hproj : H (U.starProjection v) = 0 :=
+    LinearMap.mem_ker.mp (hU (Submodule.starProjection_apply_mem _ _))
+  have hform : ⟪H v, v⟫_ℂ = ⟪H (Uᗮ.starProjection v), Uᗮ.starProjection v⟫_ℂ := by
+    simp only [Submodule.starProjection_orthogonal_val, map_sub, hproj, sub_zero,
+      hH.isSymmetric v]
+  have hnorm : (⟪Uᗮ.starProjection v, v⟫_ℂ).re = ‖Uᗮ.starProjection v‖ ^ 2 :=
+    Uᗮ.re_inner_starProjection_eq_normSq v
+  have h := hq (Uᗮ.starProjection v) (Submodule.starProjection_apply_mem _ _)
+  change 0 ≤ (⟪H v - (γ : ℂ) • Uᗮ.starProjection v, v⟫_ℂ).re
+  simpa only [inner_sub_left, inner_smul_left, Complex.sub_re, Complex.conj_ofReal,
+    Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, zero_mul, sub_zero,
+    hnorm, hform, sub_nonneg] using h
 
 /-- A norm gap `γ ≥ 0` of a positive operator gives the lower order bound `γ P ≤ H` by the
 orthogonal projection `P` onto the orthogonal complement of its kernel. -/
@@ -422,7 +445,7 @@ theorem smul_orthogonal_ker_projection_le_of_norm_gap {H : E →ₗ[ℂ] E} (hH 
     {γ : ℝ} (hγ : 0 ≤ γ)
     (hGap : ∀ v ∈ (LinearMap.ker H)ᗮ, γ * ‖v‖ ≤ ‖H v‖) :
     (γ : ℂ) • (LinearMap.ker H)ᗮ.starProjection.toLinearMap ≤ H :=
-  smul_orthogonal_ker_projection_le_of_re_inner hH (hH.re_inner_ge_of_norm_gap hγ hGap)
+  (hH.smul_starProjection_orthogonal_le_iff le_rfl).mpr (hH.re_inner_ge_of_norm_gap hγ hGap)
 
 /-- **The gap above the kernel in operator form.** If every eigenvalue of a positive operator
 `H` other than `0` is at least `γ`, then `γ P ≤ H` for the orthogonal projection `P` onto the
@@ -431,7 +454,7 @@ theorem smul_orthogonal_ker_projection_le_of_forall_hasEigenvalue {H : E →ₗ[
     (hH : H.IsPositive) {γ : ℝ} (_hγ : 0 ≤ γ)
     (hGap : ∀ μ : ℂ, Module.End.HasEigenvalue H μ → μ = 0 ∨ (γ : ℂ) ≤ μ) :
     (γ : ℂ) • (LinearMap.ker H)ᗮ.starProjection.toLinearMap ≤ H :=
-  smul_orthogonal_ker_projection_le_of_re_inner hH fun _ hv ↦
+  (hH.smul_starProjection_orthogonal_le_iff le_rfl).mpr fun _ hv ↦
     (hH.isSymmetric.mul_norm_sq_le_re_inner_of_forall_hasEigenvalue hGap hv).trans_eq
       (inner_re_symm (𝕜 := ℂ) _ _)
 

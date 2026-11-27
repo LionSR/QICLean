@@ -134,7 +134,7 @@ Add QICLean to your `lakefile.toml` (pinning a release tag or commit; Lake autom
 
 ```toml
 [[require]]
-name = "qiclean"
+name = "QICLean"
 git = "https://github.com/LionSR/QICLean.git"
 rev = "main" # or pin a release tag / commit
 ```

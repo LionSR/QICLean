@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Sites.Support
+import QICLean.Algebra.Matrix.KroneckerEmbed
 import Mathlib.LinearAlgebra.Matrix.Kronecker
 
 /-!
@@ -69,16 +70,6 @@ theorem mulVec_prod_apply (B : Matrix (Config X × α) (Config X × α) ℂ) (Ω
   exact Finset.sum_congr rfl fun τ _ ↦ by ring
 
 omit [∀ v, DecidableEq (X v)] in
-/-- The coordinates of `(G ⊗ 1) w`. -/
-theorem kronecker_one_mulVec_apply (G : Matrix (Config X) (Config X) ℂ)
-    (w : Config X × α → ℂ) (σ : Config X) (a : α) :
-    ((G ⊗ₖ (1 : Matrix α α ℂ)) *ᵥ w) (σ, a) = (G *ᵥ fun τ ↦ w (τ, a)) σ := by
-  simp only [mulVec, dotProduct, Fintype.sum_prod_type, kroneckerMap_apply, one_apply]
-  refine Finset.sum_congr rfl fun τ _ ↦ ?_
-  rw [Finset.sum_eq_single a (fun b _ hb ↦ by simp [Ne.symm hb]) (by simp)]
-  simp
-
-omit [∀ v, DecidableEq (X v)] in
 /-- The blocks of `(G ⊗ 1) B` are `G` times the blocks of `B`. -/
 theorem submatrix_kronecker_one_mul (G : Matrix (Config X) (Config X) ℂ)
     (B : Matrix (Config X × α) (Config X × α) ℂ) (a b : α) :
@@ -103,7 +94,7 @@ theorem kronecker_one_mulVec_eq_self {B : Matrix (Config X × α) (Config X × �
     (G ⊗ₖ (1 : Matrix α α ℂ)) *ᵥ (B *ᵥ (fun p : Config X × α ↦ Ω p.1 * ξ p.2)) =
       B *ᵥ (fun p : Config X × α ↦ Ω p.1 * ξ p.2) := by
   ext ⟨σ, a⟩
-  rw [kronecker_one_mulVec_apply]
+  rw [Matrix.kronecker_one_mulVec_apply]
   have hw : (fun τ ↦ (B *ᵥ (fun p : Config X × α ↦ Ω p.1 * ξ p.2)) (τ, a)) =
       ∑ b, ξ b • (B.submatrix (fun σ ↦ (σ, a)) (fun τ ↦ (τ, b)) *ᵥ Ω) := by
     ext τ

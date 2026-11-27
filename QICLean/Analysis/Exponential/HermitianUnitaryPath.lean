@@ -12,12 +12,17 @@ import Mathlib.Data.Matrix.Basis
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Tactic.FunProp
 import Mathlib.Tactic.Push
+import Mathlib.Data.List.OfFn
 
 /-!
 # Hermitian exponential paths
 
 The punctured-neighborhood result uses differentiation and a matrix unit,
-not eigenvalue enumeration or a trigonometric framework.
+not eigenvalue enumeration or a trigonometric framework. Commuting generators have the product
+of their paths as the path of their sum (`Matrix.hermitianUnitaryPath_add_of_commute`,
+`Matrix.hermitianUnitaryPath_fin_sum_of_commute`, moved from TNLean,
+`TNLean/MPS/AreaLaw/GroundStateAlgorithm/GaussianFilter/GridEvolution.lean` at commit
+`6a5afb57c2`).
 
 Two facts about unitaries of any C*-ring sit at the end: `CStarRing.norm_le_one_of_mem_unitary`
 (a unitary has norm at most one, also in the zero ring) and
@@ -79,6 +84,31 @@ theorem hermitianUnitaryPath_add_smul_one (X : Matrix n n ℂ) (c t : ℝ) :
   have := hermitianUnitaryPath_smul_one (n := n) c t
   unfold hermitianUnitaryPath at this
   rw [this, mul_smul_comm, mul_one]
+
+/-- The path of a sum of two commuting generators is the product of their paths. -/
+theorem hermitianUnitaryPath_add_of_commute (A B : Matrix n n ℂ) (hAB : Commute A B)
+    (t : ℝ) : hermitianUnitaryPath (A + B) t =
+      hermitianUnitaryPath A t * hermitianUnitaryPath B t := by
+  unfold hermitianUnitaryPath
+  rw [smul_add, smul_add]
+  exact Matrix.exp_add_of_commute _ _
+    ((((hAB.smul_left Complex.I).smul_right Complex.I).smul_left t).smul_right t)
+
+/-- The path of a finite sum of pairwise commuting generators is the ordered product of their
+paths. -/
+theorem hermitianUnitaryPath_fin_sum_of_commute {m : ℕ}
+    (A : Fin m → Matrix n n ℂ) (hc : Pairwise fun j k ↦ Commute (A j) (A k)) (t : ℝ) :
+    hermitianUnitaryPath (∑ j, A j) t =
+      (List.ofFn fun j ↦ hermitianUnitaryPath (A j) t).prod := by
+  induction m with
+  | zero => simp [hermitianUnitaryPath]
+  | succ m ih =>
+    have h0 : Commute (A 0) (∑ j : Fin m, A j.succ) :=
+      Commute.sum_right Finset.univ (fun j : Fin m ↦ A j.succ) (A 0)
+        (fun j _ ↦ hc (Fin.succ_ne_zero j).symm)
+    rw [Fin.sum_univ_succ, List.ofFn_succ, List.prod_cons,
+      hermitianUnitaryPath_add_of_commute _ _ h0]
+    rw [ih (fun j ↦ A j.succ) (fun j k h ↦ hc (by simpa using h))]
 
 /-- Hermitian generators give unitary matrices. -/
 theorem hermitianUnitaryPath_mul_conjTranspose

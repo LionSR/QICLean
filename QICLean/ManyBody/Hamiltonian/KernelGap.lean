@@ -43,6 +43,12 @@ and `TNLean/Algebra/CompactGapBounds.lean`.
   positive semidefinite `H`, the spectral bound above `0` in quadratic and norm form.
 * `ManyBody.isGapped_zero_iff_inner`, `ManyBody.isGapped_zero_iff_norm` — for positive
   semidefinite `H`, the gap at `0` in quadratic and norm form.
+* `ManyBody.groundSpace_zero_eq_and_forall_hasEigenvalue_iff_norm`,
+  `ManyBody.groundSpace_zero_eq_and_forall_hasEigenvalue_iff_re_inner`,
+  `ManyBody.isGapped_zero_and_groundSpace_eq_iff_norm`,
+  `ManyBody.isGapped_zero_and_groundSpace_eq_iff_re_inner` — for a positive semidefinite `H`
+  and a subspace `U` of its kernel, a positive lower bound on the orthogonal complement of `U`
+  is the gap above the kernel together with the identification of the kernel with `U`.
 * `ManyBody.groundSpace_zero_eq_of_le`, `ManyBody.forall_hasEigenvalue_of_le`,
   `ManyBody.IsGapped.of_le` — a larger positive matrix whose kernel contains that of `A` has the
   same kernel and keeps the spectral bound and the gap of `A`.
@@ -54,6 +60,8 @@ and `TNLean/Algebra/CompactGapBounds.lean`.
   compact parameter set.
 * `ManyBody.eventually_forall_hasEigenvalue` — the spectral half of `eventually_isGapped_zero`,
   without a ground state.
+* `ManyBody.eventually_groundSpace_zero_eq_and_forall_hasEigenvalue` — the same with a ground
+  space that moves continuously with the parameter.
 -/
 
 open Matrix
@@ -127,6 +135,99 @@ theorem isGapped_zero_iff_norm {H : Matrix n n ℂ} (hH : H.PosSemidef) {Δ : �
     IsGapped H 0 Δ ↔ groundSpace H 0 ≠ ⊥ ∧
       ∀ v ∈ (LinearMap.ker (toEuclideanLin H))ᗮ, Δ * ‖v‖ ≤ ‖toEuclideanLin H v‖ := by
   rw [isGapped_zero_iff, forall_hasEigenvalue_iff_norm hH]
+
+/-! ### The gap on the orthogonal complement of a subspace
+
+A lower bound on the orthogonal complement of a subspace `U` annihilated by `H`, rather than on
+the orthogonal complement of the kernel, is the gap together with the identification of the
+kernel with `U`. -/
+
+/-- If `H` annihilates `U` and no nonzero vector orthogonal to `U` lies in the kernel, the kernel
+is `U`. -/
+private theorem groundSpace_zero_eq_of_forall_orthogonal {H : Matrix n n ℂ}
+    {U : Submodule ℂ (EuclideanSpace ℂ n)} (hU : U ≤ groundSpace H 0)
+    (h : ∀ w ∈ Uᗮ, toEuclideanLin H w = 0 → w = 0) : groundSpace H 0 = U := by
+  refine le_antisymm (fun x hx ↦ ?_) hU
+  rw [groundSpace_zero] at hU hx
+  have hw : toEuclideanLin H (x - U.starProjection x) = 0 := by
+    rw [map_sub, LinearMap.mem_ker.mp hx,
+      LinearMap.mem_ker.mp (hU (U.starProjection_apply_mem x)), sub_zero]
+  rw [← U.starProjection_eq_self_iff, eq_comm, ← sub_eq_zero]
+  exact h _ (U.sub_starProjection_mem_orthogonal x) hw
+
+/-- **The gap on the orthogonal complement of a subspace, in norm form.** Let `H` be positive
+semidefinite and `U` a subspace of its kernel, and let `Δ > 0`. Then `Δ ‖v‖ ≤ ‖H v‖` for every
+`v` orthogonal to `U` exactly when the kernel of `H` is `U` and every eigenvalue of `H` other
+than `0` is at least `Δ`. -/
+theorem groundSpace_zero_eq_and_forall_hasEigenvalue_iff_norm {H : Matrix n n ℂ}
+    (hH : H.PosSemidef) {U : Submodule ℂ (EuclideanSpace ℂ n)} (hU : U ≤ groundSpace H 0)
+    {Δ : ℝ} (hΔ : 0 < Δ) :
+    (groundSpace H 0 = U ∧
+      ∀ μ : ℂ, Module.End.HasEigenvalue (toEuclideanLin H) μ → μ = 0 ∨ (Δ : ℂ) ≤ μ) ↔
+      ∀ v ∈ Uᗮ, Δ * ‖v‖ ≤ ‖toEuclideanLin H v‖ := by
+  constructor
+  · rintro ⟨rfl, h⟩
+    rw [groundSpace_zero]
+    exact (forall_hasEigenvalue_iff_norm hH).mp h
+  intro h
+  have heq : groundSpace H 0 = U := groundSpace_zero_eq_of_forall_orthogonal hU fun w hw hHw ↦
+    norm_eq_zero.mp (le_antisymm (nonpos_of_mul_nonpos_right (by simpa [hHw] using h w hw) hΔ)
+      (norm_nonneg w))
+  refine ⟨heq, (forall_hasEigenvalue_iff_norm hH).mpr ?_⟩
+  rw [← groundSpace_zero, heq]
+  exact h
+
+/-- **The gap on the orthogonal complement of a subspace, in quadratic form.** Let `H` be
+positive semidefinite and `U` a subspace of its kernel, and let `Δ > 0`. Then
+`Δ ‖v‖² ≤ Re ⟨v, H v⟩` for every `v` orthogonal to `U` exactly when the kernel of `H` is `U`
+and every eigenvalue of `H` other than `0` is at least `Δ`. -/
+theorem groundSpace_zero_eq_and_forall_hasEigenvalue_iff_re_inner {H : Matrix n n ℂ}
+    (hH : H.PosSemidef) {U : Submodule ℂ (EuclideanSpace ℂ n)} (hU : U ≤ groundSpace H 0)
+    {Δ : ℝ} (hΔ : 0 < Δ) :
+    (groundSpace H 0 = U ∧
+      ∀ μ : ℂ, Module.End.HasEigenvalue (toEuclideanLin H) μ → μ = 0 ∨ (Δ : ℂ) ≤ μ) ↔
+      ∀ v ∈ Uᗮ, Δ * ‖v‖ ^ 2 ≤ (⟪v, toEuclideanLin H v⟫_ℂ).re := by
+  constructor
+  · rintro ⟨rfl, h⟩
+    rw [groundSpace_zero]
+    exact (forall_hasEigenvalue_iff_re_inner hH).mp h
+  intro h
+  have heq : groundSpace H 0 = U := groundSpace_zero_eq_of_forall_orthogonal hU fun w hw hHw ↦
+    norm_eq_zero.mp (pow_eq_zero_iff two_ne_zero |>.mp (le_antisymm
+      (nonpos_of_mul_nonpos_right (by simpa [hHw] using h w hw) hΔ) (by positivity)))
+  refine ⟨heq, (forall_hasEigenvalue_iff_re_inner hH).mpr ?_⟩
+  rw [← groundSpace_zero, heq]
+  exact h
+
+/-- **The gap with a prescribed ground space, in norm form.** Let `H` be positive semidefinite
+and `U` a subspace of its kernel, and let `Δ > 0`. Then `H` is gapped at `0` with gap `Δ` and
+ground space `U` exactly when `U` is nonzero and `Δ ‖v‖ ≤ ‖H v‖` for every `v` orthogonal
+to `U`. -/
+theorem isGapped_zero_and_groundSpace_eq_iff_norm {H : Matrix n n ℂ} (hH : H.PosSemidef)
+    {U : Submodule ℂ (EuclideanSpace ℂ n)} (hU : U ≤ groundSpace H 0) {Δ : ℝ} (hΔ : 0 < Δ) :
+    IsGapped H 0 Δ ∧ groundSpace H 0 = U ↔
+      U ≠ ⊥ ∧ ∀ v ∈ Uᗮ, Δ * ‖v‖ ≤ ‖toEuclideanLin H v‖ := by
+  rw [isGapped_zero_iff, ← groundSpace_zero_eq_and_forall_hasEigenvalue_iff_norm hH hU hΔ]
+  constructor
+  · rintro ⟨⟨hne, h⟩, heq⟩
+    exact ⟨heq ▸ hne, heq, h⟩
+  · rintro ⟨hne, heq, h⟩
+    exact ⟨⟨heq ▸ hne, h⟩, heq⟩
+
+/-- **The gap with a prescribed ground space, in quadratic form.** Let `H` be positive
+semidefinite and `U` a subspace of its kernel, and let `Δ > 0`. Then `H` is gapped at `0` with
+gap `Δ` and ground space `U` exactly when `U` is nonzero and `Δ ‖v‖² ≤ Re ⟨v, H v⟩` for every
+`v` orthogonal to `U`. -/
+theorem isGapped_zero_and_groundSpace_eq_iff_re_inner {H : Matrix n n ℂ} (hH : H.PosSemidef)
+    {U : Submodule ℂ (EuclideanSpace ℂ n)} (hU : U ≤ groundSpace H 0) {Δ : ℝ} (hΔ : 0 < Δ) :
+    IsGapped H 0 Δ ∧ groundSpace H 0 = U ↔
+      U ≠ ⊥ ∧ ∀ v ∈ Uᗮ, Δ * ‖v‖ ^ 2 ≤ (⟪v, toEuclideanLin H v⟫_ℂ).re := by
+  rw [isGapped_zero_iff, ← groundSpace_zero_eq_and_forall_hasEigenvalue_iff_re_inner hH hU hΔ]
+  constructor
+  · rintro ⟨⟨hne, h⟩, heq⟩
+    exact ⟨heq ▸ hne, heq, h⟩
+  · rintro ⟨hne, heq, h⟩
+    exact ⟨⟨heq ▸ hne, h⟩, heq⟩
 
 /-- If `0 ≤ A ≤ C` and the kernel of `A` lies in that of `C`, the two kernels agree. -/
 theorem groundSpace_zero_eq_of_le {A C : Matrix n n ℂ} (hA : A.PosSemidef) (hAC : A ≤ C)
@@ -298,5 +399,41 @@ theorem _root_.IsCompact.exists_uniform_forall_hasEigenvalue {X : Type*} [Topolo
   obtain ⟨Δ, hΔ, h⟩ := ContinuousLinearMap.exists_uniform_norm_gap_of_compact
     (fun x ↦ toEuclideanCLM (𝕜 := ℂ) (H x)) hcont hK' hS
   exact ⟨Δ, hΔ, fun x hx ↦ (forall_hasEigenvalue_iff_norm (hpos x)).mpr (h x hx)⟩
+
+/-- **Persistence of the gap with a moving ground space.** Let `H x` be positive semidefinite
+matrices depending on a parameter, continuous at `x₀`, and let `U x` be subspaces of their
+kernels whose orthogonal projections are continuous at `x₀`. If the kernel of `H x₀` is `U x₀`
+and every eigenvalue of `H x₀` other than `0` is at least `Δ`, then for every `Δ' < Δ`, near
+`x₀` the kernel of `H x` is `U x` and every eigenvalue of `H x` other than `0` is at least `Δ'`.
+arXiv:1010.3732, Appendix A, finite-window gap continuity. -/
+theorem eventually_groundSpace_zero_eq_and_forall_hasEigenvalue {X : Type*}
+    [TopologicalSpace X] {H : X → Matrix n n ℂ} {U : X → Submodule ℂ (EuclideanSpace ℂ n)}
+    {x₀ : X} (hH : ContinuousAt H x₀) (hpos : ∀ᶠ x in 𝓝 x₀, (H x).PosSemidef)
+    (hU : ContinuousAt (fun x ↦ (U x).starProjection) x₀)
+    (hUle : ∀ᶠ x in 𝓝 x₀, U x ≤ groundSpace (H x) 0) {Δ Δ' : ℝ}
+    (hgap : groundSpace (H x₀) 0 = U x₀ ∧
+      ∀ μ : ℂ, Module.End.HasEigenvalue (toEuclideanLin (H x₀)) μ → μ = 0 ∨ (Δ : ℂ) ≤ μ)
+    (hΔ' : Δ' < Δ) :
+    ∀ᶠ x in 𝓝 x₀, groundSpace (H x) 0 = U x ∧
+      ∀ μ : ℂ, Module.End.HasEigenvalue (toEuclideanLin (H x)) μ → μ = 0 ∨ (Δ' : ℂ) ≤ μ := by
+  have hpos₀ := hpos.self_of_nhds
+  obtain ⟨Δ₀, hΔ₀, h₀⟩ := exists_pos_forall_hasEigenvalue hpos₀
+  have hΔ₂ : 0 < max Δ Δ₀ := lt_max_of_lt_right hΔ₀
+  have hnorm := (forall_hasEigenvalue_iff_norm hpos₀).mp hgap.2
+  have hnorm₀ := (forall_hasEigenvalue_iff_norm hpos₀).mp h₀
+  rw [← groundSpace_zero, hgap.1] at hnorm hnorm₀
+  have hT : ContinuousAt (fun x ↦ toEuclideanCLM (n := n) (𝕜 := ℂ) (H x)) x₀ :=
+    ((toEuclideanCLM (n := n) (𝕜 := ℂ)).toAlgEquiv.toLinearMap.continuous_of_finiteDimensional
+      ).continuousAt.comp hH
+  have hev := ContinuousLinearMap.eventually_norm_gap_on_orthogonal
+    (fun x ↦ toEuclideanCLM (n := n) (𝕜 := ℂ) (H x)) U hT hU
+    (hgap.1 ▸ (groundSpace_zero (H x₀)).le) hΔ₂
+    (max_lt (hΔ'.trans_le (le_max_left Δ Δ₀)) (half_lt_self hΔ₂))
+    (fun v hv ↦ (max_mul_of_nonneg _ _ (norm_nonneg v)).trans_le
+      (max_le (hnorm v hv) (hnorm₀ v hv)))
+  filter_upwards [hpos, hUle, hev] with x hx hxU hxgap
+  obtain ⟨heq, h⟩ := (groundSpace_zero_eq_and_forall_hasEigenvalue_iff_norm hx hxU
+    (lt_max_of_lt_right (half_pos hΔ₂))).mpr hxgap
+  exact ⟨heq, forall_hasEigenvalue_mono (le_max_left _ _) h⟩
 
 end ManyBody
