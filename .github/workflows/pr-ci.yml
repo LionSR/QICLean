@@ -276,10 +276,11 @@ jobs:
       # documenting the invariant this repository must keep true for TNLean;
       # TNLean's own pr-ci.yml carries the real comparison step.
 
-      # Keep the small RC-migration regressions independently observable before
-      # the full build reaches unrelated dependencies. This is additive: the
-      # root build and complete strict suite below remain mandatory.
-      - name: Check focused Mathlib migration regressions strictly
+      # Keep the modules most sensitive to the RC migration independently
+      # observable before the full build reaches unrelated dependencies. This
+      # is additive: the root build and the strict check of changed files below
+      # remain mandatory.
+      - name: Check focused Mathlib migration modules strictly
         timeout-minutes: 30
         run: |
           set -eo pipefail
@@ -323,14 +324,8 @@ jobs:
               "QICLean/Probability/Gaussian/ProductSourceTransport.lean",
               "QICLean/Probability/Gaussian/SchmidtSource.lean",
               "QICLean/ManyBody/Replica/Symbol/CoherentMeasure.lean",
-              "QICLeanTest/Entropy/Conditional/DoubleCurveInstances.lean",
-              "QICLeanTest/Probability/Gaussian/GaussianContraction.lean",
-              "QICLeanTest/Probability/Gaussian/GaussianProductSourceTransport.lean",
-              "QICLeanTest/Mathlib436Replacement.lean",
-              "QICLeanTest/Probability/Gaussian/SchmidtSource.lean",
-              "QICLeanTest/SemigroupNormable.lean",
           ]
-          failed = run_batch(paths, None, jobs=3, timeout=240)
+          failed = run_batch(paths, jobs=3, timeout=240)
           if failed:
               print("Focused migration checks failed:", *failed, sep="\n  ")
               sys.exit(1)
@@ -361,14 +356,9 @@ jobs:
             lake build lint_style
           } 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
 
-      # Elaborate changed production files and every affected test file
-      # (QICLeanTest/ and scripts/Tests/) with warnings as errors. A test is
-      # affected when it changed or its import closure contains a changed
-      # module; every test runs on manual dispatch and when a dependency pin,
-      # the toolchain, this workflow or the selection script changes. New
-      # modules and tests need no workflow edit. Selection:
-      # scripts/ci_lean_checks.py.
-      - name: Check changed Lean files and affected tests strictly
+      # Elaborate every changed production file with warnings as errors. New
+      # modules need no workflow edit. Selection: scripts/ci_lean_checks.py.
+      - name: Check changed Lean files strictly
         timeout-minutes: 60
         env:
           BASE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
@@ -519,6 +509,17 @@ jobs:
 
       - name: Test changed-file Lean check selection
         run: python3 scripts/test_ci_lean_checks.py
+
+      # The repository keeps no Lean test fixtures (per-theorem axiom
+      # printouts and the like) under QICLeanTest/ or scripts/Tests/; see
+      # docs/project_conventions.md.
+      - name: Reject test fixture files
+        run: |
+          files=$(git ls-files -- QICLeanTest scripts/Tests)
+          if [ -n "$files" ]; then
+            printf '::error file=%s::No test fixtures; see docs/project_conventions.md.\n' $files
+            exit 1
+          fi
 
       # Formerly the separate import-completeness.yml workflow, which spent
       # a runner on two Python commands.
