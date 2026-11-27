@@ -53,14 +53,12 @@ Wolf eq. (3.16).
 
 ## Scope
 
-The **PPT criterion** as an *entanglement* criterion — that a separable state
-has positive partial transpose, so a negative partial transpose certifies
-entanglement — needs a separable-state predicate, which is absent from the
-development.  This file formalizes the partial-transpose object, the PPT
-property, and the witnesses; the separability implication is not formalized.
-The same missing foundation blocks the reduction-criterion entanglement
-implication, recorded in
-`docs/paper-gaps/wolf_reduction_criterion_schmidt_premise.tex`.
+The **PPT criterion** as an *entanglement* criterion is proved in
+`QICLean.Channel.Entanglement.Separable`: `Matrix.IsSeparable.isPPT` shows that
+a separable matrix has positive partial transpose. The algebraic definitions
+and identities stay in this file so that they do not depend on channel-level
+separability. Preservation by product-Kraus operations is developed in
+`QICLean.Channel.Entanglement.SeparableOperationPreservation`.
 
 ## References
 
@@ -321,6 +319,37 @@ theorem isPPT_basis_change {U : Matrix (Fin d) (Fin d) ℂ}
   rw [partialTransposeLeft_unitary_basis_change U ρ]
   have hM := hρ.mul_mul_conjTranspose_same ((U * Uᵀ) ⊗ₖ (1 : Matrix (Fin d') (Fin d') ℂ))
   rwa [Matrix.conjTranspose_kronecker, Matrix.conjTranspose_one] at hM
+
+/-! ## Rectangular local product sandwiches -/
+
+/-- Partial transpose intertwines a rectangular product sandwich with the
+sandwich whose first local operator is entrywise conjugated. The input need
+not be positive, Hermitian, or normalized. -/
+theorem partialTransposeLeft_product_sandwich {dA dB dAout dBout : ℕ}
+    (A : Matrix (Fin dAout) (Fin dA) ℂ)
+    (B : Matrix (Fin dBout) (Fin dB) ℂ)
+    (ρ : Matrix (Fin dA × Fin dB) (Fin dA × Fin dB) ℂ) :
+    partialTransposeLeft ((A ⊗ₖ B) * ρ * (A ⊗ₖ B)ᴴ) =
+      (A.map star ⊗ₖ B) * partialTransposeLeft ρ * (A.map star ⊗ₖ B)ᴴ := by
+  ext ⟨i, k⟩ ⟨j, l⟩
+  simp only [partialTransposeLeft_apply, mul_apply, conjTranspose_apply,
+    kroneckerMap_apply, map_apply, star_mul, star_star,
+    Fintype.sum_prod_type, Finset.sum_mul]
+  conv_lhs =>
+    rw [Finset.sum_comm]
+    arg 2
+    ext b
+    rw [Finset.sum_comm]
+  rw [Finset.sum_comm]
+  apply Finset.sum_congr rfl
+  intro a _
+  apply Finset.sum_congr rfl
+  intro b _
+  apply Finset.sum_congr rfl
+  intro c _
+  apply Finset.sum_congr rfl
+  intro d _
+  ring
 
 /-! ## Transposition witnesses (Wolf eq. (3.16)) -/
 

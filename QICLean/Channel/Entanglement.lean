@@ -16,3 +16,5 @@ import QICLean.Channel.Entanglement.SchmidtNumber
 import QICLean.Channel.Entanglement.SchmidtNumberCompact
 import QICLean.Channel.Entanglement.SchmidtNumberFactors
 import QICLean.Channel.Entanglement.Separable
+import QICLean.Channel.Entanglement.SeparableOperation
+import QICLean.Channel.Entanglement.SeparableOperationPreservation
