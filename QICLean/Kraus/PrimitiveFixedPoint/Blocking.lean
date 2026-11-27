@@ -15,14 +15,13 @@ Blocking a finite family $A = (A_i)_{i}$ at length $L$ replaces its transfer map
 $E_A^L$; relabelling the index set by a bijection changes neither the transfer map nor
 trace preservation (`QICLean.Kraus.BlockingTransfer`).
 
-This file shows that positive blocking preserves peripheral primitivity and the
-irreducibility of a trace-preserving primitive irreducible family, and that both
+This file shows that positive blocking preserves the irreducibility of a
+trace-preserving primitive irreducible family, and that both
 operations preserve a complementary fixed-point gap together with its distinguished fixed
 point $\rho$, rather than another representative of its ray.
 
 ## Main results
 
-* `isPrimitive_pow_of_isPrimitive`: positive powers of a primitive map are primitive.
 * `Kraus.isIrreducibleFamily_blockTensor_of_tp_primitive_irr`,
   `Kraus.tp_primitive_irreducible_extra_blocking`: blocking a trace-preserving primitive
   irreducible family at a positive length keeps all three properties.
@@ -43,28 +42,6 @@ point $\rho$, rather than another representative of its ray.
 
 open scoped Matrix Matrix.Norms.Operator ComplexOrder BigOperators
 open Matrix
-
-section Power
-
-/-- Positive powers of a primitive map are primitive: if one is the only peripheral
-eigenvalue of `E`, it is the only peripheral eigenvalue of `E ^ m` for `m > 0`. -/
-theorem isPrimitive_pow_of_isPrimitive {D : ℕ} [NeZero D]
-    (E : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ)
-    (m : ℕ) (hm : 0 < m) (hPrim : IsPrimitive E) :
-    IsPrimitive (E ^ m) := by
-  have h1_mem : (1 : ℂ) ∈ peripheralEigenvalues E := by
-    rw [hPrim]; exact rfl
-  obtain ⟨ρ, hρ_ev⟩ := h1_mem.1.exists_hasEigenvector
-  have hρ_ne : ρ ≠ 0 := (Module.End.hasEigenvector_iff.mp hρ_ev).2
-  have hρ_fix : E ρ = ρ := by
-    simpa using Module.End.mem_eigenspace_iff.mp (Module.End.hasEigenvector_iff.mp hρ_ev).1
-  have hper : ∀ μ : ℂ, μ ∈ peripheralEigenvalues E → μ ^ m = 1 := by
-    intro μ hμ
-    rw [hPrim] at hμ
-    simp [Set.mem_singleton_iff.mp hμ]
-  exact peripheralEigenvalues_pow_eq_singleton E hm hper ρ hρ_fix hρ_ne
-
-end Power
 
 namespace Kraus
 
