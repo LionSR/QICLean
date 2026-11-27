@@ -455,10 +455,7 @@ private theorem sitePermOp_replicaSwap_conj_doubled_of_subset {R S : Finset V} (
 private theorem reindex_conj {m n : Type*} [Fintype m] [Fintype n] (e : m ≃ n)
     (U D : Matrix m m ℂ) :
     reindex e e (U * D * Uᴴ) = reindex e e U * reindex e e D * (reindex e e U)ᴴ := by
-  classical
-  have hmul (X Y : Matrix m m ℂ) : reindex e e (X * Y) = reindex e e X * reindex e e Y := by
-    simpa only [coe_reindexAlgEquiv] using map_mul (reindexAlgEquiv ℂ ℂ e) X Y
-  rw [hmul, hmul, conjTranspose_reindex]
+  rw [reindex_mul, reindex_mul, conjTranspose_reindex]
 
 omit [DecidableEq V] [Fintype α] in
 /-- Pairing the two replicas carries their doubled operator to the doubled operator on paired
