@@ -275,14 +275,28 @@ def renamed_modules(root: Path, commit: str) -> dict[str, str]:
     return renames
 
 
-def base_state(
-    root: Path, base_ref: str, small: Mapping[str, Mapping[str, int]]
-) -> tuple[dict[str, int] | None, dict[str, int], set[str]]:
-    """Return the ceilings at the merge base, the moves into each directory and the changed modules."""
+def base_commit(root: Path, base_ref: str, *, exact: bool) -> str:
+    """Return the commit whose ceilings may not rise.
+
+    For ``--base-ref`` this is the merge base of ``HEAD`` and ``base_ref``. For
+    ``--base-revision`` it is ``base_ref`` itself, so that a force-push with divergent history
+    is compared against the previous tip rather than against the common ancestor.
+    """
+    if exact:
+        resolved = git(root, "rev-parse", "--verify", f"{base_ref}^{{commit}}")
+        if resolved.returncode != 0:
+            raise ValueError(f"cannot resolve base revision {base_ref}: {resolved.stderr.strip()}")
+        return resolved.stdout.strip()
     merge_base = git(root, "merge-base", "HEAD", base_ref)
     if merge_base.returncode != 0:
         raise ValueError(f"cannot find merge base with {base_ref}: {merge_base.stderr.strip()}")
-    commit = merge_base.stdout.strip()
+    return merge_base.stdout.strip()
+
+
+def base_state(
+    root: Path, commit: str, small: Mapping[str, Mapping[str, int]]
+) -> tuple[dict[str, int] | None, dict[str, int], set[str]]:
+    """Return the ceilings at ``commit``, the moves into each directory and the changed modules."""
     shown = git(root, "show", f"{commit}:{CEILINGS_PATH}")
     if shown.returncode == 0:
         base = parse_ceilings(shown.stdout)
@@ -313,11 +327,14 @@ def main() -> int:
         "directory under its recorded ceiling."
     )
     parser.add_argument("--root", type=Path, default=Path("."))
-    parser.add_argument(
-        "--base-revision",
+    base = parser.add_mutually_exclusive_group()
+    base.add_argument(
         "--base-ref",
-        dest="base_ref",
         help="revision whose merge base with HEAD fixes the ceilings that may not rise",
+    )
+    base.add_argument(
+        "--base-revision",
+        help="exact revision (no merge base taken) whose ceilings may not rise",
     )
     parser.add_argument(
         "--write",
@@ -354,9 +371,11 @@ def main() -> int:
     ceilings = ceilings or {}
 
     base = moved_in = changed = None
-    if args.base_ref is not None:
+    if args.base_ref is not None or args.base_revision is not None:
         try:
-            base, moved_in, changed = base_state(root, args.base_ref, small)
+            commit = base_commit(root, args.base_revision or args.base_ref,
+                                 exact=args.base_revision is not None)
+            base, moved_in, changed = base_state(root, commit, small)
         except (ValueError, subprocess.CalledProcessError) as error:
             print(f"::error title=Small-module check failed::{error}")
             return 1
