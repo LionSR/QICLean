@@ -8,6 +8,7 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Channel.Entanglement
 
+import QICLean.Channel.Entanglement.BipartiteCopies
 import QICLean.Channel.Entanglement.DecomposableWitness
 import QICLean.Channel.Entanglement.EntanglementWitness
 import QICLean.Channel.Entanglement.MaxEntangledOverlap

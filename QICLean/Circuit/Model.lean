@@ -13,6 +13,7 @@ import QICLean.Circuit.Model.AsymptoticPreparation
 import QICLean.Circuit.Model.Channel
 import QICLean.Circuit.Model.CleanWorkspace
 import QICLean.Circuit.Model.Conversion
+import QICLean.Circuit.Model.Distillation
 import QICLean.Circuit.Model.LOCC
 import QICLean.Circuit.Model.Measurement
 import QICLean.Circuit.Model.ProductPreparation
