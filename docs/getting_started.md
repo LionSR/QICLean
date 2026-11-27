@@ -175,10 +175,11 @@ shortened module path with the `QICLean/` prefix dropped — for example
 
 - `pr-ci.yml` — the main pipeline on pushes and pull requests: builds the
   library and runs the text-based style linter, elaborates the changed Lean
-  files and every affected test strictly (selected by
-  `scripts/ci_lean_checks.py`, so new modules and tests need no workflow
-  edit), checks that Lean compilation times for changed modules stay under
-  their limit, enforces module-length and numbered-sequel-file policies,
+  files strictly (selected by `scripts/ci_lean_checks.py`, so new modules
+  need no workflow edit), checks that Lean compilation times for changed
+  modules stay under their limit, enforces module-length and
+  numbered-sequel-file policies, rejects Lean test fixtures under
+  `QICLeanTest/` or `scripts/Tests/` (see `docs/project_conventions.md`),
   checks that the generated `QICLean.lean` aggregator is complete, and
   compiles the blueprint (including its reader-facing prose checks).
 - `blueprint.yml` — compiles and deploys the blueprint (web and PDF) on

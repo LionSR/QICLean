@@ -214,6 +214,9 @@ When adding or completing (removing sorry from) theorems/lemmas:
 - If a mathematical result looks wrong or suspiciously general, check the LaTeX sources in
   `Notes/` for the original theorems (QICLean's copy of Wolf's lecture notes; see
   `docs/paper-gaps/README.md`)
+- Do not write Lean test fixtures: no `QICLeanTest/` or `scripts/Tests/` files (CI rejects
+  them) and no per-theorem `#print axioms` / `#guard_msgs` files. Run `#print axioms` locally
+  while proving if needed, then delete it; see `docs/project_conventions.md`
 
 ### Faithfulness rule
 
