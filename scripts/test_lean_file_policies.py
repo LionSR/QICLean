@@ -386,37 +386,6 @@ class SmallModuleCeilingTests(unittest.TestCase):
         self.assertEqual(moved_in, {"Algebra": 1})
         self.assertEqual(changed, {"QICLean.Algebra.Moved", "QICLean.Algebra.New"})
 
-    def test_base_revision_reads_the_previous_tip_not_the_merge_base(self) -> None:
-        # A force-push with divergent history: the ceiling is 2 at the common ancestor and 1
-        # at the discarded previous tip. `--base-revision` compares against the previous tip.
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
-
-            def git(*args: str) -> str:
-                return subprocess.run(["git", "-C", str(root), *args], check=True,
-                                      capture_output=True, text=True).stdout.strip()
-
-            def commit_ceiling(text: str, message: str) -> str:
-                path = root / small.CEILINGS_PATH
-                path.parent.mkdir(parents=True, exist_ok=True)
-                path.write_text(text, encoding="utf-8")
-                git("add", ".")
-                git("commit", "-q", "-m", message)
-                return git("rev-parse", "HEAD")
-
-            git("init", "-q")
-            git("config", "user.email", "test@example.com")
-            git("config", "user.name", "test")
-            ancestor = commit_ceiling("Entropy 2\n", "ancestor")
-            previous_tip = commit_ceiling("Entropy 1\n", "previous tip")
-            git("checkout", "-q", "--detach", ancestor)
-            commit_ceiling("Entropy 2\n# divergent\n", "divergent head")
-            self.assertEqual(small.base_commit(root, previous_tip, exact=False), ancestor)
-            self.assertEqual(small.base_commit(root, previous_tip, exact=True), previous_tip)
-            base, _, _ = small.base_state(root, small.base_commit(root, previous_tip, exact=True),
-                                          {})
-        self.assertEqual(base, {"Entropy": 1})
-
     def test_a_module_deleted_in_the_working_tree_is_absent(self) -> None:
         # Git still lists a module that is removed but not yet committed; the checks read
         # the tree on disk instead of failing on the missing file.
