@@ -6,6 +6,22 @@ Existing declarations and import constraints below are a source-level inventory.
 
 ---
 
+## Verified implementation checkpoint
+
+The curated `feature/nptent-foundations` branch now contains checked implementations of:
+
+- `Algebra.Matrix.InvariantBlocks`: fiber-supported PSD reduction and symmetry transport.
+- `Analysis.Order.RationalCertificate`: data-only rational Gram/LDL checkers with kernel soundness; regression tests include all 27 small Appendix A blocks.
+- `Analysis.Order.FiniteKroneckerOrder`: heterogeneous tensor stability of symmetric order intervals.
+- `Spectral.Projection.TwoForms`: the full two-form split, including singular, noncommuting and zero cases.
+- `Channel.Entanglement.ReverseBlockCriterion`: pure-input vanishing, the reverse-block criterion and its heterogeneous finite tensor extension.
+- `Channel.Entanglement.MaxEntangledOverlap`: PPT overlap bounds and full trace-norm stability.
+- `Circuit.Model.LOCC`: finite-round operational definitions, actual branchwise factorization, and the bipartite separable-operation bridge.
+
+The source-policy cleanup deliberately reuses original `KrausFamily` trace laws and `IsAdaptiveProtocol` identity/composition/CPTP theorems rather than adding alias declarations for them.
+
+The sections below retain the architectural design and proposed interfaces. Their planned annotations are not a current completion checklist; consult the implemented declarations and regression tests for exact coverage. The coherence amplification, full concrete 4096-dimensional certificate, and distillation-rate integration remain separate proof obligations.
+
 ## 1. Existing Foundations (Inspected Inventory)
 
 ### 1.1 Algebraic & Kronecker Layer (`algebra`)

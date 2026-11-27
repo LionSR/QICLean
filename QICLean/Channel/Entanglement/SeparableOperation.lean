@@ -112,23 +112,6 @@ def IsTP (S : SeparableOperation A B Aout Bout) : Prop := S.toKrausFamily.IsTP
 def IsTraceNonincreasing (S : SeparableOperation A B Aout Bout) : Prop :=
   S.toKrausFamily.IsTraceNonincreasing
 
-omit [Fintype A] [Fintype B] in
-/-- A channel is also an admissible trace-nonincreasing branch. -/
-theorem IsTP.isTraceNonincreasing {S : SeparableOperation A B Aout Bout} (h : S.IsTP) :
-    S.IsTraceNonincreasing := KrausFamily.IsTP.isTraceNonincreasing h
-
-/-- Trace preservation for normalized presentations. -/
-theorem trace_map {S : SeparableOperation A B Aout Bout} (h : S.IsTP)
-    (ρ : Matrix (A × B) (A × B) ℂ) : (S.map ρ).trace = ρ.trace :=
-  KrausFamily.trace_map h ρ
-
-open scoped ComplexOrder MatrixOrder in
-/-- A physical branch decreases trace on positive semidefinite inputs. -/
-theorem trace_map_le {S : SeparableOperation A B Aout Bout} (h : S.IsTraceNonincreasing)
-    {ρ : Matrix (A × B) (A × B) ℂ} (hρ : ρ.PosSemidef) :
-    (S.map ρ).trace ≤ ρ.trace :=
-  KrausFamily.trace_map_le h hρ
-
 end Map
 
 section Composition

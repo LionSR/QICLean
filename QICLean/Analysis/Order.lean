@@ -21,5 +21,6 @@ import QICLean.Analysis.Order.PosSemidefCommute
 import QICLean.Analysis.Order.ProjectionQuadraticBound
 import QICLean.Analysis.Order.ProjectiveDiameterCounterexample
 import QICLean.Analysis.Order.QuadraticScalarShift
+import QICLean.Analysis.Order.RationalCertificate
 import QICLean.Analysis.Order.SuperoperatorResolvent
 import QICLean.Analysis.Order.WeylMonotonicity

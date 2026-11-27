@@ -367,4 +367,52 @@ theorem transpositionWitness_isHermitian (A B : Matrix (Fin d) (Fin d) ℂ) :
   rw [Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose,
     Matrix.swapMatrix_conjTranspose, Matrix.mul_assoc]
 
+/-! ## Trace-pairing symmetry and maximally entangled projector -/
+
+/-- Taking the first-factor partial transpose on both factors preserves the bilinear
+trace pairing: `tr(X^{T₁} Y^{T₁}) = tr(X Y)`. -/
+theorem trace_partialTransposeLeft_mul_partialTransposeLeft
+    (X Y : Matrix (Fin d × Fin d') (Fin d × Fin d') ℂ) :
+    (partialTransposeLeft X * partialTransposeLeft Y).trace = (X * Y).trace := by
+  classical
+  simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply, partialTransposeLeft_apply,
+    Fintype.sum_prod_type]
+  calc
+    ∑ i₁, ∑ k, ∑ i₂, ∑ l,
+        X (i₂, k) (i₁, l) * Y (i₁, l) (i₂, k) =
+      ∑ i₁, ∑ i₂, ∑ k, ∑ l,
+        X (i₂, k) (i₁, l) * Y (i₁, l) (i₂, k) := by
+          apply Finset.sum_congr rfl
+          intro i₁ _
+          rw [Finset.sum_comm]
+    _ = ∑ i₂, ∑ i₁, ∑ k, ∑ l,
+        X (i₂, k) (i₁, l) * Y (i₁, l) (i₂, k) := by
+          rw [Finset.sum_comm]
+    _ = ∑ i₂, ∑ k, ∑ i₁, ∑ l,
+        X (i₂, k) (i₁, l) * Y (i₁, l) (i₂, k) := by
+          apply Finset.sum_congr rfl
+          intro i₂ _
+          rw [Finset.sum_comm]
+
+/-- The first-factor partial transpose of the maximally entangled projector `|Ω_d⟩⟨Ω_d|`
+is `d⁻¹` times the SWAP operator: `(|Ω_d⟩⟨Ω_d|)^{T₁} = d⁻¹ F_d`.
+
+Holds for all `d : ℕ`, including `d = 0` where both sides are the unique empty matrix. -/
+theorem partialTransposeLeft_omegaProj (d : ℕ) :
+    partialTransposeLeft (omegaProj d) = (d : ℂ)⁻¹ • swapMatrix d := by
+  by_cases hd : 0 < d
+  · ext ⟨i₁, i₂⟩ ⟨j₁, j₂⟩
+    simp only [partialTransposeLeft_apply, omegaProj_apply, omegaVec_apply,
+      Matrix.smul_apply, swapMatrix_apply, smul_eq_mul]
+    by_cases h1 : i₁ = j₂
+    · by_cases h2 : i₂ = j₁
+      · subst h1 h2
+        simpa [one_div] using MaximallyEntangled.omegaCoeff_eq_inv hd
+      · have h2' : j₁ ≠ i₂ := Ne.symm h2
+        simp [h1, h2, h2']
+    · simp [h1]
+  · have hd0 : d = 0 := Nat.eq_zero_of_not_pos hd
+    subst hd0
+    exact Subsingleton.elim _ _
+
 end Matrix

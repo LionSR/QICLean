@@ -64,11 +64,11 @@ theorem identity_tp : (SeparableOperation.id (Fin 2) (Fin 3)).IsTP := by
   simp
 
 theorem identity_tni : (SeparableOperation.id (Fin 2) (Fin 3)).IsTraceNonincreasing :=
-  identity_tp.isTraceNonincreasing
+  KrausFamily.IsTP.isTraceNonincreasing identity_tp
 
 theorem identity_trace (ρ : Matrix (Fin 2 × Fin 3) (Fin 2 × Fin 3) ℂ) :
     ((SeparableOperation.id (Fin 2) (Fin 3)).map ρ).trace = ρ.trace :=
-  SeparableOperation.trace_map identity_tp ρ
+  KrausFamily.trace_map identity_tp ρ
 
 -- The empty outcome set is permitted: the zero branch is TNI but not TP.
 def emptyBranch : SeparableOperation (Fin 2) (Fin 3) (Fin 1) (Fin 2) :=
@@ -94,7 +94,7 @@ theorem empty_not_tp : ¬ emptyBranch.IsTP := by
 
 theorem empty_trace_le {ρ : Matrix (Fin 2 × Fin 3) (Fin 2 × Fin 3) ℂ}
     (hρ : ρ.PosSemidef) : (emptyBranch.map ρ).trace ≤ ρ.trace :=
-  SeparableOperation.trace_map_le empty_tni hρ
+  KrausFamily.trace_map_le empty_tni hρ
 
 end SeparableOperationTest
 
@@ -112,9 +112,9 @@ run_cmd do
       ``QuantumInfo.SeparableOperation.isKrausCP_map,
       ``QuantumInfo.SeparableOperation.IsTP,
       ``QuantumInfo.SeparableOperation.IsTraceNonincreasing,
-      ``QuantumInfo.SeparableOperation.IsTP.isTraceNonincreasing,
-      ``QuantumInfo.SeparableOperation.trace_map,
-      ``QuantumInfo.SeparableOperation.trace_map_le,
+      ``KrausFamily.IsTP.isTraceNonincreasing,
+      ``KrausFamily.trace_map,
+      ``KrausFamily.trace_map_le,
       ``QuantumInfo.SeparableOperation.comp,
       ``QuantumInfo.SeparableOperation.toKrausFamily_comp_op,
       ``QuantumInfo.SeparableOperation.map_comp,
