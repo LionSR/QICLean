@@ -8,10 +8,10 @@ import QICLean.Channel.KrausMap.KrausFamily
 /-!
 # Finite product-Kraus operations
 
-Adapted from `NPTEnt/Quantum/SeparableOperation.lean` in the uncommitted NPTEnt
-working copy (no source commit available; SHA-256
-`1e490b23dfd630dd3471f001adf03ebefca41741e77e88473a18ca66a6da9278`).
-Changes: QICLean header and source notice only; the `QuantumInfo` API is retained.
+Adapted from `NPTEnt/Quantum/SeparableOperation.lean` at
+`LionSR/NPTEnt`, commit `b1dada63c7d362c0f461375e015e19d62baecac9` (Apache-2.0).
+The paper-independent `QuantumInfo` namespace is retained; trace laws are
+provided by the original `KrausFamily` API rather than duplicate aliases.
 
 `QuantumInfo.SeparableOperation` records rectangular local operators with a shared finite
 outcome index. Its associated KrausFamily has operators left i ⊗ₖ right i.

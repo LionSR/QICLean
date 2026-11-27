@@ -416,3 +416,52 @@ theorem partialTransposeLeft_omegaProj (d : ℕ) :
     exact Subsingleton.elim _ _
 
 end Matrix
+
+/-! ## Partial transpose on arbitrary product bases -/
+
+/-- Partial transpose over the first (input) tensor factor for arbitrary index types `α, β`:
+`(partialTransposeFst Q) (i, a) (j, b) = Q (j, a) (i, b)`. -/
+def Matrix.partialTransposeFst {R α β : Type*}
+    (Q : Matrix (α × β) (α × β) R) : Matrix (α × β) (α × β) R :=
+  fun p q => Q (q.1, p.2) (p.1, q.2)
+
+@[simp]
+theorem Matrix.partialTransposeFst_apply {R α β : Type*}
+    (Q : Matrix (α × β) (α × β) R) (p q : α × β) :
+    Matrix.partialTransposeFst Q p q = Q (q.1, p.2) (p.1, q.2) := rfl
+
+@[simp]
+theorem Matrix.partialTransposeFst_partialTransposeFst {R α β : Type*}
+    (Q : Matrix (α × β) (α × β) R) :
+    Matrix.partialTransposeFst (Matrix.partialTransposeFst Q) = Q := by
+  ext ⟨i, a⟩ ⟨j, b⟩
+  rfl
+
+@[simp]
+theorem Matrix.partialTransposeFst_add {R α β : Type*} [Add R]
+    (P Q : Matrix (α × β) (α × β) R) :
+    Matrix.partialTransposeFst (P + Q) =
+      Matrix.partialTransposeFst P + Matrix.partialTransposeFst Q := by
+  ext ⟨i, a⟩ ⟨j, b⟩
+  rfl
+
+@[simp]
+theorem Matrix.partialTransposeFst_sub {R α β : Type*} [Sub R]
+    (P Q : Matrix (α × β) (α × β) R) :
+    Matrix.partialTransposeFst (P - Q) =
+      Matrix.partialTransposeFst P - Matrix.partialTransposeFst Q := by
+  ext ⟨i, a⟩ ⟨j, b⟩
+  rfl
+
+@[simp]
+theorem Matrix.partialTransposeFst_smul {S R α β : Type*} [SMul S R]
+    (c : S) (Q : Matrix (α × β) (α × β) R) :
+    Matrix.partialTransposeFst (c • Q) = c • Matrix.partialTransposeFst Q := by
+  ext ⟨i, a⟩ ⟨j, b⟩
+  rfl
+
+/-- On `Fin d × Fin d'`, `Matrix.partialTransposeFst` coincides with
+`Matrix.partialTransposeLeft`. -/
+theorem Matrix.partialTransposeFst_eq_partialTransposeLeft {d d' : ℕ}
+    (Q : Matrix (Fin d × Fin d') (Fin d × Fin d') ℂ) :
+    Matrix.partialTransposeFst Q = Matrix.partialTransposeLeft Q := rfl

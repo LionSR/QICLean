@@ -26,7 +26,7 @@ The development separates cleanly into three layers:
    * `IsKrausCP.fromBlocks_posSemidef`: rectangular Kraus-CP maps preserve positive
      semidefiniteness of `2 × 2` block matrices.
    * `IsCompletelyCopositiveMap.reverseBlock_vecMulVec_posSemidef`: a completely
-     copositive map `S` satisfies `[[S(|u⟩⟨u|), S(|z⟩⟨u|)], [S(|u⟩⟨z|), S(|z⟩⟨z|)]] ⪰ 0`
+     copositive map `S` satisfies `[[S(|u⟩⟨u|), S(|z⟩⟨u|)], [S(|u⟩⟨z|), S(|z⟩⟨z|)]] ≥ 0`
      for all complex vectors `u, z`.
 
 2. **One-copy reverse-block criterion (minimal hypotheses, no Choi):**
@@ -244,7 +244,7 @@ private theorem fromBlocks_zero_lowerRight_posSemidef [Finite β]
 For arbitrary finite rectangular linear maps `C, S` and complex vector `u`, if `C - S` is
 completely positive, `S` is completely copositive, and `C(|u⟩⟨u|) = S(|u⟩⟨u|)`, then for
 every complex vector `z`,
-`[[C(|u⟩⟨u|), C(|z⟩⟨u|)], [C(|u⟩⟨z|), C(|z⟩⟨z|)]] ⪰ 0`.
+`[[C(|u⟩⟨u|), C(|z⟩⟨u|)], [C(|u⟩⟨z|), C(|z⟩⟨z|)]] ≥ 0`.
 Complete positivity of `C + S` (or of `C`) is not needed. -/
 theorem reverseBlock_vecMulVec_posSemidef
     {C S : Matrix α α ℂ →ₗ[ℂ] Matrix β β ℂ}
@@ -275,7 +275,7 @@ theorem reverseBlock_vecMulVec_posSemidef
 For arbitrary finite rectangular linear maps `C, S : Matrix α α ℂ →ₗ[ℂ] Matrix β β ℂ`
 and arbitrary complex vectors `u, v, w : α → ℂ` with `v + w = u`: if `C - S` is
 completely positive, `S` is completely copositive, and `C(|u⟩⟨u|) = S(|u⟩⟨u|)`, then
-`[[C(|w⟩⟨w|), C(|v⟩⟨w|)], [C(|w⟩⟨v|), C(|v⟩⟨v|)]] ⪰ 0`. -/
+`[[C(|w⟩⟨w|), C(|v⟩⟨w|)], [C(|w⟩⟨v|), C(|v⟩⟨v|)]] ≥ 0`. -/
 theorem reverseBlock_posSemidef
     {C S : Matrix α α ℂ →ₗ[ℂ] Matrix β β ℂ}
     (hCS : IsKrausCP (C - S))
