@@ -86,7 +86,7 @@ open scoped Matrix ComplexOrder MatrixOrder BigOperators
 
 namespace Kraus
 
-variable {d D : ℕ}
+variable {ι : Type*} [Fintype ι] {D : ℕ}
 
 local notation "Mat" => Matrix (Fin D) (Fin D) ℂ
 
@@ -94,7 +94,7 @@ local notation "Mat" => Matrix (Fin D) (Fin D) ℂ
 
 We implement `ρ^{1/2}` as `CFC.sqrt ρ`.
 (For `ρ` positive definite, this is invertible.) -/
-noncomputable def tpGauge (K : Fin d → Mat) (ρ : Mat) : Fin d → Mat :=
+noncomputable def tpGauge (K : ι → Mat) (ρ : Mat) : ι → Mat :=
   fun i => (CFC.sqrt ρ) * K i * (CFC.sqrt ρ)⁻¹
 
 /-- **TP normalisation from an adjoint fixed point.**
@@ -106,7 +106,7 @@ preserving: `∑ i, (B i)ᴴ * B i = I`.
 This is the standard "left-canonical" gauge construction, the specialization
 `S = ρ^{1/2}` of `gauged_isTP_of_map_conjTranspose_fixedPoint`. -/
 theorem tpGauge_isTP_of_map_conjTranspose_fixedPoint
-    (K : Fin d → Mat) (ρ : Mat)
+    (K : ι → Mat) (ρ : Mat)
     (hρ : ρ.PosDef)
     (hfix : mapLM (fun i => (K i)ᴴ) ρ = ρ) :
     IsTP (tpGauge K ρ) := by
@@ -123,12 +123,12 @@ If `ρ` is positive definite and the conjugate-transposed Kraus map sends `ρ` t
 `r • ρ` for a positive real number `r`, then applying `tpGauge` after scaling the
 family by the inverse square root of `r` gives a trace-preserving family. -/
 theorem tpGauge_isTP_of_map_conjTranspose_eigenvector
-    (K : Fin d → Mat) (ρ : Mat) (r : ℝ)
+    (K : ι → Mat) (ρ : Mat) (r : ℝ)
     (hρ : ρ.PosDef) (hr : 0 < r)
     (heig : mapLM (fun i => (K i)ᴴ) ρ = (r : ℂ) • ρ) :
     IsTP (tpGauge (fun j => (↑((Real.sqrt r)⁻¹) : ℂ) • K j) ρ) := by
   let c : ℝ := (Real.sqrt r)⁻¹
-  let K' : Fin d → Matrix (Fin D) (Fin D) ℂ := fun i => (↑c : ℂ) • K i
+  let K' : ι → Matrix (Fin D) (Fin D) ℂ := fun i => (↑c : ℂ) • K i
   have hstar_c : star (↑c : ℂ) = (↑c : ℂ) := by
     rw [RCLike.star_def, Complex.conj_ofReal]
   have hcc : c * c = r⁻¹ := by
@@ -140,7 +140,7 @@ theorem tpGauge_isTP_of_map_conjTranspose_eigenvector
       Matrix.smul_mul, Matrix.mul_smul, smul_smul, star_star]
     simp_rw [hstar_c, hc_sq]
     rw [← Finset.smul_sum]
-    have hsum : ∑ i : Fin d, (K i)ᴴ * ρ * ((K i)ᴴ)ᴴ =
+    have hsum : ∑ i : ι, (K i)ᴴ * ρ * ((K i)ᴴ)ᴴ =
         mapLM (fun i => (K i)ᴴ) ρ := by
       simp [mapLM_apply]
     rw [hsum, heig, smul_smul, inv_mul_cancel₀, one_smul]
@@ -148,13 +148,13 @@ theorem tpGauge_isTP_of_map_conjTranspose_eigenvector
   exact tpGauge_isTP_of_map_conjTranspose_fixedPoint K' ρ hρ hfix
 
 /-- Gauge-transformed Kraus family `B i = (sqrt ρ)⁻¹ K i (sqrt ρ)`. -/
-noncomputable def unitalGauge (K : Fin d → Mat) (ρ : Mat) : Fin d → Mat :=
+noncomputable def unitalGauge (K : ι → Mat) (ρ : Mat) : ι → Mat :=
   fun i => (CFC.sqrt ρ)⁻¹ * K i * CFC.sqrt ρ
 
 /-- Rescaled right-canonical gauge obtained by multiplying `unitalGauge K ρ` by the
 inverse square root of `r`. -/
 noncomputable def spectralUnitalGauge
-    (K : Fin d → Mat) (r : ℝ) (ρ : Mat) : Fin d → Mat :=
+    (K : ι → Mat) (r : ℝ) (ρ : Mat) : ι → Mat :=
   fun i => (↑((Real.sqrt r)⁻¹) : ℂ) • unitalGauge K ρ i
 
 /-- **Unital normalization from a positive Kraus-map eigenvector.**
@@ -162,7 +162,7 @@ noncomputable def spectralUnitalGauge
 If `ρ` is positive definite and `mapLM K ρ = r • ρ` for a positive real number
 `r`, then `spectralUnitalGauge K r ρ` is unital. -/
 theorem spectralUnitalGauge_isUnital_of_map_eigenvector
-    (K : Fin d → Mat) (ρ : Mat) (r : ℝ)
+    (K : ι → Mat) (ρ : Mat) (r : ℝ)
     (hρ : ρ.PosDef) (hr : 0 < r)
     (hfix : mapLM K ρ = (r : ℂ) • ρ) :
     IsUnital (spectralUnitalGauge K r ρ) := by
@@ -189,7 +189,7 @@ theorem spectralUnitalGauge_isUnital_of_map_eigenvector
   have hdetT : IsUnit (Sᴴ.det) := by
     simpa [Matrix.det_conjTranspose] using (IsUnit.star hdet)
   have hStmul_inv : Sᴴ * (Sᴴ)⁻¹ = 1 := Matrix.mul_nonsing_inv Sᴴ hdetT
-  have h_term : ∀ i : Fin d,
+  have h_term : ∀ i : ι,
       (c • (S⁻¹ * K i * S)) * (c • (S⁻¹ * K i * S))ᴴ =
         (r : ℂ)⁻¹ • (S⁻¹ * (K i * ρ * (K i)ᴴ) * (Sᴴ)⁻¹) := by
     intro i
@@ -205,10 +205,10 @@ theorem spectralUnitalGauge_isUnital_of_map_eigenvector
               rw [Matrix.conjTranspose_mul, Matrix.conjTranspose_mul,
                 Matrix.conjTranspose_nonsing_inv]
               simp [Matrix.mul_assoc, ← hSS]
-  have h_sum_eq : ∑ i : Fin d, K i * ρ * (K i)ᴴ = (r : ℂ) • ρ := by
+  have h_sum_eq : ∑ i : ι, K i * ρ * (K i)ᴴ = (r : ℂ) • ρ := by
     simpa [mapLM_apply, Matrix.mul_assoc] using hfix
   change
-    (∑ i : Fin d, (c • (S⁻¹ * K i * S)) * (c • (S⁻¹ * K i * S))ᴴ) = 1
+    (∑ i : ι, (c • (S⁻¹ * K i * S)) * (c • (S⁻¹ * K i * S))ᴴ) = 1
   simp_rw [h_term]
   rw [← Finset.smul_sum, ← Finset.sum_mul, ← Finset.mul_sum, h_sum_eq]
   have hr_ne : (r : ℂ) ≠ 0 := by
@@ -231,7 +231,7 @@ theorem spectralUnitalGauge_isUnital_of_map_eigenvector
 If `ρ` is positive definite and fixed by `mapLM K`, then `unitalGauge K ρ` is
 unital. -/
 theorem unitalGauge_isUnital_of_map_fixedPoint
-    (K : Fin d → Mat) (ρ : Mat)
+    (K : ι → Mat) (ρ : Mat)
     (hρ : ρ.PosDef) (hfix : mapLM K ρ = ρ) :
     IsUnital (unitalGauge K ρ) := by
   classical
@@ -239,9 +239,9 @@ theorem unitalGauge_isUnital_of_map_fixedPoint
     simpa using hfix
   have h :=
     spectralUnitalGauge_isUnital_of_map_eigenvector
-      (d := d) (D := D) K ρ 1 hρ zero_lt_one hfix_one
-  change ∑ i : Fin d, unitalGauge K ρ i * (unitalGauge K ρ i)ᴴ = 1
-  change ∑ i : Fin d,
+      (D := D) K ρ 1 hρ zero_lt_one hfix_one
+  change ∑ i : ι, unitalGauge K ρ i * (unitalGauge K ρ i)ᴴ = 1
+  change ∑ i : ι,
     spectralUnitalGauge K 1 ρ i * (spectralUnitalGauge K 1 ρ i)ᴴ = 1 at h
   simpa [spectralUnitalGauge] using h
 

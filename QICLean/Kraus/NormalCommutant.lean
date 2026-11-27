@@ -30,7 +30,7 @@ open scoped Matrix ComplexOrder
 
 namespace Kraus
 
-variable {d D : ℕ}
+variable {ι : Type*} {D : ℕ}
 
 /-- A matrix commuting with every matrix of a normal finite Kraus family is a
 scalar multiple of the identity. Commutation extends from the matrices to all
@@ -40,11 +40,11 @@ This is the commutant triviality behind the step "since $M_\alpha$ is a NT in
 the vertical direction" in the proof of Proposition 4.13 of arXiv:1606.00608,
 line 1921. -/
 theorem IsNormal.eq_smul_one_of_commute
-    {A : Fin d → Matrix (Fin D) (Fin D) ℂ} (hA : Kraus.IsNormal A)
+    {A : ι → Matrix (Fin D) (Fin D) ℂ} (hA : Kraus.IsNormal A)
     {S : Matrix (Fin D) (Fin D) ℂ} (hS : ∀ i, S * A i = A i * S) :
     ∃ c : ℂ, S = c • 1 := by
   obtain ⟨N, _hNpos, hN⟩ := hA
-  have hwords : ∀ M ∈ Set.range fun σ : Fin N → Fin d => Kraus.evalWord A (List.ofFn σ),
+  have hwords : ∀ M ∈ Set.range fun σ : Fin N → ι => Kraus.evalWord A (List.ofFn σ),
       S * M = M * S := by
     rintro _ ⟨σ, rfl⟩
     exact Kraus.commutes_evalWord_of_commutes_letters S A hS (List.ofFn σ)
@@ -62,7 +62,7 @@ of Proposition 4.13 of arXiv:1606.00608, lines 1914--1921.  It compares the
 sector $k$ directly with the distinguished sector $1$ and does not assume that
 the matrices of the representative family are self-adjoint. -/
 theorem IsNormal.gram_eq_pos_smul_gram_of_gram_conj_eq
-    {A : Fin d → Matrix (Fin D) (Fin D) ℂ} (hA : Kraus.IsNormal A)
+    {A : ι → Matrix (Fin D) (Fin D) ℂ} (hA : Kraus.IsNormal A)
     {X Y : Matrix (Fin D) (Fin D) ℂ} (hX : IsUnit X.det) (hY : IsUnit Y.det)
     (hgram : ∀ i,
       Xᴴ * X * A i * (Xᴴ * X)⁻¹ = Yᴴ * Y * A i * (Yᴴ * Y)⁻¹) :
@@ -113,7 +113,7 @@ Kraus family, then its Gram matrix is a positive real multiple of the identity.
 
 Source: arXiv:1606.00608, proof of Proposition 4.13, lines 1903--1921. -/
 theorem IsNormal.gram_eq_pos_smul_one_of_gram_conj_eq
-    {A : Fin d → Matrix (Fin D) (Fin D) ℂ} (hA : Kraus.IsNormal A)
+    {A : ι → Matrix (Fin D) (Fin D) ℂ} (hA : Kraus.IsNormal A)
     {X : Matrix (Fin D) (Fin D) ℂ} (hX : IsUnit X.det)
     (hgram : ∀ i, Xᴴ * X * A i * (Xᴴ * X)⁻¹ = A i) :
     ∃ ω : ℝ, 0 < ω ∧ Xᴴ * X = (ω : ℂ) • 1 := by
@@ -130,7 +130,7 @@ scalar.
 
 Source: arXiv:1606.00608, proof of Proposition 4.13, lines 1903--1921. -/
 theorem IsNormal.exists_unitary_normalization_of_gram_conj_eq
-    {A : Fin d → Matrix (Fin D) (Fin D) ℂ} (hA : Kraus.IsNormal A)
+    {A : ι → Matrix (Fin D) (Fin D) ℂ} (hA : Kraus.IsNormal A)
     {X : Matrix (Fin D) (Fin D) ℂ} (hX : IsUnit X.det)
     (hgram : ∀ i, Xᴴ * X * A i * (Xᴴ * X)⁻¹ = A i) :
     ∃ ω : ℝ, 0 < ω ∧
@@ -153,7 +153,7 @@ This is an algebraic consequence of the Figure 8 equality in
 arXiv:1606.00608, proof of Proposition 4.13, lines 1909--1921.  It is not the
 source-facing reflected marked-chain statement. -/
 theorem IsNormal.gram_eq_pos_smul_gram_of_common_dressed_target
-    {A C : Fin d → Matrix (Fin D) (Fin D) ℂ} (hA : Kraus.IsNormal A)
+    {A C : ι → Matrix (Fin D) (Fin D) ℂ} (hA : Kraus.IsNormal A)
     {X Y : Matrix (Fin D) (Fin D) ℂ} (hX : IsUnit X.det) (hY : IsUnit Y.det)
     (hdX : ∀ i, X * A i * X⁻¹ = X⁻¹ᴴ * C i * Xᴴ)
     (hdY : ∀ i, Y * A i * Y⁻¹ = Y⁻¹ᴴ * C i * Yᴴ) :
@@ -166,7 +166,7 @@ theorem IsNormal.gram_eq_pos_smul_gram_of_common_dressed_target
 division by the square root of its positive Gram scalar.  In the normalization
 $Y=\Id$, this is $\omega^{-1/2}X$ from arXiv:1606.00608, lines 1904--1908. -/
 theorem IsNormal.smul_mul_nonsing_inv_mem_unitaryGroup_of_common_dressed_target
-    {A C : Fin d → Matrix (Fin D) (Fin D) ℂ} (hA : Kraus.IsNormal A)
+    {A C : ι → Matrix (Fin D) (Fin D) ℂ} (hA : Kraus.IsNormal A)
     {X Y : Matrix (Fin D) (Fin D) ℂ} (hX : IsUnit X.det) (hY : IsUnit Y.det)
     (hdX : ∀ i, X * A i * X⁻¹ = X⁻¹ᴴ * C i * Xᴴ)
     (hdY : ∀ i, Y * A i * Y⁻¹ = Y⁻¹ᴴ * C i * Yᴴ) :
@@ -185,7 +185,7 @@ necessarily positive constant $\omega$ (arXiv:1606.00608, proof of Proposition
 invertible; only $X \ne 0$ is needed here, and invertibility of $X$ follows from the
 conclusion. -/
 theorem IsNormal.conjTranspose_mul_self_eq_smul_one_of_commute
-    {A : Fin d → Matrix (Fin D) (Fin D) ℂ} (hA : Kraus.IsNormal A)
+    {A : ι → Matrix (Fin D) (Fin D) ℂ} (hA : Kraus.IsNormal A)
     {X : Matrix (Fin D) (Fin D) ℂ} (hX : X ≠ 0)
     (hcomm : ∀ i, Xᴴ * X * A i = A i * (Xᴴ * X)) :
     ∃ ω : ℝ, 0 < ω ∧ Xᴴ * X = (ω : ℂ) • 1 := by
@@ -219,7 +219,7 @@ Proposition 4.13, lines 1906--1908): a nonzero $X$ whose Gram matrix commutes
 with every matrix of a normal finite Kraus family becomes unitary after
 division by the square root of the positive constant from eq3:proof.IV.12. -/
 theorem IsNormal.smul_mem_unitaryGroup_of_commute
-    {A : Fin d → Matrix (Fin D) (Fin D) ℂ} (hA : Kraus.IsNormal A)
+    {A : ι → Matrix (Fin D) (Fin D) ℂ} (hA : Kraus.IsNormal A)
     {X : Matrix (Fin D) (Fin D) ℂ} (hX : X ≠ 0)
     (hcomm : ∀ i, Xᴴ * X * A i = A i * (Xᴴ * X)) :
     ∃ ω : ℝ, 0 < ω ∧
@@ -236,31 +236,31 @@ open scoped Matrix BigOperators
 
 namespace Kraus
 
-variable {d D : ℕ}
+variable {ι : Type*} [Fintype ι] {D : ℕ}
 
 /-- For an injective tensor, any matrix can be decomposed in the spanning set. -/
-theorem IsInjective.exists_decomposition {A : Fin d → Matrix (Fin D) (Fin D) ℂ}
+theorem IsInjective.exists_decomposition {A : ι → Matrix (Fin D) (Fin D) ℂ}
     (hA : Kraus.IsInjective A)
     (X : Matrix (Fin D) (Fin D) ℂ) :
-    ∃ c : Fin d → ℂ, X = ∑ i, c i • A i := by
+    ∃ c : ι → ℂ, X = ∑ i, c i • A i := by
   obtain ⟨c, hc⟩ := hA.linearCombination_surjective X
   exact ⟨c, by rw [← hc]; simp [Fintype.linearCombination_apply]⟩
 
 /-- Noncomputable decomposition map: a choice of right inverse for the linear combination map.
 For an injective tensor `A`, `decompositionMap A hA` is a linear map
 `M_D(ℂ) → ℂ^d` such that `∑ i, (decompositionMap A hA X) i • A i = X`. -/
-noncomputable def decompositionMap {A : Fin d → Matrix (Fin D) (Fin D) ℂ}
+noncomputable def decompositionMap {A : ι → Matrix (Fin D) (Fin D) ℂ}
     (hA : Kraus.IsInjective A) :
-    Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] (Fin d → ℂ) :=
+    Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] (ι → ℂ) :=
   (hA.exists_rightInverse).choose
 
-theorem decompositionMap_spec {A : Fin d → Matrix (Fin D) (Fin D) ℂ} (hA : Kraus.IsInjective A)
+theorem decompositionMap_spec {A : ι → Matrix (Fin D) (Fin D) ℂ} (hA : Kraus.IsInjective A)
     (X : Matrix (Fin D) (Fin D) ℂ) :
     Fintype.linearCombination ℂ A (decompositionMap hA X) = X :=
   (hA.exists_rightInverse).choose_spec X
 
 @[simp]
-theorem decompositionMap_sum {A : Fin d → Matrix (Fin D) (Fin D) ℂ} (hA : Kraus.IsInjective A)
+theorem decompositionMap_sum {A : ι → Matrix (Fin D) (Fin D) ℂ} (hA : Kraus.IsInjective A)
     (X : Matrix (Fin D) (Fin D) ℂ) :
     ∑ i, decompositionMap hA X i • A i = X := by
   have := decompositionMap_spec hA X
@@ -276,23 +276,25 @@ open scoped Matrix BigOperators
 
 namespace Kraus
 
-variable {d D : ℕ}
+variable {ι : Type*} [Fintype ι] {D : ℕ}
 
-private def evalWordMarkedLast (A B : Fin d → Matrix (Fin D) (Fin D) ℂ) :
-    List (Fin d) → Matrix (Fin D) (Fin D) ℂ
+private def evalWordMarkedLast (A B : ι → Matrix (Fin D) (Fin D) ℂ) :
+    List ι → Matrix (Fin D) (Fin D) ℂ
   | [] => 0
   | [i] => B i
   | i :: j :: w => A i * evalWordMarkedLast A B (j :: w)
 
-private theorem ofFn_ne_nil_of_pos {N : ℕ} (hN : 0 < N) (σ : Fin N → Fin d) :
+omit [Fintype ι] in
+private theorem ofFn_ne_nil_of_pos {N : ℕ} (hN : 0 < N) (σ : Fin N → ι) :
     List.ofFn σ ≠ [] := by
   intro h
   have := congrArg List.length h
   simp only [List.length_ofFn, List.length_nil] at this
   omega
 
+omit [Fintype ι] in
 private theorem mul_evalWord_eq_mul_evalWordMarkedLast
-    (A B : Fin d → Matrix (Fin D) (Fin D) ℂ)
+    (A B : ι → Matrix (Fin D) (Fin D) ℂ)
     (hcross : ∀ i j, B i * A j = A i * B j) :
     ∀ i w, w ≠ [] →
       B i * Kraus.evalWord A w = A i * evalWordMarkedLast A B w := by
@@ -314,7 +316,7 @@ private theorem mul_evalWord_eq_mul_evalWordMarkedLast
             _ = A i * evalWordMarkedLast A B (j :: k :: w) := rfl
 
 private theorem exists_factor_of_cross_mul_eq_of_isInjective
-    {A B : Fin d → Matrix (Fin D) (Fin D) ℂ} (hA : Kraus.IsInjective A)
+    {A B : ι → Matrix (Fin D) (Fin D) ℂ} (hA : Kraus.IsInjective A)
     (hcross : ∀ i j, B i * A j = A i * B j) :
     ∃ C : Matrix (Fin D) (Fin D) ℂ, ∀ i, B i = A i * C := by
   let C : Matrix (Fin D) (Fin D) ℂ :=
@@ -335,24 +337,24 @@ private theorem exists_factor_of_cross_mul_eq_of_isInjective
       simp only [C, Finset.mul_sum, Matrix.mul_smul]
 
 private theorem exists_factor_of_cross_mul_eq_of_isNBlkInjective
-    {A B : Fin d → Matrix (Fin D) (Fin D) ℂ} {N : ℕ}
+    {A B : ι → Matrix (Fin D) (Fin D) ℂ} {N : ℕ}
     (hNpos : 0 < N) (hA : Kraus.IsNBlkInjective A N)
     (hcross : ∀ i j, B i * A j = A i * B j) :
     ∃ C : Matrix (Fin D) (Fin D) ℂ, ∀ i, B i = A i * C := by
   let C : Matrix (Fin D) (Fin D) ℂ :=
-    ∑ σ : Fin N → Fin d, Kraus.blockDecompositionMap hA 1 σ •
+    ∑ σ : Fin N → ι, Kraus.blockDecompositionMap hA 1 σ •
       evalWordMarkedLast A B (List.ofFn σ)
   refine ⟨C, fun i ↦ ?_⟩
   calc
     B i = B i * 1 := by rw [Matrix.mul_one]
-    _ = B i * ∑ σ : Fin N → Fin d,
+    _ = B i * ∑ σ : Fin N → ι,
         Kraus.blockDecompositionMap hA 1 σ • Kraus.evalWord A (List.ofFn σ) := by
       rw [Kraus.blockDecompositionMap_sum]
-    _ = ∑ σ : Fin N → Fin d, Kraus.blockDecompositionMap hA 1 σ •
+    _ = ∑ σ : Fin N → ι, Kraus.blockDecompositionMap hA 1 σ •
         (B i * Kraus.evalWord A (List.ofFn σ)) := by
       rw [Finset.mul_sum]
       simp only [Matrix.mul_smul]
-    _ = ∑ σ : Fin N → Fin d, Kraus.blockDecompositionMap hA 1 σ •
+    _ = ∑ σ : Fin N → ι, Kraus.blockDecompositionMap hA 1 σ •
         (A i * evalWordMarkedLast A B (List.ofFn σ)) := by
       congr 1
       funext σ
@@ -361,7 +363,7 @@ private theorem exists_factor_of_cross_mul_eq_of_isNBlkInjective
       simp only [C, Finset.mul_sum, Matrix.mul_smul]
 
 private theorem eq_smul_of_factor_of_cross_mul_eq
-    {A B : Fin d → Matrix (Fin D) (Fin D) ℂ} (hA : Kraus.IsNormal A)
+    {A B : ι → Matrix (Fin D) (Fin D) ℂ} (hA : Kraus.IsNormal A)
     (hfactor : ∃ C : Matrix (Fin D) (Fin D) ℂ, ∀ i, B i = A i * C)
     (hcross : ∀ i j, B i * A j = A i * B j) :
     ∃ δ : ℂ, ∀ i, B i = δ • A i := by
@@ -369,9 +371,9 @@ private theorem eq_smul_of_factor_of_cross_mul_eq
   have hcomm : ∀ j, C * A j = A j * C := by
     intro j
     obtain ⟨N, hNpos, hN⟩ := hA
-    have hletter (i : Fin d) : A i * (C * A j) = A i * (A j * C) := by
+    have hletter (i : ι) : A i * (C * A j) = A i * (A j * C) := by
       simpa only [hC, Matrix.mul_assoc] using hcross i j
-    have hword_nonempty : ∀ w : List (Fin d), w ≠ [] →
+    have hword_nonempty : ∀ w : List ι, w ≠ [] →
         Kraus.evalWord A w * (C * A j) = Kraus.evalWord A w * (A j * C) := by
       intro w hw
       induction w with
@@ -391,25 +393,25 @@ private theorem eq_smul_of_factor_of_cross_mul_eq
                 _ = Kraus.evalWord A (i :: k :: w) * (A j * C) := by
                   conv_rhs => rw [Kraus.evalWord_cons]
                   rw [Matrix.mul_assoc]
-    have hword (σ : Fin N → Fin d) :
+    have hword (σ : Fin N → ι) :
         Kraus.evalWord A (List.ofFn σ) * (C * A j) =
           Kraus.evalWord A (List.ofFn σ) * (A j * C) := by
       exact hword_nonempty _ (ofFn_ne_nil_of_pos hNpos σ)
     calc
       C * A j = 1 * (C * A j) := by rw [Matrix.one_mul]
-      _ = (∑ σ : Fin N → Fin d,
+      _ = (∑ σ : Fin N → ι,
           Kraus.blockDecompositionMap hN 1 σ • Kraus.evalWord A (List.ofFn σ)) *
           (C * A j) := by rw [Kraus.blockDecompositionMap_sum]
-      _ = ∑ σ : Fin N → Fin d, Kraus.blockDecompositionMap hN 1 σ •
+      _ = ∑ σ : Fin N → ι, Kraus.blockDecompositionMap hN 1 σ •
           (Kraus.evalWord A (List.ofFn σ) * (C * A j)) := by
         rw [Finset.sum_mul]
         simp only [Matrix.smul_mul]
-      _ = ∑ σ : Fin N → Fin d, Kraus.blockDecompositionMap hN 1 σ •
+      _ = ∑ σ : Fin N → ι, Kraus.blockDecompositionMap hN 1 σ •
           (Kraus.evalWord A (List.ofFn σ) * (A j * C)) := by
         congr 1
         funext σ
         rw [hword]
-      _ = (∑ σ : Fin N → Fin d,
+      _ = (∑ σ : Fin N → ι,
           Kraus.blockDecompositionMap hN 1 σ • Kraus.evalWord A (List.ofFn σ)) *
           (A j * C) := by
         rw [Finset.sum_mul]
@@ -425,7 +427,7 @@ then all matrices of `B` are obtained from `A` by one common scalar.
 
 Source: `Papers/2502.20257/main.tex:1255-1325`. -/
 theorem IsInjective.eq_smul_of_cross_mul_eq
-    {A B : Fin d → Matrix (Fin D) (Fin D) ℂ} (hA : Kraus.IsInjective A)
+    {A B : ι → Matrix (Fin D) (Fin D) ℂ} (hA : Kraus.IsInjective A)
     (hcross : ∀ i j, B i * A j = A i * B j) :
     ∃ δ : ℂ, ∀ i, B i = δ • A i := by
   apply eq_smul_of_factor_of_cross_mul_eq
@@ -440,7 +442,7 @@ through each word before applying the block decomposition map.
 
 Source: `Papers/2502.20257/main.tex:1255-1325`. -/
 theorem IsNormal.eq_smul_of_cross_mul_eq
-    {A B : Fin d → Matrix (Fin D) (Fin D) ℂ} (hA : Kraus.IsNormal A)
+    {A B : ι → Matrix (Fin D) (Fin D) ℂ} (hA : Kraus.IsNormal A)
     (hcross : ∀ i j, B i * A j = A i * B j) :
     ∃ δ : ℂ, ∀ i, B i = δ • A i := by
   obtain ⟨N, hNpos, hN⟩ := hA
