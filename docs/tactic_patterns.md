@@ -2,8 +2,7 @@
 
 Record repeated proof patterns before introducing a new tactic. Prefer an
 existing theorem, then a reusable lemma or simp set; promote a new abstraction
-only after at least three genuine occurrences across two files. Occurrences
-in a regression file are not additional mathematical consumers.
+only after at least three genuine occurrences across two files.
 
 ## Promoted
 
@@ -1672,9 +1671,9 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
 
 ### Equality decisions in finite coordinates — existing lemma (2026-10-23)
 
-- **Occurrences:** The one-dimensional and two-qubit applications in
-  `QICLeanTest/Entropy/VonNeumann/AGSPFavorableEntropyAxioms.lean`, and both configuration factors
-  in `QICLean/ManyBody/Entropy/AGSPRegionalEntropy.lean`.
+- **Occurrences:** Both configuration factors in
+  `QICLean/ManyBody/Entropy/AGSPRegionalEntropy.lean`. Two further applications
+  in a test fixture were deleted with the rest of `QICLeanTest/` (2026-11-27).
 - **Reuse:** `Subsingleton.elim` identifies a classically chosen `DecidableEq`
   value with the available value before applying a theorem whose matrix
   expressions contain those decisions.

@@ -63,8 +63,8 @@ The downstream source audit used TNLean commit
 `7e8438a32f1f0435e3acec579a89656de1b3f07b` and covered `TNLean/Circuit/LiebRobinson` (in particular
 `GraphPropagation`), the regional state bridges in `TNLean/Lattice`, and
 `TNLean/PEPS/ParentHamiltonian/DependentRegionCoordinates`. The latter unfolds
-`Entropy.regionState`, so the regression suite checks the original partial-trace
-rewrite sequence as well as definitional compatibility. The Lieb–Robinson
+`Entropy.regionState`, so the original partial-trace rewrite sequence was checked
+as well as definitional compatibility. The Lieb–Robinson
 support signatures are unchanged by this extension; this is not its pilot port.
 
 ## Remaining work
@@ -93,13 +93,8 @@ fetching all 9,047 Mathlib cache artifacts:
   supported-observable trace theorems contain only `propext`, `Classical.choice`,
   and `Quot.sound`.
 
-`QICLeanTest/ManyBodyRegionState.lean` checks product-valued site bases, empty
-bases, the reference-free supported-observable theorem, definitional agreement
-with the legacy state and entropy, legacy rewrite sequences, the entrywise
-scaling proof, and the disjoint-union inverse computation. The TNLean-style
-site-equivalence simplification is checked explicitly. TNLean itself was source
-audited at the revision recorded above, not built; downstream caller migration
-remains separate work.
+TNLean itself was source audited at the revision recorded above, not built;
+downstream caller migration remains separate work.
 
 The repository does not contain the optional `scripts/tactic_pattern_scan.py`
 mentioned in `CLAUDE.md`; migrated proof repetition was reviewed directly.
