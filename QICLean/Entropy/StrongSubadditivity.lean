@@ -13,7 +13,6 @@ import QICLean.Entropy.StrongSubadditivity.EntropyMarkovReverse
 import QICLean.Entropy.StrongSubadditivity.EqualitySeparability
 import QICLean.Entropy.StrongSubadditivity.MarkovChain
 import QICLean.Entropy.StrongSubadditivity.MutualInformationDataProcessing
-import QICLean.Entropy.StrongSubadditivity.MutualInformationMonotone
 import QICLean.Entropy.StrongSubadditivity.PositiveOverlappingProduct
 import QICLean.Entropy.StrongSubadditivity.StrongSubadditivity
 import QICLean.Entropy.StrongSubadditivity.StrongSubadditivityPosDef

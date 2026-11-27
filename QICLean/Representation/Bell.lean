@@ -10,5 +10,4 @@ Authors: QICLean contributors
 
 import QICLean.Representation.Bell.LabelDimensionRemainder
 import QICLean.Representation.Bell.ReplicaPrevector
-import QICLean.Representation.Bell.SchmidtBellPrevector
 import QICLean.Representation.Bell.UniformBellLabel

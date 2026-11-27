@@ -12,7 +12,6 @@ import QICLean.ManyBody.Entropy.Typical.CompressedTypicalSiteCoordinates
 import QICLean.Representation.SchurWeyl.IidSchurLabelExponential
 import QICLean.ManyBody.Replica.Label.SubsystemLabelCoordinates
 import QICLean.ManyBody.Replica.CompressedSite.CompressedTypicalAuxiliaryCoordinates
-import QICLean.ManyBody.Replica.Label.CommonSchurBellCutoffs
 
 /-!
 # Common regional cutoffs for the actual compressed selected state

@@ -6,7 +6,7 @@ Authors: QICLean contributors
 import QICLean.ManyBody.Replica.Bell.SchmidtBellEnumeratedCompression
 import QICLean.ManyBody.Replica.Label.SubsystemTransport
 import QICLean.ManyBody.Replica.Bell.SchmidtBellPhysicalWitness
-import QICLean.ManyBody.Replica.Bell.CompressedInverseNorm
+import QICLean.ManyBody.Replica.Bell.PinnedCompressedPowers
 import QICLean.Analysis.Real.BellOverlapLogBound
 
 /-!

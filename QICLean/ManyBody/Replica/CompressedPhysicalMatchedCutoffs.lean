@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Entropy.Typical.CompressedPhysicalRegions
-import QICLean.ManyBody.Replica.Label.MatchedSchurCutoffs
+import QICLean.ManyBody.Replica.Label.SubsystemLabelCoordinates
 
 /-!
 # Matched cutoffs in the original physical dimensions

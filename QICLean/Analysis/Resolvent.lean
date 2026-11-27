@@ -12,6 +12,5 @@ import QICLean.Analysis.Resolvent.Defect
 import QICLean.Analysis.Resolvent.DefectIntegral
 import QICLean.Analysis.Resolvent.FunctionalCalculus
 import QICLean.Analysis.Resolvent.Mellin
-import QICLean.Analysis.Resolvent.OperatorJensenIntegrands
 import QICLean.Analysis.Resolvent.PhaseBound
 import QICLean.Analysis.Resolvent.PhaseGap

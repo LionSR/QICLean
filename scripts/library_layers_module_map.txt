@@ -2335,3 +2335,35 @@ QICLean.Analysis.Norm.NeumannInverse QICLean.Analysis.Calculus.NeumannInverse
 # The residual of a Choi-minorized channel is a statement about Kraus maps and the
 # trace-preserving completion, so it follows them to KrausMap.
 QICLean.Channel.Choi.Residual QICLean.Channel.KrausMap.ChoiResidual
+
+# Second round of merges of modules with at most two public declarations (#1172)
+QICLean.Algebra.OperatorSchmidt.LocalPolynomialSchmidtRank QICLean.Algebra.OperatorSchmidt.Bounds merge
+QICLean.Algebra.OperatorSchmidt.MonomialEvaluationSchmidtRank QICLean.Algebra.OperatorSchmidt.WeightedFrequencySchmidtRank merge
+QICLean.Analysis.FunctionalCalculus.CfcLogAdditive QICLean.Analysis.FunctionalCalculus.MatrixPowers merge
+QICLean.Analysis.OperatorMean.MeanTreeExponentialLowerNorm QICLean.Analysis.OperatorMean.MeanTreeProjectionSectors merge
+QICLean.Analysis.Resolvent.OperatorJensenIntegrands QICLean.Analysis.Resolvent.FunctionalCalculus merge
+QICLean.Analysis.TraceNorm.WeightedPureStateTraceNorm QICLean.Analysis.TraceNorm.PureStateTraceDistance merge
+QICLean.Channel.Choi.Doeblin QICLean.Channel.Choi.JamiolkowskiSpectrum merge
+QICLean.Channel.KoashiImoto.NormalizedFamilyBlockForm QICLean.Channel.KoashiImoto.PreservingBlockAction merge
+QICLean.Channel.Schwarz.PositiveOnAbelian.Characterization QICLean.Channel.Schwarz.PositiveOnAbelian.CompletePositivity merge
+QICLean.Entropy.Markov.InvariantConditionalBlockForm QICLean.Entropy.Markov.InvariantConditionalFamily merge
+QICLean.Entropy.StrongSubadditivity.MutualInformationMonotone QICLean.Entropy.StrongSubadditivity.MutualInformationDataProcessing merge
+QICLean.Entropy.Typical.StateFromTail QICLean.Entropy.Typical.PureState merge
+QICLean.ManyBody.Entropy.Typical.TypicalMarginalMass QICLean.ManyBody.Entropy.Typical.PlaneMarginalTails merge
+QICLean.ManyBody.Replica.Bell.CompressedInverseNorm QICLean.ManyBody.Replica.Bell.PinnedCompressedPowers merge
+QICLean.ManyBody.Replica.Bell.PrevectorSharpUpper QICLean.ManyBody.Replica.Bell.SelectedBellPostPin merge
+QICLean.ManyBody.Replica.Bell.SchmidtBellEnumeratedPrevector QICLean.ManyBody.Replica.Bell.SchmidtBellPrevectorOverlap merge
+QICLean.ManyBody.Replica.Bell.SchmidtBellSharpUpper QICLean.ManyBody.Replica.Bell.SelectedBellPostPin merge
+QICLean.ManyBody.Replica.Configuration.ComponentMergeMoment QICLean.ManyBody.Replica.Configuration.GoodConfigurationMergeMoment merge
+QICLean.ManyBody.Replica.Configuration.PhysicalLabelMoment QICLean.ManyBody.Replica.Configuration.GoodCopyDensity merge
+QICLean.ManyBody.Replica.Label.CommonSchurBellCutoffs QICLean.ManyBody.Replica.Label.CommonSchurCutoffs merge
+QICLean.ManyBody.Replica.Label.MatchedSchurCutoffs QICLean.ManyBody.Replica.Label.SubsystemLabelCoordinates merge
+QICLean.ManyBody.Replica.LowDefect.ComponentInverseRough QICLean.ManyBody.Replica.LowDefect.RegionalLowDefectLowerPin merge
+QICLean.ManyBody.Replica.LowDefect.ComponentInverseRoughUniform QICLean.ManyBody.Replica.LowDefect.RegionalLowDefectLowerPin merge
+QICLean.ManyBody.Replica.LowDefect.InverseRoughCompression QICLean.ManyBody.Replica.LowDefect.RegionalLowDefectLowerPin merge
+QICLean.Probability.Measurable.FiniteSpanProjectionMeasurable QICLean.Probability.Measurable.MatrixFamilySupportMeasurable merge
+QICLean.Probability.PoissonWord.PoissonWordOmissionBound QICLean.Probability.PoissonWord.Partition merge
+QICLean.Probability.Sampling.NativeRankUnitarySampling QICLean.Probability.Sampling.RankUnitaryProductHaar merge
+QICLean.Representation.Bell.SchmidtBellPrevector QICLean.Representation.Bell.ReplicaPrevector merge
+QICLean.Spectral.Eigenvalue.ShiftedFilterClipping QICLean.Spectral.Eigenvalue.ShiftedDensityClipping merge
+QICLean.Spectral.Perturbation.HermitianSpectrumPreserver QICLean.Spectral.Perturbation.HermitianSpectrumPerturbation merge

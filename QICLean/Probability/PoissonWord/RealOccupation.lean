@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Probability.PoissonWord.Occupation
-import QICLean.Probability.PoissonWord.PoissonWordOmissionBound
+import QICLean.Probability.PoissonWord.Partition
 
 /-!
 # Integrable real occupation of Poissonized prefixes

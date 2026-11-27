@@ -414,6 +414,8 @@ second table to the first, and an earlier row whose target was merged names the 
 | `Algebra.MatrixRankKronecker` | `Algebra.Matrix.MatrixRankBaseChange` |
 | `Algebra.MatrixReindexUnitary` | `Algebra.Unitary.MatrixUnitaryBetween` |
 | `Algebra.OperatorBlock` | `Algebra.OperatorSchmidt.Basic` |
+| `Algebra.OperatorSchmidt.LocalPolynomialSchmidtRank` | `Algebra.OperatorSchmidt.Bounds` |
+| `Algebra.OperatorSchmidt.MonomialEvaluationSchmidtRank` | `Algebra.OperatorSchmidt.WeightedFrequencySchmidtRank` |
 | `Algebra.OperatorSchmidtProducts` | `Algebra.OperatorSchmidt.Bounds` |
 | `Algebra.PermutationMatrixUnitary` | `Algebra.Unitary.MatrixUnitaryBetween` |
 | `Algebra.PiProductTrace` | `Algebra.Kronecker.KroneckerFactorPositivity` |
@@ -442,6 +444,7 @@ second table to the first, and an earlier row whose target was merged names the 
 | `Analysis.FiniteProductUnionProbability` | `Probability.Measure.FiniteProductSectionProbability` |
 | `Analysis.FiniteProductUpdateProbability` | `Probability.Measure.FiniteProductSectionProbability` |
 | `Analysis.FiveMomentExponentialBound` | `Analysis.Real.FiniteExponentialRetainedMass` |
+| `Analysis.FunctionalCalculus.CfcLogAdditive` | `Analysis.FunctionalCalculus.MatrixPowers` |
 | `Analysis.FunctionalCalculus.RealPowerIntertwine` | `Analysis.FunctionalCalculus.MatrixPowers` |
 | `Analysis.GeometricDecay` | `Analysis.Real.GeometricOrderPolynomialBound` |
 | `Analysis.GroundSpectrumMinimum` | `Spectral.Eigenvalue.GroundEnergyBounds` |
@@ -458,6 +461,7 @@ second table to the first, and an earlier row whose target was merged names the 
 | `Analysis.MeanTreeProjectionMassBound` | `Analysis.OperatorMean.MeanTreeProjectionSectors` |
 | `Analysis.NestedChebyshevViability` | `Spectral.LowEnergy.ChebyshevViability` |
 | `Analysis.OperatorMean.GeometricMeanIntertwine` | `Analysis.OperatorMean.WeightedGeometricMean` |
+| `Analysis.OperatorMean.MeanTreeExponentialLowerNorm` | `Analysis.OperatorMean.MeanTreeProjectionSectors` |
 | `Analysis.OperatorMean.MeanTreeIntertwine` | `Analysis.OperatorMean.FiniteTree` |
 | `Analysis.OptimizedPureErrorMass` | `Analysis.Real.OptimizedPureTraceError` |
 | `Analysis.OrthonormalMatrixNorm` | `Analysis.Norm.KroneckerOperatorNorm` |
@@ -476,6 +480,7 @@ second table to the first, and an earlier row whose target was merged names the 
 | `Analysis.ReplicaGoodConfigurationIndividualMergeMoment` | `ManyBody.Replica.Configuration.GoodConfigurationMergeMoment` |
 | `Analysis.ReplicaGoodConfigurationSignedMoments` | `ManyBody.Replica.Configuration.GoodConfigurationSharpMoment` |
 | `Analysis.ReplicaRegionalDensity` | `ManyBody.Replica.Configuration.GoodCopyDensity` |
+| `Analysis.Resolvent.OperatorJensenIntegrands` | `Analysis.Resolvent.FunctionalCalculus` |
 | `Analysis.RootChannelWord` | `Analysis.Norm.RootChannel` |
 | `Analysis.SoftTruncationOperatorBounds` | `Spectral.Filter.ShiftedSoftHardTruncation` |
 | `Analysis.SoftTruncationRestrictedResidual` | `Spectral.Filter.SoftTruncationHardResidual` |
@@ -488,6 +493,7 @@ second table to the first, and an earlier row whose target was merged names the 
 | `Analysis.Subspace.ViableSubspaceSharpTensorReduction` | `Analysis.Subspace.ViableSubspaceErrorReduction` |
 | `Analysis.Support.LogJensen` | `Analysis.FunctionalCalculus.SpectralQuadraticForm` |
 | `Analysis.SurprisalFunctionalCalculus` | `Analysis.Logarithm.CfcLogAdditive` |
+| `Analysis.TraceNorm.WeightedPureStateTraceNorm` | `Analysis.TraceNorm.PureStateTraceDistance` |
 | `Analysis.TwoSidedResidual` | `Spectral.Perturbation.ResidualComparison` |
 | `Analysis.ViableNodeLeafCount` | `Analysis.Parameter.ViableNodeParameters` |
 | `Analysis.ViableProjectionNonzero` | `Analysis.Subspace.ViableSubspace` |
@@ -501,28 +507,34 @@ second table to the first, and an earlier row whose target was merged names the 
 | `Analysis.ViableTrimmingRadius` | `Analysis.Parameter.ViableRefinementParameters` |
 | `Analysis.ViableTrimmingRank` | `Analysis.Parameter.ViableRefinementParameters` |
 | `Analysis.WeightedTraceExponential` | `Analysis.TraceInequality.WeightedTraceHolder` |
+| `Channel.Choi.Doeblin` | `Channel.Choi.JamiolkowskiSpectrum` |
 | `Channel.ConditionalExpectation.StarSubalgebraConditionalExpectation` | `Channel.ConditionalExpectation.DirectSumConditionalExpectation` |
 | `Channel.FaithfulMarginalWhitenedChoi` | `Entropy.Renyi.SupportCompressedEntropy` |
 | `Channel.GaugeConjugation` | `Channel.KrausMap.KrausGauge` |
+| `Channel.KoashiImoto.NormalizedFamilyBlockForm` | `Channel.KoashiImoto.PreservingBlockAction` |
 | `Channel.KrausMap.SingleKraus` | `Channel.KrausMap.SingleKrausPositivity` |
 | `Channel.OperatorMean.LeafStateIntertwine` | `Channel.OperatorMean.Intertwine` |
 | `Channel.PartialTrace.MarginalRank` | `Channel.PartialTrace.MarginalSupportAbsorption` |
 | `Channel.Positive.PositiveFunctional` | `Channel.ConditionalExpectation.PositiveConditionalExpectation` |
 | `Channel.SchmidtMarginalAction` | `Channel.Schmidt.Trimming` |
+| `Channel.Schwarz.PositiveOnAbelian.Characterization` | `Channel.Schwarz.PositiveOnAbelian.CompletePositivity` |
 | `Entropy.Classical.SurprisalProductMoment` | `Entropy.Typical.IidSurprisal` |
 | `Entropy.CompressedTypicalRegionalMarginal` | `ManyBody.Entropy.Typical.CompressedTypicalSiteCoordinates` |
 | `Entropy.CompressedTypicalRegionalTail` | `ManyBody.Replica.CompressedTypicalCommonRetainedMass` |
 | `Entropy.CompressedTypicalSiteEntropy` | `ManyBody.Entropy.Typical.CompressedTypicalSiteCoordinates` |
 | `Entropy.CompressedTypicalSiteNorm` | `ManyBody.Entropy.Typical.CompressedTypicalSiteCoordinates` |
 | `Entropy.IidSchurExponentialMoments` | `Representation.SchurWeyl.IidSchurSignedMoments` |
+| `Entropy.Markov.InvariantConditionalBlockForm` | `Entropy.Markov.InvariantConditionalFamily` |
 | `Entropy.MutualInformation.PhysicalBufferUniform` | `Entropy.MutualInformation.PhysicalBuffer` |
 | `Entropy.PatchNormalizedFirstVariation` | `ManyBody.Entropy.Filter.PatchStationarity` |
 | `Entropy.RegionConditionalInformationSum` | `ManyBody.Entropy.RegionConditionalInformation` |
 | `Entropy.RegionEntropyContinuity` | `ManyBody.Entropy.MutualInformationPerturbation` |
-| `Entropy.SSAEqualityCharacterization` | `Entropy.StrongSubadditivity.MarkovChain` |
 | `Entropy.SelectedSchmidtEntropy` | `Entropy.Typical.PureCompression` |
+| `Entropy.SSAEqualityCharacterization` | `Entropy.StrongSubadditivity.MarkovChain` |
+| `Entropy.StrongSubadditivity.MutualInformationMonotone` | `Entropy.StrongSubadditivity.MutualInformationDataProcessing` |
 | `Entropy.TripartiteTrace` | `Entropy.VonNeumann.Entropy` |
 | `Entropy.Typical.IidSurprisalMomentExponential` | `Entropy.Typical.IidSurprisal` |
+| `Entropy.Typical.StateFromTail` | `Entropy.Typical.PureState` |
 | `Entropy.ViableSampling.StoppedHalfSamplingRank` | `ManyBody.Subspace.Sampling.CanonicalHalfSamplingDimension` |
 | `Entropy.ViableSampling.ViableHalfSamplingTrimming` | `ManyBody.Subspace.Sampling.StoppedHalfSamplingProbability` |
 | `Entropy.ViableSampling.ViableSubspaceReferenceTrimming` | `ManyBody.Subspace.Trimming` |
@@ -531,17 +543,29 @@ second table to the first, and an earlier row whose target was merged names the 
 | `Kraus.MultiBlockWord` | `Kraus.Word` |
 | `Kraus.TracePairing` | `Kraus.Transfer` |
 | `ManyBody.Entropy.RegionalResetEntropy` | `ManyBody.Entropy.InformationReset` |
+| `ManyBody.Entropy.Typical.TypicalMarginalMass` | `ManyBody.Entropy.Typical.PlaneMarginalTails` |
 | `ManyBody.Replica.BandMetric.Integrated` | `ManyBody.Replica.BandMetric.IntegratedEntropy` |
 | `ManyBody.Replica.BandMetric.RootCompression` | `ManyBody.Replica.BandMetric.Energy` |
+| `ManyBody.Replica.Bell.CompressedInverseNorm` | `ManyBody.Replica.Bell.PinnedCompressedPowers` |
 | `ManyBody.Replica.Bell.MetricFactorPositivity` | `ManyBody.Replica.Bell.PinnedTreeAction` |
 | `ManyBody.Replica.Bell.PhysicalRoughUpper` | `ManyBody.Replica.Bell.PrevectorRoughUpper` |
 | `ManyBody.Replica.Bell.PinnedProductAction` | `ManyBody.Replica.Bell.PinnedTreeAction` |
+| `ManyBody.Replica.Bell.PrevectorSharpUpper` | `ManyBody.Replica.Bell.SelectedBellPostPin` |
+| `ManyBody.Replica.Bell.SchmidtBellEnumeratedPrevector` | `ManyBody.Replica.Bell.SchmidtBellPrevectorOverlap` |
+| `ManyBody.Replica.Bell.SchmidtBellSharpUpper` | `ManyBody.Replica.Bell.SelectedBellPostPin` |
 | `ManyBody.Replica.Bell.SelectedBellPostInverseTransport` | `ManyBody.Replica.Bell.SelectedBellPostPin` |
 | `ManyBody.Replica.Bell.SymmetricPinProjection` | `ManyBody.Replica.Bell.InsertionSymmetry` |
 | `ManyBody.Replica.CompressedTypicalCommonBellVector` | `ManyBody.Replica.CompressedTypicalCommonRetainedMass` |
+| `ManyBody.Replica.Configuration.ComponentMergeMoment` | `ManyBody.Replica.Configuration.GoodConfigurationMergeMoment` |
 | `ManyBody.Replica.Configuration.GoodPhysicalSupport` | `ManyBody.Replica.Configuration.GoodConfigurationDensity` |
+| `ManyBody.Replica.Configuration.PhysicalLabelMoment` | `ManyBody.Replica.Configuration.GoodCopyDensity` |
+| `ManyBody.Replica.Label.CommonSchurBellCutoffs` | `ManyBody.Replica.Label.CommonSchurCutoffs` |
+| `ManyBody.Replica.Label.MatchedSchurCutoffs` | `ManyBody.Replica.Label.SubsystemLabelCoordinates` |
 | `ManyBody.Replica.Label.SubsystemLabelCommutation` | `ManyBody.Replica.Label.GroupedLabelSymmetricSupport` |
 | `ManyBody.Replica.Label.SymmetricSupport` | `ManyBody.Replica.Label.GroupedLabelSymmetricSupport` |
+| `ManyBody.Replica.LowDefect.ComponentInverseRough` | `ManyBody.Replica.LowDefect.RegionalLowDefectLowerPin` |
+| `ManyBody.Replica.LowDefect.ComponentInverseRoughUniform` | `ManyBody.Replica.LowDefect.RegionalLowDefectLowerPin` |
+| `ManyBody.Replica.LowDefect.InverseRoughCompression` | `ManyBody.Replica.LowDefect.RegionalLowDefectLowerPin` |
 | `ManyBody.Replica.LowDefect.LowDefectRoughLowerPin` | `ManyBody.Replica.LowDefect.RegionalLowDefectLowerPin` |
 | `ManyBody.Replica.LowDefect.LowDefectSharpLowerPin` | `ManyBody.Replica.LowDefect.RegionalLowDefectLowerPin` |
 | `ManyBody.Replica.LowDefect.RegionalRoughLowerThree` | `ManyBody.Replica.LowDefect.RegionalRoughLowerNorm` |
@@ -553,14 +577,18 @@ second table to the first, and an earlier row whose target was merged names the 
 | `ManyBody.Subspace.Sampling.TrimmingProjectionMeasurable` | `ManyBody.Subspace.Sampling.TrimmingMeasurable` |
 | `Probability.ComplexGaussian.SourceTransportExpansion` | `Probability.Gaussian.ProductSourceTransport` |
 | `Probability.Concentration.MatrixTraceNormIntegrability` | `Probability.Concentration.WeightedSourceError` |
+| `Probability.Measurable.FiniteSpanProjectionMeasurable` | `Probability.Measurable.MatrixFamilySupportMeasurable` |
 | `Probability.PoissonWord.ExpectedOmission` | `Probability.PoissonWord.RealOccupation` |
+| `Probability.PoissonWord.PoissonWordOmissionBound` | `Probability.PoissonWord.Partition` |
 | `Probability.PoissonWord.PoissonWordTelescope` | `Probability.PoissonWord.Partition` |
 | `Probability.PoissonWord.ShellGrowth` | `Probability.PoissonWord.WeightedGrowth` |
+| `Probability.Sampling.NativeRankUnitarySampling` | `Probability.Sampling.RankUnitaryProductHaar` |
 | `Probability.Sampling.NestedSamplingNaturalParameters` | `Probability.Sampling.ViableSubspaceNestedSampling` |
 | `Probability.Sampling.SampledWordImageBounds` | `Probability.Sampling.SampledOperatorImage` |
 | `Probability.Sampling.ViableSubspaceNestedCountSampling` | `Probability.Sampling.ViableSubspaceNestedSampling` |
 | `Probability.Sampling.ViableSubspaceSamplingEvent` | `Probability.Sampling.ViableSubspaceSampleOrFull` |
 | `QPF.Primitive` | `Kraus.PrimitiveFixedPoint.Assembly` |
+| `Representation.Bell.SchmidtBellPrevector` | `Representation.Bell.ReplicaPrevector` |
 | `Representation.BellInsertionRegisterCoordinates` | `ManyBody.Replica.Bell.InsertionCoordinates` |
 | `Representation.GroupAlgebraProductCoordinates` | `Representation.Permutation.PermutationRepresentation` |
 | `Representation.Permutation.SchurLabelCutoff` | `Representation.Permutation.SchurSurprisal` |
@@ -576,8 +604,10 @@ second table to the first, and an earlier row whose target was merged names the 
 | `Representation.YoungSubgroup.GoodAuxiliaryLabelCompression` | `Representation.YoungSubgroup.GroupedLabelEntropy` |
 | `Representation.YoungSubgroup.GoodAuxiliaryLabelEntropy` | `Representation.YoungSubgroup.GroupedLabelEntropy` |
 | `Spectral.Eigenvalue.CompressionEnergyInterval` | `Spectral.Eigenvalue.CompressionEnergyBounds` |
+| `Spectral.Eigenvalue.ShiftedFilterClipping` | `Spectral.Eigenvalue.ShiftedDensityClipping` |
 | `Spectral.Filter.ChebyshevGroundFilter` | `Spectral.Filter.ChebyshevSpectralFilter` |
 | `Spectral.Filter.Gaussian.UniformGroundEstimate` | `Spectral.Filter.Gaussian.GroundEstimate` |
+| `Spectral.Perturbation.HermitianSpectrumPreserver` | `Spectral.Perturbation.HermitianSpectrumPerturbation` |
 
 ### Not merged
 
@@ -592,7 +622,6 @@ second table to the first, and an earlier row whose target was merged names the 
 | `Analysis.Norm.PrincipalSubmatrixNorm` | one lemma l2 op norm of principal submatrix; merge into an Analysis/Norm matrix module (e.g. QICLean.Analysis.Norm.BlockDiagonalNorm) |
 | `Analysis.Norm.SquaredTriangle` | one inequality in a seminormed group (Mathlib object); merge into a general Analysis/Norm vector-norm module (e.g. QICLean.Analysis.Projection.OverlapTriangle) |
 | `Analysis.Norm.UnitNormalizationDistance` | one normed-space inequality; imported only by the aggregator; merge into a vector-norm host or delete |
-| `Analysis.OperatorMean.MeanTreeExponentialLowerNorm` | merge into QICLean.Analysis.OperatorMean.MeanTreeExponentialLowerNorm; one explicit-rate corollary |
 | `Analysis.Order.HermitianTracePower` | merge into QICLean.Spectral.Eigenvalue.HermitianSpectrumMultiplicity: one lemma trace(A^k) = ∑ eigenvalue^k |
 | `Analysis.Parameter.RoughLowerCoefficient` | merge into QICLean.ManyBody.Replica.LowDefect.RegionalRoughLowerNorm (sole consumer): one scalar inequality |
 | `Analysis.Projection.InvariantTensorWordPower` | merge into QICLean.Analysis.Subspace.ViableSubspaceTensor (defines IsViable); one theorem on Hilbert tensor product M ⊗ R, words of operators |
@@ -602,8 +631,8 @@ second table to the first, and an earlier row whose target was merged names the 
 | `Channel.KrausMap.KrausFamilyTraceNorm` | merge into QICLean.Channel.KrausMap.KrausFamilyDilation (or KrausFamily): one trace-norm contraction corollary of Channel.RectangularTraceNormContraction for TP families |
 | `Entropy.MutualInformation.Basic` | namespaced alias plus congr; merge into the module defining mutualInformation (QICLean.Entropy.VonNeumann.Entropy, itself an Entropy-layer module) |
 | `Entropy.MutualInformation.EffectMutualInformation` | one theorem (binary relative entropy <= mutual information) plus kernel helper; merge into QICLean.Entropy.Relative.EffectRelativeEntropy (defines binaryRelativeEntropy) |
-| `Entropy.MutualInformation.OperatorSchmidt` | one theorem (I <= log operator-Schmidt rank); merge into QICLean.Entropy.StrongSubadditivity.MutualInformationMonotone, or keep to avoid Channel.MarginalSupportWhitenedChoi import there |
-| `Entropy.MutualInformation.ProductMarginals` | merge into QICLean.Entropy.StrongSubadditivity.MutualInformationMonotone: one identity, relative entropy to product of marginals = mutual information |
+| `Entropy.MutualInformation.OperatorSchmidt` | one theorem (I <= log operator-Schmidt rank); merge into QICLean.Entropy.StrongSubadditivity.MutualInformationDataProcessing, or keep to avoid Channel.MarginalSupportWhitenedChoi import there |
+| `Entropy.MutualInformation.ProductMarginals` | merge into QICLean.Entropy.StrongSubadditivity.MutualInformationDataProcessing: one identity, relative entropy to product of marginals = mutual information |
 | `Entropy.VonNeumann.Aliases` | alias-only module (0 decls besides aliases) of _root_.vonNeumannEntropy and quantumRelativeEntropy defined in QICLean.Entropy.VonNeumann.Entropy; move that definition to Entropy/VonNeumann and fold these aliases into it |
 | `Kraus.IrreducibleAction` | merge into QICLean.Channel.Irreducible.InvariantProjection, which defines IsIrreducibleFamily; one equivalence with Matrix.IsIrreducibleAction plus its two directions |
 | `Kraus.TraceFactorGauge` | merge into QICLean.Channel.KrausMap.KrausGauge (tpGauge of a family); two lemmas; KrausGauge is itself family-level and belongs in Kraus |
@@ -615,23 +644,16 @@ second table to the first, and an earlier row whose target was merged names the 
 | `ManyBody.Entropy.Cut.RightLocalLift` | merge into QICLean.ManyBody.Sites.Support: one lemma, operator on the complement cut factor is IsSupportedOn the complement |
 | `ManyBody.Entropy.Cut.SupportedOperatorAlgebra` | merge into QICLean.Algebra.Matrix.KroneckerEmbed (or the Kronecker module): kronecker_one_mul_one_kronecker_comm is pure Kronecker algebra, no sites despite title |
 | `ManyBody.Entropy.Cut.SupportedOperatorSchmidtWords` | merge into QICLean.ManyBody.Sites.OperatorSchmidtRank: one bound on operatorSchmidtRank of ordered products of supported operators; imports Entropy.FilterChainEnergy only for proof |
-| `ManyBody.Replica.Bell.CompressedInverseNorm` | merge into QICLean.ManyBody.Replica.Bell.PinnedTreeAction (with BellPinnedProductAction and BellPinnedCompressedPowers: one chain of one-theorem modules about replica metrics acting on the Bell pin); objects replicaMetric,regions,op norm |
 | `ManyBody.Replica.Bell.PinnedCompressedPowers` | merge into QICLean.ManyBody.Replica.Bell.PinnedTreeAction; one rpow identity for the band product compressed to symmetric coordinates |
-| `ManyBody.Replica.Bell.PrevectorRoughUpper` | one theorem; merge with QICLean.ManyBody.Replica.Bell.PrevectorSharpUpper (rough and sharp upper rate of the same supplied replica prevector on nested regions) |
-| `ManyBody.Replica.Bell.PrevectorSharpUpper` | one theorem in enumerated coordinates; merge with ReplicaPrevectorRoughUpper (or into QICLean.ManyBody.Replica.Bell.SchmidtBellSharpUpper which it re-coordinatizes) |
-| `ManyBody.Replica.Bell.SchmidtBellEnumeratedPrevector` | one theorem; merge into QICLean.ManyBody.Replica.Bell.SchmidtBellPrevectorOverlap (defines schmidtBellSitePrevector) |
+| `ManyBody.Replica.Bell.PrevectorRoughUpper` | one theorem; merge with QICLean.ManyBody.Replica.Bell.SelectedBellPostPin (rough and sharp upper rate of the same supplied replica prevector on nested regions) |
 | `ManyBody.Replica.Bell.SchmidtBellPhysicalWitness` | one theorem (nested regions,physical witness); merge with SchmidtBellCommonCutoffs; or into QICLean.ManyBody.Replica.Bell.SchmidtBellWitnessRange |
-| `ManyBody.Replica.Bell.SchmidtBellSharpUpper` | one theorem; merge into QICLean.ManyBody.Replica.Bell.SelectedBellPostPin (it is the eventual rate built on that norm transport) |
 | `ManyBody.Replica.CompressedSite.CompressedTypicalExponentialDomination` | merge into QICLean.ManyBody.Replica.CompressedSite.CompressedTypicalExponentialDomination (its only input); one inequality form of the same exponential expectation; imports Algebra.FiniteKroneckerOrder (Loewner order in Algebra) |
 | `ManyBody.Replica.Configuration.FiveFactorAuxiliaryCoordinates` | merge into QICLean.ManyBody.Replica.Configuration.GoodConfigurationDensity (defines fiveFactorCopiesEquiv); copy permutation operators and group-algebra reps on k copies of five subsystems; subsystems, not sites |
-| `ManyBody.Replica.Configuration.PhysicalLabelMoment` | merge into QICLean.ManyBody.Replica.Configuration.GoodCopyDensity: one trace-exp labelEntropy identity on the same regional density (cutEquiv on copies); no importers |
-| `ManyBody.Replica.LowDefect.ComponentInverseRoughUniform` | one uniform version of ComponentInverseRough; merge into QICLean.ManyBody.Replica.LowDefect.ComponentInverseRough |
 | `ManyBody.Replica.LowDefect.ComponentInverseSharpUniform` | one uniform version of ComponentInverseSharp; merge into QICLean.ManyBody.Replica.LowDefect.ComponentInverseSharp |
 | `ManyBody.Replica.LowDefect.LowDefectSymmetricCoordinates` | merge into QICLean.Representation.Replica.LowDefectProjection (defines replicaLowDefectProjection, replicaJointCopyPerm; that module is itself Representation/Bell content misplaced in Analysis); objects symProj,copyPerm,IrrepLabel,five fixed registers (no regions) |
 | `ManyBody.Replica.Metric.CutoffNorm` | one norm bound on replicaMetric; merge with ReplicaPinnedMetricUpper and ReplicaWholeInverse into one bounds module after QICLean.ManyBody.Replica.Metric.Similarity (cannot go into ReplicaMetric: needs Similarity and labelCutoff) |
 | `ManyBody.Subspace.ReferenceFilterTrimming` | merge into QICLean.ManyBody.Subspace.Trimming: one filter-then-trim closeness step |
 | `Probability.Haar.NativeRankUnitarySampling` | merge into QICLean.Probability.Sampling.RankUnitaryProductHaar: one theorem, the uniform failure bound transported along a coordinate relabelling e : Fin d = sigma |
-| `Probability.PoissonWord.PoissonWordOmissionBound` | merge with PoissonWordTelescope and PoissonWordExpectedOmission into one Omission module; one deterministic norm bound (contractive linear maps along a word), no measure; sole consumer ExpectedOmission |
 | `Probability.Sampling.ViableSubspaceNestedSampling` | one lemma (deterministic, sample U retained as data); merge into QICLean.Probability.Sampling.ViableSubspaceNestedSampling |
 | `Representation.Replica.GoodAuxiliaryLabelBound` | merge into QICLean.Representation.Replica.GoodAuxiliaryMarginal: one labelEntropy bound on an excitation component; its public replicaGoodBadSplit duplicates the private one there |
 | `Representation.SchurWeyl.IidSchurLabelExponential` | one theorem (Schur label cutoff tail for tensor powers); merge into QICLean.Representation.SchurWeyl.IidSchurSignedMoments; needs entropy+Schur labels so Representation |
@@ -639,7 +661,6 @@ second table to the first, and an earlier row whose target was merged names the 
 | `Spectral.Eigenvalue.DensityMaxEigenvector` | merge with QICLean.Spectral.Eigenvalue.DominantEigenvectorUniqueness (both single facts on top eigenvectors of a density matrix) |
 | `Spectral.Eigenvalue.DominantEigenvectorUniqueness` | one theorem on uniqueness of a density-matrix eigenvector above 1/2; merge with QICLean.Spectral.Eigenvalue.DensityMaxEigenvector |
 | `Spectral.Eigenvalue.EuclideanEigenvectorBasis` | one lemma on Mathlib eigenvectorBasis in Euclidean CLM form; merge into a Spectral/Eigenvalue basics module (e.g. QICLean.Spectral.Eigenvalue.AdjointEigenvalues) |
-| `Spectral.Eigenvalue.ShiftedFilterClipping` | merge into QICLean.Spectral.Eigenvalue.ShiftedDensityClipping: one inverse-power bound for the same clipped eigenvalue form |
 | `Spectral.Filter.EnergyWeightedPowerOrder` | one Loewner bound for H(1-H/A)^tau of one Hermitian matrix; merge into QICLean.Spectral.Filter.EnergyTruncation or keep beside it |
 | `Spectral.Gap.GroundProjection` | merged into QICLean.Spectral.Filter.Gaussian.SpectralGap, which proves the ground-or-excited dichotomy it uses; one identity spectralProjectionGE = rank-one ground projection from a global gap |
 | `Spectral.Gap.KernelSpectralGap` | merged into QICLean.Spectral.Gap.EigenvalueGap, the forms of the gap above a kernel; one lemma quadratic-form gap above the kernel of a Hermitian matrix |
