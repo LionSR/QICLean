@@ -332,8 +332,8 @@ theorem isInjective_iff_injective_traceMap (A : ι → Matrix n n ℂ) :
         intro i j
         rw [Matrix.smul_single, smul_eq_mul, mul_one]
       conv_rhs => rw [Matrix.matrix_eq_sum_single M]
-      simp only [hsingle, map_sum, LinearMap.map_smul, Matrix.trace, Matrix.diag, Matrix.mul_apply, X,
-        Matrix.of_apply, smul_eq_mul]
+      simp only [hsingle, map_sum, LinearMap.map_smul, Matrix.trace, Matrix.diag,
+        Matrix.mul_apply, X, Matrix.of_apply, smul_eq_mul]
     have hX : X = 0 := by
       apply hT
       ext i
