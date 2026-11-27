@@ -22,4 +22,4 @@ ManyBody/Sites       2
 ManyBody/Subspace    1
 Probability          1
 Representation       4
-Spectral             17
+Spectral             16
