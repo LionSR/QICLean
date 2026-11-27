@@ -22,8 +22,6 @@ point $\rho$, rather than another representative of its ray.
 
 ## Main results
 
-* `Kraus.hasInvariantProj_reindexPhysical_equiv`, `Kraus.isIrreducibleFamily_reindexPhysical_equiv`:
-  relabelling the index set preserves invariant projections and irreducibility.
 * `Kraus.isIrreducibleFamily_block_of_tp_primitive_irr`,
   `Kraus.tp_primitive_irreducible_extra_blocking`: blocking a trace-preserving primitive
   irreducible family at a positive length keeps all three properties.
@@ -46,29 +44,6 @@ open scoped Matrix Matrix.Norms.Operator ComplexOrder BigOperators
 open Matrix
 
 namespace Kraus
-
-section Relabel
-
-variable {ι ι' n : Type*} [Fintype n] [DecidableEq n]
-
-/-- Relabelling the index set of a finite family by a bijection preserves invariant
-projections. -/
-theorem hasInvariantProj_reindexPhysical_equiv (e : ι' ≃ ι) (A : ι → Matrix n n ℂ) :
-    HasInvariantProj (reindexPhysical e A) ↔ HasInvariantProj A := by
-  constructor
-  · rintro ⟨P, hPproj, hP0, hP1, hLower⟩
-    refine ⟨P, hPproj, hP0, hP1, ?_⟩
-    intro i
-    simpa [reindexPhysical] using hLower (e.symm i)
-  · rintro ⟨P, hPproj, hP0, hP1, hLower⟩
-    exact ⟨P, hPproj, hP0, hP1, fun i => hLower (e i)⟩
-
-/-- Relabelling the index set of a finite family by a bijection preserves irreducibility. -/
-theorem isIrreducibleFamily_reindexPhysical_equiv (e : ι' ≃ ι) (A : ι → Matrix n n ℂ) :
-    IsIrreducibleFamily (reindexPhysical e A) ↔ IsIrreducibleFamily A := by
-  rw [IsIrreducibleFamily, IsIrreducibleFamily, hasInvariantProj_reindexPhysical_equiv e A]
-
-end Relabel
 
 section PrimitiveBlocking
 

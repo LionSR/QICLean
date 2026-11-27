@@ -6,6 +6,7 @@ Authors: TNLean contributors
 import QICLean.Algebra.Hermitian.OrthogonalProjection
 import QICLean.Channel.FixedPoint.Stationary.SupportInvariance
 import QICLean.Channel.Irreducible.Basic
+import QICLean.Kraus.Word
 
 /-!
 # Invariant orthogonal projections for finite matrix families
@@ -22,6 +23,9 @@ a nontrivial invariant orthogonal projection.
 * `Kraus.isIrreducibleMap_mapLM_of_isIrreducibleFamily` shows that an irreducible
   family defines an irreducible Kraus map.
 * `Kraus.isIrreducibleFamily_of_isIrreducibleMap_mapLM` proves the converse.
+* `Kraus.hasInvariantProj_reindexPhysical_equiv` and
+  `Kraus.isIrreducibleFamily_reindexPhysical_equiv`: both notions are invariant under
+  relabelling the index set.
 -/
 
 namespace Kraus
@@ -66,5 +70,28 @@ theorem isIrreducibleFamily_of_isIrreducibleMap_mapLM
   have hInv : ∀ X, P * mapLM K (P * X * P) * P = mapLM K (P * X * P) := fun X => by
     simpa only [mapLM_apply] using lowerZero_implies_invariance K P hProj hLower X
   exact (hIrr P hProj hInv).elim hP0 hP1
+
+section Relabel
+
+variable {ι ι' n : Type*} [Fintype n] [DecidableEq n]
+
+/-- Relabelling the index set of a finite family by a bijection preserves invariant
+projections. -/
+theorem hasInvariantProj_reindexPhysical_equiv (e : ι' ≃ ι) (A : ι → Matrix n n ℂ) :
+    HasInvariantProj (reindexPhysical e A) ↔ HasInvariantProj A := by
+  constructor
+  · rintro ⟨P, hPproj, hP0, hP1, hLower⟩
+    refine ⟨P, hPproj, hP0, hP1, ?_⟩
+    intro i
+    simpa [reindexPhysical] using hLower (e.symm i)
+  · rintro ⟨P, hPproj, hP0, hP1, hLower⟩
+    exact ⟨P, hPproj, hP0, hP1, fun i => hLower (e i)⟩
+
+/-- Relabelling the index set of a finite family by a bijection preserves irreducibility. -/
+theorem isIrreducibleFamily_reindexPhysical_equiv (e : ι' ≃ ι) (A : ι → Matrix n n ℂ) :
+    IsIrreducibleFamily (reindexPhysical e A) ↔ IsIrreducibleFamily A := by
+  rw [IsIrreducibleFamily, IsIrreducibleFamily, hasInvariantProj_reindexPhysical_equiv e A]
+
+end Relabel
 
 end Kraus
