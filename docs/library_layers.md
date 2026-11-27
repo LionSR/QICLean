@@ -263,11 +263,11 @@ modules at its top level.
 ## The module map
 
 `scripts/library_layers_module_map.txt` lists 1,211 moves of modules, 119
-merges of one-lemma modules into the module of their object, 306 moves of
-`QICLeanTest` files that follow their modules, and the 52 modules of these
-directories that stay. `scripts/apply_library_layers.py` applies it with
-`git mv`, appends the merged modules, and rewrites the module names and paths in
-`QICLean`, `QICLeanTest`, `scripts`, `blueprint`, `docs` and the workflows. It is
+merges of one-lemma modules into the module of their object, and the 52 modules
+of these directories that stay. Its entries for the files of `QICLeanTest` were
+removed with that directory on 2026-11-27. `scripts/apply_library_layers.py`
+applies it with `git mv`, appends the merged modules, and rewrites the module
+names and paths in `QICLean`, `scripts`, `blueprint`, `docs` and the workflows. It is
 idempotent, and it leaves alone, and reports, a module of these directories
 that the map does not know, so it can be applied again after another branch is
 merged:
@@ -283,7 +283,7 @@ dependent repository and then lists each `import QICLean.…` that names no modu
 of this checkout.
 
 Later sections of the map divide `Channel/FixedPoint` (43 moves) and `Channel/Peripheral` (45
-moves and two test files) into subdirectories by object. The import-only module
+moves) into subdirectories by object. The import-only module
 `Channel.Peripheral.CyclicDecomposition` was deleted; its six modules are now in
 `Channel/Peripheral/Irreducible`, whose aggregator replaces it. The import ratchet reads the recorded entries of its base revision under the moves of
 the map, so that moving a module renames its entries instead of adding new ones.
