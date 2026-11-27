@@ -14,9 +14,22 @@ import Mathlib.Analysis.Matrix.Hermitian
 The coordinate matrix of the orthogonal projection onto a subspace of complex
 functions is characterized by its range. These are the local range projectors,
 whose complements are the canonical parent interactions in SCP10.
+
+The instance `Submodule.hasOrthogonalProjection_of_finiteDimensional` was moved from TNLean,
+`TNLean/MPS/Tensor/GroundSpace/ParentHamiltonian.lean` at commit `fd7e3b7d7c` (Apache-2.0).
 -/
 
 open scoped Matrix
+
+/-- Every subspace of a finite-dimensional inner product space has an orthogonal projection.
+The instance is stated for every subspace at once, so that rewriting a subspace under
+`Submodule.starProjection`, such as the image of a local ground space, keeps the instance argument
+well typed. -/
+instance (priority := high) Submodule.hasOrthogonalProjection_of_finiteDimensional
+    {𝕜 E : Type*} [RCLike 𝕜] [NormedAddCommGroup E] [InnerProductSpace 𝕜 E]
+    [FiniteDimensional 𝕜 E] (K : Submodule 𝕜 E) : K.HasOrthogonalProjection :=
+  haveI : CompleteSpace K := FiniteDimensional.complete 𝕜 K
+  Submodule.HasOrthogonalProjection.ofCompleteSpace K
 
 namespace Matrix
 

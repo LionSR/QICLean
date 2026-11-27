@@ -39,6 +39,10 @@ from `TNLean/MPS/AreaLaw/RangeOneCut.lean`; `ChainSupport.edist_le` from
 boundary of a region of the chain is the edge boundary of the path graph, and
 `mem_boundaryEdges` is proved from that definition.
 
+`mem_interval_zero_iff` and `notMem_interval_zero_iff` were moved from TNLean,
+`TNLean/MPS/Tensor/VaryingBond/MinimalCutRepresentationCuts.lean` at commit `d2694f4f7b`
+(Apache-2.0). Changes: namespace `ManyBody` in place of `MPSPreparation`.
+
 Moved from TNLean (`e113e005`): the bonds, their overlap graph and the size of their union from
 `TNLean/Lattice/ClusterExpansion/NearestNeighborPath.lean` and `NearestNeighborIntervalRank.lean`.
 Changes: the family `fun i ↦ {i.castSucc, i.succ}`, written inline there, is named
@@ -197,6 +201,14 @@ def interval (L a b : ℕ) : Finset (Fin L) := Finset.univ.filter fun i ↦ a �
 @[simp]
 theorem mem_interval {a b : ℕ} {i : Fin L} : i ∈ interval L a b ↔ a ≤ i.val ∧ i.val < b := by
   simp [interval]
+
+/-- A site lies in the left block of the cut after `k` sites exactly when it precedes `k`. -/
+theorem mem_interval_zero_iff {k : ℕ} {s : Fin L} : s ∈ interval L 0 k ↔ s.val < k := by
+  simp
+
+/-- A site lies after the cut after `k` sites exactly when it is at least `k`. -/
+theorem notMem_interval_zero_iff {k : ℕ} {s : Fin L} : s ∉ interval L 0 k ↔ k ≤ s.val := by
+  simp
 
 /-- Two adjacent intervals `[a, b)` and `[b, c)` are disjoint. -/
 theorem disjoint_interval_interval (a b c : ℕ) :

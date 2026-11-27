@@ -232,5 +232,23 @@ class MathlibSourceResolutionTests(unittest.TestCase):
         self.assertIn("Continuous.matrix_traceTypo", result.stdout)
 
 
+class ScopeTrackingTests(unittest.TestCase):
+    def test_end_closes_innermost_of_section_and_namespace_of_same_name(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary) / "QICLean"
+            root.mkdir()
+            lean_file = root / "Scopes.lean"
+            lean_file.write_text(
+                "section Foo\n"
+                "namespace Foo\n"
+                "theorem inner : True := trivial\n"
+                "end Foo\n"
+                "theorem outer : True := trivial\n"
+                "end Foo\n"
+            )
+            names = {decl.fqn for decl in sync.collect_file_lean_decls(lean_file, root)}
+        self.assertEqual(names, {"Foo.inner", "outer"})
+
+
 if __name__ == "__main__":
     unittest.main()
