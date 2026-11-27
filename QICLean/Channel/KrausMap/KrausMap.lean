@@ -91,7 +91,7 @@ theorem mapLM_ne_zero_of_exists_ne_zero
 
 /-- The trace-adjoint identity for a linear map presented as a finite Kraus map. -/
 theorem trace_mul_mapLM_adjoint
-    {n : ℕ} (K : Fin n → Mat)
+    (K : ι → Mat)
     {E : Mat →ₗ[ℂ] Mat}
     (hE_eq : E = mapLM K)
     (ρ X : Mat) :

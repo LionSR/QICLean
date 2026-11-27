@@ -27,12 +27,12 @@ open scoped Matrix BigOperators ComplexOrder MatrixOrder
 
 namespace Kraus
 
-variable {d D : ℕ}
+variable {ι : Type*} [Fintype ι] {D : ℕ}
 
 /-- The map of a TP-gauged family is the similarity transform of the original map by the
 positive square root of the adjoint fixed point. -/
 lemma mapLM_tpGauge_eq_similarityMap
-    (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
+    (K : ι → Matrix (Fin D) (Fin D) ℂ)
     (σ : Matrix (Fin D) (Fin D) ℂ)
     (hσ : σ.PosDef) :
     mapLM (tpGauge K σ) =
@@ -51,15 +51,15 @@ lemma mapLM_tpGauge_eq_similarityMap
         similarityMap (D := D) S⁻¹ (mapLM K) X := by
     calc
       mapLM (tpGauge K σ) X
-          = ∑ i : Fin d, (S * K i * S⁻¹) * X * (S * K i * S⁻¹)ᴴ := by
+          = ∑ i : ι, (S * K i * S⁻¹) * X * (S * K i * S⁻¹)ᴴ := by
               simp [mapLM_apply, tpGauge, S]
-      _ = ∑ i : Fin d, S * (K i * (S⁻¹ * X * S⁻¹ * (K i)ᴴ)) * S := by
+      _ = ∑ i : ι, S * (K i * (S⁻¹ * X * S⁻¹ * (K i)ᴴ)) * S := by
             refine Finset.sum_congr rfl ?_
             intro x _
             rw [Matrix.conjTranspose_mul, Matrix.conjTranspose_mul,
               Matrix.conjTranspose_nonsing_inv]
             simp [Matrix.mul_assoc, hS_herm]
-      _ = S * (∑ i : Fin d, K i * (S⁻¹ * X * S⁻¹ * (K i)ᴴ)) * S := by
+      _ = S * (∑ i : ι, K i * (S⁻¹ * X * S⁻¹ * (K i)ᴴ)) * S := by
             simp only [← Matrix.sum_mul, ← Matrix.mul_sum]
       _ = similarityMap (D := D) S⁻¹ (mapLM K) X := by
             simp [similarityMap, mapLM_apply, S, hS_inv_inv, hS_inv_herm',
@@ -68,7 +68,7 @@ lemma mapLM_tpGauge_eq_similarityMap
 
 /-- TP gauging preserves family irreducibility when the original Kraus map is irreducible. -/
 lemma isIrreducibleFamily_tpGauge_of_isIrreducibleMap
-    (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
+    (K : ι → Matrix (Fin D) (Fin D) ℂ)
     (σ : Matrix (Fin D) (Fin D) ℂ)
     (hσ : σ.PosDef)
     (hIrr : IsIrreducibleMap (mapLM K)) :
@@ -91,7 +91,7 @@ lemma isIrreducibleFamily_tpGauge_of_isIrreducibleMap
 
 /-- Positive-definite TP gauging preserves irreducibility of a finite matrix family. -/
 theorem isIrreducibleFamily_tpGauge_iff
-    (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
+    (K : ι → Matrix (Fin D) (Fin D) ℂ)
     (σ : Matrix (Fin D) (Fin D) ℂ) (hσ : σ.PosDef) :
     IsIrreducibleFamily (tpGauge K σ) ↔ IsIrreducibleFamily K := by
   constructor

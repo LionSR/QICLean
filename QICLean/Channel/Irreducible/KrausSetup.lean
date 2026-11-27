@@ -246,8 +246,8 @@ This theorem applies the project-supplied Brouwer theorem
 that irreducibility passes to that family, and then upgrades the resulting PSD
 eigenvector to a PosDef one using irreducibility (Wolf Theorem 6.3 item 2). -/
 theorem exists_posDef_adjoint_eigenvector
-    [NeZero D]
-    (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
+    {ι : Type*} [Fintype ι] [NeZero D]
+    (K : ι → Matrix (Fin D) (Fin D) ℂ)
     (hIrr : IsIrreducibleMap (mapLM K))
     (hK : ∃ i, K i ≠ 0) :
     ∃ (σ : Matrix (Fin D) (Fin D) ℂ) (r : ℝ),

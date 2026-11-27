@@ -165,11 +165,11 @@ namespace Kraus
 
 open scoped Matrix BigOperators ComplexOrder MatrixOrder
 
-variable {d D : ℕ}
+variable {ι : Type*} [Fintype ι] {D : ℕ}
 
 /-- Positive-definite TP gauging preserves peripheral-spectrum primitivity. -/
 lemma isPrimitive_mapLM_tpGauge_iff
-    (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
+    (K : ι → Matrix (Fin D) (Fin D) ℂ)
     (σ : Matrix (Fin D) (Fin D) ℂ)
     (hσ : σ.PosDef) :
     _root_.IsPrimitive (mapLM (tpGauge K σ)) ↔
