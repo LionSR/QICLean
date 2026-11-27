@@ -21,4 +21,3 @@ import QICLean.Analysis.Topology.NearestKronecker
 import QICLean.Analysis.Topology.NewtonIdempotent
 import QICLean.Analysis.Topology.OrthogonalGroupJoined
 import QICLean.Analysis.Topology.TraceQuotientCoordinates
-import QICLean.Analysis.Topology.UniformSelectionBounds

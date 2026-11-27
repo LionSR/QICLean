@@ -5,6 +5,8 @@ Authors: QICLean contributors
 -/
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.LinearAlgebra.UnitaryGroup
+import Mathlib.Analysis.Normed.Lp.Matrix
+import Mathlib.LinearAlgebra.Matrix.Reindex
 
 /-!
 # Unitary matrices preserve inner products of Euclidean vectors
@@ -23,11 +25,14 @@ Moved from TNLean, `TNLean/Algebra/UnitaryMulVecInner.lean` at commit `49b78ed82
 * `Matrix.inner_eq_of_mulVec_eq`: `⟨U x|U y⟩ = ⟨x|y⟩`.
 * `Matrix.norm_eq_of_mulVec_eq`: `‖U x‖ = ‖x‖`.
 * `Matrix.conjTranspose_mulVec_eq_of_mulVec_eq`: `U x = y` gives `Uᴴ y = x`.
+* `Matrix.inner_toEuclideanLin_reindex`: matrix expectations under a change of coordinates.
 -/
 
 open scoped InnerProductSpace
 
 namespace Matrix
+
+section UnitaryMulVecInner
 
 variable {ι : Type*} [Fintype ι] [DecidableEq ι] {U : Matrix ι ι ℂ}
 
@@ -59,5 +64,36 @@ theorem norm_eq_of_mulVec_eq (hU : U ∈ unitary (Matrix ι ι ℂ)) {x x' : Euc
 theorem conjTranspose_mulVec_eq_of_mulVec_eq (hU : U ∈ unitaryGroup ι ℂ) {x y : ι → ℂ}
     (h : U *ᵥ x = y) : Uᴴ *ᵥ y = x := by
   rw [← h, mulVec_mulVec, ← star_eq_conjTranspose, Unitary.star_mul_self_of_mem hU, one_mulVec]
+
+end UnitaryMulVecInner
+
+section EuclideanReindex
+
+/-!
+## Matrix expectations under a change of coordinates
+
+Relabelling the coordinates of a vector and the rows and columns of a matrix
+through the same equivalence preserves their expectation pairing.
+
+The statement is adapted from `TNLean/MPS/AreaLaw/ViableSet/Gluing.lean`, commit
+`111c9fe461af184e1aa20be8091ec1d1a775a68a`, with a public matrix namespace and
+a proof using Mathlib's coordinate isometry and matrix-vector transport.
+-/
+
+/-- Relabelling a vector and both indices of a matrix preserves the expectation pairing. -/
+theorem inner_toEuclideanLin_reindex {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y] (e : X ≃ Y) (M : Matrix X X ℂ) (ψ : EuclideanSpace ℂ X) :
+    ⟪WithLp.toLp 2 (WithLp.ofLp ψ ∘ e.symm),
+        toEuclideanLin (reindex e e M) (WithLp.toLp 2 (WithLp.ofLp ψ ∘ e.symm))⟫_ℂ =
+      ⟪ψ, toEuclideanLin M ψ⟫_ℂ := by
+  convert (LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ e).inner_map_map ψ
+    (toEuclideanLin M ψ) using 2
+  · rfl
+  · change WithLp.toLp 2 (M.submatrix e.symm e.symm *ᵥ (WithLp.ofLp ψ ∘ e.symm)) =
+      WithLp.toLp 2 ((M *ᵥ WithLp.ofLp ψ) ∘ e.symm)
+    simpa [Function.comp_assoc] using congrArg (WithLp.toLp 2)
+      (submatrix_mulVec_equiv M (WithLp.ofLp ψ ∘ e.symm) e.symm e.symm)
+
+end EuclideanReindex
 
 end Matrix

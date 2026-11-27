@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Entropy.Filter.Stationarity
-import QICLean.Analysis.Optimization.FloorKKT
+import QICLean.Analysis.Optimization.DensitySimplex
 import QICLean.Analysis.Real.LogClipping
 import QICLean.Spectral.Eigenvalue.MatrixSpectralDecomp
 import Mathlib.Analysis.SpecialFunctions.Pow.Deriv

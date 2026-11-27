@@ -10,4 +10,3 @@ Authors: QICLean contributors
 
 import QICLean.Analysis.Complex.SkewFromPhases
 import QICLean.Analysis.Complex.StripQuadratic
-import QICLean.Analysis.Complex.ThreeLines

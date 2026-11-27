@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Entropy.Conditional.BoundaryEnergy
-import QICLean.Analysis.Complex.ThreeLines
+import QICLean.Analysis.Complex.StripQuadratic
 
 /-!
 # The movement interpolation curve

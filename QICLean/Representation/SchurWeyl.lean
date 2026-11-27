@@ -17,7 +17,6 @@ import QICLean.Representation.SchurWeyl.ExteriorPieri
 import QICLean.Representation.SchurWeyl.HighLabelWindow
 import QICLean.Representation.SchurWeyl.HighestWeight
 import QICLean.Representation.SchurWeyl.HookDimension
-import QICLean.Representation.SchurWeyl.IidSchurLabelExponential
 import QICLean.Representation.SchurWeyl.IidSchurSignedMoments
 import QICLean.Representation.SchurWeyl.JucysRecursion
 import QICLean.Representation.SchurWeyl.Labels

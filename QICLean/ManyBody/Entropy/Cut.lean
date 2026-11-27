@@ -9,8 +9,6 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.ManyBody.Entropy.Cut
 
 import QICLean.ManyBody.Entropy.Cut.CutEnvironment
-import QICLean.ManyBody.Entropy.Cut.PositiveLocalLift
-import QICLean.ManyBody.Entropy.Cut.RegionPureApproximationTail
 import QICLean.ManyBody.Entropy.Cut.RegionRank
 import QICLean.ManyBody.Entropy.Cut.RegionSplit
 import QICLean.ManyBody.Entropy.Cut.RegionTensorSplitting

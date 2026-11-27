@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Hamiltonian.Chain.ConsecutiveRegions
 import QICLean.Spectral.LowEnergy.WeightedLowRestriction
-import QICLean.Spectral.Eigenvalue.EuclideanEigenvectorBasis
+import QICLean.Spectral.Eigenvalue.MatrixSpectralDecomp
 import QICLean.Spectral.Filter.EnergyTruncation
 import QICLean.Spectral.Projection.ExponentialDrop
 import QICLean.Algebra.Combinatorics.FinSum
