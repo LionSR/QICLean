@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Channel.Positive.QuantumChernoff
-import QICLeanTest.Channel.PetzOverlapDataProcessing
+import QICLeanTest.Channel.Schwarz.PetzOverlapDataProcessing
 
 /-! Boundary regressions and transitive axiom audit for finite-copy Chernoff bounds. -/
 

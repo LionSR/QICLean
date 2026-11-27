@@ -17,7 +17,7 @@ consumer applies one choice at `(b, L) = (0, 1)` in dimension one and at
 The phase `I` gives overlap `-I` for the identity input, so the forward and
 adjoint estimates have different coefficients even for a Hermitian input.
 The Hamiltonian construction is adapted from
-`QICLeanTest/GaussianGroundEstimate.lean`.
+`QICLeanTest/Spectral/Filter/Gaussian/GaussianGroundEstimate.lean`.
 -/
 
 open Complex Matrix GaussianFilter

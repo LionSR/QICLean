@@ -319,7 +319,7 @@ jobs:
               "QICLean/ManyBody/Replica/Symbol/CoherentMeasure.lean",
               "QICLeanTest/Entropy/Conditional/DoubleCurveInstances.lean",
               "QICLeanTest/Probability/Gaussian/GaussianContraction.lean",
-              "QICLeanTest/GaussianProductSourceTransport.lean",
+              "QICLeanTest/Probability/Gaussian/GaussianProductSourceTransport.lean",
               "QICLeanTest/Mathlib436Replacement.lean",
               "QICLeanTest/Probability/Gaussian/SchmidtSource.lean",
               "QICLeanTest/SemigroupNormable.lean",
