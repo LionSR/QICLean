@@ -48,20 +48,6 @@ The note writes the factors as `(1 - h_X/J)^{1/2}`; the range projections are us
 open Matrix ManyBody
 open scoped InnerProductSpace ComplexOrder MatrixOrder Kronecker
 
-namespace ContinuousLinearMap
-
-variable {𝕜 E : Type*} [RCLike 𝕜] [NormedAddCommGroup E] [InnerProductSpace 𝕜 E]
-
-theorem complementProd_congr {h h' : ℕ → E →L[𝕜] E} {n : ℕ} (hh : ∀ i < n, h i = h' i) :
-    complementProd h n = complementProd h' n := by
-  induction n with
-  | zero => rfl
-  | succ n ih =>
-    rw [complementProd_succ, complementProd_succ, hh n n.lt_succ_self,
-      ih fun i hi ↦ hh i (hi.trans n.lt_succ_self)]
-
-end ContinuousLinearMap
-
 namespace ManyBody
 
 variable {V : Type*} [Fintype V] [DecidableEq V] {X : V → Type*} [∀ v, Fintype (X v)]
