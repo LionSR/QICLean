@@ -25,7 +25,7 @@ open scoped Matrix ComplexOrder MatrixOrder BigOperators NNReal ENNReal Matrix.N
 
 namespace Kraus
 
-variable {d D D₁ D₂ : ℕ}
+variable {ι : Type*} [Fintype ι] {D D₁ D₂ : ℕ}
 
 attribute [local instance] Matrix.linftyOpNormedAddCommGroup Matrix.linftyOpNormedSpace
   ContinuousLinearMap.toNormedAddCommGroup
@@ -35,10 +35,10 @@ attribute [local instance] Matrix.linftyOpNormedAddCommGroup Matrix.linftyOpNorm
 /-- Gauge-phase equivalence of two square finite matrix families, expressed by an invertible
 intertwiner. -/
 def GaugePhaseEquiv
-    (A B : Fin d → Matrix (Fin D) (Fin D) ℂ) : Prop :=
+    (A B : ι → Matrix (Fin D) (Fin D) ℂ) : Prop :=
   ∃ (X Xinv : Matrix (Fin D) (Fin D) ℂ) (μ : ℂ),
     X * Xinv = 1 ∧ Xinv * X = 1 ∧ ‖μ‖ = 1 ∧
-      ∀ i : Fin d, A i * X = μ • X * B i
+      ∀ i : ι, A i * X = μ • X * B i
 
 /-- A finite-dimensional matrix endomorphism has an eigenvalue attaining its spectral
 radius. This packages the continuous-linear-map instances used by both gap arguments. -/
@@ -107,11 +107,11 @@ private lemma isUnit_det_of_self_mul_conjTranspose_scalar [NeZero D]
   exact Matrix.isUnit_det_of_right_inverse hX_right_inv
 
 private theorem gaugePhaseEquiv_of_gauged_intertwining
-    (A B : Fin d → Matrix (Fin D) (Fin D) ℂ)
+    (A B : ι → Matrix (Fin D) (Fin D) ℂ)
     (SA SB X' : Matrix (Fin D) (Fin D) ℂ) (μ : ℂ)
     (hSA_det : SA.det ≠ 0) (hSB_det : SB.det ≠ 0)
     (hX'_u : IsUnit X'.det) (hμ : ‖μ‖ = 1)
-    (hInter : ∀ i : Fin d,
+    (hInter : ∀ i : ι,
       gaugeFamily SA A i * X' = μ • X' * gaugeFamily SB B i) :
     GaugePhaseEquiv A B := by
   let Y : Matrix (Fin D) (Fin D) ℂ := SA * X' * SB⁻¹
@@ -138,7 +138,7 @@ section SameDimension
 /-- Bundle the irreducible fixed point with an invertible square root for a left-canonical
 tensor. -/
 private lemma exists_irreducible_TP_fixedPoint_squareRoot [NeZero D]
-    (A : Fin d → Matrix (Fin D) (Fin D) ℂ)
+    (A : ι → Matrix (Fin D) (Fin D) ℂ)
     (hA_irr : IsIrreducibleMap (mapLM A))
     (hA_tp : IsTP A) :
     ∃ ρ : Matrix (Fin D) (Fin D) ℂ, ∃ S : Matrix (Fin D) (Fin D) ℂ,
@@ -169,7 +169,7 @@ private lemma exists_irreducible_TP_fixedPoint_squareRoot [NeZero D]
 
 /-- Transport a modulus-one mixed-transfer eigenvector to the gauged intertwining relation. -/
 private lemma gauged_intertwining_of_mixedTransfer_eigenvector [NeZero D]
-    (A B : Fin d → Matrix (Fin D) (Fin D) ℂ)
+    (A B : ι → Matrix (Fin D) (Fin D) ℂ)
     (SA SB ρA ρB X : Matrix (Fin D) (Fin D) ℂ) (μ : ℂ)
     (hSA_det : SA.det ≠ 0) (hSB_det : SB.det ≠ 0)
     (hSA_mul : SA * SAᴴ = ρA) (hSB_mul : SB * SBᴴ = ρB)
@@ -179,9 +179,9 @@ private lemma gauged_intertwining_of_mixedTransfer_eigenvector [NeZero D]
     (hB_tp : IsTP B)
     (hFX : mixedMapLM A B X = μ • X)
     (hμ : ‖μ‖ = 1) (hX : X ≠ 0) :
-    (∑ i : Fin d, gaugeFamily SB B i * (gaugeFamily SB B i)ᴴ = 1) ∧
+    (∑ i : ι, gaugeFamily SB B i * (gaugeFamily SB B i)ᴴ = 1) ∧
       gaugeMixedEigenvector SA SB X ≠ 0 ∧
-      ∀ i : Fin d,
+      ∀ i : ι,
         gaugeFamily SA A i * gaugeMixedEigenvector SA SB X =
           μ • gaugeMixedEigenvector SA SB X * gaugeFamily SB B i := by
   classical
@@ -196,16 +196,16 @@ private lemma gauged_intertwining_of_mixedTransfer_eigenvector [NeZero D]
 /-- A nonzero gauged intertwiner has invertible determinant by uniqueness of positive fixed
 points. -/
 private lemma isUnit_det_of_gauged_intertwining [NeZero D]
-    (A B : Fin d → Matrix (Fin D) (Fin D) ℂ)
+    (A B : ι → Matrix (Fin D) (Fin D) ℂ)
     (SA SB ρA X' : Matrix (Fin D) (Fin D) ℂ) (μ : ℂ)
     (hA_irrMap : IsIrreducibleMap (mapLM A))
     (hρA_psd : ρA.PosSemidef) (hρA_ne : ρA ≠ 0)
     (hρA_fix : mapLM A ρA = ρA)
     (hSA_det : SA.det ≠ 0) (hSA_mul : SA * SAᴴ = ρA)
-    (hB_unital : ∑ i : Fin d, gaugeFamily SB B i * (gaugeFamily SB B i)ᴴ = 1)
+    (hB_unital : ∑ i : ι, gaugeFamily SB B i * (gaugeFamily SB B i)ᴴ = 1)
     (hX'_ne : X' ≠ 0)
     (hInter :
-      ∀ i : Fin d,
+      ∀ i : ι,
         gaugeFamily SA A i * X' = μ • X' * gaugeFamily SB B i)
     (hμ : ‖μ‖ = 1) :
     IsUnit X'.det := by
@@ -246,7 +246,7 @@ private lemma isUnit_det_of_gauged_intertwining [NeZero D]
 /-- A nonzero modulus-one mixed-map eigenvector forces gauge-phase equivalence of two
 irreducible trace-preserving square families. -/
 theorem modulus_one_mixedMapLM_eigenvector_implies_gauge_of_irreducible_TP [NeZero D]
-    (A B : Fin d → Matrix (Fin D) (Fin D) ℂ) (X : Matrix (Fin D) (Fin D) ℂ) (μ : ℂ)
+    (A B : ι → Matrix (Fin D) (Fin D) ℂ) (X : Matrix (Fin D) (Fin D) ℂ) (μ : ℂ)
     (hA_irr : IsIrreducibleMap (mapLM A))
     (hB_irr : IsIrreducibleMap (mapLM B))
     (hA_tp : IsTP A)
@@ -275,7 +275,7 @@ theorem modulus_one_mixedMapLM_eigenvector_implies_gauge_of_irreducible_TP [NeZe
 /-- If the mixed transfer spectral radius of two irreducible left-canonical tensors is at least
 `1`, then the tensors are gauge-phase equivalent. -/
 theorem modulus_one_mixedMapSpectralRadius_implies_gauge
-    (A B : Fin d → Matrix (Fin D) (Fin D) ℂ)
+    (A B : ι → Matrix (Fin D) (Fin D) ℂ)
     (hA_irr : IsIrreducibleMap (mapLM A))
     (hB_irr : IsIrreducibleMap (mapLM B))
     (hA_tp : IsTP A)
@@ -308,7 +308,7 @@ theorem modulus_one_mixedMapSpectralRadius_implies_gauge
 of the same bond dimension.
 -/
 theorem mixedMapSpectralRadius_lt_one_of_irreducible_TP
-    (A B : Fin d → Matrix (Fin D) (Fin D) ℂ)
+    (A B : ι → Matrix (Fin D) (Fin D) ℂ)
     (hA_irr : IsIrreducibleMap (mapLM A))
     (hB_irr : IsIrreducibleMap (mapLM B))
     (hA_tp : IsTP A)
@@ -323,8 +323,8 @@ theorem mixedMapSpectralRadius_lt_one_of_irreducible_TP
 /-- If a mixed finite-family map has spectral radius below one, its powers converge pointwise
 to zero. -/
 theorem mixedMapLM_pow_tendsto_zero_of_spectralRadius_lt_one
-    (A : Fin d → Matrix (Fin D₁) (Fin D₁) ℂ)
-    (B : Fin d → Matrix (Fin D₂) (Fin D₂) ℂ)
+    (A : ι → Matrix (Fin D₁) (Fin D₁) ℂ)
+    (B : ι → Matrix (Fin D₂) (Fin D₂) ℂ)
     (h : mixedMapSpectralRadius A B < 1)
     (X : Matrix (Fin D₁) (Fin D₂) ℂ) :
     Filter.Tendsto (fun n => ((mixedMapLM A B) ^ n) X)
@@ -366,7 +366,7 @@ theorem mixedMapLM_pow_tendsto_zero_of_spectralRadius_lt_one
 
 /-- Mixed-map iterates decay for inequivalent irreducible trace-preserving families. -/
 theorem mixedMapLM_pow_tendsto_zero_of_irreducible_TP
-    (A B : Fin d → Matrix (Fin D) (Fin D) ℂ)
+    (A B : ι → Matrix (Fin D) (Fin D) ℂ)
     (hA_irr : IsIrreducibleMap (mapLM A))
     (hB_irr : IsIrreducibleMap (mapLM B))
     (hA_tp : IsTP A)
@@ -399,7 +399,7 @@ private lemma mul_mul_conjTranspose_ne_zero_of_ne_zero {D : ℕ}
 square-root gauge is invertible. -/
 private lemma exists_posSemidef_fixedPoint_gauge_of_irreducible_TP {D : ℕ}
     [NeZero D]
-    (A : Fin d → Matrix (Fin D) (Fin D) ℂ)
+    (A : ι → Matrix (Fin D) (Fin D) ℂ)
     (hA_irr : IsIrreducibleMap (mapLM A))
     (hA_tp : IsTP A) :
     ∃ (ρ : Matrix (Fin D) (Fin D) ℂ) (S : Matrix (Fin D) (Fin D) ℂ),
@@ -431,13 +431,13 @@ private lemma exists_posSemidef_fixedPoint_gauge_of_irreducible_TP {D : ℕ}
 intertwiner between unital gauged tensors. -/
 private lemma gauged_rectangular_intertwiner_properties
     [NeZero D₁] [NeZero D₂]
-    (A : Fin d → Matrix (Fin D₁) (Fin D₁) ℂ)
-    (B : Fin d → Matrix (Fin D₂) (Fin D₂) ℂ)
+    (A : ι → Matrix (Fin D₁) (Fin D₁) ℂ)
+    (B : ι → Matrix (Fin D₂) (Fin D₂) ℂ)
     (ρA : Matrix (Fin D₁) (Fin D₁) ℂ) (ρB : Matrix (Fin D₂) (Fin D₂) ℂ)
     (SA : Matrix (Fin D₁) (Fin D₁) ℂ) (SB : Matrix (Fin D₂) (Fin D₂) ℂ)
     (X : Matrix (Fin D₁) (Fin D₂) ℂ) (μ : ℂ)
-    (A' : Fin d → Matrix (Fin D₁) (Fin D₁) ℂ)
-    (B' : Fin d → Matrix (Fin D₂) (Fin D₂) ℂ)
+    (A' : ι → Matrix (Fin D₁) (Fin D₁) ℂ)
+    (B' : ι → Matrix (Fin D₂) (Fin D₂) ℂ)
     (X' : Matrix (Fin D₁) (Fin D₂) ℂ)
     (hA'_eq : A' = gaugeFamily SA A)
     (hB'_eq : B' = gaugeFamily SB B)
@@ -450,11 +450,11 @@ private lemma gauged_rectangular_intertwiner_properties
     (hB_tp : IsTP B)
     (hFX : mixedMapLM A B X = μ • X)
     (hμ : ‖μ‖ = 1) (hX : X ≠ 0) :
-    (∑ i : Fin d, A' i * (A' i)ᴴ = 1) ∧
-      (∑ i : Fin d, B' i * (B' i)ᴴ = 1) ∧
+    (∑ i : ι, A' i * (A' i)ᴴ = 1) ∧
+      (∑ i : ι, B' i * (B' i)ᴴ = 1) ∧
       X' ≠ 0 ∧
-      (∀ i : Fin d, X' * (B' i)ᴴ = μ • ((A' i)ᴴ * X')) ∧
-      (∀ i : Fin d, A' i * X' = μ • X' * B' i) := by
+      (∀ i : ι, X' * (B' i)ᴴ = μ • ((A' i)ᴴ * X')) ∧
+      (∀ i : ι, A' i * X' = μ • X' * B' i) := by
   subst A'
   subst B'
   subst X'
@@ -467,14 +467,14 @@ private lemma gauged_rectangular_intertwiner_properties
 /-- The two Gram matrices of a gauged rectangular intertwiner are nonzero positive
 fixed points for the two gauged transfer maps. -/
 private lemma exists_gram_fixedPoints_of_gauged_rectangular_intertwiner
-    (A' : Fin d → Matrix (Fin D₁) (Fin D₁) ℂ)
-    (B' : Fin d → Matrix (Fin D₂) (Fin D₂) ℂ)
+    (A' : ι → Matrix (Fin D₁) (Fin D₁) ℂ)
+    (B' : ι → Matrix (Fin D₂) (Fin D₂) ℂ)
     (X' : Matrix (Fin D₁) (Fin D₂) ℂ) (μ : ℂ)
-    (hA'unital : ∑ i : Fin d, A' i * (A' i)ᴴ = 1)
-    (hB'unital : ∑ i : Fin d, B' i * (B' i)ᴴ = 1)
+    (hA'unital : ∑ i : ι, A' i * (A' i)ᴴ = 1)
+    (hB'unital : ∑ i : ι, B' i * (B' i)ᴴ = 1)
     (hX'ne : X' ≠ 0)
-    (hInter1 : ∀ i : Fin d, X' * (B' i)ᴴ = μ • ((A' i)ᴴ * X'))
-    (hInter2 : ∀ i : Fin d, A' i * X' = μ • X' * B' i)
+    (hInter1 : ∀ i : ι, X' * (B' i)ᴴ = μ • ((A' i)ᴴ * X'))
+    (hInter2 : ∀ i : ι, A' i * X' = μ • X' * B' i)
     (hμ : ‖μ‖ = 1) :
     ∃ (σA : Matrix (Fin D₁) (Fin D₁) ℂ)
         (σB : Matrix (Fin D₂) (Fin D₂) ℂ),
@@ -485,7 +485,7 @@ private lemma exists_gram_fixedPoints_of_gauged_rectangular_intertwiner
   classical
   have hμ_conj : ‖(starRingEnd ℂ) μ‖ = 1 := by
     simpa [Complex.norm_conj] using hμ
-  have hInter1c : ∀ i : Fin d, B' i * X'ᴴ = (starRingEnd ℂ μ) • X'ᴴ * A' i := by
+  have hInter1c : ∀ i : ι, B' i * X'ᴴ = (starRingEnd ℂ μ) • X'ᴴ * A' i := by
     intro i
     have h22 := congrArg Matrix.conjTranspose (hInter1 i)
     simp only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose,
@@ -521,16 +521,16 @@ private lemma exists_gram_fixedPoints_of_gauged_rectangular_intertwiner
 Gram matrices scalar, forcing the two rectangular dimensions to agree. -/
 private lemma dim_eq_of_gram_fixedPoints_of_irreducible_TP
     [NeZero D₁] [NeZero D₂]
-    (A : Fin d → Matrix (Fin D₁) (Fin D₁) ℂ)
-    (B : Fin d → Matrix (Fin D₂) (Fin D₂) ℂ)
+    (A : ι → Matrix (Fin D₁) (Fin D₁) ℂ)
+    (B : ι → Matrix (Fin D₂) (Fin D₂) ℂ)
     (hA_irr : IsIrreducibleMap (mapLM A))
     (hB_irr : IsIrreducibleMap (mapLM B))
     (ρA : Matrix (Fin D₁) (Fin D₁) ℂ)
     (ρB : Matrix (Fin D₂) (Fin D₂) ℂ)
     (SA : Matrix (Fin D₁) (Fin D₁) ℂ)
     (SB : Matrix (Fin D₂) (Fin D₂) ℂ)
-    (A' : Fin d → Matrix (Fin D₁) (Fin D₁) ℂ)
-    (B' : Fin d → Matrix (Fin D₂) (Fin D₂) ℂ)
+    (A' : ι → Matrix (Fin D₁) (Fin D₁) ℂ)
+    (B' : ι → Matrix (Fin D₂) (Fin D₂) ℂ)
     (X' : Matrix (Fin D₁) (Fin D₂) ℂ)
     (σA : Matrix (Fin D₁) (Fin D₁) ℂ)
     (σB : Matrix (Fin D₂) (Fin D₂) ℂ)
@@ -647,8 +647,8 @@ private lemma dim_eq_of_gram_fixedPoints_of_irreducible_TP
 
 private theorem dim_eq_of_modulus_one_mixedMapLM_eigenvector
     [NeZero D₁] [NeZero D₂]
-    (A : Fin d → Matrix (Fin D₁) (Fin D₁) ℂ)
-    (B : Fin d → Matrix (Fin D₂) (Fin D₂) ℂ)
+    (A : ι → Matrix (Fin D₁) (Fin D₁) ℂ)
+    (B : ι → Matrix (Fin D₂) (Fin D₂) ℂ)
     (hA_irr : IsIrreducibleMap (mapLM A))
     (hB_irr : IsIrreducibleMap (mapLM B))
     (hA_tp : IsTP A)
@@ -662,8 +662,8 @@ private theorem dim_eq_of_modulus_one_mixedMapLM_eigenvector
     exists_posSemidef_fixedPoint_gauge_of_irreducible_TP A hA_irr hA_tp
   obtain ⟨ρB, SB, hρB_psd, hρB_ne, hρB_fix, hSB_det, hSB_u, hSB_mul⟩ :=
     exists_posSemidef_fixedPoint_gauge_of_irreducible_TP B hB_irr hB_tp
-  let A' : Fin d → Matrix (Fin D₁) (Fin D₁) ℂ := gaugeFamily SA A
-  let B' : Fin d → Matrix (Fin D₂) (Fin D₂) ℂ := gaugeFamily SB B
+  let A' : ι → Matrix (Fin D₁) (Fin D₁) ℂ := gaugeFamily SA A
+  let B' : ι → Matrix (Fin D₂) (Fin D₂) ℂ := gaugeFamily SB B
   let X' : Matrix (Fin D₁) (Fin D₂) ℂ := gaugeMixedEigenvector SA SB X
   obtain ⟨hA'unital, hB'unital, hX'ne, hInter1, hInter2⟩ :=
     gauged_rectangular_intertwiner_properties
@@ -691,8 +691,8 @@ and `B` upgrades this to a unitary, and hence forces equality of bond dimensions
 -/
 theorem mixedMapSpectralRadius_lt_one_of_dim_ne_of_irreducible_TP
     [NeZero D₁] [NeZero D₂]
-    (A : Fin d → Matrix (Fin D₁) (Fin D₁) ℂ)
-    (B : Fin d → Matrix (Fin D₂) (Fin D₂) ℂ)
+    (A : ι → Matrix (Fin D₁) (Fin D₁) ℂ)
+    (B : ι → Matrix (Fin D₂) (Fin D₂) ℂ)
     (hA_irr : IsIrreducibleMap (mapLM A))
     (hB_irr : IsIrreducibleMap (mapLM B))
     (hA_tp : IsTP A)
@@ -723,7 +723,7 @@ theorem mixedMapSpectralRadius_lt_one_of_dim_ne_of_irreducible_TP
 /-- The trace of mixed-map iterates tends to zero for inequivalent irreducible
 trace-preserving families. -/
 theorem cross_correlation_tendsto_zero
-    (A B : Fin d → Matrix (Fin D) (Fin D) ℂ)
+    (A B : ι → Matrix (Fin D) (Fin D) ℂ)
     (hA_irr : IsIrreducibleMap (mapLM A))
     (hB_irr : IsIrreducibleMap (mapLM B))
     (hA_tp : IsTP A) (hB_tp : IsTP B)
@@ -744,7 +744,7 @@ theorem cross_correlation_tendsto_zero
 
 /-- The trace of every iterate at a fixed point equals the original trace. -/
 theorem self_correlation_persists
-    (A : Fin d → Matrix (Fin D) (Fin D) ℂ)
+    (A : ι → Matrix (Fin D) (Fin D) ℂ)
     (ρ : Matrix (Fin D) (Fin D) ℂ)
     (hfp : mapLM A ρ = ρ) :
     ∀ N : ℕ, Matrix.trace (((mapLM A) ^ N) ρ) = Matrix.trace ρ := by

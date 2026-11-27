@@ -32,12 +32,12 @@ open scoped Matrix TNOperatorSpace
 
 namespace Kraus
 
-variable {d D₁ D₂ : ℕ}
+variable {ι : Type*} [Fintype ι] {D₁ D₂ : ℕ}
 
 /-- The spectral radius of the mixed map of two finite matrix families. -/
 noncomputable def mixedMapSpectralRadius
-    (A : Fin d → Matrix (Fin D₁) (Fin D₁) ℂ)
-    (B : Fin d → Matrix (Fin D₂) (Fin D₂) ℂ) : ENNReal :=
+    (A : ι → Matrix (Fin D₁) (Fin D₁) ℂ)
+    (B : ι → Matrix (Fin D₂) (Fin D₂) ℂ) : ENNReal :=
   spectralRadius ℂ
     (Module.End.toContinuousLinearMap (Matrix (Fin D₁) (Fin D₂) ℂ) (mixedMapLM A B))
 
@@ -73,19 +73,19 @@ private noncomputable def fromBlocksUpperRightLM :
   map_smul' c X := by ext (i | i) (j | j) <;> simp
 
 private noncomputable def blockDiagonalFamily
-    (A : Fin d → Matrix (Fin D₁) (Fin D₁) ℂ)
-    (B : Fin d → Matrix (Fin D₂) (Fin D₂) ℂ) :
-    Fin d → Matrix (Fin (D₁ + D₂)) (Fin (D₁ + D₂)) ℂ :=
+    (A : ι → Matrix (Fin D₁) (Fin D₁) ℂ)
+    (B : ι → Matrix (Fin D₂) (Fin D₂) ℂ) :
+    ι → Matrix (Fin (D₁ + D₂)) (Fin (D₁ + D₂)) ℂ :=
   fun i ↦ sumFinReindexAlgEquiv (Matrix.fromBlocks (A i) 0 0 (B i))
 
 private theorem blockDiagonalFamily_isTP
-    (A : Fin d → Matrix (Fin D₁) (Fin D₁) ℂ)
-    (B : Fin d → Matrix (Fin D₂) (Fin D₂) ℂ)
+    (A : ι → Matrix (Fin D₁) (Fin D₁) ℂ)
+    (B : ι → Matrix (Fin D₂) (Fin D₂) ℂ)
     (hA : IsTP A) (hB : IsTP B) :
     IsTP (blockDiagonalFamily A B) := by
   classical
   rw [IsTP]
-  have hTerm (i : Fin d) :
+  have hTerm (i : ι) :
       (blockDiagonalFamily A B i)ᴴ * blockDiagonalFamily A B i =
         sumFinReindexAlgEquiv
           (Matrix.fromBlocks ((A i)ᴴ * A i) 0 0 ((B i)ᴴ * B i)) := by
@@ -133,14 +133,14 @@ private theorem upperRightBlock_ne_zero
   exact hBlock₁₂.trans rfl
 
 private theorem mapLM_blockDiagonalFamily_upperRightBlock
-    (A : Fin d → Matrix (Fin D₁) (Fin D₁) ℂ)
-    (B : Fin d → Matrix (Fin D₂) (Fin D₂) ℂ)
+    (A : ι → Matrix (Fin D₁) (Fin D₁) ℂ)
+    (B : ι → Matrix (Fin D₂) (Fin D₂) ℂ)
     (X : Matrix (Fin D₁) (Fin D₂) ℂ) :
     mapLM (blockDiagonalFamily A B) (upperRightBlock X) =
       upperRightBlock (mixedMapLM A B X) := by
   classical
   rw [mapLM_apply, map_apply]
-  have hTerm (i : Fin d) :
+  have hTerm (i : ι) :
       blockDiagonalFamily A B i * upperRightBlock X *
           (blockDiagonalFamily A B i)ᴴ =
         sumFinReindexAlgEquiv
@@ -158,8 +158,8 @@ private theorem mapLM_blockDiagonalFamily_upperRightBlock
 /-- Every eigenvalue of the mixed map of two trace-preserving finite matrix families has norm at
 most one. -/
 theorem eigenvalue_norm_le_one_mixedMapLM_of_isTP
-    (A : Fin d → Matrix (Fin D₁) (Fin D₁) ℂ)
-    (B : Fin d → Matrix (Fin D₂) (Fin D₂) ℂ)
+    (A : ι → Matrix (Fin D₁) (Fin D₁) ℂ)
+    (B : ι → Matrix (Fin D₂) (Fin D₂) ℂ)
     (hA : IsTP A) (hB : IsTP B)
     (μ : ℂ) (hμ : Module.End.HasEigenvalue (mixedMapLM A B) μ) :
     ‖μ‖ ≤ 1 := by
@@ -179,8 +179,8 @@ theorem eigenvalue_norm_le_one_mixedMapLM_of_isTP
 
 /-- The mixed map of two trace-preserving finite matrix families has spectral radius at most one. -/
 theorem mixedMapSpectralRadius_le_one_of_isTP
-    (A : Fin d → Matrix (Fin D₁) (Fin D₁) ℂ)
-    (B : Fin d → Matrix (Fin D₂) (Fin D₂) ℂ)
+    (A : ι → Matrix (Fin D₁) (Fin D₁) ℂ)
+    (B : ι → Matrix (Fin D₂) (Fin D₂) ℂ)
     (hA : IsTP A) (hB : IsTP B) :
     mixedMapSpectralRadius A B ≤ 1 := by
   exact spectralRadius_le_one_of_forall_eigenvalue_norm_le_one (mixedMapLM A B)

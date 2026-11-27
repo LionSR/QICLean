@@ -19,22 +19,22 @@ open scoped Matrix BigOperators
 
 namespace Kraus
 
-variable {d D : ℕ}
+variable {ι : Type*} [Fintype ι] {D : ℕ}
 
 /-- The block-diagonal part of a matrix family with respect to a projection `P`. -/
 noncomputable def diagPart
-    (K : Fin d → Matrix (Fin D) (Fin D) ℂ) (P : Matrix (Fin D) (Fin D) ℂ) :
-    Fin d → Matrix (Fin D) (Fin D) ℂ :=
+    (K : ι → Matrix (Fin D) (Fin D) ℂ) (P : Matrix (Fin D) (Fin D) ℂ) :
+    ι → Matrix (Fin D) (Fin D) ℂ :=
   fun i => P * K i * P + (1 - P) * K i * (1 - P)
 
 /-- If each letter satisfies `(1-P) * K i * P = 0`, then every word evaluation satisfies
 `(1-P) * Kraus.evalWord K w * P = 0`.
 
 This is the coordinate-free “upper-triangularity is stable under products” statement. -/
-lemma lowerZero_evalWord (K : Fin d → Matrix (Fin D) (Fin D) ℂ) (P : Matrix (Fin D) (Fin D) ℂ)
+lemma lowerZero_evalWord (K : ι → Matrix (Fin D) (Fin D) ℂ) (P : Matrix (Fin D) (Fin D) ℂ)
     (hP : IsOrthogonalProjection P)
-    (hLower : ∀ i : Fin d, (1 - P) * K i * P = 0) :
-    ∀ w : List (Fin d), (1 - P) * Kraus.evalWord K w * P = 0 := by
+    (hLower : ∀ i : ι, (1 - P) * K i * P = 0) :
+    ∀ w : List (ι), (1 - P) * Kraus.evalWord K w * P = 0 := by
   classical
   intro w
   induction w with
@@ -75,11 +75,11 @@ The proof uses:
 * orthogonality relations `P*(1-P)=0` and `(1-P)*P=0` (from idempotence of `P`), and
 * stability of the “lower-left block is zero” condition under word evaluation
   (`lowerZero_evalWord`). -/
-lemma evalWord_diagPart_eq (K : Fin d → Matrix (Fin D) (Fin D) ℂ) (P : Matrix (Fin D) (Fin D) ℂ)
+lemma evalWord_diagPart_eq (K : ι → Matrix (Fin D) (Fin D) ℂ) (P : Matrix (Fin D) (Fin D) ℂ)
     (hP : IsOrthogonalProjection P)
-    (hLower : ∀ i : Fin d, (1 - P) * K i * P = 0) :
-    ∀ w : List (Fin d),
-      Kraus.evalWord (diagPart (d := d) (D := D) K P) w =
+    (hLower : ∀ i : ι, (1 - P) * K i * P = 0) :
+    ∀ w : List (ι),
+      Kraus.evalWord (diagPart (ι := ι) (D := D) K P) w =
         P * Kraus.evalWord K w * P + (1 - P) * Kraus.evalWord K w * (1 - P) := by
   classical
   intro w
@@ -97,7 +97,7 @@ lemma evalWord_diagPart_eq (K : Fin d → Matrix (Fin D) (Fin D) ℂ) (P : Matri
       have hQQ : (1 - P) * (1 - P) = (1 - P) := IsIdempotentElem.one_sub hP.2
       have hsum : P + (1 - P) = (1 : Matrix (Fin D) (Fin D) ℂ) := by simp
       have hLowerWord : (1 - P) * Kraus.evalWord K w * P = 0 :=
-        lowerZero_evalWord (d := d) (D := D) K P hP hLower w
+        lowerZero_evalWord (ι := ι) (D := D) K P hP hLower w
       -- First simplify the `diagPart` product: cross terms vanish because `P*(1-P)=0`
       -- and `(1-P)*P=0`.
       have hMulDiag :
@@ -186,9 +186,9 @@ lemma evalWord_diagPart_eq (K : Fin d → Matrix (Fin D) (Fin D) ℂ) (P : Matri
                   simp [hLower i, Matrix.mul_assoc]
       -- Finish the inductive step.
       calc
-        Kraus.evalWord (diagPart (d := d) (D := D) K P) (i :: w)
+        Kraus.evalWord (diagPart (ι := ι) (D := D) K P) (i :: w)
             = (P * K i * P + (1 - P) * K i * (1 - P)) *
-                Kraus.evalWord (diagPart (d := d) (D := D) K P) w := by
+                Kraus.evalWord (diagPart (ι := ι) (D := D) K P) w := by
                   simp [Kraus.evalWord, diagPart]
         _ = (P * K i * P + (1 - P) * K i * (1 - P)) *
               (P * Kraus.evalWord K w * P + (1 - P) * Kraus.evalWord K w * (1 - P)) := by
@@ -257,19 +257,19 @@ end Matrix
 
 namespace Kraus
 
-variable {d D : ℕ}
+variable {ι : Type*} [Fintype ι] {D : ℕ}
 
 /-- If a finite matrix family is block upper triangular with respect to an orthogonal projection,
 replacing each matrix by its diagonal compressions preserves the trace of every evaluated word. -/
 theorem trace_evalWord_diagPart_eq
-    (K : Fin d → Matrix (Fin D) (Fin D) ℂ) (P : Matrix (Fin D) (Fin D) ℂ)
+    (K : ι → Matrix (Fin D) (Fin D) ℂ) (P : Matrix (Fin D) (Fin D) ℂ)
     (hP : IsOrthogonalProjection P)
-    (hLower : ∀ i : Fin d, (1 - P) * K i * P = 0) (w : List (Fin d)) :
+    (hLower : ∀ i : ι, (1 - P) * K i * P = 0) (w : List (ι)) :
     Matrix.trace (Kraus.evalWord K w) =
-      Matrix.trace (Kraus.evalWord (diagPart (d := d) (D := D) K P) w) := by
-  have hEval : Kraus.evalWord (diagPart (d := d) (D := D) K P) w =
+      Matrix.trace (Kraus.evalWord (diagPart (ι := ι) (D := D) K P) w) := by
+  have hEval : Kraus.evalWord (diagPart (ι := ι) (D := D) K P) w =
       P * Kraus.evalWord K w * P + (1 - P) * Kraus.evalWord K w * (1 - P) :=
-    evalWord_diagPart_eq (d := d) (D := D) K P hP hLower w
+    evalWord_diagPart_eq (ι := ι) (D := D) K P hP hLower w
   have hDiag := Matrix.trace_eq_trace_diag_of_proj (D := D) P hP (Kraus.evalWord K w)
   calc
     Matrix.trace (Kraus.evalWord K w)
@@ -279,7 +279,7 @@ theorem trace_evalWord_diagPart_eq
     _ = Matrix.trace
           (P * Kraus.evalWord K w * P + (1 - P) * Kraus.evalWord K w * (1 - P)) := by
             simp [Matrix.trace_add]
-    _ = Matrix.trace (Kraus.evalWord (diagPart (d := d) (D := D) K P) w) := by
+    _ = Matrix.trace (Kraus.evalWord (diagPart (ι := ι) (D := D) K P) w) := by
           simpa using congrArg Matrix.trace hEval.symm
 
 end Kraus

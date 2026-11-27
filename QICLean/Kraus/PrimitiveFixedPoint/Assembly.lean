@@ -75,7 +75,7 @@ instead of `IsInjective A`.
 
 namespace Kraus
 
-variable {d D : ℕ}
+variable {ι : Type*} [Fintype ι] {D : ℕ}
 
 /-! ## Positive definiteness from injectivity -/
 
@@ -88,7 +88,7 @@ section PosDef
 only positivity, whereas a transfer map is completely positive. See
 `docs/paper-gaps/wolf_thm6_3_positive_map_cp_scope.tex`. -/
 theorem posSemidef_fixedPoint_isPosDef_of_irreducible
-    (A : Fin d → Matrix (Fin D) (Fin D) ℂ)
+    (A : ι → Matrix (Fin D) (Fin D) ℂ)
     (hIrr : IsIrreducibleMap (transferMap A))
     (ρ : Matrix (Fin D) (Fin D) ℂ)
     (hρ_psd : ρ.PosSemidef) (hρ_ne : ρ ≠ 0)
@@ -105,7 +105,7 @@ then `ρ` is positive definite.
 only positivity, whereas a transfer map is completely positive. See
 `docs/paper-gaps/wolf_thm6_3_positive_map_cp_scope.tex`. -/
 theorem posSemidef_fixedPoint_isPosDef
-    (A : Fin d → Matrix (Fin D) (Fin D) ℂ) (hA : IsInjective A)
+    (A : ι → Matrix (Fin D) (Fin D) ℂ) (hA : IsInjective A)
     (ρ : Matrix (Fin D) (Fin D) ℂ)
     (hρ_psd : ρ.PosSemidef) (hρ_ne : ρ ≠ 0)
     (hρ_fix : transferMap A ρ = ρ) :
@@ -151,13 +151,13 @@ radius) is also a consequence.
 
 namespace Kraus
 
-variable {d D : ℕ}
+variable {ι : Type*} [Fintype ι] {D : ℕ}
 
 section Uniqueness
 
 /-- **Uniqueness under irreducibility** (Wolf Theorem 6.3(2)): any PSD fixed point
 of an irreducible transfer map is proportional to a fixed nonzero PSD fixed point. -/
-theorem posSemidef_fixedPoint_unique_of_irreducible {ι : Type*} [Fintype ι]
+theorem posSemidef_fixedPoint_unique_of_irreducible
     (A : ι → Matrix (Fin D) (Fin D) ℂ)
     (hIrr : IsIrreducibleMap (transferMap A))
     (ρ σ : Matrix (Fin D) (Fin D) ℂ)
@@ -172,7 +172,7 @@ theorem posSemidef_fixedPoint_unique_of_irreducible {ι : Type*} [Fintype ι]
 /-- **Uniqueness** (Wolf Theorem 6.3(2), non-degeneracy): any PSD fixed point
 of an injective transfer map is proportional to a given nonzero PSD fixed point. -/
 theorem posSemidef_fixedPoint_unique
-    (A : Fin d → Matrix (Fin D) (Fin D) ℂ) (hA : IsInjective A)
+    (A : ι → Matrix (Fin D) (Fin D) ℂ) (hA : IsInjective A)
     (ρ σ : Matrix (Fin D) (Fin D) ℂ)
     (hρ_psd : ρ.PosSemidef) (hρ_ne : ρ ≠ 0)
     (hσ_psd : σ.PosSemidef)
@@ -192,7 +192,7 @@ section Assembly
 
 namespace Kraus
 
-variable {d D : ℕ}
+variable {ι : Type*} [Fintype ι] {D : ℕ}
 
 /-! ## Part 3: Existence of PSD fixed point -/
 
@@ -214,7 +214,7 @@ the positive-definiteness and uniqueness statements. For a general non-normalize
 injective tensor, one instead expects the eigenvector statement
 `∃ ρ c, ρ.PosSemidef ∧ ρ ≠ 0 ∧ 0 < c ∧ E(ρ) = c • ρ`, and then rescales to the
 fixed-point setting. -/
-theorem exists_posSemidef_fixedPoint {ι : Type*} [Fintype ι]
+theorem exists_posSemidef_fixedPoint
     (A : ι → Matrix (Fin D) (Fin D) ℂ)
     (hNorm : ∑ i : ι, (A i)ᴴ * A i = 1)
     (hD : 0 < D) :
@@ -235,8 +235,8 @@ section PerronFrobenius
 The transfer map of an injective MPS tensor has a unique PSD fixed point
 (up to scalar), and it is positive definite. -/
 theorem quantum_perron_frobenius [DecidableEq (Fin D)]
-    (A : Fin d → Matrix (Fin D) (Fin D) ℂ) (hA : IsInjective A)
-    (hNorm : ∑ i : Fin d, (A i)ᴴ * A i = 1)
+    (A : ι → Matrix (Fin D) (Fin D) ℂ) (hA : IsInjective A)
+    (hNorm : ∑ i : ι, (A i)ᴴ * A i = 1)
     (hD : 0 < D) :
     ∃ ρ : Matrix (Fin D) (Fin D) ℂ,
       HasUniqueFixedPoint (transferMap A) ρ := by
@@ -257,8 +257,8 @@ theorem quantum_perron_frobenius [DecidableEq (Fin D)]
 /-- **Injectivity implies unique fixed point** (without the `0 < D` hypothesis).
 Extends `quantum_perron_frobenius` to the case `D = 0`, which holds vacuously. -/
 theorem injective_transfer_unique_fixed_point' [DecidableEq (Fin D)]
-    (A : Fin d → Matrix (Fin D) (Fin D) ℂ) (hA : IsInjective A)
-    (hNorm : ∑ i : Fin d, (A i)ᴴ * A i = 1) :
+    (A : ι → Matrix (Fin D) (Fin D) ℂ) (hA : IsInjective A)
+    (hNorm : ∑ i : ι, (A i)ᴴ * A i = 1) :
     ∃ ρ : Matrix (Fin D) (Fin D) ℂ,
       HasUniqueFixedPoint (transferMap A) ρ := by
   by_cases hD : 0 < D
@@ -325,7 +325,7 @@ open scoped Matrix ComplexOrder BigOperators
 
 namespace Kraus
 
-variable {d D : ℕ}
+variable {ι : Type*} [Fintype ι] {D : ℕ}
 
 /-- **Quantum Perron–Frobenius under irreducibility** (Wolf Theorem 6.3).
 
@@ -340,9 +340,9 @@ may not span), but the transfer map can still be irreducible.
 **Proof**: The normalization makes the transfer map a channel, so channel fixed-point
 existence and uniqueness under irreducibility applies directly. -/
 theorem quantum_perron_frobenius_irreducible [DecidableEq (Fin D)]
-    (A : Fin d → Matrix (Fin D) (Fin D) ℂ)
+    (A : ι → Matrix (Fin D) (Fin D) ℂ)
     (hIrr : IsIrreducibleMap (transferMap A))
-    (hNorm : ∑ i : Fin d, (A i)ᴴ * A i = 1)
+    (hNorm : ∑ i : ι, (A i)ᴴ * A i = 1)
     (hD : 0 < D) :
     ∃ ρ : Matrix (Fin D) (Fin D) ℂ,
       HasUniqueFixedPoint (transferMap A) ρ := by

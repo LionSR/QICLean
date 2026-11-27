@@ -59,11 +59,11 @@ of the rank-one fixed-point projection has spectral radius strictly smaller than
 The field names, order, and displayed normalization equality are part of this structure's
 public interface. In particular, the normalization is displayed as
 $\sum_i K_i^\dagger K_i = I$ rather than through an equivalent predicate. -/
-structure HasComplementaryFixedPointGap {d D : ℕ} [NeZero D]
-    (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
+structure HasComplementaryFixedPointGap {ι : Type*} [Fintype ι] {D : ℕ} [NeZero D]
+    (K : ι → Matrix (Fin D) (Fin D) ℂ)
     (ρ : Matrix (Fin D) (Fin D) ℂ) : Prop where
   /-- Trace-preserving Kraus normalization: $\sum_i K_i^\dagger K_i = I$. -/
-  norm : ∑ i : Fin d, (K i)ᴴ * K i = 1
+  norm : ∑ i : ι, (K i)ᴴ * K i = 1
   /-- The distinguished fixed point is nonzero. -/
   fixedPoint_ne_zero : ρ ≠ 0
   /-- The distinguished fixed point is positive semidefinite. -/
@@ -82,12 +82,12 @@ structure HasComplementaryFixedPointGap {d D : ℕ} [NeZero D]
 
 /-- A finite Kraus family has a primitive fixed point if some matrix witnesses a
 complementary fixed-point gap. -/
-def HasPrimitiveFixedPoint {d D : ℕ} [NeZero D]
-    (K : Fin d → Matrix (Fin D) (Fin D) ℂ) : Prop :=
+def HasPrimitiveFixedPoint {ι : Type*} [Fintype ι] {D : ℕ} [NeZero D]
+    (K : ι → Matrix (Fin D) (Fin D) ℂ) : Prop :=
   ∃ ρ, HasComplementaryFixedPointGap K ρ
 
-variable {d D : ℕ} [NeZero D]
-variable {K : Fin d → Matrix (Fin D) (Fin D) ℂ}
+variable {ι : Type*} [Fintype ι] {D : ℕ} [NeZero D]
+variable {K : ι → Matrix (Fin D) (Fin D) ℂ}
 variable {ρ : Matrix (Fin D) (Fin D) ℂ}
 
 /-- The trace of the nonzero positive-semidefinite fixed point is nonzero. -/
@@ -185,8 +185,8 @@ then every one-modulus eigenvalue of $E_K$ is equal to one.
   peripheral-spectrum primitivity of `Kraus.mapLM K`.
 -/
 
-variable {d D : ℕ} [NeZero D]
-variable {K : Fin d → Matrix (Fin D) (Fin D) ℂ}
+variable {ι : Type*} [Fintype ι] {D : ℕ} [NeZero D]
+variable {K : ι → Matrix (Fin D) (Fin D) ℂ}
 variable {ρ : Matrix (Fin D) (Fin D) ℂ}
 
 /-- A complementary fixed-point gap makes the finite Kraus map primitive in the
@@ -235,8 +235,8 @@ theorem Matrix.PosDef.inv_trace_smul {D : ℕ} [NeZero D]
 /-- Rescaling a positive-definite primitive fixed point to unit trace preserves the
 complementary fixed-point gap. Only the ray through the fixed point enters the gap
 certificate, so the normalized witness carries the same primitivity data. -/
-theorem Kraus.HasComplementaryFixedPointGap.smul_inv_trace {d D : ℕ} [NeZero D]
-    {A : Fin d → Matrix (Fin D) (Fin D) ℂ} {ρ : Matrix (Fin D) (Fin D) ℂ}
+theorem Kraus.HasComplementaryFixedPointGap.smul_inv_trace {ι : Type*} [Fintype ι] {D : ℕ} [NeZero D]
+    {A : ι → Matrix (Fin D) (Fin D) ℂ} {ρ : Matrix (Fin D) (Fin D) ℂ}
     (hP : Kraus.HasComplementaryFixedPointGap A ρ) (hρ : ρ.PosDef) :
     Kraus.HasComplementaryFixedPointGap A ((Matrix.trace ρ)⁻¹ • ρ) := by
   have htr_ne : Matrix.trace ρ ≠ 0 := ne_of_gt hρ.trace_pos
@@ -257,13 +257,13 @@ open scoped BigOperators Matrix Topology Matrix.Norms.Operator
 
 section
 
-variable {d D : ℕ}
+variable {ι : Type*} [Fintype ι] {D : ℕ}
 
 /-- The powers of a normalized primitive transfer map converge in operator norm
  to its rank-one fixed-point projection. Source: Nachtergaele,
 arXiv:cond-mat/9410110, equations (3.1)--(3.2b) and Section 6. -/
 theorem Kraus.HasComplementaryFixedPointGap.transferMap_pow_tendsto_fixedPointProj
-    [NeZero D] {A : Fin d → Matrix (Fin D) (Fin D) ℂ} {ρ : Matrix (Fin D) (Fin D) ℂ}
+    [NeZero D] {A : ι → Matrix (Fin D) (Fin D) ℂ} {ρ : Matrix (Fin D) (Fin D) ℂ}
     (hP : Kraus.HasComplementaryFixedPointGap A ρ) :
     let Φ := Module.End.toContinuousLinearMap (𝕜 := ℂ) (Matrix (Fin D) (Fin D) ℂ)
     Tendsto (fun n : ℕ => Φ ((Kraus.transferMap A) ^ n)) atTop

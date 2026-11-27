@@ -112,13 +112,13 @@ open scoped Matrix
 
 namespace Kraus
 
-variable {d D : ℕ}
+variable {ι : Type*} [Fintype ι] {D : ℕ}
 
 /-- If the length-\(p-1\) word span contains an invertible matrix, then the
 length-\(p\) word span has dimension at least the one-letter Kraus span.
 Source context: arXiv:1708.00029, Theorem 4.1, converse, lines 812--818. -/
 theorem wordSpan_one_finrank_le_of_isUnit_mem_wordSpan_pred
-    (A : Fin d → Matrix (Fin D) (Fin D) ℂ) {p : ℕ} (hp : 0 < p)
+    (A : ι → Matrix (Fin D) (Fin D) ℂ) {p : ℕ} (hp : 0 < p)
     {X : Matrix (Fin D) (Fin D) ℂ} (hX : X ∈ wordSpan A (p - 1))
     (hUnit : IsUnit X) :
     Module.finrank ℂ (wordSpan A 1) ≤ Module.finrank ℂ (wordSpan A p) := by
@@ -144,7 +144,7 @@ theorem wordSpan_one_finrank_le_of_isUnit_mem_wordSpan_pred
 length-\(p-1\) invertible element needed above, for every positive \(p\).
 Source context: arXiv:1708.00029, Theorem 4.1, converse, lines 812--818. -/
 theorem wordSpan_one_finrank_le_of_isUnit_mem_wordSpan_one
-    (A : Fin d → Matrix (Fin D) (Fin D) ℂ) {p : ℕ} (hp : 0 < p)
+    (A : ι → Matrix (Fin D) (Fin D) ℂ) {p : ℕ} (hp : 0 < p)
     {X : Matrix (Fin D) (Fin D) ℂ} (hX : X ∈ wordSpan A 1)
     (hUnit : IsUnit X) :
     Module.finrank ℂ (wordSpan A 1) ≤ Module.finrank ℂ (wordSpan A p) := by

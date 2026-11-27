@@ -146,7 +146,7 @@ trivial zero-dimensional case is discharged separately.
 
 namespace Kraus
 
-variable {d D : ℕ}
+variable {ι : Type*} [Fintype ι] {D : ℕ}
 
 local notation "Mat" => Matrix (Fin D) (Fin D) ℂ
 
@@ -156,7 +156,7 @@ This is the trace-preserving form of the spectral bound in Wolf, Proposition 6.1
 obtained from the positive-map bound after discharging the trivial
 zero-dimensional case. -/
 theorem eigenvalue_norm_le_one_of_isTP
-    (K : Fin d → Mat) (hTP : IsTP K)
+    (K : ι → Mat) (hTP : IsTP K)
     (μ : ℂ) (hμ : Module.End.HasEigenvalue (mapLM K) μ) :
     ‖μ‖ ≤ 1 := by
   rcases eq_or_ne D 0 with hD0 | hD0
@@ -173,7 +173,7 @@ open scoped TNOperatorSpace
 
 /-- A trace-preserving finite Kraus map has spectral radius at most one. -/
 theorem spectralRadius_mapLM_le_one_of_isTP
-    (K : Fin d → Mat) (hTP : IsTP K) :
+    (K : ι → Mat) (hTP : IsTP K) :
     spectralRadius ℂ
       ((Module.End.toContinuousLinearMap (Matrix (Fin D) (Fin D) ℂ)) (mapLM K)) ≤ 1 :=
   spectralRadius_le_one_of_forall_eigenvalue_norm_le_one (mapLM K)

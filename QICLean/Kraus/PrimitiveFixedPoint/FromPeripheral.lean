@@ -35,13 +35,13 @@ open Matrix
 
 namespace Kraus
 
-variable {d D : ℕ}
+variable {ι : Type*} [Fintype ι] {D : ℕ}
 
 /-- For an irreducible trace-preserving finite Kraus family, every traceless fixed point
 of its Kraus map is zero. -/
 theorem mapLM_fixedPoint_eq_zero_of_trace_eq_zero_of_irreducible
     [NeZero D]
-    (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
+    (K : ι → Matrix (Fin D) (Fin D) ℂ)
     (hIrr : IsIrreducibleFamily K)
     (hTP : IsTP K)
     (X : Matrix (Fin D) (Fin D) ℂ)
@@ -56,7 +56,7 @@ theorem mapLM_fixedPoint_eq_zero_of_trace_eq_zero_of_irreducible
 its Kraus map is zero. -/
 theorem mapLM_fixedPoint_eq_zero_of_trace_eq_zero
     [NeZero D]
-    (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
+    (K : ι → Matrix (Fin D) (Fin D) ℂ)
     (hInj : IsInjective K)
     (hTP : IsTP K)
     (X : Matrix (Fin D) (Fin D) ℂ)
@@ -74,7 +74,7 @@ produces a nonzero positive-semidefinite fixed point whose complementary map has
 radius below one. -/
 theorem spectralRadius_compl_lt_one_of_peripheralPrimitive_of_irreducible
     [NeZero D]
-    (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
+    (K : ι → Matrix (Fin D) (Fin D) ℂ)
     (hIrr : IsIrreducibleFamily K)
     (hTP : IsTP K)
     (hPrim : _root_.IsPrimitive (mapLM K)) :
@@ -98,7 +98,7 @@ theorem spectralRadius_compl_lt_one_of_peripheralPrimitive_of_irreducible
 implies the existence of a primitive fixed point. -/
 theorem hasPrimitiveFixedPoint_of_peripheralPrimitive_of_irreducible
     [NeZero D]
-    (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
+    (K : ι → Matrix (Fin D) (Fin D) ℂ)
     (hIrr : IsIrreducibleFamily K)
     (hTP : IsTP K)
     (hPrim : _root_.IsPrimitive (mapLM K)) :
@@ -113,7 +113,7 @@ produces a nonzero positive-semidefinite fixed point whose complementary map has
 radius below one. -/
 theorem spectralRadius_compl_lt_one_of_peripheralPrimitive
     [NeZero D]
-    (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
+    (K : ι → Matrix (Fin D) (Fin D) ℂ)
     (hInj : IsInjective K)
     (hTP : IsTP K)
     (hPrim : _root_.IsPrimitive (mapLM K)) :
@@ -133,7 +133,7 @@ theorem spectralRadius_compl_lt_one_of_peripheralPrimitive
 implies the existence of a primitive fixed point. -/
 theorem hasPrimitiveFixedPoint_of_peripheralPrimitive
     [NeZero D]
-    (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
+    (K : ι → Matrix (Fin D) (Fin D) ℂ)
     (hInj : IsInjective K)
     (hTP : IsTP K)
     (hPrim : _root_.IsPrimitive (mapLM K)) :

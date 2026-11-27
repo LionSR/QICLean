@@ -35,12 +35,12 @@ attribute [local instance] Matrix.linftyOpNormedAddCommGroup Matrix.linftyOpNorm
 
 namespace Kraus
 
-variable {d D D₁ D₂ : ℕ}
+variable {ι : Type*} [Fintype ι] {D D₁ D₂ : ℕ}
 
 /-- Gauge a tensor by `S`, in MPS notation. -/
 noncomputable def gaugeTensor
-    {d D : ℕ} (S : Matrix (Fin D) (Fin D) ℂ) (A : Fin d → Matrix (Fin D) (Fin D) ℂ) :
-    Fin d → Matrix (Fin D) (Fin D) ℂ :=
+    {ι : Type*} [Fintype ι] {D : ℕ} (S : Matrix (Fin D) (Fin D) ℂ) (A : ι → Matrix (Fin D) (Fin D) ℂ) :
+    ι → Matrix (Fin D) (Fin D) ℂ :=
   Kraus.gaugeFamily S A
 
 /-- Apply the two gauges to a mixed-transfer eigenvector, in MPS notation. -/
@@ -52,8 +52,8 @@ noncomputable def gaugeEigenvector
   Kraus.gaugeMixedEigenvector SA SB X
 
 @[simp] lemma gaugeTensor_apply
-    {d D : ℕ} (S : Matrix (Fin D) (Fin D) ℂ) (A : Fin d → Matrix (Fin D) (Fin D) ℂ)
-    (i : Fin d) :
+    {ι : Type*} [Fintype ι] {D : ℕ} (S : Matrix (Fin D) (Fin D) ℂ) (A : ι → Matrix (Fin D) (Fin D) ℂ)
+    (i : ι) :
     gaugeTensor S A i = S⁻¹ * A i * S :=
   rfl
 
@@ -67,9 +67,9 @@ noncomputable def gaugeEigenvector
 /-- If `ker X` is invariant under all generators `(B k)ᴴ` and `B` is injective, then `ker X`
 is invariant under every matrix of the source dimension. -/
 theorem ker_all_of_inj {D₁ D₂ : ℕ}
-    (B : Fin d → Matrix (Fin D₂) (Fin D₂) ℂ) (hB : IsInjective B)
+    (B : ι → Matrix (Fin D₂) (Fin D₂) ℂ) (hB : IsInjective B)
     (X : Matrix (Fin D₁) (Fin D₂) ℂ)
-    (h : ∀ k : Fin d, ∀ v, X *ᵥ v = 0 → X *ᵥ ((B k)ᴴ *ᵥ v) = 0) :
+    (h : ∀ k : ι, ∀ v, X *ᵥ v = 0 → X *ᵥ ((B k)ᴴ *ᵥ v) = 0) :
     ∀ (M : Matrix (Fin D₂) (Fin D₂) ℂ) (v : Fin D₂ → ℂ),
       X *ᵥ v = 0 → X *ᵥ (M *ᵥ v) = 0 :=
   Matrix.ker_all_of_span_eq_top B hB.span_eq_top X h
@@ -92,7 +92,7 @@ theorem det_ne_zero_of_ker_all [NeZero D]
 
 /-- Conjugation by an invertible matrix preserves injectivity (spanning). -/
 theorem isInjective_conjugate {D : ℕ}
-    (T : Fin d → Matrix (Fin D) (Fin D) ℂ) (hT : IsInjective T)
+    (T : ι → Matrix (Fin D) (Fin D) ℂ) (hT : IsInjective T)
     (S : Matrix (Fin D) (Fin D) ℂ) (hS : S.det ≠ 0) :
     IsInjective (gaugeTensor S T) :=
   Matrix.span_range_gauge_eq_top T hT.span_eq_top S hS
@@ -100,26 +100,26 @@ theorem isInjective_conjugate {D : ℕ}
 /-- Shared block-KS core: transporting a modulus-one mixed-transfer eigenvector to canonical
 gauges produces Kraus-level intertwining relations for the gauged tensors. -/
 theorem gauged_intertwining_core
-    (A : Fin d → Matrix (Fin D₁) (Fin D₁) ℂ)
-    (B : Fin d → Matrix (Fin D₂) (Fin D₂) ℂ)
+    (A : ι → Matrix (Fin D₁) (Fin D₁) ℂ)
+    (B : ι → Matrix (Fin D₂) (Fin D₂) ℂ)
     (SA : Matrix (Fin D₁) (Fin D₁) ℂ) (SB : Matrix (Fin D₂) (Fin D₂) ℂ)
     (ρA : Matrix (Fin D₁) (Fin D₁) ℂ) (ρB : Matrix (Fin D₂) (Fin D₂) ℂ)
     (hSA_det : SA.det ≠ 0) (hSB_det : SB.det ≠ 0)
     (hSA_mul : SA * SAᴴ = ρA) (hSB_mul : SB * SBᴴ = ρB)
     (hρA_fix : mapLM A ρA = ρA)
     (hρB_fix : mapLM B ρB = ρB)
-    (hA_norm : ∑ i : Fin d, (A i)ᴴ * A i = 1)
-    (hB_norm : ∑ i : Fin d, (B i)ᴴ * B i = 1)
+    (hA_norm : ∑ i : ι, (A i)ᴴ * A i = 1)
+    (hB_norm : ∑ i : ι, (B i)ᴴ * B i = 1)
     (X : Matrix (Fin D₁) (Fin D₂) ℂ) (μ : ℂ)
     (hFX : mixedMapLM A B X = μ • X)
     (hμ : ‖μ‖ = 1) (hX : X ≠ 0) :
-    (∑ i : Fin d, gaugeTensor SA A i * (gaugeTensor SA A i)ᴴ = 1) ∧
-      (∑ i : Fin d, gaugeTensor SB B i * (gaugeTensor SB B i)ᴴ = 1) ∧
+    (∑ i : ι, gaugeTensor SA A i * (gaugeTensor SA A i)ᴴ = 1) ∧
+      (∑ i : ι, gaugeTensor SB B i * (gaugeTensor SB B i)ᴴ = 1) ∧
       gaugeEigenvector SA SB X ≠ 0 ∧
-      (∀ i : Fin d,
+      (∀ i : ι,
         gaugeEigenvector SA SB X * (gaugeTensor SB B i)ᴴ =
           μ • ((gaugeTensor SA A i)ᴴ * gaugeEigenvector SA SB X)) ∧
-      (∀ i : Fin d,
+      (∀ i : ι,
         gaugeTensor SA A i * gaugeEigenvector SA SB X =
           μ • gaugeEigenvector SA SB X * gaugeTensor SB B i) := by
   simpa only [gaugeTensor, gaugeEigenvector, Kraus.IsUnital] using
@@ -129,11 +129,11 @@ theorem gauged_intertwining_core
 /-- If `A i * X = μ • X * B i` and `B` is unital, then `X * Xᴴ` is a fixed point of
 `mapLM A`. -/
 theorem self_mul_conjTranspose_fixed_of_intertwining
-    (A : Fin d → Matrix (Fin D₁) (Fin D₁) ℂ)
-    (B : Fin d → Matrix (Fin D₂) (Fin D₂) ℂ)
+    (A : ι → Matrix (Fin D₁) (Fin D₁) ℂ)
+    (B : ι → Matrix (Fin D₂) (Fin D₂) ℂ)
     (X : Matrix (Fin D₁) (Fin D₂) ℂ) (μ : ℂ)
-    (hB_unital : ∑ i : Fin d, B i * (B i)ᴴ = 1)
-    (hInter : ∀ i : Fin d, A i * X = μ • X * B i)
+    (hB_unital : ∑ i : ι, B i * (B i)ᴴ = 1)
+    (hInter : ∀ i : ι, A i * X = μ • X * B i)
     (hμ : ‖μ‖ = 1) :
     mapLM A (X * Xᴴ) = X * Xᴴ :=
   Kraus.mapLM_self_mul_conjTranspose_fixed_of_intertwining
@@ -141,7 +141,7 @@ theorem self_mul_conjTranspose_fixed_of_intertwining
 
 /-- Transport a fixed point of the gauged transfer map back to the original tensor. -/
 theorem ungauge_transfer_fixedPoint
-    (A : Fin d → Matrix (Fin D) (Fin D) ℂ) (S σ : Matrix (Fin D) (Fin D) ℂ)
+    (A : ι → Matrix (Fin D) (Fin D) ℂ) (S σ : Matrix (Fin D) (Fin D) ℂ)
     (hS : IsUnit S.det)
     (hσ : mapLM (gaugeTensor S A) σ = σ) :
     mapLM A (S * σ * Sᴴ) = S * σ * Sᴴ := by
@@ -168,19 +168,19 @@ theorem isUnit_det_of_self_mul_conjTranspose_scalar [NeZero D]
 /-- Generic square gauge construction: once the gauged intertwiner is invertible, it upgrades to
 gauge-phase equivalence for the original tensors. -/
 theorem gaugePhaseEquiv_of_gauged_intertwining [NeZero D]
-    (A B : Fin d → Matrix (Fin D) (Fin D) ℂ)
+    (A B : ι → Matrix (Fin D) (Fin D) ℂ)
     (SA SB X' : Matrix (Fin D) (Fin D) ℂ) (μ : ℂ)
     (hSA_det : SA.det ≠ 0) (hSB_det : SB.det ≠ 0)
     (hX'_u : IsUnit X'.det) (hμ : ‖μ‖ = 1)
     (hInter :
-      ∀ i : Fin d, gaugeTensor SA A i * X' = μ • X' * gaugeTensor SB B i) :
+      ∀ i : ι, gaugeTensor SA A i * X' = μ • X' * gaugeTensor SB B i) :
     GaugePhaseEquiv A B := by
-  let A' : Fin d → Matrix (Fin D) (Fin D) ℂ := gaugeTensor SA A
-  let B' : Fin d → Matrix (Fin D) (Fin D) ℂ := gaugeTensor SB B
+  let A' : ι → Matrix (Fin D) (Fin D) ℂ := gaugeTensor SA A
+  let B' : ι → Matrix (Fin D) (Fin D) ℂ := gaugeTensor SB B
   have hSA_u : IsUnit SA.det := Ne.isUnit hSA_det
   have hSB_u : IsUnit SB.det := Ne.isUnit hSB_det
   have hμ_ne0 : μ ≠ 0 := Complex.ne_zero_of_norm_eq_one hμ
-  have hper : ∀ i : Fin d, B' i = μ⁻¹ • (X'⁻¹ * A' i * X') := by
+  have hper : ∀ i : ι, B' i = μ⁻¹ • (X'⁻¹ * A' i * X') := by
     intro i
     have hAX : A' i * X' = μ • X' * B' i := by
       simpa [A', B', gaugeTensor] using hInter i
@@ -252,15 +252,15 @@ theorem gaugePhaseEquiv_of_gauged_intertwining [NeZero D]
 /-- Generic rectangular dimension comparison: the two intertwining relations force equality of
 dimensions once both gauged tensor families are injective. -/
 theorem dim_eq_of_gauged_intertwining [NeZero D₁] [NeZero D₂]
-    (A : Fin d → Matrix (Fin D₁) (Fin D₁) ℂ)
-    (B : Fin d → Matrix (Fin D₂) (Fin D₂) ℂ)
+    (A : ι → Matrix (Fin D₁) (Fin D₁) ℂ)
+    (B : ι → Matrix (Fin D₂) (Fin D₂) ℂ)
     (X : Matrix (Fin D₁) (Fin D₂) ℂ) (μ : ℂ)
     (hA : IsInjective A) (hB : IsInjective B)
     (hX : X ≠ 0)
-    (hInter1 : ∀ k : Fin d, X * (B k)ᴴ = μ • ((A k)ᴴ * X))
-    (hInter2 : ∀ k : Fin d, A k * X = μ • X * B k) :
+    (hInter1 : ∀ k : ι, X * (B k)ᴴ = μ • ((A k)ᴴ * X))
+    (hInter2 : ∀ k : ι, A k * X = μ • X * B k) :
     D₁ = D₂ := by
-  have hker_X : ∀ k : Fin d, ∀ v, X *ᵥ v = 0 → X *ᵥ ((B k)ᴴ *ᵥ v) = 0 := by
+  have hker_X : ∀ k : ι, ∀ v, X *ᵥ v = 0 → X *ᵥ ((B k)ᴴ *ᵥ v) = 0 := by
     intro k v hv
     have : X *ᵥ ((B k)ᴴ *ᵥ v) = (X * (B k)ᴴ) *ᵥ v := by
       simp only [Matrix.mulVec_mulVec]
@@ -284,12 +284,12 @@ theorem dim_eq_of_gauged_intertwining [NeZero D₁] [NeZero D₂]
     apply hX
     exact Matrix.conjTranspose_eq_zero.mp h
   have hInter2h :
-      ∀ k : Fin d, Xᴴ * (A k)ᴴ = (starRingEnd ℂ μ) • ((B k)ᴴ * Xᴴ) := by
+      ∀ k : ι, Xᴴ * (A k)ᴴ = (starRingEnd ℂ μ) • ((B k)ᴴ * Xᴴ) := by
     intro k
     have h22 := congrArg Matrix.conjTranspose (hInter2 k)
     simp only [Matrix.conjTranspose_mul, Matrix.conjTranspose_smul] at h22
     simpa [smul_mul_assoc] using h22
-  have hker_Xh : ∀ k : Fin d, ∀ v, Xᴴ *ᵥ v = 0 → Xᴴ *ᵥ ((A k)ᴴ *ᵥ v) = 0 := by
+  have hker_Xh : ∀ k : ι, ∀ v, Xᴴ *ᵥ v = 0 → Xᴴ *ᵥ ((A k)ᴴ *ᵥ v) = 0 := by
     intro k v hv
     have : Xᴴ *ᵥ ((A k)ᴴ *ᵥ v) = (Xᴴ * (A k)ᴴ) *ᵥ v := by
       simp only [Matrix.mulVec_mulVec]

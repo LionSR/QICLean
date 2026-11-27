@@ -36,8 +36,8 @@ open Matrix
 
 namespace Kraus
 
-variable {d D : ℕ} [NeZero D]
-variable {K : Fin d → Matrix (Fin D) (Fin D) ℂ}
+variable {ι : Type*} [Fintype ι] {D : ℕ} [NeZero D]
+variable {K : ι → Matrix (Fin D) (Fin D) ℂ}
 variable {ρ : Matrix (Fin D) (Fin D) ℂ}
 
 /-- If the finite Kraus map is irreducible, the nonzero positive-semidefinite fixed point

@@ -32,7 +32,7 @@ open scoped Matrix TNOperatorSpace ComplexOrder BigOperators NNReal ENNReal
 
 namespace Kraus
 
-variable {d D : ℕ}
+variable {ι : Type*} [Fintype ι] {D : ℕ}
 
 noncomputable scoped instance : NormedRing (Matrix (Fin D) (Fin D) ℂ) :=
   Matrix.linftyOpNormedRing
@@ -41,13 +41,13 @@ noncomputable scoped instance : NormedAlgebra ℂ (Matrix (Fin D) (Fin D) ℂ) :
   Matrix.linftyOpNormedAlgebra
 
 /-- The spectral radius of the mixed transfer operator. -/
-noncomputable def mixedTransferSpectralRadius (A B : Fin d → Matrix (Fin D) (Fin D) ℂ) :
+noncomputable def mixedTransferSpectralRadius (A B : ι → Matrix (Fin D) (Fin D) ℂ) :
     ENNReal :=
   spectralRadius ℂ
     ((Module.End.toContinuousLinearMap (Matrix (Fin D) (Fin D) ℂ))
       (mixedMapLM A B))
 
-theorem mixedTransferSpectralRadius_eq (A B : Fin d → Matrix (Fin D) (Fin D) ℂ) :
+theorem mixedTransferSpectralRadius_eq (A B : ι → Matrix (Fin D) (Fin D) ℂ) :
     mixedTransferSpectralRadius A B =
       spectralRadius ℂ
         ((Module.End.toContinuousLinearMap (Matrix (Fin D) (Fin D) ℂ))
@@ -55,24 +55,24 @@ theorem mixedTransferSpectralRadius_eq (A B : Fin d → Matrix (Fin D) (Fin D) �
 
 /-- In equal bond dimension, the rectangular and square spectral radii agree. -/
 @[simp]
-theorem mixedTransferSpectralRadius₂_same_dim (A B : Fin d → Matrix (Fin D) (Fin D) ℂ) :
+theorem mixedTransferSpectralRadius₂_same_dim (A B : ι → Matrix (Fin D) (Fin D) ℂ) :
     mixedTransferSpectralRadius₂ A B = mixedTransferSpectralRadius A B :=
   rfl
 
 /-- Every eigenvalue of the mixed transfer operator has modulus at most one. -/
 theorem eigenvalue_norm_le_one
-    (A B : Fin d → Matrix (Fin D) (Fin D) ℂ)
-    (hA_norm : ∑ i : Fin d, (A i)ᴴ * A i = 1)
-    (hB_norm : ∑ i : Fin d, (B i)ᴴ * B i = 1)
+    (A B : ι → Matrix (Fin D) (Fin D) ℂ)
+    (hA_norm : ∑ i : ι, (A i)ᴴ * A i = 1)
+    (hB_norm : ∑ i : ι, (B i)ᴴ * B i = 1)
     (μ : ℂ) (hμ : Module.End.HasEigenvalue (mixedMapLM A B) μ) :
     ‖μ‖ ≤ 1 :=
   Kraus.eigenvalue_norm_le_one_mixedMapLM_of_isTP A B hA_norm hB_norm μ hμ
 
 /-- The mixed transfer operator of normalized tensors has spectral radius at most one. -/
 theorem spectralRadius_mixedTransfer_le_one
-    (A B : Fin d → Matrix (Fin D) (Fin D) ℂ)
-    (hA_norm : ∑ i : Fin d, (A i)ᴴ * A i = 1)
-    (hB_norm : ∑ i : Fin d, (B i)ᴴ * B i = 1) :
+    (A B : ι → Matrix (Fin D) (Fin D) ℂ)
+    (hA_norm : ∑ i : ι, (A i)ᴴ * A i = 1)
+    (hB_norm : ∑ i : ι, (B i)ᴴ * B i = 1) :
     mixedTransferSpectralRadius A B ≤ 1 :=
   Kraus.mixedMapSpectralRadius_le_one_of_isTP A B hA_norm hB_norm
 

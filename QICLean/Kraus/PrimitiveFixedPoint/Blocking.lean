@@ -25,7 +25,7 @@ point $\rho$, rather than another representative of its ray.
 * `Kraus.isIrreducibleFamily_block_of_tp_primitive_irr`,
   `Kraus.tp_primitive_irreducible_extra_blocking`: blocking a trace-preserving primitive
   irreducible family at a positive length keeps all three properties.
-* `Kraus.HasComplementaryFixedPointGap.blockTensor`,
+* `Kraus.HasComplementaryFixedPointGap.block`,
   `Kraus.HasComplementaryFixedPointGap.reindexPhysical`: a complementary fixed-point gap
   with positive-definite fixed point survives positive blocking, and any complementary
   fixed-point gap survives relabelling.
@@ -47,7 +47,7 @@ namespace Kraus
 
 section PrimitiveBlocking
 
-variable {d D : ℕ} [NeZero D]
+variable {ι : Type*} [Fintype ι] {D : ℕ} [NeZero D]
 
 /-- Blocking a trace-preserving family with primitive transfer map that is irreducible
 gives an irreducible family at every positive length `P`.
@@ -59,7 +59,7 @@ since `E ^ n = P_ρ + (E - P_ρ) ^ n` for `n ≥ 1`. The powers of `E - P_ρ` te
 `σ' = 0`; uniqueness of the positive-definite fixed point gives irreducibility.
 Source: arXiv:1606.00608, Section 2.3 and Appendix A. -/
 theorem isIrreducibleFamily_block_of_tp_primitive_irr
-    (A : Fin d → Matrix (Fin D) (Fin D) ℂ) (hTP : IsTP A)
+    (A : ι → Matrix (Fin D) (Fin D) ℂ) (hTP : IsTP A)
     (hPrim : _root_.IsPrimitive (transferMap A)) (hIrr : IsIrreducibleFamily A)
     {P : ℕ} (hP : 0 < P) :
     IsIrreducibleFamily (block A P) := by
@@ -124,32 +124,31 @@ theorem isIrreducibleFamily_block_of_tp_primitive_irr
 at a positive length `k` keeps all three properties: trace preservation, primitivity of
 the transfer map, and irreducibility. -/
 theorem tp_primitive_irreducible_extra_blocking
-    (A : Fin d → Matrix (Fin D) (Fin D) ℂ) (hTP : IsTP A)
+    (A : ι → Matrix (Fin D) (Fin D) ℂ) (hTP : IsTP A)
     (hPrim : _root_.IsPrimitive (transferMap A)) (hIrr : IsIrreducibleFamily A)
     {k : ℕ} (hk : 0 < k) :
-    IsTP (blockTensor A k) ∧ _root_.IsPrimitive (transferMap (blockTensor A k)) ∧
-      IsIrreducibleFamily (blockTensor A k) := by
-  unfold blockTensor
-  refine ⟨(isTP_reindexPhysical_iff _ _).2 (hTP.block k), ?_,
-    (isIrreducibleFamily_reindexPhysical_equiv _ _).2
-      (isIrreducibleFamily_block_of_tp_primitive_irr A hTP hPrim hIrr hk)⟩
-  rw [transferMap_reindexPhysical_equiv, transferMap_block]
+    IsTP (block A k) ∧ _root_.IsPrimitive (transferMap (block A k)) ∧
+      IsIrreducibleFamily (block A k) := by
+  refine ⟨hTP.block k, ?_, isIrreducibleFamily_block_of_tp_primitive_irr A hTP hPrim hIrr hk⟩
+  rw [transferMap_block]
   exact isPrimitive_pow_of_isPrimitive _ k hk hPrim
 
 /-- Every positive blocking keeps a complementary fixed-point gap with positive-definite
 fixed point, with the same fixed point `ρ`. Source: arXiv:1708.00029,
 Lemma lem:blocking-arbitrary, lines 434--451, for a family of period one; Nachtergaele,
 arXiv:cond-mat/9410110, Section 6, lines 2649--2675. -/
-theorem HasComplementaryFixedPointGap.blockTensor {A : Fin d → Matrix (Fin D) (Fin D) ℂ}
+theorem HasComplementaryFixedPointGap.block {A : ι → Matrix (Fin D) (Fin D) ℂ}
     {ρ : Matrix (Fin D) (Fin D) ℂ} (hP : HasComplementaryFixedPointGap A ρ)
     (hρ : ρ.PosDef) {q : ℕ} (hq : 0 < q) :
-    HasComplementaryFixedPointGap (Kraus.blockTensor A q) ρ := by
+    HasComplementaryFixedPointGap (Kraus.block A q) ρ := by
   obtain ⟨hTP, hPrim, hIrr⟩ := tp_primitive_irreducible_extra_blocking A
     hP.norm hP.isPrimitive (hP.isIrreducibleFamily_of_posDef hρ) hq
-  have hFix := transferMap_blockTensor_fixedPoint A q ρ hP.fixedPoint_is_fixed
+  have hFix : transferMap (Kraus.block A q) ρ = ρ := by
+    rw [transferMap_block, Module.End.pow_apply,
+      Function.iterate_fixed hP.fixedPoint_is_fixed]
   obtain ⟨_, hGap⟩ :=
     spectralRadius_compl_lt_one_of_primitive_fixedPoint_of_irreducible_channel
-      (transferMap (Kraus.blockTensor A q)) (isChannel_mapLM _ hTP)
+      (transferMap (Kraus.block A q)) (isChannel_mapLM _ hTP)
       (isIrreducibleMap_mapLM_of_isIrreducibleFamily _ hIrr)
       hPrim ρ hP.fixedPoint_psd hP.fixedPoint_ne_zero hFix
   exact ⟨hTP, hP.fixedPoint_ne_zero, hP.fixedPoint_psd, hFix, hGap⟩
@@ -158,9 +157,9 @@ theorem HasComplementaryFixedPointGap.blockTensor {A : Fin d → Matrix (Fin D) 
 the same fixed point, since the normalization and the transfer map are unchanged.
 Source: Nachtergaele, arXiv:cond-mat/9410110, equations (3.1)--(3.2b),
 lines 1394--1435. -/
-theorem HasComplementaryFixedPointGap.reindexPhysical {d₁ d₂ : ℕ}
-    {A : Fin d₂ → Matrix (Fin D) (Fin D) ℂ} {ρ : Matrix (Fin D) (Fin D) ℂ}
-    (hP : HasComplementaryFixedPointGap A ρ) (e : Fin d₁ ≃ Fin d₂) :
+theorem HasComplementaryFixedPointGap.reindexPhysical {ι' : Type*} [Fintype ι']
+    {A : ι → Matrix (Fin D) (Fin D) ℂ} {ρ : Matrix (Fin D) (Fin D) ℂ}
+    (hP : HasComplementaryFixedPointGap A ρ) (e : ι' ≃ ι) :
     HasComplementaryFixedPointGap (Kraus.reindexPhysical e A) ρ := by
   have hMap : mapLM (Kraus.reindexPhysical e A) = mapLM A :=
     transferMap_reindexPhysical_equiv e A

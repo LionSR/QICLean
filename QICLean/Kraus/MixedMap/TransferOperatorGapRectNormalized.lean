@@ -35,7 +35,7 @@ open scoped Matrix MatrixOrder ComplexOrder BigOperators NNReal ENNReal Matrix.N
 
 namespace Kraus
 
-variable {d D₁ D₂ : ℕ}
+variable {ι : Type*} [Fintype ι] {D₁ D₂ : ℕ}
 
 attribute [local instance] Matrix.linftyOpNormedAddCommGroup Matrix.linftyOpNormedSpace
   ContinuousLinearMap.toNormedAddCommGroup
@@ -46,16 +46,16 @@ attribute [local instance] Matrix.linftyOpNormedAddCommGroup Matrix.linftyOpNorm
 
 /-- The **spectral radius** of the rectangular mixed transfer operator. -/
 noncomputable def mixedTransferSpectralRadius₂
-    (A : Fin d → Matrix (Fin D₁) (Fin D₁) ℂ)
-    (B : Fin d → Matrix (Fin D₂) (Fin D₂) ℂ) :
+    (A : ι → Matrix (Fin D₁) (Fin D₁) ℂ)
+    (B : ι → Matrix (Fin D₂) (Fin D₂) ℂ) :
     ENNReal :=
   spectralRadius ℂ
     ((Module.End.toContinuousLinearMap (Matrix (Fin D₁) (Fin D₂) ℂ))
       (mixedMapLM A B))
 
 theorem mixedTransferSpectralRadius₂_eq
-    (A : Fin d → Matrix (Fin D₁) (Fin D₁) ℂ)
-    (B : Fin d → Matrix (Fin D₂) (Fin D₂) ℂ) :
+    (A : ι → Matrix (Fin D₁) (Fin D₁) ℂ)
+    (B : ι → Matrix (Fin D₂) (Fin D₂) ℂ) :
     mixedTransferSpectralRadius₂ A B =
       spectralRadius ℂ
         ((Module.End.toContinuousLinearMap (Matrix (Fin D₁) (Fin D₂) ℂ))
@@ -65,20 +65,20 @@ theorem mixedTransferSpectralRadius₂_eq
 
 /-- Every eigenvalue of the rectangular mixed transfer operator has modulus ≤ 1. -/
 theorem eigenvalue_norm_le_one₂
-    (A : Fin d → Matrix (Fin D₁) (Fin D₁) ℂ)
-    (B : Fin d → Matrix (Fin D₂) (Fin D₂) ℂ)
-    (hA_norm : ∑ i : Fin d, (A i)ᴴ * A i = 1)
-    (hB_norm : ∑ i : Fin d, (B i)ᴴ * B i = 1)
+    (A : ι → Matrix (Fin D₁) (Fin D₁) ℂ)
+    (B : ι → Matrix (Fin D₂) (Fin D₂) ℂ)
+    (hA_norm : ∑ i : ι, (A i)ᴴ * A i = 1)
+    (hB_norm : ∑ i : ι, (B i)ᴴ * B i = 1)
     (μ : ℂ) (hμ : Module.End.HasEigenvalue (mixedMapLM A B) μ) :
     ‖μ‖ ≤ 1 :=
   Kraus.eigenvalue_norm_le_one_mixedMapLM_of_isTP A B hA_norm hB_norm μ hμ
 
 /-- **Spectral radius bound**: `ρ(F₂) ≤ 1` for normalized tensors. -/
 theorem spectralRadius_mixedTransfer₂_le_one
-    (A : Fin d → Matrix (Fin D₁) (Fin D₁) ℂ)
-    (B : Fin d → Matrix (Fin D₂) (Fin D₂) ℂ)
-    (hA_norm : ∑ i : Fin d, (A i)ᴴ * A i = 1)
-    (hB_norm : ∑ i : Fin d, (B i)ᴴ * B i = 1) :
+    (A : ι → Matrix (Fin D₁) (Fin D₁) ℂ)
+    (B : ι → Matrix (Fin D₂) (Fin D₂) ℂ)
+    (hA_norm : ∑ i : ι, (A i)ᴴ * A i = 1)
+    (hB_norm : ∑ i : ι, (B i)ᴴ * B i = 1) :
     mixedTransferSpectralRadius₂ A B ≤ 1 :=
   Kraus.mixedMapSpectralRadius_le_one_of_isTP A B hA_norm hB_norm
 
