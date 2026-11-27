@@ -18,7 +18,7 @@ left-canonical/trace-preserving gauge.
 
 open scoped Matrix ComplexOrder BigOperators
 
-variable {d D : ℕ}
+variable {ι : Type*} [Fintype ι] {D : ℕ}
 
 section CanonicalGauge
 
@@ -28,12 +28,12 @@ variable [DecidableEq (Fin D)]
 `A'_i = S⁻¹ A_i S` satisfy `∑ A'_i A'_i† = I` whenever the Kraus map of `A`
 fixes `ρ`. This is the standard **right-canonical** gauge construction. -/
 theorem gauged_unital
-    (A : Fin d → Matrix (Fin D) (Fin D) ℂ)
+    (A : ι → Matrix (Fin D) (Fin D) ℂ)
     (S : Matrix (Fin D) (Fin D) ℂ) (ρ : Matrix (Fin D) (Fin D) ℂ)
     (hS_inv : S.det ≠ 0)
     (hSS : S * Sᴴ = ρ)
     (hfix : Kraus.map A ρ = ρ) :
-    ∑ i : Fin d, (S⁻¹ * A i * S) * (S⁻¹ * A i * S)ᴴ = 1 := by
+    ∑ i : ι, (S⁻¹ * A i * S) * (S⁻¹ * A i * S)ᴴ = 1 := by
   have hSinv_mul : S⁻¹ * S = 1 := Matrix.nonsing_inv_mul S (Ne.isUnit hS_inv)
   have hSmul_inv : S * S⁻¹ = 1 := Matrix.mul_nonsing_inv S (Ne.isUnit hS_inv)
   have hSt_inv : Sᴴ.det ≠ 0 := by
@@ -53,7 +53,7 @@ theorem gauged_unital
   -- Goal: ∑ i, S⁻¹ * (A i * ρ * (A i)ᴴ) * Sᴴ⁻¹ = 1
   -- Each term is S⁻¹ * (A i * ρ * (A i)ᴴ) * Sᴴ⁻¹ = (S⁻¹ * (A i * ρ * (A i)ᴴ)) * Sᴴ⁻¹
   -- Use Finset.sum_mul (reversed) and Finset.mul_sum (reversed)
-  have h_sum_eq : ∑ i : Fin d, A i * ρ * (A i)ᴴ = ρ := by
+  have h_sum_eq : ∑ i : ι, A i * ρ * (A i)ᴴ = ρ := by
     rw [← Kraus.map_apply]; exact hfix
   -- Rewrite: ∑ i, S⁻¹ * (A i * ρ * (A i)ᴴ) * Sᴴ⁻¹
   --        = (∑ i, S⁻¹ * (A i * ρ * (A i)ᴴ)) * Sᴴ⁻¹
@@ -67,12 +67,12 @@ the conjugate-transposed family fixes `σ`.
 
 This is the trace-preserving (left-canonical) analogue of `gauged_unital`. -/
 theorem gauged_tracePreserving
-    (A : Fin d → Matrix (Fin D) (Fin D) ℂ)
+    (A : ι → Matrix (Fin D) (Fin D) ℂ)
     (S : Matrix (Fin D) (Fin D) ℂ) (σ : Matrix (Fin D) (Fin D) ℂ)
     (hS_inv : S.det ≠ 0)
     (hStS : Sᴴ * S = σ)
     (hfix : Kraus.map (fun i => (A i)ᴴ) σ = σ) :
-    ∑ i : Fin d, (S * A i * S⁻¹)ᴴ * (S * A i * S⁻¹) = 1 := by
+    ∑ i : ι, (S * A i * S⁻¹)ᴴ * (S * A i * S⁻¹) = 1 := by
   have h :=
     Kraus.gauged_isTP_of_map_conjTranspose_fixedPoint A S σ (Ne.isUnit hS_inv) hStS hfix
   simpa only [Kraus.IsTP] using h
