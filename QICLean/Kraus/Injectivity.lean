@@ -32,8 +32,9 @@ biconditional obtained by applying conjugate transposition twice.
 * `Kraus.IsNormal`: eventual block injectivity at some positive blocking length
 * `Kraus.isNormal_iff_eventually_isNBlkInjective`: normality is fullness of all
   sufficiently long word spans
-* `Kraus.isInjective_iff_wordSpan_one_eq_top`, `Kraus.isInjective_iff_injective_traceMap`:
-  injectivity as one-letter fullness and as injectivity of the trace map
+* `Kraus.isInjective_iff_isNBlkInjective_one`, `Kraus.isInjective_iff_injective_traceMap`:
+  injectivity as block injectivity at length one and as injectivity of the trace map;
+  `Kraus.IsInjective.eq_zero_of_forall_trace_mul_eq_zero`, its trace-pairing form
 
 Moved from TNLean, `TNLean/MPS/Tensor/Words/OneSidedInverse.lean` at commit `021ba0bd19`
 (Apache-2.0).
@@ -184,25 +185,17 @@ def IsNormal (A : ι → Matrix n n ℂ) : Prop :=
 @[simp] lemma isNormal_iff (A : ι → Matrix n n ℂ) :
     IsNormal A ↔ ∃ N, 0 < N ∧ IsNBlkInjective A N := Iff.rfl
 
+/-- Injectivity is block injectivity at length one: the span of the words of length one,
+which are the letters, is the full matrix algebra. -/
+theorem isInjective_iff_isNBlkInjective_one (A : ι → Matrix n n ℂ) :
+    IsInjective A ↔ IsNBlkInjective A 1 := by
+  rw [IsNBlkInjective, wordSpan_one]
+  rfl
+
 /-- Algebraic injectivity gives `1`-block injectivity. -/
 theorem isNBlkInjective_one_of_isInjective {A : ι → Matrix n n ℂ}
-    (h : IsInjective A) : IsNBlkInjective A 1 := by
-  unfold IsNBlkInjective
-  have hrange : (Set.range fun σ : Fin 1 → ι =>
-      Kraus.evalWord A (List.ofFn σ)) = Set.range A := by
-    ext M
-    simp only [Set.mem_range]
-    constructor
-    · rintro ⟨σ, hσ⟩
-      refine ⟨σ 0, ?_⟩
-      simpa only [List.ofFn_succ, List.ofFn_zero,
-        Kraus.evalWord_cons, Kraus.evalWord_nil, mul_one] using hσ
-    · rintro ⟨i, hi⟩
-      refine ⟨fun _ => i, ?_⟩
-      simpa only [List.ofFn_succ, List.ofFn_zero,
-        Kraus.evalWord_cons, Kraus.evalWord_nil, mul_one] using hi
-  rw [Kraus.wordSpan, hrange]
-  exact h
+    (h : IsInjective A) : IsNBlkInjective A 1 :=
+  (isInjective_iff_isNBlkInjective_one A).mp h
 
 /-- Algebraic injectivity (1-block) implies normality (eventual block injectivity).
 This is the trivial direction: injectivity is `IsNBlkInjective 1`. -/
@@ -287,12 +280,6 @@ theorem IsNormal.eventually_isNBlkInjective {A : ι → Matrix n n ℂ} (hA : Is
 
 /-! ### Characterizations of injectivity -/
 
-/-- Injectivity is fullness of the span of the words of length one. -/
-theorem isInjective_iff_wordSpan_one_eq_top (A : ι → Matrix n n ℂ) :
-    IsInjective A ↔ wordSpan A 1 = ⊤ := by
-  rw [wordSpan_one]
-  rfl
-
 omit [DecidableEq n] in
 /-- Injectivity in the trace-map form: the matrices `A i` span the full matrix algebra
 exactly when the map `X ↦ (tr (A i X))_i` from boundary matrices to coefficient vectors
@@ -347,6 +334,16 @@ theorem isInjective_iff_injective_traceMap (A : ι → Matrix n n ℂ) :
     ext M
     rw [← htrace M, hX, Matrix.mul_zero, Matrix.trace_zero]
     rfl
+
+omit [DecidableEq n] in
+/-- The trace pairing against an injective family detects zero: a matrix `M` with
+`tr (M A i) = 0` for every `i` is zero. This is the forward direction of
+`isInjective_iff_injective_traceMap`, read through the cyclicity of the trace. -/
+theorem IsInjective.eq_zero_of_forall_trace_mul_eq_zero {A : ι → Matrix n n ℂ}
+    (hA : IsInjective A) {M : Matrix n n ℂ} (hM : ∀ i, (M * A i).trace = 0) : M = 0 :=
+  (isInjective_iff_injective_traceMap A).mp hA <| funext fun i => by
+    simp only [Matrix.mul_zero, Matrix.trace_zero]
+    rw [Matrix.trace_mul_comm, hM i]
 
 end Kraus
 

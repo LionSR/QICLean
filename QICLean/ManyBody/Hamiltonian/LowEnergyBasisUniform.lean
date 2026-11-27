@@ -29,8 +29,6 @@ open scoped InnerProductSpace
 
 namespace ManyBody
 
-
-
 noncomputable local instance {ν : Type*} [Fintype ν] [DecidableEq ν]
     (H : Matrix ν ν ℂ) (E₀ : ℝ) : InnerProductSpace ℂ (groundSpace H E₀) :=
   (groundSpace H E₀).innerProductSpace
@@ -159,7 +157,6 @@ theorem exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le_uniform
   have hH : Φ.hamiltonian.IsHermitian := Interaction.isHermitian_hamiltonian hHerm
   have : NeZero (Module.finrank ℂ (groundSpace Φ.hamiltonian E₀)) :=
     ⟨fun h0 ↦ hgap.1 (Submodule.finrank_eq_zero.mp h0)⟩
-  have hgapE := ((isGapped_iff_eigenvalues hH).mp hgap).2
   classical
   let γ := commutatorRate R vR b₀ ΔE
   have hγ : 0 < γ := commutatorRate_pos hΔE R vR b₀
@@ -167,17 +164,11 @@ theorem exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le_uniform
   have hC : 0 ≤ C := mul_nonneg
     (le_trans (by norm_num) (six_le_commutatorConst R vR b₀ (abs_nonneg Kg) kg))
     (Real.exp_pos _).le
-  have hGrow : ∀ x (r : ℕ),
-      ((Finset.univ.filter fun y ↦ G.edist x y = r).card : ℝ) ≤ |Kg| * ((r : ℝ) + 1) ^ kg :=
-    fun x r ↦ (hGrowth x r).trans
-      (mul_le_mul_of_nonneg_right (le_abs_self Kg) (by positivity))
   simp only [groundCompression_gaussianFilteredTerm hq hH]
   exact exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le_of_commutator_le G a ha Φ.term
-    Φ.term
-    hHerm (fun _ ↦ le_rfl) b₀ hBudget Kg kg hGrowth _ E₀ hγ hC fun i j ↦
-      (norm_subspaceCompression_commutator _ _ _).le.trans
-        (norm_groundCompression_commutator_le_exp_edist G a ha Φ hHerm R hDiam vR
-          hCard b₀ hBudget |Kg| kg hGrow hΔE hgap j i)
+    Φ.term hHerm (fun _ ↦ le_rfl) b₀ hBudget Kg kg hGrowth _ E₀ hγ hC
+    (norm_groundSpaceCompression_commutator_le_graphDecayKernel G a ha Φ hHerm R hDiam vR hCard
+      b₀ hBudget Kg kg hGrowth hΔE hgap)
 
 end Graph
 
