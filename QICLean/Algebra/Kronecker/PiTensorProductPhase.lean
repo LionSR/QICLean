@@ -56,19 +56,19 @@ namespace PiTensorProduct
 with a nonzero reference entry in each factor implies factorwise proportionality,
 and the factor scalars multiply to the global scalar. -/
 theorem exists_kappa_of_tprod_eq_smul
-    {d m : ℕ}
+    {ι : Type*} {m : ℕ}
     {row col : Fin m → Type*}
-    (A B : (v : Fin m) → Fin d → Matrix (row v) (col v) ℂ)
+    (A B : (v : Fin m) → ι → Matrix (row v) (col v) ℂ)
     (z : ℂ) (hz : z ≠ 0)
-    (ref : Fin m → Fin d) (r : (v : Fin m) → row v) (c : (v : Fin m) → col v)
+    (ref : Fin m → ι) (r : (v : Fin m) → row v) (c : (v : Fin m) → col v)
     (hB_ref : ∀ v : Fin m, B v (ref v) (r v) (c v) ≠ 0)
     (hresult :
-      ∀ σ : Fin m → Fin d,
+      ∀ σ : Fin m → ι,
         (⨂ₜ[ℂ] v : Fin m, A v (σ v)) =
           z • (⨂ₜ[ℂ] v : Fin m, B v (σ v))) :
     ∃ κ : Fin m → ℂ,
       (∏ v : Fin m, κ v = z) ∧
-      ∀ (v : Fin m) (i : Fin d), A v i = κ v • B v i := by
+      ∀ (v : Fin m) (i : ι), A v i = κ v • B v i := by
   classical
   let ell : (v : Fin m) → Module.Dual ℂ (Matrix (row v) (col v) ℂ) :=
     fun v => Matrix.normalizedEntryDual (B v (ref v)) (r v) (c v)
@@ -142,19 +142,19 @@ theorem exists_kappa_of_tprod_eq_smul
 `ξ ^ m = z` normalizes the factor scalars to have product one, so that
 `∏ v, κ v = 1` and `A v i = (κ v * ξ) • B v i`. -/
 theorem exists_kappa_product_one_of_tprod_eq_root_smul
-    {d m : ℕ} [NeZero m]
+    {ι : Type*} {m : ℕ} [NeZero m]
     {row col : Fin m → Type*}
-    (A B : (v : Fin m) → Fin d → Matrix (row v) (col v) ℂ)
+    (A B : (v : Fin m) → ι → Matrix (row v) (col v) ℂ)
     (z ξ : ℂ) (hz : z ≠ 0) (hξ_pow : ξ ^ m = z)
-    (ref : Fin m → Fin d) (r : (v : Fin m) → row v) (c : (v : Fin m) → col v)
+    (ref : Fin m → ι) (r : (v : Fin m) → row v) (c : (v : Fin m) → col v)
     (hB_ref : ∀ v : Fin m, B v (ref v) (r v) (c v) ≠ 0)
     (hresult :
-      ∀ σ : Fin m → Fin d,
+      ∀ σ : Fin m → ι,
         (⨂ₜ[ℂ] v : Fin m, A v (σ v)) =
           z • (⨂ₜ[ℂ] v : Fin m, B v (σ v))) :
     ∃ κ : Fin m → ℂ,
       (∏ v : Fin m, κ v = 1) ∧
-      ∀ (v : Fin m) (i : Fin d), A v i = (κ v * ξ) • B v i := by
+      ∀ (v : Fin m) (i : ι), A v i = (κ v * ξ) • B v i := by
   classical
   obtain ⟨κ₀, hκ₀_prod, hκ₀⟩ :=
     exists_kappa_of_tprod_eq_smul
