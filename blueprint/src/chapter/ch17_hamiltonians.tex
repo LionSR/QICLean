@@ -373,6 +373,52 @@ kernel, either from the quadratic form or from the norm.
     the two inequalities.
 \end{proof}
 
+\begin{theorem}[The gap on the orthogonal complement of a subspace]
+    \label{thm:hamiltonians_subspace_gap}
+    \lean{ManyBody.groundSpace_zero_eq_and_forall_hasEigenvalue_iff_norm,
+        ManyBody.groundSpace_zero_eq_and_forall_hasEigenvalue_iff_re_inner,
+        ManyBody.isGapped_zero_and_groundSpace_eq_iff_norm,
+        ManyBody.isGapped_zero_and_groundSpace_eq_iff_re_inner}
+    \leanok
+    \uses{def:hamiltonians_gap, thm:hamiltonians_kernel_spectrum}
+    Let $H\ge0$ be a complex $n\times n$ matrix, let $U\subseteq\ker H$ be a
+    subspace, and let $\Delta>0$. The following are equivalent.
+    \begin{enumerate}
+        \item $\ker H=U$, and every eigenvalue of $H$ other than $0$ is at least
+              $\Delta$.
+        \item $\Delta\lVert v\rVert^2\le\operatorname{Re}\langle v,Hv\rangle$ for
+              every $v\perp U$.
+        \item $\Delta\lVert v\rVert\le\lVert Hv\rVert$ for every $v\perp U$.
+    \end{enumerate}
+    In particular $H$ is gapped at $0$ with gap $\Delta$ and ground space $U$
+    exactly when $U\neq0$ and (2), equivalently (3), holds.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:hamiltonians_kernel_spectrum}
+    If $\ker H=U$, Theorem~\ref{thm:hamiltonians_kernel_spectrum} gives (2) and (3)
+    from (1). Conversely, let $x\in\ker H$ and write $w=x-P_Ux$ with $P_U$ the
+    orthogonal projection onto $U$. Then $w\perp U$ and $Hw=Hx-HP_Ux=0$, so either
+    inequality forces $w=0$ since $\Delta>0$. Hence $\ker H=U$, and
+    Theorem~\ref{thm:hamiltonians_kernel_spectrum} turns the inequality on
+    $(\ker H)^\perp=U^\perp$ into the bound on the eigenvalues.
+\end{proof}
+
+\begin{lemma}[The gap in terms of the spectrum]
+    \label{lem:hamiltonians_gap_spectrum}
+    \lean{Matrix.hasEigenvalue_toEuclideanLin_iff_mem_spectrum,
+        ManyBody.isGapped_iff_spectrum}
+    \leanok
+    \uses{def:hamiltonians_gap}
+    The eigenvalues of a complex $n\times n$ matrix $H$, as an operator on $\C^n$,
+    are the points of its spectrum. Hence $H$ is gapped at $E_0$ with gap $\Delta$
+    exactly when $\ker(H-E_0)\neq0$ and every point $\mu\neq E_0$ of the spectrum
+    of $H$ is real with $\mu\ge E_0+\Delta$.
+\end{lemma}
+\begin{proof}\leanok
+    In finite dimension a point of the spectrum is an eigenvalue, and the
+    spectrum of $H$ is that of the operator it defines.
+\end{proof}
+
 \begin{theorem}[A larger matrix with the same kernel keeps the gap]
     \label{thm:hamiltonians_kernel_gap_domination}
     \lean{ManyBody.groundSpace_zero_eq_of_le, ManyBody.forall_hasEigenvalue_of_le,
@@ -467,6 +513,30 @@ kernel, either from the quadratic form or from the norm.
     eigenvalues. For the gap, the projection onto $\ker H_{x_0}$ is nonzero, so by
     continuity the projection onto $\ker H_x$ is nonzero, and $\ker H_x\neq0$, near
     $x_0$; Theorem~\ref{thm:hamiltonians_kernel_gap} combines the two.
+\end{proof}
+
+\begin{theorem}[Persistence of the gap with a moving ground space]
+    \label{thm:hamiltonians_subspace_gap_continuity}
+    \lean{ManyBody.eventually_groundSpace_zero_eq_and_forall_hasEigenvalue}
+    \leanok
+    \uses{thm:hamiltonians_subspace_gap, lem:kernel_gap_perturbation}
+    Let $x\mapsto H_x$ be a family of positive semidefinite matrices on a
+    topological space, continuous at $x_0$, and let $U_x\subseteq\ker H_x$ be
+    subspaces whose orthogonal projections are continuous at $x_0$. If
+    $\ker H_{x_0}=U_{x_0}$ and every eigenvalue of $H_{x_0}$ other than $0$ is at
+    least $\Delta$, then for every $\Delta'<\Delta$ and all $x$ near $x_0$ one has
+    $\ker H_x=U_x$ and every eigenvalue of $H_x$ other than $0$ is at least $\Delta'$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:hamiltonians_kernel_spectrum, thm:hamiltonians_subspace_gap,
+        lem:kernel_gap_perturbation}
+    A positive semidefinite matrix has some gap $\Delta_0>0$ above its kernel, so
+    $\Delta_2=\max(\Delta,\Delta_0)>0$ is a gap of $H_{x_0}$, and
+    Theorem~\ref{thm:hamiltonians_kernel_spectrum} turns it into a norm bound on
+    $U_{x_0}^\perp=(\ker H_{x_0})^\perp$. Lemma~\ref{lem:kernel_gap_perturbation}
+    with $K_x=U_x$ gives the norm bound with $\max(\Delta',\Delta_2/2)>0$ on
+    $U_x^\perp$ near $x_0$, and Theorem~\ref{thm:hamiltonians_subspace_gap} turns
+    it into $\ker H_x=U_x$ and the bound on the eigenvalues.
 \end{proof}
 
 \begin{lemma}[Uniform bounds from local bounds on a compact set]
