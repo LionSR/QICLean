@@ -524,7 +524,7 @@ lakefile edit + 630-import rewrite + aggregator regeneration).
   - **`interface_edges.md` residue** — every packaging pass (Section 4)
     flagged this file as using the superseded whole-file
     ≥50%-item-fraction classification instead of PR #6806's item-level
-    split (schema v4, `docs/audits/data/qiclean/blueprint-files.txt`).
+    split (schema v4).
     Regenerating it correctly requires re-running
     `qic_blueprint_boundary_report.py --mode blueprint-files` against the
     real cut's `movers.txt`, not hand-porting any dry run's numbers
