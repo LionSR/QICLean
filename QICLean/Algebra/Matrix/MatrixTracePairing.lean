@@ -20,6 +20,7 @@ import Mathlib.LinearAlgebra.Trace
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.Matrix.Hermitian
 import Mathlib.Tactic.Ring
+import Mathlib.Algebra.Algebra.NonUnitalHom
 
 
 
@@ -61,6 +62,11 @@ linear map between matrix algebras.
 * `Matrix.traceAdjointMap_comp` — the trace-pairing adjoint reverses composition
 * `Matrix.traceAdjointMap_comp_reindexAlgEquiv` — the adjoint of a map precomposed with a
   reindexing
+
+Moved from TNLean, `TNLean/MPS/Tensor/DirectSum/BoundaryDecomposition.lean`,
+`TNLean/MPS/Operator/Boundary/BoundaryRepresentation.lean`,
+`TNLean/MPS/Operator/Boundary/BoundaryDecompositionComparison.lean` at commit `021ba0bd19`
+(Apache-2.0).
 -/
 
 open scoped Matrix BigOperators
@@ -560,3 +566,104 @@ end Matrix
 end
 
 end PureStateExpectation
+
+section
+
+open scoped Matrix BigOperators
+
+noncomputable section
+
+namespace Matrix
+
+variable {r : ℕ} {dim : Fin r → ℕ}
+
+/-- The diagonal block of a matrix written on a flattened finite dependent
+direct sum. -/
+def finSigmaDiagonalBlock
+    (X : Matrix (Fin (∑ j : Fin r, dim j)) (Fin (∑ j : Fin r, dim j)) ℂ)
+    (j : Fin r) : Matrix (Fin (dim j)) (Fin (dim j)) ℂ :=
+  (Matrix.reindex finSigmaFinEquiv.symm finSigmaFinEquiv.symm X).submatrix
+    (fun a ↦ ⟨j, a⟩) (fun a ↦ ⟨j, a⟩)
+
+end Matrix
+
+end
+
+end
+
+section
+
+open scoped Matrix BigOperators
+
+noncomputable section
+
+namespace Matrix
+
+variable {r D : ℕ} {dim : Fin r → ℕ}
+
+/-- The trace dual of a boundary map taking an ambient matrix to one boundary
+for each target block. Source: GLM23, Appendix A, `decompopen`. -/
+def familyTraceAdjoint
+    (b : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ]
+      ((c : Fin r) → Matrix (Fin (dim c)) (Fin (dim c)) ℂ)) :
+    ((c : Fin r) → Matrix (Fin (dim c)) (Fin (dim c)) ℂ) →ₗ[ℂ]
+      Matrix (Fin D) (Fin D) ℂ :=
+  ∑ c : Fin r,
+    (traceAdjointMap ((LinearMap.proj c).comp b)).comp (LinearMap.proj c)
+
+/-- The defining trace identity of the family trace dual. No adjoints or
+positivity hypotheses occur. Source: GLM23, Appendix A, `decompopen`. -/
+theorem trace_familyTraceAdjoint_mul
+    (b : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ]
+      ((c : Fin r) → Matrix (Fin (dim c)) (Fin (dim c)) ℂ))
+    (M : (c : Fin r) → Matrix (Fin (dim c)) (Fin (dim c)) ℂ)
+    (X : Matrix (Fin D) (Fin D) ℂ) :
+    trace (familyTraceAdjoint b M * X) =
+      ∑ c : Fin r, trace (M c * b X c) := by
+  simp only [familyTraceAdjoint, LinearMap.sum_apply, LinearMap.comp_apply,
+    LinearMap.proj_apply, Matrix.sum_mul, Matrix.trace_sum,
+    trace_traceAdjointMap_mul]
+
+/-- Extract all diagonal blocks of a matrix on a flattened direct sum.
+Source: GLM23, Appendix A, the block projectors preceding `decompopen`. -/
+def finSigmaDiagonalBlocks :
+    Matrix (Fin (∑ c : Fin r, dim c)) (Fin (∑ c : Fin r, dim c)) ℂ →ₗ[ℂ]
+      ((c : Fin r) → Matrix (Fin (dim c)) (Fin (dim c)) ℂ) where
+  toFun X c := finSigmaDiagonalBlock X c
+  map_add' _ _ := rfl
+  map_smul' _ _ := rfl
+
+end Matrix
+
+end
+
+end
+
+section
+
+open scoped Matrix BigOperators
+
+namespace Matrix
+
+/-- Coordinate changes between two left-invertible factorizations of the
+same support are inverse and carry each synthesis to the other. No adjoints
+or completeness on the ambient space are needed. Source: GLM23 `1Fsymbol`. -/
+theorem comparison_of_common_support
+    {R m n k : Type*} [Semiring R] [Fintype m] [Fintype n] [Fintype k]
+    [DecidableEq n] [DecidableEq k]
+    (S : Matrix m n R) (H : Matrix n m R)
+    (S' : Matrix m k R) (H' : Matrix k m R)
+    (hHS : H * S = 1) (hHS' : H' * S' = 1) (hSupport : S * H = S' * H') :
+    (H' * S) * (H * S') = 1 ∧ (H * S') * (H' * S) = 1 ∧
+      S' * (H' * S) = S ∧ S * (H * S') = S' := by
+  have hforward : S' * (H' * S) = S := by
+    rw [← Matrix.mul_assoc, ← hSupport, Matrix.mul_assoc, hHS, Matrix.mul_one]
+  have hbackward : S * (H * S') = S' := by
+    rw [← Matrix.mul_assoc, hSupport, Matrix.mul_assoc, hHS', Matrix.mul_one]
+  refine ⟨?_, ?_, hforward, hbackward⟩
+  · rw [Matrix.mul_assoc, hbackward, hHS']
+  · rw [Matrix.mul_assoc, hforward, hHS]
+
+end Matrix
+
+end

@@ -25,8 +25,8 @@ and 237–249):
 
 ## Main declarations
 
-* `IrrepLabel.restrictHom ι` — the algebra homomorphism `ℂ[H] → ℂ[G]`.
-* `IrrepLabel.branchMult ι l n` — the multiplicity `c(λ, ν)`.
+* `IrrepLabel.branchMult ι l n` — the multiplicity `c(λ, ν)`, read through the algebra
+  homomorphism `IrrepLabel.restrictHom ι : ℂ[H] → ℂ[G]`.
 * `IrrepLabel.dim_eq_sum_branchMult`, `IrrepLabel.sum_dim_sq`.
 * `PermutationRepresentation.trace_mul_groupAlgebraRep_mul_labelProj`.
 * `PermutationRepresentation.groupAlgebraRep_mul_labelProj_eq_zero_iff`.
@@ -37,10 +37,6 @@ open MonoidAlgebra Matrix Finset PermutationRepresentation
 namespace IrrepLabel
 
 variable {G H : Type*} [Group G] [Fintype G] [Group H] [Fintype H]
-
-/-- The algebra homomorphism `ℂ[H] → ℂ[G]` induced by `ι : H →* G`. -/
-noncomputable abbrev restrictHom (ι : H →* G) : MonoidAlgebra ℂ H →ₐ[ℂ] MonoidAlgebra ℂ G :=
-  mapDomainAlgHom ℂ ℂ ι
 
 /-- The `λ` block of an element of `ℂ[G]`. -/
 noncomputable abbrev block (l : IrrepLabel G) (a : MonoidAlgebra ℂ G) :
@@ -117,14 +113,6 @@ namespace PermutationRepresentation
 
 variable {G H X : Type*} [Group G] [Fintype G] [Group H] [Fintype H] [Fintype X]
   [DecidableEq X] (φ : G →* Equiv.Perm X)
-
-omit [Fintype G] [Fintype H] in
-theorem groupAlgebraRep_comp (ι : H →* G) (b : MonoidAlgebra ℂ H) :
-    groupAlgebraRep (φ.comp ι) b = groupAlgebraRep φ (IrrepLabel.restrictHom ι b) := by
-  induction b using MonoidAlgebra.induction_linear with
-  | zero => simp
-  | add a b ha hb => rw [map_add, map_add, map_add, ha, hb]
-  | single h c => simp [permOp_comp]
 
 /-- `ρ(a) E^λ_{jo} = ∑_p W_λ(a)_{pj} E^λ_{po}`. -/
 theorem groupAlgebraRep_mul_matrixUnitOp (a : MonoidAlgebra ℂ G) (l : IrrepLabel G)

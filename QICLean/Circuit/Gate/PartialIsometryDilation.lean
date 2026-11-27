@@ -8,6 +8,9 @@ import Mathlib.Data.Matrix.ColumnRowPartitioned
 import Mathlib.Algebra.Star.StarProjection
 import Mathlib.LinearAlgebra.UnitaryGroup
 import Mathlib.Tactic.NoncommRing
+import Mathlib.LinearAlgebra.Matrix.Reindex
+import Mathlib.Analysis.Matrix.Order
+import Mathlib.LinearAlgebra.Matrix.Kronecker
 
 /-!
 # A unitary dilation of a partial isometry
@@ -20,6 +23,9 @@ TNLean `docs/audits/2026-10-02_mpu_rank_two_circuits.tex`.
 
 The declarations are ported from `TNLean/Circuit/PartialIsometryDilation.lean` at commit
 `4150a33bacefe5ca311874b20cc4b90237fa447e` (Apache-2.0), with statements and names unchanged.
+
+Moved from TNLean, `TNLean/MPS/MPU/Circuit/Merging/BalancedIntervalDilation.lean` at commit
+`021ba0bd19` (Apache-2.0).
 -/
 
 namespace Matrix
@@ -101,3 +107,44 @@ theorem partialIsometryDilation_success_gram {m : Type*}
     Matrix.mul_one, Matrix.mul_zero, add_zero, fromCols_mul_fromRows, Matrix.zero_mul]
 
 end Matrix
+
+section
+
+open scoped Matrix Kronecker ComplexOrder MatrixOrder
+
+namespace Matrix
+
+variable {a b c : Type*} [Fintype a] [Fintype b] [DecidableEq a] [DecidableEq b]
+
+/-- A matrix of output columns with an additional register in a basis state. -/
+def basisResetOutput (V : Matrix a c ℂ) (z : b) : Matrix (a × b) c ℂ :=
+  fun p j ↦ V p.1 j * (Pi.single z (1 : ℂ) : b → ℂ) p.2
+
+omit [DecidableEq a] in
+/-- Attaching a basis state preserves all inner products. -/
+theorem basisResetOutput_gram (V : Matrix a c ℂ) (z : b) :
+    (basisResetOutput V z)ᴴ * basisResetOutput V z = Vᴴ * V := by
+  ext i j
+  simp [mul_apply, basisResetOutput, Fintype.sum_prod_type, Pi.single_apply]
+
+omit [DecidableEq a] [DecidableEq b] in
+/-- Gram matrices are invariant under a reordering of output coordinates. -/
+theorem reindex_rows_gram (V : Matrix a c ℂ) (e : a ≃ b) :
+    (reindexLinearEquiv ℂ ℂ e (Equiv.refl c) V)ᴴ *
+        reindexLinearEquiv ℂ ℂ e (Equiv.refl c) V = Vᴴ * V := by
+  exact reindexLinearEquiv_mul ℂ ℂ (Equiv.refl c) e (Equiv.refl c) Vᴴ V
+
+/-- A dilation on one tensor factor leaves the other factor unchanged. -/
+theorem partialIsometryDilation_one_kronecker (A : Matrix b b ℂ) :
+    partialIsometryDilation ((1 : Matrix a a ℂ) ⊗ₖ A) =
+      reindexLinearEquiv ℂ ℂ (Equiv.prodSumDistrib a b b) (Equiv.prodSumDistrib a b b)
+        ((1 : Matrix a a ℂ) ⊗ₖ partialIsometryDilation A) := by
+  simp only [partialIsometryDilation, conjTranspose_kronecker, conjTranspose_one,
+    ← mul_kronecker_mul, Matrix.one_mul]
+  ext (⟨p, x⟩ | ⟨p, x⟩) (⟨q, y⟩ | ⟨q, y⟩)
+  all_goals simp [reindexLinearEquiv, Matrix.reindex, kroneckerMap_apply, one_apply, mul_sub]
+  all_goals split_ifs <;> simp_all
+
+end Matrix
+
+end

@@ -64,6 +64,9 @@ zero-register reflection is not carried here.
 * `QuantumCircuit.isCleanImplementation_sitePermOp_workspaceFixedSitePerm`,
   `QuantumCircuit.IsCleanImplementation.conjugate_workspaceFixedSitePerm` — logical site
   permutations.
+
+Moved from TNLean, `TNLean/MPS/MPU/Circuit/Interval/ColumnCoordinateTransport.lean` at commit
+`021ba0bd19` (Apache-2.0).
 -/
 
 open Matrix ManyBody
@@ -305,3 +308,28 @@ theorem IsCleanImplementation.conjugate_workspaceFixedSitePerm {w : Fin a → α
 end Workspace
 
 end QuantumCircuit
+
+section
+
+open Matrix QuantumCircuit
+
+namespace QuantumCircuit.IsCleanImplementation
+
+/-- The ambient initialized columns determine the exact logical initialized columns.
+
+See `docs/audits/2026-10-02_mpu_rank_two_circuits.tex`, §5. -/
+theorem logical_columns_of_ambient {ι κ μ : Type*}
+    [Fintype ι] [Fintype κ] [DecidableEq κ]
+    {J : Matrix ι κ ℂ} {C : Matrix ι ι ℂ} {Z : Matrix κ κ ℂ}
+    (h : IsCleanImplementation J C Z) (hJ : J.IsIsometry)
+    (E F : Matrix κ μ ℂ) (hc : C * (J * E) = J * F) : Z * E = F := by
+  change C * J = J * Z at h
+  change Jᴴ * J = 1 at hJ
+  have hh : J * (Z * E) = J * F := by
+    simpa only [← Matrix.mul_assoc, ← h] using hc
+  have hcancel := congrArg (fun M ↦ Jᴴ * M) hh
+  simpa only [← Matrix.mul_assoc, hJ, Matrix.one_mul] using hcancel
+
+end QuantumCircuit.IsCleanImplementation
+
+end

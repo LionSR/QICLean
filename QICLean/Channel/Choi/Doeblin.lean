@@ -5,7 +5,6 @@ Authors: TNLean contributors
 -/
 import QICLean.Analysis.TraceNorm.TraceNormContractivity
 import QICLean.Channel.Choi.Rectangular
-import QICLean.Channel.SupportCompletion
 
 /-!
 # Choi-dominated Doeblin contraction

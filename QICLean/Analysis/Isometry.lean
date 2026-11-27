@@ -11,6 +11,7 @@ Authors: QICLean contributors
 import QICLean.Analysis.Isometry.CoisometricCompression
 import QICLean.Analysis.Isometry.CompressedPartialSwap
 import QICLean.Analysis.Isometry.ConjugationCovariantGauge
+import QICLean.Analysis.Isometry.ConjugationDeterminant
 import QICLean.Analysis.Isometry.EuclideanReindex
 import QICLean.Analysis.Isometry.FiniteOrbit
 import QICLean.Analysis.Isometry.FramePerturbation

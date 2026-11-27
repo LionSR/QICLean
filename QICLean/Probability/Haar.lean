@@ -8,7 +8,7 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Probability.Haar
 
-import QICLean.Probability.Haar.NativeRankUnitarySampling
+import QICLean.Probability.Haar.CanonicalSampleProjectionMeasurable
 import QICLean.Probability.Haar.Projection
-import QICLean.Probability.Haar.RankUnitaryProductHaar
 import QICLean.Probability.Haar.UnitaryHaar
+import QICLean.Probability.Haar.VariableRankSampleProjection

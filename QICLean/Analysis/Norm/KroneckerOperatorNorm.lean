@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors, QICLean contributors
 -/
 import QICLean.Analysis.Norm.L2OpNormReindex
-import QICLean.Algebra.Kronecker.KroneckerEmbed
+import QICLean.Algebra.Matrix.KroneckerEmbed
 import QICLean.Analysis.Norm.RootChannel
 import Mathlib.Analysis.CStarAlgebra.Hom
 import Mathlib.Analysis.CStarAlgebra.Matrix

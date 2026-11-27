@@ -3,8 +3,7 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Representation.YoungSubgroup.GroupedCopies
-import QICLean.Representation.Replica.SchurLabelCommutation
+import QICLean.Representation.Permutation.JointIsotypic
 
 /-!
 # Merging the labels of disjoint subsystems
@@ -25,7 +24,9 @@ under `π^ν` is a nonzero invariant subspace of the `ν`-isotypic component.
 * `PermutationRepresentation.dim_le_mul_dim_of_compatible` — `d_ν ≤ d_λ d_μ`.
 * `PermutationRepresentation.dim_le_mul_dim_of_compatible'` — `d_λ ≤ d_ν d_μ`, through the
   action `M ↦ U_{QE}(σ) M U_E(σ)⁻¹` on matrices, which replaces the duality argument.
-* `TensorPower.merge_dim_le` — both inequalities for disjoint subsystems.
+
+Both inequalities for disjoint subsystems of a tensor power, `TensorPower.merge_dim_le`, are
+stated with the merge moment.
 -/
 
 open MonoidAlgebra Matrix Module
@@ -264,26 +265,3 @@ theorem dim_le_mul_dim_of_compatible' (hcomm : ∀ g h, Commute (φQ g) (φE h))
     _ = ν.dim * μ.dim := by simp
 
 end PermutationRepresentation
-
-
-namespace TensorPower
-
-open PermutationRepresentation
-
-variable {F : Type*} [Fintype F] [DecidableEq F] {ι : F → Type*} [∀ f, Fintype (ι f)]
-  [∀ f, DecidableEq (ι f)] {k : ℕ}
-
-/-- **Lemma 6.1(3), merge dimensions** (`05-replicas.tex`, lines 105–111, equation
-`replicas:merge-dimensions`): if `Q, E` are disjoint and their labels `λ, μ` are compatible
-with the label `ν` on `QE`, then `d_ν ≤ d_λ d_μ` and `d_λ ≤ d_ν d_μ`. -/
-theorem merge_dim_le {Q E : Finset F} (hQE : Disjoint Q E)
-    {l μ ν : IrrepLabel (Equiv.Perm (Fin k))}
-    (hP : labelProj (subsystemPerm k ι Q) l * labelProj (subsystemPerm k ι E) μ *
-      labelProj (subsystemPerm k ι (Q ∪ E)) ν ≠ 0) :
-    ν.dim ≤ l.dim * μ.dim ∧ l.dim ≤ ν.dim * μ.dim :=
-  ⟨dim_le_mul_dim_of_compatible (commute_subsystemPerm_of_disjoint k ι hQE)
-    (subsystemPerm_union k ι hQE) hP,
-   dim_le_mul_dim_of_compatible' (commute_subsystemPerm_of_disjoint k ι hQE)
-    (subsystemPerm_union k ι hQE) hP⟩
-
-end TensorPower

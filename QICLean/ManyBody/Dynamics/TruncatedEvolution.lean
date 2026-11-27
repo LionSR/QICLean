@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Algebra.Combinatorics.GateIncidence
 import QICLean.ManyBody.Dynamics.GraphPropagation
-import QICLean.ManyBody.Sites.Placement
+import QICLean.ManyBody.Sites.Placement.Basic
 import Mathlib.Analysis.Calculus.MeanValue
 
 /-!

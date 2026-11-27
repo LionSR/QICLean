@@ -12,7 +12,6 @@ import QICLean.Representation.Character.Branching
 import QICLean.Representation.Character.Delta
 import QICLean.Representation.Character.DeltaPositive
 import QICLean.Representation.Character.IrrepLabelCount
-import QICLean.Representation.Character.IrrepLabels
 import QICLean.Representation.Character.Projector
 import QICLean.Representation.Character.RegularTrace
 import QICLean.Representation.Character.SemiRegular

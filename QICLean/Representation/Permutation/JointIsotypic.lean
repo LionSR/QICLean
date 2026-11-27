@@ -30,6 +30,9 @@ lines 105–123, proof lines 183–221).
 * `PermutationRepresentation.blockSpan` and `PermutationRepresentation.pairBlockSpan`.
 * `PermutationRepresentation.mul_dim_le_finrank_of_invariant` — the joint version of
   the eigenvalue repetition.
+* `IrrepLabel.restrictHom ι` — the algebra homomorphism `ℂ[H] → ℂ[G]` induced by
+  `ι : H →* G`, and `PermutationRepresentation.groupAlgebraRep_comp` — the group-algebra
+  representation of `φ ∘ ι` is that of `φ` after `restrictHom ι`.
 -/
 
 open MonoidAlgebra Matrix Module
@@ -219,5 +222,32 @@ theorem mul_dim_le_finrank_of_invariant (α : IrrepLabel G) (β : IrrepLabel H)
       have : ¬(jd.1 = k ∧ jd.2 = b) := fun h => hjd (Prod.ext h.1 h.2)
       simp [this]
   simpa using hv.fintype_card_le_finrank
+
+end PermutationRepresentation
+
+/-! ## Restriction along a group homomorphism -/
+
+namespace IrrepLabel
+
+variable {G H : Type*} [Group G] [Fintype G] [Group H] [Fintype H]
+
+/-- The algebra homomorphism `ℂ[H] → ℂ[G]` induced by `ι : H →* G`. -/
+noncomputable abbrev restrictHom (ι : H →* G) : MonoidAlgebra ℂ H →ₐ[ℂ] MonoidAlgebra ℂ G :=
+  mapDomainAlgHom ℂ ℂ ι
+
+end IrrepLabel
+
+namespace PermutationRepresentation
+
+variable {G H X : Type*} [Group G] [Fintype G] [Group H] [Fintype H] [Fintype X]
+  [DecidableEq X] (φ : G →* Equiv.Perm X)
+
+omit [Fintype G] [Fintype H] in
+theorem groupAlgebraRep_comp (ι : H →* G) (b : MonoidAlgebra ℂ H) :
+    groupAlgebraRep (φ.comp ι) b = groupAlgebraRep φ (IrrepLabel.restrictHom ι b) := by
+  induction b using MonoidAlgebra.induction_linear with
+  | zero => simp
+  | add a b ha hb => rw [map_add, map_add, map_add, ha, hb]
+  | single h c => simp [permOp_comp]
 
 end PermutationRepresentation

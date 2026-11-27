@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Algebra.Kronecker.KroneckerFactorPositivity
 import QICLean.Algebra.Word.OrderedProduct
+import Mathlib.Algebra.Algebra.Subalgebra.Basic
 
 /-!
 # Kronecker powers of the matrix of a map, and traces of products of sums
@@ -20,6 +21,8 @@ Moved from TNLean, `TNLean/Algebra/FinKronecker.lean` at commit `49b78ed821` (Ap
 
 * `Matrix.piKronecker_mul_apply_of_eq_ite`, `Matrix.mul_piKronecker_apply_of_eq_ite`.
 * `Matrix.trace_prod_ofFn_sum_smul`.
+
+Moved from TNLean, `TNLean/MPS/Operator/Boundary/Boundary.lean` at commit `021ba0bd19` (Apache-2.0).
 -/
 
 open scoped Matrix BigOperators
@@ -62,3 +65,23 @@ theorem trace_prod_ofFn_sum_smul {n J : Type*} [Fintype n] [DecidableEq n] [Fint
   rw [List.prod_ofFn_smul, trace_smul, smul_eq_mul]
 
 end Matrix
+
+section
+
+open scoped Matrix ComplexOrder BigOperators
+
+namespace Matrix
+
+/-- Expansion of a boundary-weighted trace through a product of linear combinations. -/
+theorem trace_mul_prod_ofFn_sum_smul {n J : Type*} [Fintype n] [DecidableEq n]
+    [Fintype J] {L : ℕ} (X : Matrix n n ℂ)
+    (f : Fin L → J → ℂ) (B : Fin L → J → Matrix n n ℂ) :
+    trace (X * (List.ofFn fun l => ∑ j, f l j • B l j).prod) =
+      ∑ ch : Fin L → J, (∏ l, f l (ch l)) *
+        trace (X * (List.ofFn fun l => B l (ch l)).prod) := by
+  rw [List.prod_ofFn_sum, Matrix.mul_sum, trace_sum]
+  simp only [List.prod_ofFn_smul, Matrix.mul_smul, trace_smul, smul_eq_mul]
+
+end Matrix
+
+end

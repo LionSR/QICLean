@@ -5,6 +5,8 @@ Authors: QICLean contributors
 -/
 import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
 import Mathlib.Topology.MetricSpace.CoveringNumbers
+import Mathlib.Analysis.Convex.Segment
+import Mathlib.Analysis.Normed.Affine.AddTorsor
 
 /-!
 # Nets of subsets of the unit ball by a volume argument
@@ -131,5 +133,28 @@ theorem exists_finset_net_of_subset_closedBall {ε : ℝ} (hε : 0 < ε) {A : Se
     have : edist x c ≤ ε' := hxc
     rw [edist_dist, ENNReal.coe_nnreal_eq] at this
     exact (ENNReal.ofReal_le_ofReal_iff hε.le).mp this
+
+end Metric
+
+namespace Metric
+
+/-- Clipping a unit segment at its initial endpoint.
+Auxiliary to area-law Section 11, `geometry:repair-induction`, lines 501–511. -/
+theorem segment_inter_closedBall_of_dist_eq_one
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    (a b : E) (hab : dist a b = 1)
+    {η : ℝ} (hη0 : 0 ≤ η) (hη1 : η ≤ 1) :
+    segment ℝ a b ∩ Metric.closedBall a η =
+      segment ℝ a (AffineMap.lineMap a b η) := by
+  rw [segment_eq_image_lineMap ℝ a b, ← Set.image_inter_preimage]
+  have himage : (AffineMap.lineMap a b) '' Set.Icc 0 η =
+      segment ℝ a ((AffineMap.lineMap a b) η) := by
+    simpa only [segment_eq_Icc hη0, AffineMap.lineMap_apply_zero] using
+      image_segment ℝ (AffineMap.lineMap a b) (0 : ℝ) η
+  refine (congrArg (Set.image (AffineMap.lineMap a b)) ?_).trans himage
+  simp only [Set.ext_iff, Set.mem_inter_iff, Set.mem_Icc, Set.mem_preimage,
+    Metric.mem_closedBall, dist_lineMap_left, hab, mul_one,
+    Real.norm_eq_abs, abs_le]
+  grind
 
 end Metric

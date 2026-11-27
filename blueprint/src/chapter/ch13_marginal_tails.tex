@@ -377,14 +377,9 @@ depend on the common values there.
 
 \begin{lemma}[Local lifts and the trace argument]
     \label{lem:local_lift}
-    \lean{ManyBody.place, ManyBody.regionState, ManyBody.regionState_isHermitian,
-        ManyBody.place_mul,
-        ManyBody.place_one, ManyBody.place_conjTranspose,
-        ManyBody.place_mem_supportedOperators, ManyBody.exists_eq_place_of_mem_supportedOperators,
-        ManyBody.IsSupportedOn.mono, ManyBody.IsSupportedOn.mul, ManyBody.inner_place,
-        ManyBody.inner_conj_eq_of_mem_supportedOperators}
+    \lean{ManyBody.IsSupportedOn.mono, ManyBody.IsSupportedOn.mul}
     \leanok
-    \uses{lem:supported_product_decomposition}
+    \uses{lem:supported_product_decomposition, def:sites_place, def:sites-regional-state}
     The lift $K\mapsto K\otimes1$ from a region $D$ is a unital multiplicative
     map compatible with adjoints, and its range is the set of operators
     supported on $D$. The regional pure-state matrix is Hermitian. Support is
@@ -396,6 +391,7 @@ depend on the common values there.
         Y\varphi\rangle$ for every $Y$ supported on $D$.
 \end{lemma}
 \begin{proof}\leanok
+    \uses{thm:sites_place_range, lem:sites-regional-expectations, lem:sites_place_hom}
     The algebraic properties hold for $K\otimes1$ and survive the relabelling.
     The regional state is the partial trace of a positive semidefinite
     matrix, and is therefore Hermitian.
@@ -463,10 +459,8 @@ depend on the common values there.
 
 \begin{theorem}[Regional states under bijections of tensor factors]
     \label{thm:region_state_relabel}
-    \lean{ManyBody.siteConfigurationEquiv, ManyBody.regionConfigurationEquiv,
-        ManyBody.relabelVector, ManyBody.regionState_relabel}
     \leanok
-    \uses{lem:local_lift}
+    \uses{lem:local_lift, lem:sites-regional-relabel}
     Let $V,V'$ be finite sets of sites, let $e:V\to V'$ be a bijection,
     and let $n_v,n'_{v'}$ be nonnegative integer local dimensions.
     Write $E_v=\{i\in\mathbb N:i<n_v\}$ and
@@ -478,6 +472,8 @@ depend on the common values there.
     and $U_D$ for the permutation isometry induced by $f_D$. Then
     $\rho_{T\Omega,D'}=U_D\rho_{\Omega,D}U_D^*$.
     No normalization assumption is required.
+    Lemma~\ref{lem:sites-regional-relabel} states this identity for arbitrary
+    finite local bases.
 \end{theorem}
 \begin{proof}\leanok
     \uses{lem:partial_trace_petz_product_reindexing}
@@ -494,14 +490,15 @@ depend on the common values there.
 
 \begin{theorem}[Regional entropy under bijections of tensor factors]
     \label{thm:region_entropy_relabel}
-    \lean{ManyBody.regionEntropy_relabel}
     \leanok
     \uses{thm:region_state_relabel, def:von_neumann_entropy}
     Under the hypotheses of Theorem~\ref{thm:region_state_relabel},
     $S_{T\Omega}(D')=S_\Omega(D)$.
+    Lemma~\ref{lem:sites-regional-relabel} states this equality for arbitrary
+    finite local bases.
 \end{theorem}
 \begin{proof}\leanok
-    \uses{thm:region_state_relabel, thm:entropy_submatrix_equiv}
+    \uses{thm:region_state_relabel, thm:entropy_submatrix_equiv, lem:sites-regional-relabel}
     By Theorem~\ref{thm:entropy_submatrix_equiv}, conjugation by a permutation
     isometry preserves the von Neumann entropy of the regional state.
 \end{proof}
@@ -574,8 +571,7 @@ depend on the common values there.
         Entropy.abs_re_inner_sub_conj_le_of_common_basis,
         Entropy.norm_modularExpectation_kronecker_le_of_log_clipping,
         Entropy.abs_re_inner_sub_inner_conj_le_logarithmic,
-        Entropy.abs_re_inner_sub_conj_le_of_common_basis_logarithmic,
-        ManyBody.commute_of_mem_supportedOperators_of_disjoint}
+        Entropy.abs_re_inner_sub_conj_le_of_common_basis_logarithmic}
     \leanok
     \uses{lem:filter_conjugation, lem:commuting_hermitian}
     If the marginal of a unit vector is $U\operatorname{diag}(q)U^*$ and
@@ -620,7 +616,8 @@ depend on the common values there.
     Lemma~\ref{lem:filter_conjugation}. For disjoint supports, both operators
     are of the forms $A\otimes1$ and $1\otimes B$ across the same cut.
 
-    \uses{lem:strip_quadratic, lem:supported_product_decomposition}
+    \uses{lem:strip_quadratic, lem:supported_product_decomposition,
+        lem:sites_supported_commute}
     In the common eigenbasis, write the rows of
     $(U^*\otimes I)\varphi$ as $\sqrt{p_i}\,\omega_i$. The nonzero
     $\omega_i$ are orthonormal. Clipping and
@@ -800,7 +797,7 @@ has trace two.
 
 \begin{theorem}[Coordinate changes for matrix actions]
     \label{thm:coordinate_matrix_action}
-    \lean{Matrix.reindex_mulVec, ManyBody.norm_relabelVector}
+    \lean{Matrix.reindex_mulVec}
     \leanok
     \uses{thm:region_state_relabel}
     Let $e:I\to J$ be a bijection of finite coordinate sets, let $R$ be
@@ -814,6 +811,7 @@ has trace two.
 \end{theorem}
 \begin{proof}
     \leanok
+    \uses{lem:sites-regional-relabel}
     Changing variables in the finite matrix-vector sum gives the first
     identity. The configuration bijection acts on Euclidean space as
     a permutation isometry, which gives the norm identity.
@@ -1367,8 +1365,7 @@ has trace two.
 
 \begin{lemma}[Trial filters on a disjoint union]
     \label{lem:trial_filters}
-    \lean{ManyBody.place_apply, ManyBody.regionUnionEquiv, ManyBody.place_union_kronecker,
-        Entropy.isFeasibleFilter_union_kronecker, Entropy.pinProj, Entropy.pinProj_conjTranspose,
+    \lean{Entropy.isFeasibleFilter_union_kronecker, Entropy.pinProj, Entropy.pinProj_conjTranspose,
         Entropy.pinProj_mul_self, Entropy.sum_pinProj, Entropy.eq_of_forall_trace_mul_eq,
         Entropy.norm_toEuclideanLin_sq, Entropy.norm_sq_localLift_pinProj,
         Entropy.inner_localLift_eq_sum_pinProj, Entropy.regionState_eq_sum_pinProj,
@@ -1385,6 +1382,7 @@ has trace two.
         (P_i\otimes M_0)\Omega\rVert$.
 \end{lemma}
 \begin{proof}\leanok
+    \uses{def:sites_place, lem:sites-regional-union}
     On a disjoint union the lift of $A\otimes B$ is the product of the lifts of $A$ and of $B$.
     The projection $P_i$ commutes with the filters on the $T_j$, is idempotent, and does not
     increase norms.
@@ -1421,19 +1419,19 @@ has trace two.
 
 \begin{theorem}[Strong subadditivity for regions]
     \label{thm:region_ssa}
-    \lean{ManyBody.regionEntropy, ManyBody.trace_regionState_submatrix_mul,
-        Entropy.disjoint_union_of_disjoint, Entropy.tripleEquiv, Entropy.tripleEquiv_apply,
-        Entropy.localLift_tripleEquiv_kronecker_one, ManyBody.regionState_posSemidef,
+    \lean{Entropy.disjoint_union_of_disjoint, Entropy.tripleEquiv, Entropy.tripleEquiv_apply,
+        Entropy.localLift_tripleEquiv_kronecker_one,
         Entropy.tripleState, Entropy.partialTraceLeft_tripleState,
-        ManyBody.partialTraceRight_regionState_union,
         Entropy.partialTraceRight_reassoc_tripleState, Entropy.regionEntropy_ssa,
         Entropy.regionEntropy_cond_anti}
     \leanok
+    \uses{def:sites-regional-state}
     For pairwise disjoint regions $A,B,C$,
     $S(A\cup B\cup C)+S(B)\le S(A\cup B)+S(B\cup C)$. In particular
     $S(X\mid T)\le S(X\mid T')$ for $T'\subseteq T$ disjoint from $X$.
 \end{theorem}
 \begin{proof}\leanok
+    \uses{lem:sites-regional-union, lem:sites-regional-expectations}
     The regional states of $A\cup B$, $B\cup C$ and $B$ are the partial traces of the regional
     state of $A\cup B\cup C$, viewed as a tripartite matrix, so strong subadditivity applies.
 \end{proof}

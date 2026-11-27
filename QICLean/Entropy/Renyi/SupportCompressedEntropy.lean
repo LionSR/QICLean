@@ -9,7 +9,7 @@ import QICLean.Entropy.Renyi.SandwichedRenyiTwo
 import QICLean.Analysis.Support.Compression
 import QICLean.Channel.PartialTrace.MarginalSupportAbsorption
 import QICLean.Analysis.FunctionalCalculus.MatrixSqrt
-import QICLean.Channel.WhitenedChoi
+import QICLean.Channel.Schwarz.WhitenedChoi
 
 /-!
 # Entropy functionals compressed to the reference support

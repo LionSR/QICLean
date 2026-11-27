@@ -11,6 +11,7 @@ Authors: QICLean contributors
 import QICLean.Channel.Peripheral.Asymptotic.AsymptoticImage
 import QICLean.Channel.Peripheral.Asymptotic.AsymptoticStateConvergence
 import QICLean.Channel.Peripheral.Asymptotic.AsymptoticStateConverse
+import QICLean.Channel.Peripheral.Asymptotic.PositiveInverse
 import QICLean.Channel.Peripheral.Asymptotic.PrimitivePositiveMap
 import QICLean.Channel.Peripheral.Asymptotic.RecurrentInverse
 import QICLean.Channel.Peripheral.Asymptotic.SchurAsymptoticConvergence

@@ -8,7 +8,7 @@ import QICLean.Circuit.Core.LocalGate
 import QICLean.Circuit.Core.Parallel
 import QICLean.Analysis.Isometry.UnitPhaseScalar
 import QICLean.Circuit.Core.Seq
-import QICLean.ManyBody.Sites.PlaceAlong
+import QICLean.ManyBody.Sites.Placement.PlaceAlong
 
 /-!
 # Unitary circuits

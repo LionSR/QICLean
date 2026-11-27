@@ -219,3 +219,94 @@ theorem PosSemidef.typicalSpectralRestriction_entropy_bounds (hρ : ρ.PosSemide
   exact Entropy.typicalSpectrum_entropy_bounds hz hE
 
 end Matrix
+
+section
+open Matrix
+open scoped Kronecker ComplexOrder MatrixOrder InnerProductSpace Matrix.Norms.L2Operator
+namespace Matrix
+
+section Spectral
+
+variable {n : Type*} [Fintype n] [DecidableEq n] {ρ : Matrix n n ℂ}
+
+private theorem IsHermitian.spectralSelection_eq_conj (hρ : ρ.IsHermitian) (E : Finset n) :
+    hρ.spectralSelection E = (hρ.eigenvectorUnitary : Matrix n n ℂ) *
+      diagonal (fun i ↦ if i ∈ E then (1 : ℂ) else 0) *
+        (hρ.eigenvectorUnitary : Matrix n n ℂ)ᴴ := by
+  rw [IsHermitian.spectralSelection, Unitary.conjStarAlgAut_apply, star_eq_conjTranspose]
+
+private theorem IsHermitian.eq_conj (hρ : ρ.IsHermitian) :
+    ρ = (hρ.eigenvectorUnitary : Matrix n n ℂ) *
+      diagonal (fun i ↦ ((hρ.eigenvalues i : ℝ) : ℂ)) *
+        (hρ.eigenvectorUnitary : Matrix n n ℂ)ᴴ := by
+  conv_lhs => rw [hρ.spectral_theorem]
+  rw [Unitary.conjStarAlgAut_apply, star_eq_conjTranspose]
+  rfl
+
+/-- A spectral selection of a positive matrix is at most `c ρ` when every selected
+eigenvalue is at least `1 / c`. -/
+theorem PosSemidef.spectralSelection_le_smul (hρ : ρ.PosSemidef) {E : Finset n} {c : ℝ}
+    (hc : 0 ≤ c) (h : ∀ i ∈ E, 1 ≤ c * hρ.isHermitian.eigenvalues i) :
+    hρ.isHermitian.spectralSelection E ≤ c • ρ := by
+  rw [Matrix.le_iff]
+  set U := (hρ.isHermitian.eigenvectorUnitary : Matrix n n ℂ)
+  have hd : c • ρ - hρ.isHermitian.spectralSelection E = U * diagonal (fun i ↦
+      ((c * hρ.isHermitian.eigenvalues i : ℝ) : ℂ) - if i ∈ E then 1 else 0) * Uᴴ := by
+    rw [hρ.isHermitian.spectralSelection_eq_conj]
+    conv_lhs => arg 1; rw [hρ.isHermitian.eq_conj]
+    rw [← Matrix.smul_mul, ← Matrix.mul_smul, ← Matrix.sub_mul, ← Matrix.mul_sub]
+    congr 2
+    ext i j
+    by_cases hij : i = j
+    · subst hij; simp
+    · simp [diagonal_apply_ne _ hij]
+  rw [hd]
+  refine PosSemidef.mul_mul_conjTranspose_same (PosSemidef.diagonal fun i ↦ ?_) U
+  change (0 : ℂ) ≤ _
+  by_cases hi : i ∈ E
+  · simp only [hi, ↓reduceIte]
+    exact_mod_cast sub_nonneg.mpr (h i hi)
+  · simp only [hi, ↓reduceIte, sub_zero]
+    exact_mod_cast mul_nonneg hc (hρ.eigenvalues_nonneg i)
+
+/-- A spectral selection compresses `ρ` below `b` times itself when every selected
+eigenvalue is at most `b`. -/
+theorem IsHermitian.spectralSelection_mul_mul_le_smul (hρ : ρ.IsHermitian) {E : Finset n}
+    {b : ℝ} (h : ∀ i ∈ E, hρ.eigenvalues i ≤ b) :
+    hρ.spectralSelection E * ρ * hρ.spectralSelection E ≤ b • hρ.spectralSelection E := by
+  rw [Matrix.le_iff]
+  set U := (hρ.eigenvectorUnitary : Matrix n n ℂ)
+  have hU : Uᴴ * U = 1 := by
+    simp only [U, ← star_eq_conjTranspose]; exact Unitary.coe_star_mul_self _
+  have hd : b • hρ.spectralSelection E - hρ.spectralSelection E * ρ * hρ.spectralSelection E =
+      U * diagonal (fun i ↦ if i ∈ E then ((b - hρ.eigenvalues i : ℝ) : ℂ) else 0) * Uᴴ := by
+    rw [hρ.spectralSelection_eq_conj]
+    conv_lhs => arg 2; arg 1; arg 2; rw [hρ.eq_conj]
+    have hcollapse : U * diagonal (fun i ↦ if i ∈ E then (1 : ℂ) else 0) * Uᴴ *
+        (U * diagonal (fun i ↦ ((hρ.eigenvalues i : ℝ) : ℂ)) * Uᴴ) *
+        (U * diagonal (fun i ↦ if i ∈ E then (1 : ℂ) else 0) * Uᴴ) =
+        U * (diagonal (fun i ↦ if i ∈ E then (1 : ℂ) else 0) *
+          diagonal (fun i ↦ ((hρ.eigenvalues i : ℝ) : ℂ)) *
+          diagonal (fun i ↦ if i ∈ E then (1 : ℂ) else 0)) * Uᴴ := by
+      simp only [Matrix.mul_assoc]
+      rw [← Matrix.mul_assoc Uᴴ U, hU, Matrix.one_mul, ← Matrix.mul_assoc Uᴴ U, hU,
+        Matrix.one_mul]
+    rw [hcollapse, diagonal_mul_diagonal, diagonal_mul_diagonal, ← Matrix.smul_mul,
+      ← Matrix.mul_smul, ← Matrix.sub_mul, ← Matrix.mul_sub]
+    congr 2
+    ext i j
+    by_cases hij : i = j
+    · subst hij; by_cases hi : i ∈ E <;> simp [hi]
+    · simp [diagonal_apply_ne _ hij]
+  rw [hd]
+  refine PosSemidef.mul_mul_conjTranspose_same (PosSemidef.diagonal fun i ↦ ?_) U
+  change (0 : ℂ) ≤ _
+  by_cases hi : i ∈ E
+  · simp only [hi, ↓reduceIte]
+    exact_mod_cast sub_nonneg.mpr (h i hi)
+  · simp only [hi, ↓reduceIte, le_refl]
+
+end Spectral
+
+end Matrix
+end

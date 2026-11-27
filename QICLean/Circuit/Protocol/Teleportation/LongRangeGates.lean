@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import Mathlib.Data.Fin.Tuple.Embedding
 import QICLean.Circuit.Protocol.Teleportation.Chains
-import QICLean.ManyBody.Sites.PlaceAlong
+import QICLean.ManyBody.Sites.Placement.PlaceAlong
 
 /-!
 # Layers of gates between distant sites in constant depth with measurements

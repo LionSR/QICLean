@@ -14,6 +14,8 @@ import QICLean.ManyBody.Sites.Config
 import QICLean.ManyBody.Sites.ConfigurationMap
 import QICLean.ManyBody.Sites.Cut
 import QICLean.ManyBody.Sites.CutMatrix
+import QICLean.ManyBody.Sites.Cylinder
+import QICLean.ManyBody.Sites.Dyadic
 import QICLean.ManyBody.Sites.GraphBall
 import QICLean.ManyBody.Sites.GraphBoundary
 import QICLean.ManyBody.Sites.Hierarchy
@@ -24,14 +26,14 @@ import QICLean.ManyBody.Sites.OperatorSchmidtRank
 import QICLean.ManyBody.Sites.PairSwap
 import QICLean.ManyBody.Sites.PairSwapPermutation
 import QICLean.ManyBody.Sites.Partition
-import QICLean.ManyBody.Sites.PlaceAlong
-import QICLean.ManyBody.Sites.PlaceAlongMonomial
 import QICLean.ManyBody.Sites.PlacedConfiguration
 import QICLean.ManyBody.Sites.Placement
-import QICLean.ManyBody.Sites.ProductFamily
-import QICLean.ManyBody.Sites.ProductForm
-import QICLean.ManyBody.Sites.ProductOperatorTrace
-import QICLean.ManyBody.Sites.ProductVector
+import QICLean.ManyBody.Sites.Placement.Basic
+import QICLean.ManyBody.Sites.Placement.DependentRegionCoordinates
+import QICLean.ManyBody.Sites.Placement.PlaceAlong
+import QICLean.ManyBody.Sites.Placement.PlaceAlongMonomial
+import QICLean.ManyBody.Sites.Placement.RegionPlacement
+import QICLean.ManyBody.Sites.Product
 import QICLean.ManyBody.Sites.RegionExpectation
 import QICLean.ManyBody.Sites.RegionMatrix
 import QICLean.ManyBody.Sites.RegionState
@@ -47,5 +49,6 @@ import QICLean.ManyBody.Sites.Support
 import QICLean.ManyBody.Sites.SupportedDecomposition
 import QICLean.ManyBody.Sites.SupportedUnitary
 import QICLean.ManyBody.Sites.SystemUpdate
+import QICLean.ManyBody.Sites.Template
 import QICLean.ManyBody.Sites.ThreeRegion
 import QICLean.ManyBody.Sites.Twirl

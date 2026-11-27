@@ -20,6 +20,7 @@ import QICLean.ManyBody.Entropy.Filter.OutputCovariance
 import QICLean.ManyBody.Entropy.Filter.PatchStationarity
 import QICLean.ManyBody.Entropy.Filter.Power
 import QICLean.ManyBody.Entropy.Filter.Prefix
+import QICLean.ManyBody.Entropy.Filter.Regularized
 import QICLean.ManyBody.Entropy.Filter.SchmidtPinning
 import QICLean.ManyBody.Entropy.Filter.Stationarity
 import QICLean.ManyBody.Entropy.Filter.ZeroFloor

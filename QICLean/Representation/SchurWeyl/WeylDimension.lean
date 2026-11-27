@@ -5,7 +5,7 @@ Authors: TNLean contributors
 -/
 import QICLean.Representation.SchurWeyl.SchurLabelEstimates
 import QICLean.Representation.Partition.WeylRecursion
-import QICLean.Representation.SymmetricGroup.JucysRecursion
+import QICLean.Representation.SchurWeyl.JucysRecursion
 import QICLean.Representation.Character.RegularTrace
 
 /-!

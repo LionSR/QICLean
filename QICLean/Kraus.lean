@@ -33,4 +33,5 @@ import QICLean.Kraus.TraceFactorGauge
 import QICLean.Kraus.Transfer
 import QICLean.Kraus.Wielandt
 import QICLean.Kraus.Word
+import QICLean.Kraus.WordCompression
 import QICLean.Kraus.WordSpan

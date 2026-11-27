@@ -476,7 +476,6 @@ theorem cycleGraph_adj_smul {n : ℕ} [NeZero n] (a : Multiplicative (Fin n)) (x
   change (cycleGraph n).Adj (a.toAdd + x) (a.toAdd + y) ↔ _
   simp only [cycleGraph_adj', add_sub_add_left_eq_sub]
 
-
 end SimpleGraph
 
 namespace SimpleGraph
@@ -520,7 +519,6 @@ theorem natAbs_valMinAbs_sub_le_edist (hR : 0 < R) (π : V → ZMod n)
     simp only [sub_self, ZMod.valMinAbs_zero, Int.natAbs_zero, zero_add] at hw
     exact_mod_cast hw
 
-
 section Spacing
 
 open ZMod
@@ -552,3 +550,20 @@ theorem edist_pow_mul_ge_of_near {V Γ : Type*} [Group Γ] [MulAction Γ V]
 end Spacing
 
 end SimpleGraph
+
+set_option relaxedAutoImplicit false
+set_option maxSynthPendingDepth 3
+set_option linter.mathlibStandardSet true
+
+namespace ManyBody
+
+variable {ι : Type*}
+
+/-- Distinct graph components are at infinite distance in the pseudo-emetric. -/
+@[simp]
+theorem graphPseudoEMetricSpace_edist_eq_top (G : SimpleGraph ι) (x y : ι) :
+    letI := ManyBody.graphPseudoEMetricSpace G
+    edist x y = ⊤ ↔ ¬ G.Reachable x y := by
+  simp only [← ManyBody.graphPseudoEMetricSpace_edist_ne_top G x y, not_not]
+
+end ManyBody

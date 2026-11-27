@@ -52,6 +52,9 @@ maximally mixed reference state can fail to be invertible.
   tripartite density matrix.
 * `strong_subadditivity_general` — strong subadditivity for an arbitrary
   tripartite density matrix, on the full positive semidefinite unit-trace domain.
+* `isSSAEquality_iff_maximally_mixed_reference_data_processing_eq` — equality in
+  strong subadditivity is saturation of the same data-processing inequality, with
+  the maximally mixed reference on $A$.
 
 ## Proof outline
 
@@ -490,22 +493,6 @@ theorem traceC_ABC_posDef [NeZero dC]
   rw [heq]
   exact Matrix.posDef_sum Finset.univ_nonempty fun c _ => hblock c
 
-/-- The partial trace over the third factor of a positive semidefinite tripartite
-matrix is positive semidefinite, being a sum of positive semidefinite principal
-submatrices. -/
-theorem traceC_ABC_posSemidef
-    {ρ : Matrix (Fin dA × Fin dB × Fin dC) (Fin dA × Fin dB × Fin dC) ℂ} (hρ : ρ.PosSemidef) :
-    (traceC_ABC ρ).PosSemidef := by
-  have hblock : ∀ c : Fin dC,
-      (ρ.submatrix (fun q : Fin dA × Fin dB => (q.1, q.2, c))
-        (fun q => (q.1, q.2, c))).PosSemidef := fun c => hρ.submatrix _
-  have heq : traceC_ABC ρ
-      = ∑ c : Fin dC, ρ.submatrix (fun q : Fin dA × Fin dB => (q.1, q.2, c))
-          (fun q => (q.1, q.2, c)) := by
-    ext q₁ q₂; simp only [traceC_ABC, Matrix.sum_apply, Matrix.submatrix_apply]
-  rw [heq]
-  exact Matrix.posSemidef_sum _ fun c _ => hblock c
-
 /-- **Partial trace of the maximally mixed reference.** For every tripartite
 matrix $\rho_{ABC}$, tracing out $C$ from
 $(\mathbf 1_A/d_A)\otimes\rho_{BC}$ gives
@@ -880,5 +867,94 @@ theorem strong_subadditivity_general
     vonNeumannEntropy_congr rfl _ _
   rw [hSρBC, hSρB, hSρAB] at hdpi
   linarith
+
+/-- **SSA equality is saturation of partial-trace data processing for the
+maximally mixed reference.** For every tripartite density matrix
+$\rho_{ABC}$, equality in strong subadditivity is equivalent to
+\[
+  D\!\left(\rho_{ABC}\,\middle\|\,
+    (\mathbf 1_A/d_A)\otimes\rho_{BC}\right)
+  =
+  D\!\left(\rho_{AB}\,\middle\|\,
+    (\mathbf 1_A/d_A)\otimes\rho_B\right).
+\]
+The second reference is the image of the first under
+$\operatorname{tr}_C$, since tracing out $C$ sends
+$(\mathbf 1_A/d_A)\otimes\rho_{BC}$ to
+$(\mathbf 1_A/d_A)\otimes\rho_B$.
+
+This is an equivalent criterion with a different reference state: both
+relative-entropy differences equal the strong-subadditivity deficit. The exact
+Hayden--Jozsa--Petz--Winter pair uses $\rho_A$ in place of the maximally mixed
+state on $A$.
+
+Source: Hayden--Jozsa--Petz--Winter, arXiv:quant-ph/0304007v2, p. 3,
+equations (5)--(7) and the paragraph following equation (7). -/
+theorem isSSAEquality_iff_maximally_mixed_reference_data_processing_eq
+    (ρ_ABC : Matrix (Fin dA × Fin dB × Fin dC) (Fin dA × Fin dB × Fin dC) ℂ)
+    (hρ_dm : ρ_ABC.PosSemidef ∧ ρ_ABC.trace = 1) :
+    IsSSAEquality ρ_ABC hρ_dm.1.isHermitian ↔
+      quantumRelativeEntropy ρ_ABC
+          (((dA : ℂ)⁻¹ • (1 : Matrix (Fin dA) (Fin dA) ℂ)) ⊗ₖ traceA_ABC ρ_ABC)
+        = quantumRelativeEntropy (traceC_ABC ρ_ABC)
+          (traceC_ABC
+            (((dA : ℂ)⁻¹ • (1 : Matrix (Fin dA) (Fin dA) ℂ))
+              ⊗ₖ traceA_ABC ρ_ABC)) := by
+  classical
+  obtain ⟨hρ, hρtr⟩ := hρ_dm
+  have hAne : NeZero dA := by
+    refine ⟨fun h ↦ ?_⟩
+    subst h
+    rw [Matrix.trace_eq_zero_of_isEmpty] at hρtr
+    exact zero_ne_one hρtr
+  have hBne : NeZero dB := by
+    refine ⟨fun h ↦ ?_⟩
+    subst h
+    rw [Matrix.trace_eq_zero_of_isEmpty] at hρtr
+    exact zero_ne_one hρtr
+  have hCne : NeZero dC := by
+    refine ⟨fun h ↦ ?_⟩
+    subst h
+    rw [Matrix.trace_eq_zero_of_isEmpty] at hρtr
+    exact zero_ne_one hρtr
+  have : Nonempty (Fin dB × Fin dC) := ⟨⟨⟨0, Nat.pos_of_ne_zero (NeZero.ne dB)⟩,
+    ⟨0, Nat.pos_of_ne_zero (NeZero.ne dC)⟩⟩⟩
+  have : Nonempty (Fin dB) := ⟨⟨0, Nat.pos_of_ne_zero (NeZero.ne dB)⟩⟩
+  have hfull := rel_entropy_eval_support (ρ := ρ_ABC) hρ hρtr (kron_marginal_support hρ)
+  set ρAB := traceC_ABC ρ_ABC with hρAB
+  have hρAB_psd : ρAB.PosSemidef := traceC_ABC_posSemidef hρ
+  have hρABtr : ρAB.trace = 1 := by
+    rw [hρAB, ← Matrix.trace_eq_trace_traceC_ABC]
+    exact hρtr
+  have himg := rel_entropy_eval_support (ρ := ρAB) hρAB_psd hρABtr
+    (kron_marginal_support hρAB_psd)
+  have hρB : traceLeftA ρAB = traceAC_ABC ρ_ABC := by
+    ext b₁ b₂
+    simp only [hρAB, traceLeftA, traceC_ABC, traceAC_ABC]
+  have hSρBC :
+      vonNeumannEntropy (traceLeftA ρ_ABC) (traceLeftA_posSemidef hρ).isHermitian
+        = vonNeumannEntropy (traceA_ABC ρ_ABC)
+          (traceA_ABC_isHermitian hρ.isHermitian) :=
+    vonNeumannEntropy_congr rfl _ _
+  have hSρB : vonNeumannEntropy (traceLeftA ρAB)
+      (traceLeftA_posSemidef hρAB_psd).isHermitian
+        = vonNeumannEntropy (traceAC_ABC ρ_ABC)
+          (traceAC_ABC_isHermitian hρ.isHermitian) :=
+    vonNeumannEntropy_congr hρB _ _
+  have hSρAB : vonNeumannEntropy ρAB hρAB_psd.isHermitian
+      = vonNeumannEntropy (traceC_ABC ρ_ABC)
+          (traceC_ABC_isHermitian hρ.isHermitian) :=
+    vonNeumannEntropy_congr hρAB _ _
+  rw [traceC_ABC_kronecker_traceA_ABC]
+  rw [← hρB]
+  change IsSSAEquality ρ_ABC hρ.isHermitian ↔
+    quantumRelativeEntropy ρ_ABC
+        (((dA : ℂ)⁻¹ • (1 : Matrix (Fin dA) (Fin dA) ℂ)) ⊗ₖ traceLeftA ρ_ABC)
+      = quantumRelativeEntropy ρAB
+        (((dA : ℂ)⁻¹ • (1 : Matrix (Fin dA) (Fin dA) ℂ)) ⊗ₖ traceLeftA ρAB)
+  simp only [hfull, himg]
+  rw [IsSSAEquality]
+  rw [hSρBC, hSρB, hSρAB]
+  constructor <;> intro h <;> linarith
 
 end StrongSubadditivityPosDef

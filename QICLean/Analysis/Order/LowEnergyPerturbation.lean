@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import Mathlib.Algebra.Order.Chebyshev
 import QICLean.Analysis.Subspace.ViableSubspace
-import QICLean.Algebra.Kronecker.KroneckerEmbed
+import QICLean.Algebra.Matrix.KroneckerEmbed
 
 /-!
 # Closeness of low-energy subspaces under a perturbation on the low spectrum

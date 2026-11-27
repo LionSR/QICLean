@@ -197,6 +197,30 @@ class MathlibSourceResolutionTests(unittest.TestCase):
         self.assertFalse(self.package.exists())
         self.assertEqual(list(self.package.parent.glob(".blueprint-mathlib-*")), [])
 
+    def test_duplicate_tags_are_errors_only_when_reported(self) -> None:
+        self.write("QICLean/Other.lean", "theorem Owner.unique : True := by trivial\n")
+        self.tags("Owner.shared", "Owner.unique", "Owner.shared")
+        report = self.run_sync()
+        self.assertTrue(report.ok)
+        self.assertEqual([decl for decl, _ in report.duplicate_lean_tags], ["Owner.shared"])
+        self.assertEqual([e.line for e in report.duplicate_lean_tags[0][1]], [2, 8])
+        with contextlib.redirect_stdout(io.StringIO()):
+            strict = sync.run_sync(self.root, report_duplicate_tags=True)
+        self.assertFalse(strict.ok)
+        result = subprocess.run(
+            ["python3", str(Path(sync.__file__).resolve()), "--root", str(self.root),
+             "--ci", "--report-duplicate-tags"],
+            capture_output=True, text=True,
+        )
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("Declarations tagged in more than one blueprint entry (1)", result.stdout)
+        self.tags("Owner.shared", "Owner.unique")
+        self.assertEqual(
+            sync.find_duplicate_lean_tags(
+                sync.collect_blueprint_lean_refs(self.root / "blueprint/src")),
+            [],
+        )
+
     def test_ci_cli_still_exits_nonzero_for_missing_external_name(self) -> None:
         self.dependency()
         self.tags("Continuous.matrix_traceTypo")

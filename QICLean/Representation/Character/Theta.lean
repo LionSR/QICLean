@@ -6,6 +6,7 @@ Authors: QICLean contributors
 import QICLean.Representation.Character.Delta
 import QICLean.Analysis.Real.ComplexSqrt
 import Mathlib.LinearAlgebra.Eigenspace.Basic
+import QICLean.Representation.Character.DeltaPositive
 
 /-!
 # Fourth-root weights of a representation
@@ -34,6 +35,9 @@ Changes: the two modules are merged.
 * `Representation.thetaOperator_pow_four`: `Θ⁴ = |G| Δ`.
 * `Representation.thetaOperator_commute`: `Θ` commutes with the representation.
 * `Representation.thetaOperator_sq_apply_of_mem`: the action of `Θ²` on an irreducible summand.
+
+Moved from TNLean, `TNLean/Algebra/RepresentationThetaPositive.lean` at commit `021ba0bd19`
+(Apache-2.0).
 -/
 
 noncomputable section
@@ -147,3 +151,52 @@ theorem thetaOperator_sq_apply_of_multiplicity_one (ρ : Representation ℂ G V)
   simp only [Complex.natCast_re, Complex.one_re, div_one]
 
 end Representation
+
+section
+
+open Module LinearMap
+
+open scoped ComplexOrder
+
+namespace Representation
+
+variable {G V : Type*} [Group G] [Fintype G]
+
+variable [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
+
+/-- The fourth-root weight is invertible, with no unitarity assumption.
+Source: SCP10, §7, lines 3000–3006, and Lemma 4.4, lines 970–976. -/
+theorem isUnit_thetaOperator (ρ : Representation ℂ G V) : IsUnit (thetaOperator ρ) := by
+  apply (isUnit_pow_iff (by norm_num : (4 : ℕ) ≠ 0)).mp
+  rw [thetaOperator_pow_four, Algebra.smul_def]
+  exact ((isUnit_iff_ne_zero.mpr (natCard_ne_zero_complex (G := G))).map
+    (algebraMap ℂ (Module.End ℂ V))).mul (isUnit_deltaOperator ρ)
+
+variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
+  [FiniteDimensional ℂ E]
+
+/-- The fourth-root weight of a unitary representation is positive.
+Source: the positive coefficients in SCP10, §7, lines 3000–3006. -/
+theorem isPositive_thetaOperator_of_unitary (ρ : Representation ℂ G E)
+    (hρ : ∀ g, LinearMap.adjoint (ρ g) = ρ g⁻¹) :
+    (thetaOperator ρ).IsPositive := by
+  classical
+  rw [thetaOperator]
+  apply isPositive_sum_smul_charProjector_of_nonneg ρ _ hρ
+  intro χ hχ
+  positivity
+
+/-- In every orthonormal basis, the fourth-root weight is positive definite.
+Source: the positive occurring block weights in SCP10, §7, lines 3000–3006. -/
+theorem posDef_toMatrix_thetaOperator_of_unitary (ρ : Representation ℂ G E)
+    (hρ : ∀ g, LinearMap.adjoint (ρ g) = ρ g⁻¹)
+    {ι : Type*} [Fintype ι] [DecidableEq ι] (b : OrthonormalBasis ι ℂ E) :
+    (LinearMap.toMatrix b.toBasis b.toBasis (thetaOperator ρ)).PosDef := by
+  have hp := (LinearMap.posSemidef_toMatrix_iff b).mpr
+    (isPositive_thetaOperator_of_unitary ρ hρ)
+  apply hp.posDef_iff_isUnit.mpr
+  exact (isUnit_thetaOperator ρ).map (LinearMap.toMatrixAlgEquiv b.toBasis).toMonoidHom
+
+end Representation
+
+end

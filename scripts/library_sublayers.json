@@ -164,18 +164,21 @@
       ]
     },
     "QICLean.Channel": {
-      "Choi": [],
+      "(top)": [],
+      "Choi": [
+        "(top)"
+      ],
       "KrausMap": [
         "Choi"
       ],
       "Twirl": [
         "KrausMap"
       ],
-      "(top)": [
+      "TransferMatrix": [
         "Twirl"
       ],
       "Dilation": [
-        "(top)"
+        "TransferMatrix"
       ],
       "PartialTrace": [
         "Dilation"
@@ -327,11 +330,8 @@
     },
     "QICLean.Representation": {
       "Partition": [],
-      "SymmetricGroup": [
-        "Partition"
-      ],
       "Permutation": [
-        "SymmetricGroup"
+        "Partition"
       ],
       "TensorPower": [
         "Permutation"

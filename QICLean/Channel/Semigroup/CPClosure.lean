@@ -3,7 +3,7 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Channel.CompletelyPositiveClosure
+import QICLean.Channel.KrausMap.CompletelyPositiveClosure
 import QICLean.Channel.Semigroup.Basic
 import Mathlib.Analysis.SpecificLimits.Normed
 import Mathlib.Topology.Algebra.Module.FiniteDimension
@@ -14,7 +14,7 @@ import Mathlib.Analysis.Matrix.Order
 
 The exponential `exp(tL)` of a completely positive generator `L` is completely positive for
 `t ≥ 0`. The closure properties of completely positive maps it rests on are in
-`QICLean.Channel.CompletelyPositiveClosure`.
+`QICLean.Channel.KrausMap.CompletelyPositiveClosure`.
 
 ## Main results
 

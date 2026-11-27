@@ -592,18 +592,18 @@ second table to the first, and an earlier row whose target was merged names the 
 | `Analysis.Norm.PrincipalSubmatrixNorm` | one lemma l2 op norm of principal submatrix; merge into an Analysis/Norm matrix module (e.g. QICLean.Analysis.Norm.BlockDiagonalNorm) |
 | `Analysis.Norm.SquaredTriangle` | one inequality in a seminormed group (Mathlib object); merge into a general Analysis/Norm vector-norm module (e.g. QICLean.Analysis.Projection.OverlapTriangle) |
 | `Analysis.Norm.UnitNormalizationDistance` | one normed-space inequality; imported only by the aggregator; merge into a vector-norm host or delete |
-| `Analysis.OperatorMean.MeanTreeExponentialLowerNorm` | merge into QICLean.Analysis.OperatorMean.MeanTreeMultibandLowerNorm; one explicit-rate corollary |
+| `Analysis.OperatorMean.MeanTreeExponentialLowerNorm` | merge into QICLean.Analysis.OperatorMean.MeanTreeExponentialLowerNorm; one explicit-rate corollary |
 | `Analysis.Order.HermitianTracePower` | merge into QICLean.Spectral.Eigenvalue.HermitianSpectrumMultiplicity: one lemma trace(A^k) = ∑ eigenvalue^k |
-| `Analysis.Parameter.RoughLowerCoefficient` | merge into QICLean.ManyBody.Replica.LowDefect.RegionalRoughLowerThree (sole consumer): one scalar inequality |
+| `Analysis.Parameter.RoughLowerCoefficient` | merge into QICLean.ManyBody.Replica.LowDefect.RegionalRoughLowerNorm (sole consumer): one scalar inequality |
 | `Analysis.Projection.InvariantTensorWordPower` | merge into QICLean.Analysis.Subspace.ViableSubspaceTensor (defines IsViable); one theorem on Hilbert tensor product M ⊗ R, words of operators |
-| `Channel.Gluing.BoundaryDensitySelection` | merge into QICLean.Channel.Gluing.BoundaryDensityMinimizer: one corollary (max-eigenvector of the minimizer) of its existence theorem |
-| `Channel.Gluing.LeadingEigenvectorBounds` | merge into QICLean.Channel.Gluing.LeadingEigenvector: one choice-independent form of its theorem |
+| `Channel.Gluing.BoundaryDensitySelection` | merge into QICLean.Channel.Gluing.BoundaryDensitySelection: one corollary (max-eigenvector of the minimizer) of its existence theorem |
+| `Channel.Gluing.LeadingEigenvectorBounds` | merge into QICLean.Channel.Gluing.LeadingEigenvectorBounds: one choice-independent form of its theorem |
 | `Channel.KrausMap.KrausFamilyDilation` | merge into QICLean.Channel.KrausMap.KrausFamilyEncoding: one theorem (unitary dilation of a TP Kraus family) built from embed/prod |
 | `Channel.KrausMap.KrausFamilyTraceNorm` | merge into QICLean.Channel.KrausMap.KrausFamilyDilation (or KrausFamily): one trace-norm contraction corollary of Channel.RectangularTraceNormContraction for TP families |
 | `Entropy.MutualInformation.Basic` | namespaced alias plus congr; merge into the module defining mutualInformation (QICLean.Entropy.VonNeumann.Entropy, itself an Entropy-layer module) |
 | `Entropy.MutualInformation.EffectMutualInformation` | one theorem (binary relative entropy <= mutual information) plus kernel helper; merge into QICLean.Entropy.Relative.EffectRelativeEntropy (defines binaryRelativeEntropy) |
-| `Entropy.MutualInformation.OperatorSchmidt` | one theorem (I <= log operator-Schmidt rank); merge into QICLean.Entropy.MutualInformation.MutualInformation, or keep to avoid Channel.MarginalSupportWhitenedChoi import there |
-| `Entropy.MutualInformation.ProductMarginals` | merge into QICLean.Entropy.MutualInformation.MutualInformation: one identity, relative entropy to product of marginals = mutual information |
+| `Entropy.MutualInformation.OperatorSchmidt` | one theorem (I <= log operator-Schmidt rank); merge into QICLean.Entropy.StrongSubadditivity.MutualInformationMonotone, or keep to avoid Channel.MarginalSupportWhitenedChoi import there |
+| `Entropy.MutualInformation.ProductMarginals` | merge into QICLean.Entropy.StrongSubadditivity.MutualInformationMonotone: one identity, relative entropy to product of marginals = mutual information |
 | `Entropy.VonNeumann.Aliases` | alias-only module (0 decls besides aliases) of _root_.vonNeumannEntropy and quantumRelativeEntropy defined in QICLean.Entropy.VonNeumann.Entropy; move that definition to Entropy/VonNeumann and fold these aliases into it |
 | `Kraus.IrreducibleAction` | merge into QICLean.Channel.Irreducible.InvariantProjection, which defines IsIrreducibleFamily; one equivalence with Matrix.IsIrreducibleAction plus its two directions |
 | `Kraus.TraceFactorGauge` | merge into QICLean.Channel.KrausMap.KrausGauge (tpGauge of a family); two lemmas; KrausGauge is itself family-level and belongs in Kraus |
@@ -613,7 +613,7 @@ second table to the first, and an earlier row whose target was merged names the 
 | `ManyBody.Entropy.Cut.RegionTraceNorm` | merge into QICLean.ManyBody.Sites.RegionState (or together with RegionPureApproximationTail): one trace-norm contraction of regional pure-state reduction |
 | `ManyBody.Entropy.Cut.RegionalRightContraction` | merge into QICLean.ManyBody.Sites.OperatorSchmidtRank: one operatorSchmidtRank bound for right contraction across nested regions |
 | `ManyBody.Entropy.Cut.RightLocalLift` | merge into QICLean.ManyBody.Sites.Support: one lemma, operator on the complement cut factor is IsSupportedOn the complement |
-| `ManyBody.Entropy.Cut.SupportedOperatorAlgebra` | merge into QICLean.Algebra.Kronecker.KroneckerEmbed (or the Kronecker module): kronecker_one_mul_one_kronecker_comm is pure Kronecker algebra, no sites despite title |
+| `ManyBody.Entropy.Cut.SupportedOperatorAlgebra` | merge into QICLean.Algebra.Matrix.KroneckerEmbed (or the Kronecker module): kronecker_one_mul_one_kronecker_comm is pure Kronecker algebra, no sites despite title |
 | `ManyBody.Entropy.Cut.SupportedOperatorSchmidtWords` | merge into QICLean.ManyBody.Sites.OperatorSchmidtRank: one bound on operatorSchmidtRank of ordered products of supported operators; imports Entropy.FilterChainEnergy only for proof |
 | `ManyBody.Replica.Bell.CompressedInverseNorm` | merge into QICLean.ManyBody.Replica.Bell.PinnedTreeAction (with BellPinnedProductAction and BellPinnedCompressedPowers: one chain of one-theorem modules about replica metrics acting on the Bell pin); objects replicaMetric,regions,op norm |
 | `ManyBody.Replica.Bell.PinnedCompressedPowers` | merge into QICLean.ManyBody.Replica.Bell.PinnedTreeAction; one rpow identity for the band product compressed to symmetric coordinates |
@@ -621,8 +621,8 @@ second table to the first, and an earlier row whose target was merged names the 
 | `ManyBody.Replica.Bell.PrevectorSharpUpper` | one theorem in enumerated coordinates; merge with ReplicaPrevectorRoughUpper (or into QICLean.ManyBody.Replica.Bell.SchmidtBellSharpUpper which it re-coordinatizes) |
 | `ManyBody.Replica.Bell.SchmidtBellEnumeratedPrevector` | one theorem; merge into QICLean.ManyBody.Replica.Bell.SchmidtBellPrevectorOverlap (defines schmidtBellSitePrevector) |
 | `ManyBody.Replica.Bell.SchmidtBellPhysicalWitness` | one theorem (nested regions,physical witness); merge with SchmidtBellCommonCutoffs; or into QICLean.ManyBody.Replica.Bell.SchmidtBellWitnessRange |
-| `ManyBody.Replica.Bell.SchmidtBellSharpUpper` | one theorem; merge into QICLean.ManyBody.Replica.Bell.SelectedBellPostInverseTransport (it is the eventual rate built on that norm transport) |
-| `ManyBody.Replica.CompressedSite.CompressedTypicalExponentialDomination` | merge into QICLean.ManyBody.Replica.CompressedSite.CompressedTypicalExponential (its only input); one inequality form of the same exponential expectation; imports Algebra.FiniteKroneckerOrder (Loewner order in Algebra) |
+| `ManyBody.Replica.Bell.SchmidtBellSharpUpper` | one theorem; merge into QICLean.ManyBody.Replica.Bell.SelectedBellPostPin (it is the eventual rate built on that norm transport) |
+| `ManyBody.Replica.CompressedSite.CompressedTypicalExponentialDomination` | merge into QICLean.ManyBody.Replica.CompressedSite.CompressedTypicalExponentialDomination (its only input); one inequality form of the same exponential expectation; imports Algebra.FiniteKroneckerOrder (Loewner order in Algebra) |
 | `ManyBody.Replica.Configuration.FiveFactorAuxiliaryCoordinates` | merge into QICLean.ManyBody.Replica.Configuration.GoodConfigurationDensity (defines fiveFactorCopiesEquiv); copy permutation operators and group-algebra reps on k copies of five subsystems; subsystems, not sites |
 | `ManyBody.Replica.Configuration.PhysicalLabelMoment` | merge into QICLean.ManyBody.Replica.Configuration.GoodCopyDensity: one trace-exp labelEntropy identity on the same regional density (cutEquiv on copies); no importers |
 | `ManyBody.Replica.LowDefect.ComponentInverseRoughUniform` | one uniform version of ComponentInverseRough; merge into QICLean.ManyBody.Replica.LowDefect.ComponentInverseRough |
@@ -630,9 +630,9 @@ second table to the first, and an earlier row whose target was merged names the 
 | `ManyBody.Replica.LowDefect.LowDefectSymmetricCoordinates` | merge into QICLean.Representation.Replica.LowDefectProjection (defines replicaLowDefectProjection, replicaJointCopyPerm; that module is itself Representation/Bell content misplaced in Analysis); objects symProj,copyPerm,IrrepLabel,five fixed registers (no regions) |
 | `ManyBody.Replica.Metric.CutoffNorm` | one norm bound on replicaMetric; merge with ReplicaPinnedMetricUpper and ReplicaWholeInverse into one bounds module after QICLean.ManyBody.Replica.Metric.Similarity (cannot go into ReplicaMetric: needs Similarity and labelCutoff) |
 | `ManyBody.Subspace.ReferenceFilterTrimming` | merge into QICLean.ManyBody.Subspace.Trimming: one filter-then-trim closeness step |
-| `Probability.Haar.NativeRankUnitarySampling` | merge into QICLean.Probability.Haar.RankUnitaryUniformSampling: one theorem, the uniform failure bound transported along a coordinate relabelling e : Fin d = sigma |
+| `Probability.Haar.NativeRankUnitarySampling` | merge into QICLean.Probability.Sampling.RankUnitaryProductHaar: one theorem, the uniform failure bound transported along a coordinate relabelling e : Fin d = sigma |
 | `Probability.PoissonWord.PoissonWordOmissionBound` | merge with PoissonWordTelescope and PoissonWordExpectedOmission into one Omission module; one deterministic norm bound (contractive linear maps along a word), no measure; sole consumer ExpectedOmission |
-| `Probability.Sampling.ViableSubspaceNestedSampling` | one lemma (deterministic, sample U retained as data); merge into QICLean.Probability.Sampling.ViableSubspaceDyadicBootstrap |
+| `Probability.Sampling.ViableSubspaceNestedSampling` | one lemma (deterministic, sample U retained as data); merge into QICLean.Probability.Sampling.ViableSubspaceNestedSampling |
 | `Representation.Replica.GoodAuxiliaryLabelBound` | merge into QICLean.Representation.Replica.GoodAuxiliaryMarginal: one labelEntropy bound on an excitation component; its public replicaGoodBadSplit duplicates the private one there |
 | `Representation.SchurWeyl.IidSchurLabelExponential` | one theorem (Schur label cutoff tail for tensor powers); merge into QICLean.Representation.SchurWeyl.IidSchurSignedMoments; needs entropy+Schur labels so Representation |
 | `Representation.TensorPower.ReplicaMeanIdentityExtension` | merge into QICLean.Representation.SchurWeyl.Commutant (defines siteOp = one-COPY operator, not a lattice site); kronecker,finKronecker,copies only |
@@ -644,8 +644,8 @@ second table to the first, and an earlier row whose target was merged names the 
 | `Spectral.Gap.GroundProjection` | merged into QICLean.Spectral.Filter.Gaussian.SpectralGap, which proves the ground-or-excited dichotomy it uses; one identity spectralProjectionGE = rank-one ground projection from a global gap |
 | `Spectral.Gap.KernelSpectralGap` | merged into QICLean.Spectral.Gap.EigenvalueGap, the forms of the gap above a kernel; one lemma quadratic-form gap above the kernel of a Hermitian matrix |
 | `Spectral.LowEnergy.Order` | merge into QICLean.Analysis.Order.LowEnergyPerturbation (defines spectralSpanLE); one monotonicity lemma |
-| `Spectral.LowEnergy.RitzGroundSpaceCloseness` | merge into QICLean.Spectral.LowEnergy.RitzGroundSpace (sole importer target): one corollary for a trial space close to the ground space |
-| `Spectral.Perturbation.ClusterNormPerturbation` | merge into QICLean.Spectral.Perturbation.BufferedSpectralNormPerturbation: one low-cluster stability theorem; imports ViableSubspaceDimension |
+| `Spectral.LowEnergy.RitzGroundSpaceCloseness` | merge into QICLean.Spectral.LowEnergy.RitzGroundSpaceCloseness (sole importer target): one corollary for a trial space close to the ground space |
+| `Spectral.Perturbation.ClusterNormPerturbation` | merge into QICLean.Spectral.Perturbation.ClusterNormPerturbation: one low-cluster stability theorem; imports ViableSubspaceDimension |
 | `Spectral.Projection.ProjectionIntertwiner` | merge into QICLean.Spectral.Projection.ShiftedDensityTruncation (defines spectralProjectionGE); imports Entropy.ConditionalMovement.LogCompression only for cfc_intertwine, which belongs in Analysis/FunctionalCalculus |
 ## Modules that fail the strict check at the base revision
 
@@ -688,7 +688,7 @@ left to a separate change.
 - `QICLean/Entropy/Conditional/UnitaryCovariance.lean`
 - `QICLean/Entropy/Relative/MarginalPhaseSupport.lean`
 - `QICLean/Entropy/VonNeumann/ConditionalContinuity.lean`
-- `QICLean/ManyBody/Replica/Metric/WholeInverse.lean`
+- `QICLean/ManyBody/Replica/Metric/GroupedInverse.lean`
 - `QICLean/ManyBody/Replica/Symbol/CoherentLog.lean`
 - `QICLean/Representation/SchurWeyl/SchurSectorMass.lean`
 - `QICLean/Spectral/Jordan/FittingRange.lean`

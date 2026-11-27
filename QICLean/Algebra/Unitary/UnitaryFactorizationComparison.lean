@@ -4,6 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import Mathlib.LinearAlgebra.UnitaryGroup
+import Mathlib.Analysis.Complex.Order
+import Mathlib.LinearAlgebra.Matrix.Hermitian
 
 /-!
 # Comparison of unitary factorizations
@@ -25,6 +27,10 @@ equalities only determine which factorizations are compared in applications.
 Moved from TNLean, `TNLean/Algebra/UnitaryFactorizationComparison.lean` at commit
 `49b78ed821` (Apache-2.0). Changes: one docstring is phrased without naming the operators of
 the source.
+
+Moved from TNLean,
+`TNLean/MPS/Symmetry/MPOSymmetry/MixedPath/MPO/ArbitraryPhysicalMixedHermitianGauge.lean` at commit
+`021ba0bd19` (Apache-2.0).
 -/
 
 namespace Matrix
@@ -99,3 +105,19 @@ theorem unitaryFactorizationComparison_right_reference
     (unitaryFactorizationComparison_of_reference_eq_one R g h 1 (g * h) (hR (g * h))).symm
 
 end Matrix
+
+section
+
+open scoped Matrix BigOperators ComplexOrder
+
+
+/-- A unitary matrix squaring to the identity is Hermitian. -/
+theorem Matrix.isHermitian_of_mem_unitaryGroup_of_mul_self_eq_one {n : Type*} [Fintype n]
+    [DecidableEq n] {u : Matrix n n ℂ} (hu : u ∈ Matrix.unitaryGroup n ℂ) (hu2 : u * u = 1) :
+    u.IsHermitian := by
+  have h : star u * u = 1 := Matrix.mem_unitaryGroup_iff'.mp hu
+  calc uᴴ = uᴴ * (u * u) := by rw [hu2, Matrix.mul_one]
+    _ = (star u * u) * u := by rw [Matrix.star_eq_conjTranspose, Matrix.mul_assoc]
+    _ = u := by rw [h, Matrix.one_mul]
+
+end
