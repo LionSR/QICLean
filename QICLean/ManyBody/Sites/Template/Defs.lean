@@ -57,7 +57,7 @@ orthogonal. Source: area-law Definition 9.3, closed convex rectangles and triang
 
 **Local fix (nondegenerate pieces):** the source's rectangles and triangles are
 read in the ordinary sense, so segments and points are not admitted as degenerate
-pieces. Documented in `docs/paper-gaps/arealaw2d_nondegenerate_templates.tex`. -/
+pieces. Documented in `docs/paper-gaps/oai26_nondegenerate_templates.tex`. -/
 inductive TemplatePolygon where
   /-- A triangle whose three sides have allowed slopes. -/
   | triangle (a b c : ℝ × ℝ)
