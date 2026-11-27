@@ -21,17 +21,6 @@ def git(root: Path, *args: str) -> str:
                           capture_output=True, text=True).stdout.strip()
 
 
-class ParseImportsTest(unittest.TestCase):
-    def test_header_only(self) -> None:
-        text = ("/-\nCopyright\n-/\nimport A.B -- see D\nimport C\n\n/-! doc -/\n"
-                "import NotHeader\n")
-        self.assertEqual(ci.parse_imports(text), ["A.B", "C"])
-
-    def test_module_system_keywords(self) -> None:
-        text = "module\n\npublic import A\nmeta import B\nimport C D\n"
-        self.assertEqual(ci.parse_imports(text), ["A", "B", "C", "D"])
-
-
 class SelectTest(unittest.TestCase):
     def setUp(self) -> None:
         self.tmp = tempfile.TemporaryDirectory()
@@ -41,11 +30,7 @@ class SelectTest(unittest.TestCase):
             "QICLean/Uses.lean": "import QICLean.Core\n",
             "QICLean/Other.lean": "import Mathlib\n",
             "QICLean/Archive/Old.lean": "import QICLean.Core\n",
-            "QICLeanTest/Support/Fixture.lean": "import QICLean.Other\n",
-            "QICLeanTest/UsesTest.lean": "import QICLean.Uses\n",
-            "QICLeanTest/FixtureTest.lean": "import QICLeanTest.Support.Fixture\n",
-            "QICLeanTest/Unrelated.lean": "import Mathlib\n",
-            "scripts/Tests/CoreRegression.lean": "import QICLean.Uses\n",
+            "QICLean.lean": "import QICLean.Core\n",
             "scripts/LintStyle.lean": "import QICLean.Core\n",
         }
         for path, text in files.items():
@@ -74,109 +59,51 @@ class SelectTest(unittest.TestCase):
         try:
             import os
             os.chdir(self.root)
-            return ci.select(Path("."), base)[:3]
+            return ci.select(Path("."), base)
         finally:
             os.chdir(cwd)
 
-    def test_transitive_dependents_are_selected(self) -> None:
+    def test_changed_module_is_selected_alone(self) -> None:
         self.change("QICLean/Core.lean", "import Mathlib\n-- edit\n")
-        early, sources, tests = self.select(self.base)
+        early, sources = self.select(self.base)
         self.assertEqual(early, ["QICLean.Core"])
         self.assertEqual(sources, ["QICLean/Core.lean"])
-        self.assertEqual(tests, ["QICLeanTest/UsesTest.lean",
-                                 "scripts/Tests/CoreRegression.lean"])
-
-    def test_imported_test_fixture_runs_first(self) -> None:
-        self.change("QICLean/Other.lean", "import Mathlib\n-- edit\n")
-        _, _, tests = self.select(self.base)
-        self.assertEqual(tests, ["QICLeanTest/Support/Fixture.lean",
-                                 "QICLeanTest/FixtureTest.lean"])
-
-    def test_changed_test_brings_its_fixture(self) -> None:
-        self.change("QICLeanTest/FixtureTest.lean",
-                    "import QICLeanTest.Support.Fixture\n-- edit\n")
-        early, sources, tests = self.select(self.base)
-        self.assertEqual((early, sources), ([], []))
-        self.assertEqual(tests, ["QICLeanTest/Support/Fixture.lean",
-                                 "QICLeanTest/FixtureTest.lean"])
 
     def test_archive_is_not_built_early(self) -> None:
         self.change("QICLean/Archive/Old.lean", "import QICLean.Core\n-- edit\n")
-        early, sources, tests = self.select(self.base)
-        self.assertEqual((early, sources, tests), ([], [], []))
+        self.assertEqual(self.select(self.base), ([], []))
 
-    def test_new_module_and_test(self) -> None:
-        (self.root / "QICLean/New.lean").write_text("import QICLean.Core\n")
-        self.change("QICLeanTest/NewTest.lean", "import QICLean.New\n")
-        early, sources, tests = self.select(self.base)
+    def test_root_aggregator_and_scripts_are_not_selected(self) -> None:
+        (self.root / "QICLean.lean").write_text("import QICLean.Core\n-- edit\n")
+        self.change("scripts/LintStyle.lean", "import QICLean.Core\n-- edit\n")
+        self.assertEqual(self.select(self.base), ([], []))
+
+    def test_new_module(self) -> None:
+        self.change("QICLean/New.lean", "import QICLean.Core\n")
+        early, sources = self.select(self.base)
         self.assertEqual(early, ["QICLean.New"])
-        self.assertEqual(tests, ["QICLeanTest/NewTest.lean"])
+        self.assertEqual(sources, ["QICLean/New.lean"])
 
-    def test_changed_regression_script_is_selected(self) -> None:
-        self.change("scripts/Tests/CoreRegression.lean", "import QICLean.Uses\n-- edit\n")
-        early, sources, tests = self.select(self.base)
-        self.assertEqual((early, sources, tests), ([], [], ["scripts/Tests/CoreRegression.lean"]))
-
-    def test_deleted_module_marks_its_importers(self) -> None:
+    def test_deleted_module_is_not_selected(self) -> None:
         (self.root / "QICLean/Uses.lean").unlink()
         git(self.root, "add", "-A")
         git(self.root, "-c", "user.email=t@t", "-c", "user.name=t", "commit", "-qm", "delete")
-        early, sources, tests = self.select(self.base)
-        self.assertEqual((early, sources), ([], []))
-        self.assertEqual(tests, ["QICLeanTest/UsesTest.lean", "scripts/Tests/CoreRegression.lean"])
+        self.assertEqual(self.select(self.base), ([], []))
 
-    def test_renamed_module_marks_importers_of_the_old_name(self) -> None:
+    def test_renamed_module_selects_the_new_name(self) -> None:
         git(self.root, "mv", "QICLean/Uses.lean", "QICLean/Renamed.lean")
         git(self.root, "-c", "user.email=t@t", "-c", "user.name=t", "commit", "-qm", "rename")
-        early, sources, tests = self.select(self.base)
+        early, sources = self.select(self.base)
         self.assertEqual(early, ["QICLean.Renamed"])
-        self.assertEqual(tests, ["QICLeanTest/UsesTest.lean", "scripts/Tests/CoreRegression.lean"])
-
-    def test_deleted_test_fixture_marks_its_importers(self) -> None:
-        (self.root / "QICLeanTest/Support/Fixture.lean").unlink()
-        git(self.root, "add", "-A")
-        git(self.root, "-c", "user.email=t@t", "-c", "user.name=t", "commit", "-qm", "delete")
-        _, _, tests = self.select(self.base)
-        self.assertEqual(tests, ["QICLeanTest/FixtureTest.lean"])
-
-    def test_dependency_pin_runs_every_test(self) -> None:
-        self.change("lake-manifest.json", "{}\n")
-        early, sources, tests = self.select(self.base)
-        self.assertEqual((early, sources), ([], []))
-        self.assertEqual(len(tests), 5)
-        self.assertNotIn("scripts/LintStyle.lean", tests)
-        self.assertLess(tests.index("QICLeanTest/Support/Fixture.lean"),
-                        tests.index("QICLeanTest/FixtureTest.lean"))
+        self.assertEqual(sources, ["QICLean/Renamed.lean"])
 
     def test_pin_change_keeps_changed_sources_strict(self) -> None:
         (self.root / "lake-manifest.json").write_text("{}\n")
         self.change("QICLean/Core.lean", "import Mathlib\n-- edit\n")
-        early, sources, tests = self.select(self.base)
-        self.assertEqual((early, sources), (["QICLean.Core"], ["QICLean/Core.lean"]))
-        self.assertEqual(len(tests), 5)
+        self.assertEqual(self.select(self.base), (["QICLean.Core"], ["QICLean/Core.lean"]))
 
-    def test_lakefile_lean_runs_every_test(self) -> None:
-        self.change("lakefile.lean", "import Lake\n")
-        _, _, tests = self.select(self.base)
-        self.assertEqual(len(tests), 5)
-
-    def test_no_base_runs_every_test(self) -> None:
-        _, _, tests = self.select(None)
-        self.assertEqual(len(tests), 5)
-
-    def test_levels_respect_imports(self) -> None:
-        _, _, tests = self.select(None)
-        files = ci.lean_files(self.root)
-        cwd = Path.cwd()
-        try:
-            import os
-            os.chdir(self.root)
-            graph = ci.import_graph(Path("."), files)
-        finally:
-            os.chdir(cwd)
-        batches = ci.levels(tests, graph)
-        self.assertIn("QICLeanTest/Support/Fixture.lean", batches[0])
-        self.assertIn("QICLeanTest/FixtureTest.lean", batches[1])
+    def test_no_base_selects_nothing(self) -> None:
+        self.assertEqual(self.select(None), ([], []))
 
 
 class EarlyBuildTest(unittest.TestCase):
