@@ -105,7 +105,7 @@ local instance : InnerProductSpace ℂ (Matrix (Fin D) (Fin D) ℂ) :=
 
 /-- The adjoint of `mapLM K` (Frobenius inner product) is the Kraus map of the
 conjugate-transposed family. -/
-lemma mapLM_conjTranspose_eq_adjoint (K : Fin d → Mat) :
+lemma mapLM_conjTranspose_eq_adjoint {ι : Type*} [Fintype ι] (K : ι → Mat) :
     mapLM (fun i => (K i)ᴴ) = (mapLM K).adjoint := by
   classical
   refine (LinearMap.eq_adjoint_iff (A := mapLM fun i => (K i)ᴴ)
