@@ -33,6 +33,10 @@ No locality or spectral assumptions enter these algebraic inequalities.
 Moved from TNLean, `TNLean/MPS/MPU/Circuit/Gates/SchmidtSpanCuts.lean` at commit `021ba0bd19`
 (Apache-2.0).
 
+Moved from TNLean, `TNLean/MPS/AreaLaw/Spectral/TwoWindowPolynomialRank.lean` at commit
+`6a5afb57c2`: `Matrix.operatorSchmidtRank_aeval_le_sum` and
+`Matrix.operatorSchmidtRank_le_one_of_unique_left`, with no change to the statements.
+
 ## Main results
 
 * `Matrix.operatorSchmidtRank_coeff_coeff_pow_left_add_right_le`,
@@ -106,6 +110,34 @@ theorem operatorSchmidtRank_sum_le
     operatorSchmidtRank_add_le s A
   exact operatorSchmidtRank_le_of_hasOperatorSchmidtDecomposition
     ⟨Fin.elim0, Fin.elim0, by simp⟩
+
+/-- Summing the operator Schmidt ranks of every power through a polynomial degree bound.
+Supporting algebra for ALVV, arXiv:1602.08828v2, Proposition 5.7, lines 1324–1333. -/
+theorem operatorSchmidtRank_aeval_le_sum
+    {l n : Type*} [Fintype l] [Fintype n] [DecidableEq l] [DecidableEq n]
+    (M : Matrix (l × n) (l × n) ℂ) (P : Polynomial ℂ) (k : ℕ)
+    (hdeg : P.natDegree ≤ k) :
+    operatorSchmidtRank (Polynomial.aeval M P) ≤
+      ∑ r ∈ Finset.range (k + 1), operatorSchmidtRank (M ^ r) := by
+  rw [Polynomial.aeval_eq_sum_range' (Nat.lt_succ_of_le hdeg) M]
+  exact (operatorSchmidtRank_sum_le _ _).trans
+    (Finset.sum_le_sum fun r _ ↦ operatorSchmidtRank_smul_le (P.coeff r) (M ^ r))
+
+/-- A one-dimensional left configuration space gives operator Schmidt rank at most one.
+This supplies the local-dimension-one case of the regional estimate in ALVV,
+arXiv:1602.08828v2, Proposition 5.7, lines 1324–1333. -/
+theorem operatorSchmidtRank_le_one_of_unique_left
+    {m n : Type*} [Fintype m] [Unique m] [Finite n]
+    (M : Matrix (m × n) (m × n) ℂ) : operatorSchmidtRank M ≤ 1 := by
+  simpa only [Fintype.card_fin] using
+    operatorSchmidtRank_le_card_of_blocks_mem_span M
+      (fun _ : Fin 1 ↦ operatorBlock M default default)
+      (by
+        intro x y
+        apply Submodule.subset_span
+        refine ⟨0, ?_⟩
+        exact congrArg₂ (operatorBlock M)
+          (Subsingleton.elim _ _) (Subsingleton.elim _ _))
 
 end Matrix
 
