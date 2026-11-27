@@ -57,7 +57,7 @@ The empty product is the identity matrix.
     \label{thm:kraus_eventually_full_vector_spread_of_word_span}
     \lean{Kraus.hasEventuallyFullVectorSpread_of_isNormal}
     \leanok
-    \uses{def:kraus_eventually_full_word_span,
+    \uses{lem:kraus_normal_iff_eventually_full_word_span,
         def:kraus_eventually_full_vector_spread}
     If $\mathcal S_m=\MN{D}$ for every sufficiently large $m$, then the
     Kraus family has eventually full vector spread.
@@ -175,7 +175,7 @@ The empty product is the identity matrix.
     \lean{Kraus.isNormal_of_isIrreducibleMap_of_isPrimitive,
         Kraus.eventually_choiMatrix_mapLM_pow_posDef_of_isIrreducibleMap_of_isPrimitive}
     \leanok
-    \uses{def:kraus_eventually_full_word_span, def:irreducible_cp,
+    \uses{lem:kraus_normal_iff_eventually_full_word_span, def:irreducible_cp,
         def:primitive_channel}
     Suppose that $K$ is trace preserving and that its Kraus map $E$ is
     irreducible with peripheral spectrum $\{1\}$. This is the implication from

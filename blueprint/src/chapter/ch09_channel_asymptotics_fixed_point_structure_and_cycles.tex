@@ -509,23 +509,32 @@ in Theorem~\ref{thm:wolf_6_2_item_3}.
     The empty product is the identity matrix.
 \end{definition}
 
-\begin{definition}[Eventually full exact word spans]
-    \label{def:kraus_eventually_full_word_span}
-    \lean{Kraus.HasEventuallyFullWordSpan}
+\begin{lemma}[Normality is eventual fullness of the word spans]
+    \label{lem:kraus_normal_iff_eventually_full_word_span}
+    \lean{Kraus.isNormal_iff_eventually_isNBlkInjective,
+        Kraus.IsNormal.eventually_isNBlkInjective}
     \leanok
-    A finite Kraus family has eventually full word span when
-    $S_N(K)=\MN{D}$ for all sufficiently large $N$.
-\end{definition}
+    \uses{def:kraus_exact_word_span}
+    A finite Kraus family $K$ is normal, that is $S_N(K)=\MN{D}$ for some
+    $N\geq1$, if and only if $S_N(K)=\MN{D}$ for all sufficiently large $N$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    If $S_N(K)=\MN{D}$ with $N\geq1$, then every word of length $N$ ends
+    in a letter, so $\MN{D}=S_N(K)\subseteq\MN{D}\,S_1(K)$, and therefore
+    $S_{N+1}(K)=S_N(K)S_1(K)=\MN{D}\,S_1(K)=\MN{D}$. Induction gives
+    $S_m(K)=\MN{D}$ for every $m\geq N$. The converse takes one positive
+    sufficiently large length.
+\end{proof}
 
 \begin{theorem}[Upward closure of full word spans]
     \label{thm:kraus_word_span_upward_tp}
-    \lean{Kraus.wordSpan_eq_top_of_ge_of_isTP,
-        Kraus.hasEventuallyFullWordSpan_iff_exists_pos_of_isTP}
+    \lean{Kraus.wordSpan_eq_top_of_ge_of_isTP}
     \leanok
-    \uses{def:kraus_exact_word_span,def:kraus_eventually_full_word_span}
+    \uses{def:kraus_exact_word_span}
     Let $K$ be trace preserving. If $S_N(K)=\MN{D}$ and $m\geq N$, then
-    $S_m(K)=\MN{D}$. Consequently, eventual fullness is equivalent to the
-    existence of a positive $N$ such that $S_N(K)=\MN{D}$.
+    $S_m(K)=\MN{D}$; here $N=0$ is allowed.
 \end{theorem}
 
 \begin{proof}
@@ -533,8 +542,6 @@ in Theorem~\ref{thm:wolf_6_2_item_3}.
     From $\sum_iK_i^\dagger K_i=\Id$, every $X\in\MN{D}$ satisfies
     $X=\sum_i(XK_i^\dagger)K_i$. Hence $S_n(K)=\MN{D}$ implies
     $S_{n+1}(K)=S_n(K)S_1(K)=\MN{D}$. Induction proves upward closure.
-    The stated equivalence follows by choosing one positive sufficiently
-    large level in one direction and applying upward closure in the other.
 \end{proof}
 
 \begin{theorem}[Connected rank-one pure-state locus in a full matrix block]
