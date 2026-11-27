@@ -131,11 +131,13 @@ theorem hasFDerivAt_simplexFilterObjective (r : ι → ℝ) (a b : ℝ) (x : ι 
     HasFDerivAt (simplexFilterObjective r a b)
       (∑ i, (r i * ((-a) * (x i + b) ^ (-a - 1))) •
         (ContinuousLinearMap.proj i : (ι → ℝ) →L[ℝ] ℝ)) x := by
-  simpa [simplexFilterObjective, Finset.sum_apply, smul_smul, mul_assoc] using!
-    HasFDerivAt.fun_sum (u := Finset.univ) (fun i _ ↦
+  convert HasFDerivAt.fun_sum (u := Finset.univ) (fun i _ ↦
       (((hasFDerivAt_add_const_iff (f := fun y : ι → ℝ ↦ y i) (x := x) b).mpr
         (hasFDerivAt_apply i x)).rpow_const (p := -a)
-        (Or.inl (hxb i).ne')).const_mul (r i))
+        (Or.inl (hxb i).ne')).const_mul (r i)) using 1
+  · ext y
+    simp [simplexFilterObjective]
+  · simp only [smul_smul]
 
 /-- A nonzero initial probability weight gives a strictly positive filtered
 squared norm. Source: OpenAI `03-patches.tex`, lines 68–99. -/
