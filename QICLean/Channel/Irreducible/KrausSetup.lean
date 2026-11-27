@@ -77,7 +77,7 @@ This projection `P` satisfies:
 private lemma exists_supportProjection
     {ρ : Matrix (Fin D) (Fin D) ℂ} (hρ : ρ.PosSemidef) :
     ∃ P : Matrix (Fin D) (Fin D) ℂ,
-      IsOrthogonalProjection (D := D) P ∧ P * ρ = ρ ∧
+      IsOrthogonalProjection P ∧ P * ρ = ρ ∧
         ∀ A : Matrix (Fin D) (Fin D) ℂ, A * ρ = 0 → A * P = 0 := by
   classical
   have hH : ρ.IsHermitian := hρ.isHermitian
@@ -111,7 +111,7 @@ private lemma exists_supportProjection
         simp [Matrix.diagonal_mul_diagonal, Matrix.mul_assoc]
       _ = P := by
         simp [P, hsgn_sq]
-  have hP_proj : IsOrthogonalProjection (D := D) P := ⟨hP_herm, hP_idem⟩
+  have hP_proj : IsOrthogonalProjection P := ⟨hP_herm, hP_idem⟩
   have h_eig_nonneg : ∀ j, 0 ≤ hH.eigenvalues j := by
     -- PSD ⇒ eigenvalues nonneg.
     have : 0 ≤ hH.eigenvalues := (hH.posSemidef_iff_eigenvalues_nonneg).mp hρ
