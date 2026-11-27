@@ -297,3 +297,49 @@ Section~\ref{sec:app_positive_not_cp_witness_choi}.
     would supply an $n$-positive $T\colon\MN{d}\to\MN{d'}$ for which the displayed
     ampliation is not positive semidefinite, contradicting the universal hypothesis.
 \end{proof}
+
+\subsection{Finite-copy distillability and two-qubit reductions}
+
+Following Dür, Cirac, Lewenstein, and Bruß, \emph{Phys.\ Rev.\ A} \textbf{61}, 062313 (2000), quant-ph/9910022, Sec.\ II, Eqs.\ (3)--(4), we formulate finite-copy distillability via partial-transpose witnesses of Schmidt rank at most $2$ on party-major tensor powers $\rho^{\otimes N}$.
+
+\begin{definition}[Finite-copy distillability]
+  \label{def:finite_copy_distillability}
+  \lean{QuantumInfo.IsNDistillable, QuantumInfo.IsNUndistillable, QuantumInfo.IsFiniteCopyDistillable, QuantumInfo.IsFiniteCopyUndistillable}
+  \leanok
+  A bipartite operator $\rho$ is \emph{$N$-copy distillable} if $N > 0$ and there exists a vector $\psi$ of Schmidt rank at most $2$ across the $N$-copy cut satisfying $\operatorname{Re}\langle \psi, (\rho^{\otimes N})^{T_1} \psi \rangle < 0$. It is \emph{$N$-copy undistillable} (for any $N \ge 0$) if $\operatorname{Re}\langle \psi, (\rho^{\otimes N})^{T_1} \psi \rangle \ge 0$ for every vector $\psi$ of Schmidt rank at most $2$. Furthermore, $\rho$ is \emph{finite-copy distillable} if it is $N$-copy distillable for some $N$, and \emph{finite-copy undistillable} if it is $N$-copy undistillable for all $N$.
+\end{definition}
+
+\begin{theorem}[Two-qubit reduction criteria]
+  \label{thm:finite_copy_filter_criterion}
+  \lean{QuantumInfo.isNDistillable_iff_exists_filter_twoQubit_nppt, QuantumInfo.isNDistillable_iff_exists_coisometry_twoQubit_nppt}
+  \uses{def:finite_copy_distillability}
+  \leanok
+  Let $N > 0$. If $\rho$ is Hermitian, then $\rho$ is $N$-copy distillable if and only if there exist rectangular local maps $A, B$ into $\mathbb{C}^2$ such that $((A \otimes B)\rho^{\otimes N}(A \otimes B)^\dagger)^{T_1}$ is not positive semidefinite. If $\rho$ is positive semidefinite, then $\rho$ is $N$-copy distillable if and only if there exist local coisometries $A, B$ into $\mathbb{C}^2$, satisfying $A A^\dagger = B B^\dagger = I_2$, with the same non-positivity property.
+\end{theorem}
+\begin{proof}
+  \leanok
+  A Hermitian matrix fails to be positive semidefinite if and only if it admits a vector with strictly negative real quadratic form. By the local partial-transpose identity $((A \otimes B)\sigma(A \otimes B)^\dagger)^{T_1} = (\overline{A} \otimes B)\sigma^{T_1}(\overline{A} \otimes B)^\dagger$, pulling back a negative quadratic witness from $\mathbb{C}^2 \otimes \mathbb{C}^2$ along $\overline{A}^\dagger \otimes B^\dagger$ yields a witness on $\rho^{\otimes N}$ of Schmidt rank at most $2$. Conversely, any rank-at-most-$2$ witness factors through $\mathbb{C}^2 \otimes \mathbb{C}^2$, constructing general filters $A, B$. When $\rho$ is positive semidefinite, every product vector has nonnegative partial-transpose quadratic form, so any negative witness must have exact Schmidt rank $2$. This forces both $N$-copy local spaces to have dimension at least $2$, and the spectral Schmidt decomposition provides orthonormal local pairs that define the coisometries $A$ and $B$.
+\end{proof}
+
+\begin{theorem}[PPT implies finite-copy undistillability]
+  \label{thm:finite_copy_ppt}
+  \lean{QuantumInfo.isFiniteCopyUndistillable_of_partialTransposeFst_posSemidef}
+  \uses{def:finite_copy_distillability}
+  \leanok
+  If $\rho^{T_1}$ is positive semidefinite, then $\rho$ is finite-copy undistillable.
+\end{theorem}
+\begin{proof}
+  \leanok
+  For $N = 0$, the party-major zero-copy partial transpose has nonnegative quadratic form automatically, and for every $N \ge 1$, partial transposition commutes with party-major tensor powers so $(\rho^{\otimes N})^{T_1} \simeq (\rho^{T_1})^{\otimes N}$ remains positive semidefinite, forcing all real quadratic forms to be nonnegative.
+\end{proof}
+
+\begin{theorem}[Tensor powers of separable operations]
+  \label{thm:finite_copy_tensor_operation}
+  \lean{QuantumInfo.SeparableOperation.map_tensorCopies_bipartiteCopies}
+  \leanok
+  For any finite-index product Kraus map $\mathcal{S}(\sigma) = \sum_i (A_i \otimes B_i)\sigma(A_i \otimes B_i)^\dagger$ without normalization or trace constraints and any $n \ge 0$, its $n$-fold shared-index tensor power acts on party-major copies by $\mathcal{S}^{\otimes n}(\rho^{\otimes n}) = (\mathcal{S}(\rho))^{\otimes n}$.
+\end{theorem}
+\begin{proof}
+  \leanok
+  Expanding matrix entries in the $n$-copy product basis and rearranging finite sums and products identifies the multi-index Kraus expansion of $\mathcal{S}^{\otimes n}(\rho^{\otimes n})$ entrywise with $(\mathcal{S}(\rho))^{\otimes n}$, including the one-term $n = 0$ case.
+\end{proof}
