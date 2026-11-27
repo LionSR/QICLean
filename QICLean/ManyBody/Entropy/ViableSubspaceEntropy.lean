@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Analysis.Subspace.ViableSubspaceCoordinates
 import QICLean.Channel.Schmidt.ViableSubspaceSchmidtRank
-import QICLean.Entropy.VonNeumann.VonNeumannEntropySpectralTail
+import QICLean.Entropy.VonNeumann.SpectralTail
 import QICLean.ManyBody.Sites.RegionMatrix
 import QICLean.Channel.Schmidt.MaximalOverlap
 import QICLean.ManyBody.Entropy.Cut.RegionRank

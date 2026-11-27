@@ -6,8 +6,8 @@ Authors: TNLean contributors
 import QICLean.Representation.Permutation.SchurSurprisal
 import QICLean.Entropy.Typical.IidSurprisal
 import QICLean.Representation.Replica.PermutationCovariance
-import QICLean.Analysis.Real.IidTailThreshold
-import QICLean.Channel.PartialTrace.PureTensorPower
+import QICLean.Analysis.Real.StretchedExponentialSummability
+import QICLean.Channel.PartialTrace.TensorPowerPartialTrace
 
 /-!
 # Entropy windows for the actual Schur labels

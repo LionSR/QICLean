@@ -12,6 +12,5 @@ import QICLean.Channel.Convexity.ConvexFunctionalMonotonicity
 import QICLean.Channel.Convexity.IntegralJensen
 import QICLean.Channel.Convexity.LiebConcavity
 import QICLean.Channel.Convexity.LiebConvexity
-import QICLean.Channel.Convexity.LiebSubBoundary
 import QICLean.Channel.Convexity.OperatorJensenAux
 import QICLean.Channel.Convexity.TensorPowerConvexity

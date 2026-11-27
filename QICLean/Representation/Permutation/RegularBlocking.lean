@@ -6,7 +6,7 @@ Authors: QICLean contributors
 import Mathlib.Algebra.Group.Action.End
 import Mathlib.Algebra.Group.Action.Pi
 import Mathlib.Algebra.Group.Action.Prod
-import QICLean.Algebra.Matrix.PermutationMatrixCommute
+import QICLean.Algebra.Matrix.MonomialMatrix
 import QICLean.Algebra.Unitary.MatrixUnitaryBetween
 
 /-!
@@ -21,7 +21,7 @@ arXiv:1001.3807, Section 6, lines 1830–1850.
 
 Moved from TNLean, `TNLean/Algebra/RegularRepresentationBlocking.lean` at commit `49b78ed821`
 (Apache-2.0). Changes: `Matrix.permMatrixHom_prodCongr` moved to
-`QICLean.Algebra.Matrix.PermutationMatrixCommute`.
+`QICLean.Algebra.Matrix.MonomialMatrix`.
 
 ## Main results
 

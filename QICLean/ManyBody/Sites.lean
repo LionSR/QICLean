@@ -21,7 +21,6 @@ import QICLean.ManyBody.Sites.GraphBoundary
 import QICLean.ManyBody.Sites.Hierarchy
 import QICLean.ManyBody.Sites.Lattice
 import QICLean.ManyBody.Sites.OneMagnon
-import QICLean.ManyBody.Sites.OperatorSchmidtPartition
 import QICLean.ManyBody.Sites.OperatorSchmidtRank
 import QICLean.ManyBody.Sites.PairSwap
 import QICLean.ManyBody.Sites.PairSwapPermutation

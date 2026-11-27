@@ -1,7 +1,7 @@
 # A numerical threshold for independent-copy tail estimates
 
 For any fixed real coefficient V and natural degree m, the module
-`QICLean/Analysis/Real/IidTailThreshold.lean` proves that, eventually for k ≥ 1,
+`QICLean/Analysis/Real/StretchedExponentialSummability.lean` proves that, eventually for k ≥ 1,
 
 V/√k + (k + 1)ᵐ exp(−k³⁄⁴/2) ≤ 1/2.
 

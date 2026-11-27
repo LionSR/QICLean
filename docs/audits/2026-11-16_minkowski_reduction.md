@@ -85,7 +85,7 @@ not solved by this change.
 - Paper-gap PDF: two successful pdfLaTeX passes, four pages; `dsfont` was
   installed locally for this check. The second pass has no undefined references.
 - Compiled Algebra/root aggregate checks were attempted and stopped on absent
-  unrelated artifacts (`QICLean.Algebra.Combinatorics.BinomialFrequencySum.olean`, then
+  unrelated artifacts (`QICLean.Algebra.Combinatorics.TwoWindowCounts.olean`, then
   `QICLean.Algebra.olean`). This is a fresh checkout, not a full-library build;
   global compiled `leanblueprint checkdecls` is consequently not certified.
 - Full blueprint PDF: passed (949 pages); the new main theorem was visually

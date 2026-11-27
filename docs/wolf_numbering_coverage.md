@@ -287,7 +287,7 @@ so that the cited formal statements are available from the main project import.
 #### Section 2.1 Representation corollaries (Propositions 2.2–2.4)
 
 * **Proposition 2.2** (decomposition into completely positive maps), in
-  `QICLean/Channel/Choi/CPDecomposition.lean`:
+  `QICLean/Channel/Choi/Jamiolkowski.lean`:
   - `ChoiRectangular.exists_four_isKrausCP_complexCombination` — every linear
     map `M_d(ℂ) → M_{d'}(ℂ)` is a ℂ-linear combination of four CP maps ✓
   - `ChoiRectangular.exists_two_isKrausCP_realCombination_of_hermiticityPreserving`

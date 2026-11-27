@@ -2464,3 +2464,52 @@ QICLeanTest.TaggedInterleavingsRawAxioms QICLeanTest.Algebra.Word.TaggedInterlea
 QICLeanTest.TransportLeafMeasure QICLeanTest.ManyBody.Replica.BandMetric.TransportLeafMeasure
 QICLeanTest.TransportLeafMeasureAxioms QICLeanTest.ManyBody.Replica.BandMetric.TransportLeafMeasureAxioms
 QICLeanTest.WeightedFrequencySchmidtRankBoundaries QICLeanTest.Algebra.OperatorSchmidt.WeightedFrequencySchmidtRankBoundaries
+
+# Third round of merges of modules with at most two public declarations (#1172)
+QICLean.Algebra.Combinatorics.BinomialFrequencySum QICLean.Algebra.Combinatorics.TwoWindowCounts merge
+QICLean.Algebra.Combinatorics.DependentSequence QICLean.Algebra.Combinatorics.IndexInduction merge
+QICLean.Algebra.Combinatorics.GreedyColoring QICLean.Algebra.Combinatorics.ConnectedSetCount merge
+QICLean.Algebra.Hermitian.IdempotentEndomorphism QICLean.Algebra.Hermitian.OrthogonalProjection merge
+QICLean.Algebra.Matrix.EqualRangeRightFactor QICLean.Algebra.Matrix.MatrixMulRange merge
+QICLean.Algebra.Matrix.OrderedMatrixAction QICLean.Algebra.Matrix.MatrixCyclicPathSum merge
+QICLean.Algebra.Matrix.PermutationMatrixCommute QICLean.Algebra.Matrix.MonomialMatrix merge
+QICLean.Algebra.Matrix.ReindexSandwich QICLean.Algebra.Matrix.MatrixReindex merge
+QICLean.Algebra.Module.TraceInvariantSubmodule QICLean.Algebra.Module.Subquotient merge
+QICLean.Algebra.PerronFrobenius.PrimitiveAperiodic QICLean.Algebra.PerronFrobenius.Idempotent merge
+QICLean.Algebra.PerronFrobenius.SupportStabilization QICLean.Algebra.PerronFrobenius.Idempotent merge
+QICLean.Analysis.Complex.ThreeLines QICLean.Analysis.Complex.StripQuadratic merge
+QICLean.Analysis.FunctionalCalculus.MatrixCFCIntegral QICLean.Analysis.FunctionalCalculus.TraceCFC merge
+QICLean.Analysis.Isometry.EuclideanReindex QICLean.Analysis.Isometry.UnitaryMulVecInner merge
+QICLean.Analysis.Isometry.PositiveProjectionCompression QICLean.Analysis.Isometry.IsometricCompression merge
+QICLean.Analysis.Isometry.SkewUnitaryNormalForm QICLean.Analysis.Isometry.OrthogonalComplexStructure merge
+QICLean.Analysis.Norm.ThreeOperatorPerturbation QICLean.Analysis.Norm.NormedRingTelescoping merge
+QICLean.Analysis.Optimization.FloorKKT QICLean.Analysis.Optimization.DensitySimplex merge
+QICLean.Analysis.Parameter.LowDensityDyadicScale QICLean.Analysis.Parameter.LowDensityCountParameters merge
+QICLean.Analysis.Parameter.SoftClusterParameters QICLean.Analysis.Parameter.SoftRegionalEnergyParameters merge
+QICLean.Analysis.Projection.OverlapTriangle QICLean.Analysis.Projection.PhaseError merge
+QICLean.Analysis.Real.BetaHalfLine QICLean.Analysis.Real.GammaRatio merge
+QICLean.Analysis.Real.ExponentialGeometricTailOrder QICLean.Analysis.Real.GeometricOrderPolynomialBound merge
+QICLean.Analysis.Real.ExponentialSumWindow QICLean.Analysis.Real.UnitModulusPowerSum merge
+QICLean.Analysis.Real.IidTailThreshold QICLean.Analysis.Real.StretchedExponentialSummability merge
+QICLean.Analysis.Topology.UniformSelectionBounds QICLean.Analysis.Topology.CompactUniformBounds merge
+QICLean.Channel.Choi.CPDecomposition QICLean.Channel.Choi.Jamiolkowski merge
+QICLean.Channel.Convexity.LiebSubBoundary QICLean.Channel.Convexity.LiebConvexity merge
+QICLean.Channel.PartialTrace.PureTensorPower QICLean.Channel.PartialTrace.TensorPowerPartialTrace merge
+QICLean.Circuit.Gate.UnitaryExtension QICLean.Circuit.Gate.PartialIsometryDilation merge
+QICLean.Entropy.VonNeumann.AGSPGeneralEntropy QICLean.Entropy.VonNeumann.AGSPFavorableEntropy merge
+QICLean.Entropy.VonNeumann.VonNeumannEntropySpectralTail QICLean.Entropy.VonNeumann.SpectralTail merge
+QICLean.Kraus.CPPrimitive QICLean.Kraus.Transfer merge
+QICLean.Kraus.PrimitiveFixedPoint.PosDef QICLean.Kraus.PrimitiveFixedPoint.Assembly merge
+QICLean.Kraus.Wielandt.RankOne.Products QICLean.Kraus.Wielandt.RankOne.BoundedWord merge
+QICLean.Kraus.Wielandt.RectangularSpan.UniversalityAux.Quantitative QICLean.Kraus.Wielandt.RectangularSpan.UniversalityAux.Basic merge
+QICLean.ManyBody.Entropy.Cut.PositiveLocalLift QICLean.ManyBody.Entropy.Cut.RightLocalLift merge
+QICLean.ManyBody.Entropy.Cut.RegionPureApproximationTail QICLean.ManyBody.Entropy.Cut.RegionTraceNorm merge
+QICLean.ManyBody.Replica.LowDefect.ComponentInverseGoodExpectation QICLean.ManyBody.Replica.LowDefect.ComponentInverseSharp merge
+QICLean.ManyBody.Replica.LowDefect.ComponentInverseSharpUniform QICLean.ManyBody.Replica.LowDefect.ComponentInverseSharp merge
+QICLean.ManyBody.Replica.LowDefect.LowDefectSharpCompression QICLean.ManyBody.Replica.LowDefect.ComponentInverseSharp merge
+QICLean.ManyBody.Sites.OperatorSchmidtPartition QICLean.ManyBody.Sites.OperatorSchmidtRank merge
+QICLean.Representation.SchurWeyl.IidSchurLabelExponential QICLean.Representation.SchurWeyl.IidSchurSignedMoments merge
+QICLean.Spectral.Eigenvalue.DensityMaxEigenvector QICLean.Spectral.Eigenvalue.DominantEigenvectorUniqueness merge
+QICLean.Spectral.Eigenvalue.EuclideanEigenvectorBasis QICLean.Spectral.Eigenvalue.MatrixSpectralDecomp merge
+QICLean.Spectral.Eigenvalue.ProjectiveCommutantEigenspace QICLean.Spectral.Eigenvalue.KramersDegeneracy merge
+QICLean.Spectral.Filter.EnergyWeightedPowerOrder QICLean.Spectral.Filter.EnergyTruncation merge

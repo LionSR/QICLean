@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Circuit.Compile.SwapRouting
 import QICLean.Circuit.Compile.Universality
-import QICLean.Circuit.Gate.UnitaryExtension
+import QICLean.Circuit.Gate.PartialIsometryDilation
 
 /-!
 # Universality of neighbouring two-site gates on an open chain
