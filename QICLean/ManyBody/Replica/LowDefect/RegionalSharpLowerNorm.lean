@@ -6,7 +6,7 @@ Authors: QICLean contributors
 import QICLean.ManyBody.Replica.LowDefect.RegionalLowDefectProductMass
 import QICLean.ManyBody.Replica.LowDefect.RegionalLowDefectLowerPin
 import QICLean.ManyBody.Replica.Configuration.RegionalPhysicalMarginals
-import QICLean.Analysis.OperatorMean.MeanTreeExponentialLowerNorm
+import QICLean.Analysis.OperatorMean.MeanTreeProjectionSectors
 import QICLean.ManyBody.Replica.Metric.SymmetricMetricFloor
 import QICLean.ManyBody.Replica.Metric.RegionalReplicaMetricRegions
 

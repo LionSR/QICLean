@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Representation.Replica.PermutationCovariance
-import QICLean.Analysis.FunctionalCalculus.CfcLogAdditive
+import QICLean.Analysis.FunctionalCalculus.MatrixPowers
 import QICLean.Entropy.Typical.IidSurprisal
 import QICLean.Representation.Permutation.SchurSurprisal
 

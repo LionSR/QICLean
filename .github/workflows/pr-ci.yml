@@ -28,6 +28,8 @@ on:
       - 'scripts/check_import_layers.py'
       - 'scripts/library_sublayers.json'
       - 'scripts/check_pass_through_declarations.py'
+      - 'scripts/check_small_lean_modules.py'
+      - 'scripts/small_lean_module_ceilings.txt'
       - 'scripts/test_architecture_policies.py'
       - 'scripts/test_issue_automation.cjs'
       - '.github/workflows/issue-automation.yml'
@@ -87,6 +89,8 @@ on:
       - 'scripts/check_import_layers.py'
       - 'scripts/library_sublayers.json'
       - 'scripts/check_pass_through_declarations.py'
+      - 'scripts/check_small_lean_modules.py'
+      - 'scripts/small_lean_module_ceilings.txt'
       - 'scripts/test_architecture_policies.py'
       - 'scripts/test_issue_automation.cjs'
       - '.github/workflows/issue-automation.yml'
@@ -179,6 +183,8 @@ jobs:
               - 'scripts/check_import_layers.py'
               - 'scripts/library_sublayers.json'
               - 'scripts/check_pass_through_declarations.py'
+              - 'scripts/check_small_lean_modules.py'
+              - 'scripts/small_lean_module_ceilings.txt'
               - 'scripts/test_architecture_policies.py'
               - 'scripts/test_issue_automation.cjs'
               - '.github/workflows/issue-automation.yml'
@@ -319,7 +325,7 @@ jobs:
               "QICLean/ManyBody/Replica/Symbol/CoherentMeasure.lean",
               "QICLeanTest/Entropy/Conditional/DoubleCurveInstances.lean",
               "QICLeanTest/Probability/Gaussian/GaussianContraction.lean",
-              "QICLeanTest/GaussianProductSourceTransport.lean",
+              "QICLeanTest/Probability/Gaussian/GaussianProductSourceTransport.lean",
               "QICLeanTest/Mathlib436Replacement.lean",
               "QICLeanTest/Probability/Gaussian/SchmidtSource.lean",
               "QICLeanTest/SemigroupNormable.lean",
@@ -506,6 +512,7 @@ jobs:
           fi
           python3 scripts/check_import_layers.py "${args[@]}"
           python3 scripts/check_pass_through_declarations.py "${args[@]}"
+          python3 scripts/check_small_lean_modules.py --root . "${args[@]}"
 
       - name: Test Lean compilation-time checker
         run: python3 scripts/test_lake_build_hotspots.py

@@ -11,7 +11,6 @@ Authors: QICLean contributors
 import QICLean.Probability.Measurable.FiniteCoordinateRangeFrame
 import QICLean.Probability.Measurable.FiniteFamilyImageProjection
 import QICLean.Probability.Measurable.FiniteFrameMeasurable
-import QICLean.Probability.Measurable.FiniteSpanProjectionMeasurable
 import QICLean.Probability.Measurable.MatrixFamilySupportMeasurable
 import QICLean.Probability.Measurable.MatrixRangeFrameMeasurable
 import QICLean.Probability.Measurable.MatrixRangeProjectionMeasurable

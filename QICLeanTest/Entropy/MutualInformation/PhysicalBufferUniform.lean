@@ -16,8 +16,8 @@ proves all original hypotheses for a one-dimensional complex-phase state at
 negative ground energy, with zero entropy and zero decay exponent.
 
 The nontrivial-register coordinate and doubled-gap calculations are covered in
-`QICLeanTest/PhysicalBufferGaussianFilter.lean`; these consumers test the new
-order of choices and the positive-variance and zero-exponent boundary cases.
+`QICLeanTest/Entropy/MutualInformation/PhysicalBufferGaussianFilter.lean`; these consumers
+test the new order of choices and the positive-variance and zero-exponent boundary cases.
 -/
 
 open Matrix GaussianFilter

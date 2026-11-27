@@ -10,8 +10,6 @@ Authors: QICLean contributors
 
 import QICLean.Algebra.OperatorSchmidt.Basic
 import QICLean.Algebra.OperatorSchmidt.Bounds
-import QICLean.Algebra.OperatorSchmidt.LocalPolynomialSchmidtRank
 import QICLean.Algebra.OperatorSchmidt.MatrixFactorExchange
-import QICLean.Algebra.OperatorSchmidt.MonomialEvaluationSchmidtRank
 import QICLean.Algebra.OperatorSchmidt.OperatorRightContraction
 import QICLean.Algebra.OperatorSchmidt.WeightedFrequencySchmidtRank

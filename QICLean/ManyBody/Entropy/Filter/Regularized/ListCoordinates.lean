@@ -6,7 +6,6 @@ Authors: QICLean contributors
 import QICLean.ManyBody.Entropy.Filter.Regularized.Marginal
 import QICLean.ManyBody.Entropy.Filter.PatchStationarity
 import QICLean.Spectral.Eigenvalue.ShiftedDensityClipping
-import QICLean.Spectral.Eigenvalue.ShiftedFilterClipping
 
 /-!
 # Ordered patch outputs in canonical coordinates

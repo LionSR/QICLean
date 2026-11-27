@@ -8,7 +8,6 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.ManyBody.Replica.Bell
 
-import QICLean.ManyBody.Replica.Bell.CompressedInverseNorm
 import QICLean.ManyBody.Replica.Bell.InsertionCoordinates
 import QICLean.ManyBody.Replica.Bell.InsertionSymmetry
 import QICLean.ManyBody.Replica.Bell.PinnedCompressedPowers
@@ -17,12 +16,9 @@ import QICLean.ManyBody.Replica.Bell.PinnedSharpLeaf
 import QICLean.ManyBody.Replica.Bell.PinnedSharpTree
 import QICLean.ManyBody.Replica.Bell.PinnedTreeAction
 import QICLean.ManyBody.Replica.Bell.PrevectorRoughUpper
-import QICLean.ManyBody.Replica.Bell.PrevectorSharpUpper
 import QICLean.ManyBody.Replica.Bell.SchmidtBellEnumeratedCompression
-import QICLean.ManyBody.Replica.Bell.SchmidtBellEnumeratedPrevector
 import QICLean.ManyBody.Replica.Bell.SchmidtBellPhysicalWitness
 import QICLean.ManyBody.Replica.Bell.SchmidtBellPrevectorOverlap
-import QICLean.ManyBody.Replica.Bell.SchmidtBellSharpUpper
 import QICLean.ManyBody.Replica.Bell.SchmidtBellSitePin
 import QICLean.ManyBody.Replica.Bell.SchmidtBellWitnessCoordinates
 import QICLean.ManyBody.Replica.Bell.SchmidtBellWitnessRange

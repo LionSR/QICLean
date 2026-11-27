@@ -9,7 +9,6 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Entropy.Markov
 
 import QICLean.Entropy.Markov.AmbientMarkovBipartiteBlockForm
-import QICLean.Entropy.Markov.InvariantConditionalBlockForm
 import QICLean.Entropy.Markov.InvariantConditionalFamily
 import QICLean.Entropy.Markov.MarkovBipartiteBlockForm
 import QICLean.Entropy.Markov.MarkovDilation
