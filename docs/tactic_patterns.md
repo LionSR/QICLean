@@ -2,8 +2,7 @@
 
 Record repeated proof patterns before introducing a new tactic. Prefer an
 existing theorem, then a reusable lemma or simp set; promote a new abstraction
-only after at least three genuine occurrences across two files. Occurrences
-in a regression file are not additional mathematical consumers.
+only after at least three genuine occurrences across two files.
 
 ## Promoted
 
@@ -376,7 +375,7 @@ in a regression file are not additional mathematical consumers.
   `List.prod_hom_rel`, the same rectangular associativity calculation, and
   `List.map_ofFn`.
 - **Result:** `Matrix.listProd_ofFn_intertwine` in
-  `QICLean/Algebra/Matrix/OrderedMatrixAction.lean`, over an arbitrary semiring
+  `QICLean/Algebra/Matrix/MatrixCyclicPathSum.lean`, over an arbitrary semiring
   and arbitrary finite row and column index types.
 - **Consumers:** `ReplicaSymmetricMeanTreeProduct`,
   `BellPinnedCompressedPowers`, and `ReplicaTransport/RootCompression`.
@@ -711,7 +710,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   the projector across that pairing, then use idempotence, self-adjointness
   and the Euclidean norm identity.
 - **Seen:** The private `norm_sq_mulVec_eq_re_trace` calculation in
-  `QICLean/Channel/PartialTrace/PureTensorPower.lean`, and the local `hmass` calculation
+  `QICLean/Channel/PartialTrace/TensorPowerPartialTrace.lean`, and the local `hmass` calculation
   in `TensorPower.exists_labelProj_norm_mass_ge` on the separate
   `SchurSectorMass` contribution. These are two mathematical consumers.
 - **Abstraction:** The actual product marginal and projected-mass identities
@@ -1672,9 +1671,9 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
 
 ### Equality decisions in finite coordinates — existing lemma (2026-10-23)
 
-- **Occurrences:** The one-dimensional and two-qubit applications in
-  `QICLeanTest/Entropy/VonNeumann/AGSPFavorableEntropyAxioms.lean`, and both configuration factors
-  in `QICLean/ManyBody/Entropy/AGSPRegionalEntropy.lean`.
+- **Occurrences:** Both configuration factors in
+  `QICLean/ManyBody/Entropy/AGSPRegionalEntropy.lean`. Two further applications
+  in a test fixture were deleted with the rest of `QICLeanTest/` (2026-11-27).
 - **Reuse:** `Subsingleton.elim` identifies a classically chosen `DecidableEq`
   value with the available value before applying a theorem whose matrix
   expressions contain those decisions.

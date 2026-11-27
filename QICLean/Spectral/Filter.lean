@@ -12,7 +12,6 @@ import QICLean.Spectral.Filter.ChebyshevSpectralFilter
 import QICLean.Spectral.Filter.ChebyshevSpectralProjector
 import QICLean.Spectral.Filter.DensityPowerIteration
 import QICLean.Spectral.Filter.EnergyTruncation
-import QICLean.Spectral.Filter.EnergyWeightedPowerOrder
 import QICLean.Spectral.Filter.ExponentialWeights
 import QICLean.Spectral.Filter.ExteriorClippingGap
 import QICLean.Spectral.Filter.FilterLocality

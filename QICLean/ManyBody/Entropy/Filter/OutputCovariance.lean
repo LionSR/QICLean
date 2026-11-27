@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Algebra.Matrix.OrderedMatrixAction
+import QICLean.Algebra.Matrix.MatrixCyclicPathSum
 import QICLean.ManyBody.Entropy.Filter.FilterFeasibility
 import QICLean.ManyBody.Entropy.Filter.Maximizer
 import QICLean.ManyBody.Sites.Relabel

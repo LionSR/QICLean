@@ -96,7 +96,7 @@ more than a hundred declarations and 79 modules, so they are an upper bound and
 must be read again before a batch uses them. The check cannot see a module filed too
 high; finding one needs a reading of its statements.
 
-Two measurable families remain.
+One measurable family remains.
 
 - **Small modules.** 227 modules hold one or two public declarations: 152 in
   the single-system layers (46 in `Analysis`, 30 in `Algebra`, 24 in
@@ -105,8 +105,6 @@ Two measurable families remain.
   Each is merged into the module of its object. #1172 counted 447 such modules,
   private declarations included, before 119 were merged; the count here excludes
   private declarations and import-only modules.
-- **Tests.** Of the 411 files of `QICLeanTest`, 244 sit at the path of the
-  module they test, and 102 are still at the top level of `QICLeanTest`.
 
 ## Cleanup batches
 
@@ -122,8 +120,9 @@ they run.
    `Channel`, `Spectral` and `Entropy`, then the rest. A layer is done when none
    of its modules holds one or two public declarations outside a definition
    that other modules extend.
-2. **The tests follow their modules.** One map section moves the 167 test files
-   not at the path of their module, starting with the 102 at the top level.
+2. **The tests follow their modules.** Dropped: the 411 files of `QICLeanTest`
+   were deleted on 2026-11-27, and the repository keeps no Lean test fixtures
+   (`docs/project_conventions.md`, "No test fixtures").
 3. **The top level of `Kraus`.** Its 15 modules are words and word spans,
    blocking, the transfer map of a family, injectivity and primitivity; they go
    into subdirectories by these objects, with an order in

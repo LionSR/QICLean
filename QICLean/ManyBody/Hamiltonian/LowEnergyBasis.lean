@@ -8,6 +8,7 @@ import Mathlib.Analysis.Normed.Group.Quotient
 import Mathlib.LinearAlgebra.Complex.Module
 import QICLean.Spectral.LowEnergy.Basis.SpectralSplit
 import QICLean.Spectral.LowEnergy.Basis.Construction
+import QICLean.Spectral.LowEnergy.Basis.Recursive
 import QICLean.ManyBody.Hamiltonian.LowEnergyCommutatorSum
 
 /-!
@@ -21,6 +22,9 @@ constructions themselves are in `Analysis/LowEnergyBasis/Construction`.
   `subspaceCompression`.
 * `exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le`: eq. `oibu` with the condition
   number of the commutator map.
+* `norm_groundSpaceCompression_commutator_le_graphDecayKernel`: eq. `blecm` for the
+  ground-space compressions of two terms, in the form of the graph decay kernel that both
+  basis constructions take.
 * `exists_twoDimensional_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le`: a
   two-dimensional ground space.
 
@@ -110,7 +114,6 @@ theorem exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le
   have hH : Φ.hamiltonian.IsHermitian := Interaction.isHermitian_hamiltonian hHerm
   have : NeZero (Module.finrank ℂ (groundSpace Φ.hamiltonian E₀)) :=
     ⟨fun h0 ↦ hgap.1 (Submodule.finrank_eq_zero.mp h0)⟩
-  have hgapE := ((isGapped_iff_eigenvalues hH).mp hgap).2
   classical
   let K := groundSpace Φ.hamiltonian E₀
   let B := fun i => groundSpaceCompression Φ.hamiltonian E₀ (Φ.term i)
@@ -144,22 +147,32 @@ theorem exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le
       exact sum_norm_groundCompression_commutator_le G a ha Φ hHerm R hDiam vR
         hCard b₀ hBudget Kg kg hGrowth hΔE hgap (j k)
 
-end Graph
-
-
-
-
-noncomputable local instance {ν : Type*} [Fintype ν] [DecidableEq ν]
-    (H : Matrix ν ν ℂ) (E₀ : ℝ) : InnerProductSpace ℂ (groundSpace H E₀) :=
-  (groundSpace H E₀).innerProductSpace
-
-section Graph
-
-open GaussianFilter Matrix
-open scoped Matrix.Norms.L2Operator
-
-variable {V : Type*} [Fintype V] [DecidableEq V] {X : V → Type*} [∀ v, Fintype (X v)]
-  [∀ v, DecidableEq (X v)] {κ : Type*} [Fintype κ]
+/-- Eq. `blecm` for the ground-space compressions `B_i = P h_i P` of two terms, written with
+the graph decay kernel of rate `γ = commutatorRate R vR b₀ ΔE`:
+`‖[B_i, B_j]‖ ≤ C ‖h_i‖ ‖h_j‖ k_γ(a_i, a_j)` with
+`C = commutatorConst R vR b₀ |K_g| k_g · exp (γ (2R + 1))`. This is the commutator input of
+both ground-space basis constructions. Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`,
+eq. `blecm` and lines 1689–1708. -/
+theorem norm_groundSpaceCompression_commutator_le_graphDecayKernel
+    (G : SimpleGraph V) {T : κ → Finset V} (a : κ → V) (ha : ∀ k, a k ∈ T k)
+    (Φ : Interaction X T) (hHerm : ∀ k, (Φ.term k).IsHermitian)
+    (R : ℕ) (hDiam : ∀ k, ∀ x ∈ T k, ∀ z ∈ T k, G.edist x z ≤ R)
+    (vR : ℕ) (hCard : ∀ k, (T k).card ≤ vR) (b₀ : ℝ)
+    (hBudget : ∀ x, ∑ j ∈ Finset.univ.filter (fun j => x ∈ T j), ‖Φ.term j‖ ≤ b₀)
+    (Kg : ℝ) (kg : ℕ) (hGrowth : ∀ x (r : ℕ),
+      ((Finset.univ.filter fun y => G.edist x y = r).card : ℝ) ≤ Kg * ((r : ℝ) + 1) ^ kg)
+    {ΔE : ℝ} (hΔE : 0 < ΔE) {E₀ : ℝ} (hgap : IsGapped Φ.hamiltonian E₀ ΔE) (i j : κ) :
+    ‖groundSpaceCompression Φ.hamiltonian E₀ (Φ.term i) *
+        groundSpaceCompression Φ.hamiltonian E₀ (Φ.term j) -
+      groundSpaceCompression Φ.hamiltonian E₀ (Φ.term j) *
+        groundSpaceCompression Φ.hamiltonian E₀ (Φ.term i)‖ ≤
+      commutatorConst R vR b₀ |Kg| kg *
+          Real.exp (commutatorRate R vR b₀ ΔE * (2 * R + 1)) * ‖Φ.term i‖ * ‖Φ.term j‖ *
+        graphDecayKernel G (commutatorRate R vR b₀ ΔE) (a i) (a j) :=
+  (norm_subspaceCompression_commutator _ _ _).le.trans
+    (norm_groundCompression_commutator_le_exp_edist G a ha Φ hHerm R hDiam vR hCard b₀ hBudget
+      |Kg| kg (fun x r => (hGrowth x r).trans
+        (mul_le_mul_of_nonneg_right (le_abs_self Kg) (by positivity))) hΔE hgap j i)
 
 /-- There is an orthonormal basis of a two-dimensional ground space for which the
 sum of the off-diagonal parts is bounded only by the local norm budget, range, gap and
@@ -185,7 +198,6 @@ theorem exists_twoDimensional_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le
           Real.exp (commutatorRate R vR b₀ ΔE * (2 * R + 1))) *
           (|b₀| * (|Kg| * Real.shellSumConst (commutatorRate R vR b₀ ΔE / 2) kg)) := by
   have hH : Φ.hamiltonian.IsHermitian := Interaction.isHermitian_hamiltonian hHerm
-  have hgapE := ((isGapped_iff_eigenvalues hH).mp hgap).2
   classical
   let K := groundSpace Φ.hamiltonian E₀
   let B := fun i => groundSpaceCompression Φ.hamiltonian E₀ (Φ.term i)
@@ -199,23 +211,15 @@ theorem exists_twoDimensional_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le
       ((Finset.univ.filter fun y => G.edist x y = r).card : ℝ) ≤ |Kg| * ((r : ℝ) + 1) ^ kg :=
     fun x r => (hGrowth x r).trans
       (mul_le_mul_of_nonneg_right (le_abs_self Kg) (by positivity))
-  let f := fun j i => if G.edist (a j) (a i) = ⊤ then 0 else
-    Real.exp (-(γ / 2 * ((G.edist (a j) (a i)).toNat : ℝ)))
-  have hf (j i : κ) : 0 ≤ f j i := by dsimp only [f]; split_ifs <;> positivity
+  let f := fun j i => graphDecayKernel G (γ / 2) (a j) (a i)
+  have hf (j i : κ) : 0 ≤ f j i := graphDecayKernel_nonneg G _ _ _
   have hnorm (i : κ) : ‖B i‖ ≤ ‖Φ.term i‖ := norm_subspaceCompression_le _ _
   have hcomm (i j : κ) : ‖B j * B i - B i * B j‖ ≤ C * ‖Φ.term j‖ * ‖Φ.term i‖ * (f j i) ^ 2 := by
-    have heq : (f j i) ^ 2 = if G.edist (a j) (a i) = ⊤ then 0 else
-        Real.exp (-(γ * ((G.edist (a j) (a i)).toNat : ℝ))) := by
-      dsimp only [f]
-      split_ifs
-      · simp
-      · rw [← Real.exp_nat_mul]
-        congr 1
-        ring
-    rw [heq]
-    exact ((norm_subspaceCompression_commutator _ _ _).le).trans
-      (norm_groundCompression_commutator_le_exp_edist G a ha Φ hHerm R hDiam vR
-        hCard b₀ hBudget |Kg| kg hGrow hΔE hgap i j)
+    have hsq := sqrtKernel_succ_sq (graphDecayKernel_nonneg G γ) 0 (a j) (a i)
+    rw [sqrtKernel_graphDecayKernel, zero_add, pow_one, sqrtKernel_zero] at hsq
+    rw [hsq]
+    exact norm_groundSpaceCompression_commutator_le_graphDecayKernel G a ha Φ hHerm R hDiam vR
+      hCard b₀ hBudget Kg kg hGrowth hΔE hgap j i
   obtain ⟨b, hb⟩ := exists_orthonormalBasis_norm_inner_le_sqrt_commutator_decay B
     (fun i => isSelfAdjoint_subspaceCompression _ _
       ((hHerm i).isSelfAdjoint.map toEuclideanCLM)) hdim

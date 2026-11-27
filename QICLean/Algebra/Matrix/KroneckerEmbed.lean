@@ -28,6 +28,7 @@ both for continuous functional calculus and for operator-norm `CStarMatrix` cons
 ## Main results
 
 * `Matrix.kronecker_one_mul_one_kronecker_comm` — `A ⊗ 1` and `1 ⊗ B` commute.
+* `Matrix.kronecker_one_mulVec_apply` — `A ⊗ 1` acts on each slice of a vector separately.
 * `Matrix.star_dotProduct_kronecker_one_mulVec_eq_sum_slices` — the quadratic form of `A ⊗ 1` is
   the sum of the quadratic forms of `A` on the slices of a vector.
 
@@ -152,19 +153,22 @@ theorem star_dotProduct_self_eq_sum_slices (w : α × β → ℂ) :
   simp only [dotProduct, Pi.star_apply, Fintype.sum_prod_type]
   exact Finset.sum_comm
 
+/-- `M ⊗ 1` acts on each slice `a ↦ w (a, b)` of a vector on `α × β` separately: the
+coordinates of `(M ⊗ 1) w` at `(a, b)` are those of `M` applied to the slice at `b`. -/
+theorem Matrix.kronecker_one_mulVec_apply {R : Type*} [NonAssocSemiring R] [DecidableEq β]
+    (M : Matrix α α R) (w : α × β → R) (a : α) (b : β) :
+    ((M ⊗ₖ (1 : Matrix β β R)) *ᵥ w) (a, b) = (M *ᵥ fun a' ↦ w (a', b)) a := by
+  simp only [Matrix.mulVec, dotProduct, Fintype.sum_prod_type, Matrix.kroneckerMap_apply,
+    Matrix.one_apply, mul_ite, mul_one, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq,
+    Finset.mem_univ, ite_true]
+
 /-- The quadratic form of `M ⊗ 1` is the sum of the quadratic forms of `M` on the slices
 `a ↦ w (a, b)`. -/
 theorem Matrix.star_dotProduct_kronecker_one_mulVec_eq_sum_slices [DecidableEq β]
     (M : Matrix α α ℂ) (w : α × β → ℂ) :
     star w ⬝ᵥ ((M ⊗ₖ (1 : Matrix β β ℂ)) *ᵥ w) =
       ∑ b, star (fun a ↦ w (a, b)) ⬝ᵥ (M *ᵥ fun a ↦ w (a, b)) := by
-  have hmul : ∀ p : α × β, ((M ⊗ₖ (1 : Matrix β β ℂ)) *ᵥ w) p =
-      (M *ᵥ fun a ↦ w (a, p.2)) p.1 := by
-    rintro ⟨a, b⟩
-    simp only [Matrix.mulVec, dotProduct, Fintype.sum_prod_type, Matrix.kroneckerMap_apply,
-      Matrix.one_apply, mul_ite, mul_one, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq,
-      Finset.mem_univ, ite_true]
-  simp only [dotProduct, Pi.star_apply, hmul, Fintype.sum_prod_type]
+  simp only [dotProduct, Pi.star_apply, Fintype.sum_prod_type, Matrix.kronecker_one_mulVec_apply]
   exact Finset.sum_comm
 
 end Slices

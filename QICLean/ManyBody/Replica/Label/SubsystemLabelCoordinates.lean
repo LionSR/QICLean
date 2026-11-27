@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Sites.RegionState
-import QICLean.Channel.PartialTrace.PureTensorPower
+import QICLean.Channel.PartialTrace.TensorPowerPartialTrace
 import QICLean.Representation.Permutation.SchurSurprisal
 import QICLean.Representation.Permutation.PermutationRepresentation
 import QICLean.Representation.TensorPower.Action

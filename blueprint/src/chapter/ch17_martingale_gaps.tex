@@ -179,6 +179,23 @@ $\ker H\neq0$ it is the gap at energy $0$ of Theorem~\ref{thm:hamiltonians_kerne
     $\operatorname{Re}\langle Hw,w\rangle\le\lVert H\rVert\lVert w\rVert^2$.
 \end{proof}
 
+\begin{lemma}[The gap on the orthogonal complement of a subspace in operator form]
+    \label{lem:gap_operator_form_subspace}
+    \lean{LinearMap.IsPositive.smul_starProjection_orthogonal_le_iff}
+    \leanok
+    Let $H\ge0$ be an operator on a finite-dimensional complex Hilbert space that
+    annihilates a subspace $U$, let $P$ be the orthogonal projection onto $U^\perp$,
+    and let $\gamma\in\R$. Then $\gamma P\le H$ if and only if
+    $\gamma\lVert w\rVert^2\le\operatorname{Re}\langle Hw,w\rangle$ for every
+    $w\perp U$.
+\end{lemma}
+\begin{proof}\leanok
+    Since $H$ annihilates $U$ and is symmetric, $\langle Hv,v\rangle=\langle HPv,Pv\rangle$
+    and $\langle Pv,v\rangle=\lVert Pv\rVert^2$ for every $v$, so
+    $\operatorname{Re}\langle(H-\gamma P)v,v\rangle\ge0$ for every $v$ says exactly
+    that the inequality holds at $w=Pv$; for $w\perp U$ one has $Pw=w$.
+\end{proof}
+
 \begin{lemma}[One constant for all indices]
     \label{lem:gap_eventual_constant}
     \lean{Nat.exists_pos_forall_of_eventually}

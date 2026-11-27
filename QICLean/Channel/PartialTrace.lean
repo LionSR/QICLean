@@ -18,5 +18,4 @@ import QICLean.Channel.PartialTrace.MarginalSupportAbsorption
 import QICLean.Channel.PartialTrace.PartialTrace
 import QICLean.Channel.PartialTrace.PartialTraceDomination
 import QICLean.Channel.PartialTrace.ProductReferenceDensityError
-import QICLean.Channel.PartialTrace.PureTensorPower
 import QICLean.Channel.PartialTrace.TensorPowerPartialTrace

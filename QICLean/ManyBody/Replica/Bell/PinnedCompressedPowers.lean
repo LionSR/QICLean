@@ -6,7 +6,7 @@ Authors: QICLean contributors
 import QICLean.ManyBody.Replica.Bell.PinnedTreeAction
 import QICLean.ManyBody.Replica.Metric.SymmetricBandCommute
 import QICLean.ManyBody.Replica.Metric.RegionalReplicaMetricRegions
-import QICLean.Algebra.Matrix.OrderedMatrixAction
+import QICLean.Algebra.Matrix.MatrixCyclicPathSum
 import QICLean.Analysis.Isometry.IsometricDomainExtension
 import QICLean.ManyBody.Replica.Bell.InsertionSymmetry
 

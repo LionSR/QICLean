@@ -38,16 +38,17 @@ buffer width `m` is arbitrary.
 
 ## Main results
 
-* `ManyBody.ChainInteraction.hamiltonian_eq_leftPart_add_bufferPart_add_rightPart` —
+* `ChainInteraction.hamiltonian_eq_cutLeftSupports_add_cutBufferSupports_add_cutRightSupports` —
   `H = H_L + H_B + H_R`.
 * `ManyBody.ChainInteraction.centeredObservable_parts_sum_of_eigen` — the centered parts sum to
   `H - E₀ 1` for a unit eigenvector of energy `E₀`.
 * `ManyBody.ChainInteraction.isGapped_centeredObservable_parts_sum` — the centered sum has the
   same gapped ground vector, at energy zero.
-* `ManyBody.ChainInteraction.isSupportedOn_leftPart`, `isSupportedOn_rightPart`,
-  `isSupportedOn_bufferPart` — the supports of the parts.
-* `ManyBody.ChainInteraction.norm_bufferPart_le` — `‖H_B‖ ≤ 2 (m + R) 2^{2R+1} J`, linear in the
-  buffer width.
+* `ManyBody.ChainInteraction.isSupportedOn_partialHamiltonian_cutLeftSupports`,
+  `isSupportedOn_partialHamiltonian_cutRightSupports`,
+  `isSupportedOn_partialHamiltonian_cutBufferSupports` — the supports of the parts.
+* `ManyBody.ChainInteraction.norm_partialHamiltonian_cutBufferSupports_le` —
+  `‖H_B‖ ≤ 2 (m + R) 2^{2R+1} J`, linear in the buffer width.
 
 ## References
 
@@ -163,7 +164,7 @@ Hastings, arXiv:0705.2024v4, `law16.tex`, lines 775–778. -/
 
 /-- **The three-way splitting.** `H = H_L + H_B + H_R`.
 Hastings, arXiv:0705.2024v4, `law16.tex`, lines 775–779. -/
-theorem ChainInteraction.hamiltonian_eq_leftPart_add_bufferPart_add_rightPart
+theorem ChainInteraction.hamiltonian_eq_cutLeftSupports_add_cutBufferSupports_add_cutRightSupports
     (h : ChainInteraction L q R) (j m : ℕ) :
     h.hamiltonian = h.partialHamiltonian (cutLeftSupports L R j m) +
       h.partialHamiltonian (cutBufferSupports L R j m) +
@@ -179,7 +180,7 @@ theorem ChainInteraction.centeredObservable_parts_sum
       centeredObservable Ψ (h.partialHamiltonian (cutRightSupports L R j m)) =
         centeredObservable Ψ h.hamiltonian := by
   rw [← centeredObservable_add, ← centeredObservable_add,
-    h.hamiltonian_eq_leftPart_add_bufferPart_add_rightPart j m]
+    h.hamiltonian_eq_cutLeftSupports_add_cutBufferSupports_add_cutRightSupports j m]
 
 /-- **The centered splitting.** For a unit eigenvector `Ψ₀` of `H` of energy `E₀`, the
 centered parts, each of expectation zero in `Ψ₀`, sum to `H - E₀ 1`. With the source's
@@ -221,7 +222,7 @@ theorem ChainInteraction.isGapped_centeredObservable_parts_sum
 
 /-- The left part is supported on the sites `i < j - m`, at distance at least `m` from the
 cut. Hastings, arXiv:0705.2024v4, `law16.tex`, line 776. -/
-theorem ChainInteraction.isSupportedOn_leftPart
+theorem ChainInteraction.isSupportedOn_partialHamiltonian_cutLeftSupports
     (h : ChainInteraction L q R) (j m : ℕ) :
     IsSupportedOn (X := fun _ ↦ Fin q) (h.partialHamiltonian (cutLeftSupports L R j m))
       (interval L 0 (j - m)) := by
@@ -230,7 +231,7 @@ theorem ChainInteraction.isSupportedOn_leftPart
 
 /-- The right part is supported on the sites `i ≥ j + m`, at distance at least `m` from the
 cut. Hastings, arXiv:0705.2024v4, `law16.tex`, line 778. -/
-theorem ChainInteraction.isSupportedOn_rightPart
+theorem ChainInteraction.isSupportedOn_partialHamiltonian_cutRightSupports
     (h : ChainInteraction L q R) (j m : ℕ) :
     IsSupportedOn (X := fun _ ↦ Fin q) (h.partialHamiltonian (cutRightSupports L R j m))
       (interval L (j + m) L) := by
@@ -239,7 +240,7 @@ theorem ChainInteraction.isSupportedOn_rightPart
 
 /-- The buffer part is supported on the window `[j - m - R, j + m + R)`.
 Hastings, arXiv:0705.2024v4, `law16.tex`, line 777. -/
-theorem ChainInteraction.isSupportedOn_bufferPart
+theorem ChainInteraction.isSupportedOn_partialHamiltonian_cutBufferSupports
     (h : ChainInteraction L q R) (j m : ℕ) :
     IsSupportedOn (X := fun _ ↦ Fin q) (h.partialHamiltonian (cutBufferSupports L R j m))
       (interval L (j - m - R) (j + m + R)) := by
@@ -249,7 +250,7 @@ theorem ChainInteraction.isSupportedOn_bufferPart
 
 /-- **The norm of the buffer part.** `‖H_B‖ ≤ 2 (m + R) 2^{2R+1} J`, linear in the buffer
 width. Hastings, arXiv:0705.2024v4, `law16.tex`, lines 89–91 and 777. -/
-theorem ChainInteraction.norm_bufferPart_le (h : ChainInteraction L q R)
+theorem ChainInteraction.norm_partialHamiltonian_cutBufferSupports_le (h : ChainInteraction L q R)
     (hhJ : ∀ X, ‖h.term X‖ ≤ J) (hJ : 0 ≤ J)
     (j m : ℕ) :
     ‖h.partialHamiltonian (cutBufferSupports L R j m)‖ ≤
@@ -259,13 +260,14 @@ theorem ChainInteraction.norm_bufferPart_le (h : ChainInteraction L q R)
 
 /-- The centered buffer part has norm at most `4 (m + R) 2^{2R+1} J`.
 Hastings, arXiv:0705.2024v4, `law16.tex`, lines 777 and 781–782. -/
-theorem ChainInteraction.norm_centeredObservable_bufferPart_le
+theorem ChainInteraction.norm_centeredObservable_partialHamiltonian_cutBufferSupports_le
     (h : ChainInteraction L q R) (hhJ : ∀ X, ‖h.term X‖ ≤ J)
     (hJ : 0 ≤ J) {Ψ : EuclideanSpace ℂ (Fin L → Fin q)} (hΨ : ‖Ψ‖ = 1) (j m : ℕ) :
     ‖centeredObservable Ψ (h.partialHamiltonian (cutBufferSupports L R j m))‖ ≤
       2 * ((2 * (m + R) * 2 ^ (2 * R + 1) : ℕ) * J) :=
   (norm_centeredObservable_le (norm_pos_iff.mp (by rw [hΨ]; exact one_pos)) _).trans
-    (mul_le_mul_of_nonneg_left (h.norm_bufferPart_le hhJ hJ j m) (by norm_num))
+    (mul_le_mul_of_nonneg_left (h.norm_partialHamiltonian_cutBufferSupports_le hhJ hJ j m)
+      (by norm_num))
 
 end Splitting
 
@@ -294,7 +296,7 @@ variable {L q R : ℕ} {J : ℝ}
 /-- The left part vanishes when `j ≤ m`: the region `[0, j - m)` is then empty, and no
 support, being nonempty, is contained in it.
 Hastings, arXiv:0705.2024v4, `law16.tex`, appendix, line 776 (`H_L`). -/
-theorem ManyBody.ChainInteraction.leftPart_eq_zero_of_le
+theorem ManyBody.ChainInteraction.partialHamiltonian_cutLeftSupports_eq_zero_of_le
     (h : ChainInteraction L q R) {j m : ℕ}
     (hjm : j ≤ m) : h.partialHamiltonian (cutLeftSupports L R j m) = 0 := by
   change ∑ X ∈ cutLeftSupports L R j m, h.term X = 0

@@ -33,7 +33,6 @@ import QICLean.Analysis.Norm.PrincipalSubmatrixNorm
 import QICLean.Analysis.Norm.RootChannel
 import QICLean.Analysis.Norm.SchattenNorm
 import QICLean.Analysis.Norm.SquaredTriangle
-import QICLean.Analysis.Norm.ThreeOperatorPerturbation
 import QICLean.Analysis.Norm.UnitNormalizationDistance
 import QICLean.Analysis.Norm.VectorPreparation
 import QICLean.Analysis.Norm.WeightedSupertrace

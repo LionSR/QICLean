@@ -7,8 +7,8 @@ import QICLean.Channel.OperatorMean.EnergyBlock
 import QICLean.ManyBody.Replica.BandMetric.Prerequisites
 import QICLean.ManyBody.Replica.BandMetric.States
 import QICLean.ManyBody.Replica.BandMetric.EntropyGain
-import QICLean.Algebra.Matrix.OrderedMatrixAction
-import QICLean.Analysis.Isometry.PositiveProjectionCompression
+import QICLean.Algebra.Matrix.MatrixCyclicPathSum
+import QICLean.Analysis.Isometry.IsometricCompression
 import QICLean.Algebra.Unitary.MatrixUnitaryBetween
 import QICLean.Analysis.OperatorMean.FiniteTree
 import QICLean.Channel.OperatorMean.FilteringIntertwine

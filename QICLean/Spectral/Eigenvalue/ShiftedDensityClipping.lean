@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Analysis.FunctionalCalculus.CfcConjugation
 import QICLean.Spectral.Eigenvalue.MatrixSpectralDecomp
-import QICLean.Analysis.Optimization.FloorKKT
+import QICLean.Analysis.Optimization.DensitySimplex
 import QICLean.Analysis.Convexity.LiebOperatorIntegral
 import QICLean.Analysis.Real.LogClipping
 

@@ -15,7 +15,6 @@ import QICLean.Analysis.Parameter.InterleavedPolynomialDegree
 import QICLean.Analysis.Parameter.InterleavedTrimmingIteration
 import QICLean.Analysis.Parameter.LocalizationParameters
 import QICLean.Analysis.Parameter.LowDensityCountParameters
-import QICLean.Analysis.Parameter.LowDensityDyadicScale
 import QICLean.Analysis.Parameter.MoveBounds
 import QICLean.Analysis.Parameter.NestedSamplingParameters
 import QICLean.Analysis.Parameter.ParameterChoice
@@ -26,7 +25,6 @@ import QICLean.Analysis.Parameter.QuantitativeFilterIteration
 import QICLean.Analysis.Parameter.ReferencePolynomialBound
 import QICLean.Analysis.Parameter.RefinementOutputPolynomialBound
 import QICLean.Analysis.Parameter.RoughLowerCoefficient
-import QICLean.Analysis.Parameter.SoftClusterParameters
 import QICLean.Analysis.Parameter.SoftFamilyCalibration
 import QICLean.Analysis.Parameter.SoftMemberGrowth
 import QICLean.Analysis.Parameter.SoftRegionalEnergyParameters

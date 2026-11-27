@@ -6,7 +6,7 @@ Authors: QICLean contributors
 import QICLean.Analysis.Order.LowEnergyPerturbation
 import QICLean.Analysis.Subspace.ViableSubspace
 import Mathlib.Analysis.Matrix.Order
-import QICLean.Spectral.Eigenvalue.EuclideanEigenvectorBasis
+import QICLean.Spectral.Eigenvalue.MatrixSpectralDecomp
 
 /-!
 # Stability of a finite low spectral cluster under norm perturbation

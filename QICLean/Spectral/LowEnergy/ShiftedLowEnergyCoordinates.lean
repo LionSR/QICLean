@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Spectral.LowEnergy.Coordinates
 import QICLean.Spectral.Eigenvalue.GroundEnergyBounds
-import QICLean.Spectral.Eigenvalue.EuclideanEigenvectorBasis
+import QICLean.Spectral.Eigenvalue.MatrixSpectralDecomp
 
 /-!
 # Low-energy spaces under scalar shifts
