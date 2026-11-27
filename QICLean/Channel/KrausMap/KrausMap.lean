@@ -80,7 +80,7 @@ theorem isChannel_mapLM (K : ι → Mat) (h_tp : IsTP K) : IsChannel (mapLM K) :
 
 /-- A finite Kraus map with a nonzero Kraus operator is nonzero. -/
 theorem mapLM_ne_zero_of_exists_ne_zero
-    (K : Fin d → Mat) (hK : ∃ i, K i ≠ 0) :
+    (K : ι → Mat) (hK : ∃ i, K i ≠ 0) :
     mapLM K ≠ 0 := by
   intro h
   obtain ⟨i, hi⟩ := hK

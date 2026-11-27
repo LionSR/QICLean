@@ -78,8 +78,8 @@ section Uniqueness
 
 /-- **Uniqueness under irreducibility** (Wolf Theorem 6.3(2)): any PSD fixed point
 of an irreducible transfer map is proportional to a fixed nonzero PSD fixed point. -/
-theorem posSemidef_fixedPoint_unique_of_irreducible
-    (A : Fin d → Matrix (Fin D) (Fin D) ℂ)
+theorem posSemidef_fixedPoint_unique_of_irreducible {ι : Type*} [Fintype ι]
+    (A : ι → Matrix (Fin D) (Fin D) ℂ)
     (hIrr : IsIrreducibleMap (transferMap A))
     (ρ σ : Matrix (Fin D) (Fin D) ℂ)
     (hρ_psd : ρ.PosSemidef) (hρ_ne : ρ ≠ 0)
@@ -135,9 +135,9 @@ the positive-definiteness and uniqueness statements. For a general non-normalize
 injective tensor, one instead expects the eigenvector statement
 `∃ ρ c, ρ.PosSemidef ∧ ρ ≠ 0 ∧ 0 < c ∧ E(ρ) = c • ρ`, and then rescales to the
 fixed-point setting. -/
-theorem exists_posSemidef_fixedPoint
-    (A : Fin d → Matrix (Fin D) (Fin D) ℂ)
-    (hNorm : ∑ i : Fin d, (A i)ᴴ * A i = 1)
+theorem exists_posSemidef_fixedPoint {ι : Type*} [Fintype ι]
+    (A : ι → Matrix (Fin D) (Fin D) ℂ)
+    (hNorm : ∑ i : ι, (A i)ᴴ * A i = 1)
     (hD : 0 < D) :
     ∃ ρ : Matrix (Fin D) (Fin D) ℂ, ρ.PosSemidef ∧ ρ ≠ 0 ∧
       transferMap A ρ = ρ :=
