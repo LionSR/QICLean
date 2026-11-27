@@ -293,11 +293,6 @@ theorem isInjective_iff_wordSpan_one_eq_top (A : ι → Matrix n n ℂ) :
   rw [wordSpan_one]
   rfl
 
-/-- Injectivity is one-block injectivity. -/
-theorem isInjective_iff_isNBlkInjective_one (A : ι → Matrix n n ℂ) :
-    IsInjective A ↔ IsNBlkInjective A 1 :=
-  isInjective_iff_wordSpan_one_eq_top A
-
 /-- Injectivity in the trace-map form: the matrices `A i` span the full matrix algebra
 exactly when the map `X ↦ (tr (A i X))_i` from boundary matrices to coefficient vectors
 is injective. This is the dual statement under the nondegenerate trace pairing
