@@ -14,7 +14,8 @@ target ground vector has phase `I`. It also has an excited component, so the
 estimates test Gaussian suppression as well as conjugation. The tests include
 zero variance, unrenormalized truncation, and the real-overlap contraction result.
 
-The shifted-projector fixture adapts `QICLeanTest/Spectral/Filter/Gaussian/GaussianSpectralGap.lean` and
+The shifted-projector fixture adapts
+`QICLeanTest/Spectral/Filter/Gaussian/GaussianSpectralGap.lean` and
 `QICLeanTest/Spectral/Gap/PositiveGapUniqueness.lean`; all estimates below concern the actual
 integral, with no coefficient identity supplied as a hypothesis.
 -/
