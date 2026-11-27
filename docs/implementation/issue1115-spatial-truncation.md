@@ -58,5 +58,4 @@ c_L and n. No decay of the entire error in distance alone is claimed.
 Issue #1115 remains open for stronger volume-controlled or boundary-weighted
 estimates. The integration retains M_deleted explicitly and does not prove its
 uniform boundedness, nor an infinite-system limit. Acceptance requires independent
-review of the composition, exact-head CI, and regression checks for positive,
-negative and zero times, full retention, and empty-region boundary cases.
+review of the composition and exact-head CI.

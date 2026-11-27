@@ -31,12 +31,3 @@ September 24, 2026, source commit `adc7f1241b42e322a6451854ab7e4b4c146bf78a`,
 `03-patches.tex:362–413`, equations `eq:patch-constant-tail` and
 `eq:patch-regulator-trace`. The proofs are independently written from the
 mathematical argument, with no upstream Lean proof text reused.
-
-## Regression checks
-
-`QICLeanTest.Entropy.VonNeumann.SpectralTail` exercises a rank-deficient pure state, the
-maximally mixed two-level state at and strictly above the cutoff, the
-zero-entropy endpoint, a noncommuting target state, the half/full norm
-convention and the impossibility
-of a trace-one state on an empty index set. `SpectralTailAxioms` reports all
-exported kernel dependencies. Both are included in the strict PR workflow.

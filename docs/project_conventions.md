@@ -82,6 +82,20 @@ directory held only proved theorems and was dissolved: its four modules
 were relocated to their subject homes and the `_axiom` suffix was dropped
 from the one declaration name that still carried it.
 
+### No test fixtures
+
+Do not write Lean test fixtures: no `QICLeanTest/` directory, no standalone
+Lean files under `scripts/Tests/`, no per-theorem `#print axioms` files pinned
+with `#guard_msgs`, and no example files whose only purpose is to show that a
+theorem's hypotheses can hold together. The module-policy job in `pr-ci.yml`
+rejects any file under `QICLeanTest/` or `scripts/Tests/`. Check a new
+theorem's axioms locally with `#print axioms` while writing it, and delete the
+command before committing. A worked example that is itself mathematics belongs
+in the library with a blueprint entry. A 2026-11-27 cleanup deleted 425
+fixture files (about 24,700 lines): the 411 files of `QICLeanTest/`, the 13
+files of `scripts/Tests/` and one standalone axiom check in `scripts/`; 331 of
+them checked axioms.
+
 ## Prose (prose_style)
 
 - No migrated docstring region is currently designated (the monorepo this
