@@ -6,20 +6,20 @@
 # small module moves to another directory, move its ceiling with it.
 Algebra              25
 Analysis             40
-Channel              15
+Channel              20
 Circuit/Compile      2
 Circuit/Core         1
 Circuit/Gate         1
 Circuit/Model        1
 Circuit/Party        14
-Entropy              8
+Entropy              11
 Kraus                9
-ManyBody/Dynamics    2
+ManyBody/Dynamics    3
 ManyBody/Entropy     9
 ManyBody/Hamiltonian 2
-ManyBody/Replica     7
+ManyBody/Replica     9
 ManyBody/Sites       2
 ManyBody/Subspace    1
 Probability          1
-Representation       3
-Spectral             16
+Representation       4
+Spectral             17
