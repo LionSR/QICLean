@@ -60,11 +60,11 @@ noncomputable def wielandtIndex
 threshold. -/
 theorem hasFullWordSpanFrom_wielandtIndex
     (K : Fin r → Matrix (Fin D) (Fin D) ℂ)
-    (hFull : HasEventuallyFullWordSpan K) :
+    (hFull : IsNormal K) :
     HasFullWordSpanFrom K (wielandtIndex K) := by
   have hNonempty : {q : ℕ | HasFullWordSpanFrom K q}.Nonempty := by
     obtain ⟨q, hq⟩ :=
-      (hasEventuallyFullWordSpan_iff_exists_hasFullWordSpanFrom K).mp hFull
+      (isNormal_iff_exists_hasFullWordSpanFrom K).mp hFull
     exact ⟨q, hq⟩
   exact Nat.sInf_mem hNonempty
 
@@ -84,13 +84,13 @@ theorem wielandtIndex_le_of_wordSpan_eq_top_of_isTP
   exact wielandtIndex_minimal K fun m hqm =>
     wordSpan_eq_top_of_ge_of_isTP K hTP hq hqm
 
-private theorem hasEventuallyFullWordSpan_oneStepAugment
+private theorem isNormal_oneStepAugment
     (K : Fin r → Matrix (Fin D) (Fin D) ℂ)
     {X : Matrix (Fin D) (Fin D) ℂ} (hX : X ∈ wordSpan K 1)
-    (hFull : HasEventuallyFullWordSpan K) :
-    HasEventuallyFullWordSpan (oneStepAugment K X) := by
-  filter_upwards [hFull] with n hn
-  simpa only [wordSpan_oneStepAugment_eq K hX n] using hn
+    (hFull : IsNormal K) :
+    IsNormal (oneStepAugment K X) := by
+  obtain ⟨n, hnpos, hn⟩ := hFull
+  exact ⟨n, hnpos, by simpa only [IsNBlkInjective, wordSpan_oneStepAugment_eq K hX n] using hn⟩
 
 /-! ## Wolf's precursor lemmas -/
 
@@ -110,9 +110,8 @@ theorem wolf_lemma_6_2 [NeZero D]
       w.length ≤ D ^ 2 - krausRank K + 1 ∧
       Matrix.trace (evalWord K w) ≠ 0 := by
   have hFull :=
-    hasEventuallyFullWordSpan_of_isIrreducibleMap_of_isPrimitive K hTP hIrr hPrim
-  obtain ⟨N, hNpos, hN⟩ :=
-    (hasEventuallyFullWordSpan_iff_exists_pos_of_isTP K hTP).mp hFull
+    isNormal_of_isIrreducibleMap_of_isPrimitive K hTP hIrr hPrim
+  obtain ⟨N, hNpos, hN⟩ := hFull
   simpa only [krausRank] using exists_nonzero_trace_word_sharp_pos K hN hNpos
 
 /-- **Wolf, Lemma 6.3, primitive-channel form.** If a Kraus operator has a
@@ -134,11 +133,11 @@ theorem wolf_lemma_6_3 [NeZero D]
         ∀ ψ : Fin D → ℂ,
           vecMulVec φ ψ ∈ wordSpan K (D ^ 2 - D + 1)) := by
   have hFull :=
-    hasEventuallyFullWordSpan_of_isIrreducibleMap_of_isPrimitive K hTP hIrr hPrim
-  exact ⟨vectorSpreadSpan_eq_top_of_hasEventuallyFullWordSpan_of_eigenvector
+    isNormal_of_isIrreducibleMap_of_isPrimitive K hTP hIrr hPrim
+  exact ⟨vectorSpreadSpan_eq_top_of_isNormal_of_eigenvector
       K hFull φ hφ i₀ μ hμ heig,
     fun hNotInv =>
-      vecMulVec_eigenvector_mem_wordSpan_of_hasEventuallyFullWordSpan
+      vecMulVec_eigenvector_mem_wordSpan_of_isNormal
         K i₀ hFull (fun h => hNotInv (Matrix.isUnit_toLin'_iff.mp h)) hμ heig⟩
 
 /-! ## Exact-span forms of the three bounds -/
@@ -147,17 +146,17 @@ theorem wolf_lemma_6_3 [NeZero D]
 invertible element, then `K_{D²-k+1}` is the full matrix algebra. -/
 theorem wordSpan_eq_top_of_mem_wordSpan_one_of_isUnit
     (K : Fin r → Matrix (Fin D) (Fin D) ℂ)
-    (hFull : HasEventuallyFullWordSpan K)
+    (hFull : IsNormal K)
     {X : Matrix (Fin D) (Fin D) ℂ}
     (hX : X ∈ wordSpan K 1) (hInv : IsUnit X) :
     wordSpan K (D ^ 2 - krausRank K + 1) = ⊤ := by
   let B := oneStepAugment K X
-  have hFullB : HasEventuallyFullWordSpan B :=
-    hasEventuallyFullWordSpan_oneStepAugment K hX hFull
+  have hFullB : IsNormal B :=
+    isNormal_oneStepAugment K hX hFull
   have hInvB : IsUnit (B 0) := by
     simpa only [B, oneStepAugment_zero] using hInv
   have hBtop :=
-    wordSpan_eq_top_of_hasEventuallyFullWordSpan_of_isUnit B 0 hInvB hFullB
+    wordSpan_eq_top_of_isNormal_of_isUnit B 0 hInvB hFullB
   have hRank : finrank ℂ (wordSpan B 1) = finrank ℂ (wordSpan K 1) := by
     dsimp only [B]
     rw [wordSpan_oneStepAugment_eq K hX 1]
@@ -173,15 +172,15 @@ algebra. -/
 theorem wordSpan_eq_top_of_mem_wordSpan_one_of_nonzero_eigenvalue
     [NeZero D]
     (K : Fin r → Matrix (Fin D) (Fin D) ℂ)
-    (hFull : HasEventuallyFullWordSpan K)
+    (hFull : IsNormal K)
     {X : Matrix (Fin D) (Fin D) ℂ}
     (hX : X ∈ wordSpan K 1)
     {μ : ℂ} {φ : Fin D → ℂ}
     (hμ : μ ≠ 0) (hφ : φ ≠ 0) (heig : X *ᵥ φ = μ • φ) :
     wordSpan K (D ^ 2) = ⊤ := by
   let B := oneStepAugment K X
-  have hFullB : HasEventuallyFullWordSpan B :=
-    hasEventuallyFullWordSpan_oneStepAugment K hX hFull
+  have hFullB : IsNormal B :=
+    isNormal_oneStepAugment K hX hFull
   have heigB : B 0 *ᵥ φ = μ • φ := by
     simpa only [B, oneStepAugment_zero] using heig
   by_cases hInv : IsUnit X
@@ -219,11 +218,11 @@ theorem wordSpan_eq_top_of_mem_wordSpan_one_of_nonzero_eigenvalue
       have h' : IsUnit (B 0) := Matrix.isUnit_toLin'_iff.mp h
       simpa only [B, oneStepAugment_zero] using h'
     have hVec : vectorSpreadSpan B φ (D - 1) = ⊤ :=
-      vectorSpreadSpan_eq_top_of_hasEventuallyFullWordSpan_of_eigenvector
+      vectorSpreadSpan_eq_top_of_isNormal_of_eigenvector
         B hFullB φ hφ 0 μ hμ heigB
     have hRankOne : ∀ ψ : Fin D → ℂ,
         vecMulVec φ ψ ∈ wordSpan B (D ^ 2 - D + 1) :=
-      vecMulVec_eigenvector_mem_wordSpan_of_hasEventuallyFullWordSpan
+      vecMulVec_eigenvector_mem_wordSpan_of_isNormal
         B 0 hFullB hNotInvB hμ heigB
     have hAssembly :=
       wordSpan_eq_top_of_vectorSpreadSpan_eq_top_of_rankOneBasis
@@ -252,7 +251,7 @@ theorem wielandtIndex_le_of_mem_wordSpan_one_of_isUnit
     (hX : X ∈ wordSpan K 1) (hInv : IsUnit X) :
     wielandtIndex K ≤ D ^ 2 - krausRank K + 1 := by
   have hFull :=
-    hasEventuallyFullWordSpan_of_isIrreducibleMap_of_isPrimitive K hTP hIrr hPrim
+    isNormal_of_isIrreducibleMap_of_isPrimitive K hTP hIrr hPrim
   exact wielandtIndex_le_of_wordSpan_eq_top_of_isTP K hTP
     (wordSpan_eq_top_of_mem_wordSpan_one_of_isUnit K hFull hX hInv)
 
@@ -270,7 +269,7 @@ theorem wielandtIndex_le_of_mem_wordSpan_one_of_nonzero_eigenvalue
     (hμ : μ ≠ 0) (hφ : φ ≠ 0) (heig : X *ᵥ φ = μ • φ) :
     wielandtIndex K ≤ D ^ 2 := by
   have hFull :=
-    hasEventuallyFullWordSpan_of_isIrreducibleMap_of_isPrimitive K hTP hIrr hPrim
+    isNormal_of_isIrreducibleMap_of_isPrimitive K hTP hIrr hPrim
   exact wielandtIndex_le_of_wordSpan_eq_top_of_isTP K hTP
     (wordSpan_eq_top_of_mem_wordSpan_one_of_nonzero_eigenvalue
       K hFull hX hμ hφ heig)
@@ -285,12 +284,12 @@ theorem wielandtIndex_le_general [NeZero D]
     wielandtIndex K ≤ (D ^ 2 - krausRank K + 1) * D ^ 2 := by
   classical
   have hFull :=
-    hasEventuallyFullWordSpan_of_isIrreducibleMap_of_isPrimitive K hTP hIrr hPrim
+    isNormal_of_isIrreducibleMap_of_isPrimitive K hTP hIrr hPrim
   obtain ⟨w, hwpos, hwlen, hwtr⟩ := wolf_lemma_6_2 K hTP hIrr hPrim
   obtain ⟨μ, φ, hμ, hφ, heig⟩ :=
     exists_eigenvector_of_trace_ne_zero (evalWord K w) hwtr
   let B := blockTensor K w.length
-  have hFullB : HasEventuallyFullWordSpan B := hFull.blockTensor hwpos
+  have hFullB : IsNormal B := hFull.blockTensor hwpos
   let i₀ : Fin (blockPhysDim r w.length) :=
     (decodeBlockEquiv r w.length).symm w.get
   have hBi : B i₀ = evalWord K w := by

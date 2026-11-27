@@ -10,7 +10,7 @@ import Lean.Util.CollectAxioms
 /-! Standard-axiom guard for the discrete quantum-Wielandt implication (issue #525). -/
 
 run_cmd do
-  let decl := ``Kraus.hasEventuallyFullWordSpan_of_isIrreducibleMap_of_isPrimitive
+  let decl := ``Kraus.isNormal_of_isIrreducibleMap_of_isPrimitive
   unless (← Lean.getEnv).contains decl do
     throwError "Missing declaration {decl}"
   let allowed := #[``propext, ``Classical.choice, ``Quot.sound]

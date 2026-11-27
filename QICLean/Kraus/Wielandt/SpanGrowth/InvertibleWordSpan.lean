@@ -27,7 +27,7 @@ Wielandt inequality (arXiv:0909.5347, Theorem 1; Wolf Section 6.9).
   then `S_m = ⊤` for all `m ≥ N`.
 
 ### Sharp case-(2) theorem
-* `wordSpan_eq_top_of_hasEventuallyFullWordSpan_of_isUnit`: under eventual
+* `wordSpan_eq_top_of_isNormal_of_isUnit`: under eventual
   fullness and an invertible family element, the word span at level
   `D² - dim(S₁) + 1` is the full matrix algebra.
 
@@ -415,9 +415,9 @@ dimensions of word spans strictly increase until they reach the ceiling `D²`.
 
 This is the strict-growth step behind arXiv:0909.5347, Theorem 1 case (2);
 Wolf, Theorem 6.9. -/
-theorem wordSpan_finrank_strict_mono_of_isUnit_of_hasEventuallyFullWordSpan
+theorem wordSpan_finrank_strict_mono_of_isUnit_of_isNormal
     (K : Fin d → Matrix (Fin D) (Fin D) ℂ) (i₀ : Fin d)
-    (hU : IsUnit (K i₀)) (hFull : HasEventuallyFullWordSpan K) (n : ℕ)
+    (hU : IsUnit (K i₀)) (hFull : IsNormal K) (n : ℕ)
     (hlt : Module.finrank ℂ (wordSpan K n) < D ^ 2) :
     Module.finrank ℂ (wordSpan K n) <
       Module.finrank ℂ (wordSpan K (n + 1)) := by
@@ -427,7 +427,7 @@ theorem wordSpan_finrank_strict_mono_of_isUnit_of_hasEventuallyFullWordSpan
   have hfin : Module.finrank ℂ (wordSpan K n) =
       Module.finrank ℂ (wordSpan K (n + 1)) := by
     omega
-  obtain ⟨N, hNtop⟩ := Filter.eventually_atTop.mp hFull
+  obtain ⟨N, hNtop⟩ := Filter.eventually_atTop.mp hFull.eventually_isNBlkInjective
   obtain ⟨k, hk⟩ := Nat.exists_eq_add_of_le (le_max_left n N)
   have hconst := wordSpan_finrank_constant_of_finrank_eq K i₀ hU n k hfin
   have htopMax : wordSpan K (max n N) = ⊤ :=
@@ -457,10 +457,10 @@ word spans are eventually full, then the exact word span at level
 `D² - dim(S₁(K)) + 1` is full.
 
 Paper: arXiv:0909.5347, Theorem 1 case (2); Wolf, Theorem 6.9. -/
-theorem wordSpan_eq_top_of_hasEventuallyFullWordSpan_of_isUnit
+theorem wordSpan_eq_top_of_isNormal_of_isUnit
     (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
     (i₀ : Fin d) (hU : IsUnit (K i₀))
-    (hFull : HasEventuallyFullWordSpan K) :
+    (hFull : IsNormal K) :
     wordSpan K (D ^ 2 - Module.finrank ℂ (wordSpan K 1) + 1) = ⊤ := by
   let k : ℕ := D ^ 2 - Module.finrank ℂ (wordSpan K 1) + 1
   change wordSpan K k = ⊤
@@ -492,7 +492,7 @@ theorem wordSpan_eq_top_of_hasEventuallyFullWordSpan_of_isUnit
         have hstrict : Module.finrank ℂ (wordSpan K (t + 1)) <
             Module.finrank ℂ (wordSpan K (t + 2)) := by
           simpa [Nat.add_assoc] using
-            wordSpan_finrank_strict_mono_of_isUnit_of_hasEventuallyFullWordSpan
+            wordSpan_finrank_strict_mono_of_isUnit_of_isNormal
               K i₀ hU hFull (t + 1) hlt_t1
         have hsucc : Module.finrank ℂ (wordSpan K (t + 1)) + 1 ≤
             Module.finrank ℂ (wordSpan K (t + 2)) := by

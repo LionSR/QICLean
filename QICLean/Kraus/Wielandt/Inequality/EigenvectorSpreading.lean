@@ -32,15 +32,16 @@ Suppose the exact word spans of `K` are eventually the full matrix algebra. If
 length-`D - 1` word images of `φ` span `ℂ^D`.
 
 Paper: arXiv:0909.5347, Lemma 2(a); Wolf, Chapter 6. -/
-theorem vectorSpreadSpan_eq_top_of_hasEventuallyFullWordSpan_of_eigenvector
+theorem vectorSpreadSpan_eq_top_of_isNormal_of_eigenvector
     [NeZero D]
     (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
-    (hFull : HasEventuallyFullWordSpan K)
+    (hFull : IsNormal K)
     (φ : Fin D → ℂ) (hφ : φ ≠ 0)
     (i₀ : Fin d) (μ : ℂ) (hμ : μ ≠ 0)
     (heig : K i₀ *ᵥ φ = μ • φ) :
     vectorSpreadSpan K φ (D - 1) = ⊤ := by
-  obtain ⟨N, hN⟩ := hFull.exists
+  obtain ⟨N, -, hN⟩ := hFull
+  replace hN : wordSpan K N = ⊤ := hN
   have hCum : cumulativeSpan K N = ⊤ := by
     rw [eq_top_iff]
     exact hN.ge.trans (wordSpan_le_cumulativeSpan K (le_refl N))

@@ -242,7 +242,7 @@ theorem zeroError_dichotomy_eventually [NeZero D] {r : ℕ} (K : Fin r → Mat) 
     intro n hn
     apply not_hasOneShotZeroErrorBit_of_posDef_outputs
     intro τ hτ
-    have hFull := hasEventuallyFullWordSpan_of_isIrreducibleMap_of_isPrimitive K hTP hIrr hPrim
+    have hFull := isNormal_of_isIrreducibleMap_of_isPrimitive K hTP hIrr hPrim
     have hq := hasFullWordSpanFrom_wielandtIndex K hFull n hn
     have hspread : ∀ φ : Fin D → ℂ, φ ≠ 0 → vectorSpreadSpan K φ n = ⊤ :=
       fun φ hφ ↦ vectorSpreadSpan_eq_top_of_wordSpan_eq_top K hq φ hφ

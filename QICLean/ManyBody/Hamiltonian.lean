@@ -24,6 +24,7 @@ import QICLean.ManyBody.Hamiltonian.GroundSpace
 import QICLean.ManyBody.Hamiltonian.HardCore
 import QICLean.ManyBody.Hamiltonian.HardTruncation
 import QICLean.ManyBody.Hamiltonian.HermitianPart
+import QICLean.ManyBody.Hamiltonian.InteractionPicture
 import QICLean.ManyBody.Hamiltonian.KernelGap
 import QICLean.ManyBody.Hamiltonian.KroneckerSum
 import QICLean.ManyBody.Hamiltonian.LocalTermTranslates

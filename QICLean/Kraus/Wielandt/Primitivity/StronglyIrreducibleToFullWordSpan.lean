@@ -99,7 +99,7 @@ The proof uses the following channel-native argument:
    contribution, which eventually dominates the complementary contribution.
 
 The next two lemmas provide the span criterion and the uniform error estimate
-used in `hasEventuallyFullWordSpan_of_isIrreducibleMap_of_isPrimitive`.
+used in `isNormal_of_isIrreducibleMap_of_isPrimitive`.
 
 **Lemma A** (`wordSpan_eq_top_of_tracePairBilin_re_pos`): if the trace-pairing
 bilinear form `Q_{E^n}(B).re > 0` for every nonzero `B`, then `wordSpan K n = ⊤`.
@@ -456,13 +456,14 @@ private theorem norm_tracePairBilin_le_sq [NeZero D]
 
 /-- Sanz--Pérez-García--Wolf--Cirac, Proposition 3(c) to (b), in
 channel-native form: a trace-preserving finite Kraus family whose map is both
-irreducible and primitive has eventually full word span. -/
-theorem hasEventuallyFullWordSpan_of_isIrreducibleMap_of_isPrimitive [NeZero D]
+irreducible and primitive is normal: its word spans are full at every sufficiently large
+length. -/
+theorem isNormal_of_isIrreducibleMap_of_isPrimitive [NeZero D]
     (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
     (hTP : IsTP K)
     (hIrr : IsIrreducibleMap (mapLM K))
     (hPrim : IsPrimitive (mapLM K)) :
-    HasEventuallyFullWordSpan K := by
+    IsNormal K := by
   let E := mapLM K
   have hE : IsChannel E := by
     simpa [E] using isChannel_mapLM K hTP
@@ -503,7 +504,6 @@ theorem hasEventuallyFullWordSpan_of_isIrreducibleMap_of_isPrimitive [NeZero D]
   have hCÊ_lt_δ : C * ‖Ê ^ (n₀ + 1)‖ < δ := by
     calc C * ‖Ê ^ (n₀ + 1)‖ < C * ε := mul_lt_mul_of_pos_left hÊ_small hC_pos
       _ = δ := by rw [hε_def, mul_div_cancel₀ _ hC_pos.ne']
-  apply (hasEventuallyFullWordSpan_iff_exists_pos_of_isTP K hTP).2
   refine ⟨n₀ + 1, Nat.zero_lt_succ n₀,
     wordSpan_eq_top_of_tracePairBilin_re_pos K (n₀ + 1) fun B hBne => ?_⟩
   have hdecomp : (E ^ (n₀ + 1) : Module.End ℂ _) = Pρ + N ^ (n₀ + 1) :=

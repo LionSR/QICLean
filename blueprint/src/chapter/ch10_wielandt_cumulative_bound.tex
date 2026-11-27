@@ -518,9 +518,9 @@ matrices, and let $\E_K$ be its Kraus map.
 \begin{theorem}[Fixed-length spreading from eventual word-span fullness]
     \label{thm:eigenvector_spreading_eventually_full}
     \lean{Kraus.vectorSpreadSpan_eq_top_of_cumulativeVectorSpan_eq_top_of_eigenvector,
-        Kraus.vectorSpreadSpan_eq_top_of_hasEventuallyFullWordSpan_of_eigenvector}
+        Kraus.vectorSpreadSpan_eq_top_of_isNormal_of_eigenvector}
     \leanok
-    \uses{def:kraus_eventually_full_word_span, def:vector_spread_span}
+    \uses{lem:kraus_normal_iff_eventually_full_word_span, def:vector_spread_span}
     Let $K=(K^i)_{i=0}^{d-1}$ be a finite family of $D\times D$ matrices, where
     $D>0$, and suppose that $S_n(K)=\MN{D}$ for every sufficiently large
     $n$. If $\varphi\neq0$, $\mu\neq0$, and
@@ -609,8 +609,8 @@ rank, and $q$ is the least integer such that $K_m=\MN{d}$ for every $m\geq q$.
 
 \begin{lemma}[Spreading from a Kraus operator with nonzero eigenvalue]
     \label{lem:wolf_6_3_eigenvector_spreading}
-    \lean{Kraus.rectSpan_nilpIndex_strict_growth_of_hasEventuallyFullWordSpan,
-        Kraus.vecMulVec_eigenvector_mem_wordSpan_of_hasEventuallyFullWordSpan,
+    \lean{Kraus.rectSpan_nilpIndex_strict_growth_of_isNormal,
+        Kraus.vecMulVec_eigenvector_mem_wordSpan_of_isNormal,
         Kraus.wolf_lemma_6_3}
     \leanok
     \uses{def:kraus_exact_word_span, def:vector_spread_span}

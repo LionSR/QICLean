@@ -40,7 +40,7 @@ blocked family on that numbering is the reindexing of the general one.
 * `Kraus.transferMap_block` the transfer map of the blocked family is the $L$-th power.
 * `Kraus.wordSpan_block` identifies blocked word spans with the original word spans at the
   multiplied length.
-* `Kraus.HasEventuallyFullWordSpan.block` preserves eventual fullness under positive-length
+* `Kraus.IsNormal.block` preserves normality under positive-length
   blocking.
 * `Kraus.evalWord_replicate` evaluates a constant word as a matrix power.
 -/
@@ -114,15 +114,15 @@ theorem wordSpan_block (A : ι → Matrix n n ℂ) (L k : ℕ) :
   | succ k ih =>
     rw [wordSpan_succ, ih, wordSpan_block_one, ← wordSpan_add, Nat.succ_mul]
 
-/-- Eventual fullness of exact word spans is preserved by blocking at a
-positive length. -/
-theorem HasEventuallyFullWordSpan.block {A : ι → Matrix n n ℂ}
-    (hA : HasEventuallyFullWordSpan A) {L : ℕ} (hL : 0 < L) :
-    HasEventuallyFullWordSpan (Kraus.block A L) := by
-  obtain ⟨N, hN⟩ := Filter.eventually_atTop.mp hA
-  refine Filter.eventually_atTop.mpr ⟨N, fun k hk => ?_⟩
+/-- Normality is preserved by blocking at a positive length. -/
+theorem IsNormal.block {A : ι → Matrix n n ℂ}
+    (hA : IsNormal A) {L : ℕ} (hL : 0 < L) :
+    IsNormal (Kraus.block A L) := by
+  obtain ⟨N, hNpos, hN⟩ := hA
+  refine ⟨N, hNpos, ?_⟩
+  change wordSpan (Kraus.block A L) N = ⊤
   rw [wordSpan_block]
-  exact hN _ (hk.trans (Nat.le_mul_of_pos_right k hL))
+  exact isNBlkInjective_of_le hNpos hN (Nat.le_mul_of_pos_right N hL)
 
 /-- The transfer map of the family blocked at length `L` is the `L`-th power of the
 transfer map. -/
@@ -266,12 +266,11 @@ theorem wordSpan_blockTensor (A : Fin d → Matrix n n ℂ) (L k : ℕ) :
     wordSpan (blockTensor A L) k = wordSpan A (k * L) := by
   rw [wordSpan_eq_of_range_eq (range_blockTensor A L), wordSpan_block]
 
-/-- Eventual fullness of exact word spans is preserved by blocking at a
-positive length. -/
-theorem HasEventuallyFullWordSpan.blockTensor {A : Fin d → Matrix n n ℂ}
-    (hA : HasEventuallyFullWordSpan A) (hL : 0 < L) :
-    HasEventuallyFullWordSpan (Kraus.blockTensor A L) := by
-  simpa only [HasEventuallyFullWordSpan, wordSpan_eq_of_range_eq (range_blockTensor A L)]
+/-- Normality is preserved by blocking at a positive length. -/
+theorem IsNormal.blockTensor {A : Fin d → Matrix n n ℂ}
+    (hA : IsNormal A) (hL : 0 < L) :
+    IsNormal (Kraus.blockTensor A L) := by
+  simpa only [IsNormal, IsNBlkInjective, wordSpan_eq_of_range_eq (range_blockTensor A L)]
     using hA.block hL
 
 /-- Length of a flattened blocked word. -/
