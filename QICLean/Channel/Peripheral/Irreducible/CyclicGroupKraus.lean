@@ -26,15 +26,15 @@ open Matrix Finset Complex
 
 namespace Kraus
 
-variable {d D : ℕ}
+variable {ι : Type*} [Fintype ι] {D : ℕ}
 
 /-- Peripheral product closure for a finite Kraus map, specialized from
 Wolf's abstract positive unital irreducible Schwarz-map theorem. The historical
 adjoint-weight arguments are retained for downstream compatibility. -/
 theorem peripheralEigenvalues_mul_mem_of_irreducible_unital_of_adjoint_fixedPoint
     [NeZero D]
-    (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
-    (h_unital : KadisonSchwarz.IsUnitalKraus (d := d) (D := D) K)
+    (K : ι → Matrix (Fin D) (Fin D) ℂ)
+    (h_unital : KadisonSchwarz.IsUnitalKraus (ι := ι) (D := D) K)
     (ρ : Matrix (Fin D) (Fin D) ℂ) (hρ : ρ.PosDef)
     (hfix : Kraus.adjointMap K ρ = ρ)
     (hIrr : IsIrreducibleMap (Kraus.mapLM K)) :
@@ -56,8 +56,8 @@ Wolf's source-general result with all four clauses and the order bound is
 `SchwarzMap.wolf_theorem_6_6`. The historical stationary-weight arguments are
 retained for downstream compatibility. -/
 theorem peripheralEigenvalues_eq_range_primitiveRoot [NeZero D]
-    (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
-    (h_unital : KadisonSchwarz.IsUnitalKraus (d := d) (D := D) K)
+    (K : ι → Matrix (Fin D) (Fin D) ℂ)
+    (h_unital : KadisonSchwarz.IsUnitalKraus (ι := ι) (D := D) K)
     (ρ : Matrix (Fin D) (Fin D) ℂ) (hρ : ρ.PosDef)
     (hfix : Kraus.adjointMap K ρ = ρ)
     (hIrr : IsIrreducibleMap (Kraus.mapLM K)) :

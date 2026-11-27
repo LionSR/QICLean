@@ -135,8 +135,8 @@ trace-preserving map `E`, we have `m ∣ D`. The argument: trace preservation fo
 to have equal trace, so `m * tr(P₀) = tr(I) = D`; since `tr(P₀) ∈ ℕ` for any orthogonal
 projection, `m ∣ D`. -/
 private lemma period_dvd_dim_of_cyclic_projections
-    {r : ℕ} [NeZero D]
-    (K : Fin r → MatrixAlg D)
+    {ι : Type*} [Fintype ι] [NeZero D]
+    (K : ι → MatrixAlg D)
     (hTP : Kraus.IsTP K)
     {m : ℕ} [NeZero m]
     (P : Fin m → MatrixAlg D)
@@ -184,9 +184,9 @@ Follows from `Kraus.exists_peripheral_unitary_of_irreducible_schwarz`: periphera
 eigenvalues have unitary eigenvectors, and the multiplicative domain property
 gives `E(U_α U_β) = E(U_α) E(U_β) = αβ · U_α U_β`. -/
 theorem peripheral_eigenvalues_closed_under_mul
-    {r : ℕ} [NeZero D]
-    (K : Fin r → MatrixAlg D)
-    (hUnital : KadisonSchwarz.IsUnitalKraus (d := r) (D := D) K)
+    {ι : Type*} [Fintype ι] [NeZero D]
+    (K : ι → MatrixAlg D)
+    (hUnital : KadisonSchwarz.IsUnitalKraus (ι := ι) (D := D) K)
     (ρ : MatrixAlg D) (hρ : ρ.PosDef)
     (hρfix : Kraus.adjointMap K ρ = ρ)
     (hIrr : IsIrreducibleMap (Kraus.mapLM K))
@@ -259,9 +259,9 @@ theorem peripheral_eigenvalues_closed_under_mul
 
 For `|α| = 1`, we have `α⁻¹ = α'`, and `U_α†` is the eigenvector. -/
 theorem peripheral_eigenvalues_closed_under_inv
-    {r : ℕ} [NeZero D]
-    (K : Fin r → MatrixAlg D)
-    (hUnital : KadisonSchwarz.IsUnitalKraus (d := r) (D := D) K)
+    {ι : Type*} [Fintype ι] [NeZero D]
+    (K : ι → MatrixAlg D)
+    (hUnital : KadisonSchwarz.IsUnitalKraus (ι := ι) (D := D) K)
     (ρ : MatrixAlg D) (hρ : ρ.PosDef)
     (hρfix : Kraus.adjointMap K ρ = ρ)
     (hIrr : IsIrreducibleMap (Kraus.mapLM K))
@@ -321,9 +321,9 @@ finite-Kraus specialization of the cyclicity conclusion in Wolf Theorem 6.6(1),
 with a positive-definite adjoint fixed point assumed explicitly and without the
 order bound. See `docs/paper-gaps/wolf_thm6_6_kraus_scope.tex`. -/
 theorem peripheral_eigenvalues_cyclic_structure
-    {r : ℕ} [NeZero D]
-    (K : Fin r → MatrixAlg D)
-    (hUnital : KadisonSchwarz.IsUnitalKraus (d := r) (D := D) K)
+    {ι : Type*} [Fintype ι] [NeZero D]
+    (K : ι → MatrixAlg D)
+    (hUnital : KadisonSchwarz.IsUnitalKraus (ι := ι) (D := D) K)
     (ρ : MatrixAlg D) (hρ : ρ.PosDef)
     (hρfix : Kraus.adjointMap K ρ = ρ)
     (hIrr : IsIrreducibleMap (Kraus.mapLM K)) :
@@ -460,9 +460,9 @@ declaration assumes a finite Kraus family, trace preservation, and a
 positive-definite fixed point of the adjoint. See
 `docs/paper-gaps/wolf_thm6_6_kraus_scope.tex`. -/
 theorem peripheral_eigenvalues_form_cyclic_group
-    {r : ℕ} [NeZero D]
-    (K : Fin r → MatrixAlg D)
-    (hUnital : KadisonSchwarz.IsUnitalKraus (d := r) (D := D) K)
+    {ι : Type*} [Fintype ι] [NeZero D]
+    (K : ι → MatrixAlg D)
+    (hUnital : KadisonSchwarz.IsUnitalKraus (ι := ι) (D := D) K)
     (hTP : Kraus.IsTP K)
     (ρ : MatrixAlg D) (hρ : ρ.PosDef)
     (hρfix : Kraus.adjointMap K ρ = ρ)
@@ -508,9 +508,9 @@ Theorem 6.6 assumes an irreducible positive unital Schwarz map, whereas this
 declaration assumes a finite Kraus family and a positive-definite fixed point of
 its adjoint. See `docs/paper-gaps/wolf_thm6_6_kraus_scope.tex`. -/
 theorem peripheral_eigenvalue_multiplicity_one
-    {r : ℕ} [NeZero D]
-    (K : Fin r → MatrixAlg D)
-    (hUnital : KadisonSchwarz.IsUnitalKraus (d := r) (D := D) K)
+    {ι : Type*} [Fintype ι] [NeZero D]
+    (K : ι → MatrixAlg D)
+    (hUnital : KadisonSchwarz.IsUnitalKraus (ι := ι) (D := D) K)
     (ρ : MatrixAlg D) (hρ : ρ.PosDef)
     (hρfix : Kraus.adjointMap K ρ = ρ)
     (hIrr : IsIrreducibleMap (Kraus.mapLM K))
@@ -611,9 +611,9 @@ Follows from `exists_cyclic_projections_of_peripheral_unitary` in
 `CyclicDecomposition.lean`: the `m` mutually orthogonal projections summing
 to `I` force each to have rank `D/m`. -/
 theorem channel_period_divides_dim
-    {r : ℕ} [NeZero D]
-    (K : Fin r → MatrixAlg D)
-    (hUnital : KadisonSchwarz.IsUnitalKraus (d := r) (D := D) K)
+    {ι : Type*} [Fintype ι] [NeZero D]
+    (K : ι → MatrixAlg D)
+    (hUnital : KadisonSchwarz.IsUnitalKraus (ι := ι) (D := D) K)
     (hTP : Kraus.IsTP K)
     (ρ : MatrixAlg D) (hρ : ρ.PosDef)
     (hρfix : Kraus.adjointMap K ρ = ρ)

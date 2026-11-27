@@ -238,7 +238,7 @@ theorem peripheral_powers_closed_of_irreducible_channel_with_fixed [NeZero D]
   -- ── Step 3: Gauged operators L_i = S⁻¹ K_i S ──
   let L : Fin r → Mat := fun i => S⁻¹ * K i * S
   -- ── Step 4: L is unital (∑ L_i L_i† = 1) ──
-  have hL_unital : KadisonSchwarz.IsUnitalKraus (d := r) (D := D) L := by
+  have hL_unital : KadisonSchwarz.IsUnitalKraus (ι := Fin r) (D := D) L := by
     change ∑ i : Fin r, L i * (L i)ᴴ = 1
     exact gauged_unital K S σ hS_det (by rw [hS_herm]; exact hS_sq)
       (by

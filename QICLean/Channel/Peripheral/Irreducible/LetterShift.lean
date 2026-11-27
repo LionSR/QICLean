@@ -50,7 +50,7 @@ open Matrix Finset Complex
 
 namespace Kraus
 
-variable {r n m : ℕ}
+variable {ι : Type*} [Fintype ι] {n m : ℕ}
 
 /-- **Kraus operators intertwine a mapped projection pair.**  If the Kraus map of
 the family `K` sends the orthogonal projection `P'` to the orthogonal
@@ -61,12 +61,12 @@ This is the letter-level step in the proof of Wolf Theorem 6.6: compressing
 $\sum_v K_v P' K_v^\dagger = P$ by $1-P$ exhibits a vanishing sum of positive
 semidefinite matrices, so each summand vanishes. -/
 theorem one_sub_mul_kraus_mul_eq_zero_of_mapLM_proj
-    (K : Fin r → MatrixAlg n) {P P' : MatrixAlg n}
+    (K : ι → MatrixAlg n) {P P' : MatrixAlg n}
     (hP : IsOrthogonalProjection P) (hP' : IsOrthogonalProjection P')
     (hmap : mapLM K P' = P) :
     ∀ v, (1 - P) * K v * P' = 0 := by
   classical
-  set T : Fin r → MatrixAlg n := fun w => (1 - P) * K w * P' with hT
+  set T : ι → MatrixAlg n := fun w => (1 - P) * K w * P' with hT
   have h1P : (1 - P)ᴴ = 1 - P := by
     rw [Matrix.conjTranspose_sub, Matrix.conjTranspose_one, hP.1.eq]
   -- Each `T w * (T w)ᴴ` is the `w`-th summand of `(1-P) E(P') (1-P)`.
@@ -79,15 +79,15 @@ theorem one_sub_mul_kraus_mul_eq_zero_of_mapLM_proj
           rw [hP'.1.eq, hP'.2, h1P]
           simp only [Matrix.mul_assoc]
   -- The sum of these PSD matrices is `(1-P) P (1-P) = 0`.
-  have hsum : ∑ w : Fin r, T w * (T w)ᴴ = 0 := by
+  have hsum : ∑ w : ι, T w * (T w)ᴴ = 0 := by
     have h1PP : (1 - P) * P = 0 := by
       rw [Matrix.sub_mul, Matrix.one_mul, hP.2, sub_self]
-    calc ∑ w : Fin r, T w * (T w)ᴴ
-        = (1 - P) * (∑ w : Fin r, K w * P' * (K w)ᴴ) * (1 - P) := by
+    calc ∑ w : ι, T w * (T w)ᴴ
+        = (1 - P) * (∑ w : ι, K w * P' * (K w)ᴴ) * (1 - P) := by
           rw [Finset.mul_sum, Finset.sum_mul]
           exact Finset.sum_congr rfl fun w _ => hexp w
       _ = (1 - P) * P * (1 - P) := by
-          rw [show ∑ w : Fin r, K w * P' * (K w)ᴴ = P from by
+          rw [show ∑ w : ι, K w * P' * (K w)ᴴ = P from by
             simpa [mapLM_apply, map_apply] using hmap]
       _ = 0 := by rw [h1PP, Matrix.zero_mul]
   exact Matrix.eq_zero_of_sum_mul_conjTranspose_eq_zero T hsum
@@ -104,11 +104,11 @@ resolution of the identity, see `offDiag_shift_of_adjoint_cyclic_shift` in
 `TNLean/MPS/CanonicalForm/CyclicSectors/FixedAdjoint.lean`; the two
 hypothesis sets are incomparable (see the module docstring). -/
 theorem kraus_mul_cyclicProj
-    (K : Fin r → MatrixAlg n) (P : Fin m → MatrixAlg n)
+    (K : ι → MatrixAlg n) (P : Fin m → MatrixAlg n)
     (hproj : ∀ k, IsOrthogonalProjection (P k))
     (hsum : ∑ k : Fin m, P k = 1)
     (hcyclic : ∀ k : Fin m, mapLM K (P (k + 1)) = P k) :
-    ∀ (v : Fin r) (k : Fin m), K v * P (k + 1) = P k * K v := by
+    ∀ (v : ι) (k : Fin m), K v * P (k + 1) = P k * K v := by
   intro v k
   -- One-sided containment for every consecutive pair.
   have hinto : ∀ j : Fin m, K v * P (j + 1) = P j * (K v * P (j + 1)) := by
@@ -146,7 +146,7 @@ summing to the identity vanished, the cyclic action `E(P (k+1)) = P k` would
 propagate the vanishing to every projection, contradicting the resolution of
 the identity. -/
 theorem cyclicProj_ne_zero [NeZero n]
-    (K : Fin r → MatrixAlg n) (P : Fin m → MatrixAlg n)
+    (K : ι → MatrixAlg n) (P : Fin m → MatrixAlg n)
     (hsum : ∑ k : Fin m, P k = 1)
     (hcyclic : ∀ k : Fin m, mapLM K (P (k + 1)) = P k) :
     ∀ k : Fin m, P k ≠ 0 := by

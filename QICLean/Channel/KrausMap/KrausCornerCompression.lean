@@ -28,18 +28,18 @@ open Matrix Finset Complex
 
 namespace Kraus
 
-variable {d D : ℕ}
+variable {ι : Type*} [Fintype ι] {D : ℕ}
 
 /-- The Schrödinger map of a Kraus family compressed along `V` is the compression of the
 ambient Schrödinger map after expanding its argument along `V`. -/
 theorem map_compressed_eq_conj {n : ℕ}
-    (A : Fin d → MatrixAlg D) (C : Fin d → MatrixAlg n)
+    (A : ι → MatrixAlg D) (C : ι → MatrixAlg n)
     (V : Matrix (Fin D) (Fin n) ℂ)
-    (hC : ∀ i : Fin d, C i = Vᴴ * A i * V) (Z : MatrixAlg n) :
+    (hC : ∀ i : ι, C i = Vᴴ * A i * V) (Z : MatrixAlg n) :
     map C Z = Vᴴ * map A (V * Z * Vᴴ) * V := by
   calc
-    map C Z = ∑ i : Fin d, C i * Z * (C i)ᴴ := by rw [map_apply]
-    _ = ∑ i : Fin d, Vᴴ * (A i * (V * Z * Vᴴ) * (A i)ᴴ) * V := by
+    map C Z = ∑ i : ι, C i * Z * (C i)ᴴ := by rw [map_apply]
+    _ = ∑ i : ι, Vᴴ * (A i * (V * Z * Vᴴ) * (A i)ᴴ) * V := by
       refine Finset.sum_congr rfl fun i _ => ?_
       have hCiH : (C i)ᴴ = Vᴴ * (A i)ᴴ * V := by
         rw [hC i]
@@ -47,16 +47,16 @@ theorem map_compressed_eq_conj {n : ℕ}
           Matrix.mul_assoc]
       rw [hCiH, hC i]
       simp [Matrix.mul_assoc]
-    _ = Vᴴ * (∑ i : Fin d, A i * (V * Z * Vᴴ) * (A i)ᴴ) * V := by
+    _ = Vᴴ * (∑ i : ι, A i * (V * Z * Vᴴ) * (A i)ᴴ) * V := by
       rw [Matrix.mul_sum, Matrix.sum_mul]
     _ = Vᴴ * map A (V * Z * Vᴴ) * V := by rw [map_apply]
 
 /-- Compression along `V` preserves a fixed point supported on the range projection
 `V * Vᴴ`. -/
 theorem map_compressed_fixedPoint {n : ℕ}
-    (A : Fin d → MatrixAlg D) (C : Fin d → MatrixAlg n)
+    (A : ι → MatrixAlg D) (C : ι → MatrixAlg n)
     (V : Matrix (Fin D) (Fin n) ℂ) (P X : MatrixAlg D)
-    (hC : ∀ i : Fin d, C i = Vᴴ * A i * V) (hVVt : V * Vᴴ = P)
+    (hC : ∀ i : ι, C i = Vᴴ * A i * V) (hVVt : V * Vᴴ = P)
     (hXmem : P * X * P = X) (hXfix : map A X = X) :
     map C (Vᴴ * X * V) = Vᴴ * X * V := by
   calc
@@ -76,11 +76,11 @@ matrix algebra. The result includes the corner equivalence, its support isometry
 trace-preserving normalization, the adjoint-map intertwining, and the algebraic identities
 needed to move between the compressed and ambient corners. -/
 theorem exists_corner_compression_of_supported_projection
-    (A : Fin d → MatrixAlg D) (P : MatrixAlg D)
+    (A : ι → MatrixAlg D) (P : MatrixAlg D)
     (hP : IsOrthogonalProjection P)
-    (hSupp : ∀ i : Fin d, P * A i * P = A i)
-    (hTP : ∑ i : Fin d, (A i)ᴴ * A i = P) :
-    ∃ (n : ℕ) (C : Fin d → MatrixAlg n)
+    (hSupp : ∀ i : ι, P * A i * P = A i)
+    (hTP : ∑ i : ι, (A i)ᴴ * A i = P) :
+    ∃ (n : ℕ) (C : ι → MatrixAlg n)
       (φ : MatrixAlg n ≃ₗ[ℂ] cornerSubmodule P)
       (V : Matrix (Fin D) (Fin n) ℂ),
       ((n : ℂ) = Matrix.trace P) ∧
@@ -89,8 +89,8 @@ theorem exists_corner_compression_of_supported_projection
         (φ (adjointMap C X)).1 = adjointMap A (φ X).1) ∧
       (∀ X Y : MatrixAlg n, (φ (X * Y)).1 = (φ X).1 * (φ Y).1) ∧
       (∀ X : MatrixAlg n, (φ Xᴴ).1 = ((φ X).1)ᴴ) ∧
-      (∀ i : Fin d, (φ (C i)).1 = A i) ∧
-      (∀ i : Fin d, C i = Vᴴ * A i * V) ∧
+      (∀ i : ι, (φ (C i)).1 = A i) ∧
+      (∀ i : ι, C i = Vᴴ * A i * V) ∧
       Vᴴ * V = 1 ∧
       V * Vᴴ = P ∧
       (∀ X : MatrixAlg n, (φ X).1 = V * X * Vᴴ) := by
@@ -119,9 +119,9 @@ theorem exists_corner_compression_of_supported_projection
   have hφ_apply (X : MatrixAlg n) : (φ X).1 = expand X := rfl
   have hExpand_eq_V (X : MatrixAlg n) : expand X = V * X * Vᴴ := by
     simpa [expand, V] using cornerCompressionExpand_eq_isometry Umat eST eS X
-  let C : Fin d → MatrixAlg n := fun i => Vᴴ * A i * V
-  have hCompression : ∀ i : Fin d, C i = Vᴴ * A i * V := fun _ => rfl
-  have hLetter : ∀ i : Fin d, expand (C i) = A i := by
+  let C : ι → MatrixAlg n := fun i => Vᴴ * A i * V
+  have hCompression : ∀ i : ι, C i = Vᴴ * A i * V := fun _ => rfl
+  have hLetter : ∀ i : ι, expand (C i) = A i := by
     intro i
     rw [hExpand_eq_V]
     change V * (Vᴴ * A i * V) * Vᴴ = A i
@@ -132,18 +132,18 @@ theorem exists_corner_compression_of_supported_projection
       _ = A i := hSupp i
   refine ⟨n, C, φ, V, htrace, ?_, ?_, ?_, ?_, ?_, hCompression,
     hV_iso, hV_range, ?_⟩
-  · change ∑ i : Fin d, (C i)ᴴ * C i = 1
+  · change ∑ i : ι, (C i)ᴴ * C i = 1
     apply φ.injective
     apply Subtype.ext
     rw [hφ_apply, hφ_apply, map_sum]
-    have hsum : (∑ i : Fin d, expand ((C i)ᴴ * C i)) =
-        ∑ i : Fin d, (A i)ᴴ * A i := by
+    have hsum : (∑ i : ι, expand ((C i)ᴴ * C i)) =
+        ∑ i : ι, (A i)ᴴ * A i := by
       refine Finset.sum_congr rfl ?_
       intro i _
       rw [cornerCompressionExpand_mul Umat eST eS hU'U,
         ← cornerCompressionExpand_conjTranspose Umat eST eS, hLetter]
     calc
-      (∑ i : Fin d, expand ((C i)ᴴ * C i)) = ∑ i : Fin d, (A i)ᴴ * A i := hsum
+      (∑ i : ι, expand ((C i)ᴴ * C i)) = ∑ i : ι, (A i)ᴴ * A i := hsum
       _ = P := hTP
       _ = expand 1 := by rw [hExpand_one]
   · intro Z

@@ -26,7 +26,7 @@ characterization together with algebraic closure properties.
 open scoped Matrix ComplexOrder MatrixOrder
 open Matrix Finset Complex KadisonSchwarz
 
-variable {d D : ℕ}
+variable {ι : Type*} [Fintype ι] {D : ℕ}
 
 namespace KadisonSchwarz
 
@@ -34,15 +34,15 @@ local notation "Mat" => Matrix (Fin D) (Fin D) ℂ
 
 section AuxiliaryLemmas
 
-@[simp] theorem krausMap_add (K : Fin d → Mat) (X Y : Mat) :
+@[simp] theorem krausMap_add (K : ι → Mat) (X Y : Mat) :
     krausMap K (X + Y) = krausMap K X + krausMap K Y := by
   simp [krausMap, add_mul, mul_add, Finset.sum_add_distrib, mul_assoc]
 
-@[simp] theorem krausMap_zero (K : Fin d → Mat) :
+@[simp] theorem krausMap_zero (K : ι → Mat) :
     krausMap K (0 : Mat) = 0 := by
   simp [krausMap]
 
-@[simp] theorem krausMap_smul (K : Fin d → Mat) (μ : ℂ) (X : Mat) :
+@[simp] theorem krausMap_smul (K : ι → Mat) (μ : ℂ) (X : Mat) :
     krausMap K (μ • X) = μ • krausMap K X := by
   simp [krausMap, Finset.smul_sum, mul_assoc]
 
@@ -52,16 +52,16 @@ section Definitions
 
 /-- Right multiplicative domain: the set of `X` such that
 `E(XY) = E(X)E(Y)` for all `Y`. -/
-noncomputable def rightMultiplicativeDomain (K : Fin d → Mat) : Set Mat :=
+noncomputable def rightMultiplicativeDomain (K : ι → Mat) : Set Mat :=
   {X | ∀ Y, krausMap K (X * Y) = krausMap K X * krausMap K Y}
 
 /-- Left multiplicative domain: the set of `X` such that
 `E(YX) = E(Y)E(X)` for all `Y`. -/
-noncomputable def leftMultiplicativeDomain (K : Fin d → Mat) : Set Mat :=
+noncomputable def leftMultiplicativeDomain (K : ι → Mat) : Set Mat :=
   {X | ∀ Y, krausMap K (Y * X) = krausMap K Y * krausMap K X}
 
 /-- Full multiplicative domain: the intersection of the left and right domains. -/
-noncomputable def multiplicativeDomain (K : Fin d → Mat) : Set Mat :=
+noncomputable def multiplicativeDomain (K : ι → Mat) : Set Mat :=
   rightMultiplicativeDomain K ∩ leftMultiplicativeDomain K
 
 end Definitions
@@ -69,7 +69,7 @@ end Definitions
 section ReverseCharacterization
 
 /-- From the `XX†` equality to left multiplication by `X`. -/
-theorem rightMultiplicativeDomain_of_ks_equality (K : Fin d → Mat)
+theorem rightMultiplicativeDomain_of_ks_equality (K : ι → Mat)
     (h_unital : IsUnitalKraus K) (X : Mat)
     (h_eq : krausMap K (X * Xᴴ) = krausMap K X * (krausMap K X)ᴴ) :
     X ∈ rightMultiplicativeDomain K := by
@@ -80,13 +80,13 @@ theorem rightMultiplicativeDomain_of_ks_equality (K : Fin d → Mat)
     multiplicative_domain_left (K := K) h_unital (X := Xᴴ) h_eq' (Y := Y)
 
 /-- From right multiplicativity to the `XX†` equality. -/
-theorem ks_equality_of_rightMultiplicativeDomain (K : Fin d → Mat) (X : Mat)
+theorem ks_equality_of_rightMultiplicativeDomain (K : ι → Mat) (X : Mat)
     (hX : X ∈ rightMultiplicativeDomain K) :
     krausMap K (X * Xᴴ) = krausMap K X * (krausMap K X)ᴴ := by
   simpa [krausMap_conjTranspose] using hX Xᴴ
 
 /-- From the `X†X` equality to right multiplication by `X`. -/
-theorem leftMultiplicativeDomain_of_ks_equality (K : Fin d → Mat)
+theorem leftMultiplicativeDomain_of_ks_equality (K : ι → Mat)
     (h_unital : IsUnitalKraus K) (X : Mat)
     (h_eq : krausMap K (Xᴴ * X) = (krausMap K X)ᴴ * krausMap K X) :
     X ∈ leftMultiplicativeDomain K := by
@@ -94,13 +94,13 @@ theorem leftMultiplicativeDomain_of_ks_equality (K : Fin d → Mat)
   simpa using multiplicative_domain_right (K := K) h_unital X h_eq (Y := Y)
 
 /-- From left multiplicativity to the `X†X` equality. -/
-theorem ks_equality_of_leftMultiplicativeDomain (K : Fin d → Mat) (X : Mat)
+theorem ks_equality_of_leftMultiplicativeDomain (K : ι → Mat) (X : Mat)
     (hX : X ∈ leftMultiplicativeDomain K) :
     krausMap K (Xᴴ * X) = (krausMap K X)ᴴ * krausMap K X := by
   simpa [krausMap_conjTranspose] using hX Xᴴ
 
 /-- Wolf's multiplicative-domain characterization on the right. -/
-theorem mem_rightMultiplicativeDomain_iff (K : Fin d → Mat)
+theorem mem_rightMultiplicativeDomain_iff (K : ι → Mat)
     (h_unital : IsUnitalKraus K) (X : Mat) :
     X ∈ rightMultiplicativeDomain K ↔
       krausMap K (X * Xᴴ) = krausMap K X * (krausMap K X)ᴴ := by
@@ -109,7 +109,7 @@ theorem mem_rightMultiplicativeDomain_iff (K : Fin d → Mat)
   · exact rightMultiplicativeDomain_of_ks_equality (K := K) h_unital X
 
 /-- Wolf's multiplicative-domain characterization on the left. -/
-theorem mem_leftMultiplicativeDomain_iff (K : Fin d → Mat)
+theorem mem_leftMultiplicativeDomain_iff (K : ι → Mat)
     (h_unital : IsUnitalKraus K) (X : Mat) :
     X ∈ leftMultiplicativeDomain K ↔
       krausMap K (Xᴴ * X) = (krausMap K X)ᴴ * krausMap K X := by
@@ -122,7 +122,7 @@ end ReverseCharacterization
 section AlgebraicStructure
 
 /-- Scalar multiples of `1` lie in the right multiplicative domain. -/
-theorem smul_one_mem_rightMultiplicativeDomain (K : Fin d → Mat)
+theorem smul_one_mem_rightMultiplicativeDomain (K : ι → Mat)
     (h_unital : IsUnitalKraus K) (μ : ℂ) :
     (μ • (1 : Mat)) ∈ rightMultiplicativeDomain K := by
   intro Y
@@ -135,7 +135,7 @@ theorem smul_one_mem_rightMultiplicativeDomain (K : Fin d → Mat)
     _ = krausMap K (μ • (1 : Mat)) * krausMap K Y := by rw [krausMap_smul]
 
 /-- Scalar multiples of `1` lie in the left multiplicative domain. -/
-theorem smul_one_mem_leftMultiplicativeDomain (K : Fin d → Mat)
+theorem smul_one_mem_leftMultiplicativeDomain (K : ι → Mat)
     (h_unital : IsUnitalKraus K) (μ : ℂ) :
     (μ • (1 : Mat)) ∈ leftMultiplicativeDomain K := by
   intro Y
@@ -147,17 +147,17 @@ theorem smul_one_mem_leftMultiplicativeDomain (K : Fin d → Mat)
     _ = krausMap K Y * (μ • krausMap K (1 : Mat)) := by rw [krausMap_one_of_unital K h_unital]
     _ = krausMap K Y * krausMap K (μ • (1 : Mat)) := by rw [krausMap_smul]
 
-theorem zero_mem_rightMultiplicativeDomain (K : Fin d → Mat) :
+theorem zero_mem_rightMultiplicativeDomain (K : ι → Mat) :
     (0 : Mat) ∈ rightMultiplicativeDomain K := by
   intro Y
   simp
 
-theorem zero_mem_leftMultiplicativeDomain (K : Fin d → Mat) :
+theorem zero_mem_leftMultiplicativeDomain (K : ι → Mat) :
     (0 : Mat) ∈ leftMultiplicativeDomain K := by
   intro Y
   simp
 
-theorem add_mem_rightMultiplicativeDomain (K : Fin d → Mat) {X Y : Mat}
+theorem add_mem_rightMultiplicativeDomain (K : ι → Mat) {X Y : Mat}
     (hX : X ∈ rightMultiplicativeDomain K) (hY : Y ∈ rightMultiplicativeDomain K) :
     X + Y ∈ rightMultiplicativeDomain K := by
   intro Z
@@ -170,7 +170,7 @@ theorem add_mem_rightMultiplicativeDomain (K : Fin d → Mat) {X Y : Mat}
     _ = (krausMap K X + krausMap K Y) * krausMap K Z := by simp [add_mul]
     _ = krausMap K (X + Y) * krausMap K Z := by simp
 
-theorem add_mem_leftMultiplicativeDomain (K : Fin d → Mat) {X Y : Mat}
+theorem add_mem_leftMultiplicativeDomain (K : ι → Mat) {X Y : Mat}
     (hX : X ∈ leftMultiplicativeDomain K) (hY : Y ∈ leftMultiplicativeDomain K) :
     X + Y ∈ leftMultiplicativeDomain K := by
   intro Z
@@ -183,7 +183,7 @@ theorem add_mem_leftMultiplicativeDomain (K : Fin d → Mat) {X Y : Mat}
     _ = krausMap K Z * (krausMap K X + krausMap K Y) := by simp [mul_add]
     _ = krausMap K Z * krausMap K (X + Y) := by simp
 
-theorem mul_mem_rightMultiplicativeDomain (K : Fin d → Mat) {X Y : Mat}
+theorem mul_mem_rightMultiplicativeDomain (K : ι → Mat) {X Y : Mat}
     (hX : X ∈ rightMultiplicativeDomain K) (hY : Y ∈ rightMultiplicativeDomain K) :
     X * Y ∈ rightMultiplicativeDomain K := by
   intro Z
@@ -195,7 +195,7 @@ theorem mul_mem_rightMultiplicativeDomain (K : Fin d → Mat) {X Y : Mat}
     _ = (krausMap K X * krausMap K Y) * krausMap K Z := by simp [mul_assoc]
     _ = krausMap K (X * Y) * krausMap K Z := by rw [hX Y]
 
-theorem mul_mem_leftMultiplicativeDomain (K : Fin d → Mat) {X Y : Mat}
+theorem mul_mem_leftMultiplicativeDomain (K : ι → Mat) {X Y : Mat}
     (hX : X ∈ leftMultiplicativeDomain K) (hY : Y ∈ leftMultiplicativeDomain K) :
     X * Y ∈ leftMultiplicativeDomain K := by
   intro Z
@@ -207,31 +207,31 @@ theorem mul_mem_leftMultiplicativeDomain (K : Fin d → Mat) {X Y : Mat}
     _ = krausMap K Z * (krausMap K X * krausMap K Y) := by simp [mul_assoc]
     _ = krausMap K Z * krausMap K (X * Y) := by rw [hY X]
 
-theorem one_mem_rightMultiplicativeDomain (K : Fin d → Mat)
+theorem one_mem_rightMultiplicativeDomain (K : ι → Mat)
     (h_unital : IsUnitalKraus K) :
     (1 : Mat) ∈ rightMultiplicativeDomain K := by
   simpa using smul_one_mem_rightMultiplicativeDomain (K := K) h_unital (1 : ℂ)
 
-theorem one_mem_leftMultiplicativeDomain (K : Fin d → Mat)
+theorem one_mem_leftMultiplicativeDomain (K : ι → Mat)
     (h_unital : IsUnitalKraus K) :
     (1 : Mat) ∈ leftMultiplicativeDomain K := by
   simpa using smul_one_mem_leftMultiplicativeDomain (K := K) h_unital (1 : ℂ)
 
-theorem conjTranspose_mem_rightMultiplicativeDomain (K : Fin d → Mat) {X : Mat}
+theorem conjTranspose_mem_rightMultiplicativeDomain (K : ι → Mat) {X : Mat}
     (hX : X ∈ leftMultiplicativeDomain K) :
     Xᴴ ∈ rightMultiplicativeDomain K := by
   intro Y
   have h := congrArg Matrix.conjTranspose (hX Yᴴ)
   simpa [conjTranspose_krausMap, mul_assoc] using h
 
-theorem conjTranspose_mem_leftMultiplicativeDomain (K : Fin d → Mat) {X : Mat}
+theorem conjTranspose_mem_leftMultiplicativeDomain (K : ι → Mat) {X : Mat}
     (hX : X ∈ rightMultiplicativeDomain K) :
     Xᴴ ∈ leftMultiplicativeDomain K := by
   intro Y
   have h := congrArg Matrix.conjTranspose (hX Yᴴ)
   simpa [conjTranspose_krausMap, mul_assoc] using h
 
-noncomputable def rightMultiplicativeDomainSubalgebra (K : Fin d → Mat)
+noncomputable def rightMultiplicativeDomainSubalgebra (K : ι → Mat)
     (h_unital : IsUnitalKraus K) : Subalgebra ℂ Mat where
   carrier := rightMultiplicativeDomain K
   zero_mem' := zero_mem_rightMultiplicativeDomain K
@@ -243,7 +243,7 @@ noncomputable def rightMultiplicativeDomainSubalgebra (K : Fin d → Mat)
     simpa [Algebra.smul_def] using
       smul_one_mem_rightMultiplicativeDomain (K := K) h_unital μ
 
-noncomputable def leftMultiplicativeDomainSubalgebra (K : Fin d → Mat)
+noncomputable def leftMultiplicativeDomainSubalgebra (K : ι → Mat)
     (h_unital : IsUnitalKraus K) : Subalgebra ℂ Mat where
   carrier := leftMultiplicativeDomain K
   zero_mem' := zero_mem_leftMultiplicativeDomain K
@@ -256,7 +256,7 @@ noncomputable def leftMultiplicativeDomainSubalgebra (K : Fin d → Mat)
       smul_one_mem_leftMultiplicativeDomain (K := K) h_unital μ
 
 /-- The full multiplicative domain is a `*`-subalgebra of the matrix algebra. -/
-noncomputable def multiplicativeDomainStarSubalgebra (K : Fin d → Mat)
+noncomputable def multiplicativeDomainStarSubalgebra (K : ι → Mat)
     (h_unital : IsUnitalKraus K) : StarSubalgebra ℂ Mat where
   toSubalgebra :=
     rightMultiplicativeDomainSubalgebra (K := K) h_unital ⊓
@@ -266,19 +266,19 @@ noncomputable def multiplicativeDomainStarSubalgebra (K : Fin d → Mat)
     exact ⟨conjTranspose_mem_rightMultiplicativeDomain (K := K) hX.2,
       conjTranspose_mem_leftMultiplicativeDomain (K := K) hX.1⟩
 
-@[simp] theorem mem_rightMultiplicativeDomainSubalgebra (K : Fin d → Mat)
+@[simp] theorem mem_rightMultiplicativeDomainSubalgebra (K : ι → Mat)
     (h_unital : IsUnitalKraus K) (X : Mat) :
     X ∈ rightMultiplicativeDomainSubalgebra (K := K) h_unital ↔
       X ∈ rightMultiplicativeDomain K :=
   Iff.rfl
 
-@[simp] theorem mem_leftMultiplicativeDomainSubalgebra (K : Fin d → Mat)
+@[simp] theorem mem_leftMultiplicativeDomainSubalgebra (K : ι → Mat)
     (h_unital : IsUnitalKraus K) (X : Mat) :
     X ∈ leftMultiplicativeDomainSubalgebra (K := K) h_unital ↔
       X ∈ leftMultiplicativeDomain K :=
   Iff.rfl
 
-@[simp] theorem mem_multiplicativeDomainStarSubalgebra (K : Fin d → Mat)
+@[simp] theorem mem_multiplicativeDomainStarSubalgebra (K : ι → Mat)
     (h_unital : IsUnitalKraus K) (X : Mat) :
     X ∈ multiplicativeDomainStarSubalgebra (K := K) h_unital ↔
       X ∈ multiplicativeDomain K :=
@@ -293,7 +293,7 @@ section StarHomomorphism
 This is the culmination of Wolf Theorem 5.7: the restriction `E|_𝒜` is a
 `*`-homomorphism from the multiplicative domain `StarSubalgebra` to the matrix
 algebra. -/
-noncomputable def krausMapStarAlgHom (K : Fin d → Mat)
+noncomputable def krausMapStarAlgHom (K : ι → Mat)
     (h_unital : IsUnitalKraus K) :
     ↥(multiplicativeDomainStarSubalgebra (K := K) h_unital) →⋆ₐ[ℂ] Mat :=
   letI S := multiplicativeDomainStarSubalgebra (K := K) h_unital
@@ -316,21 +316,21 @@ noncomputable def krausMapStarAlgHom (K : Fin d → Mat)
       simp only [star_eq_conjTranspose]
       exact krausMap_conjTranspose K (X : Mat) }
 
-@[simp] theorem krausMapStarAlgHom_apply (K : Fin d → Mat) (h_unital : IsUnitalKraus K)
+@[simp] theorem krausMapStarAlgHom_apply (K : ι → Mat) (h_unital : IsUnitalKraus K)
     (X : ↥(multiplicativeDomainStarSubalgebra (K := K) h_unital)) :
     krausMapStarAlgHom (K := K) h_unital X = krausMap K (X : Mat) :=
   rfl
 
 /-- The Kraus map is multiplicative on right multiplicative domain elements:
 `E(XY) = E(X)E(Y)` for all `X ∈ 𝒜_R` and all `Y`. -/
-theorem krausMap_mul_right_of_mem_multiplicativeDomain (K : Fin d → Mat)
+theorem krausMap_mul_right_of_mem_multiplicativeDomain (K : ι → Mat)
     {X : Mat} (hX : X ∈ multiplicativeDomain K) (Y : Mat) :
     krausMap K (X * Y) = krausMap K X * krausMap K Y :=
   hX.1 Y
 
 /-- The Kraus map is multiplicative on left multiplicative domain elements:
 `E(YX) = E(Y)E(X)` for all `X ∈ 𝒜_L` and all `Y`. -/
-theorem krausMap_mul_left_of_mem_multiplicativeDomain (K : Fin d → Mat)
+theorem krausMap_mul_left_of_mem_multiplicativeDomain (K : ι → Mat)
     {X : Mat} (hX : X ∈ multiplicativeDomain K) (Y : Mat) :
     krausMap K (Y * X) = krausMap K Y * krausMap K X :=
   hX.2 Y
@@ -347,7 +347,7 @@ the source-faithful abstract theory in `AbstractMultiplicativeDomain`.
 Source: Wolf, Equation (5.2), local source
 `Notes/WolfNoteTexSource/ch05_schwarz_inequalities.tex`, lines 156--164. -/
 theorem krausMap_isSchwarzMap
-    (K : Fin d → Mat) (h_unital : IsUnitalKraus K) :
+    (K : ι → Mat) (h_unital : IsUnitalKraus K) :
     IsSchwarzMap (Kraus.mapLM K) := by
   intro X
   change (Kraus.map K (Xᴴ * X) - Kraus.map K Xᴴ * Kraus.map K X).PosSemidef
@@ -359,7 +359,7 @@ theorem krausMap_isSchwarzMap
 multiplicative domain.  The names differ because the two formulations record
 opposite multiplication conventions. -/
 theorem mem_abstractRightMultiplicativeDomain_iff
-    (K : Fin d → Mat) (X : Mat) :
+    (K : ι → Mat) (X : Mat) :
     X ∈ SchwarzMap.rightMultiplicativeDomain (Kraus.mapLM K) ↔
       X ∈ leftMultiplicativeDomain K := by
   simp [SchwarzMap.rightMultiplicativeDomain, leftMultiplicativeDomain,
@@ -369,7 +369,7 @@ theorem mem_abstractRightMultiplicativeDomain_iff
 multiplicative domain.  The names differ because the two formulations record
 opposite multiplication conventions. -/
 theorem mem_abstractLeftMultiplicativeDomain_iff
-    (K : Fin d → Mat) (X : Mat) :
+    (K : ι → Mat) (X : Mat) :
     X ∈ SchwarzMap.leftMultiplicativeDomain (Kraus.mapLM K) ↔
       X ∈ rightMultiplicativeDomain K := by
   simp [SchwarzMap.leftMultiplicativeDomain, rightMultiplicativeDomain,
@@ -377,7 +377,7 @@ theorem mem_abstractLeftMultiplicativeDomain_iff
 
 /-- The abstract and Kraus full multiplicative domains agree. -/
 theorem mem_abstractMultiplicativeDomain_iff
-    (K : Fin d → Mat) (X : Mat) :
+    (K : ι → Mat) (X : Mat) :
     X ∈ SchwarzMap.multiplicativeDomain (Kraus.mapLM K) ↔
       X ∈ multiplicativeDomain K := by
   rw [SchwarzMap.multiplicativeDomain, multiplicativeDomain,

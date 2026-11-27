@@ -37,9 +37,9 @@ section PeripheralUnitary
 /-- Every fixed point of an irreducible unital finite Kraus map is scalar,
 by the abstract positive-map simplicity theorem (Wolf Theorem 6.6). -/
 theorem fixed_eq_scalar_of_irreducible_unital
-    {r D : ℕ} [NeZero D]
-    (K : Fin r → MatrixAlg D)
-    (hUnital : KadisonSchwarz.IsUnitalKraus (d := r) (D := D) K)
+    {ι : Type*} [Fintype ι] {D : ℕ} [NeZero D]
+    (K : ι → MatrixAlg D)
+    (hUnital : KadisonSchwarz.IsUnitalKraus (ι := ι) (D := D) K)
     (hIrr : IsIrreducibleMap (mapLM K))
     (X : MatrixAlg D)
     (hfix : mapLM K X = X) :
@@ -54,9 +54,9 @@ unitary eigenvector, by the abstract Schwarz theorem (Wolf Theorem 6.6).
 The historical adjoint-weight arguments are retained for compatibility;
 the faithful stationary weight is now derived internally. -/
 theorem exists_peripheral_unitary_of_irreducible_schwarz
-    {r D : ℕ} [NeZero D]
-    (K : Fin r → MatrixAlg D)
-    (hUnital : KadisonSchwarz.IsUnitalKraus (d := r) (D := D) K)
+    {ι : Type*} [Fintype ι] {D : ℕ} [NeZero D]
+    (K : ι → MatrixAlg D)
+    (hUnital : KadisonSchwarz.IsUnitalKraus (ι := ι) (D := D) K)
     (ρ : MatrixAlg D) (hρ : ρ.PosDef)
     (hρfix : Kraus.adjointMap K ρ = ρ)
     (hIrr : IsIrreducibleMap (mapLM K))
@@ -74,9 +74,9 @@ theorem exists_peripheral_unitary_of_irreducible_schwarz
 /-- Powers of a peripheral unitary remain eigenvectors, by the abstract
 multiplicative-domain theorem (Wolf Theorem 6.6(3)). -/
 theorem map_powers_of_peripheral_unitary
-    {r D : ℕ} [NeZero D]
-    (K : Fin r → MatrixAlg D)
-    (hUnital : KadisonSchwarz.IsUnitalKraus (d := r) (D := D) K)
+    {ι : Type*} [Fintype ι] {D : ℕ} [NeZero D]
+    (K : ι → MatrixAlg D)
+    (hUnital : KadisonSchwarz.IsUnitalKraus (ι := ι) (D := D) K)
     (ρ : MatrixAlg D) (hρ : ρ.PosDef)
     (hρfix : Kraus.adjointMap K ρ = ρ)
     {γ : ℂ}
@@ -96,9 +96,9 @@ theorem map_powers_of_peripheral_unitary
 /-- A peripheral generator can be normalized to have `m`-th power one,
 by the abstract Schwarz theorem (Wolf Theorem 6.6(4)). -/
 theorem exists_normalized_peripheral_unitary_of_irreducible_schwarz
-    {r D m : ℕ} [NeZero D] [NeZero m]
-    (K : Fin r → MatrixAlg D)
-    (hUnital : KadisonSchwarz.IsUnitalKraus (d := r) (D := D) K)
+    {ι : Type*} [Fintype ι] {D m : ℕ} [NeZero D] [NeZero m]
+    (K : ι → MatrixAlg D)
+    (hUnital : KadisonSchwarz.IsUnitalKraus (ι := ι) (D := D) K)
     (ρ : MatrixAlg D) (hρ : ρ.PosDef)
     (hρfix : Kraus.adjointMap K ρ = ρ)
     (hIrr : IsIrreducibleMap (mapLM K))
@@ -147,9 +147,9 @@ finite-Kraus specialization of the cyclic decomposition in Wolf Theorem 6.6,
 with a positive-definite adjoint fixed point assumed explicitly. See
 `docs/paper-gaps/wolf_thm6_6_kraus_scope.tex`. -/
 theorem exists_cyclic_decomposition_of_irreducible_schwarz
-    {r D m : ℕ} [NeZero D] [NeZero m]
-    (K : Fin r → MatrixAlg D)
-    (hUnital : KadisonSchwarz.IsUnitalKraus (d := r) (D := D) K)
+    {ι : Type*} [Fintype ι] {D m : ℕ} [NeZero D] [NeZero m]
+    (K : ι → MatrixAlg D)
+    (hUnital : KadisonSchwarz.IsUnitalKraus (ι := ι) (D := D) K)
     (ρ : MatrixAlg D) (hρ : ρ.PosDef)
     (hρfix : Kraus.adjointMap K ρ = ρ)
     (hIrr : IsIrreducibleMap (Kraus.mapLM K))

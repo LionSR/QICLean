@@ -42,9 +42,9 @@ namespace KadisonSchwarz
 
 /-- The predicate `KadisonSchwarz.IsUnitalKraus` implies `Kraus.IsUnital`.
 Both express `∑ᵢ Kᵢ Kᵢ† = I`. -/
-theorem IsUnitalKraus.toIsUnital {d D : ℕ}
-    {K : Fin d → Matrix (Fin D) (Fin D) ℂ}
-    (h : IsUnitalKraus (d := d) (D := D) K) : Kraus.IsUnital K := by
+theorem IsUnitalKraus.toIsUnital {ι : Type*} [Fintype ι] {D : ℕ}
+    {K : ι → Matrix (Fin D) (Fin D) ℂ}
+    (h : IsUnitalKraus (ι := ι) (D := D) K) : Kraus.IsUnital K := by
   simpa [Kraus.IsUnital, IsUnitalKraus] using h
 
 end KadisonSchwarz
@@ -61,9 +61,9 @@ Theorem 6.6 assumes an irreducible positive unital Schwarz map, whereas this
 declaration assumes a finite Kraus family and a positive-definite fixed point of
 its adjoint. See `docs/paper-gaps/wolf_thm6_6_kraus_scope.tex`. -/
 theorem isUnit_peripheral_eigenvector
-    {d D : ℕ} [NeZero D]
-    (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
-    (h_unital : KadisonSchwarz.IsUnitalKraus (d := d) (D := D) K)
+    {ι : Type*} [Fintype ι] {D : ℕ} [NeZero D]
+    (K : ι → Matrix (Fin D) (Fin D) ℂ)
+    (h_unital : KadisonSchwarz.IsUnitalKraus (ι := ι) (D := D) K)
     (ρ : Matrix (Fin D) (Fin D) ℂ) (hρ : ρ.PosDef)
     (hfix : Kraus.adjointMap K ρ = ρ)
     (hIrr : IsIrreducibleMap (Kraus.mapLM K))
@@ -71,7 +71,7 @@ theorem isUnit_peripheral_eigenvector
     (hEig : Kraus.mapLM K X = μ • X)
     (hμ : ‖μ‖ = 1) (hX_ne : X ≠ 0) :
     IsUnit X := by
-  have hEig_kraus : KadisonSchwarz.krausMap (d := d) (D := D) K X = μ • X := by
+  have hEig_kraus : KadisonSchwarz.krausMap (ι := ι) (D := D) K X = μ • X := by
     simpa [Kraus.mapLM_apply, KadisonSchwarz.krausMap] using hEig
   have hEig_map : Kraus.map K X = μ • X := by
     simpa [Kraus.mapLM_apply] using hEig
@@ -81,18 +81,18 @@ theorem isUnit_peripheral_eigenvector
     Kraus.ks_equality_of_peripheral_eigenvector_of_fixedPoint
       K h_unital' hρ hfix X μ hEig_map hμ
   have hKS :
-      KadisonSchwarz.krausMap (d := d) (D := D) K (Xᴴ * X)
-        = (KadisonSchwarz.krausMap (d := d) (D := D) K X)ᴴ
-            * KadisonSchwarz.krausMap (d := d) (D := D) K X := by
+      KadisonSchwarz.krausMap (ι := ι) (D := D) K (Xᴴ * X)
+        = (KadisonSchwarz.krausMap (ι := ι) (D := D) K X)ᴴ
+            * KadisonSchwarz.krausMap (ι := ι) (D := D) K X := by
     simpa [Kraus.map, KadisonSchwarz.krausMap] using hKS_map
   have hμ_starRingEnd_mul : ((starRingEnd ℂ) μ) * μ = 1 := by
     simpa [Complex.normSq_eq_norm_sq, hμ] using
       (Complex.normSq_eq_conj_mul_self (z := μ)).symm
-  have hfix_kraus : KadisonSchwarz.krausMap (d := d) (D := D) K (Xᴴ * X) = Xᴴ * X := by
+  have hfix_kraus : KadisonSchwarz.krausMap (ι := ι) (D := D) K (Xᴴ * X) = Xᴴ * X := by
     calc
-      KadisonSchwarz.krausMap (d := d) (D := D) K (Xᴴ * X)
-          = (KadisonSchwarz.krausMap (d := d) (D := D) K X)ᴴ
-              * KadisonSchwarz.krausMap (d := d) (D := D) K X := hKS
+      KadisonSchwarz.krausMap (ι := ι) (D := D) K (Xᴴ * X)
+          = (KadisonSchwarz.krausMap (ι := ι) (D := D) K X)ᴴ
+              * KadisonSchwarz.krausMap (ι := ι) (D := D) K X := hKS
       _ = (μ • X)ᴴ * (μ • X) := by simp [hEig_kraus]
       _ = (star μ * μ) • (Xᴴ * X) := by
             simp [conjTranspose_smul, smul_smul, mul_comm]
@@ -133,9 +133,9 @@ Theorem 6.6 assumes an irreducible positive unital Schwarz map, whereas this
 declaration assumes a finite Kraus family and a positive-definite fixed point of
 its adjoint. See `docs/paper-gaps/wolf_thm6_6_kraus_scope.tex`. -/
 theorem peripheralEigenvalues_pow_mem_of_irreducible_unital_of_adjoint_fixedPoint
-    {d D : ℕ} [NeZero D]
-    (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
-    (h_unital : KadisonSchwarz.IsUnitalKraus (d := d) (D := D) K)
+    {ι : Type*} [Fintype ι] {D : ℕ} [NeZero D]
+    (K : ι → Matrix (Fin D) (Fin D) ℂ)
+    (h_unital : KadisonSchwarz.IsUnitalKraus (ι := ι) (D := D) K)
     (ρ : Matrix (Fin D) (Fin D) ℂ) (hρ : ρ.PosDef)
     (hfix : Kraus.adjointMap K ρ = ρ)
     (hIrr : IsIrreducibleMap (Kraus.mapLM K)) :
@@ -155,7 +155,7 @@ theorem peripheralEigenvalues_pow_mem_of_irreducible_unital_of_adjoint_fixedPoin
   have hEig_mapLM : Kraus.mapLM K X = μ • X :=
     (Module.End.mem_eigenspace_iff).1 hX_mem
   -- Rewrite the eigenvector equation in terms of `krausMap` / `Kraus.map`.
-  have hEig_kraus : KadisonSchwarz.krausMap (d := d) (D := D) K X = μ • X := by
+  have hEig_kraus : KadisonSchwarz.krausMap (ι := ι) (D := D) K X = μ • X := by
     simpa [Kraus.mapLM_apply, KadisonSchwarz.krausMap] using hEig_mapLM
   have hEig_map : Kraus.map K X = μ • X := by
     simpa [Kraus.mapLM_apply] using hEig_mapLM
@@ -166,9 +166,9 @@ theorem peripheralEigenvalues_pow_mem_of_irreducible_unital_of_adjoint_fixedPoin
     Kraus.ks_equality_of_peripheral_eigenvector_of_fixedPoint
       K h_unital' hρ hfix X μ hEig_map hμ_norm
   have hKS :
-      KadisonSchwarz.krausMap (d := d) (D := D) K (Xᴴ * X)
-        = (KadisonSchwarz.krausMap (d := d) (D := D) K X)ᴴ
-            * KadisonSchwarz.krausMap (d := d) (D := D) K X := by
+      KadisonSchwarz.krausMap (ι := ι) (D := D) K (Xᴴ * X)
+        = (KadisonSchwarz.krausMap (ι := ι) (D := D) K X)ᴴ
+            * KadisonSchwarz.krausMap (ι := ι) (D := D) K X := by
     simpa [Kraus.map, KadisonSchwarz.krausMap] using hKS_map
   -- Reuse the extracted invertibility lemma.
   have hUnit_X : IsUnit X :=
@@ -178,7 +178,7 @@ theorem peripheralEigenvalues_pow_mem_of_irreducible_unital_of_adjoint_fixedPoin
     exact hUnit_Xpow.ne_zero
   -- Powers of `X` stay eigenvectors (algebraic multiplicative-domain argument).
   have hpow_kraus :
-      KadisonSchwarz.krausMap (d := d) (D := D) K (X ^ n) = μ ^ n • X ^ n :=
+      KadisonSchwarz.krausMap (ι := ι) (D := D) K (X ^ n) = μ ^ n • X ^ n :=
     KadisonSchwarz.krausMap_pow_of_ks_equality (K := K) h_unital X μ hEig_kraus hKS n
   have hpow_mapLM :
       Kraus.mapLM K (X ^ n) = μ ^ n • X ^ n := by
@@ -204,9 +204,9 @@ Theorem 6.6 assumes an irreducible positive unital Schwarz map, whereas this
 declaration assumes a finite Kraus family and a positive-definite fixed point of
 its adjoint. See `docs/paper-gaps/wolf_thm6_6_kraus_scope.tex`. -/
 theorem peripheral_isRootOfUnity_of_irreducible_unital_of_adjoint_fixedPoint
-    {d D : ℕ} [NeZero D]
-    (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
-    (h_unital : KadisonSchwarz.IsUnitalKraus (d := d) (D := D) K)
+    {ι : Type*} [Fintype ι] {D : ℕ} [NeZero D]
+    (K : ι → Matrix (Fin D) (Fin D) ℂ)
+    (h_unital : KadisonSchwarz.IsUnitalKraus (ι := ι) (D := D) K)
     (ρ : Matrix (Fin D) (Fin D) ℂ) (hρ : ρ.PosDef)
     (hfix : Kraus.adjointMap K ρ = ρ)
     (hIrr : IsIrreducibleMap (Kraus.mapLM K)) :

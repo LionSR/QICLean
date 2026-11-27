@@ -20,7 +20,7 @@ used in the “periodicity removal / peripheral spectrum” reduction:
 open scoped Matrix ComplexOrder MatrixOrder
 open Matrix Finset Complex KadisonSchwarz
 
-variable {d D : ℕ}
+variable {ι : Type*} [Fintype ι] {D : ℕ}
 
 namespace KadisonSchwarz
 
@@ -34,7 +34,7 @@ If `E` is unital and the KS gap vanishes at `X` (i.e. `E(X†X) = E(X)†E(X)`),
 `E(YX) = E(Y)E(X)` for all `Y`.
 
 This is the right-handed analogue of `multiplicative_domain_left`. -/
-theorem multiplicative_domain_right (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
+theorem multiplicative_domain_right (K : ι → Matrix (Fin D) (Fin D) ℂ)
     (h_unital : IsUnitalKraus K) (X : Matrix (Fin D) (Fin D) ℂ)
     (h_eq : krausMap K (Xᴴ * X) = (krausMap K X)ᴴ * krausMap K X)
     (Y : Matrix (Fin D) (Fin D) ℂ) :
@@ -64,7 +64,7 @@ section Powers
 (equations) eigenvectors: `E(X^n)=μ^n X^n`.
 
 This lemma is purely algebraic once one has `multiplicative_domain_right`. -/
-theorem krausMap_pow_of_ks_equality (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
+theorem krausMap_pow_of_ks_equality (K : ι → Matrix (Fin D) (Fin D) ℂ)
     (h_unital : IsUnitalKraus K)
     (X : Matrix (Fin D) (Fin D) ℂ) (μ : ℂ)
     (hEig : krausMap K X = μ • X)
@@ -94,7 +94,7 @@ theorem krausMap_pow_of_ks_equality (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
 `E(X^n)=μ^n X^n` for all `n`.
 
 This uses `ks_equality_of_peripheral_eigenvector` to obtain KS equality at `X`. -/
-theorem krausMap_pow_of_peripheral_eigenvector (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
+theorem krausMap_pow_of_peripheral_eigenvector (K : ι → Matrix (Fin D) (Fin D) ℂ)
     (h_unital : IsUnitalKraus K) (h_tp : Kraus.IsTP K)
     (X : Matrix (Fin D) (Fin D) ℂ) (μ : ℂ)
     (hEig : krausMap K X = μ • X) (hμ : ‖μ‖ = 1) :

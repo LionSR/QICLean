@@ -172,7 +172,7 @@ theorem peripheral_isRootOfUnity_of_irreducible_channel [NeZero D]
   have hIrrK : IsIrreducibleMap (Kraus.mapLM K) := by
     simpa [hE_eq] using hIrr
   -- The conjugate-transposed family is unital.
-  have hL_unital : KadisonSchwarz.IsUnitalKraus (d := r) (D := D) (fun i => (K i)ᴴ) :=
+  have hL_unital : KadisonSchwarz.IsUnitalKraus (ι := Fin r) (D := D) (fun i => (K i)ᴴ) :=
     KadisonSchwarz.isUnitalKraus_conjTranspose (K := K) hK_tp
   -- The irreducible channel has a positive definite fixed point, which is an
   -- adjoint fixed point of the conjugate-transposed family.

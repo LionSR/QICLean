@@ -88,7 +88,7 @@ adjoint of `Kraus.mapLM K` is the Kraus map of the conjugate-transposed family
 
 namespace Kraus
 
-variable {d D : ℕ}
+variable {ι : Type*} [Fintype ι] {D : ℕ}
 
 local notation "Mat" => Matrix (Fin D) (Fin D) ℂ
 
@@ -132,7 +132,7 @@ lemma mapLM_conjTranspose_eq_adjoint {ι : Type*} [Fintype ι] (K : ι → Mat) 
 
 /-- Eigenvalues of the conjugate-transposed Kraus family are the complex conjugates
 of the eigenvalues of the original family. -/
-theorem hasEigenvalue_mapLM_conjTranspose_iff (K : Fin d → Mat) (μ : ℂ) :
+theorem hasEigenvalue_mapLM_conjTranspose_iff (K : ι → Mat) (μ : ℂ) :
     Module.End.HasEigenvalue (mapLM fun i => (K i)ᴴ) μ ↔
       Module.End.HasEigenvalue (mapLM K) (star μ) := by
   rw [mapLM_conjTranspose_eq_adjoint]
@@ -140,7 +140,7 @@ theorem hasEigenvalue_mapLM_conjTranspose_iff (K : Fin d → Mat) (μ : ℂ) :
 
 /-- The peripheral spectrum of the conjugate-transposed Kraus family is the
 image of the peripheral spectrum of the original family under complex conjugation. -/
-theorem peripheralEigenvalues_mapLM_conjTranspose (K : Fin d → Mat) :
+theorem peripheralEigenvalues_mapLM_conjTranspose (K : ι → Mat) :
     peripheralEigenvalues (mapLM fun i => (K i)ᴴ) =
       star '' peripheralEigenvalues (mapLM K) := by
   rw [mapLM_conjTranspose_eq_adjoint, peripheralEigenvalues_adjoint]

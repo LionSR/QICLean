@@ -29,12 +29,12 @@ open Matrix
 
 namespace KadisonSchwarz
 
-variable {d D : ℕ}
+variable {ι : Type*} [Fintype ι] {D : ℕ}
 
 /-- The adjoint Kraus map commutes with `conjTranspose`. -/
 @[simp]
 theorem krausAdjointMap_conjTranspose
-    (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
+    (K : ι → Matrix (Fin D) (Fin D) ℂ)
     (X : Matrix (Fin D) (Fin D) ℂ) :
     krausAdjointMap K Xᴴ = (krausAdjointMap K X)ᴴ := by
   simp only [krausAdjointMap, Matrix.conjTranspose_sum, Matrix.conjTranspose_mul,
@@ -47,7 +47,7 @@ assumption is included to match the statement of the proposition; the proof does
 not use it since Kadison–Schwarz already holds for all inputs (see
 `kadison_schwarz_adjoint`). -/
 theorem kadison_schwarz_normal_cp
-    (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
+    (K : ι → Matrix (Fin D) (Fin D) ℂ)
     (h_tp : Kraus.IsTP K)
     (A : Matrix (Fin D) (Fin D) ℂ)
     (_hNormal : Aᴴ * A = A * Aᴴ) :
@@ -56,7 +56,7 @@ theorem kadison_schwarz_normal_cp
 
 /-- Loewner-order reformulation of `kadison_schwarz_normal_cp`. -/
 theorem kadison_schwarz_normal_cp_le
-    (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
+    (K : ι → Matrix (Fin D) (Fin D) ℂ)
     (h_tp : Kraus.IsTP K)
     (A : Matrix (Fin D) (Fin D) ℂ)
     (hNormal : Aᴴ * A = A * Aᴴ) :

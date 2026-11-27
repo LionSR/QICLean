@@ -44,7 +44,7 @@ open Matrix
 
 namespace KadisonSchwarz
 
-variable {d D : ℕ}
+variable {ι : Type*} [Fintype ι] {D : ℕ}
 
 local notation "Mat" => Matrix (Fin D) (Fin D) ℂ
 
@@ -359,7 +359,7 @@ interface from `PositiveMapProperties`.
 Note: `TNLean.Channel.Semigroup.Generator` contains an older duplicate
 formula with the same name; inside `namespace KadisonSchwarz`, this formulation
 intentionally uses the canonical Schwarz-side definition. -/
-noncomputable def krausAdjointMapLinear (K : Fin d → Mat) : Mat →ₗ[ℂ] Mat where
+noncomputable def krausAdjointMapLinear (K : ι → Mat) : Mat →ₗ[ℂ] Mat where
   toFun := krausAdjointMap K
   map_add' := by
     intro X Y
@@ -369,8 +369,8 @@ noncomputable def krausAdjointMapLinear (K : Fin d → Mat) : Mat →ₗ[ℂ] Ma
     simp [krausAdjointMap, Finset.smul_sum, Matrix.mul_assoc]
 
 /-- The adjoint Kraus map is positive. -/
-private lemma krausAdjointMapLinear_isPositiveMap (K : Fin d → Mat) :
-    IsPositiveMap (krausAdjointMapLinear (d := d) (D := D) K) := by
+private lemma krausAdjointMapLinear_isPositiveMap (K : ι → Mat) :
+    IsPositiveMap (krausAdjointMapLinear (ι := ι) (D := D) K) := by
   intro X hX
   classical
   change (∑ i, (K i)ᴴ * X * K i).PosSemidef
@@ -420,15 +420,15 @@ Once both inequalities `Aᴴ * A ≤ D` and `A * Aᴴ ≤ D` are available, the 
 just Kadison--Schwarz for the adjoint Kraus map, followed by monotonicity of the
 positive map `X ↦ ∑ᵢ Kᵢ† X Kᵢ`. -/
 theorem kadison_schwarz_commuting_dominant_cp_of_two_sided_bound
-    (K : Fin d → Mat)
+    (K : ι → Mat)
     (h_tp : Kraus.IsTP K)
     (A Dom : Mat)
     (hDomLeft : Aᴴ * A ≤ Dom)
     (hDomRight : A * Aᴴ ≤ Dom) :
     krausAdjointMap K (Aᴴ) * krausAdjointMap K A ≤ krausAdjointMap K Dom ∧
       krausAdjointMap K A * krausAdjointMap K (Aᴴ) ≤ krausAdjointMap K Dom := by
-  let T : Mat →ₗ[ℂ] Mat := krausAdjointMapLinear (d := d) (D := D) K
-  have hPosT : IsPositiveMap T := krausAdjointMapLinear_isPositiveMap (d := d) (D := D) K
+  let T : Mat →ₗ[ℂ] Mat := krausAdjointMapLinear (ι := ι) (D := D) K
+  have hPosT : IsPositiveMap T := krausAdjointMapLinear_isPositiveMap (ι := ι) (D := D) K
   have hKSLeft' : (krausAdjointMap K A)ᴴ * krausAdjointMap K A ≤
       krausAdjointMap K (Aᴴ * A) := by
     rw [Matrix.le_iff]
@@ -458,7 +458,7 @@ theorem kadison_schwarz_commuting_dominant_cp_of_two_sided_bound
 The only missing ingredient beyond `kadison_schwarz_commuting_dominant_cp_of_two_sided_bound`
 is the right-dominance lemma `commuting_dominant_right_bound`. -/
 theorem kadison_schwarz_commuting_dominant_cp
-    (K : Fin d → Mat)
+    (K : ι → Mat)
     (h_tp : Kraus.IsTP K)
     (A Dom : Mat)
     (hDomPos : Dom.PosSemidef)
