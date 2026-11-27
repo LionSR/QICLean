@@ -1610,7 +1610,7 @@ seven public standard-axiom guards pass; full repository CI is not claimed.
   minimal for both the word-span and Choi clauses, chooses the minimal vector
   threshold `n`, and proves `n ≤ q`.
 * `Kraus.hasEventuallyFullVectorSpread_iff_exists_hasFullVectorSpreadFrom`,
-  `Kraus.hasEventuallyFullWordSpan_iff_exists_hasFullWordSpanFrom`, and
+  `Kraus.isNormal_iff_exists_hasFullWordSpanFrom`, and
   `Kraus.eventually_choiMatrix_mapLM_pow_posDef_iff_exists_hasPosDefChoiFrom`
   identify the reusable eventual predicates with Wolf's explicitly quantified
   threshold clauses.

@@ -248,7 +248,7 @@ Then `wordSpan K (n+m) = ⊤`.
 
 This is the part of Lemma 2(b) that turns rank-one operators and vector
 spanning into full matrix spanning. The rank-one hypothesis is supplied by
-`Kraus.vecMulVec_eigenvector_mem_wordSpan_of_hasEventuallyFullWordSpan`.
+`Kraus.vecMulVec_eigenvector_mem_wordSpan_of_isNormal`.
 -/
 theorem wordSpan_eq_top_of_vectorSpreadSpan_eq_top_of_rankOneBasis
     (K : Fin d → Matrix (Fin D) (Fin D) ℂ) (φ : Fin D → ℂ) {n m : ℕ}

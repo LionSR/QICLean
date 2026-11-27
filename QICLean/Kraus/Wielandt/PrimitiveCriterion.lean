@@ -63,11 +63,13 @@ theorem hasEventuallyFullVectorSpread_iff_exists_hasFullVectorSpreadFrom
   · rintro ⟨n, hn⟩
     exact Filter.eventually_atTop.mpr ⟨n, hn⟩
 
-/-- Eventual full word span is equivalent to Wolf's explicit existence of a
+/-- Normality, that is eventual fullness of the word spans, is equivalent to Wolf's
+explicit existence of a
 threshold `q` after which all word spans are the full matrix algebra. -/
-theorem hasEventuallyFullWordSpan_iff_exists_hasFullWordSpanFrom
+theorem isNormal_iff_exists_hasFullWordSpanFrom
     (K : Fin r → Matrix (Fin D) (Fin D) ℂ) :
-    HasEventuallyFullWordSpan K ↔ ∃ q, HasFullWordSpanFrom K q := by
+    IsNormal K ↔ ∃ q, HasFullWordSpanFrom K q := by
+  rw [isNormal_iff_eventually_isNBlkInjective]
   constructor
   · intro h
     exact Filter.eventually_atTop.mp h
@@ -97,8 +99,8 @@ theorem eventually_choiMatrix_mapLM_pow_posDef_of_isIrreducibleMap_of_isPrimitiv
     (hPrim : IsPrimitive (mapLM K)) :
     ∀ᶠ m : ℕ in Filter.atTop,
       (ChoiJamiolkowski.choiMatrix ((mapLM K) ^ m)).PosDef :=
-  (eventually_choiMatrix_mapLM_pow_posDef_iff_hasEventuallyFullWordSpan K).2
-    (hasEventuallyFullWordSpan_of_isIrreducibleMap_of_isPrimitive K hTP hIrr hPrim)
+  (eventually_choiMatrix_mapLM_pow_posDef_iff_isNormal K).2
+    (isNormal_of_isIrreducibleMap_of_isPrimitive K hTP hIrr hPrim)
 
 /-- Wolf, Theorem 6.8: for a trace-preserving finite Kraus family, the source's
 four characterizations of primitivity are equivalent. Clause 1 explicitly
@@ -115,8 +117,8 @@ theorem wolf_theorem_6_8_tfae [NeZero D]
       ∃ q, HasPosDefChoiFrom K q] := by
   tfae_have h13 : 1 → 3 := by
     rintro ⟨hIrr, hPrim⟩
-    exact (hasEventuallyFullWordSpan_iff_exists_hasFullWordSpanFrom K).mp
-      (hasEventuallyFullWordSpan_of_isIrreducibleMap_of_isPrimitive
+    exact (isNormal_iff_exists_hasFullWordSpanFrom K).mp
+      (isNormal_of_isIrreducibleMap_of_isPrimitive
         K hTP hIrr hPrim)
   tfae_have h34 : 3 ↔ 4 := by
     constructor
@@ -158,8 +160,8 @@ theorem wolf_theorem_6_8_minimal_indices [NeZero D]
       n ≤ q := by
   classical
   have hWord : ∃ q, HasFullWordSpanFrom K q :=
-    (hasEventuallyFullWordSpan_iff_exists_hasFullWordSpanFrom K).mp
-      (hasEventuallyFullWordSpan_of_isIrreducibleMap_of_isPrimitive
+    (isNormal_iff_exists_hasFullWordSpanFrom K).mp
+      (isNormal_of_isIrreducibleMap_of_isPrimitive
         K hTP hIrr hPrim)
   have hVector : ∃ n, HasFullVectorSpreadFrom K n := by
     obtain ⟨q, hq⟩ := hWord

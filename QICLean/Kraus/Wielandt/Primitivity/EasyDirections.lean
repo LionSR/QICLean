@@ -17,7 +17,7 @@ vector spreads in Wolf, Theorem 6.8.
 * `Kraus.HasEventuallyFullVectorSpread` is Wolf, Theorem 6.8, item 2.
 * `Kraus.vectorSpreadSpan_eq_top_of_wordSpan_eq_top` is the fixed-length
   implication from item 3 to item 2.
-* `Kraus.hasEventuallyFullVectorSpread_of_hasEventuallyFullWordSpan` is the
+* `Kraus.hasEventuallyFullVectorSpread_of_isNormal` is the
   eventual implication from item 3 to item 2.
 -/
 
@@ -63,13 +63,13 @@ theorem vectorSpreadSpan_eq_top_of_wordSpan_eq_top
   simp only [Finset.sum_ite_eq, Finset.mem_univ, ite_true]
   field_simp
 
-/-- Wolf, Theorem 6.8, item 3 implies item 2: eventual fullness of the matrix
-word spans gives eventual full vector spread. -/
-theorem hasEventuallyFullVectorSpread_of_hasEventuallyFullWordSpan
+/-- Wolf, Theorem 6.8, item 3 implies item 2: normality, that is eventual fullness of the
+matrix word spans, gives eventual full vector spread. -/
+theorem hasEventuallyFullVectorSpread_of_isNormal
     (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
-    (hK : HasEventuallyFullWordSpan K) :
+    (hK : IsNormal K) :
     HasEventuallyFullVectorSpread K := by
-  filter_upwards [hK] with N hN
+  filter_upwards [hK.eventually_isNBlkInjective] with N hN
   exact fun φ hφ => vectorSpreadSpan_eq_top_of_wordSpan_eq_top K hN φ hφ
 
 end Kraus

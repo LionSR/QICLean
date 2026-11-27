@@ -28,8 +28,8 @@ exact level.
 
 It also contains the following results.
 
-* `Kraus.rectSpan_nilpIndex_strict_growth_of_hasEventuallyFullWordSpan`,
-  `Kraus.vecMulVec_eigenvector_mem_wordSpan_of_hasEventuallyFullWordSpan`: eventual fullness and
+* `Kraus.rectSpan_nilpIndex_strict_growth_of_isNormal`,
+  `Kraus.vecMulVec_eigenvector_mem_wordSpan_of_isNormal`: eventual fullness and
   Wolf's rectangular-span bound.
 -/
 
@@ -559,9 +559,9 @@ the dimension of the corresponding left-multiplication range.
 
 This is the strict-growth step in Wolf, Lemma 6.3(b), and
 arXiv:0909.5347, Lemma 2(b). -/
-theorem rectSpan_nilpIndex_strict_growth_of_hasEventuallyFullWordSpan
+theorem rectSpan_nilpIndex_strict_growth_of_isNormal
     (K : Fin d → Matrix (Fin D) (Fin D) ℂ) (i₀ : Fin d)
-    (hFull : HasEventuallyFullWordSpan K) (n : ℕ)
+    (hFull : IsNormal K) (n : ℕ)
     (hlt : finrank ℂ (rectSpan ((K i₀) ^ nilpIndex (toLin' (K i₀))) K n) <
       D * ((K i₀) ^ D).rank) :
     finrank ℂ (rectSpan ((K i₀) ^ nilpIndex (toLin' (K i₀))) K n) <
@@ -573,7 +573,7 @@ theorem rectSpan_nilpIndex_strict_growth_of_hasEventuallyFullWordSpan
       finrank ℂ (rectSpan ((K i₀) ^ nilpIndex (toLin' (K i₀))) K n) =
         finrank ℂ (rectSpan ((K i₀) ^ nilpIndex (toLin' (K i₀))) K (n + 1)) := by
     omega
-  obtain ⟨N, hN⟩ := Filter.eventually_atTop.mp hFull
+  obtain ⟨N, hN⟩ := Filter.eventually_atTop.mp hFull.eventually_isNBlkInjective
   have hNrange :
       rectSpan ((K i₀) ^ nilpIndex (toLin' (K i₀))) K N =
         LinearMap.range (LinearMap.mulLeft ℂ
@@ -595,10 +595,10 @@ matrix `|φ⟩⟨ψ|` belongs to the exact word span at length
 
 Source: `Notes/WolfNoteTexSource/ch06_spectral_properties.tex`, lines
 1018--1067; arXiv:0909.5347, Lemma 2(b). -/
-theorem vecMulVec_eigenvector_mem_wordSpan_of_hasEventuallyFullWordSpan
+theorem vecMulVec_eigenvector_mem_wordSpan_of_isNormal
     [NeZero D]
     (K : Fin d → Matrix (Fin D) (Fin D) ℂ) (i₀ : Fin d)
-    (hFull : HasEventuallyFullWordSpan K)
+    (hFull : IsNormal K)
     (hNotInv : ¬ IsUnit (toLin' (K i₀)))
     {φ : Fin D → ℂ} {μ : ℂ} (hμ : μ ≠ 0)
     (heig : K i₀ *ᵥ φ = μ • φ) :
@@ -611,7 +611,7 @@ theorem vecMulVec_eigenvector_mem_wordSpan_of_hasEventuallyFullWordSpan
       finrank ℂ (rectSpan ((K i₀) ^ r) K n) <
         finrank ℂ (rectSpan ((K i₀) ^ r) K (n + 1)) :=
     fun n hlt ↦
-      rectSpan_nilpIndex_strict_growth_of_hasEventuallyFullWordSpan
+      rectSpan_nilpIndex_strict_growth_of_isNormal
         K i₀ hFull n hlt
   obtain ⟨n₀, hn₀, hrange⟩ :=
     rectSpan_nilpIndex_eq_range_of_strict_growth K i₀ hStrict
