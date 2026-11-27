@@ -37,7 +37,7 @@ the vectors `{v i N}` are linearly independent.
 -/
 theorem eventually_linearIndependent_of_gram_tendsto_nondegenerate
     {ι : Type*} [Fintype ι] [DecidableEq ι]
-    {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
+    {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     (v : ι → ℕ → V) (L : Matrix ι ι ℂ) (hL : L.det ≠ 0)
     (h : ∀ i j, Tendsto (fun N => ⟪v i N, v j N⟫_ℂ) atTop (nhds (L i j))) :
     ∀ᶠ N in atTop, LinearIndependent ℂ (fun i => v i N) := by
@@ -69,7 +69,7 @@ statement itself.
 -/
 theorem eventually_linearIndependent_of_gram_tendsto_id
     {ι : Type*} [Finite ι] [DecidableEq ι]
-    {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
+    {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     (v : ι → ℕ → V)
     (h : ∀ i j, Tendsto (fun N => ⟪v i N, v j N⟫_ℂ) atTop
              (nhds (if i = j then (1 : ℂ) else 0))) :
