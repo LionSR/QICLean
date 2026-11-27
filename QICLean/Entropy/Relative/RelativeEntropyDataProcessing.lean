@@ -12,7 +12,7 @@ import Mathlib.LinearAlgebra.UnitaryGroup
 import Mathlib.LinearAlgebra.Matrix.Kronecker
 import Mathlib.Analysis.Matrix.Order
 import QICLean.Analysis.FunctionalCalculus.CfcKronecker
-import QICLean.Analysis.FunctionalCalculus.CfcLogAdditive
+import QICLean.Analysis.FunctionalCalculus.MatrixPowers
 import QICLean.Entropy.VonNeumann.Entropy
 
 /-!

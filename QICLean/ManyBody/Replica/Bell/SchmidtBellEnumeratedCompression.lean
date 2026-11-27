@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.ManyBody.Replica.Bell.SchmidtBellEnumeratedPrevector
+import QICLean.ManyBody.Replica.Bell.SchmidtBellPrevectorOverlap
 import QICLean.ManyBody.Replica.Bell.InsertionCoordinates
 import QICLean.ManyBody.Replica.Metric.Metric
 import QICLean.ManyBody.Replica.Label.SubsystemTransport

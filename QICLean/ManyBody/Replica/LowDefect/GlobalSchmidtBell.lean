@@ -6,7 +6,7 @@ Authors: QICLean contributors
 import QICLean.ManyBody.Replica.LowDefect.RegionalRoughLowerNorm
 import QICLean.Analysis.Real.SublinearRemainder
 import QICLean.Spectral.Eigenvalue.MatrixReindexEuclidean
-import QICLean.Representation.Bell.SchmidtBellPrevector
+import QICLean.Representation.Bell.ReplicaPrevector
 import QICLean.ManyBody.Replica.LowDefect.RegionalLowDefectProjection
 import QICLean.ManyBody.Replica.Bell.PrevectorRoughUpper
 import QICLean.ManyBody.Hamiltonian.Constraint.FiniteSetTruncationGap

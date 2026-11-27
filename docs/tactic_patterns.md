@@ -982,7 +982,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Pattern:** Keep the physical coefficient fixed while an operator acts
   on the selected auxiliary factor, and identify the result after regrouping
   the physical and auxiliary coordinates.
-- **Seen:** `QICLean/Representation/Bell/SchmidtBellPrevector.lean` has one new
+- **Seen:** `QICLean/Representation/Bell/ReplicaPrevector.lean` has one new
   consumer. The earlier product-action and identity-spectator calculations
   occur in `ReplicaPrevector.lean` and `ReplicaDefect.lean`.
 - **Abstraction:** The new calculation reuses Mathlib's
@@ -1041,7 +1041,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   invariance of the actual product density, then partial-trace preservation
   and the unit one-copy trace to recover the component's squared norm.
 - **Seen:** `Matrix.replicaGoodRegionalAuxiliaryMarginal_exp_mergeDeficit_le`
-  in `QICLean/ManyBody/Replica/Configuration/ComponentMergeMoment.lean`; one mathematical
+  in `QICLean/ManyBody/Replica/Configuration/GoodConfigurationMergeMoment.lean`; one mathematical
   consumer. The two separate actions use different factor invariances.
 - **Abstraction:** Reuse the existing permutation entries, tensor-product
   multiplication, partial-trace preservation, and paired homogeneous moment

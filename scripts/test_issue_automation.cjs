@@ -94,10 +94,10 @@ function runBaseStep(event, base, fetchFails = false) {
   } finally { rmSync(dir, { recursive: true }); }
 }
 for (const event of ['pull_request', 'push']) {
-  test(`${event}: exact base passed to both ratchets`, () => {
+  test(`${event}: exact base passed to all three ratchets`, () => {
     const result = runBaseStep(event, sha);
     assert.equal(result.status, 0);
-    assert.equal(result.calls.split(`--base-revision ${sha}`).length - 1, 2);
+    assert.equal(result.calls.split(`--base-revision ${sha}`).length - 1, 3);
   });
   for (const base of ['', 'invalid']) {
     test(`${event}: missing or malformed base fails closed (${base})`, () => {
@@ -118,10 +118,10 @@ test('PR cannot bootstrap with the zero SHA', () => {
   assert.equal(result.calls, '');
 });
 for (const [event, base] of [['push', '0'.repeat(40)], ['workflow_dispatch', '']]) {
-  test(`${event}: intentional bootstrap still runs both checks`, () => {
+  test(`${event}: intentional bootstrap still runs all three checks`, () => {
     const result = runBaseStep(event, base);
     assert.equal(result.status, 0);
-    assert.equal(result.calls.split('python3').length - 1, 2);
+    assert.equal(result.calls.split('python3').length - 1, 3);
     assert.ok(!result.calls.includes('--base-'));
   });
 }

@@ -34,7 +34,6 @@ import QICLean.Spectral.Eigenvalue.RitzCompression
 import QICLean.Spectral.Eigenvalue.RitzSubspace
 import QICLean.Spectral.Eigenvalue.SemisimpleTracePowers
 import QICLean.Spectral.Eigenvalue.ShiftedDensityClipping
-import QICLean.Spectral.Eigenvalue.ShiftedFilterClipping
 import QICLean.Spectral.Eigenvalue.ShiftedTracePowerSpectrum
 import QICLean.Spectral.Eigenvalue.ShiftedZeroTraceNilpotent
 import QICLean.Spectral.Eigenvalue.TailTraceNorm

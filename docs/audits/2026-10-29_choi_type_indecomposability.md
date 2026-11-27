@@ -76,7 +76,7 @@ This is an automated mathematical audit, not a human or GitHub approval.
   after the implementation commit: exactly one changed production file and
   one test file. It uses all repository strict flags, standard linters, and
   warnings as errors.
-- `QICLeanTest/ChoiTypeIndecomposable.lean` checks `d=3,n=1`, `d=5,n=2`, the
+- `QICLeanTest/Channel/ChoiTypeMap/ChoiTypeIndecomposable.lean` checks `d=3,n=1`, `d=5,n=2`, the
   arbitrary upper endpoint, arbitrary-parameter nondecomposability and
   indecomposability, actual smallest-dimension PPT witness, middle-parameter
   negative scaled quadratic form, and all three transitive axiom guards.

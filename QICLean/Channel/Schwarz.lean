@@ -23,7 +23,6 @@ import QICLean.Channel.Schwarz.PetzOverlapDataProcessing
 import QICLean.Channel.Schwarz.PositiveMapProperties
 import QICLean.Channel.Schwarz.PositiveOnAbelian
 import QICLean.Channel.Schwarz.PositiveOnAbelian.Basic
-import QICLean.Channel.Schwarz.PositiveOnAbelian.Characterization
 import QICLean.Channel.Schwarz.PositiveOnAbelian.CompletePositivity
 import QICLean.Channel.Schwarz.RussoDye
 import QICLean.Channel.Schwarz.SchurComplement

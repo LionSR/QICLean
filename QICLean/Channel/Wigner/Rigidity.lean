@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Channel.Wigner.ProjectiveCarrierBridge
-import QICLean.Spectral.Perturbation.HermitianSpectrumPreserver
+import QICLean.Spectral.Perturbation.HermitianSpectrumPerturbation
 import QICLean.Channel.Wigner.ProjectivePureState
 import QICLean.Channel.Wigner.TwoPureStateCharpoly
 

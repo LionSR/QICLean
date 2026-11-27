@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Unit tests for Lean module naming and file-size policy checkers."""
+"""Unit tests for the Lean module naming, file-size and small-module policy checkers."""
 
 from __future__ import annotations
 
@@ -11,8 +11,10 @@ import unittest
 from collections.abc import Callable
 from pathlib import Path
 
+import check_import_layers as layers
 import check_numbered_lean_files as numbered
 import check_oversized_lean_files as oversized
+import check_small_lean_modules as small
 
 
 class CapturedCheck(unittest.TestCase):
@@ -267,6 +269,158 @@ class OversizedLeanFilePolicyTests(CapturedCheck):
         )
         self.assertEqual(status, 1)
         self.assertIn("unterminated block comment", output)
+
+
+class SmallModuleCeilingTests(unittest.TestCase):
+    def test_public_top_level_declarations_are_counted(self) -> None:
+        count = small.public_declarations
+        source = (
+            "import QICLean.Algebra.Matrix.Basic\n"
+            "/-! A module docstring naming theorem fake. -/\n"
+            "@[simp] theorem a : True := trivial\n"
+            "private lemma b : True := trivial\n"
+            "noncomputable def c := 0\n"
+            "  theorem indented : True := trivial\n"
+            'def d := "theorem inString"\n'
+            "-- theorem commented : True := trivial\n"
+        )
+        self.assertEqual(count(source), 3)
+        self.assertEqual(count("syntax \"foo\" : tactic\n"), 0)
+
+    def test_aggregators_and_import_only_modules_are_not_counted(self) -> None:
+        generated = f"-- {small.AGGREGATOR_MARKER}\nimport QICLean.A\n"
+        self.assertIsNone(small.public_declarations(generated))
+        self.assertIsNone(small.public_declarations("/- forward -/\nimport QICLean.A\n"))
+
+    def test_modules_are_grouped_by_the_directories_of_the_layer_check(self) -> None:
+        sources = {
+            "QICLean.ManyBody.Replica.Sub.A": "theorem a : True := trivial\n",
+            "QICLean.Algebra.Deep.B": "def b := 0\n",
+            "QICLean.Root": "def r := 0\n",
+            "QICLean.ManyBody.Replica.Big": "def x := 0\ndef y := 0\ndef z := 0\n",
+        }
+        self.assertEqual(
+            small.small_modules(sources),
+            {
+                "ManyBody/Replica": {"QICLean.ManyBody.Replica.Sub.A": 1},
+                "Algebra": {"QICLean.Algebra.Deep.B": 1},
+                ".": {"QICLean.Root": 1},
+            },
+        )
+
+    def test_a_count_above_its_ceiling_names_the_directory_and_modules(self) -> None:
+        found = {"ManyBody/Replica": {"QICLean.ManyBody.Replica.A": 1, "QICLean.ManyBody.Replica.B": 2}}
+        errors, _ = small.check(found, {"ManyBody/Replica": 1})
+        self.assertEqual(len(errors), 1)
+        self.assertIn("ManyBody/Replica has 2 modules", errors[0])
+        self.assertIn("QICLean.ManyBody.Replica.A (1), QICLean.ManyBody.Replica.B (2)", errors[0])
+        # A changed module is named in preference to the others.
+        errors, _ = small.check(found, {"ManyBody/Replica": 1}, {"ManyBody/Replica": 1}, {},
+                                {"QICLean.ManyBody.Replica.B"})
+        self.assertIn("added or changed modules: QICLean.ManyBody.Replica.B (2)", errors[0])
+        # A directory without a ceiling has ceiling 0.
+        errors, _ = small.check({"Entropy": {"QICLean.Entropy.New": 0}}, {})
+        self.assertIn("above its ceiling of 0", errors[0])
+        # A count below its ceiling only warns.
+        errors, warnings = small.check({}, {"Entropy": 2})
+        self.assertEqual(errors, [])
+        self.assertIn("below its ceiling of 2", warnings[0])
+
+    def test_write_lowers_ceilings_and_never_raises_one(self) -> None:
+        self.assertEqual(
+            small.lowered({"A": 3, "B": 2, "C": 1}, {"A": 1, "B": 5, "D": 4}), {"A": 1, "B": 2}
+        )
+        text = small.format_ceilings({"ManyBody/Replica": 2, "Entropy": 1, "Gone": 0})
+        self.assertEqual(small.parse_ceilings(text), {"ManyBody/Replica": 2, "Entropy": 1})
+        for bad in ("A\n", "A x\n", "A 1\nA 2\n"):
+            with self.assertRaises(ValueError):
+                small.parse_ceilings(bad)
+
+    def test_ceilings_may_only_fall_against_the_base(self) -> None:
+        found = {"A": {"QICLean.A.X": 1, "QICLean.A.Y": 1}}
+        errors, _ = small.check(found, {"A": 2}, {"A": 1}, {})
+        self.assertEqual(
+            errors,
+            [
+                "Ceiling of A rose from 1 to 2; a ceiling may only fall",
+                "Sum of the ceilings rose from 1 to 2; when a small module moves, lower the "
+                "ceiling of the directory it left",
+            ],
+        )
+        # A moved module carries its ceiling, provided the directory it left falls.
+        moved = {"B": {"QICLean.B.X": 1}, "A": {"QICLean.A.Y": 1}}
+        self.assertEqual(small.check(moved, {"A": 1, "B": 1}, {"A": 2}, {"B": 1})[0], [])
+        errors, _ = small.check(moved, {"A": 2, "B": 1}, {"A": 2}, {"B": 1})
+        self.assertEqual(len(errors), 1)
+        self.assertIn("Sum of the ceilings rose from 2 to 3", errors[0])
+        # Without a base the recorded ceilings are the baseline.
+        self.assertEqual(small.check(found, {"A": 2}, None)[0], [])
+
+    def test_moves_and_changes_are_read_from_git(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+
+            def git(*args: str) -> None:
+                subprocess.run(["git", "-C", str(root), *args], check=True, capture_output=True)
+
+            def write(relative: str, text: str) -> None:
+                path = root / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(text, encoding="utf-8")
+
+            git("init", "-q")
+            git("config", "user.email", "test@example.com")
+            git("config", "user.name", "test")
+            write("QICLean/Entropy/Moved.lean", "theorem moved_statement : True := trivial\n")
+            write(small.CEILINGS_PATH, "Entropy 1\n")
+            git("add", ".")
+            git("commit", "-q", "-m", "base")
+            git("branch", "base")
+            write("QICLean/Algebra/New.lean", "def fresh := 0\n")
+            git("mv", "QICLean/Entropy/Moved.lean", "QICLean/Algebra/Moved.lean")
+            git("add", ".")
+            git("commit", "-q", "-m", "head")
+            found = small.small_modules(layers.tracked_sources(root))
+            base, moved_in, changed = small.base_state(root, "base", found)
+        self.assertEqual(base, {"Entropy": 1})
+        self.assertEqual(moved_in, {"Algebra": 1})
+        self.assertEqual(changed, {"QICLean.Algebra.Moved", "QICLean.Algebra.New"})
+
+    def test_a_module_deleted_in_the_working_tree_is_absent(self) -> None:
+        # Git still lists a module that is removed but not yet committed; the checks read
+        # the tree on disk instead of failing on the missing file.
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+
+            def git(*args: str) -> None:
+                subprocess.run(["git", "-C", str(root), *args], check=True, capture_output=True)
+
+            git("init", "-q")
+            git("config", "user.email", "test@example.com")
+            git("config", "user.name", "test")
+            for name in ("Kept", "Deleted"):
+                path = root / "QICLean" / "Entropy" / f"{name}.lean"
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(f"def {name.lower()} := 0\n", encoding="utf-8")
+            (root / small.CEILINGS_PATH).parent.mkdir(parents=True, exist_ok=True)
+            (root / small.CEILINGS_PATH).write_text("Entropy 2\n", encoding="utf-8")
+            git("add", ".")
+            git("commit", "-q", "-m", "base")
+            git("branch", "base")
+            (root / "QICLean" / "Entropy" / "Deleted.lean").unlink()
+            sources = layers.tracked_sources(root)
+            found = small.small_modules(sources)
+            base, _, changed = small.base_state(root, "base", found)
+        self.assertEqual(set(sources), {"QICLean.Entropy.Kept"})
+        self.assertEqual(found, {"Entropy": {"QICLean.Entropy.Kept": 1}})
+        self.assertEqual(base, {"Entropy": 2})
+        self.assertEqual(changed, set())
+
+    def test_recorded_ceilings_hold_for_the_tree(self) -> None:
+        root = Path(__file__).resolve().parent.parent
+        found = small.small_modules(layers.tracked_sources(root))
+        ceilings = small.parse_ceilings((root / small.CEILINGS_PATH).read_text(encoding="utf-8"))
+        self.assertEqual(small.check(found, ceilings)[0], [])
 
 
 if __name__ == "__main__":

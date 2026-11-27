@@ -12,4 +12,3 @@ import QICLean.ManyBody.Entropy.Typical.CompressedPhysicalRegions
 import QICLean.ManyBody.Entropy.Typical.CompressedTypicalSiteCoordinates
 import QICLean.ManyBody.Entropy.Typical.PlaneMarginalTails
 import QICLean.ManyBody.Entropy.Typical.RegionTypicalState
-import QICLean.ManyBody.Entropy.Typical.TypicalMarginalMass

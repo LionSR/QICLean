@@ -42,7 +42,7 @@ approval. No merge-readiness claim follows from it.
 - Targeted `lake build QICLean.Channel.Schwarz.OperatorConvexity` passed.
 - Production and permanent test elaboration passed with standard Mathlib
   linters and warnings treated as errors.
-- `QICLeanTest/EntropicJensen.lean` guards both public theorems' axioms and
+- `QICLeanTest/Channel/Schwarz/EntropicJensen.lean` guards both public theorems' axioms and
   checks zero input, a rank-one singular projection at unequal dimensions,
   empty source and target indices, and the rectangular zero map. Both
   theorems depend only on `propext`, `Classical.choice`, and `Quot.sound`.

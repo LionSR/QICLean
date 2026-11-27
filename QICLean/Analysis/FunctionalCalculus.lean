@@ -11,7 +11,6 @@ Authors: QICLean contributors
 import QICLean.Analysis.FunctionalCalculus.CfcComplex
 import QICLean.Analysis.FunctionalCalculus.CfcConjugation
 import QICLean.Analysis.FunctionalCalculus.CfcKronecker
-import QICLean.Analysis.FunctionalCalculus.CfcLogAdditive
 import QICLean.Analysis.FunctionalCalculus.CfcUnitaryConjugation
 import QICLean.Analysis.FunctionalCalculus.ContinuousProjectionFrames
 import QICLean.Analysis.FunctionalCalculus.FiniteKroneckerPowers

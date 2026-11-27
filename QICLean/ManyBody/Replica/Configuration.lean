@@ -9,7 +9,6 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.ManyBody.Replica.Configuration
 
 import QICLean.ManyBody.Replica.Configuration.BadCopyExponential
-import QICLean.ManyBody.Replica.Configuration.ComponentMergeMoment
 import QICLean.ManyBody.Replica.Configuration.FiveFactorAuxiliaryCoordinates
 import QICLean.ManyBody.Replica.Configuration.GoodConfigurationDensity
 import QICLean.ManyBody.Replica.Configuration.GoodConfigurationExpectation
@@ -26,7 +25,6 @@ import QICLean.ManyBody.Replica.Configuration.GoodPhysicalExponential
 import QICLean.ManyBody.Replica.Configuration.GroupedConfigurationTransport
 import QICLean.ManyBody.Replica.Configuration.JointAuxiliaryExponential
 import QICLean.ManyBody.Replica.Configuration.JointDensity
-import QICLean.ManyBody.Replica.Configuration.PhysicalLabelMoment
 import QICLean.ManyBody.Replica.Configuration.PhysicalSingletonDensity
 import QICLean.ManyBody.Replica.Configuration.PhysicalSingletonEntropy
 import QICLean.ManyBody.Replica.Configuration.RegionalFiveFactorCoordinates

@@ -14,7 +14,7 @@ import QICLean.Entropy.Typical.Density
 import QICLean.ManyBody.Replica.CompressedSite.CompressedTypicalLabelMass
 import QICLean.ManyBody.Replica.Configuration.RegionalFiveFactorCoordinates
 import QICLean.ManyBody.Replica.Bell.PrevectorRoughUpper
-import QICLean.ManyBody.Replica.Bell.PrevectorSharpUpper
+import QICLean.ManyBody.Replica.Bell.SelectedBellPostPin
 import QICLean.ManyBody.Replica.Metric.SymmetricBandCommute
 import QICLean.Channel.OperatorMean.TreeDerivative
 

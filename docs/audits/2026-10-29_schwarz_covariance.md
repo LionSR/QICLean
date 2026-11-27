@@ -53,8 +53,8 @@ conclusion-shaped premise, new axiom, or proof hole is introduced.
 
 - `QICLean/Channel/Peripheral/Irreducible/SchwarzCovariance.lean`
 - `QICLean/Channel/Peripheral.lean` — generated one-line export addition
-- `QICLeanTest/SchwarzCovariance.lean`
-- `QICLeanTest/SchwarzCovarianceNonTP.lean`
+- `QICLeanTest/Channel/Peripheral/Irreducible/SchwarzCovariance.lean`
+- `QICLeanTest/Channel/Peripheral/Irreducible/SchwarzCovarianceNonTP.lean`
 - `blueprint/src/chapter/ch08_spectral_schwarz_covariance.tex`
 - `blueprint/src/chapter/ch08_spectral_ft_peripheral_cyclic.tex` — fragment input
 - `docs/wolf_numbering_coverage.md` — only the Proposition 6.7 entry
