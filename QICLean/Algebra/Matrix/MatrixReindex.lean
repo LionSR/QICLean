@@ -34,9 +34,14 @@ Moved from TNLean, `TNLean/MPS/Operator/Product/DirectSum.lean` at commit `021ba
 Moved from TNLean, `TNLean/MPS/Tensor/VaryingBond/VaryingBondOBC.lean` at commit `021ba0bd19`
 (Apache-2.0).
 
+`Matrix.reindex_sum_word_products` (reindexing commutes with sums of ordered word products) is
+moved from TNLean, `TNLean/MPS/AreaLaw/Spectral/TwoWindowPolynomialRank.lean` at commit
+`6a5afb57c2`, with no change to the statement.
+
 ## Main results
 
 * `Matrix.reindex_mul_mul_conjTranspose`: reindexed sandwich products.
+* `Matrix.reindex_sum_word_products`: reindexing commutes with sums of ordered word products.
 -/
 
 section MatrixReindex
@@ -342,3 +347,24 @@ theorem reindex_mul_mul_conjTranspose {m m' n n' : Type*} [Fintype n] [Fintype n
 end Matrix
 
 end ReindexSandwich
+
+section WordProducts
+
+namespace Matrix
+
+/-- Ordered word sums commute with a change of configuration coordinates.
+This transports the original coefficients in ALVV, arXiv:1602.08828v2,
+`eq:H-mid-cut`, lines 810–821, and Proposition 5.7, lines 1324–1333. -/
+theorem reindex_sum_word_products
+    {I m n : Type*} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n]
+    (F : I → Matrix m m ℂ) (e : m ≃ n) (r : ℕ) (W : Finset (Fin r → I)) :
+    (∑ w ∈ W, (List.ofFn (fun t ↦ F (w t))).prod).reindex e e =
+      ∑ w ∈ W, (List.ofFn (fun t ↦ (F (w t)).reindex e e)).prod := by
+  change (Matrix.reindexAlgEquiv ℂ ℂ e)
+    (∑ w ∈ W, (List.ofFn (fun t ↦ F (w t))).prod) = _
+  simp only [map_sum, map_list_prod, List.map_ofFn, Matrix.coe_reindexAlgEquiv,
+    Function.comp_def]
+
+end Matrix
+
+end WordProducts

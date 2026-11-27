@@ -281,8 +281,8 @@ theorem norm_sweepOp_pow_apply_le (hJ : 0 < J) (hΔ : 0 < Δ)
     intro u hu
     rw [hsum]
     exact hff.mul_norm_sq_le_re_inner_sum_termProj hJ hΔ hu
-  have key := ContinuousLinearMap.norm_pow_complementProd_le_of_gap hP hPΩ hdeg
-    (div_nonneg hΔ.le hJ.le) hgap t hv
+  have key := ContinuousLinearMap.norm_pow_complementProd_le_of_gap (fun k _ ↦ hP k)
+    (fun k _ ↦ hPΩ k) hdeg (div_nonneg hΔ.le hJ.le) hgap t hv
   rw [map_pow, hD]
   exact key
 
