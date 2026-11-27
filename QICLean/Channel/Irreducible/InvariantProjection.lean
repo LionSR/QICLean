@@ -26,29 +26,31 @@ a nontrivial invariant orthogonal projection.
 
 namespace Kraus
 
-variable {d D : ℕ}
-
-local notation "Mat" => Matrix (Fin D) (Fin D) ℂ
+variable {ι : Type*} {n : Type*} [Fintype n] [DecidableEq n]
 
 /-- A finite matrix family has a nontrivial invariant orthogonal projection if there is a
 Hermitian idempotent $P$, distinct from $0$ and $1$, such that
 $(1-P)K_iP=0$ for every family index $i$. -/
-def HasInvariantProj (K : Fin d → Mat) : Prop :=
-  ∃ P : Mat,
-    IsOrthogonalProjection P ∧ P ≠ 0 ∧ P ≠ 1 ∧ (∀ i : Fin d, (1 - P) * K i * P = 0)
+def HasInvariantProj (K : ι → Matrix n n ℂ) : Prop :=
+  ∃ P : Matrix n n ℂ,
+    IsOrthogonalProjection P ∧ P ≠ 0 ∧ P ≠ 1 ∧ (∀ i : ι, (1 - P) * K i * P = 0)
 
 /-- A finite matrix family is irreducible if it has no nontrivial invariant orthogonal
 projection. -/
-def IsIrreducibleFamily (K : Fin d → Mat) : Prop :=
+def IsIrreducibleFamily (K : ι → Matrix n n ℂ) : Prop :=
   ¬ HasInvariantProj K
+
+variable [Fintype ι] {D : ℕ}
+
+local notation "Mat" => Matrix (Fin D) (Fin D) ℂ
 
 /-- A finite matrix family with no nontrivial invariant orthogonal projection defines an
 irreducible Kraus map. -/
 theorem isIrreducibleMap_mapLM_of_isIrreducibleFamily
-    (K : Fin d → Mat) (hIrr : IsIrreducibleFamily K) :
+    (K : ι → Mat) (hIrr : IsIrreducibleFamily K) :
     IsIrreducibleMap (mapLM K) := by
   intro P hProj hInv
-  have hLower : ∀ i : Fin d, (1 - P) * K i * P = 0 :=
+  have hLower : ∀ i : ι, (1 - P) * K i * P = 0 :=
     invariance_implies_lowerZero K P hProj fun X => by
       simpa only [mapLM_apply] using hInv X
   by_contra h_neither
@@ -58,7 +60,7 @@ theorem isIrreducibleMap_mapLM_of_isIrreducibleFamily
 /-- If the finite Kraus map is irreducible, then its matrix family has no nontrivial
 invariant orthogonal projection. -/
 theorem isIrreducibleFamily_of_isIrreducibleMap_mapLM
-    (K : Fin d → Mat) (hIrr : IsIrreducibleMap (mapLM K)) :
+    (K : ι → Mat) (hIrr : IsIrreducibleMap (mapLM K)) :
     IsIrreducibleFamily K := by
   intro ⟨P, hProj, hP0, hP1, hLower⟩
   have hInv : ∀ X, P * mapLM K (P * X * P) * P = mapLM K (P * X * P) := fun X => by

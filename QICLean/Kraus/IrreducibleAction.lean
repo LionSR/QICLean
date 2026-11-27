@@ -28,7 +28,7 @@ If a nontrivial `K`-invariant submodule `W` existed, its orthogonal projection w
 nontrivial invariant orthogonal projection matrix, contradicting `Kraus.IsIrreducibleFamily`. -/
 lemma isIrreducibleAction_of_isIrreducibleFamily
     {d D : ℕ} (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
-    (hIrr : Kraus.IsIrreducibleFamily (d := d) (D := D) K) :
+    (hIrr : Kraus.IsIrreducibleFamily K) :
     Matrix.IsIrreducibleAction (d := d) (D := D) K := by
   classical
   intro W hW
@@ -82,7 +82,7 @@ lemma isIrreducibleAction_of_isIrreducibleFamily
     have : W'.starProjection (W'.starProjection x) = W'.starProjection x :=
       (Submodule.starProjection_eq_self_iff (K := W') (v := W'.starProjection x)).2 hx
     simpa using this
-  have horth : IsOrthogonalProjection (D := D) P := ⟨hHerm, hPP⟩
+  have horth : IsOrthogonalProjection P := ⟨hHerm, hPP⟩
   -- `P` is nontrivial.
   have hP_ne0 : P ≠ 0 := by
     intro hP0
@@ -143,7 +143,7 @@ lemma isIrreducibleAction_of_isIrreducibleFamily
     -- Now `toEuclideanLin (1 - P)` kills vectors in `W'`.
     simp [Matrix.toEuclideanLin, hfix]
   -- Build `Kraus.HasInvariantProj K`, contradicting `Kraus.IsIrreducibleFamily K`.
-  have : Kraus.HasInvariantProj (d := d) (D := D) K :=
+  have : Kraus.HasInvariantProj K :=
     ⟨P, horth, hP_ne0, hP_ne1, hPinv⟩
   exact hIrr this
 
@@ -153,7 +153,7 @@ If there are no nontrivial invariant submodules, then there are no
 nontrivial invariant orthogonal projections. -/
 lemma isIrreducibleFamily_of_isIrreducibleAction
     (K : Fin d → Matrix (Fin D) (Fin D) ℂ) (hIrr : Matrix.IsIrreducibleAction K) :
-    Kraus.IsIrreducibleFamily (d := d) (D := D) K := by
+    Kraus.IsIrreducibleFamily K := by
   intro ⟨P, horth, hne0, hne1, hinv⟩
   let V : Type := Fin D → ℂ
   let f : V →ₗ[ℂ] V := Matrix.toLin' P
