@@ -118,12 +118,30 @@ previous branch tip. The first introduction of a record is the sole
 bootstrap exception. No module in the new layers has recorded import debt or
 pass-through debt, and a regression test keeps that invariant explicit.
 
+`scripts/check_small_lean_modules.py` keeps the number of small modules of
+each directory under a ceiling. A module holds one coherent interface, and a
+module of at most two public top-level declarations is merged into the module of
+its object (`docs/library_layers.md`). The check counts, per directory of the
+layer check (two path components below `ManyBody` and `Circuit`, one elsewhere),
+the modules with at most two public top-level declarations, not counting
+aggregators, import-only modules or `Archive`, and fails when a count rises above
+its ceiling in `scripts/small_lean_module_ceilings.txt`. A directory that is not
+listed has ceiling 0. The ceilings may only fall: after a change that merges
+small modules, `--write` lowers them to the current counts and never raises one.
+Compared with the merge base, a ceiling may rise only by the number of small
+modules that Git records as moved into the directory, and the sum of the
+ceilings may not rise; so a moved module carries its ceiling, and a new small
+module cannot be admitted by recording it. `--list` prints the small modules of
+each directory. The check is ported from TNLean.
+
 ## Running and maintaining the checks
 
 ```sh
 PYTHONPATH=scripts python3 scripts/test_architecture_policies.py -v
+PYTHONPATH=scripts python3 scripts/test_lean_file_policies.py -v
 python3 scripts/check_import_layers.py --base-ref origin/main
 python3 scripts/check_pass_through_declarations.py --base-ref origin/main
+python3 scripts/check_small_lean_modules.py --base-ref origin/main
 node --test scripts/test_issue_automation.cjs
 python3 scripts/generate_import_aggregators.py --check
 ```

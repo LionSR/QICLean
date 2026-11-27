@@ -1,0 +1,25 @@
+# Ceilings on the number of small Lean modules per directory of QICLean, read by
+# scripts/check_small_lean_modules.py.  A small module has at most two public
+# top-level declarations; it is merged into the module of its object.  A
+# directory not listed here has ceiling 0.  The ceilings may only fall: lower
+# them with `python3 scripts/check_small_lean_modules.py --write`, and when a
+# small module moves to another directory, move its ceiling with it.
+Algebra              25
+Analysis             40
+Channel              15
+Circuit/Compile      2
+Circuit/Core         1
+Circuit/Gate         1
+Circuit/Model        1
+Circuit/Party        14
+Entropy              8
+Kraus                9
+ManyBody/Dynamics    2
+ManyBody/Entropy     9
+ManyBody/Hamiltonian 2
+ManyBody/Replica     7
+ManyBody/Sites       2
+ManyBody/Subspace    1
+Probability          1
+Representation       3
+Spectral             16
