@@ -39,7 +39,8 @@ Moved from TNLean, `TNLean/MPS/MPU/Index/GeneralIndexContinuity.lean` at commit 
 
 ## Main results
 
-* `Kraus.injective_implies_irreducibleCP`, `Kraus.transferMap_isCPMap`: CPPrimitive.
+* `Kraus.injective_implies_irreducibleCP`, `Kraus.transferMap_isCPMap`: injectivity implies
+  irreducibility of the transfer map, which is completely positive.
 -/
 
 section Transfer
