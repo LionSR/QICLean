@@ -75,7 +75,7 @@ theorem isTracePreservingMap_mapLM_of_isTP (K : ι → Mat) (h_tp : IsTP K) :
   rw [h1, hadj, one_mul]
 
 /-- A trace-preserving finite Kraus family defines a quantum channel. -/
-theorem isChannel_mapLM (K : Fin d → Mat) (h_tp : IsTP K) : IsChannel (mapLM K) :=
+theorem isChannel_mapLM (K : ι → Mat) (h_tp : IsTP K) : IsChannel (mapLM K) :=
   ⟨isCPMap_mapLM K, isTracePreservingMap_mapLM_of_isTP K h_tp⟩
 
 /-- A finite Kraus map with a nonzero Kraus operator is nonzero. -/

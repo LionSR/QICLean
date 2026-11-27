@@ -22,7 +22,9 @@ point $\rho$, rather than another representative of its ray.
 
 ## Main results
 
-* `Kraus.isIrreducibleFamily_blockTensor_of_tp_primitive_irr`,
+* `Kraus.hasInvariantProj_reindexPhysical_equiv`, `Kraus.isIrreducibleFamily_reindexPhysical_equiv`:
+  relabelling the index set preserves invariant projections and irreducibility.
+* `Kraus.isIrreducibleFamily_block_of_tp_primitive_irr`,
   `Kraus.tp_primitive_irreducible_extra_blocking`: blocking a trace-preserving primitive
   irreducible family at a positive length keeps all three properties.
 * `Kraus.HasComplementaryFixedPointGap.blockTensor`,
@@ -45,6 +47,29 @@ open Matrix
 
 namespace Kraus
 
+section Relabel
+
+variable {ι ι' n : Type*} [Fintype n] [DecidableEq n]
+
+/-- Relabelling the index set of a finite family by a bijection preserves invariant
+projections. -/
+theorem hasInvariantProj_reindexPhysical_equiv (e : ι' ≃ ι) (A : ι → Matrix n n ℂ) :
+    HasInvariantProj (reindexPhysical e A) ↔ HasInvariantProj A := by
+  constructor
+  · rintro ⟨P, hPproj, hP0, hP1, hLower⟩
+    refine ⟨P, hPproj, hP0, hP1, ?_⟩
+    intro i
+    simpa [reindexPhysical] using hLower (e.symm i)
+  · rintro ⟨P, hPproj, hP0, hP1, hLower⟩
+    exact ⟨P, hPproj, hP0, hP1, fun i => hLower (e i)⟩
+
+/-- Relabelling the index set of a finite family by a bijection preserves irreducibility. -/
+theorem isIrreducibleFamily_reindexPhysical_equiv (e : ι' ≃ ι) (A : ι → Matrix n n ℂ) :
+    IsIrreducibleFamily (reindexPhysical e A) ↔ IsIrreducibleFamily A := by
+  rw [IsIrreducibleFamily, IsIrreducibleFamily, hasInvariantProj_reindexPhysical_equiv e A]
+
+end Relabel
+
 section PrimitiveBlocking
 
 variable {d D : ℕ} [NeZero D]
@@ -58,22 +83,22 @@ the transfer map of the blocked family. A fixed point `σ` of `E ^ P` differs fr
 since `E ^ n = P_ρ + (E - P_ρ) ^ n` for `n ≥ 1`. The powers of `E - P_ρ` tend to zero, so
 `σ' = 0`; uniqueness of the positive-definite fixed point gives irreducibility.
 Source: arXiv:1606.00608, Section 2.3 and Appendix A. -/
-theorem isIrreducibleFamily_blockTensor_of_tp_primitive_irr
+theorem isIrreducibleFamily_block_of_tp_primitive_irr
     (A : Fin d → Matrix (Fin D) (Fin D) ℂ) (hTP : IsTP A)
     (hPrim : _root_.IsPrimitive (transferMap A)) (hIrr : IsIrreducibleFamily A)
     {P : ℕ} (hP : 0 < P) :
-    IsIrreducibleFamily (blockTensor A P) := by
+    IsIrreducibleFamily (block A P) := by
   obtain ⟨ρ, hρ⟩ :=
     hasPrimitiveFixedPoint_of_peripheralPrimitive_of_irreducible A hIrr hTP hPrim
   have hPD : ρ.PosDef := hρ.posDef_of_isIrreducibleFamily hIrr
-  have hCh : IsChannel (transferMap (blockTensor A P)) :=
-    isChannel_mapLM (blockTensor A P) (hTP.blockTensor P)
-  have hρ_fix_blocked : transferMap (blockTensor A P) ρ = ρ :=
-    transferMap_blockTensor_fixedPoint A P ρ hρ.fixedPoint_is_fixed
+  have hCh : IsChannel (transferMap (block A P)) :=
+    isChannel_mapLM (block A P) (hTP.block P)
+  have hρ_fix_blocked : transferMap (block A P) ρ = ρ := by
+    rw [transferMap_block, Module.End.pow_apply, Function.iterate_fixed hρ.fixedPoint_is_fixed]
   have huniq : ∀ σ : Matrix (Fin D) (Fin D) ℂ, σ.PosSemidef →
-      transferMap (blockTensor A P) σ = σ → ∃ c : ℂ, σ = c • ρ := by
+      transferMap (block A P) σ = σ → ∃ c : ℂ, σ = c • ρ := by
     intro σ _ hσ_fix
-    rw [transferMap_blockTensor] at hσ_fix hρ_fix_blocked
+    rw [transferMap_block] at hσ_fix hρ_fix_blocked
     set E := transferMap A
     set Pρ := fixedPointProj (D := D) ρ hρ.trace_ne_zero
     set N := E - Pρ
@@ -117,7 +142,7 @@ theorem isIrreducibleFamily_blockTensor_of_tp_primitive_irr
     rw [show (fun n => (N ^ n) σ') ∘ (fun k : ℕ => P * (k + 1)) = fun _ => σ' from
       funext hN] at hconst
     exact tendsto_nhds_unique tendsto_const_nhds hconst
-  exact isIrreducibleFamily_of_isIrreducibleMap_mapLM (blockTensor A P)
+  exact isIrreducibleFamily_of_isIrreducibleMap_mapLM (block A P)
     (isIrreducibleMap_of_channel_posDef_fixedPoint_unique _ hCh ρ hPD hρ_fix_blocked huniq)
 
 /-- Blocking a trace-preserving family with primitive transfer map that is irreducible
@@ -129,9 +154,11 @@ theorem tp_primitive_irreducible_extra_blocking
     {k : ℕ} (hk : 0 < k) :
     IsTP (blockTensor A k) ∧ _root_.IsPrimitive (transferMap (blockTensor A k)) ∧
       IsIrreducibleFamily (blockTensor A k) := by
-  refine ⟨hTP.blockTensor k, ?_, isIrreducibleFamily_blockTensor_of_tp_primitive_irr
-    A hTP hPrim hIrr hk⟩
-  rw [transferMap_blockTensor]
+  unfold blockTensor
+  refine ⟨(isTP_reindexPhysical_iff _ _).2 (hTP.block k), ?_,
+    (isIrreducibleFamily_reindexPhysical_equiv _ _).2
+      (isIrreducibleFamily_block_of_tp_primitive_irr A hTP hPrim hIrr hk)⟩
+  rw [transferMap_reindexPhysical_equiv, transferMap_block]
   exact isPrimitive_pow_of_isPrimitive _ k hk hPrim
 
 /-- Every positive blocking keeps a complementary fixed-point gap with positive-definite

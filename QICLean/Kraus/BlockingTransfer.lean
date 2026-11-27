@@ -19,7 +19,7 @@ preservation.
 
 * `Kraus.transferMap_reindexPhysical_equiv`, `Kraus.isTP_reindexPhysical_iff`: relabelling
   by a bijection preserves the transfer map and trace preservation.
-* `Kraus.sum_evalWord_conjTranspose_mul_evalWord`, `Kraus.IsTP.blockTensor`: blocking
+* `Kraus.sum_evalWord_conjTranspose_mul_evalWord`, `Kraus.IsTP.block`: blocking
   preserves trace preservation.
 * `Kraus.transferMap_blockTensor`, `Kraus.transferMap_blockTensor_apply`: the transfer map
   of the blocked family is $E_A^L$.
@@ -84,9 +84,9 @@ theorem sum_evalWord_conjTranspose_mul_evalWord {ι n : Type*} [Fintype ι] [Fin
 variable {d : ℕ} {n : Type*} [Fintype n] [DecidableEq n]
 
 /-- Blocking at any length preserves trace preservation. -/
-theorem IsTP.blockTensor {A : Fin d → Matrix n n ℂ} (hA : IsTP A) (L : ℕ) :
-    IsTP (Kraus.blockTensor A L) :=
-  (isTP_reindexPhysical_iff _ _).2 (sum_evalWord_conjTranspose_mul_evalWord A hA L)
+theorem IsTP.block {ι : Type*} [Fintype ι] {A : ι → Matrix n n ℂ} (hA : IsTP A) (L : ℕ) :
+    IsTP (Kraus.block A L) :=
+  sum_evalWord_conjTranspose_mul_evalWord A hA L
 
 /-- The transfer map of the family blocked at length `L` is the `L`-th power of the
 transfer map. -/
