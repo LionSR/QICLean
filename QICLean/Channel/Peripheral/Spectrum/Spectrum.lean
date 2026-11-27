@@ -44,7 +44,8 @@ the eigenvalues on the unit circle.
 * `compl_eigenvalue_norm_lt_one_of_primitive` — primitive → complementary transfer-map gap
 * `peripheralEigenvalues_card_le_finrank`, `peripheralEigenvalues_eq_range_exp_of_mul_mem`:
   cyclicity from multiplicative closure of peripheral eigenvalues.
-* `exists_common_power_eq_one_of_finite`, `peripheralEigenvalues_pow_eq_singleton`: periodicity
+* `exists_common_power_eq_one_of_finite`, `peripheralEigenvalues_pow_eq_singleton`,
+  `isPrimitive_pow_of_isPrimitive`: periodicity
   removal.
 * `peripheral_isRootOfUnity_of_closed_powers`: peripheral powers.
 * `spectralRadius_eq_one_and_isPrimitive_of_transferMatrix_shifted_trace`: shifted transfer traces
@@ -561,6 +562,24 @@ theorem peripheralEigenvalues_pow_eq_singleton
     intro ν hν
     rcases Set.mem_singleton_iff.1 hν with rfl
     exact hone_mem
+
+/-- Positive powers of a primitive map are primitive: if one is the only peripheral
+eigenvalue of `E`, it is the only peripheral eigenvalue of `E ^ m` for `m > 0`. -/
+theorem isPrimitive_pow_of_isPrimitive {D : ℕ} [NeZero D]
+    (E : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ)
+    (m : ℕ) (hm : 0 < m) (hPrim : IsPrimitive E) :
+    IsPrimitive (E ^ m) := by
+  have h1_mem : (1 : ℂ) ∈ peripheralEigenvalues E := by
+    rw [hPrim]; exact rfl
+  obtain ⟨ρ, hρ_ev⟩ := h1_mem.1.exists_hasEigenvector
+  have hρ_ne : ρ ≠ 0 := (Module.End.hasEigenvector_iff.mp hρ_ev).2
+  have hρ_fix : E ρ = ρ := by
+    simpa using Module.End.mem_eigenspace_iff.mp (Module.End.hasEigenvector_iff.mp hρ_ev).1
+  have hper : ∀ μ : ℂ, μ ∈ peripheralEigenvalues E → μ ^ m = 1 := by
+    intro μ hμ
+    rw [hPrim] at hμ
+    simp [Set.mem_singleton_iff.mp hμ]
+  exact peripheralEigenvalues_pow_eq_singleton E hm hper ρ hρ_fix hρ_ne
 
 end Peripheral
 
