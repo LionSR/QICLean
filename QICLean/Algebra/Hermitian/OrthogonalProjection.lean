@@ -39,9 +39,9 @@ open scoped Matrix ComplexOrder BigOperators MatrixOrder
 
 variable {D : ℕ}
 
-/-- An orthogonal projection in `M_D(ℂ)`: a matrix that is both Hermitian and idempotent.
-These correspond to projections onto subspaces of `ℂ^D`. -/
-def IsOrthogonalProjection (P : Matrix (Fin D) (Fin D) ℂ) : Prop :=
+/-- An orthogonal projection in the matrix algebra on `ℂ^n`: a matrix that is both Hermitian and
+idempotent. These correspond to projections onto subspaces of `ℂ^n`. -/
+def IsOrthogonalProjection {n : Type*} [Fintype n] (P : Matrix n n ℂ) : Prop :=
   P.IsHermitian ∧ P * P = P
 
 /-- An orthogonal projection is a star projection. -/

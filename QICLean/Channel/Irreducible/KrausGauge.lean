@@ -72,7 +72,7 @@ lemma isIrreducibleFamily_tpGauge_of_isIrreducibleMap
     (σ : Matrix (Fin D) (Fin D) ℂ)
     (hσ : σ.PosDef)
     (hIrr : IsIrreducibleMap (mapLM K)) :
-    Kraus.IsIrreducibleFamily (d := d) (D := D) (tpGauge K σ) := by
+    Kraus.IsIrreducibleFamily (tpGauge K σ) := by
   set S : Matrix (Fin D) (Fin D) ℂ := CFC.sqrt σ
   have hS_det : S.det ≠ 0 := by
     exact (Matrix.PosDef.isUnit_det_cfc_sqrt hσ).ne_zero
