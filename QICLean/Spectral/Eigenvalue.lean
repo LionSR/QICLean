@@ -13,10 +13,8 @@ import QICLean.Spectral.Eigenvalue.AnticommutingEvenDimension
 import QICLean.Spectral.Eigenvalue.CompactSVD
 import QICLean.Spectral.Eigenvalue.CompressionEnergyBounds
 import QICLean.Spectral.Eigenvalue.ConstantTracePowers
-import QICLean.Spectral.Eigenvalue.DensityMaxEigenvector
 import QICLean.Spectral.Eigenvalue.DominantEigenvectorUniqueness
 import QICLean.Spectral.Eigenvalue.EigenspaceMap
-import QICLean.Spectral.Eigenvalue.EuclideanEigenvectorBasis
 import QICLean.Spectral.Eigenvalue.GlobalGap
 import QICLean.Spectral.Eigenvalue.GroundEnergyBounds
 import QICLean.Spectral.Eigenvalue.HermitianExtremalEigenvalues
@@ -29,12 +27,10 @@ import QICLean.Spectral.Eigenvalue.MatrixReindexEuclidean
 import QICLean.Spectral.Eigenvalue.MatrixSpectralDecomp
 import QICLean.Spectral.Eigenvalue.NonzeroTraceEigenvalue
 import QICLean.Spectral.Eigenvalue.PositiveRayleighEigenvalue
-import QICLean.Spectral.Eigenvalue.ProjectiveCommutantEigenspace
 import QICLean.Spectral.Eigenvalue.RitzCompression
 import QICLean.Spectral.Eigenvalue.RitzSubspace
 import QICLean.Spectral.Eigenvalue.SemisimpleTracePowers
 import QICLean.Spectral.Eigenvalue.ShiftedDensityClipping
-import QICLean.Spectral.Eigenvalue.ShiftedFilterClipping
 import QICLean.Spectral.Eigenvalue.ShiftedTracePowerSpectrum
 import QICLean.Spectral.Eigenvalue.ShiftedZeroTraceNilpotent
 import QICLean.Spectral.Eigenvalue.TailTraceNorm

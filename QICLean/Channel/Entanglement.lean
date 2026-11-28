@@ -8,11 +8,20 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Channel.Entanglement
 
+import QICLean.Channel.Entanglement.BellOverlapBound
+import QICLean.Channel.Entanglement.BipartiteCopies
+import QICLean.Channel.Entanglement.ChoiCertificate
 import QICLean.Channel.Entanglement.DecomposableWitness
 import QICLean.Channel.Entanglement.EntanglementWitness
+import QICLean.Channel.Entanglement.LocalTensorCopies
+import QICLean.Channel.Entanglement.MaxEntangledOverlap
 import QICLean.Channel.Entanglement.PPTIndecomposable
 import QICLean.Channel.Entanglement.PositiveMapDetection
+import QICLean.Channel.Entanglement.RankOneCoherence
+import QICLean.Channel.Entanglement.ReverseBlockCriterion
 import QICLean.Channel.Entanglement.SchmidtNumber
 import QICLean.Channel.Entanglement.SchmidtNumberCompact
 import QICLean.Channel.Entanglement.SchmidtNumberFactors
 import QICLean.Channel.Entanglement.Separable
+import QICLean.Channel.Entanglement.SeparableOperation
+import QICLean.Channel.Entanglement.SeparableOperationPreservation

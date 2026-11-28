@@ -27,8 +27,6 @@ dimensions.
 * `IsKrausCPTP`: a trace-preserving completely positive map in rectangular
   Kraus form.
 * `IsKrausCPTP.isKrausCP`: a trace-preserving Kraus map is a Kraus CP map.
-* `IsKrausCP.map_posSemidef`: a Kraus CP map preserves positive
-  semidefiniteness.
 * `IsKrausCP.kadison_schwarz_of_map_one_eq_one`: a unital rectangular Kraus
   map satisfies the Kadison--Schwarz inequality.
 * `IsKrausCP.traceAdjointMap`: the trace adjoint of a Kraus CP map is Kraus CP.
@@ -52,6 +50,8 @@ dimensions.
   positive property.
 * `Matrix.equivReindexMap_isKrausCPTP`: reindexing by an equivalence is
   trace-preserving completely positive.
+  The map `Matrix.equivReindexMap` itself is defined in
+  `QICLean.Algebra.Matrix.MatrixReindex`.
 * `Matrix.rectangularKrausMap_isKrausCPTP`: any finite Kraus family resolving
   the identity defines a trace-preserving completely positive map.
 * `Matrix.rectangularKrausMap_isKrausCP`: any finite rectangular Kraus family
@@ -70,6 +70,8 @@ dimensions.
   each diagonal summand.
 * `Matrix.preparationMap_isKrausCPTP`: adjoining a density matrix is a
   trace-preserving completely positive map.
+  The map `Matrix.preparationMap` itself is defined in
+  `QICLean.Algebra.PartialTrace`.
 * `Matrix.preparationMap_isKrausCP`: adjoining a positive semidefinite matrix is
   completely positive.
 * `Matrix.preparationKraus`: the explicit Kraus family for state preparation.
@@ -104,16 +106,6 @@ theorem IsKrausCPTP.isKrausCP
     {S : Matrix α α ℂ →ₗ[ℂ] Matrix β β ℂ} (hS : IsKrausCPTP S) : IsKrausCP S := by
   obtain ⟨r, A, hA, _⟩ := hS
   exact ⟨r, A, hA⟩
-
-/-- A completely positive map in rectangular Kraus form sends positive
-semidefinite matrices to positive semidefinite matrices. -/
-theorem IsKrausCP.map_posSemidef
-    {α β : Type*} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
-    {S : Matrix α α ℂ →ₗ[ℂ] Matrix β β ℂ} (hS : IsKrausCP S)
-    {X : Matrix α α ℂ} (hX : X.PosSemidef) : (S X).PosSemidef := by
-  obtain ⟨r, A, hA⟩ := hS
-  rw [hA]
-  exact Matrix.posSemidef_sum _ fun i _ => hX.mul_mul_conjTranspose_same (A i)
 
 /-- A unital completely positive map in rectangular Kraus form satisfies the
 Kadison--Schwarz inequality.
@@ -373,14 +365,6 @@ theorem isKrausCP_comp {α β γ : Type*} [Fintype α] [DecidableEq α] [Fintype
 namespace Matrix
 
 /-! ### Equivalence reindexing -/
-
-/-- Reindex both matrix coordinates along an equivalence of index sets.
-This is the basis relabeling used to regroup tensor factors and shift
-subspins in arXiv:1606.00608, Appendix C.2, lines 1521--1522, 1535--1540,
-1547, and 1555--1559. -/
-def equivReindexMap {α β : Type*} (e : α ≃ β) :
-    Matrix α α ℂ →ₗ[ℂ] Matrix β β ℂ :=
-  (Matrix.reindexLinearEquiv ℂ ℂ e e).toLinearMap
 
 /-- Reindexing both matrix coordinates along an equivalence is
 trace-preserving completely positive. This provides the general basis
@@ -824,17 +808,6 @@ theorem controlledPartialTraceRightLM_isKrausCPTP
   intro i
   exact chosenKraus_resolution
     (partialTraceRightLM_isKrausCPTP (α := α i) (β := β i))
-
-/-- The state-preparation map $X\mapsto X\otimes\rho$.  This is the
-elementary operation used to adjoin the positive neighboring operators in
-the maps $\mathcal T_1$ and $\mathcal S_1$ of arXiv:1606.00608,
-Appendix C.2, lines 1527--1533 and 1551--1555. -/
-def preparationMap {α β : Type*} [Fintype α] [DecidableEq α]
-    [Fintype β] [DecidableEq β] (ρ : Matrix β β ℂ) :
-    Matrix α α ℂ →ₗ[ℂ] Matrix (α × β) (α × β) ℂ where
-  toFun X := Matrix.kroneckerMap (· * ·) X ρ
-  map_add' X Y := Matrix.add_kronecker X Y ρ
-  map_smul' c X := Matrix.smul_kronecker c X ρ
 
 /-- The Kraus operator obtained from one column of the positive square root of
 the density matrix in a state-preparation map. These are the explicit

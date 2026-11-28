@@ -4,11 +4,24 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import Mathlib.Analysis.Normed.Algebra.GelfandFormula
+import Mathlib.LinearAlgebra.Eigenspace.Basic
+import Mathlib.Topology.Algebra.Module.FiniteDimension
 
 /-!
 # General spectral-radius identities
 
-This file collects spectral-radius facts for elements of complex Banach algebras.
+This file collects spectral-radius facts for elements of complex Banach algebras, and the
+passage from eigenvalue bounds to spectral-radius bounds for endomorphisms of
+finite-dimensional complex normed spaces.
+
+## Main statements
+
+* `spectralRadius_smul`: the spectral radius scales by the norm of a nonzero scalar.
+* `IsIdempotentElem.spectralRadius_eq_one_of_ne_zero`: a nonzero idempotent has spectral
+  radius one.
+* `spectralRadius_le_of_forall_eigenvalue_nnnorm_le`,
+  `spectralRadius_le_one_of_forall_eigenvalue_norm_le_one`: a bound on the eigenvalues of
+  an endomorphism of a finite-dimensional space bounds its spectral radius.
 -/
 
 open scoped ENNReal NNReal Pointwise
@@ -88,3 +101,37 @@ theorem eq_zero_of_spectralRadius_lt_one
   exact (lt_irrefl 1) h
 
 end IsIdempotentElem
+
+/-- If every eigenvalue of a linear endomorphism of a finite-dimensional complex normed space
+has `nnnorm` at most `c`, then its spectral radius (computed after transport to the induced
+continuous linear map) is at most `c`.
+
+This is the norm-agnostic passage from an algebraic eigenvalue bound to a
+spectral-radius bound. -/
+theorem spectralRadius_le_of_forall_eigenvalue_nnnorm_le
+    {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimensional ℂ V]
+    (E : V →ₗ[ℂ] V) (c : ℝ≥0)
+    (h : ∀ μ, Module.End.HasEigenvalue E μ → ‖μ‖₊ ≤ c) :
+    spectralRadius ℂ (Module.End.toContinuousLinearMap V E) ≤ c := by
+  have hSpec : spectrum ℂ (Module.End.toContinuousLinearMap V E) = spectrum ℂ E :=
+    AlgEquiv.spectrum_eq (Module.End.toContinuousLinearMap V) E
+  rw [spectralRadius_eq_of_unital]
+  refine iSup₂_le fun μ hμ ↦ ?_
+  have hμE : μ ∈ spectrum ℂ E := hSpec ▸ hμ
+  have hEig : Module.End.HasEigenvalue E μ := Module.End.hasEigenvalue_iff_mem_spectrum.mpr hμE
+  exact_mod_cast h μ hEig
+
+/-- If every eigenvalue of a linear endomorphism of a finite-dimensional complex normed space
+has modulus at most one, then its spectral radius (computed after transport to the induced
+continuous linear map) is at most one.
+
+This is the norm-agnostic step of Wolf Proposition 6.1's spectral-radius conclusion: only the
+algebraic fact `spectrum = eigenvalues` and the identification of `spectrum` along the
+`AlgEquiv` to continuous linear maps are used, so the same argument serves any choice of
+operator norm on `V`. -/
+theorem spectralRadius_le_one_of_forall_eigenvalue_norm_le_one
+    {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimensional ℂ V]
+    (E : V →ₗ[ℂ] V) (h : ∀ μ, Module.End.HasEigenvalue E μ → ‖μ‖ ≤ 1) :
+    spectralRadius ℂ (Module.End.toContinuousLinearMap V E) ≤ 1 :=
+  spectralRadius_le_of_forall_eigenvalue_nnnorm_le E 1 fun μ hμ ↦ by
+    exact_mod_cast h μ hμ

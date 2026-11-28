@@ -6,7 +6,7 @@ Authors: QICLean contributors
 import QICLean.Circuit.Compile.SwapRouting
 import QICLean.Circuit.Model.CleanWorkspace
 import QICLean.Circuit.Model.UnitaryPlacement
-import QICLean.ManyBody.Sites.PlaceAlong
+import QICLean.ManyBody.Sites.Placement.PlaceAlong
 
 /-!
 # Circuits on an open chain placed in a longer open chain

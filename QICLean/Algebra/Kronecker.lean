@@ -10,7 +10,6 @@ Authors: QICLean contributors
 
 import QICLean.Algebra.Kronecker.CommutingDecomposition
 import QICLean.Algebra.Kronecker.FiniteKroneckerProduct
-import QICLean.Algebra.Kronecker.KroneckerEmbed
 import QICLean.Algebra.Kronecker.KroneckerFactorPositivity
 import QICLean.Algebra.Kronecker.KroneckerSandwich
 import QICLean.Algebra.Kronecker.MatrixRealignment
@@ -21,4 +20,7 @@ import QICLean.Algebra.Kronecker.PiKronecker
 import QICLean.Algebra.Kronecker.PiKroneckerProducts
 import QICLean.Algebra.Kronecker.PiKroneckerRange
 import QICLean.Algebra.Kronecker.PiTensorProductPhase
+import QICLean.Algebra.Kronecker.SupportAlgebra
+import QICLean.Algebra.Kronecker.SupportAlgebraCommutant
 import QICLean.Algebra.Kronecker.TensorMap
+import QICLean.Algebra.Kronecker.Vectors

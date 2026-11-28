@@ -6,6 +6,10 @@ Authors: QICLean contributors
 import Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Order
 import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.Abs
 import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.Rpow.Order
+import Mathlib.Topology.Algebra.AffineSubspace
+import QICLean.Analysis.FunctionalCalculus.MatrixPolar
+import QICLean.Analysis.FunctionalCalculus.MatrixSqrt
+import QICLean.Analysis.Order.DensityMatrix
 
 /-!
 # Hölder continuity of the square root in a C⋆-algebra
@@ -34,6 +38,9 @@ scalar bounds gives the norm estimate.
   lines 306–325 (inequality `eq:quasilocal-square-root` and its consequence for
   `|M_i|`). The proof here is written from the paper.
   Source revision: `openai/math@adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
+
+Moved from TNLean, `TNLean/MPS/Tensor/CutGram/AffineGramCompactness.lean`,
+`TNLean/MPS/Preparation/BlockSum/OverlappingBlockGram.lean` at commit `021ba0bd19` (Apache-2.0).
 -/
 
 namespace CFC
@@ -128,3 +135,173 @@ theorem norm_abs_sub_abs_le {a b : A} (ha : IsSelfAdjoint a) (hb : IsSelfAdjoint
     _ = (‖a‖ + ‖b‖) * ‖a - b‖ := by ring
 
 end CFC
+
+section
+
+open scoped Matrix ComplexOrder MatrixOrder Matrix.Norms.L2Operator
+
+namespace Matrix
+
+variable {D : ℕ}
+
+private theorem sqrt_congruence_mem_densityMatrices_iff
+    {Q P : Matrix (Fin D) (Fin D) ℂ} (hQ : Q.PosDef) :
+    CFC.sqrt Q * P * CFC.sqrt Q ∈ densityMatrices D ↔
+      P.PosSemidef ∧ (P * Q).trace = 1 := by
+  have hSstar : star (CFC.sqrt Q) = CFC.sqrt Q :=
+    Matrix.conjTranspose_cfc_sqrt Q
+  have hSunit : IsUnit (CFC.sqrt Q) :=
+    (Matrix.isUnit_iff_isUnit_det _).2 hQ.isUnit_det_cfc_sqrt
+  have hPSD := Matrix.IsUnit.posSemidef_star_left_conjugate_iff (x := P) hSunit
+  rw [hSstar] at hPSD
+  have htrace : (CFC.sqrt Q * P * CFC.sqrt Q).trace = (P * Q).trace := by
+    rw [Matrix.trace_mul_cycle, CFC.sqrt_mul_sqrt_self Q hQ.posSemidef.nonneg,
+      Matrix.trace_mul_comm]
+  simp only [mem_densityMatrices, hPSD, htrace]
+
+/-- Positive-semidefinite matrices normalized by a fixed positive-definite
+trace pairing form a compact set. The proof transports QICLean's compact
+set of density matrices by the inverse square-root congruence.
+
+Source: `docs/audits/2026-10-02_mpu_rank_two_circuits.tex`, Section 5,
+"The determinant maximizer and its dual metric". -/
+theorem isCompact_setOf_posSemidef_trace_mul_eq_one
+    {Q : Matrix (Fin D) (Fin D) ℂ} (hQ : Q.PosDef) :
+    IsCompact {P : Matrix (Fin D) (Fin D) ℂ |
+      P.PosSemidef ∧ (P * Q).trace = 1} := by
+  let S := CFC.sqrt Q
+  have hSdet : IsUnit S.det := hQ.isUnit_det_cfc_sqrt
+  have hset : {P : Matrix (Fin D) (Fin D) ℂ |
+      P.PosSemidef ∧ (P * Q).trace = 1} =
+      (fun X ↦ S⁻¹ * X * S⁻¹) '' densityMatrices D := by
+    ext P
+    constructor
+    · intro hP
+      refine ⟨S * P * S, sqrt_congruence_mem_densityMatrices_iff hQ |>.2 hP, ?_⟩
+      simp only [← Matrix.mul_assoc, Matrix.nonsing_inv_mul S hSdet,
+        Matrix.one_mul, Matrix.mul_nonsing_inv_cancel_right S P hSdet]
+    · rintro ⟨X, hX, rfl⟩
+      apply (sqrt_congruence_mem_densityMatrices_iff hQ).1
+      change S * (S⁻¹ * X * S⁻¹) * S ∈ densityMatrices D
+      simpa only [← Matrix.mul_assoc, Matrix.mul_nonsing_inv S hSdet,
+        Matrix.one_mul, Matrix.nonsing_inv_mul_cancel_right S X hSdet] using hX
+  rw [hset]
+  exact densityMatrices_isCompact.image
+    ((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const)
+
+/-- The positive-semidefinite part of a real affine matrix subspace is compact
+when a fixed positive-definite matrix normalizes its trace pairing.
+
+Source: `docs/audits/2026-10-02_mpu_rank_two_circuits.tex`, Section 5,
+"The determinant maximizer and its dual metric". -/
+theorem isCompact_affineSubspace_inter_posSemidef
+    (C : AffineSubspace ℝ (Matrix (Fin D) (Fin D) ℂ))
+    {Q : Matrix (Fin D) (Fin D) ℂ} (hQ : Q.PosDef)
+    (hnorm : ∀ P ∈ C, (P * Q).trace = 1) :
+    IsCompact ((C : Set (Matrix (Fin D) (Fin D) ℂ)) ∩ {P | P.PosSemidef}) := by
+  have hC : IsClosed (C : Set (Matrix (Fin D) (Fin D) ℂ)) :=
+    C.isClosed_direction_iff.mp C.direction.closed_of_finiteDimensional
+  exact (isCompact_setOf_posSemidef_trace_mul_eq_one hQ).of_isClosed_subset
+    (hC.inter Matrix.posSemidef_is_closed) fun P hP ↦ ⟨hP.2, hnorm P hP.1⟩
+
+/-- A positive-semidefinite maximizer of the real determinant is positive
+definite if its comparison set contains a positive-definite matrix.
+
+Source: `docs/audits/2026-10-02_mpu_rank_two_circuits.tex`, Section 5,
+"The determinant maximizer and its dual metric". -/
+theorem PosSemidef.posDef_of_isMaxOn_det_re
+    {S : Set (Matrix (Fin D) (Fin D) ℂ)}
+    {P : Matrix (Fin D) (Fin D) ℂ} (hP : P.PosSemidef)
+    (hPmax : IsMaxOn (fun X ↦ X.det.re) S P)
+    (hPD : ∃ X ∈ S, X.PosDef) : P.PosDef := by
+  obtain ⟨P₀, hP₀mem, hP₀⟩ := hPD
+  have hdetpos : 0 < P.det.re :=
+    lt_of_lt_of_le (Complex.pos_iff.mp hP₀.det_pos).1 (hPmax hP₀mem)
+  have hdet : P.det ≠ 0 := by
+    intro heq
+    simp only [heq, Complex.zero_re, lt_self_iff_false] at hdetpos
+  exact hP.posDef_iff_det_ne_zero.mpr hdet
+
+/-- A compact set of positive-semidefinite matrices containing a positive-definite
+matrix has a positive-definite determinant maximizer. Positive-semidefinite
+determinants are real, so maximizing the real part maximizes the determinant.
+
+Source: `docs/audits/2026-10-02_mpu_rank_two_circuits.tex`, Section 5,
+"The determinant maximizer and its dual metric". -/
+theorem exists_posDef_isMaxOn_det_re_of_isCompact
+    {S : Set (Matrix (Fin D) (Fin D) ℂ)} (hS : IsCompact S)
+    (hPSD : ∀ P ∈ S, P.PosSemidef)
+    (hPD : ∃ P ∈ S, P.PosDef) :
+    ∃ P ∈ S, P.PosDef ∧ IsMaxOn (fun X ↦ X.det.re) S P := by
+  have hnonempty : S.Nonempty := by
+    obtain ⟨P, hP, _⟩ := hPD
+    exact ⟨P, hP⟩
+  obtain ⟨P, hPmem, hPmax⟩ := hS.exists_isMaxOn hnonempty
+    (Complex.continuous_re.comp continuous_id.matrix_det).continuousOn
+  exact ⟨P, hPmem, (hPSD P hPmem).posDef_of_isMaxOn_det_re hPmax hPD, hPmax⟩
+
+/-- A trace-normalized real affine matrix subspace containing a positive-definite
+matrix admits a positive-definite determinant maximizer over its entire
+positive-semidefinite part.
+
+Source: `docs/audits/2026-10-02_mpu_rank_two_circuits.tex`, Section 5,
+"The determinant maximizer and its dual metric". This is the compactness and
+existence step; the derivative identity and circuit construction are separate. -/
+theorem exists_posDef_det_re_max_of_trace_mul_eq_one
+    (C : AffineSubspace ℝ (Matrix (Fin D) (Fin D) ℂ))
+    {Q : Matrix (Fin D) (Fin D) ℂ} (hQ : Q.PosDef)
+    (hnorm : ∀ P ∈ C, (P * Q).trace = 1)
+    (hPD : ∃ P ∈ C, P.PosDef) :
+    ∃ P ∈ C, P.PosDef ∧
+      ∀ X ∈ C, X.PosSemidef → X.det.re ≤ P.det.re := by
+  obtain ⟨P₀, hP₀mem, hP₀⟩ := hPD
+  obtain ⟨P, hPmem, hPpd, hPmax⟩ := exists_posDef_isMaxOn_det_re_of_isCompact
+    (isCompact_affineSubspace_inter_posSemidef C hQ hnorm)
+    (fun _ h ↦ h.2) ⟨P₀, ⟨hP₀mem, hP₀.posSemidef⟩, hP₀⟩
+  exact ⟨P, hPmem.1, hPpd, fun X hXC hX ↦ hPmax ⟨hXC, hX⟩⟩
+
+end Matrix
+
+end
+
+section
+
+open scoped Matrix Kronecker ComplexOrder MatrixOrder BigOperators NNReal ENNReal
+
+open Matrix
+
+
+section
+
+variable {d D : ℕ}
+
+attribute [local instance 1001]
+  ContinuousLinearMap.toNormedAddCommGroup
+  ContinuousLinearMap.toNormedSpace
+  ContinuousLinearMap.toNormedRing
+  ContinuousLinearMap.toNormedAlgebra
+
+variable {b : ℕ} {Dj : Fin b → ℕ}
+
+variable {ι : (j : Fin b) → Fin (Dj j) → Fin D}
+
+variable {Aj : (j : Fin b) → (Fin d → Matrix (Fin (Dj j)) (Fin (Dj j)) ℂ)}
+
+open scoped Matrix.Norms.L2Operator in
+/-- **Hölder bound for positive parts.** For every matrix `B` and every positive semidefinite
+`P`, `‖(Bᴴ B)^{1/2} - P‖ ≤ ‖Bᴴ B - P²‖^{1/2}`: the bound `‖√a - √b‖ ≤ √‖a - b‖`
+(`CFC.norm_sqrt_sub_sqrt_le`; arXiv:2103.13367, Supplemental Material, eq. (26)) at `b = P²`. -/
+theorem Matrix.norm_polarPos_sub_le_sqrt {m n : Type*} [Fintype m] [Fintype n]
+    [DecidableEq n] (B : Matrix m n ℂ) {P : Matrix n n ℂ} (hP : P.PosSemidef) :
+    ‖Matrix.polarPos B - P‖ ≤ Real.sqrt ‖Bᴴ * B - P * P‖ := by
+  have hsq : CFC.sqrt (P * P) = P := CFC.sqrt_unique rfl hP.nonneg
+  have hnn : 0 ≤ P * P := by
+    have h := Matrix.posSemidef_conjTranspose_mul_self P
+    rw [hP.isHermitian.eq] at h
+    exact h.nonneg
+  have h := CFC.norm_sqrt_sub_sqrt_le (Matrix.posSemidef_conjTranspose_mul_self B).nonneg hnn
+  rwa [hsq] at h
+
+end
+
+end

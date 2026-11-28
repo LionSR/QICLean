@@ -6,6 +6,8 @@ Authors: QICLean contributors
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.Finite
 import Mathlib.Combinatorics.SimpleGraph.Walk.Counting
 import Mathlib.Algebra.Order.BigOperators.Group.Finset
+import Mathlib.Combinatorics.SimpleGraph.Coloring.Vertex
+import Mathlib.Combinatorics.SimpleGraph.Finite
 
 /-!
 # Connected vertex sets of a graph of bounded degree
@@ -25,9 +27,13 @@ the namespace `SimpleGraph`.
 
 * `SimpleGraph.card_connected_induce_mem_le` — the connected sets of size `n` through a vertex.
 * `SimpleGraph.card_connected_induce_le_exponential` — all connected sets of size `n`.
+* `SimpleGraph.exists_coloring_list_of_forall_degree_le`,
+  `SimpleGraph.colorable_succ_of_forall_degree_le`: greedy colouring of a graph of bounded degree.
 -/
 
 namespace SimpleGraph
+
+section ConnectedSetCount
 
 open Finset
 
@@ -153,5 +159,72 @@ theorem card_connected_induce_le_exponential {Δ : ℕ} (hΔ : ∀ v, G.degree v
   rw [pow_mul]
   exact (pow_le_pow_left' (le_max_right 1 (Δ ^ 2)) (n - 1)).trans
     (pow_le_pow_right' (le_max_left 1 (Δ ^ 2)) (Nat.sub_le n 1))
+
+end ConnectedSetCount
+
+section GreedyColoring
+
+/-!
+## Greedy colouring of a graph of bounded degree
+
+A finite graph in which every vertex has at most `d` neighbours has a proper colouring with
+`d + 1` colours: colour the vertices one at a time, each with a colour not used by its
+neighbours. The frustration-free area-law note colours the overlap graph of the supports this
+way, so that one sweep is a product of at most `d + 1` layers of terms with disjoint supports.
+
+### Main statements
+
+* `SimpleGraph.colorable_succ_of_forall_degree_le`.
+
+### References
+
+* Reading note *Entanglement across a cut in two-dimensional frustration-free ground states*,
+  November 18, 2026, `docs/audits/2026-11-18_finite_range_frustration_free_area_law.tex`,
+  paragraph "Contraction in one sweep": "Color it in `χ ≤ d + 1` colors".
+
+Moved from TNLean, `TNLean/Algebra/GreedyColoring.lean` at commit `49b78ed821` (Apache-2.0).
+-/
+
+variable {V : Type*} [Fintype V] (G : SimpleGraph V) [DecidableRel G.Adj]
+
+/-- Greedy colouring along a list: some colouring with `d + 1` colours separates every pair of
+adjacent vertices of the list. -/
+theorem exists_coloring_list_of_forall_degree_le {d : ℕ} (hd : ∀ v, G.degree v ≤ d)
+    (l : List V) : ∃ c : V → Fin (d + 1), ∀ u ∈ l, ∀ w ∈ l, G.Adj u w → c u ≠ c w := by
+  classical
+  induction l with
+  | nil => exact ⟨fun _ ↦ 0, by simp⟩
+  | cons v l ih =>
+    obtain ⟨c, hc⟩ := ih
+    have hcard : ((G.neighborFinset v).image c).card < (Finset.univ : Finset (Fin (d + 1))).card :=
+      calc ((G.neighborFinset v).image c).card ≤ (G.neighborFinset v).card := Finset.card_image_le
+        _ = G.degree v := G.card_neighborFinset_eq_degree v
+        _ < d + 1 := Nat.lt_succ_of_le (hd v)
+        _ = _ := by simp
+    obtain ⟨a, -, ha⟩ := Finset.exists_mem_notMem_of_card_lt_card hcard
+    have hfree : ∀ w, G.Adj v w → a ≠ c w := fun w hw h ↦
+      ha (Finset.mem_image.mpr ⟨w, (G.mem_neighborFinset v w).mpr hw, h.symm⟩)
+    refine ⟨Function.update c v a, fun u hu w hw huw ↦ ?_⟩
+    by_cases huv : u = v
+    · subst huv
+      rw [Function.update_self, Function.update_of_ne huw.ne']
+      exact hfree w huw
+    by_cases hwv : w = v
+    · subst hwv
+      rw [Function.update_self, Function.update_of_ne huv]
+      exact (hfree u huw.symm).symm
+    rw [Function.update_of_ne huv, Function.update_of_ne hwv]
+    exact hc u ((List.mem_cons.mp hu).resolve_left huv) w
+      ((List.mem_cons.mp hw).resolve_left hwv) huw
+
+/-- **Greedy colouring.** A finite graph of maximum degree at most `d` is `d + 1` colourable.
+Source: `docs/audits/2026-11-18_finite_range_frustration_free_area_law.tex`, paragraph
+"Contraction in one sweep". -/
+theorem colorable_succ_of_forall_degree_le {d : ℕ} (hd : ∀ v, G.degree v ≤ d) :
+    G.Colorable (d + 1) := by
+  obtain ⟨c, hc⟩ := G.exists_coloring_list_of_forall_degree_le hd Finset.univ.toList
+  exact ⟨Coloring.mk c fun {u w} huw ↦ hc u (by simp) w (by simp) huw⟩
+
+end GreedyColoring
 
 end SimpleGraph

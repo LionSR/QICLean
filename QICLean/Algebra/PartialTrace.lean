@@ -7,6 +7,7 @@ import Mathlib.LinearAlgebra.Matrix.Kronecker
 import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.Analysis.Matrix.PosDef
 import Mathlib.Basic.Complex.Basic
+import QICLean.Algebra.Matrix.MatrixReindex
 import QICLean.Algebra.Unitary.MatrixIsometryEntries
 
 /-!
@@ -75,6 +76,12 @@ Proposition 2.1) and for reduced states on contiguous tensor factors.
   `Matrix.traceAC_ABC_isHermitian`: tripartite partial traces preserve Hermiticity
 * `Matrix.PosSemidef.traceLeft`, `Matrix.PosSemidef.traceRight`: bipartite partial
   traces preserve positive semidefiniteness
+* `Matrix.preparationMap`: the state-preparation map `X ↦ X ⊗ ρ`
+* `Matrix.tracePrepareMap`: discard a matrix and prepare a fixed matrix,
+  `X ↦ tr(X) • ρ`, written as preparation, interchange of the two factors and
+  partial trace
+* `Matrix.tracePrepareMap_apply`, `Matrix.tracePrepareMap_trace`: its formula
+  and its output trace
 
 ## References
 
@@ -860,3 +867,113 @@ theorem partialTraceRight_vecMulVec_tensorPurification [Fintype BT] [Fintype BE]
 end TensorPurification
 
 end Matrix
+
+noncomputable section
+
+namespace Matrix
+
+section TracePrepare
+
+/-- The state-preparation map $X\mapsto X\otimes\rho$.  This is the
+elementary operation used to adjoin the positive neighboring operators in
+the maps $\mathcal T_1$ and $\mathcal S_1$ of arXiv:1606.00608,
+Appendix C.2, lines 1527--1533 and 1551--1555. -/
+def preparationMap {α β : Type*} [Fintype α] [DecidableEq α]
+    [Fintype β] [DecidableEq β] (ρ : Matrix β β ℂ) :
+    Matrix α α ℂ →ₗ[ℂ] Matrix (α × β) (α × β) ℂ where
+  toFun X := Matrix.kroneckerMap (· * ·) X ρ
+  map_add' X Y := Matrix.add_kronecker X Y ρ
+  map_smul' c X := Matrix.smul_kronecker c X ρ
+
+variable {α β : Type*} [Fintype α] [DecidableEq α]
+  [Fintype β] [DecidableEq β]
+
+/-- The trace-and-prepare map sends `X` to `trace X • ρ`.
+
+It is expressed as state preparation, interchange of the two tensor factors,
+and partial trace.  This factorization supplies its rectangular Kraus form
+without any nonemptiness assumption on either index type. -/
+def tracePrepareMap (ρ : Matrix β β ℂ) :
+    Matrix α α ℂ →ₗ[ℂ] Matrix β β ℂ :=
+  (partialTraceRightLM (α := β) (β := α)).comp
+    ((equivReindexMap (Equiv.prodComm α β)).comp (preparationMap ρ))
+
+/-- The trace-and-prepare map has the formula `X ↦ trace X • ρ`. -/
+@[simp]
+theorem tracePrepareMap_apply (ρ : Matrix β β ℂ) (X : Matrix α α ℂ) :
+    tracePrepareMap ρ X = Matrix.trace X • ρ := by
+  classical
+  ext b c
+  change (∑ a, X a a * ρ b c) = (∑ a, X a a) * ρ b c
+  rw [Finset.sum_mul]
+
+/-- The output trace of the trace-and-prepare map is the product of the input
+trace and the trace of the prepared matrix. -/
+theorem tracePrepareMap_trace (ρ : Matrix β β ℂ) (X : Matrix α α ℂ) :
+    Matrix.trace (tracePrepareMap ρ X) = Matrix.trace X * Matrix.trace ρ := by
+  rw [tracePrepareMap_apply, Matrix.trace_smul, smul_eq_mul]
+
+end TracePrepare
+
+end Matrix
+
+end
+
+section
+open scoped Kronecker
+namespace Matrix
+
+section PartialTrace
+
+variable {α β : Type*} [Fintype α] [Fintype β] [DecidableEq β]
+
+/-- Conjugating the first factor commutes with the partial trace over the second:
+`tr₂((A ⊗ 1) M (B ⊗ 1)) = A tr₂(M) B`. -/
+theorem partialTraceRight_kronecker_one_mul_mul (A B : Matrix α α ℂ)
+    (M : Matrix (α × β) (α × β) ℂ) :
+    partialTraceRight ((A ⊗ₖ (1 : Matrix β β ℂ)) * M * (B ⊗ₖ (1 : Matrix β β ℂ))) =
+      A * partialTraceRight M * B := by
+  ext i j
+  simp only [partialTraceRight_apply, mul_apply, Fintype.sum_prod_type, kroneckerMap_apply,
+    one_apply, mul_ite, mul_one, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq,
+    Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte, Finset.sum_mul, Finset.mul_sum]
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun a _ ↦ ?_
+  rw [Finset.sum_comm]
+
+/-- The partial trace over the first factor is invariant under a similarity of that
+factor: `tr₁((A ⊗ 1) M (B ⊗ 1)) = tr₁(M)` when `B A = 1`. -/
+theorem partialTraceLeft_kronecker_one_conj [DecidableEq α] {A B : Matrix α α ℂ}
+    (hBA : B * A = 1) (M : Matrix (α × β) (α × β) ℂ) :
+    partialTraceLeft ((A ⊗ₖ (1 : Matrix β β ℂ)) * M * (B ⊗ₖ (1 : Matrix β β ℂ))) =
+      partialTraceLeft M := by
+  ext i j
+  simp only [partialTraceLeft_apply, mul_apply, Fintype.sum_prod_type, kroneckerMap_apply,
+    one_apply, mul_ite, mul_one, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq,
+    Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte, Finset.sum_mul]
+  calc ∑ k, ∑ x, ∑ y, A k y * M (y, i) (x, j) * B x k
+      = ∑ x, ∑ y, M (y, i) (x, j) * (B * A) x y := by
+        simp only [mul_apply, Finset.mul_sum]
+        rw [Finset.sum_comm]
+        refine Finset.sum_congr rfl fun x _ ↦ ?_
+        rw [Finset.sum_comm]
+        refine Finset.sum_congr rfl fun y _ ↦ Finset.sum_congr rfl fun k _ ↦ ?_
+        ring
+    _ = _ := by simp [hBA, one_apply]
+
+end PartialTrace
+
+/-- A Kronecker product of orthogonal projections is an orthogonal projection. -/
+theorem isStarProjection_kronecker {A B : Type*} [Fintype A] [Fintype B]
+    {P : Matrix A A ℂ} {Q : Matrix B B ℂ}
+    (hP : IsStarProjection P) (hQ : IsStarProjection Q) : IsStarProjection (P ⊗ₖ Q) where
+  isIdempotentElem := by
+    change (P ⊗ₖ Q) * (P ⊗ₖ Q) = P ⊗ₖ Q
+    rw [← mul_kronecker_mul, hP.isIdempotentElem.eq, hQ.isIdempotentElem.eq]
+  isSelfAdjoint := by
+    change (P ⊗ₖ Q)ᴴ = P ⊗ₖ Q
+    rw [conjTranspose_kronecker, show Pᴴ = P from hP.isSelfAdjoint,
+      show Qᴴ = Q from hQ.isSelfAdjoint]
+
+end Matrix
+end

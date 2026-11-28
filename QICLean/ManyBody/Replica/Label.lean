@@ -8,9 +8,7 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.ManyBody.Replica.Label
 
-import QICLean.ManyBody.Replica.Label.CommonSchurBellCutoffs
 import QICLean.ManyBody.Replica.Label.CommonSchurCutoffs
 import QICLean.ManyBody.Replica.Label.GroupedLabelSymmetricSupport
-import QICLean.ManyBody.Replica.Label.MatchedSchurCutoffs
 import QICLean.ManyBody.Replica.Label.SubsystemLabelCoordinates
 import QICLean.ManyBody.Replica.Label.SubsystemTransport

@@ -301,7 +301,6 @@ which gives the proposition without hypotheses beyond those of the source.
 \begin{theorem}[The skew bound at a split leaf]\label{thm:replica_split_skew_bound}
     \lean{TensorPower.re_coherentIntegral_ofReal,
       TensorPower.mul_skewOperator_eq_mul_skewSquare,
-      ManyBody.posSemidef_place_iff,
       TensorPower.ReplicaTransport.exists_tendsto_zero_forall_le,
       TensorPower.ReplicaTransport.eventually_re_trace_skewSquare_le,
       TensorPower.ReplicaTransport.splitSkewBound,
@@ -318,6 +317,7 @@ which gives the proposition without hypotheses beyond those of the source.
 \end{theorem}
 
 \begin{proof}\leanok
+    \uses{lem:sites_place_norm_order}
     For a split towards $P$ put $P_0=D\cap P$ and $x=D\cap Y$. Then $D=P_0\cup x$, so $h$ is
     the lift of an operator $0\le K\le1$ on $P_0x$ and $\dim D=(\dim P_0)(\dim x)$. The skew
     operator of~\cite[Lemma~6.4]{OpenAI2026AreaLaw} takes its absolute values on

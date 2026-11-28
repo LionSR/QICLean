@@ -4,11 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Algebra.Unitary.MatrixUnitaryBetween
-import QICLean.Analysis.Isometry.PositiveProjectionCompression
+import QICLean.Analysis.Isometry.IsometricCompression
 import QICLean.ManyBody.Replica.Metric.LaminarBandMetrics
 import QICLean.Analysis.OperatorMean.FiniteTree
 import QICLean.Analysis.Isometry.IsometricDomainExtension
-import QICLean.Algebra.Matrix.OrderedMatrixAction
+import QICLean.Algebra.Matrix.MatrixCyclicPathSum
 
 /-!
 # Cross-band commutation in fixed symmetric coordinates

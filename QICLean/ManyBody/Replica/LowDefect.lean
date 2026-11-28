@@ -8,14 +8,9 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.ManyBody.Replica.LowDefect
 
-import QICLean.ManyBody.Replica.LowDefect.ComponentInverseGoodExpectation
-import QICLean.ManyBody.Replica.LowDefect.ComponentInverseRough
-import QICLean.ManyBody.Replica.LowDefect.ComponentInverseRoughUniform
 import QICLean.ManyBody.Replica.LowDefect.ComponentInverseSharp
-import QICLean.ManyBody.Replica.LowDefect.ComponentInverseSharpUniform
-import QICLean.ManyBody.Replica.LowDefect.InverseRoughCompression
+import QICLean.ManyBody.Replica.LowDefect.GlobalSchmidtBell
 import QICLean.ManyBody.Replica.LowDefect.LowDefectCoordinateCovariance
-import QICLean.ManyBody.Replica.LowDefect.LowDefectSharpCompression
 import QICLean.ManyBody.Replica.LowDefect.LowDefectSymmetricCoordinates
 import QICLean.ManyBody.Replica.LowDefect.RegionalLowDefectLowerPin
 import QICLean.ManyBody.Replica.LowDefect.RegionalLowDefectMass

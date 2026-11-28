@@ -12,6 +12,11 @@ import Mathlib.LinearAlgebra.Dimension.RankNullity
 import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 import Mathlib.Data.Matrix.Block
 import Mathlib.Basic.Complex.Basic
+import Mathlib.LinearAlgebra.Isomorphisms
+import Mathlib.RingTheory.SimpleModule.Rank
+import QICLean.Algebra.Module.CoveringMatching
+import Mathlib.LinearAlgebra.PID
+import Mathlib.LinearAlgebra.Trace
 
 /-!
 # Subquotients of nested submodules
@@ -33,7 +38,14 @@ Moved from TNLean, `TNLean/Algebra/Subquotient.lean` at commit `49b78ed821` (Apa
 * `Submodule.subquotTopEquiv`: the subquotient `⊤ ⧸ A` is the quotient `M ⧸ A`.
 * `finrank_eq_sum_of_flag`, `exists_linearEquiv_blockTriangular_of_flag`: flag-adapted coordinates
   give block-triangular matrices.
+
+Moved from TNLean, `TNLean/MPS/FundamentalTheorem/Compression/UniquenessBlocks.lean` at commit
+`021ba0bd19` (Apache-2.0).
+* `LinearMap.trace_eq_trace_restrict_add_trace_quotient`: trace additivity over an invariant
+  submodule.
 -/
+
+section Subquotient
 
 section Subquotient
 
@@ -467,3 +479,176 @@ theorem exists_linearEquiv_blockTriangular_of_flag {ι : Type*} {V : Type*} [Add
   exact ⟨e, hclause1, hclause2, hclause3, hclause4⟩
 
 end FlagBlockTriangular
+
+section
+
+open scoped Matrix
+
+namespace Submodule
+
+variable {R M : Type*} [Ring R] [AddCommGroup M] [Module R M]
+
+/-- The second isomorphism theorem for a step: if `U ≤ Q`, `P ⊔ U = Q` and `U ⊓ P = K`, the
+inclusion `U → Q` induces an isomorphism `U / K ≅ Q / P`. -/
+noncomputable def subquotEquivOfSupEq {K U P Q : Submodule R M} (hUQ : U ≤ Q) (hsup : P ⊔ U = Q)
+    (hinf : U ⊓ P = K) : subquot K U ≃ₗ[R] subquot P Q :=
+  let f : U →ₗ[R] subquot P Q := (P.comap Q.subtype).mkQ ∘ₗ Submodule.inclusion hUQ
+  have hf : Function.Surjective f := by
+    intro y
+    obtain ⟨y, rfl⟩ := Submodule.Quotient.mk_surjective _ y
+    obtain ⟨p, hp, u, hu, hpu⟩ := Submodule.mem_sup.1 (hsup.symm ▸ y.2 : (y : M) ∈ P ⊔ U)
+    refine ⟨⟨u, hu⟩, (Submodule.Quotient.eq _).2 ?_⟩
+    rw [Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_sub,
+      Submodule.coe_inclusion, ← hpu, sub_add_cancel_right]
+    exact P.neg_mem hp
+  have hker : LinearMap.ker f = K.comap U.subtype := by
+    ext x
+    rw [LinearMap.mem_ker, LinearMap.comp_apply, Submodule.mkQ_apply,
+      Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.mem_comap,
+      Submodule.subtype_apply, Submodule.subtype_apply, Submodule.coe_inclusion, ← hinf]
+    exact ⟨fun h => ⟨x.2, h⟩, fun h => h.2⟩
+  (Submodule.quotEquivOfEq _ _ hker.symm).trans (f.quotKerEquivOfSurjective hf)
+
+/-- The isomorphism `U / K ≅ Q / P` of the step lemma (blueprint `lem:asym_uniq_step`, *One step
+against another*) for a step `P ⋖ Q` against `P'`, `Q'` with `P ⊔ (Q ⊓ P') < P ⊔ (Q ⊓ Q')`, where
+`U = Q ⊓ Q'` and `K = P ⊓ Q'`. -/
+noncomputable def subquotInfEquivOfLt {P₁ Q₁ P₂ Q₂ : Submodule R M} (h₁ : P₁ ⋖ Q₁)
+    (h : P₁ ⊔ Q₁ ⊓ P₂ < P₁ ⊔ Q₁ ⊓ Q₂) :
+    subquot (P₁ ⊓ Q₂) (Q₁ ⊓ Q₂) ≃ₗ[R] subquot P₁ Q₁ :=
+  subquotEquivOfSupEq inf_le_left (CoveringMatching.step_sup_eq_of_lt h₁ h).1 <|
+    le_antisymm (le_inf inf_le_right (inf_le_left.trans inf_le_right))
+      (le_inf (le_inf (inf_le_left.trans h₁.le) inf_le_right) inf_le_left)
+
+/-- The isomorphism `U / K ≅ Q' / P'` of the step lemma (blueprint `lem:asym_uniq_step`, *One step
+against another*) for two steps `P ⋖ Q`, `P' ⋖ Q'` with `P ⊔ (Q ⊓ P') < P ⊔ (Q ⊓ Q')`, where
+`U = Q ⊓ Q'` and `K = P ⊓ Q'`. -/
+noncomputable def subquotInfEquivOfLt' {P₁ Q₁ P₂ Q₂ : Submodule R M} (h₁ : P₁ ⋖ Q₁)
+    (h₂ : P₂ ⋖ Q₂) (h : P₁ ⊔ Q₁ ⊓ P₂ < P₁ ⊔ Q₁ ⊓ Q₂) :
+    subquot (P₁ ⊓ Q₂) (Q₁ ⊓ Q₂) ≃ₗ[R] subquot P₂ Q₂ :=
+  subquotEquivOfSupEq inf_le_right (CoveringMatching.step_sup_eq_of_lt' h₁ h₂ h).1 <| by
+    rw [inf_assoc, inf_eq_right.2 h₂.le]
+    exact (CoveringMatching.step_inf_eq_of_lt h₁ h₂ h).symm
+
+/-- **One step against another** (blueprint `lem:asym_uniq_step`, *One step against another*): for
+steps `P ⋖ Q` and `P' ⋖ Q'` of invariant subspaces with `P ⊔ (Q ⊓ P') < P ⊔ (Q ⊓ Q')` (the matching
+condition), and `U = Q ⊓ Q'`, `K = P ⊓ Q'`, the inclusions induce isomorphisms `U / K ≅ Q / P` and
+`U / K ≅ Q' / P'`. Stated for modules over any ring; for the word module of a tensor these are
+isomorphisms commuting with the letters. No hypothesis on blocks. -/
+theorem exists_subquotEquiv_of_covBy_of_lt {P₁ Q₁ P₂ Q₂ : Submodule R M} (h₁ : P₁ ⋖ Q₁)
+    (h₂ : P₂ ⋖ Q₂) (h : P₁ ⊔ Q₁ ⊓ P₂ < P₁ ⊔ Q₁ ⊓ Q₂) :
+    (∃ e : subquot (P₁ ⊓ Q₂) (Q₁ ⊓ Q₂) ≃ₗ[R] subquot P₁ Q₁,
+      ∀ x : ↥(Q₁ ⊓ Q₂), e (Submodule.Quotient.mk x) =
+        Submodule.Quotient.mk ⟨x.1, (Submodule.mem_inf.1 x.2).1⟩) ∧
+    (∃ e : subquot (P₁ ⊓ Q₂) (Q₁ ⊓ Q₂) ≃ₗ[R] subquot P₂ Q₂,
+      ∀ x : ↥(Q₁ ⊓ Q₂), e (Submodule.Quotient.mk x) =
+        Submodule.Quotient.mk ⟨x.1, (Submodule.mem_inf.1 x.2).2⟩) :=
+  ⟨⟨subquotInfEquivOfLt h₁ h, fun _ => rfl⟩, ⟨subquotInfEquivOfLt' h₁ h₂ h, fun _ => rfl⟩⟩
+
+end Submodule
+
+namespace CoveringMatching.CoveringChain
+
+variable {R M : Type*} [Ring R] [AddCommGroup M] [Module R M]
+
+/-- **Matched steps of two covering chains are isomorphic** (blueprint `prop:asym_uniq_matching`,
+*The matching*): for any two chains of submodules with covering steps, not only the flags of two
+reductions, the step `k` of the first and the matched step of the second are isomorphic modules. For
+invariant flags of a tensor this is the coordinate-free form of "the induced letters are gauge
+equivalent". -/
+theorem nonempty_subquotEquiv_jumpEquiv {r r' : ℕ} (c : CoveringChain (Submodule R M) r)
+    (c' : CoveringChain (Submodule R M) r') (k : Fin r) :
+    Nonempty (Submodule.subquot (c.toFun k.castSucc) (c.toFun k.succ) ≃ₗ[R]
+      Submodule.subquot (c'.toFun (c.jumpEquiv c' k).castSucc)
+        (c'.toFun (c.jumpEquiv c' k).succ)) :=
+  ⟨(Submodule.subquotInfEquivOfLt (c.covBy k) (c.jump_spec c' k)).symm.trans
+    (Submodule.subquotInfEquivOfLt' (c.covBy k) (c'.covBy _) (c.jump_spec c' k))⟩
+
+end CoveringMatching.CoveringChain
+
+end
+
+end Subquotient
+
+section TraceInvariantSubmodule
+
+/-!
+## Trace additivity over an invariant submodule
+
+This file proves that the trace of an endomorphism of a finite-dimensional vector space splits,
+over any submodule invariant under the endomorphism, as the sum of the trace of its restriction
+to the submodule and the trace of the endomorphism induced on the quotient.
+
+Moved from TNLean, `TNLean/Algebra/TraceInvariantSubmodule.lean` at commit `49b78ed821`
+(Apache-2.0).
+
+### Main results
+
+* `LinearMap.trace_eq_trace_restrict_add_trace_quotient`: for `p` a submodule of a
+  finite-dimensional `K`-vector space `V` and `f : V →ₗ[K] V` with `f x ∈ p` whenever
+  `x ∈ p`,
+  `trace K V f = trace K p (f.restrict hf) + trace K (V ⧸ p) (p.mapQ p f hf')`.
+-/
+
+namespace LinearMap
+
+variable {K V : Type*} [Field K] [AddCommGroup V] [Module K V] [FiniteDimensional K V]
+
+/-- The trace of an endomorphism `f` of a finite-dimensional vector space splits, over any
+`f`-invariant submodule `p`, as the trace of the restriction of `f` to `p` plus the trace of the
+endomorphism of `V ⧸ p` induced by `f`. -/
+theorem trace_eq_trace_restrict_add_trace_quotient (p : Submodule K V) (f : V →ₗ[K] V)
+    (hf : ∀ x ∈ p, f x ∈ p) :
+    trace K V f =
+      trace K p (f.restrict hf) + trace K (V ⧸ p) (p.mapQ p f fun x hx => hf x hx) := by
+  classical
+  obtain ⟨q, hpq⟩ := p.exists_isCompl
+  set P : V →ₗ[K] V := p.projection q hpq with hPdef
+  have hPmem : ∀ x, P x ∈ p := fun x => Submodule.projection_apply_mem hpq x
+  have hPfix : ∀ x ∈ p, P x = x := fun x hx => Submodule.projection_apply_of_mem_left hpq hx
+  -- `f ∘ P` has range in `p`, and its restriction to `p` agrees with `f`'s restriction.
+  have hcompmem : ∀ x, (f.comp P) x ∈ p := fun x => hf (P x) (hPmem x)
+  have hrestr_eq : (f.comp P).restrict (fun x hx => hcompmem x) = f.restrict hf := by
+    ext ⟨x, hx⟩
+    simp [LinearMap.restrict_apply, hPfix x hx]
+  have hstep1 : trace K V (f.comp P) = trace K p (f.restrict hf) := by
+    rw [← LinearMap.trace_restrict_eq_of_forall_mem p (f.comp P) hcompmem, hrestr_eq]
+  -- A section `σ : V ⧸ p → V` of the quotient map along the complement `q`.
+  set σ : V ⧸ p →ₗ[K] V :=
+    q.subtype.comp (p.quotientEquivOfIsCompl q hpq).toLinearMap with hσdef
+  have hmkQσ : p.mkQ.comp σ = LinearMap.id := by
+    ext x
+    simp [σ, Submodule.Quotient.eq, sub_mem_comm_iff, Submodule.sub_projection_mem]
+  have hσmkQ : σ.comp p.mkQ = LinearMap.id - P := by
+    have h1 : (p.quotientEquivOfIsCompl q hpq).toLinearMap.comp p.mkQ
+        = q.projectionOnto p hpq.symm := by
+      rw [Submodule.toLinearMap_quotientEquivOfIsCompl, Submodule.liftQ_mkQ]
+    calc σ.comp p.mkQ
+        = q.subtype.comp ((p.quotientEquivOfIsCompl q hpq).toLinearMap.comp p.mkQ) := by
+          rw [hσdef, LinearMap.comp_assoc]
+      _ = q.subtype.comp (q.projectionOnto p hpq.symm) := by rw [h1]
+      _ = q.projection p hpq.symm := rfl
+      _ = LinearMap.id - P := Submodule.projection_eq_id_sub_projection hpq
+  -- `f ∘ (1 - P)` and `mapQ f` are related by the cyclicity of the trace along `σ` and `mkQ`.
+  have hstep2 : trace K V (f.comp (LinearMap.id - P)) =
+      trace K (V ⧸ p) (p.mapQ p f fun x hx => hf x hx) := by
+    have hcomp : f.comp (LinearMap.id - P) = f.comp σ ∘ₗ p.mkQ := by
+      rw [← hσmkQ]
+      exact (LinearMap.comp_assoc p.mkQ σ f).symm
+    have hcyc : trace K V (f.comp σ ∘ₗ p.mkQ) =
+        trace K (V ⧸ p) (p.mkQ ∘ₗ f.comp σ) := trace_comp_comm' p.mkQ (f.comp σ)
+    have hmapq : p.mkQ.comp f = (p.mapQ p f fun x hx => hf x hx).comp p.mkQ := by
+      ext x
+      simp
+    rw [hcomp, hcyc, ← LinearMap.comp_assoc, hmapq, LinearMap.comp_assoc, hmkQσ,
+      LinearMap.comp_id]
+  have hid : P + (LinearMap.id - P) = LinearMap.id := by abel
+  calc trace K V f = trace K V (f.comp LinearMap.id) := by rw [LinearMap.comp_id]
+    _ = trace K V (f.comp (P + (LinearMap.id - P))) := by rw [hid]
+    _ = trace K V (f.comp P) + trace K V (f.comp (LinearMap.id - P)) := by
+        rw [LinearMap.comp_add, map_add]
+    _ = trace K p (f.restrict hf) + trace K (V ⧸ p) (p.mapQ p f fun x hx => hf x hx) := by
+        rw [hstep1, hstep2]
+
+end LinearMap
+
+end TraceInvariantSubmodule

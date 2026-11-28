@@ -24,5 +24,4 @@ import QICLean.Analysis.TraceNorm.TraceNormAbs
 import QICLean.Analysis.TraceNorm.TraceNormContractivity
 import QICLean.Analysis.TraceNorm.Variational
 import QICLean.Analysis.TraceNorm.WeightedBlockCombination
-import QICLean.Analysis.TraceNorm.WeightedPureStateTraceNorm
 import QICLean.Analysis.TraceNorm.WeightedRectangular

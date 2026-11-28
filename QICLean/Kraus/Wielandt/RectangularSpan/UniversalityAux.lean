@@ -10,5 +10,4 @@ Authors: QICLean contributors
 
 import QICLean.Kraus.Wielandt.RectangularSpan.UniversalityAux.Basic
 import QICLean.Kraus.Wielandt.RectangularSpan.UniversalityAux.NilpIndex
-import QICLean.Kraus.Wielandt.RectangularSpan.UniversalityAux.Quantitative
 import QICLean.Kraus.Wielandt.RectangularSpan.UniversalityAux.Sharp

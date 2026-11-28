@@ -1,0 +1,1009 @@
+\section{Ownership sheets, births, deaths and exchanges}
+\label{sec:party_sheets}
+
+An ownership sheet assigns an owner to every site of a finite set $\Lambda$, and the register
+$\C^q$ of a site is held by its owner. This section implements the homogeneous births and
+deaths of \cite[Lemma~6.5]{OpenAI2026PolynomialPEPS} and the two-sheet exchange of
+\cite[Lemma~6.6]{OpenAI2026PolynomialPEPS} by words and monomials of the party calculus, for
+given splitting data, and assembles the memory of several sheets used in
+\cite[Proposition~7.1]{OpenAI2026PolynomialPEPS}: lifts of changes of one or two sheets to the
+whole stack, bounded changes, and the private product initialization. Sheets carry no encoded
+holes, so the hole parts of the sets of the two lemmas are empty.
+
+\subsection{Framing, relabelling and sequencing of original circuits}
+
+\begin{definition}[Framing, relabelling and sequencing of original circuits]
+    \label{def:party_original_frame_sequence}
+    \lean{QuantumCircuit.Party.prodVec, QuantumCircuit.Party.prodVec_apply,
+        QuantumCircuit.Party.norm_prodVec, QuantumCircuit.Party.prodVec_sub_left,
+        QuantumCircuit.Party.prodVec_sub_right, QuantumCircuit.Party.OriginalGate.frame,
+        QuantumCircuit.Party.OriginalGate.toWeightedGate_frame,
+        QuantumCircuit.Party.OriginalCircuit.frame,
+        QuantumCircuit.Party.OriginalCircuit.toEffectCircuit_frame,
+        QuantumCircuit.Party.OriginalCircuit.nonprivateCount_frame,
+        QuantumCircuit.Party.OriginalCircuit.participation_frame,
+        QuantumCircuit.Party.OriginalCircuit.frameLocationsEquiv,
+        QuantumCircuit.Party.OriginalCircuit.participants_frameLocationsEquiv,
+        QuantumCircuit.Party.OriginalCircuit.forall_participants_frame,
+        QuantumCircuit.Party.OriginalCircuit.isExpansionBounded_frame,
+        QuantumCircuit.Party.OriginalCircuit.isMonomialBounded_frame,
+        QuantumCircuit.Party.OriginalCircuit.isSourceBounded_frame,
+        QuantumCircuit.Party.EffectCircuit.isExpansionBounded_frame,
+        QuantumCircuit.Party.EffectCircuit.isMonomialBounded_frame,
+        QuantumCircuit.Party.EffectCircuit.isSourceBounded_frame,
+        QuantumCircuit.Party.OriginalCircuit.relabel,
+        QuantumCircuit.Party.OriginalCircuit.toPartyCircuit_relabel,
+        QuantumCircuit.Party.OriginalCircuit.nonprivateCount_relabel,
+        QuantumCircuit.Party.OriginalCircuit.participation_relabel,
+        QuantumCircuit.Party.OriginalCircuit.sequence,
+        QuantumCircuit.Party.OriginalCircuit.sequence_zero,
+        QuantumCircuit.Party.OriginalCircuit.sequence_succ,
+        QuantumCircuit.Party.OriginalCircuit.op_sequence_zero,
+        QuantumCircuit.Party.OriginalCircuit.op_sequence_succ,
+        QuantumCircuit.Party.OriginalCircuit.isExpansionBounded_sequence,
+        QuantumCircuit.Party.OriginalCircuit.isMonomialBounded_sequence,
+        QuantumCircuit.Party.OriginalCircuit.isSourceBounded_sequence,
+        QuantumCircuit.Party.OriginalCircuit.nonprivateCount_sequence,
+        QuantumCircuit.Party.OriginalCircuit.forall_participants_sequence,
+        QuantumCircuit.Party.OriginalCircuit.participation_sequence}
+    \leanok
+    \uses{def:party_original_circuit, def:party_gate_frame, def:party_relabel,
+        def:party_gate_counts, def:party_weighted_gate, lem:kronecker_vectors}
+    Let $X$, $Y$ and $W$ be systems on the parties. In this section $\operatorname{op}(w)$
+    denotes the operator of an original circuit, word or monomial $w$, the letter $T$ being kept
+    for a region of sites. For an original circuit, its number of
+    nonprivate gates is its number of gates, every gate costing $1$ and local contractions
+    nothing, and the participation of a party is the number of gates whose cell contains it.
+    It satisfies the expansion bound $(r,S)$ if every monomial of every gate expansion has at
+    most $r$ pair effects and the absolute values of the coefficients of every gate expansion
+    sum to at most $S$, the monomial bound $K$ if every gate expansion has at most $K$
+    monomials, and the pair-source bound $r$ if every monomial of every gate expansion has at
+    most $r$ pair sources \cite[Theorem~5.2]{OpenAI2026PolynomialPEPS}.
+
+    \emph{Product vectors.} The product system $W\times X$ has the basis $W_p\times X_p$ at the
+    party $p$, and its configurations are the pairs of configurations of $W$ and $X$. For
+    $x\in\mathcal H_W$ and $y\in\mathcal H_X$ the product vector
+    $x\otimes y\in\mathcal H_{W\times X}$ has the coefficient $x(\sigma)y(\tau)$ at the
+    configuration paired with $(\sigma,\tau)$. Thus
+    $\lVert x\otimes y\rVert=\lVert x\rVert\,\lVert y\rVert$,
+    $x\otimes y-x'\otimes y=(x-x')\otimes y$ and $x\otimes y-x\otimes y'=x\otimes(y-y')$.
+
+    \emph{Framing.} For an original circuit $w$ from $X$ to $Y$, the framed circuit $w^W$ from
+    $W\times X$ to $W\times Y$ runs $w$ beside the spectator factor $W_p$ placed in front of the
+    basis of every party $p$: every original gate is replaced by its framed gate expansion, and
+    every local contraction $A$ at a party $p$ by $1_{W_p}\otimes A$. The effect circuit of
+    $w^W$ is the framed effect circuit of $w$. Framing keeps the number of nonprivate gates,
+    the participation of every party, the gate occurrences together with their cells, hence
+    every condition on the participants of the gates, and the expansion, monomial and
+    pair-source bounds, of original circuits and of effect circuits alike.
+
+    \emph{Relabelling.} For bijections $e_p:Y_p\to X_p$, the relabelling along $e$ is the
+    original circuit from $X$ to $Y$ made of one local operation at every party, the matrix of
+    $e_p$; it is the relabelling of party circuits, has no nonprivate gate, and no party
+    participates in it.
+
+    \emph{Sequencing.} For systems $a_0,a_1,\dots$ and original circuits $c_t$ from $a_t$ to
+    $a_{t+1}$, the sequence of length $t$ is the empty circuit for $t=0$ and $c_0$ followed by
+    $c_1,\dots,c_{t-1}$ in general, so the sequence of length $t+1$ is that of length $t$
+    followed by $c_t$. Its operator is $\operatorname{op}(c_{t-1})\cdots\operatorname{op}(c_0)$,
+    the identity for $t=0$. Its number of nonprivate gates and the participation of every party
+    are the sums of those of the stages $c_s$, $s<t$; an expansion, monomial or pair-source
+    bound satisfied by every stage $c_s$ with $s<t$ is satisfied by the sequence, and so is
+    every condition on the participants of the gates.
+\end{definition}
+
+\begin{theorem}[Framed circuits and relabellings on product vectors]
+    \label{thm:party_frame_prod_vec}
+    \lean{QuantumCircuit.Party.OriginalCircuit.op_frame,
+        QuantumCircuit.Party.OriginalGate.isCompatible_frame,
+        QuantumCircuit.Party.OriginalCircuit.toEuclideanLin_op_frame_prodVec,
+        QuantumCircuit.Party.OriginalCircuit.norm_op_frame_prodVec_sub_le,
+        QuantumCircuit.Party.OriginalCircuit.op_relabel,
+        QuantumCircuit.Party.OriginalCircuit.toEuclideanLin_op_relabel,
+        QuantumCircuit.Party.OriginalCircuit.toEuclideanLin_op_relabel_prodComm_prodVec}
+    \leanok
+    \uses{def:party_original_frame_sequence}
+    The operator of a framed original gate is the identity on the spectator factors tensored
+    with the operator of the gate. For an original circuit $w$ from $X$ to $Y$ and a system $W$,
+    read along the pairing of configurations,
+    $\operatorname{op}(w^W)=1_{\mathcal H_W}\otimes\operatorname{op}(w)$. Hence
+    $\operatorname{op}(w^W)(x\otimes y)=x\otimes\operatorname{op}(w)y$ for
+    $x\in\mathcal H_W$ and $y\in\mathcal H_X$, and if $\lVert x\rVert\leq1$ then
+    \begin{align}
+        \lVert\operatorname{op}(w^W)(x\otimes v)-x\otimes v'\rVert
+        \leq\lVert\operatorname{op}(w)v-v'\rVert
+    \end{align}
+    for all $v\in\mathcal H_X$ and $v'\in\mathcal H_Y$. The operator of the relabelling along
+    bijections $e_p:Y_p\to X_p$ is the matrix of the bijection $\tau\mapsto(e_p(\tau_p))_p$ of
+    configurations; it maps a vector $v\in\mathcal H_X$ to the vector
+    $\tau\mapsto v((e_p(\tau_p))_p)$ of $\mathcal H_Y$. In particular the relabelling exchanging
+    the two factors of $X\times Y$ maps $x\otimes y$ to $y\otimes x$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:party_op_frame, def:party_relabel, def:party_weighted_gate}
+    The compatibility of framed original gates is that of their framed gate expansions, and
+    Theorem~\ref{thm:party_op_frame} for party circuits then gives
+    $\operatorname{op}(w^W)=1\otimes\operatorname{op}(w)$. Applied to $x\otimes y$, the sum over
+    the first component reduces to its diagonal term, which gives
+    $x\otimes\operatorname{op}(w)y$. The bound follows from
+    $\operatorname{op}(w^W)(x\otimes v)-x\otimes v'=x\otimes(\operatorname{op}(w)v-v')$ and
+    $\lVert x\otimes u\rVert=\lVert x\rVert\,\lVert u\rVert$. The operator of a relabelling is that
+    of the relabelling of party circuits, a permutation matrix, and its action on vectors and on
+    product vectors is a direct computation.
+\end{proof}
+
+\subsection{Ownership sheets}
+
+Throughout, $\Lambda$ is a finite set of sites, $q\in\N$, $[q]=\{0,\dots,q-1\}$, and
+$[q]^R$ is the set of configurations of a region $R\subseteq\Lambda$. The parties form a set
+$\mathcal P$.
+
+\begin{definition}[Ownership sheets and their reference vectors]
+    \label{def:party_sheet}
+    \lean{QuantumCircuit.Party.Sheet, QuantumCircuit.Party.Sheet.system,
+        QuantumCircuit.Party.Sheet.refVec, QuantumCircuit.Party.Sheet.refVec_apply,
+        QuantumCircuit.Party.Sheet.norm_refVec, QuantumCircuit.Party.Sheet.norm_refVec_le,
+        QuantumCircuit.Party.Sheet.twoConfigEquiv,
+        QuantumCircuit.Party.Sheet.twoConfigEquiv_apply,
+        QuantumCircuit.Party.Sheet.twoConfigEquiv_fst_eq,
+        QuantumCircuit.Party.Sheet.twoConfigEquiv_snd_eq,
+        QuantumCircuit.Party.Sheet.prodVec_refVec}
+    \leanok
+    \uses{def:sites_block, def:party_original_frame_sequence, lem:kronecker_vectors}
+    A sheet $S$ on $\Lambda$ is an owner map $o_S:\Lambda\to\mathcal P$; the register $\C^q$ of
+    a site $x$ is held by $o_S(x)$ \cite[Section~6]{OpenAI2026PolynomialPEPS}. Its system $X^S$
+    has at the party $p$ the basis $X^S_p=[q]^{o_S^{-1}(p)}$ of configurations of the sites $p$
+    owns, the blocked system of $[q]^\Lambda$ along $o_S$. Its canonical coordinates are the
+    bijection $\gamma_S$ from the configurations of $X^S$ to $[q]^\Lambda$ with
+    $\gamma_S(z)(x)=z_{o_S(x)}(x)$. A vector $\Omega\in\C^{[q]^\Lambda}$ read on the sheet is
+    $\Omega_S=\Omega\circ\gamma_S$, and $\lVert\Omega_S\rVert=\lVert\Omega\rVert$, so
+    $\lVert\Omega_S\rVert\leq1$ when $\lVert\Omega\rVert\leq1$.
+
+    Two sheets $S_1,S_2$ held at once form the product system $X^{S_1}\times X^{S_2}$. Its
+    canonical coordinates are the bijection $\gamma_{S_1,S_2}$ onto $[q]^\Lambda\times[q]^\Lambda$,
+    $\gamma_{S_1,S_2}(z)=(\gamma_{S_1}(z^1),\gamma_{S_2}(z^2))$ for the pair $(z^1,z^2)$ of
+    configurations paired with $z$: the coordinate of a site $x$ on the first sheet is read at
+    $o_{S_1}(x)$, on the second at $o_{S_2}(x)$. The product of the reference vectors is
+    $\Omega_{S_1}\otimes\Omega_{S_2}=(\Omega\otimes\Omega)\circ\gamma_{S_1,S_2}$.
+\end{definition}
+
+\begin{definition}[Change of owner and the sets of a birth]
+    \label{def:party_change_owner}
+    \lean{QuantumCircuit.Party.Sheet.changeOwner, QuantumCircuit.Party.Sheet.birthEnv,
+        QuantumCircuit.Party.Sheet.mem_birthEnv, QuantumCircuit.Party.Sheet.disjoint_birthEnv,
+        QuantumCircuit.Party.Sheet.changeOwner_eq_self,
+        QuantumCircuit.Party.Sheet.changeOwner_birth_owners,
+        QuantumCircuit.Party.Sheet.owner_eq_iff_of_birth,
+        QuantumCircuit.Party.Sheet.changeOwner_owner_eq_self_iff,
+        QuantumCircuit.Party.Sheet.changeOwner_owner_eq_iff,
+        QuantumCircuit.Party.Sheet.changeOwner_owner_eq_iff_of_ne,
+        QuantumCircuit.Party.Sheet.changeOwner_self_owner_eq_iff,
+        QuantumCircuit.Party.Sheet.mem_sdiff_birthEnv_iff}
+    \leanok
+    \uses{def:party_sheet}
+    For $T\subseteq\Lambda$ and a party $Q$, the sheet $S^{T\to Q}$ hands the sites of $T$ to
+    $Q$: its owner is $Q$ on $T$ and $o_S$ elsewhere. For a party $P_\circ$, the set
+    $E_S(P_\circ)=\{x:o_S(x)\neq P_\circ\}$ is the set $E$ of
+    \cite[Lemma~6.5]{OpenAI2026PolynomialPEPS}, whose hole part is empty on a sheet. Let
+    $E=E_S(P_\circ)$ and $U=\Lambda\setminus(T\cup E)$.
+
+    For every $T$ and $Q$, the sites owned by $Q$ in $S^{T\to Q}$ are those of $T$ and those
+    owned by $Q$ in $S$; if $Q\neq P_\circ$ the sites owned by $P_\circ$ in $S^{T\to Q}$ are
+    those of $U$; and the sites owned by $P_\circ$ in $S^{T\to P_\circ}$ are those of
+    $T\cup U$. If moreover every site of $T$ is owned by $P_\circ$ in $S$, then $T$ and $E$ are
+    disjoint, $S^{T\to P_\circ}=S$, the sites owned by $P_\circ$ in $S$ are those of $T\cup U$,
+    a site lies in $(T\cup E)\setminus T$ exactly when it is not owned by $P_\circ$, every
+    party $r\notin\{P_\circ,Q\}$ owns the same sites in $S$ and in $S^{T\to Q}$, the sites of
+    $U$ are owned by $P_\circ$ in both sheets, the sites of $T$ by $Q$ in $S^{T\to Q}$, and the
+    owners on $E$ are unchanged.
+\end{definition}
+
+\begin{definition}[Bases of a party read on regions]
+    \label{def:party_sheet_region_coords}
+    \lean{QuantumCircuit.Party.Sheet.regionEquiv,
+        QuantumCircuit.Party.Sheet.regionEquiv_apply,
+        QuantumCircuit.Party.Sheet.regionEquiv_symm_apply,
+        QuantumCircuit.Party.Sheet.splitEquiv,
+        QuantumCircuit.Party.Sheet.splitEquiv_apply_fst,
+        QuantumCircuit.Party.Sheet.splitEquiv_apply_snd,
+        QuantumCircuit.Party.Sheet.complSplitEquiv,
+        QuantumCircuit.Party.Sheet.system_eq_of_owner_iff,
+        QuantumCircuit.Party.Sheet.cast_system_eq_regionEquiv,
+        QuantumCircuit.Party.Sheet.birthEquivP, QuantumCircuit.Party.Sheet.birthEquivP',
+        QuantumCircuit.Party.Sheet.birthEquivQ, QuantumCircuit.Party.Sheet.birthEquivSelf,
+        QuantumCircuit.Party.Sheet.cast_changeOwner_system_iff}
+    \leanok
+    \uses{def:party_sheet, def:party_change_owner}
+    If the sites owned by $p$ in $S$ form the region $R$, restriction identifies $X^S_p$ with
+    $[q]^R$; if they form the disjoint union $R_1\sqcup R_2$, it identifies $X^S_p$ with
+    $[q]^{R_1}\times[q]^{R_2}$; if every site outside a region $B$ is owned by $P_\circ$, it
+    identifies $X^S_{P_\circ}$ with $[q]^{B\cap o_S^{-1}(P_\circ)}\times[q]^{\Lambda\setminus B}$.
+    These are relabellings of sites \cite[Section~6]{OpenAI2026PolynomialPEPS}. If $p$ owns the
+    same sites in two sheets $S'$ and $S$, then $X^{S'}_p=X^S_p$, and the identification of these
+    equal bases is the restriction to the sites of $p$ in $S'$ followed by the inverse of the
+    restriction in $S$, site by site.
+
+    In the setting of a birth, with every site of $T$ owned by $P_\circ$, $E=E_S(P_\circ)$ and
+    $U=\Lambda\setminus(T\cup E)$, these give the bijections
+    \begin{align}
+        \beta_P     & : X^S_{P_\circ}\to[q]^T\times[q]^U,                    \notag \\
+        \beta_\circ & : X^{S^{T\to P_\circ}}_{P_\circ}\to[q]^T\times[q]^U, \notag   \\
+        \beta'_P    & : X^{S^{T\to Q}}_{P_\circ}\to[q]^U,                  \notag   \\
+        \beta_Q     & : X^{S^{T\to Q}}_{Q}\to[q]^T\times X^S_Q,
+        \label{eq:party_birth_bases}
+    \end{align}
+    the last two for $Q\neq P_\circ$, where $\beta_Q$ splits a configuration of the sites of $Q$
+    after the birth into its part on $T$ and its part on the sites $Q$ owned before. For a party
+    $r\notin\{P_\circ,Q\}$, a configuration $y$ of $X^{S^{T\to Q}}$ and a configuration $x$ of
+    $X^S$ have the same component at $r$, the two equal bases being identified, exactly when
+    $\gamma_{S^{T\to Q}}(y)$ and $\gamma_S(x)$ agree on the sites owned by $r$.
+\end{definition}
+
+\subsection{Splitting data and the canonical map of a birth}
+
+\begin{definition}[Splitting data and the canonical map of a birth]
+    \label{def:party_splitting_data}
+    \lean{ManyBody.SplittingData, ManyBody.SplittingData.error, ManyBody.birthKernel,
+        ManyBody.birthEffect, ManyBody.birthOp, ManyBody.configBirthOp}
+    \leanok
+    \uses{def:sites_config, thm:three_way_cut_coordinates,
+        def:canonical_product_purification, def:construction_idle_gates}
+    Let $X$ be a system on a finite set of sites $V$, let $A\subseteq B$ be regions and
+    $U=V\setminus B$. Write $\mathcal B_A=\C^{X_A}$ and
+    $\mathcal B_M=\C^{X_{B\setminus A}\sqcup X_U}$. Splitting data $\sigma$ for $(A,B)$
+    \cite[Lemma~6.4]{OpenAI2026PolynomialPEPS} are an isometry
+    $V_\sigma:\C^{X_U}\to\mathcal B_A\otimes\mathcal B_M$, a unit vector
+    $s\in\C^{X_A}\otimes\mathcal B_A$ and a unit vector
+    $s'\in\C^{X_{B\setminus A}}\otimes\mathcal B_M$. Their error on $\Omega\in\C^{X_V}$ is
+    \begin{align}
+        \varepsilon_\sigma(\Omega)
+        =\lVert(1_{X_A\times X_{B\setminus A}}\otimes V_\sigma)\Omega-s\otimes s'\rVert,
+        \label{eq:party_splitting_error}
+    \end{align}
+    with $\Omega$ read in the three-way cut coordinates $((x_A,x_{B\setminus A}),x_U)$ of
+    Theorem~\ref{thm:three_way_cut_coordinates} and
+    $(s\otimes s')((a,m),(b,b'))=s(a,b)\,s'(m,b')$.
+
+    The kernel of $\sigma$ is the matrix $K$ from $X_A\times X_U$ to the basis of
+    $\mathcal B_M$ with
+    $K_{b,(a,u)}=\sum_{\beta\in X_A}\overline{s(a,\beta)}\,(V_\sigma)_{(\beta,b),u}$, that is
+    $K=\langle s|(1_{X_A}\otimes V_\sigma)$. With $\mathcal V=1\otimes V_\sigma$ on
+    $(X_A\times X_{B\setminus A})\times X_U$ and $S_s$ the preparation matrix of $s$ on
+    $X_A\times\mathcal B_A$, the effect of a birth is $S_s^\dagger\mathcal V$ and the canonical
+    map of the birth is
+    \begin{align}
+        \mathbf B_\sigma=(S_s^\dagger\mathcal V)^\dagger(S_s^\dagger\mathcal V)
+        =\mathcal V^\dagger\bigl(|s\rangle\langle s|\otimes1\bigr)\mathcal V,
+        \label{eq:party_birth_map}
+    \end{align}
+    read on the configurations of $X_V$ along the three-way cut coordinates
+    \cite[Lemma~6.5]{OpenAI2026PolynomialPEPS}. In the coordinates $(x_{B\setminus A},(x_A,x_U))$
+    it is $\mathbf B_\sigma=1_{X_{B\setminus A}}\otimes K^\dagger K$
+    \cite[proof of Lemma~6.5]{OpenAI2026PolynomialPEPS}.
+\end{definition}
+
+For a sheet $S$ and a set $T$ of sites owned by $P_\circ$, splitting data for a birth are
+splitting data $\sigma$ on $[q]^\Lambda$ for $(T,T\cup E)$ with $E=E_S(P_\circ)$; then
+$\mathcal B_T=\C^{[q]^T}$, $\mathcal B_E=\C^{[q]^E\sqcup[q]^U}$ and $(T\cup E)\setminus T=E$.
+
+\begin{theorem}[The canonical map of a birth in the coordinates of the parties]
+    \label{thm:party_config_birth_op}
+    \lean{QuantumCircuit.Party.Sheet.configBirthOp_apply_changeOwner,
+        QuantumCircuit.Party.Sheet.configBirthOp_apply_changeOwner_self}
+    \leanok
+    \uses{def:party_splitting_data, def:party_sheet_region_coords, def:party_change_owner}
+    Let every site of $T$ be owned by $P_\circ$ in the sheet $S$, let $\sigma$ be splitting data
+    for the birth with kernel $K$, and use the bijections~(\ref{eq:party_birth_bases}). For
+    $Q\neq P_\circ$, a configuration $y$ of $X^{S^{T\to Q}}$ and a configuration $x$ of $X^S$,
+    \begin{align}
+        \mathbf B_\sigma(\gamma_{S^{T\to Q}}(y),\gamma_S(x))
+        =\delta\,(K^\dagger K)\bigl((\beta_Q(y_Q)_1,\beta'_P(y_{P_\circ})),
+        \beta_P(x_{P_\circ})\bigr),
+        \label{eq:party_birth_entry}
+    \end{align}
+    where $\delta=1$ if $\beta_Q(y_Q)_2=x_Q$ and $\gamma_{S^{T\to Q}}(y)$, $\gamma_S(x)$ agree on
+    the sites of every party $r\notin\{P_\circ,Q\}$, and $\delta=0$ otherwise. For a configuration
+    $y$ of $X^{S^{T\to P_\circ}}$,
+    $\mathbf B_\sigma(\gamma_{S^{T\to P_\circ}}(y),\gamma_S(x))
+        =\delta_\circ\,(K^\dagger K)(\beta_\circ(y_{P_\circ}),\beta_P(x_{P_\circ}))$, where
+    $\delta_\circ=1$ if the two configurations agree on the sites of every party $r\neq P_\circ$
+    and $\delta_\circ=0$ otherwise.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:party_splitting_data, def:party_sheet_region_coords, def:party_change_owner}
+    By Definition~\ref{def:party_splitting_data},
+    $\mathbf B_\sigma=1_{[q]^E}\otimes K^\dagger K$ in the coordinates $(x_E,(x_T,x_U))$. The
+    factor $1_{[q]^E}$ compares the parts of the two configurations on $E$, the sites not owned
+    by $P_\circ$: for $Q$ these are the sites it owned before, whose part in $y$ is
+    $\beta_Q(y_Q)_2$, and for $r\notin\{P_\circ,Q\}$ the sites $r$ owns in both sheets. The parts
+    on $T$ and $U$ are read at $Q$ and $P_\circ$ after the birth and at $P_\circ$ before it,
+    through $\beta_Q$, $\beta'_P$ and $\beta_P$. For $Q=P_\circ$ the parts on $T$ and $U$ after
+    the birth are both read at $P_\circ$ through $\beta_\circ$.
+\end{proof}
+
+\subsection{Births and deaths}
+
+In the rest of this subsection $S$ is a sheet, every site of $T$ is owned by $P_\circ$,
+$E=E_S(P_\circ)$, $U=\Lambda\setminus(T\cup E)$, and $\sigma$ are splitting data for the birth
+with isometry $V_\sigma:\C^{[q]^U}\to\mathcal B_T\otimes\mathcal B_E$, unit vector
+$s\in\C^{[q]^T}\otimes\mathcal B_T$ and kernel $K$.
+
+\begin{definition}[Birth words and death chains]
+    \label{def:party_birth_word}
+    \lean{QuantumCircuit.Party.Sheet.birthPartyMatrix, QuantumCircuit.Party.Sheet.birthFamily,
+        QuantumCircuit.Party.Sheet.birthWord, QuantumCircuit.Party.Sheet.deathFamily,
+        QuantumCircuit.Party.Sheet.deathChain}
+    \leanok
+    \uses{def:party_splitting_data, def:party_sheet_region_coords, def:party_word,
+        def:party_add_pair, def:party_pair_gates, def:party_circuit}
+    Let $Q\neq P_\circ$. The contraction of the birth at $P_\circ$ is
+    $M_\sigma=V_\sigma^\dagger(1_{\mathcal B_T}\otimes K)$, from
+    $\mathcal B_T\otimes\C^{[q]^T}\otimes\C^{[q]^U}$ to $\C^{[q]^U}$.
+
+    The birth word from $X^S$ to $X^{S^{T\to Q}}$ is the normalized pair source $s$ on a fresh
+    copy of $[q]^T$ added at $Q$ and a fresh factor $\mathcal B_T$ added at $P_\circ$, followed
+    by one local operation at every party: at $Q$ the matrix of the bijection $\beta_Q^{-1}$,
+    so that the new copy of $T$ joins the sites of $Q$; at $P_\circ$ the matrix $M_\sigma$, read
+    on the bases through $\beta_P$ and $\beta'_P$, so that the copy of $T$ held by $P_\circ$
+    before the birth leaves $P_\circ$; and the identification of equal bases at every other
+    party. In \cite[proof of Lemma~6.5]{OpenAI2026PolynomialPEPS} the contraction $K$ is applied
+    before the pair source; it acts on factors other than those of the source, and here it is
+    applied after the source, together with $V_\sigma^\dagger$, in one local operation at
+    $P_\circ$.
+
+    The death chain from $X^{S^{T\to Q}}$ to $X^S$ is the monomial made of one local operation
+    at every party, the matrix of $\beta_Q$ at $Q$, the adjoint
+    $M_\sigma^\dagger=(1_{\mathcal B_T}\otimes K^\dagger)V_\sigma$ at $P_\circ$ read through
+    the same bijections, and the identification of equal bases elsewhere, followed by the
+    normalized pair effect $\langle s|$ on the copy of $T$ at $Q$ and on $\mathcal B_T$ at
+    $P_\circ$. Since $M_\sigma^\dagger$ acts on factors other than those of the pair effect, it is
+    applied before the effect.
+\end{definition}
+
+\begin{theorem}[The contraction of a birth]
+    \label{thm:party_birth_contraction}
+    \lean{QuantumCircuit.Party.Sheet.norm_birthPartyMatrix_le_one,
+        QuantumCircuit.Party.Sheet.sum_birthPartyMatrix_mul}
+    \leanok
+    \uses{def:party_birth_word}
+    Let $T$, $U$, $B_T$ and $B_E$ be finite sets, $V$ a matrix from $\C^U$ to
+    $\C^{B_T}\otimes\C^{B_E}$, $s$ a vector on $T\times B_T$, $K=\langle s|(1_T\otimes V)$ and
+    $M=V^\dagger(1_{B_T}\otimes K)$. Then for all $t'\in T$, $u\in U$ and $(t,u')\in T\times U$,
+    \begin{align}
+        \sum_{b\in B_T}M_{u,(b,(t,u'))}\,s(t',b)=(K^\dagger K)_{(t',u),(t,u')},
+        \label{eq:party_birth_contraction}
+    \end{align}
+    and if $V$ is an isometry and $s$ a unit vector, then $\lVert M\rVert\leq1$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:party_splitting_data}
+    Expanding the identity factor,
+    $M_{u,(b,\tau)}=\sum_{b'}\overline{V_{(b,b'),u}}\,K_{b',\tau}$, and
+    $\sum_b\overline{V_{(b,b'),u}}\,s(t',b)=\overline{K_{b',(t',u)}}$, which
+    gives~(\ref{eq:party_birth_contraction}) after exchanging the two sums. For the norm,
+    $\lVert V^\dagger\rVert\leq1$, and $\lVert1\otimes K\rVert\leq\lVert K\rVert\leq1$ because $K$
+    is the effect $S_s^\dagger\mathcal V$ of Definition~\ref{def:party_splitting_data} with a
+    one-point middle region, a product of two contractions.
+\end{proof}
+
+\begin{theorem}[Birth words and death chains implement the canonical map]
+    \label{thm:party_birth_word}
+    \lean{QuantumCircuit.Party.Sheet.op_birthWord,
+        QuantumCircuit.Party.Sheet.isAllowed_birthWord,
+        QuantumCircuit.Party.Sheet.usesOnly_birthWord,
+        QuantumCircuit.Party.Sheet.sourceCount_birthWord,
+        QuantumCircuit.Party.Sheet.op_deathChain,
+        QuantumCircuit.Party.Sheet.isAllowed_deathChain,
+        QuantumCircuit.Party.Sheet.usesOnly_deathChain,
+        QuantumCircuit.Party.Sheet.forallGate_isRight_deathChain,
+        QuantumCircuit.Party.Sheet.numGates_deathChain}
+    \leanok
+    \uses{def:party_birth_word, def:party_allowed, def:party_word, def:party_gate_counts}
+    Let $Q\neq P_\circ$ and $S'=S^{T\to Q}$. The birth word is allowed, uses only $P_\circ$
+    and $Q$, has exactly one pair source, and its operator is the canonical map in canonical
+    coordinates: $\operatorname{op}(y,x)=\mathbf B_\sigma(\gamma_{S'}(y),\gamma_S(x))$ for
+    configurations $y$ of $X^{S'}$ and $x$ of $X^S$. The death chain is allowed, uses only
+    $P_\circ$ and $Q$, has exactly one gate, which is a pair effect, and its operator is
+    $\operatorname{op}(x,y)=\mathbf B_\sigma(\gamma_S(x),\gamma_{S'}(y))$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:party_birth_contraction, thm:party_config_birth_op, def:party_birth_word,
+        def:party_splitting_data}
+    The operator of the birth word is the product over the parties of the local operations
+    applied after the preparation of $s$. At the configurations $y$, $x$ and the fresh pair
+    $(a,b)$, the factor at $Q$ is $1$ exactly when $\beta_Q(y_Q)=(a,x_Q)$, the factor at $P_\circ$
+    is $M_\sigma(\beta'_P(y_{P_\circ}),(b,\beta_P(x_{P_\circ})))$, and the factor at every other
+    party is $1$ exactly when the configurations agree on its sites. The sum over $a$ leaves
+    $a=\beta_Q(y_Q)_1$, and the sum over $b$ against $s(a,b)$ gives $K^\dagger K$ by
+    Theorem~\ref{thm:party_birth_contraction}; the result is the right side
+    of~(\ref{eq:party_birth_entry}) in Theorem~\ref{thm:party_config_birth_op}. The death chain
+    gives the same computation with the adjoint factors and the effect $\langle s|$, hence the
+    complex conjugate of $\mathbf B_\sigma(\gamma_{S'}(y),\gamma_S(x))$, which is
+    $\mathbf B_\sigma(\gamma_S(x),\gamma_{S'}(y))$ because $\mathbf B_\sigma$ is Hermitian
+    by~(\ref{eq:party_birth_map}). Both are allowed: $s$ is a unit vector, the matrices of
+    bijections are contractions and $\lVert M_\sigma\rVert\leq1$ by
+    Theorem~\ref{thm:party_birth_contraction}. Outside $\{P_\circ,Q\}$ the local operations are
+    identifications of equal bases, and the counts hold by definition.
+\end{proof}
+
+\begin{definition}[Births and deaths at one party]
+    \label{def:party_private_birth}
+    \lean{QuantumCircuit.Party.Sheet.privateBirthFamily,
+        QuantumCircuit.Party.Sheet.privateBirthWord,
+        QuantumCircuit.Party.Sheet.privateDeathChain}
+    \leanok
+    \uses{def:party_splitting_data, def:party_sheet_region_coords, def:party_word,
+        def:party_pair_gates, def:party_circuit}
+    When the party receiving $T$ is $P_\circ$ itself, no pair source is needed
+    \cite[proof of Lemma~6.5]{OpenAI2026PolynomialPEPS}. The private birth word from $X^S$ to
+    $X^{S^{T\to P_\circ}}$ is the word without gates made of one local operation at every party:
+    the matrix $K^\dagger K$ at $P_\circ$, read on the bases through $\beta_P$ and $\beta_\circ$,
+    and the identification of equal bases at every other party. The private death chain from
+    $X^{S^{T\to P_\circ}}$ to $X^S$ is the monomial without gates made of the adjoints of these
+    local operations.
+\end{definition}
+
+\begin{theorem}[Births and deaths at one party implement the canonical map]
+    \label{thm:party_private_birth}
+    \lean{QuantumCircuit.Party.Sheet.op_privateBirthWord,
+        QuantumCircuit.Party.Sheet.isAllowed_privateBirthWord,
+        QuantumCircuit.Party.Sheet.usesOnly_privateBirthWord,
+        QuantumCircuit.Party.Sheet.sourceCount_privateBirthWord,
+        QuantumCircuit.Party.Sheet.op_privateDeathChain,
+        QuantumCircuit.Party.Sheet.isAllowed_privateDeathChain,
+        QuantumCircuit.Party.Sheet.usesOnly_privateDeathChain,
+        QuantumCircuit.Party.Sheet.numGates_privateDeathChain}
+    \leanok
+    \uses{def:party_private_birth, def:party_allowed, def:party_word, def:party_gate_counts}
+    Let $S'=S^{T\to P_\circ}$. The private birth word is allowed, uses only $P_\circ$, has no
+    pair source, and its operator is
+    $\operatorname{op}(y,x)=\mathbf B_\sigma(\gamma_{S'}(y),\gamma_S(x))$. The private death chain
+    is allowed, uses only $P_\circ$, has no gate, and its operator is
+    $\operatorname{op}(x,y)=\mathbf B_\sigma(\gamma_S(x),\gamma_{S'}(y))$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:party_config_birth_op, def:party_private_birth, def:party_splitting_data}
+    The operator of the private birth word is the product over the parties of its local
+    operations: $(K^\dagger K)(\beta_\circ(y_{P_\circ}),\beta_P(x_{P_\circ}))$ at $P_\circ$ times
+    the agreement of the configurations on the sites of every other party, which is the second
+    formula of Theorem~\ref{thm:party_config_birth_op}. The operator of the death chain is the
+    adjoint of this product, and $\mathbf B_\sigma$ is Hermitian by~(\ref{eq:party_birth_map}).
+    Both are allowed because $\lVert K\rVert\leq1$ (see the proof of
+    Theorem~\ref{thm:party_birth_contraction}), so $\lVert K^\dagger K\rVert\leq1$, and the
+    identifications of equal bases are contractions; the remaining statements hold by
+    definition.
+\end{proof}
+
+\begin{theorem}[Homogeneous birth and death for given splitting data]
+    \label{thm:party_birth}
+    \lean{QuantumCircuit.Party.Sheet.exists_birthWord_of_environment,
+        QuantumCircuit.Party.Sheet.exists_deathChain_of_environment,
+        QuantumCircuit.Party.Sheet.exists_birthWord_of_splittingData,
+        QuantumCircuit.Party.Sheet.exists_deathChain_of_splittingData}
+    \leanok
+    \uses{def:party_change_owner, def:party_splitting_data, def:party_word,
+        def:party_pair_gates, def:party_allowed, def:party_gate_counts}
+    Let $S$ be a sheet, $P_\circ$ and $Q$ parties, not necessarily distinct, $T\subseteq\Lambda$
+    a set of sites owned by $P_\circ$, and $E\subseteq\Lambda$ a set disjoint from $T$ such that
+    every site outside $T\cup E$ is owned by $P_\circ$; sites of $E$ may be owned by $P_\circ$.
+    Let $\sigma$ be splitting data on $[q]^\Lambda$ for $(T,T\cup E)$, let
+    $\Omega\in\C^{[q]^\Lambda}$ and $S'=S^{T\to Q}$.
+    \begin{enumerate}
+        \item There is an allowed word $w$ from $X^S$ to $X^{S'}$ that uses only $P_\circ$ and $Q$,
+              has at most one pair source, whose operator is
+              $\operatorname{op}(w)(y,x)=\mathbf B_\sigma(\gamma_{S'}(y),\gamma_S(x))$, and with
+              $\lVert\operatorname{op}(w)\Omega_S-\Omega_{S'}\rVert\leq\varepsilon_\sigma(\Omega)$.
+        \item There is an allowed monomial $M$ from $X^{S'}$ to $X^S$ that uses only $P_\circ$
+              and $Q$, whose gates are pair effects and at most one, whose operator is
+              $\operatorname{op}(M)(x,y)=\mathbf B_\sigma(\gamma_S(x),\gamma_{S'}(y))$, and with
+              $\lVert\operatorname{op}(M)\Omega_{S'}-\Omega_S\rVert\leq\varepsilon_\sigma(\Omega)$.
+    \end{enumerate}
+    In particular both hold for $E=E_S(P_\circ)$. This is the part of
+    \cite[Lemma~6.5]{OpenAI2026PolynomialPEPS} that holds for any splitting data: the birth and
+    the death involve only $P_\circ$ and $Q$, use at most one normalized pair source or pair
+    effect, and move the reference vector by at most the error of the splitting data. The
+    hypothesis of the lemma on the mutual information of $T$ and $E$ enters only through the
+    existence of splitting data of small error \cite[Lemma~6.4]{OpenAI2026PolynomialPEPS},
+    which is not part of this statement.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:party_change_owner, def:party_splitting_data, def:party_sheet}
+    The canonical coordinates are bijections, so a word or monomial whose operator is
+    $\mathbf B_\sigma$ in canonical coordinates moves $\Omega_S$ to within
+    $\lVert\mathbf B_\sigma\Omega-\Omega\rVert$ of $\Omega_{S'}$. With the projection
+    $\Pi=S_sS_s^\dagger$, which fixes $s\otimes s'$,
+    $(\mathbf B_\sigma-1)\Omega=\mathcal V^\dagger(\Pi-1)(\mathcal V\Omega-s\otimes s')$ because
+    $\mathcal V$ is an isometry, and $\lVert\mathcal V^\dagger\rVert\leq1$,
+    $\lVert\Pi-1\rVert\leq1$ give
+    $\lVert\mathbf B_\sigma\Omega-\Omega\rVert\leq\varepsilon_\sigma(\Omega)$
+    by~(\ref{eq:party_splitting_error}). For $Q=P_\circ$ the sheet is unchanged,
+    $S^{T\to P_\circ}=S$, and the private birth word and private death chain of
+    Definition~\ref{def:party_private_birth} serve, modified so that the local operation at
+    $P_\circ$ acts as the identity on the sites of $E$ owned by $P_\circ$. For $Q\neq P_\circ$ the
+    birth word and death chain of Definition~\ref{def:party_birth_word} serve, with the same
+    modification of the local operation at $P_\circ$. The computation of
+    Theorems~\ref{thm:party_birth_word} and~\ref{thm:party_private_birth}, with the sites of
+    $E$ owned by $P_\circ$ compared by the identity at $P_\circ$, shows that their operators are
+    $\mathbf B_\sigma$ in canonical coordinates, and the counts and the norms of the local
+    operations are as there. For $E=E_S(P_\circ)$, the set $T$ is disjoint from $E$ and the sites outside
+    $T\cup E$ are owned by $P_\circ$ by Definition~\ref{def:party_change_owner}.
+\end{proof}
+
+\subsection{Two-sheet exchange}
+
+\begin{definition}[Exchange of two sheets inside a region]
+    \label{def:party_exchange_sets}
+    \lean{QuantumCircuit.Party.Sheet.swapIn, QuantumCircuit.Party.Sheet.exchangeEnv,
+        QuantumCircuit.Party.Sheet.mem_exchangeEnv,
+        QuantumCircuit.Party.Sheet.owner_eq_of_notMem_exchangeEnv,
+        QuantumCircuit.Party.Sheet.sdiff_subset_compl_inter_union_sdiff,
+        QuantumCircuit.Party.Sheet.swapIn_owner_eq_of_notMem,
+        QuantumCircuit.Party.Sheet.swapIn_owner_eq_of_notMem_union,
+        QuantumCircuit.Party.Sheet.swapIn_owner_eq_of_notMem_union'}
+    \leanok
+    \uses{def:party_sheet}
+    For sheets $S_1,S_2$ and a region $Y$, the sheet $S_1\ast_YS_2$ has the owner $o_{S_2}$ on
+    $Y$ and $o_{S_1}$ outside $Y$. The exchange inside $Y$ replaces $(S_1,S_2)$ by
+    $(S_1',S_2')=(S_1\ast_YS_2,S_2\ast_YS_1)$ \cite[Lemma~6.6]{OpenAI2026PolynomialPEPS}. For a
+    party $P_\circ$, the set $Z_\circ$ of sites whose two owners are not both $P_\circ$ is the set
+    $Z$ of the lemma without its hole parts, which are empty on sheets; so let $Z$ be any set of
+    sites containing $Z_\circ$, that is, outside of which both owners are $P_\circ$. Put
+    $T=Z\cap Y$, $E=Z\setminus Y$, $A=Y\setminus Z$ and $U=\Lambda\setminus Z$. Then
+    $T\cup E=Z$, $A\subseteq\Lambda\setminus(T\cup E)$, and every site outside $T\cup E$ is owned
+    by $P_\circ$ on both sheets after the exchange.
+\end{definition}
+
+\begin{definition}[The map of an exchange]
+    \label{def:party_exchange_map}
+    \lean{QuantumCircuit.Party.Sheet.exchangeOp}
+    \leanok
+    \uses{def:party_exchange_sets, def:party_splitting_data, def:sites_pair_swap}
+    Let $\sigma$ be splitting data on $[q]^\Lambda$ for $(T,T\cup E)$, with isometry
+    $V_\sigma:\C^{[q]^U}\to\mathcal B_T\otimes\mathcal B_E$. On two copies
+    $\C^{[q]^\Lambda\times[q]^\Lambda}$, let $F_R$ be the exchange of the two copies on a region
+    $R$, and let the buffer correction $D_U$ act, in the three-way cut coordinates of both
+    copies, as the identity on the two copies of $[q]^T\times[q]^E$ and as
+    $(V_\sigma\otimes V_\sigma)^\dagger F_{\mathcal B_T}(V_\sigma\otimes V_\sigma)$ on the two
+    copies of $[q]^U$, where $F_{\mathcal B_T}$ exchanges the $\mathcal B_T$ factors of
+    $(\mathcal B_T\otimes\mathcal B_E)^{\otimes2}$. The map of the exchange is
+    $C_\sigma=D_UF_AF_Y$ \cite[proof of Lemma~6.6]{OpenAI2026PolynomialPEPS}.
+\end{definition}
+
+\begin{definition}[Renaming and corrections of an exchange]
+    \label{def:party_exchange_words}
+    \lean{QuantumCircuit.Party.Sheet.swapInEquiv, QuantumCircuit.Party.Sheet.renameWord,
+        QuantumCircuit.Party.Sheet.exchangeEquivP, QuantumCircuit.Party.Sheet.correctionAt,
+        QuantumCircuit.Party.Sheet.correctionWord}
+    \leanok
+    \uses{def:party_exchange_map, def:party_sheet_region_coords, def:party_relabel,
+        def:party_word, def:party_circuit}
+    At every party $p$, the bijection $\rho_p$ from $X^{S_1'}_p\times X^{S_2'}_p$ to
+    $X^{S_1}_p\times X^{S_2}_p$ moves the coordinate of a site of $Y$ to the other sheet and keeps
+    the coordinates of the other sites. The renaming $\mathcal R$ is the word relabelling the
+    bases along $\rho$; every register keeps its party. Restriction identifies
+    $X^{S_1'}_{P_\circ}\times X^{S_2'}_{P_\circ}$ with the product of the configurations of the
+    sites of $Z$ owned by $P_\circ$ on each sheet and of two copies of $[q]^U$. The correction at
+    $P_\circ$ is the identity on the first factor tensored with
+    \begin{align}
+        W_\sigma=(V_\sigma\otimes V_\sigma)^\dagger F_{\mathcal B_T}(V_\sigma\otimes V_\sigma)F_A
+        \label{eq:party_correction}
+    \end{align}
+    on the two copies of $[q]^U$, with $F_A$ exchanging the parts on $A\subseteq U$ of the two
+    copies. The correction word is the word without gates whose local operation is the
+    correction at $P_\circ$ and the identity at every other party.
+\end{definition}
+
+\begin{theorem}[Renaming and corrections in canonical coordinates]
+    \label{thm:party_exchange_words}
+    \lean{QuantumCircuit.Party.Sheet.twoConfigEquiv_symm_permCongr_pairSwap,
+        QuantumCircuit.Party.Sheet.op_renameWord,
+        QuantumCircuit.Party.Sheet.isAllowed_renameWord,
+        QuantumCircuit.Party.Sheet.sourceCount_renameWord,
+        QuantumCircuit.Party.Sheet.norm_correctionAt_le_one,
+        QuantumCircuit.Party.Sheet.op_correctionWord,
+        QuantumCircuit.Party.Sheet.isAllowed_correctionWord,
+        QuantumCircuit.Party.Sheet.usesOnly_correctionWord,
+        QuantumCircuit.Party.Sheet.sourceCount_correctionWord,
+        QuantumCircuit.Party.Sheet.op_comp_renameWord_correctionWord}
+    \leanok
+    \uses{def:party_exchange_words, def:party_allowed}
+    In the setting of Definition~\ref{def:party_exchange_words}:
+    \begin{enumerate}
+        \item The exchange of the two copies on $Y$, read from the canonical coordinates of
+              $(S_1',S_2')$ to those of $(S_1,S_2)$, is the bijection $(\rho_p)_p$, that is
+              $\gamma_{S_1,S_2}^{-1}\circ F_Y\circ\gamma_{S_1',S_2'}=(\rho_p)_p$. Hence the operator
+              of $\mathcal R$ is $F_Y$ in canonical coordinates, and $\mathcal R$ is allowed and
+              has no pair source.
+        \item The correction at $P_\circ$ is a contraction. The correction word is allowed, uses
+              only $P_\circ$, has no pair source, and its operator in the canonical coordinates of
+              $(S_1',S_2')$ is $D_UF_A$.
+        \item The renaming followed by the correction word has the operator $C_\sigma$, read from
+              the canonical coordinates of $(S_1,S_2)$ to those of $(S_1',S_2')$.
+    \end{enumerate}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:party_exchange_words, def:party_exchange_sets, def:party_relabel,
+        def:sites_pair_swap}
+    The first statement is checked site by site: a site of $Y$ in the first sheet after the
+    exchange is read at its owner in the second sheet before it, and conversely, while the other
+    sites stay on their sheets. The operator of a relabelling is the matrix of the bijection of
+    configurations, which gives $F_Y$. The norm of the correction is at most
+    $\lVert W_\sigma\rVert\leq1$, since $V_\sigma\otimes V_\sigma$ is an isometry and the
+    exchanges are permutation matrices. Since $A\subseteq U$, the map $D_UF_A$ acts as the
+    identity on the two copies of the configurations of $Z$ and as $W_\sigma$ on the two copies
+    of $[q]^U$. Every site outside $Z$ is owned by $P_\circ$ on both sheets after the exchange,
+    so the parts of two configurations on the sites of the other parties are compared by the
+    identity local operations, and the parts on the sites of $Z$ owned by $P_\circ$ by the
+    identity factor of the correction; this gives the operator of the correction word. The last
+    statement is the product of the first two.
+\end{proof}
+
+\begin{theorem}[Two-sheet exchange for given splitting data]
+    \label{thm:party_exchange}
+    \lean{QuantumCircuit.Party.Sheet.exists_exchangeWord_of_splittingData,
+        QuantumCircuit.Party.Sheet.exchangeOp_eq}
+    \leanok
+    \uses{def:party_exchange_map, def:party_exchange_words, def:party_allowed, def:party_word}
+    Let $S_1,S_2$ be sheets, $Y$ a region, $P_\circ$ a party, $Z$ a set of sites outside of
+    which both owners are $P_\circ$, with $T$, $E$, $A$, $U$ as in
+    Definition~\ref{def:party_exchange_sets}, and let $\sigma$ be splitting data on
+    $[q]^\Lambda$ for $(T,T\cup E)$. Then
+    \begin{align}
+        C_\sigma=D_UF_AF_Y=D_UF_T,
+        \label{eq:party_exchange_net}
+    \end{align}
+    and there is an allowed word $c$ from $X^{S_1'}\times X^{S_2'}$ to itself that uses only
+    $P_\circ$ and has no pair source, such that the renaming $\mathcal R$ followed by $c$ has the
+    operator $C_\sigma$, read from the canonical coordinates of $(S_1,S_2)$ to those of
+    $(S_1',S_2')$, and, for every unit vector $\Omega\in\C^{[q]^\Lambda}$,
+    \begin{align}
+        \bigl\lVert\operatorname{op}(\mathcal R;c)(\Omega_{S_1}\otimes\Omega_{S_2})
+        -\Omega_{S_1'}\otimes\Omega_{S_2'}\bigr\rVert\leq4\,\varepsilon_\sigma(\Omega).
+        \label{eq:party_exchange_error}
+    \end{align}
+    This is \cite[Lemma~6.6]{OpenAI2026PolynomialPEPS} for given splitting data: the exchange is
+    a relabelling of the bases of the parties whose sites change sheet, no register changing
+    party, followed by corrections private to $P_\circ$. It has no gate, so it is a bounded
+    change for every set of participants (Theorem~\ref{thm:party_resources_bounded}).
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:party_exchange_words, def:party_sheet, def:sites_pair_swap}
+    Since $A\subseteq Y$, the exchanges compose to $F_AF_Y=F_{Y\setminus A}$, and
+    $Y\setminus(Y\setminus Z)=Z\cap Y=T$, which is~(\ref{eq:party_exchange_net}). The word $c$ is
+    the correction word, and Theorem~\ref{thm:party_exchange_words} gives its properties and the
+    operator of $\mathcal R$ followed by $c$. By Definition~\ref{def:party_sheet},
+    $\Omega_{S_1}\otimes\Omega_{S_2}$ and $\Omega_{S_1'}\otimes\Omega_{S_2'}$ are $\Omega\otimes\Omega$
+    in the canonical coordinates, so the left side of~(\ref{eq:party_exchange_error}) is
+    $\lVert D_UF_T(\Omega\otimes\Omega)-\Omega\otimes\Omega\rVert$. With
+    $\mathcal V=1\otimes V_\sigma$ and $\zeta=s\otimes s'$,
+    $D_UF_T=(\mathcal V^{\otimes2})^\dagger F_{T\mathcal B_T}\mathcal V^{\otimes2}$, where
+    $F_{T\mathcal B_T}$ exchanges the parts on $[q]^T\times\mathcal B_T$ of the two copies, and
+    $F_{T\mathcal B_T}$ fixes $\zeta\otimes\zeta$, so
+    $D_UF_T(\Omega\otimes\Omega)-\Omega\otimes\Omega=(\mathcal V^{\otimes2})^\dagger
+        (F_{T\mathcal B_T}-1)\bigl((\mathcal V\Omega)^{\otimes2}-\zeta\otimes\zeta\bigr)$. Since
+    $\lVert F_{T\mathcal B_T}-1\rVert\leq2$ and
+    $\lVert(\mathcal V\Omega)^{\otimes2}-\zeta\otimes\zeta\rVert\leq
+        2\lVert\mathcal V\Omega-\zeta\rVert$ for unit vectors, the bound
+    is~$4\,\varepsilon_\sigma(\Omega)$ \cite[proof of Lemma~6.6]{OpenAI2026PolynomialPEPS}.
+\end{proof}
+
+\subsection{Stacks of sheets}
+
+In this subsection the sheets form an arbitrary set $\kappa$; every $F\in\kappa$ carries a system
+$X^F$ on the parties and, where needed, a reference vector $r_F\in\mathcal H_{X^F}$. Ownership
+sheets with $X^S$ and $r_S=\Omega_S$ are one instance.
+
+\begin{definition}[Stacks of sheets and lifted changes]
+    \label{def:party_sheet_stack}
+    \lean{QuantumCircuit.Party.stackSystem, QuantumCircuit.Party.stackVec,
+        QuantumCircuit.Party.norm_stackVec, QuantumCircuit.Party.norm_stackVec_le,
+        QuantumCircuit.Party.framesVec, QuantumCircuit.Party.norm_framesVec,
+        QuantumCircuit.Party.liftOne, QuantumCircuit.Party.liftTwo,
+        QuantumCircuit.Party.nonprivateCount_liftOne,
+        QuantumCircuit.Party.forall_participants_liftOne,
+        QuantumCircuit.Party.isExpansionBounded_liftOne,
+        QuantumCircuit.Party.isMonomialBounded_liftOne,
+        QuantumCircuit.Party.isSourceBounded_liftOne,
+        QuantumCircuit.Party.nonprivateCount_liftTwo,
+        QuantumCircuit.Party.forall_participants_liftTwo,
+        QuantumCircuit.Party.isExpansionBounded_liftTwo,
+        QuantumCircuit.Party.isMonomialBounded_liftTwo,
+        QuantumCircuit.Party.isSourceBounded_liftTwo}
+    \leanok
+    \uses{def:party_original_frame_sequence}
+    For a finite list $\mathbf F=(F_1,\dots,F_n)$ of sheets and an idle system $W$, the stack
+    system $\mathrm{St}(\mathbf F;W)$ has at the party $p$ the basis
+    $X^{F_1}_p\times(X^{F_2}_p\times\cdots\times(X^{F_n}_p\times W_p))$, and $W_p$ for the empty
+    list. For $\xi\in\mathcal H_W$ the reference vector of the stack is
+    $\omega_{\mathbf F}(\xi)=r_{F_1}\otimes(r_{F_2}\otimes\cdots\otimes(r_{F_n}\otimes\xi))$
+    \cite[Proposition~7.1]{OpenAI2026PolynomialPEPS}. Its norm is
+    $\lVert\omega_{\mathbf F}(\xi)\rVert=\prod_i\lVert r_{F_i}\rVert\,\lVert\xi\rVert$, at most
+    $\lVert\xi\rVert$ when every $\lVert r_F\rVert\leq1$. For $W$ the system with one basis vector
+    at every party and $\xi$ that vector, $\omega_{\mathbf F}=\omega_{\mathbf F}(\xi)$ has norm
+    $\prod_i\lVert r_{F_i}\rVert$.
+
+    Write $(\mathbf G,F,\mathbf H)$ for the list $\mathbf G$ followed by $F$ and then $\mathbf H$.
+    For an original circuit $c$ from $X^F$ to $X^{F'}$, the lift $L_1(c)$ from
+    $\mathrm{St}((\mathbf G,F,\mathbf H);W)$ to $\mathrm{St}((\mathbf G,F',\mathbf H);W)$ is, for
+    $\mathbf G$ empty, the relabelling exchanging the two factors of
+    $X^F\times\mathrm{St}(\mathbf H;W)$, then $c$ framed by $\mathrm{St}(\mathbf H;W)$, then the
+    relabelling exchanging the two factors back; for $\mathbf G=(G,\mathbf G')$ it is the lift
+    for $\mathbf G'$ framed by $X^G$. The lift $L_2(c)$ of an original circuit $c$ from
+    $X^{F_1}\times X^{F_2}$ to $X^{F_1'}\times X^{F_2'}$, from
+    $\mathrm{St}((\mathbf G,F_1,F_2,\mathbf H);W)$ to $\mathrm{St}((\mathbf G,F_1',F_2',\mathbf H);W)$,
+    is defined in the same way, with relabellings moving $\mathrm{St}(\mathbf H;W)$ in front of
+    the product of the two sheets and back. Lifting keeps the number of nonprivate gates, every
+    condition on the participants of the gates, and the expansion, monomial and pair-source
+    bounds.
+\end{definition}
+
+\begin{theorem}[The reference error of a lifted change]
+    \label{thm:party_stack_lift_error}
+    \lean{QuantumCircuit.Party.norm_op_liftOne_stackVec_sub_le,
+        QuantumCircuit.Party.norm_op_liftTwo_stackVec_sub_le}
+    \leanok
+    \uses{def:party_sheet_stack}
+    Let $\lVert r_G\rVert\leq1$ for every sheet $G$ and $\lVert\xi\rVert\leq1$. For an original
+    circuit $c$ from $X^F$ to $X^{F'}$,
+    \begin{align}
+        \bigl\lVert\operatorname{op}(L_1(c))\,\omega_{(\mathbf G,F,\mathbf H)}(\xi)
+        -\omega_{(\mathbf G,F',\mathbf H)}(\xi)\bigr\rVert
+        \leq\lVert\operatorname{op}(c)r_F-r_{F'}\rVert,
+    \end{align}
+    and for an original circuit $c$ from $X^{F_1}\times X^{F_2}$ to $X^{F_1'}\times X^{F_2'}$ the
+    lift $L_2(c)$ moves $\omega_{(\mathbf G,F_1,F_2,\mathbf H)}(\xi)$ to within
+    $\lVert\operatorname{op}(c)(r_{F_1}\otimes r_{F_2})-r_{F_1'}\otimes r_{F_2'}\rVert$ of
+    $\omega_{(\mathbf G,F_1',F_2',\mathbf H)}(\xi)$ \cite[Proposition~7.1]{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:party_frame_prod_vec, def:party_sheet_stack}
+    By induction on $\mathbf G$. For $\mathbf G$ empty, write $\zeta=\omega_{\mathbf H}(\xi)$, so
+    $\lVert\zeta\rVert\leq\lVert\xi\rVert\leq1$. By Theorem~\ref{thm:party_frame_prod_vec} the first
+    relabelling maps $r_F\otimes\zeta$ to $\zeta\otimes r_F$, the framed circuit maps it to
+    $\zeta\otimes\operatorname{op}(c)r_F$, and the last relabelling to
+    $\operatorname{op}(c)r_F\otimes\zeta$; the difference with $r_{F'}\otimes\zeta$ is
+    $(\operatorname{op}(c)r_F-r_{F'})\otimes\zeta$, of norm at most
+    $\lVert\operatorname{op}(c)r_F-r_{F'}\rVert$. For two sheets the relabellings map
+    $r_{F_1}\otimes(r_{F_2}\otimes\zeta)$ to $\zeta\otimes(r_{F_1}\otimes r_{F_2})$ and back, up to
+    the reassociation of the factors, which preserves norms. For $\mathbf G=(G,\mathbf G')$, the
+    bound of Theorem~\ref{thm:party_frame_prod_vec} for the circuit framed by $X^G$, with
+    $\lVert r_G\rVert\leq1$, reduces the statement to that for $\mathbf G'$.
+\end{proof}
+
+\begin{theorem}[Reordering the sheets is a relabelling]
+    \label{thm:party_stack_perm}
+    \lean{QuantumCircuit.Party.exists_relabel_stackVec_of_perm,
+        QuantumCircuit.Party.perm_map_update_cons, QuantumCircuit.Party.perm_map_cons}
+    \leanok
+    \uses{def:party_sheet_stack}
+    If the list $\mathbf F'$ is a permutation of the list $\mathbf F$, there are bijections
+    $e_p:\mathrm{St}(\mathbf F';W)_p\to\mathrm{St}(\mathbf F;W)_p$ such that the relabelling
+    along $e$ maps $\omega_{\mathbf F}(\xi)$ to $\omega_{\mathbf F'}(\xi)$ for every
+    $\xi\in\mathcal H_W$. Moreover, for a map $a$ on a set of indices, an element $x$ of a list
+    $l$ of indices, and values $m$ and $f$, the list $(m,a(l))$ is a permutation of
+    $(a(x),m,a(l\setminus x))$, where $l\setminus x$ is $l$ with one occurrence of $x$ removed;
+    if $l$ has no repetition and $a'$ is $a$ with the value at $x$ replaced by $f$, then
+    $(m,a'(l))$ is a permutation of $(f,m,a(l\setminus x))$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:party_frame_prod_vec}
+    By induction on the permutation. The empty list needs the identity. Adding the same sheet
+    $F$ in front of both lists keeps the identity on $X^F$ beside the given bijections. Exchanging
+    the first two sheets is the reassociation and commutation of the factors
+    $X^{F}_p\times(X^{G}_p\times R)\to X^{G}_p\times(X^{F}_p\times R)$, which exchanges $r_F$ and
+    $r_G$ in the product vector. A composite of permutations is handled by composing the
+    bijections. The list statements follow from the permutation of $l$ to $(x,l\setminus x)$,
+    mapped by $a$ or $a'$, followed by the exchange of the first two entries; when $l$ has no
+    repetition, $a'$ and $a$ agree on $l\setminus x$.
+\end{proof}
+
+\subsection{Bounded changes and the initialization}
+
+\begin{definition}[Bounded changes]
+    \label{def:party_bounded_change}
+    \lean{QuantumCircuit.Party.OriginalCircuit.IsBoundedChange,
+        QuantumCircuit.Party.OriginalCircuit.IsBoundedChange.mono,
+        QuantumCircuit.Party.HasBoundedChange, QuantumCircuit.Party.HasSourceBoundedChange,
+        QuantumCircuit.Party.HasSourceBoundedChange.hasBoundedChange,
+        QuantumCircuit.Party.HasBoundedChange.mono,
+        QuantumCircuit.Party.HasSourceBoundedChange.mono}
+    \leanok
+    \uses{def:party_original_frame_sequence, def:party_sheet_stack}
+    Let $c$ be an original circuit from $X$ to $Y$, $S$ a set of parties, $r,K\in\N$,
+    $\varepsilon\in\R$, $x\in\mathcal H_X$ and $y\in\mathcal H_Y$. The circuit $c$ is a bounded
+    change from $x$ to $y$ with participants in $S$, bounds $r$, $K$ and error $\varepsilon$ if
+    \begin{enumerate}
+        \item $c$ has at most one nonprivate gate;
+        \item the cell of every gate of $c$ lies in $S$;
+        \item every monomial of every gate expansion has at most $r$ pair effects and the
+              coefficient sum of every gate expansion is at most $K$;
+        \item every gate expansion has at most $K$ monomials;
+        \item $\lVert\operatorname{op}(c)x-y\rVert\leq\varepsilon$.
+    \end{enumerate}
+    Two lists $\mathbf F$, $\mathbf F'$ of sheets with an idle system $W$ and
+    $\xi\in\mathcal H_W$ have a bounded change if some original circuit from
+    $\mathrm{St}(\mathbf F;W)$ to $\mathrm{St}(\mathbf F';W)$ is a bounded change from
+    $\omega_{\mathbf F}(\xi)$ to $\omega_{\mathbf F'}(\xi)$, and a source-bounded change with
+    constant $r_s$ if moreover that circuit satisfies the pair-source bound $r_s$
+    \cite[Proposition~7.1]{OpenAI2026PolynomialPEPS}, \cite[Theorem~5.2]{OpenAI2026PolynomialPEPS}.
+    A source-bounded change is a bounded change, and all three notions persist when $S$ is
+    enlarged and $r$, $K$, $\varepsilon$ and $r_s$ are increased.
+\end{definition}
+
+\begin{theorem}[Bounded changes and circuits without nonprivate gates]
+    \label{thm:party_bounded_change_basic}
+    \lean{QuantumCircuit.Party.OriginalCircuit.norm_toEuclideanLin_op_le,
+        QuantumCircuit.Party.OriginalCircuit.IsBoundedChange.comp_right,
+        QuantumCircuit.Party.OriginalCircuit.IsBoundedChange.comp_left,
+        QuantumCircuit.Party.OriginalCircuit.isBoundedChange_of_nonprivateCount_eq_zero,
+        QuantumCircuit.Party.exists_isBoundedChange_of_eq,
+        QuantumCircuit.Party.OriginalCircuit.isEmpty_nonprivateLocations_of_nonprivateCount_eq_zero,
+        QuantumCircuit.Party.OriginalCircuit.forall_participants_of_nonprivateCount_eq_zero}
+    \leanok
+    \uses{def:party_bounded_change}
+    An original circuit does not increase the norm of a vector. An original circuit without
+    nonprivate gates has no gate occurrence, so every condition on the participants of its gates
+    holds, and it is a bounded change from $x$ to $\operatorname{op}(c)x$ for every set $S$, all
+    $r,K\in\N$ and every $\varepsilon\geq0$; in particular, for equal sheets $F=F'$ the empty
+    circuit is a bounded change from $r_F$ to $r_{F'}$. If $c$ is a bounded change from $x$ to $y$
+    and $e$ has no nonprivate gate, then $c$ followed by $e$ is a bounded change from $x$ to
+    $\operatorname{op}(e)y$, and $e$ followed by $c$ is a bounded change from every $x'$ with
+    $\operatorname{op}(e)x'=x$ to $y$, with the same $S$, $r$, $K$ and $\varepsilon$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:party_op_contraction, def:party_original_frame_sequence}
+    The operator of an original circuit is a contraction by
+    Theorem~\ref{thm:party_op_contraction}. A circuit without nonprivate gates has as many gate
+    occurrences as nonprivate gates, none, and satisfies every bound vacuously, with error $0$.
+    Under composition the numbers of nonprivate gates add and the bounds hold factor by factor;
+    the errors satisfy
+    $\lVert\operatorname{op}(e)(\operatorname{op}(c)x-y)\rVert\leq\lVert\operatorname{op}(c)x-y\rVert$
+    and $\operatorname{op}(c)\operatorname{op}(e)x'=\operatorname{op}(c)x$.
+\end{proof}
+
+\begin{theorem}[Words and chains with one pair resource are bounded changes]
+    \label{thm:party_resources_bounded}
+    \lean{QuantumCircuit.Party.Word.isBoundedChange_toOriginalCircuit,
+        QuantumCircuit.Party.Word.isBoundedChange_toOriginalCircuit_of_sourceCount_eq_zero,
+        QuantumCircuit.Party.Monomial.isBoundedChange_toOriginalCircuit}
+    \leanok
+    \uses{def:party_bounded_change, def:party_word, def:party_pair_gates, def:party_allowed}
+    Read an allowed word, or an allowed monomial of local contractions, normalized pair sources
+    and normalized pair effects, as an original circuit whose local contractions are private and
+    whose pair sources and pair effects are gates on the cells of their two parties, each with the
+    single monomial ``this gate'' of coefficient one. Let $x$ and $y$ be vectors with
+    $\lVert\operatorname{op}x-y\rVert\leq\varepsilon$ for the operator of the word or
+    monomial.
+    \begin{enumerate}
+        \item An allowed word that uses only the parties of $S$ and has at most one pair source is
+              a bounded change from $x$ to $y$ with participants in $S$, every $r$, every
+              $K\geq1$ and error $\varepsilon$; these are the words of the births of
+              Theorem~\ref{thm:party_birth}.
+        \item An allowed word without pair sources is a bounded change from $x$ to $y$ for every
+              $S$, $r$ and $K$, with error $\varepsilon$; these are the words of the exchanges of
+              Theorem~\ref{thm:party_exchange}.
+        \item An allowed monomial that uses only the parties of $S$ and has at most one gate is a
+              bounded change from $x$ to $y$ with participants in $S$, every $r\geq1$, every
+              $K\geq1$ and error $\varepsilon$; these are the chains of the deaths of
+              Theorem~\ref{thm:party_birth}.
+    \end{enumerate}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:party_original_circuit, def:party_word}
+    The original circuit has one nonprivate gate for every pair source and pair effect, whose
+    cell is the pair of its two parties, inside $S$ when the word or monomial uses only $S$. Its
+    gate expansions have one monomial, of coefficient one, with at most one pair effect, so the
+    expansion and monomial bounds hold for $r\geq1$ and $K\geq1$, and for all $r$ and $K$ when
+    there is no gate. Its operator is that of the word or monomial.
+\end{proof}
+
+\begin{theorem}[Bounded changes of the stack of sheets]
+    \label{thm:party_stack_bounded_change}
+    \lean{QuantumCircuit.Party.hasSourceBoundedChange_of_perm,
+        QuantumCircuit.Party.hasBoundedChange_of_perm,
+        QuantumCircuit.Party.hasSourceBoundedChange_refl,
+        QuantumCircuit.Party.hasBoundedChange_refl,
+        QuantumCircuit.Party.HasSourceBoundedChange.perm_left,
+        QuantumCircuit.Party.HasBoundedChange.perm_left,
+        QuantumCircuit.Party.HasSourceBoundedChange.perm_right,
+        QuantumCircuit.Party.HasBoundedChange.perm_right,
+        QuantumCircuit.Party.isBoundedChange_liftOne,
+        QuantumCircuit.Party.hasBoundedChange_liftOne,
+        QuantumCircuit.Party.hasSourceBoundedChange_liftOne,
+        QuantumCircuit.Party.isBoundedChange_liftTwo,
+        QuantumCircuit.Party.hasBoundedChange_liftTwo,
+        QuantumCircuit.Party.hasSourceBoundedChange_liftTwo,
+        QuantumCircuit.Party.hasBoundedChange_activate,
+        QuantumCircuit.Party.hasSourceBoundedChange_activate,
+        QuantumCircuit.Party.hasBoundedChange_perm_liftOne,
+        QuantumCircuit.Party.hasSourceBoundedChange_perm_liftOne}
+    \leanok
+    \uses{def:party_bounded_change, def:party_sheet_stack}
+    Fix an idle system $W$ and $\xi\in\mathcal H_W$.
+    \begin{enumerate}
+        \item If $\mathbf F'$ is a permutation of $\mathbf F$, then $\mathbf F$, $\mathbf F'$ have
+              a source-bounded change, hence a bounded change, for every $S$, $r$, $K$, $r_s$ and
+              $\varepsilon\geq0$; in particular every list has the identity change. A
+              (source-)bounded change from $\mathbf G$ to $\mathbf F'$ is one from every
+              permutation $\mathbf F$ of $\mathbf G$, and one from $\mathbf F$ to $\mathbf G$ is one
+              from $\mathbf F$ to every permutation $\mathbf F'$ of $\mathbf G$, with the same
+              constants.
+        \item Let $\lVert r_G\rVert\leq1$ for every sheet $G$ and $\lVert\xi\rVert\leq1$. If $c$ is
+              a bounded change of $F$ into $F'$ from $r_F$ to $r_{F'}$, then $L_1(c)$ is a bounded
+              change from $\omega_{(\mathbf G,F,\mathbf H)}(\xi)$ to
+              $\omega_{(\mathbf G,F',\mathbf H)}(\xi)$ with the same participants, bounds and
+              error, and a source-bounded one with constant $r_s$ if $c$ satisfies the pair-source
+              bound $r_s$. The same holds for $L_2(c)$ when $c$ is a bounded change of $F_1,F_2$
+              into $F_1',F_2'$ from $r_{F_1}\otimes r_{F_2}$ to $r_{F_1'}\otimes r_{F_2'}$.
+        \item Under the norm conditions of the second item, if $\mathbf F$ is a permutation of
+              $(\mathbf G,F_1,F_2,\mathbf H)$, for instance with an idle auxiliary sheet $F_2$ moved
+              next to the main sheet $F_1$, a bounded change of the two adjacent sheets as in the
+              second item gives a (source-)bounded change from $\mathbf F$ to
+              $(\mathbf G,F_1',F_2',\mathbf H)$; likewise, if $\mathbf F$ is a permutation of
+              $(\mathbf G,F,\mathbf H)$, a bounded change of $F$ gives one from $\mathbf F$ to
+              $(\mathbf G,F',\mathbf H)$.
+    \end{enumerate}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:party_stack_perm, thm:party_bounded_change_basic, thm:party_stack_lift_error,
+        def:party_sheet_stack, def:party_original_frame_sequence}
+    A permutation of the sheets is the relabelling of Theorem~\ref{thm:party_stack_perm}, an
+    original circuit without nonprivate gates, hence without pair sources, that maps one
+    reference vector exactly to the other; Theorem~\ref{thm:party_bounded_change_basic} gives
+    the first item. For the second, lifting keeps the number of nonprivate gates, the
+    participants and the bounds by Definition~\ref{def:party_sheet_stack}, and
+    Theorem~\ref{thm:party_stack_lift_error} bounds the error. The third item combines the second
+    with the reordering of the first.
+\end{proof}
+
+\begin{theorem}[Private product initialization]
+    \label{thm:party_stack_initialization}
+    \lean{QuantumCircuit.Party.partyFactor, QuantumCircuit.Party.eq_of_apply_holder_eq,
+        QuantumCircuit.Party.prod_partyFactor, QuantumCircuit.Party.norm_partyFactor,
+        QuantumCircuit.Party.exists_productVector_eq_framesVec,
+        QuantumCircuit.Party.Sheet.exists_productVector_eq_framesVec,
+        QuantumCircuit.Party.exists_originalCircuit_framesVec,
+        QuantumCircuit.Party.Sheet.exists_originalCircuit_framesVec}
+    \leanok
+    \uses{def:party_sheet_stack, def:party_sheet, def:party_original_circuit,
+        def:siteconfig_product_vector}
+    Let $h:\kappa\to\mathcal P$ assign a holder to every sheet, and let $\mathbf F$ be a list of
+    sheets such that $X^F_p$ is a single point for every $F$ in $\mathbf F$ and every $p\neq h(F)$.
+    \begin{enumerate}
+        \item A configuration $z$ of $X^F$ is determined by $z_{h(F)}$. The factor of $F$ at the
+              party $p$ is the vector $\pi_{F,p}$ on $X^F_p$ with
+              $\pi_{F,p}(a)=\sum_{z:z_p=a}r_F(z)$ if $p=h(F)$ and $\pi_{F,p}=1$ otherwise; then
+              $\prod_p\pi_{F,p}(z_p)=r_F(z)$, and $\lVert\pi_{F,p}\rVert$ is $\lVert r_F\rVert$ for
+              $p=h(F)$ and $1$ otherwise.
+        \item There are vectors $\varphi_p$ on $\mathrm{St}(\mathbf F;W)_p$, with $W$ the system of
+              one basis vector at every party, such that
+              $\lVert\varphi_p\rVert=\prod_{F\in\mathbf F,\,h(F)=p}\lVert r_F\rVert$ and the product
+              vector $\bigotimes_p\varphi_p$ is $\omega_{\mathbf F}$.
+        \item If moreover $\lVert r_F\rVert=1$ for every $F$ in $\mathbf F$, there is an original
+              circuit without nonprivate gate from the system of one basis vector at every party
+              to $\mathrm{St}(\mathbf F;W)$ whose operator maps that basis vector to
+              $\omega_{\mathbf F}$.
+        \item For a list of ownership sheets $S$ each owned entirely by $h(S)$, a unit vector
+              $\Omega\in\C^{[q]^\Lambda}$ and $r_S=\Omega_S$, the second item holds with
+              $\lVert\varphi_p\rVert=1$ for every party, and the third item holds.
+    \end{enumerate}
+    So the initial memory of \cite[Proposition~7.1]{OpenAI2026PolynomialPEPS}, every copy of
+    $\Omega$ initialized privately at its future owner, is a pure product across the parties,
+    prepared without nonprivate gates.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:party_sheet_stack, def:party_sheet, def:party_word,
+        thm:party_resources_bounded}
+    Two configurations of $X^F$ that agree at $h(F)$ agree everywhere, since the other bases are
+    single points; so the sum defining $\pi_{F,h(F)}(a)$ has the single term $r_F(z)$ with
+    $z_{h(F)}=a$, which gives the product formula and, the map $z\mapsto z_{h(F)}$ being a
+    bijection, the norm. The second item follows by induction on the list: for $(F,\mathbf F')$
+    take $\varphi_p=\pi_{F,p}\otimes\varphi'_p$, whose norm is
+    $\lVert\pi_{F,p}\rVert\,\lVert\varphi'_p\rVert$ and whose product over the parties is
+    $r_F\otimes\omega_{\mathbf F'}$. For the third, every $\varphi_p$ is a unit vector, and the
+    word preparing $\varphi_p$ at every party by one local preparation is allowed and has no
+    pair source, so as an original circuit it has no nonprivate gate, and it maps the basis
+    vector to $\bigotimes_p\varphi_p$. For a sheet owned entirely by $h(S)$, every other party owns
+    no site, so its basis $[q]^\emptyset$ is a single point, and
+    $\lVert\Omega_S\rVert=\lVert\Omega\rVert=1$ by Definition~\ref{def:party_sheet}.
+\end{proof}

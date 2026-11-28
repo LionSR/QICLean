@@ -15,8 +15,8 @@ Instructions:
    - `build` (Lean): `lake build` for the library; `lake exe lint_style` for
      the text linter; `python3 scripts/blueprint_lean_sync.py --root . --update-lean-decls`
      then `lake exe checkdecls blueprint/lean_decls` for the declaration check;
-     `python3 scripts/ci_lean_checks.py list --base <commit>` shows the source
-     and test files the strict check elaborates, and
+     `python3 scripts/ci_lean_checks.py list --base <commit>` shows the files
+     the strict check elaborates, and
      `python3 scripts/ci_lean_checks.py strict --base <commit>` runs it.
    - `Check Lean module policies`: the `python3 scripts/check_*.py` and
      `scripts/generate_import_aggregators.py --check` commands of the step.

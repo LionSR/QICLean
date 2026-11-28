@@ -12,6 +12,5 @@ import QICLean.Spectral.Perturbation.ClusterNormPerturbation
 import QICLean.Spectral.Perturbation.GapPerturbation
 import QICLean.Spectral.Perturbation.GroundEnergyResidual
 import QICLean.Spectral.Perturbation.HermitianSpectrumPerturbation
-import QICLean.Spectral.Perturbation.HermitianSpectrumPreserver
 import QICLean.Spectral.Perturbation.KernelGapPerturbation
 import QICLean.Spectral.Perturbation.ResidualComparison

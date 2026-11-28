@@ -150,6 +150,29 @@ across the chapter boundary.
     $\spn_{\C}\{A^i : i\in I\} = \MN{n}$.
 \end{definition}
 
+\begin{lemma}[Equivalent forms of injectivity]\label{lem:injective_characterizations}
+    \lean{Kraus.isInjective_iff_isNBlkInjective_one,
+        Kraus.isInjective_iff_injective_traceMap}
+    \leanok
+    \uses{def:injective}
+    For a family $A=\{A^i\}_{i\in I}$ of matrices on~$\C^n$ the following are
+    equivalent: $A$ is injective; the words of length one span $\MN{n}$; the
+    linear map $X\mapsto(\operatorname{tr}(A^iX))_{i\in I}$ from $\MN{n}$ to
+    $\C^I$ is injective.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    The first two statements are the same equation. For the third, the
+    trace pairing $(M,X)\mapsto\operatorname{tr}(MX)$ on $\MN{n}$ is
+    nondegenerate. If the $A^i$ span $\MN{n}$ and $\operatorname{tr}(A^iX)=0$
+    for all $i$, then $\operatorname{tr}(MX)=0$ for every matrix $M$, and taking
+    the matrix units for $M$ gives $X=0$. Conversely, if the span of the $A^i$
+    is a proper subspace, a nonzero linear functional $\varphi$ vanishes on it;
+    writing $\varphi=\operatorname{tr}(\,\cdot\,X)$ with
+    $X_{ji}=\varphi(E_{ij})$ gives a nonzero $X$ in the kernel of the map.
+\end{proof}
+
 \begin{theorem}[Injectivity implies irreducibility]\label{thm:injective_irreducible}
     \lean{Kraus.injective_implies_irreducibleCP}
     \leanok
@@ -201,7 +224,6 @@ across the chapter boundary.
 
 \begin{lemma}[Trace adjointness of a transfer map]
     \label{lem:trace_mul_transfer_map_adjoint}
-    \lean{Kraus.trace_mul_mapLM_adjoint}
     \leanok
     \uses{def:transfer_map, thm:trace_mul_kraus_map_adjoint}
     The trace-adjoint identity of

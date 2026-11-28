@@ -1,0 +1,23 @@
+\chapter{Circuits on a finite set of parties}
+\label{ch:party}
+
+This chapter states the calculus of circuits run by a finite set of parties,
+following \cite[Sections~5--7]{OpenAI2026PolynomialPEPS}. Every Hilbert space
+is finite dimensional, and at every time the memory is the tensor product of
+the current spaces of the parties. A circuit on parties is built from local
+operations, which act at one party, and gates, which act on the parties of a
+cell; it is read as a circuit with one gate or one local family per layer on
+the geometry of all finite sets of parties, and its operator is the Kraus
+operator of its single branch. Pair sources prepare a normalized vector on
+fresh registers at two parties, and pair effects contract such registers. The
+chapter first sets up this syntax and the operations on it, then proves the
+elimination of pair effects of \cite[Lemma~5.1]{OpenAI2026PolynomialPEPS}, and
+closes with ownership sheets, their births, deaths and exchanges
+\cite[Lemmas~6.5 and~6.6]{OpenAI2026PolynomialPEPS}, and stacks of sheets as
+used in \cite[Proposition~7.1]{OpenAI2026PolynomialPEPS}.
+
+\input{chapter/ch18_party_syntax}
+\input{chapter/ch18_party_syntax_operations}
+\input{chapter/ch18_party_effect_elimination}
+\input{chapter/ch18_party_effect_stacks}
+\input{chapter/ch18_party_sheets}

@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Dynamics.Interaction
 import QICLean.ManyBody.Sites.PairSwap
-import QICLean.ManyBody.Sites.PlaceAlong
+import QICLean.ManyBody.Sites.Placement.PlaceAlong
 import QICLean.ManyBody.Sites.Support
 import QICLean.ManyBody.Sites.Twirl
 import QICLean.Spectral.Gap.DoubledSystemGap

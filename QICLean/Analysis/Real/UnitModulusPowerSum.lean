@@ -8,6 +8,8 @@ import Mathlib.Analysis.Complex.Basic
 import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Algebra.Field.GeomSum
 import Mathlib.Analysis.CStarAlgebra.Basic
+import Mathlib.Analysis.Normed.Module.FiniteDimension
+import Mathlib.LinearAlgebra.Vandermonde
 
 /-!
 # Power-sum non-decay for unit-modulus complex families
@@ -42,15 +44,25 @@ comparison of lines 1184--1192.
 The module is purely about complex power sums; it has no MPS
 dependencies and uses no `sorry`/`axiom`/`unsafe`.
 
+## Main results
+
+* `Complex.exists_window_le_norm_sum_mul_pow`: exponential sums on windows of consecutive integers.
+
 ## References
 
 * Cirac, Pérez-García, Schuch, Verstraete, *Matrix Product Density Operators:
   Renormalization Fixed Points and Boundary Theories*, arXiv:1606.00608
   (2017), Theorem `thm1`, proof line 1182, together with Lemma `Lem1`
   (lines 1131--1133).
+
+Moved from TNLean, `TNLean/MPS/MPU/Circuit/Gates/UnitCircleRankTwo.lean` at commit `021ba0bd19`
+(Apache-2.0).
 -/
 
 open scoped BigOperators
+
+section UnitModulusPowerSum
+
 open Filter
 
 namespace UnitModulusPowerSum
@@ -124,3 +136,159 @@ lemma cesaro_geom_sum_one_tendsto_one :
   field_simp
 
 end UnitModulusPowerSum
+
+namespace Complex
+
+/-- Three points on a vertical line with the same squared modulus cannot be distinct.
+This is the circle–line intersection step in the proof of Lemma 1 of
+`docs/audits/2026-10-02_mpu_diagonal_circuits.tex`. -/
+theorem eq_or_eq_or_eq_of_re_eq_of_normSq_eq (x y z : ℂ) (hxy : x.re = y.re) (hxz : x.re = z.re)
+    (hxyN : Complex.normSq x = Complex.normSq y)
+    (hxzN : Complex.normSq x = Complex.normSq z) : x = y ∨ x = z ∨ y = z := by
+  have him : x.im ^ 2 = y.im ^ 2 := by
+    simp only [Complex.normSq_apply, hxy] at hxyN
+    nlinarith
+  have himz : x.im ^ 2 = z.im ^ 2 := by
+    simp only [Complex.normSq_apply, hxz] at hxzN
+    nlinarith
+  rcases sq_eq_sq_iff_eq_or_eq_neg.mp him with h | h <;>
+    rcases sq_eq_sq_iff_eq_or_eq_neg.mp himz with h' | h' <;>
+    simp_all [Complex.ext_iff]
+
+/-- A real linear functional constant on three distinct unit-circle points is zero.
+This is a step in the proof of Lemma 1 of
+`docs/audits/2026-10-02_mpu_diagonal_circuits.tex`. -/
+theorem eq_zero_of_re_mul_eq_of_three_unit_points (k u v w : ℂ)
+    (hu : Complex.normSq u = 1) (hv : Complex.normSq v = 1)
+    (hw : Complex.normSq w = 1) (huv : u ≠ v) (huw : u ≠ w) (hvw : v ≠ w)
+    (hreuv : (k * u).re = (k * v).re) (hreuw : (k * u).re = (k * w).re) : k = 0 := by
+  have hc := eq_or_eq_or_eq_of_re_eq_of_normSq_eq (k * u) (k * v) (k * w) hreuv hreuw
+    (by simp [Complex.normSq_mul, hu, hv]) (by simp [Complex.normSq_mul, hu, hw])
+  grind
+
+/-- An affine function mapping three distinct unit-circle points to the unit circle
+has a vanishing constant or linear coefficient. This is the three-value case in the
+proof of Lemma 1 of `docs/audits/2026-10-02_mpu_diagonal_circuits.tex`. -/
+theorem eq_zero_or_eq_zero_of_three_unit_affine_values (a b u v w : ℂ)
+    (hu : Complex.normSq u = 1) (hv : Complex.normSq v = 1)
+    (hw : Complex.normSq w = 1) (huv : u ≠ v) (huw : u ≠ w) (hvw : v ≠ w)
+    (h0 : Complex.normSq (a + b * u) = 1)
+    (h1 : Complex.normSq (a + b * v) = 1)
+    (h2 : Complex.normSq (a + b * w) = 1) : a = 0 ∨ b = 0 := by
+  simp only [Complex.normSq_add, hu, hv, hw, map_mul, mul_one] at h0 h1 h2
+  have hlin : a * star b = 0 := by
+    apply eq_zero_of_re_mul_eq_of_three_unit_points (a * star b) (star u) (star v) (star w)
+      (by simpa using hu) (by simpa using hv) (by simpa using hw)
+      (star_injective.ne huv) (star_injective.ne huw) (star_injective.ne hvw)
+    all_goals
+      simp only [mul_assoc, Complex.star_def]
+      nlinarith
+  simpa using mul_eq_zero.mp hlin
+
+/-- For a unit-modulus factorization `a i + b i * t j`, either every row has only one
+nonzero coefficient, or the unit-circle parameter `t` takes at most two values.
+This is the geometric step in the exact diagonal rank-two circuit argument in
+`docs/audits/2026-10-02_mpu_diagonal_circuits.tex`, Lemma 1. It does not itself
+assert a quantum-circuit implementation. -/
+theorem unitCircle_factorization_dichotomy {ι κ : Type*} [Nonempty κ] (a b : ι → ℂ) (t : κ → ℂ)
+    (ht : ∀ j, Complex.normSq (t j) = 1)
+    (hM : ∀ i j, Complex.normSq (a i + b i * t j) = 1) :
+    (∀ i, a i = 0 ∨ b i = 0) ∨ ∃ j₀ j₁, ∀ j, t j = t j₀ ∨ t j = t j₁ := by
+  classical
+  by_cases hex : ∃ j k l, t j ≠ t k ∧ t j ≠ t l ∧ t k ≠ t l
+  · obtain ⟨j, k, l, hjk, hjl, hkl⟩ := hex
+    exact Or.inl fun i =>
+      eq_zero_or_eq_zero_of_three_unit_affine_values (a i) (b i) (t j) (t k) (t l)
+      (ht j) (ht k) (ht l) hjk hjl hkl (hM i j) (hM i k) (hM i l)
+  · right
+    let j₀ : κ := Classical.arbitrary κ
+    by_cases hsame : ∀ j, t j = t j₀
+    · exact ⟨j₀, j₀, fun j => Or.inl (hsame j)⟩
+    · push Not at hsame
+      obtain ⟨j₁, hj₁⟩ := hsame
+      refine ⟨j₀, j₁, fun j => ?_⟩
+      by_contra h
+      push Not at h
+      exact hex ⟨j₀, j₁, j, Ne.symm hj₁, Ne.symm h.1, Ne.symm h.2⟩
+
+end Complex
+
+end UnitModulusPowerSum
+
+section ExponentialSumWindow
+
+/-!
+## Exponential sums on windows of consecutive integers
+
+A nonzero exponential sum `∑ⱼ aⱼ μⱼ^t` with distinct unimodular frequencies
+cannot be small at `K` consecutive integers: the Vandermonde map is injective,
+hence bounded below.
+
+This estimate is used for the decaying-correlation bound of
+arXiv:2307.01696, Supplemental Material, proof of Lemma 2, when the subleading
+eigenvalues are complex.
+
+Moved from TNLean, `TNLean/Algebra/ExponentialSumWindow.lean` at commit `49b78ed821`
+(Apache-2.0). Changes: docstrings only.
+-/
+
+namespace Complex
+
+/-- A nonzero exponential sum `∑ⱼ aⱼ μⱼ^t` with distinct unimodular frequencies
+is bounded below, uniformly in `t`, at one of any `K` consecutive integers.
+
+This is the Vandermonde estimate that replaces, for complex subleading
+eigenvalues, the final step "the second and third [conditions] ensure
+(auxform2) for sufficiently large `N`" of arXiv:2307.01696, Supplemental
+Material, proof of Lemma 2: the leading part of the correlator is a sum over
+the eigenvalues of modulus `|λ₂|`, which can vanish at individual separations.
+The constant `c₀` is not made explicit. -/
+lemma exists_window_le_norm_sum_mul_pow {K : ℕ} {μ : Fin K → ℂ}
+    (hμ : Function.Injective μ) (hnorm : ∀ j, ‖μ j‖ = 1)
+    {a : Fin K → ℂ} (ha : a ≠ 0) :
+    ∃ c₀ : ℝ, 0 < c₀ ∧ ∀ t : ℕ, ∃ u : Fin K,
+      c₀ ≤ ‖∑ j, a j * μ j ^ (t + (u : ℕ))‖ := by
+  classical
+  let W : (Fin K → ℂ) →ₗ[ℂ] (Fin K → ℂ) :=
+    { toFun := fun v u ↦ ∑ j, v j * μ j ^ (u : ℕ)
+      map_add' := fun v w ↦ by
+        funext u
+        simp [add_mul, Finset.sum_add_distrib]
+      map_smul' := fun c v ↦ by
+        funext u
+        simp [Finset.mul_sum, mul_assoc] }
+  have hW : Function.Injective W := by
+    rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
+    intro v hv
+    exact Matrix.eq_zero_of_forall_pow_sum_mul_pow_eq_zero hμ
+      (fun i ↦ congrFun hv i)
+  obtain ⟨C, hCpos, hC⟩ := W.injective_iff_antilipschitz.mp hW
+  have hapos : 0 < ‖a‖ := norm_pos_iff.mpr ha
+  refine ⟨‖a‖ / ((C : ℝ) + 1), div_pos hapos (by positivity), ?_⟩
+  intro t
+  let b : Fin K → ℂ := fun j ↦ a j * μ j ^ t
+  have hb : ‖a‖ ≤ ‖b‖ := by
+    refine (pi_norm_le_iff_of_nonneg (norm_nonneg b)).mpr fun j ↦ ?_
+    have : ‖a j‖ = ‖b j‖ := by simp [b, norm_pow, hnorm]
+    rw [this]
+    exact norm_le_pi_norm b j
+  have hWb : ‖b‖ ≤ C * ‖W b‖ := by
+    have := hC.le_mul_dist b 0
+    simpa [dist_eq_norm] using this
+  have hWb' : ‖a‖ / ((C : ℝ) + 1) ≤ ‖W b‖ := by
+    rw [div_le_iff₀ (by positivity)]
+    nlinarith [norm_nonneg (W b), NNReal.coe_nonneg C]
+  by_contra hcon
+  simp only [not_exists, not_le] at hcon
+  have hlt : ‖W b‖ < ‖a‖ / ((C : ℝ) + 1) := by
+    refine (pi_norm_lt_iff (div_pos hapos (by positivity))).mpr fun u ↦ ?_
+    have hu := hcon u
+    have : W b u = ∑ j, a j * μ j ^ (t + (u : ℕ)) := by
+      simp [W, b, pow_add, mul_assoc]
+    rw [this]
+    exact hu
+  exact absurd hWb' (not_le.mpr hlt)
+
+end Complex
+
+end ExponentialSumWindow

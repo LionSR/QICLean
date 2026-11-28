@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Probability.Measurable.FiniteCoordinateRangeFrame
-import QICLean.Probability.Measurable.VariableRankSampleProjection
+import QICLean.Probability.Haar.VariableRankSampleProjection
 import QICLean.ManyBody.Subspace.Sampling.TrimmingMeasurable
 import QICLean.Probability.Measurable.ViableSubspaceTensorProjectionMeasurable
 

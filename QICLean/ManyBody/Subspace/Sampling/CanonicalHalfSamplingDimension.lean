@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Algebra.Combinatorics.StoppedHalving
-import QICLean.Probability.Measurable.VariableRankSampleProjection
+import QICLean.Probability.Haar.VariableRankSampleProjection
 import QICLean.ManyBody.Subspace.Sampling.StoppedHalfSamplingIteration
 import QICLean.Probability.Measurable.FiniteFamilyImageProjection
 import QICLean.Analysis.FunctionalCalculus.ViableSubspaceSpectralProjector

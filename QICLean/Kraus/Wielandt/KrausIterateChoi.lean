@@ -20,7 +20,7 @@ those words span the full matrix algebra.
 
 * `Kraus.choiMatrix_mapLM_pow_posDef_iff_wordSpan_eq_top` characterizes one
   fixed iterate.
-* `Kraus.eventually_choiMatrix_mapLM_pow_posDef_iff_hasEventuallyFullWordSpan`
+* `Kraus.eventually_choiMatrix_mapLM_pow_posDef_iff_isNormal`
   gives the corresponding eventual statement.
 * `Kraus.hasEventuallyFullVectorSpread_of_eventually_choiMatrix_mapLM_pow_posDef`
   proves Wolf's implication from item 4 to item 2.
@@ -118,12 +118,13 @@ theorem choiMatrix_mapLM_pow_posDef_iff_wordSpan_eq_top
 
 /-- Wolf, Section 6.8, items 3 and 4 in eventual form: a finite Kraus family
 has eventually full word span exactly when the Choi matrices of all sufficiently
-large iterates are positive definite. -/
-theorem eventually_choiMatrix_mapLM_pow_posDef_iff_hasEventuallyFullWordSpan
+large iterates are positive definite, that is, exactly when it is normal. -/
+theorem eventually_choiMatrix_mapLM_pow_posDef_iff_isNormal
     [NeZero D] (K : Fin r → Matrix (Fin D) (Fin D) ℂ) :
     (∀ᶠ m : ℕ in Filter.atTop,
       (ChoiJamiolkowski.choiMatrix ((mapLM K) ^ m)).PosDef) ↔
-      HasEventuallyFullWordSpan K := by
+      IsNormal K := by
+  rw [isNormal_iff_eventually_isNBlkInjective]
   constructor
   · intro h
     filter_upwards [h] with m hm
@@ -139,7 +140,7 @@ theorem hasEventuallyFullVectorSpread_of_eventually_choiMatrix_mapLM_pow_posDef
     (hK : ∀ᶠ m : ℕ in Filter.atTop,
       (ChoiJamiolkowski.choiMatrix ((mapLM K) ^ m)).PosDef) :
     HasEventuallyFullVectorSpread K :=
-  hasEventuallyFullVectorSpread_of_hasEventuallyFullWordSpan K
-    ((eventually_choiMatrix_mapLM_pow_posDef_iff_hasEventuallyFullWordSpan K).mp hK)
+  hasEventuallyFullVectorSpread_of_isNormal K
+    ((eventually_choiMatrix_mapLM_pow_posDef_iff_isNormal K).mp hK)
 
 end Kraus

@@ -45,6 +45,11 @@ Moved from TNLean, `TNLean/Algebra/BlockTriangularWord.lean` at commit `49b78ed8
 ## References
 
 TNLean note on asymmetric compressions, Lemma 7.3 and Theorem 7.7(vi).
+
+Moved from TNLean, `TNLean/MPS/FundamentalTheorem/Compression/LongWords.lean`,
+`TNLean/MPS/FundamentalTheorem/Compression/UniquenessSameFlag.lean`,
+`TNLean/MPS/FundamentalTheorem/Compression/SplitUniqueness.lean` at commit `021ba0bd19`
+(Apache-2.0).
 -/
 
 open scoped Matrix
@@ -305,3 +310,174 @@ theorem evalWord_eq_zero_of_strictBlockTriangular
 end Nilpotency
 
 end Matrix
+
+section
+
+open scoped Matrix
+
+namespace Matrix
+
+variable {o : Type*} [Fintype o] [DecidableEq o] {n : o → ℕ} {d r : ℕ} {b : o → Fin r}
+
+/-- **The chain count** (proof of blueprint `lem:asym_uniq_long_words`, *Long words in a triangular
+form*). Let `T` be a family of block upper-triangular matrices for an injective labelling `b` of the
+blocks by positions. If every block at a position between those of `x` and `y` has zero diagonal
+block in every letter, and the word is longer than the distance from the position of `x` to that of
+`y`, then the `(x, y)` entry of the word vanishes: every nondecreasing chain of positions from `x`
+to `y` has an equal step, whose factor is a zero diagonal block. -/
+theorem entry_evalWord_eq_zero_of_blockDiag'_eq_zero (hb : Function.Injective b)
+    {T : Fin d → Matrix (Σ k, Fin (n k)) (Σ k, Fin (n k)) ℂ}
+    (hT : ∀ i, (T i).BlockTriangular fun x => b x.1) :
+    ∀ (w : List (Fin d)) (x y : Σ k, Fin (n k)),
+      (∀ k, b x.1 ≤ b k → b k ≤ b y.1 → ∀ i, (T i).blockDiag' k = 0) →
+      (b y.1 : ℕ) < (b x.1 : ℕ) + w.length → Kraus.evalWord T w x y = 0 := by
+  intro w
+  induction w with
+  | nil =>
+      intro x y _ h
+      simp only [List.length_nil, Nat.add_zero] at h
+      have hxy : x ≠ y := by
+        rintro rfl
+        exact absurd h (lt_irrefl _)
+      simp [Kraus.evalWord, hxy]
+  | cons i w' ih =>
+      intro x y hdiag h
+      simp only [List.length_cons] at h
+      rcases lt_or_ge (b y.1) (b x.1) with hyx | hxy
+      · exact blockTriangular_evalWord hT (i :: w') hyx
+      simp only [Kraus.evalWord, Matrix.mul_apply]
+      refine Finset.sum_eq_zero fun z _ => ?_
+      rcases lt_trichotomy (b z.1) (b x.1) with hzx | hzx | hzx
+      · rw [hT i hzx, zero_mul]
+      · obtain ⟨kz, jz⟩ := z
+        obtain ⟨kx, jx⟩ := x
+        obtain rfl : kz = kx := hb hzx
+        have h0 := congrFun (congrFun (hdiag kz le_rfl hxy i) jx) jz
+        rw [blockDiag'_apply, zero_apply] at h0
+        rw [h0, zero_mul]
+      · have hzx' : (b x.1 : ℕ) < (b z.1 : ℕ) := Fin.lt_def.mp hzx
+        have hzy : (b y.1 : ℕ) < (b z.1 : ℕ) + w'.length := by omega
+        rw [ih z y (fun k hk hk' => hdiag k (hzx.le.trans hk) hk') hzy, mul_zero]
+
+end Matrix
+
+end
+
+section
+
+open scoped Matrix
+
+namespace Matrix
+
+variable {o : Type*} [Fintype o] [DecidableEq o] {n : o → ℕ}
+
+/-- The rows of `blockProj n k * X` are the rows of `X` at the coordinates of the block `k`. -/
+theorem blockProj_mul_apply {m : Type*} (X : Matrix (Σ k, Fin (n k)) m ℂ) (k : o)
+    (i : Fin (n k)) (y : m) : (blockProj n k * X) i y = X ⟨k, i⟩ y := by
+  simp only [Matrix.mul_apply, blockProj, Matrix.transpose_apply]
+  rw [Finset.sum_eq_single ⟨k, i⟩]
+  · rw [blockEmbed_apply_fst_eq]
+    simp
+  · intro x _ hx
+    rw [blockEmbed_apply_of_ne hx, zero_mul]
+  · intro h
+    exact absurd (Finset.mem_univ _) h
+
+/-- The columns of `X * blockEmbed n k` are the columns of `X` at the coordinates of the block
+`k`. -/
+theorem mul_blockEmbed_apply {m : Type*} (X : Matrix m (Σ k, Fin (n k)) ℂ) (k : o) (x : m)
+    (j : Fin (n k)) : (X * blockEmbed n k) x j = X x ⟨k, j⟩ := by
+  simp only [Matrix.mul_apply]
+  rw [Finset.sum_eq_single ⟨k, j⟩]
+  · rw [blockEmbed_apply_fst_eq]
+    simp
+  · intro y _ hy
+    rw [blockEmbed_apply_of_ne hy, mul_zero]
+  · intro h
+    exact absurd (Finset.mem_univ _) h
+
+/-- The rows of `X` at the block `k`, expanded over the blocks of its columns. -/
+theorem blockProj_mul_eq_sum_submatrix_mul_blockProj
+    (X : Matrix (Σ k, Fin (n k)) (Σ k, Fin (n k)) ℂ) (k : o) :
+    blockProj n k * X = ∑ l, X.submatrix (Sigma.mk k) (Sigma.mk l) * blockProj n l := by
+  ext i ⟨l, j⟩
+  rw [blockProj_mul_apply, Matrix.sum_apply, Finset.sum_eq_single l]
+  · simp [Matrix.mul_apply, blockProj, Matrix.transpose_apply, blockEmbed_apply_fst_eq]
+  · intro l' _ hl'
+    simp only [Matrix.mul_apply]
+    exact Finset.sum_eq_zero fun j' _ => by
+      have h0 : blockProj n l' j' ⟨l, j⟩ = 0 := by
+        simp only [blockProj, Matrix.transpose_apply]
+        exact blockEmbed_apply_of_fst_ne (Ne.symm hl') j'
+      rw [h0, mul_zero]
+  · intro h
+    exact absurd (Finset.mem_univ _) h
+
+/-- The columns of `X` at the block `k`, expanded over the blocks of its rows. -/
+theorem mul_blockEmbed_eq_sum_blockEmbed_mul_submatrix
+    (X : Matrix (Σ k, Fin (n k)) (Σ k, Fin (n k)) ℂ) (k : o) :
+    X * blockEmbed n k = ∑ l, blockEmbed n l * X.submatrix (Sigma.mk l) (Sigma.mk k) := by
+  ext ⟨l, i⟩ j
+  rw [mul_blockEmbed_apply, Matrix.sum_apply, Finset.sum_eq_single l]
+  · simp [Matrix.mul_apply, blockEmbed_apply_fst_eq]
+  · intro l' _ hl'
+    simp only [Matrix.mul_apply]
+    exact Finset.sum_eq_zero fun j' _ => by
+      rw [blockEmbed_apply_of_fst_ne (x := ⟨l, i⟩) (Ne.symm hl') j', zero_mul]
+  · intro h
+    exact absurd (Finset.mem_univ _) h
+
+/-- A square matrix that is a scalar multiple of the identity is the multiple by its normalized
+trace. -/
+theorem eq_trace_smul_one_of_exists_eq_smul_one {m : ℕ} {M : Matrix (Fin m) (Fin m) ℂ}
+    (h : ∃ c : ℂ, M = c • 1) : M = ((m : ℂ)⁻¹ * M.trace) • 1 := by
+  obtain ⟨c, rfl⟩ := h
+  rcases Nat.eq_zero_or_pos m with rfl | hm
+  · ext i
+    exact i.elim0
+  · have hm' : (m : ℂ) ≠ 0 := by exact_mod_cast hm.ne'
+    congr 1
+    rw [Matrix.trace_smul, Matrix.trace_one, Fintype.card_fin, smul_eq_mul]
+    field_simp
+
+end Matrix
+
+end
+
+section
+
+open scoped Matrix
+
+namespace Matrix
+
+variable {o : Type*} [Fintype o] [DecidableEq o] {n : o → ℕ}
+
+/-- The coordinate blocks resolve the identity: `∑ k, blockEmbed n k * blockProj n k = 1`. -/
+theorem sum_blockEmbed_mul_blockProj : ∑ k, blockEmbed n k * blockProj n k = 1 := by
+  have h := sum_blockEmbed_mul_mul_blockProj (n := n) fun _ => 1
+  simp only [Matrix.mul_one] at h
+  rw [h]
+  exact blockDiagonal'_one
+
+/-- A block diagonal matrix maps the `k`-th coordinate block into itself by its `k`-th block. -/
+theorem blockDiagonal'_mul_blockEmbed (M : ∀ k, Matrix (Fin (n k)) (Fin (n k)) ℂ) (k : o) :
+    blockDiagonal' M * blockEmbed n k = blockEmbed n k * M k := by
+  rw [← sum_blockEmbed_mul_mul_blockProj, Matrix.sum_mul, Finset.sum_eq_single k]
+  · rw [Matrix.mul_assoc, blockProj_mul_blockEmbed_self, Matrix.mul_one]
+  · intro l _ hl
+    rw [Matrix.mul_assoc, blockProj_mul_blockEmbed_of_ne hl, Matrix.mul_zero]
+  · simp
+
+/-- The `k`-th coordinate projection of a block diagonal matrix is its `k`-th block. -/
+theorem blockProj_mul_blockDiagonal' (M : ∀ k, Matrix (Fin (n k)) (Fin (n k)) ℂ) (k : o) :
+    blockProj n k * blockDiagonal' M = M k * blockProj n k := by
+  rw [← sum_blockEmbed_mul_mul_blockProj, Matrix.mul_sum, Finset.sum_eq_single k]
+  · rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, blockProj_mul_blockEmbed_self, Matrix.one_mul]
+  · intro l _ hl
+    rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, blockProj_mul_blockEmbed_of_ne (Ne.symm hl),
+      Matrix.zero_mul, Matrix.zero_mul]
+  · simp
+
+end Matrix
+
+end

@@ -53,14 +53,12 @@ Wolf eq. (3.16).
 
 ## Scope
 
-The **PPT criterion** as an *entanglement* criterion — that a separable state
-has positive partial transpose, so a negative partial transpose certifies
-entanglement — needs a separable-state predicate, which is absent from the
-development.  This file formalizes the partial-transpose object, the PPT
-property, and the witnesses; the separability implication is not formalized.
-The same missing foundation blocks the reduction-criterion entanglement
-implication, recorded in
-`docs/paper-gaps/wolf_reduction_criterion_schmidt_premise.tex`.
+The **PPT criterion** as an *entanglement* criterion is proved in
+`QICLean.Channel.Entanglement.Separable`: `Matrix.IsSeparable.isPPT` shows that
+a separable matrix has positive partial transpose. The algebraic definitions
+and identities stay in this file so that they do not depend on channel-level
+separability. Preservation by product-Kraus operations is developed in
+`QICLean.Channel.Entanglement.SeparableOperationPreservation`.
 
 ## References
 
@@ -322,6 +320,37 @@ theorem isPPT_basis_change {U : Matrix (Fin d) (Fin d) ℂ}
   have hM := hρ.mul_mul_conjTranspose_same ((U * Uᵀ) ⊗ₖ (1 : Matrix (Fin d') (Fin d') ℂ))
   rwa [Matrix.conjTranspose_kronecker, Matrix.conjTranspose_one] at hM
 
+/-! ## Rectangular local product sandwiches -/
+
+/-- Partial transpose intertwines a rectangular product sandwich with the
+sandwich whose first local operator is entrywise conjugated. The input need
+not be positive, Hermitian, or normalized. -/
+theorem partialTransposeLeft_product_sandwich {dA dB dAout dBout : ℕ}
+    (A : Matrix (Fin dAout) (Fin dA) ℂ)
+    (B : Matrix (Fin dBout) (Fin dB) ℂ)
+    (ρ : Matrix (Fin dA × Fin dB) (Fin dA × Fin dB) ℂ) :
+    partialTransposeLeft ((A ⊗ₖ B) * ρ * (A ⊗ₖ B)ᴴ) =
+      (A.map star ⊗ₖ B) * partialTransposeLeft ρ * (A.map star ⊗ₖ B)ᴴ := by
+  ext ⟨i, k⟩ ⟨j, l⟩
+  simp only [partialTransposeLeft_apply, mul_apply, conjTranspose_apply,
+    kroneckerMap_apply, map_apply, star_mul, star_star,
+    Fintype.sum_prod_type, Finset.sum_mul]
+  conv_lhs =>
+    rw [Finset.sum_comm]
+    arg 2
+    ext b
+    rw [Finset.sum_comm]
+  rw [Finset.sum_comm]
+  apply Finset.sum_congr rfl
+  intro a _
+  apply Finset.sum_congr rfl
+  intro b _
+  apply Finset.sum_congr rfl
+  intro c _
+  apply Finset.sum_congr rfl
+  intro d _
+  ring
+
 /-! ## Transposition witnesses (Wolf eq. (3.16)) -/
 
 /-- **Wolf's transposition witness** `W = (A ⊗ B) F (A ⊗ B)†`, where `F` is the
@@ -338,4 +367,101 @@ theorem transpositionWitness_isHermitian (A B : Matrix (Fin d) (Fin d) ℂ) :
   rw [Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose,
     Matrix.swapMatrix_conjTranspose, Matrix.mul_assoc]
 
+/-! ## Trace-pairing symmetry and maximally entangled projector -/
+
+/-- Taking the first-factor partial transpose on both factors preserves the bilinear
+trace pairing: `tr(X^{T₁} Y^{T₁}) = tr(X Y)`. -/
+theorem trace_partialTransposeLeft_mul_partialTransposeLeft
+    (X Y : Matrix (Fin d × Fin d') (Fin d × Fin d') ℂ) :
+    (partialTransposeLeft X * partialTransposeLeft Y).trace = (X * Y).trace := by
+  classical
+  simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply, partialTransposeLeft_apply,
+    Fintype.sum_prod_type]
+  calc
+    ∑ i₁, ∑ k, ∑ i₂, ∑ l,
+        X (i₂, k) (i₁, l) * Y (i₁, l) (i₂, k) =
+      ∑ i₁, ∑ i₂, ∑ k, ∑ l,
+        X (i₂, k) (i₁, l) * Y (i₁, l) (i₂, k) := by
+          apply Finset.sum_congr rfl
+          intro i₁ _
+          rw [Finset.sum_comm]
+    _ = ∑ i₂, ∑ i₁, ∑ k, ∑ l,
+        X (i₂, k) (i₁, l) * Y (i₁, l) (i₂, k) := by
+          rw [Finset.sum_comm]
+    _ = ∑ i₂, ∑ k, ∑ i₁, ∑ l,
+        X (i₂, k) (i₁, l) * Y (i₁, l) (i₂, k) := by
+          apply Finset.sum_congr rfl
+          intro i₂ _
+          rw [Finset.sum_comm]
+
+/-- The first-factor partial transpose of the maximally entangled projector `|Ω_d⟩⟨Ω_d|`
+is `d⁻¹` times the SWAP operator: `(|Ω_d⟩⟨Ω_d|)^{T₁} = d⁻¹ F_d`.
+
+Holds for all `d : ℕ`, including `d = 0` where both sides are the unique empty matrix. -/
+theorem partialTransposeLeft_omegaProj (d : ℕ) :
+    partialTransposeLeft (omegaProj d) = (d : ℂ)⁻¹ • swapMatrix d := by
+  by_cases hd : 0 < d
+  · ext ⟨i₁, i₂⟩ ⟨j₁, j₂⟩
+    simp only [partialTransposeLeft_apply, omegaProj_apply, omegaVec_apply,
+      Matrix.smul_apply, swapMatrix_apply, smul_eq_mul]
+    by_cases h1 : i₁ = j₂
+    · by_cases h2 : i₂ = j₁
+      · subst h1 h2
+        simpa [one_div] using MaximallyEntangled.omegaCoeff_eq_inv hd
+      · have h2' : j₁ ≠ i₂ := Ne.symm h2
+        simp [h1, h2, h2']
+    · simp [h1]
+  · have hd0 : d = 0 := Nat.eq_zero_of_not_pos hd
+    subst hd0
+    exact Subsingleton.elim _ _
+
 end Matrix
+
+/-! ## Partial transpose on arbitrary product bases -/
+
+/-- Partial transpose over the first (input) tensor factor for arbitrary index types `α, β`:
+`(partialTransposeFst Q) (i, a) (j, b) = Q (j, a) (i, b)`. -/
+def Matrix.partialTransposeFst {R α β : Type*}
+    (Q : Matrix (α × β) (α × β) R) : Matrix (α × β) (α × β) R :=
+  fun p q => Q (q.1, p.2) (p.1, q.2)
+
+@[simp]
+theorem Matrix.partialTransposeFst_apply {R α β : Type*}
+    (Q : Matrix (α × β) (α × β) R) (p q : α × β) :
+    Matrix.partialTransposeFst Q p q = Q (q.1, p.2) (p.1, q.2) := rfl
+
+@[simp]
+theorem Matrix.partialTransposeFst_partialTransposeFst {R α β : Type*}
+    (Q : Matrix (α × β) (α × β) R) :
+    Matrix.partialTransposeFst (Matrix.partialTransposeFst Q) = Q := by
+  ext ⟨i, a⟩ ⟨j, b⟩
+  rfl
+
+@[simp]
+theorem Matrix.partialTransposeFst_add {R α β : Type*} [Add R]
+    (P Q : Matrix (α × β) (α × β) R) :
+    Matrix.partialTransposeFst (P + Q) =
+      Matrix.partialTransposeFst P + Matrix.partialTransposeFst Q := by
+  ext ⟨i, a⟩ ⟨j, b⟩
+  rfl
+
+@[simp]
+theorem Matrix.partialTransposeFst_sub {R α β : Type*} [Sub R]
+    (P Q : Matrix (α × β) (α × β) R) :
+    Matrix.partialTransposeFst (P - Q) =
+      Matrix.partialTransposeFst P - Matrix.partialTransposeFst Q := by
+  ext ⟨i, a⟩ ⟨j, b⟩
+  rfl
+
+@[simp]
+theorem Matrix.partialTransposeFst_smul {S R α β : Type*} [SMul S R]
+    (c : S) (Q : Matrix (α × β) (α × β) R) :
+    Matrix.partialTransposeFst (c • Q) = c • Matrix.partialTransposeFst Q := by
+  ext ⟨i, a⟩ ⟨j, b⟩
+  rfl
+
+/-- On `Fin d × Fin d'`, `Matrix.partialTransposeFst` coincides with
+`Matrix.partialTransposeLeft`. -/
+theorem Matrix.partialTransposeFst_eq_partialTransposeLeft {d d' : ℕ}
+    (Q : Matrix (Fin d × Fin d') (Fin d × Fin d') ℂ) :
+    Matrix.partialTransposeFst Q = Matrix.partialTransposeLeft Q := rfl

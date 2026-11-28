@@ -16,7 +16,6 @@ import QICLean.Representation.Partition
 import QICLean.Representation.Permutation
 import QICLean.Representation.Replica
 import QICLean.Representation.SchurWeyl
-import QICLean.Representation.SymmetricGroup
 import QICLean.Representation.TensorPower
 import QICLean.Representation.Twirl
 import QICLean.Representation.UnitaryCompletionClass

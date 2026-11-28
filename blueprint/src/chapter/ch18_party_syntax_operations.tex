@@ -1,0 +1,660 @@
+\section{Operations on circuits on parties}
+\label{sec:party_syntax_operations}
+
+This section runs a circuit on parties beside untouched spectator factors, reads
+a circuit without gates party by party, moves pair sources along a map of
+parties, and reads a word on blocks of parties, on a subset of parties, and on
+the parties of one cell. In each case the operator of the new circuit is the
+operator of the old one tensored with an identity or relabelled along a
+bijection of configurations, as in \cite[Section~5.1]{OpenAI2026PolynomialPEPS},
+where an operation acts on some registers and leaves the others untouched.
+
+Throughout, $P$ is a set of parties, a system is a family $X=(X_p)_{p\in P}$ of
+finite basis sets, and, when $P$ is finite, $\mathcal H_X=\bigotimes_p\C^{X_p}$
+has the configurations $X_P=\prod_pX_p$ as its basis. For a party circuit $c$
+from $X$ to $Y$ whose gates have one outcome each and an interpretation
+$\mathrm{ev}$ of its gates, $[c]$ denotes its operator from $\mathcal H_X$ to
+$\mathcal H_Y$; for a word, the interpretation is that of pair sources. For a
+region $D\subseteq P$ and a matrix $K$ from $\C^{X_D}$ to $\C^{Y_D}$, where $Y$
+agrees with $X$ outside $D$, $K\otimes1$ is its placement between $X$ and $Y$
+(Definition~\ref{def:sites_place_between}).
+
+\subsection{Circuits beside spectator factors}
+\label{sec:party_frame}
+
+Let $W=(W_p)_{p\in P}$ be a system of finite basis sets, the spectators. The
+system $W\times X$ has the basis $W_p\times X_p$ at $p$, and its configurations
+on a region $D$ are paired with $W_D\times X_D$.
+
+\begin{definition}[Circuits beside spectator factors]
+    \label{def:party_gate_frame}
+    \lean{QuantumCircuit.Party.GateFrame, QuantumCircuit.Party.GateFrame.IsCompatible,
+        QuantumCircuit.Party.SourceGate.frame,
+        QuantumCircuit.Party.SourceGate.toPairSource_frame,
+        QuantumCircuit.Party.PairEffectGate.frame,
+        QuantumCircuit.Party.PairEffectGate.toPairSource_frame,
+        QuantumCircuit.Party.PartyCircuit.frame}
+    \leanok
+    \uses{def:party_circuit, def:party_pair_gates, def:party_weighted_gate,
+        def:circuits_gate_family}
+    A family of gates runs beside spectator factors when every gate $g$ on a cell
+    $D$ from $X$ to $Y$ and every spectator system $W$ give a gate $g^W$ on $D$ from
+    $W\times X$ to $W\times Y$, with the outcomes of $g^W$ in bijection with those
+    of $g$. An interpretation $\mathrm{ev}$ is compatible with framing when, for
+    every outcome $o$ of $g^W$ with corresponding outcome $o'$ of $g$,
+    \begin{align}
+        \mathrm{ev}(g^W,o)=1_{W_D}\otimes\mathrm{ev}(g,o'),
+        \label{eq:party_frame_compatible}
+    \end{align}
+    read along the pairings $(W\times X)_D\cong W_D\times X_D$ and
+    $(W\times Y)_D\cong W_D\times Y_D$. A pair source or a pair effect beside $W$
+    keeps its endpoints, its fresh bases and its vector, the fresh factor placed in
+    front of the spectator factor at each endpoint. The gates of monomials are
+    framed as pair sources or pair effects, and a weighted gate on $D$ is framed by
+    framing each of its monomials beside the spectators $(W_p)_{p\in D}$, with the
+    same coefficients. The circuit $c^W$ beside $W$ is defined by induction on
+    the circuit $c$: the empty circuit stays empty, a gate $g$ becomes $g^W$ on the
+    same cell, a local operation $A$ at $p$ becomes $1_{W_p}\otimes A$ at $p$, local
+    operations $A_p$ at every party become $1_{W_p}\otimes A_p$, and a composition
+    becomes the composition of the framed circuits.
+\end{definition}
+
+\begin{theorem}[Framing keeps the syntax]
+    \label{thm:party_frame_syntax}
+    \lean{QuantumCircuit.Party.PartyCircuit.UsesOnly.frame,
+        QuantumCircuit.Party.PartyCircuit.gateCells_frame,
+        QuantumCircuit.Party.PartyCircuit.numGates_frame,
+        QuantumCircuit.Party.PartyCircuit.gateCount_frame,
+        QuantumCircuit.Party.PartyCircuit.participation_frame,
+        QuantumCircuit.Party.PartyCircuit.participationCount_frame,
+        QuantumCircuit.Party.PartyCircuit.frameLocationsEquiv,
+        QuantumCircuit.Party.PartyCircuit.participants_frameLocationsEquiv,
+        QuantumCircuit.Party.PartyCircuit.mapGates_frame,
+        QuantumCircuit.Party.Word.sources_frame,
+        QuantumCircuit.Party.Monomial.sources_frame,
+        QuantumCircuit.Party.Monomial.effects_frame,
+        QuantumCircuit.Party.Monomial.effectCount_frame,
+        QuantumCircuit.Party.Monomial.sourceCount_frame,
+        QuantumCircuit.Party.PartyCircuit.forallGate_isRight_frame}
+    \leanok
+    \uses{def:party_gate_frame, def:party_gate_counts, def:party_word,
+        def:party_pair_gates, def:party_relabel, def:circuits_gate_morphism}
+    Let $c$ be a party circuit and $W$ a spectator system. If $c$ uses only the
+    parties of a set $R$, so does $c^W$. The circuit $c^W$ has the same list of
+    gate cells, the same number of gates, the same gate count, and, at every party
+    $p$, the same participation and the same number of gates containing $p$. Its
+    gate occurrences are in bijection with those of $c$, corresponding occurrences
+    having the same cell. If a morphism $\varphi$ of gate families satisfies
+    $\varphi(g^W)=\varphi(g)^W$ for every gate $g$, then mapping $c^W$ along
+    $\varphi$ gives the circuit beside $W$ of the image of $c$. A word beside $W$
+    has the sources of the word. A monomial beside $W$ has the pair sources and
+    the pair effects of the monomial, hence the same numbers of each, and a chain
+    all of whose gates are pair effects stays such a chain.
+\end{theorem}
+\begin{proof}\leanok
+    By induction on the circuit. Framing does not change the cell of a gate or the
+    pair data of a source or an effect, and it adds no gate. For the parties
+    outside $R$ at which the local operations $A_p$ are the identifications of
+    equal bases $Y_p=X_p$, the matrices $1_{W_p}\otimes A_p$ are the
+    identifications of $W_p\times Y_p=W_p\times X_p$. The list of gates of a
+    composition is the concatenation of the two lists, so the lists of pair sources
+    and pair effects of a monomial are those of the framed monomial.
+\end{proof}
+
+\begin{theorem}[Pair sources and pair effects beside spectators]
+    \label{thm:party_frame_pair_compatible}
+    \lean{QuantumCircuit.Party.SourceGate.regionMatrix_frame,
+        QuantumCircuit.Party.PairEffectGate.regionMatrix_frame,
+        QuantumCircuit.Party.SourceGate.isCompatible_frame,
+        QuantumCircuit.Party.PairEffectGate.isCompatible_frame,
+        QuantumCircuit.Party.chainEv_isCompatible_frame}
+    \leanok
+    \uses{def:party_gate_frame, def:party_pair_gates}
+    The matrix of a pair source beside $W$ on its cell $D$ is $1_{W_D}\otimes M$,
+    where $M$ is the matrix of the source on $D$, read along the pairings of
+    configurations, and likewise for a pair effect. Hence the interpretations of
+    pair sources, of pair effects and of the gates of monomials are compatible with
+    framing.
+\end{theorem}
+\begin{proof}\leanok
+    The cell $D$ consists of the two endpoints. The element of the matrix of the
+    framed source at a pair of configurations vanishes unless the spectator parts
+    agree at both endpoints, that is, on all of $D$, and it is then the element of
+    $M$ at the remaining parts; this is the element of $1_{W_D}\otimes M$. The
+    matrix of a pair effect is the adjoint of the matrix of the source with the same
+    pair data, and the adjoint of $1_{W_D}\otimes M$, relabelled, is
+    $1_{W_D}\otimes M^\dagger$, relabelled. A gate of a monomial is one or the
+    other.
+\end{proof}
+
+\begin{theorem}[The operator of a circuit beside spectators]
+    \label{thm:party_op_frame}
+    \lean{QuantumCircuit.Party.PartyCircuit.op_frame,
+        QuantumCircuit.Party.PartyCircuit.op_frame_unit,
+        QuantumCircuit.Party.Word.op_frame}
+    \leanok
+    \uses{def:party_gate_frame, def:party_circuit, def:party_word}
+    Let $P$ be finite, let the gates have one outcome each, and let $\mathrm{ev}$ be
+    compatible with framing. For every party circuit $c$ from $X$ to $Y$ and every
+    spectator system $W$,
+    \begin{align}
+        [c^W]=1_{W_P}\otimes[c],
+        \label{eq:party_op_frame}
+    \end{align}
+    read along the pairings $(W\times X)_P\cong W_P\times X_P$ and
+    $(W\times Y)_P\cong W_P\times Y_P$. In particular this holds for every word.
+    If every $W_p$ has one element, then the element of $[c^W]$ at $(y,x)$ is the
+    element of $[c]$ at the second components of $y$ and $x$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:party_frame_pair_compatible, lem:sites_place_between_products,
+        thm:sites_product_span, def:circuits_single}
+    By induction on the circuit. The empty circuit gives $1=1\otimes1$. For a gate
+    $g$ on $D$, the operator of $g^W$ is the placement of
+    $\mathrm{ev}(g^W,o)=1_{W_D}\otimes\mathrm{ev}(g,o')$
+    by~(\ref{eq:party_frame_compatible}), the outcomes being unique, and placing
+    $1_{W_D}\otimes K$ between $W\times X$ and $W\times Y$ gives
+    $1_{W_P}\otimes(K\otimes1)$ by Lemma~\ref{lem:sites_place_between_products}. A
+    local operation $1_{W_p}\otimes A$, read on the one-party region $\{p\}$, is
+    $1_{W_{\{p\}}}\otimes A$ read there, and the same lemma applies. For local
+    operations at every party, $\bigotimes_p(1_{W_p}\otimes A_p)
+        =1_{W_P}\otimes\bigotimes_pA_p$ after regrouping the factors. For a
+    composition, $(1\otimes[c'])(1\otimes[c])=1\otimes[c'][c]$. If every $W_p$ has
+    one element, $1_{W_P}$ is the $1\times1$ identity.
+\end{proof}
+
+\begin{theorem}[Weighted gates beside spectators]
+    \label{thm:party_frame_weighted}
+    \lean{QuantumCircuit.Party.WeightedGate.isCompatible_frame}
+    \leanok
+    \uses{def:party_gate_frame, def:party_weighted_gate}
+    The interpretation of weighted gates is compatible with framing.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:party_op_frame, thm:party_frame_pair_compatible}
+    The matrix of a weighted gate is $\sum_tc_t[M_t]$ over its terms, and that of the
+    framed gate is $\sum_tc_t[M_t^W]$. By Theorem~\ref{thm:party_op_frame}, applied
+    to the monomials with the compatible interpretation of their gates,
+    $[M_t^W]=1\otimes[M_t]$, read along the pairings. By induction on the list of
+    terms, the Kronecker product with $1$ and the relabelling are linear, which
+    gives $1\otimes\sum_tc_t[M_t]$.
+\end{proof}
+
+\begin{theorem}[Framing keeps circuits allowed]
+    \label{thm:party_frame_allowed}
+    \lean{QuantumCircuit.Party.PartyCircuit.isAllowed_frame,
+        QuantumCircuit.Party.Word.isAllowed_frame,
+        QuantumCircuit.Party.PartyCircuit.IsLocalContractive.frame,
+        QuantumCircuit.Party.ChainGate.isAllowed_frame,
+        QuantumCircuit.Party.WeightedGate.isAllowed_frame}
+    \leanok
+    \uses{def:party_gate_frame, def:party_allowed, def:party_word,
+        def:party_pair_gates, def:party_weighted_gate}
+    Let $\mathrm{ev}$ be compatible with framing and let a condition on gates pass
+    from every gate $g$ to $g^W$. If a party circuit is allowed for this condition,
+    so is the circuit beside $W$. A circuit beside $W$ is locally contractive when
+    the circuit is, and a word, an allowed gate of a monomial, and an allowed
+    weighted gate stay allowed beside $W$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:detailed_balance_tensor_norm, lem:matrix_l2_contractions,
+        thm:party_frame_pair_compatible}
+    By induction on the circuit. A gate $g^W$ has by~(\ref{eq:party_frame_compatible})
+    the matrix $1\otimes\mathrm{ev}(g,o')$, relabelled, whose norm is at most
+    $\lVert1\otimes\mathrm{ev}(g,o')\rVert\le\lVert\mathrm{ev}(g,o')\rVert\le1$, and
+    it satisfies the condition on gates by hypothesis. A local operation
+    $1\otimes A$ has $\lVert1\otimes A\rVert\le\lVert A\rVert\le1$. For words and
+    monomials the interpretations of pair sources and of the gates of monomials are
+    compatible by Theorem~\ref{thm:party_frame_pair_compatible}, and the condition on
+    their gates concerns the vectors, which framing keeps, so the first statement
+    applies; every framed monomial of an allowed weighted gate is then allowed.
+\end{proof}
+
+\subsection{Circuits without gates}
+\label{sec:party_local}
+
+\begin{definition}[Circuits without gates and their party operations]
+    \label{def:party_local_circuit}
+    \lean{QuantumCircuit.Party.PartyCircuit.localOpFamily,
+        QuantumCircuit.Party.PartyCircuit.localOpFamily_self,
+        QuantumCircuit.Party.PartyCircuit.localOpFamily_of_ne,
+        QuantumCircuit.Party.PartyCircuit.IsLocal,
+        QuantumCircuit.Party.PartyCircuit.isLocal_iff_gates_eq_nil,
+        QuantumCircuit.Party.Word.isLocal_iff_sources_eq_nil,
+        QuantumCircuit.Party.PartyCircuit.partyOp,
+        QuantumCircuit.Party.PartyCircuit.regionOp,
+        QuantumCircuit.Party.PartyCircuit.parties}
+    \leanok
+    \uses{def:party_circuit, def:party_gate_counts, def:party_word,
+        thm:sites_product_span}
+    The party family of a local operation $A$ at $p$ from $X$ to $Y$, where
+    $Y_s=X_s$ for $s\neq p$, is $A$ at $p$ and the matrix of the identification
+    $X_s=Y_s$ at every $s\neq p$. A party circuit is local when it has no gate,
+    that is, when its list of gates is empty; a word is local exactly when it has
+    no pair source. The party operation $c_p$ of $c$ at $p$ is defined by induction
+    on $c$: it is $1$ for the empty circuit, $0$ for a gate, the party family at $p$
+    for a local operation, $A_p$ for local operations $(A_s)_s$ at every party, and
+    $c'_pc_p$ for the composition of $c$ followed by $c'$. For a finite region $R$,
+    the region operation is $c_R=\bigotimes_{p\in R}c_p$. When $P$ is finite, the
+    parties of $c$ are those named by its operations: the cells of its gates, the
+    party of each local operation, whatever its matrix, and, for local operations
+    $(A_s)_s$ at every party, the parties $p$ at which $A_p$ is not the matrix of an
+    identification of equal bases $Y_p=X_p$.
+\end{definition}
+
+\begin{theorem}[A circuit without gates acts party by party]
+    \label{thm:party_local_op}
+    \lean{QuantumCircuit.Party.PartyCircuit.op_localOp_eq_piKronecker,
+        QuantumCircuit.Party.PartyCircuit.op_eq_piKronecker_partyOp,
+        QuantumCircuit.Party.PartyCircuit.op_eq_reindex_kronecker_regionOp}
+    \leanok
+    \uses{def:party_local_circuit, def:sites_config}
+    Let $P$ be finite and let the gates have one outcome each. The operator of one
+    local operation is the product operator $\bigotimes_sm_s$ of its party family
+    $(m_s)_s$. The operator of a local circuit $c$ is the product of its party
+    operations,
+    \begin{align}
+        [c]=\bigotimes_{p\in P}c_p,
+        \label{eq:party_local_op}
+    \end{align}
+    and, for every region $R$, in the coordinates of the cuts along $R$,
+    $[c]=c_R\otimes\bigotimes_{p\notin R}c_p$. This is the collection of the local
+    maps of a word without pair sources by party in the proof of
+    \cite[Theorem~5.2]{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:party_circuit, def:sites_place_between, thm:sites_product_span,
+        lem:sites_product_intertwine}
+    The element of the placement of $A$ at $(y,x)$ is $A_{y_px_p}$ if $y$ and $x$
+    agree outside $p$ through the identifications, and $0$ otherwise; the element
+    of $\bigotimes_sm_s$ is $A_{y_px_p}\prod_{s\neq p}(m_s)_{y_sx_s}$, and the product
+    over $s\neq p$ is $1$ exactly when $y$ and $x$ agree outside $p$. The identity
+    (\ref{eq:party_local_op}) follows by induction on the circuit: the empty circuit
+    gives $1=\bigotimes_p1$, local operations at every party have the product
+    operator as their operator, and for a composition
+    $(\bigotimes_pc'_p)(\bigotimes_pc_p)=\bigotimes_pc'_pc_p$. The last statement is
+    (\ref{eq:party_local_op}) with the product split along the cut, by
+    Lemma~\ref{lem:sites_product_intertwine}.
+\end{proof}
+
+\begin{theorem}[The party operations of an allowed circuit are contractions]
+    \label{thm:party_local_contraction}
+    \lean{QuantumCircuit.Party.PartyCircuit.norm_localOpFamily_le_one,
+        QuantumCircuit.Party.PartyCircuit.norm_partyOp_le_one,
+        QuantumCircuit.Party.PartyCircuit.norm_regionOp_le_one,
+        QuantumCircuit.Party.PartyCircuit.exists_eq_piKronecker,
+        QuantumCircuit.Party.Word.exists_piKronecker_of_sources_eq_nil}
+    \leanok
+    \uses{def:party_local_circuit, def:party_allowed, def:party_word}
+    The party family of a contraction consists of contractions. If a party circuit
+    is allowed for some condition on its gates, then every party operation $c_p$ and
+    every region operation $c_R$ is a contraction. If $P$ is finite and $c$ is moreover
+    local, then $[c]=\bigotimes_pB_p$ for contractions $B_p$. In particular an
+    allowed word $w$ without pair sources satisfies $[w]=\bigotimes_pA_p$ for
+    contractions $A_p$ \cite[Theorem~5.2]{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:matrix_l2_contractions, thm:party_local_op}
+    The matrix of an identification of bases is a contraction. By induction on
+    the circuit, $c_p$ is $1$, $0$, a member of the party family of a contraction,
+    the contraction $A_p$, or a product $c'_pc_p$ of two contractions. A product of
+    contractions on the parties of $R$ is a contraction. For a local circuit take
+    $B_p=c_p$ in (\ref{eq:party_local_op}); a word without pair sources is local.
+\end{proof}
+
+\begin{theorem}[The parties of a word]
+    \label{thm:party_parties}
+    \lean{QuantumCircuit.Party.Word.usesOnly_iff_parties_subset,
+        QuantumCircuit.Party.Word.usesOnly_parties}
+    \leanok
+    \uses{def:party_local_circuit, def:party_word}
+    Let $P$ be finite. A word uses only the parties of a set $R$ if and only if its
+    parties lie in $R$. In particular a word uses only its own parties.
+\end{theorem}
+\begin{proof}\leanok
+    By induction on the word. A source uses only $R$ when its cell lies in $R$, a
+    local operation at $p$ when $p\in R$, local operations at every party when they
+    are identifications of equal bases at every party outside $R$, and a
+    composition when both parts do; the parties of a composition are the union of
+    those of its parts.
+\end{proof}
+
+\subsection{Maps of source owners}
+\label{sec:party_owner_map}
+
+\begin{definition}[Pair sources along a map of parties]
+    \label{def:party_owner_map}
+    \lean{QuantumCircuit.Party.PairSource.mapOwner,
+        QuantumCircuit.Party.SourceInventory.mapOwner,
+        QuantumCircuit.Party.SourceInventory.mapOwner_nil,
+        QuantumCircuit.Party.SourceInventory.mapOwner_cons,
+        QuantumCircuit.Party.SourceInventory.mapOwner_append,
+        QuantumCircuit.Party.affectedOwner,
+        QuantumCircuit.Party.affectedOwner_eq_none,
+        QuantumCircuit.Party.isSome_affectedOwner}
+    \leanok
+    \uses{def:party_pair_gates}
+    Let $f\colon P\to Q$ be a map of parties. A pair source $s$ with endpoints $l$
+    and $r$ is moved along $f$ to the pair source $f_*s$ with endpoints $f(l)$ and
+    $f(r)$, the same fresh bases and the same vector, when $f(l)\neq f(r)$; when
+    $f(l)=f(r)$ it becomes local and is dropped. A list $S$ of pair sources is moved
+    to the list $f_*S$ of the moved sources that are kept, in their order, so that
+    $f_*$ of the empty list is empty and $f_*(S\,S')=f_*S\,f_*S'$ for a concatenation.
+    For a set $A\subseteq P$ of affected parties, the owner map $\omega_A$ from $P$
+    to $A\sqcup\{\ast\}$ sends each affected party to itself and every other party to
+    the one exterior party $\ast$; thus $\omega_A(p)=\ast$ if and only if
+    $p\notin A$. This is the grouping of parties in the proof of
+    \cite[Theorem~5.2]{OpenAI2026PolynomialPEPS}.
+\end{definition}
+
+\begin{theorem}[Moved lists of pair sources]
+    \label{thm:party_owner_map}
+    \lean{QuantumCircuit.Party.SourceInventory.mem_mapOwner,
+        QuantumCircuit.Party.SourceInventory.IsNormalized.mapOwner,
+        QuantumCircuit.Party.SourceInventory.mapOwner_eq_nil_iff,
+        QuantumCircuit.Party.SourceInventory.map_partyPair_mapOwner,
+        QuantumCircuit.Party.SourceInventory.mem_partyPair_mapOwner}
+    \leanok
+    \uses{def:party_owner_map}
+    Let $f\colon P\to Q$ and let $S$ be a list of pair sources on $P$. A pair source
+    $t$ occurs in $f_*S$ if and only if $t=f_*s$ for some $s$ in $S$ whose endpoints
+    have distinct images. If every vector of $S$ is normalized, so is every vector
+    of $f_*S$. The list $f_*S$ is empty if and only if the endpoints of every source
+    of $S$ have the same image. The list of unordered endpoint pairs of $f_*S$ is
+    obtained from that of $S$ by applying $f$ to each pair and dropping the pairs
+    with equal points, in order and with multiplicity; hence an unordered pair
+    $\{a,b\}$ occurs in it if and only if $a\neq b$ and $\{a,b\}$ is the image of an
+    endpoint pair of $S$ \cite[Theorem~5.2]{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+\begin{proof}\leanok
+    The list $f_*S$ is obtained from $S$ by keeping the moved sources whose image
+    endpoints differ, which gives the membership and emptiness statements; a moved
+    source has the vector of the source. The list identity follows by induction on
+    $S$, splitting on whether the endpoints of the first source have the same image.
+\end{proof}
+
+\begin{theorem}[Affected owners]
+    \label{thm:party_affected_owner}
+    \lean{QuantumCircuit.Party.affectedOwner_eq_iff,
+        QuantumCircuit.Party.PairSource.affectedOwner_ne_iff,
+        QuantumCircuit.Party.SourceInventory.mem_mapOwner_affectedOwner,
+        QuantumCircuit.Party.SourceInventory.map_partyPair_affectedOwner,
+        QuantumCircuit.Party.SourceInventory.mapOwner_affectedOwner_eq_nil_iff,
+        QuantumCircuit.Party.affectedOwner_true_ne_none,
+        QuantumCircuit.Party.uniqueBlockSystemNone}
+    \leanok
+    \uses{def:party_owner_map, def:sites_block}
+    Let $A\subseteq P$. Two parties $p,q$ have the same owner, $\omega_A(p)=\omega_A(q)$,
+    if and only if $p=q$ or both are unaffected. The endpoints of a pair source get
+    distinct owners if and only if at least one of them is affected. Hence the
+    sources occurring in $(\omega_A)_*S$ are exactly the moved sources $(\omega_A)_*s$
+    of the sources $s$ of $S$ with an affected endpoint; its list of unordered
+    endpoint pairs is the list of images under $\omega_A$ of the endpoint pairs of
+    the sources of $S$ with an affected endpoint, in order and with multiplicity; and
+    $(\omega_A)_*S$ is empty if and only if both endpoints of every source of $S$
+    are unaffected. When every party is affected, no party is sent to $\ast$, and, for
+    $P$ finite, the block of $\ast$ in a blocked system along $\omega_P$ has exactly
+    one configuration \cite[Theorem~5.2]{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:party_owner_map}
+    Split on whether $p$ and $q$ are affected: two affected parties have the same
+    owner exactly when they are equal, an affected party and an unaffected one never
+    do, and two unaffected parties always do. The endpoints of a source are distinct,
+    so they share an owner exactly when both are unaffected. The statements on
+    $(\omega_A)_*S$ follow from Theorem~\ref{thm:party_owner_map}, and the list
+    identity by induction on $S$. When every party is affected, the preimage of
+    $\ast$ is empty and its configurations form the empty product.
+\end{proof}
+
+\subsection{Words along a map of parties}
+\label{sec:party_coarsen}
+
+Let $P$ be finite and $f\colon P\to Q$. The blocked system $X^f$ has the basis
+$X_{f^{-1}(q)}$ at $q\in Q$ (Definition~\ref{def:sites_block}), and its
+configurations are identified with those of $X$ by a bijection
+$\theta_X\colon X^f_Q\to X_P$. A pair source $g$ with fresh bases $\alpha_g$ and
+$\beta_g$ from $X$ to $Y$ identifies the configurations of its output with pairs,
+$\gamma_g\colon Y_P\to(\alpha_g\times\beta_g)\times X_P$.
+
+\begin{definition}[A word read on blocks of parties]
+    \label{def:party_coarsen}
+    \lean{QuantumCircuit.Party.freshBlockEquiv,
+        QuantumCircuit.Party.freshBlockEquiv_apply_fst,
+        QuantumCircuit.Party.freshBlockEquiv_apply_snd_self,
+        QuantumCircuit.Party.freshBlockEquiv_apply_snd_of_ne,
+        QuantumCircuit.Party.SourceGate.image_eq,
+        QuantumCircuit.Party.SourceGate.coarse,
+        QuantumCircuit.Party.SourceGate.toPairSource_coarse,
+        QuantumCircuit.Party.Word.coarsen, QuantumCircuit.Party.Word.coarsen_comp,
+        QuantumCircuit.Party.Word.coarsen_localOp}
+    \leanok
+    \uses{def:party_word, def:party_pair_gates, def:sites_block,
+        lem:sites_subregion_place_between}
+    Let $B$ be a region, $l\in B$, let $Y_v=X_v$ at the sites $v\in B$ other than $l$,
+    and let $e\colon Y_l\to\alpha\times X_l$ be a bijection. Then a configuration $z$
+    of $Y$ on $B$ is a pair of a fresh part $e(z_l)_1$ and the configuration of $X$ on
+    $B$ equal to $e(z_l)_2$ at $l$ and to $z_v$ at $v\neq l$. A pair source $g$ on its
+    cell $D$ has the image cell $f(D)=\{f(l),f(r)\}$. If $f(l)\neq f(r)$, the coarse
+    source $g^f$ is the pair source on $f(D)$ from $X^f$ to $Y^f$ with endpoints
+    $f(l)$ and $f(r)$, the fresh bases and the vector of $g$, its fresh factors located
+    in the bases of the blocks by the preceding bijection. The word $w^f$ read on the
+    blocks of $f$ is defined by induction on the word $w$:
+    \begin{enumerate}
+        \item the empty word stays empty, and a composition becomes the
+              composition of the coarse words;
+        \item a pair source $g$ with $f(l)\neq f(r)$ becomes $g^f$;
+        \item a pair source $g$ with $f(l)=f(r)=b$ becomes one local operation at
+              $b$, the matrix of $g$ on its cell extended to the block $f^{-1}(b)$ by
+              the identity;
+        \item a local operation $A$ at $p$ becomes a local operation at $f(p)$, the
+              matrix $A$ read on the region $\{p\}$ and extended to $f^{-1}(f(p))$
+              by the identity;
+        \item local operations $(A_v)_v$ at every party become the local operations
+              $\bigotimes_{v\in f^{-1}(b)}A_v$ at the blocks $b$.
+    \end{enumerate}
+    This is the reading on the affected and exterior systems in the proof of
+    \cite[Theorem~5.2]{OpenAI2026PolynomialPEPS}, where sources inside one block
+    become local preparations.
+\end{definition}
+
+\begin{theorem}[The coarse source on configurations]
+    \label{thm:party_coarse_source}
+    \lean{QuantumCircuit.Party.SourceGate.configEquiv_coarse}
+    \leanok
+    \uses{def:party_coarsen}
+    Let $g$ be a pair source whose endpoints lie in distinct blocks. For every
+    configuration $z$ of $Y^f$, with $(a,x)=\gamma_g(\theta_Y(z))$,
+    \begin{align}
+        \gamma_{g^f}(z)=\bigl(a,\theta_X^{-1}(x)\bigr).
+        \label{eq:party_coarse_source}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    The fresh parts agree by construction. Compare the old parts at a block $b$ and a
+    site $v$ of $f^{-1}(b)$. If $b$ is the block of an endpoint and $v$ is that
+    endpoint, both are the old part at the endpoint; if $v$ is another site of that
+    block, it lies outside the cell, since the other endpoint is in another block, and
+    both are $z$ at $v$. If $b$ is neither block, $v$ lies outside the cell and both
+    are again $z$ at $v$.
+\end{proof}
+
+\begin{theorem}[The operator of a word read on blocks]
+    \label{thm:party_op_coarsen}
+    \lean{QuantumCircuit.Party.Word.op_coarsen, QuantumCircuit.Party.Word.sum_op_coarsen}
+    \leanok
+    \uses{def:party_coarsen}
+    Let $Q$ be finite. For every word $w$ from $X$ to $Y$ and all configurations $z$
+    of $Y^f$ and $z'$ of $X^f$,
+    \begin{align}
+        [w^f]_{z,z'}=[w]_{\theta_Y(z),\theta_X(z')}.
+        \label{eq:party_op_coarsen}
+    \end{align}
+    For finitely many words $w_\xi$ and coefficients $c_\xi\in\C$, the combination
+    $\sum_\xi c_\xi[w_\xi^f]$ is likewise $\sum_\xi c_\xi[w_\xi]$ read along
+    $\theta_Y$ and $\theta_X$ \cite[Theorem~5.2]{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:party_coarse_source, lem:sites_place_between_blocks,
+        lem:sites_subregion_place_between, thm:sites_block_prod, def:party_word}
+    By induction on the word. A pair source inside the block $b$ becomes the placement
+    at $b$ of its extended matrix; by Lemma~\ref{lem:sites_place_between_blocks} this
+    is, on the configurations of the parties, the extended matrix placed on $f^{-1}(b)$,
+    which is the matrix of the source placed on its cell by
+    Lemma~\ref{lem:sites_subregion_place_between}. A local operation is treated in the
+    same way. The operator of a pair source joining two blocks is the preparation of
+    its vector with the output read through $\gamma_g$, and
+    (\ref{eq:party_coarse_source}) compares $\gamma_{g^f}$ with $\gamma_g$. Local
+    operations at every party give, by Theorem~\ref{thm:sites_block_prod}, the product
+    over the blocks of the products over the parties of each block. Products of
+    relabelled matrices are relabelled products. The statement on linear combinations
+    follows from (\ref{eq:party_op_coarsen}) entrywise.
+\end{proof}
+
+\begin{theorem}[Sources and allowedness of a word read on blocks]
+    \label{thm:party_coarsen_sources}
+    \lean{QuantumCircuit.Party.Word.sources_coarsen,
+        QuantumCircuit.Party.Word.isAllowed_coarsen}
+    \leanok
+    \uses{def:party_coarsen, def:party_owner_map, def:party_word}
+    The sources of $w^f$ are the sources of $w$ moved along $f$, $f_*$ of the list of
+    sources of $w$. If $w$ is allowed, so is $w^f$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:sites_subregion_place_between, def:party_pair_gates}
+    By induction on the word. A pair source inside one block becomes a local operation
+    and is dropped by $f_*$; one joining two blocks becomes $g^f$, which is $f_*g$. The
+    lists of a composition are concatenated and $f_*$ preserves concatenation. The
+    extension of a matrix to a block does not increase its norm, the matrix of a pair
+    source has norm at most that of its vector, and a product of contractions is a
+    contraction.
+\end{proof}
+
+\subsection{Words restricted to a set of parties}
+\label{sec:party_restrict}
+
+\begin{definition}[A word restricted to a set of parties]
+    \label{def:party_restrict}
+    \lean{QuantumCircuit.Party.SourceGate.restrict,
+        QuantumCircuit.Party.SourceGate.regionMatrix_restrict,
+        QuantumCircuit.Party.Word.restrict, QuantumCircuit.Party.Word.numGates_restrict}
+    \leanok
+    \uses{def:party_word, def:party_pair_gates, def:sites_subregion_place}
+    Let $S\subseteq P$ be finite. A pair source on a cell $D\subseteq S$ is read on
+    the parties of $S$ with the same endpoints, fresh bases and vector; its matrix is
+    the matrix of the source, read along the identification of the configurations of
+    $D$ as a region of $P$ and as a region of $S$. A word $w$ that uses only the
+    parties of $S$ restricts to the word $w|_S$ on the parties of $S$, from
+    $(X_s)_{s\in S}$ to $(Y_s)_{s\in S}$, defined by induction on $w$: each pair
+    source is read on $S$, a local operation at $p\in S$ is the same local operation
+    at $p$, local operations at every party become those at the parties of $S$, and
+    the empty word and compositions are kept. The word $w|_S$ has as many gates as
+    $w$.
+\end{definition}
+
+\begin{theorem}[Sources and allowedness of a restricted word]
+    \label{thm:party_restrict_sources}
+    \lean{QuantumCircuit.Party.Word.sources_restrict,
+        QuantumCircuit.Party.Word.isAllowed_restrict}
+    \leanok
+    \uses{def:party_restrict, def:party_owner_map}
+    Let $w$ use only the parties of $S$. The sources of $w|_S$, moved along the
+    inclusion of $S$ in $P$, are the sources of $w$. If $w$ is allowed, so is $w|_S$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:matrix_l2_contractions}
+    By induction on the word. The inclusion is injective, so it keeps every source and
+    moves it back to its endpoints in $P$; $f_*$ preserves concatenation. The matrix of
+    a restricted source is a relabelling of the matrix of the source, which does not
+    increase its norm, and its vector is unchanged.
+\end{proof}
+
+\begin{theorem}[A word using a set of parties is placed there]
+    \label{thm:party_op_restrict}
+    \lean{QuantumCircuit.Party.Word.op_eq_placeBetween_restrict}
+    \leanok
+    \uses{def:party_restrict, def:sites_place_between}
+    Let $P$ be finite and let a word $w$ from $X$ to $Y$ use only the parties of a
+    finite set $S$. Then $Y$ agrees with $X$ outside $S$, and
+    \begin{align}
+        [w]=[w|_S]\otimes1,
+        \label{eq:party_op_restrict}
+    \end{align}
+    the operator of the restricted word placed on $S$ between $X$ and $Y$: the
+    registers outside $S$ are untouched \cite[Section~5.1]{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:party_word, lem:sites_place_between_products,
+        lem:sites_subregion_place_between, thm:party_local_op,
+        lem:sites_place_between_algebra}
+    By induction on the word. The empty word gives $1=\bigotimes_p1$, and placing the
+    product operator of identities on $S$ gives it back, by
+    Lemma~\ref{lem:sites_place_between_products}. A pair source on $D\subseteq S$ is
+    the placement of its matrix on $D$, and by
+    Lemma~\ref{lem:sites_subregion_place_between} this is the placement on $S$ of its
+    extension from $D$ to $S$, which is the operator of the restricted source. A local
+    operation at $p\in S$ is the product operator of its party family by
+    Theorem~\ref{thm:party_local_op}, and so is its restriction; placing the latter on
+    $S$ gives the product operator equal to the family on $S$ and to the
+    identifications outside $S$, which is the former. Local operations at every party
+    are the identifications of equal bases outside $S$, and the same comparison
+    applies. A composition follows from
+    $([w'|_S]\otimes1)([w|_S]\otimes1)=[w'|_S][w|_S]\otimes1$.
+\end{proof}
+
+\subsection{Words on the parties of a cell}
+\label{sec:party_on_cell}
+
+\begin{definition}[A word run on the parties of a cell]
+    \label{def:party_on_cell}
+    \lean{QuantumCircuit.Party.cellEquiv,
+        QuantumCircuit.Party.cellEquiv_symm_apply_of_notMem,
+        QuantumCircuit.Party.Word.onCell}
+    \leanok
+    \uses{def:party_coarsen, def:party_gate_frame, def:party_relabel}
+    Let $D\subseteq P$ be finite, let $\iota\colon D\to P$ be the inclusion, and let
+    $Y$ agree with $X$ outside $D$. The block of a party $p$ along $\iota$ is $\{p\}$
+    if $p\in D$ and empty otherwise, and the spectator factor of $p$ is $X_p$ if
+    $p\notin D$ and a one-point set otherwise. The basis $Y_p$ is identified with the
+    product of the spectator factor and the basis of $p$ in the blocked system
+    $(Y_s)_{s\in D}^\iota$; at $p\notin D$ the inverse identification reads the
+    spectator factor through $Y_p=X_p$. A word $w$ on the parties of $D$, from
+    $(X_s)_{s\in D}$ to $(Y_s)_{s\in D}$, is run inside all parties as the word
+    $\widehat w$ from $X$ to $Y$ that first relabels $X$ along these identifications,
+    then runs the word $w^\iota$ read on the blocks of $\iota$ beside the spectator
+    factors, and finally relabels back to $Y$.
+\end{definition}
+
+\begin{theorem}[The operator of a word run on its cell]
+    \label{thm:party_op_on_cell}
+    \lean{QuantumCircuit.Party.Word.op_onCell,
+        QuantumCircuit.Party.Word.isAllowed_onCell,
+        QuantumCircuit.Party.Word.sources_onCell}
+    \leanok
+    \uses{def:party_on_cell, def:sites_place_between, def:party_owner_map}
+    Let $P$ be finite. For every word $w$ on the parties of $D$,
+    \begin{align}
+        [\widehat w]=[w]\otimes1,
+        \label{eq:party_op_on_cell}
+    \end{align}
+    the operator of $w$ placed on $D$ between $X$ and $Y$: an operation on the parties
+    of a cell acts as the identity on the other parties
+    \cite[Section~5.1]{OpenAI2026PolynomialPEPS}. The word $\widehat w$ is allowed
+    when $w$ is, and its sources are those of $w$ moved along $\iota$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:party_op_frame, thm:party_op_coarsen, def:party_relabel,
+        thm:party_frame_allowed, thm:party_coarsen_sources, thm:party_frame_syntax}
+    The operator of $\widehat w$ is the product of the two relabellings with
+    $[(w^\iota)^W]$, which is $1_{W_P}\otimes[w^\iota]$ by
+    Theorem~\ref{thm:party_op_frame} and, by Theorem~\ref{thm:party_op_coarsen},
+    $1_{W_P}\otimes[w]$ read on the configurations of $D$. Under the relabellings, the
+    block part of a configuration $y$ of $Y$ is its restriction to $D$ and its
+    spectator part is its restriction outside $D$, read in $X$. The element at $(y,x)$
+    is therefore $[w]_{y|_D,x|_D}$ if $y$ and $x$ agree outside $D$ and $0$ otherwise,
+    which is the element of $[w]\otimes1$. Relabellings are allowed and have no
+    sources, framing keeps words allowed and keeps their sources by
+    Theorems~\ref{thm:party_frame_allowed} and~\ref{thm:party_frame_syntax}, and
+    reading on blocks does so up to moving the sources along $\iota$, by
+    Theorem~\ref{thm:party_coarsen_sources}.
+\end{proof}

@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Algebra.Matrix.ReindexSandwich
+import QICLean.Algebra.Matrix.MatrixReindex
 import QICLean.Circuit.Party.Compression.SourceReplacement.CorrectedTerm
 import QICLean.Circuit.Party.Compression.SourceReplacement.Contraction
 import QICLean.Circuit.Party.Compression.PartialExpansion.SubstitutionResidual

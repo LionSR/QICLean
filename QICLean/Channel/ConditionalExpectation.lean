@@ -9,6 +9,4 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Channel.ConditionalExpectation
 
 import QICLean.Channel.ConditionalExpectation.DirectSumConditionalExpectation
-import QICLean.Channel.ConditionalExpectation.PositiveConditionalExpectation
-import QICLean.Channel.ConditionalExpectation.PositiveConditionalExpectationDirectSum
 import QICLean.Channel.ConditionalExpectation.RightFactorConditionalExpectation

@@ -34,6 +34,12 @@ under left multiplication, and the event is invariant under nonzero scalings.
   of `Uᴴ x` on `A` is the squared norm of the projection of `x` onto `U W₀`.
 * `QICLean.HaarProjection.unitaryHaar_norm_sq_starProjection_le` — the identity stated for the
   projection onto the random subspace `U W₀`.
+* `Submodule.basisEmbedding`, `Submodule.randomSubspace`, `Submodule.finrank_randomSubspace` —
+  the Haar-rotated coordinate subspace carried into a subspace `W` by an orthonormal basis of
+  `W`, of dimension `#A`.
+* `Submodule.randomSubspace_eq_span_rotated_basis`,
+  `Submodule.starProjection_randomSubspace_eq_sum_rankOne` — the random subspace is the span of
+  the rotated basis vectors, and its projection is their rank-one sum.
 -/
 
 open MeasureTheory ProbabilityTheory Matrix
@@ -318,3 +324,124 @@ theorem unitaryHaar_norm_sq_starProjection_le (A : Finset ι) (c : ℝ) {x : Euc
 end
 
 end QICLean.HaarProjection
+
+/-! ## The basis-parametrized Haar-random subspace
+
+An orthonormal basis `b` of a subspace `W`, indexed by `ι`, carries the Haar-rotated coordinate
+subspace `U W₀` into `W`. This is the random subspace of Arad, Landau, Vazirani and Vidick,
+arXiv:1602.08828v2, Lemma `l:rs`, lines 532–547. -/
+
+section RandomSubspace
+
+open QICLean.HaarProjection
+open Module
+
+namespace Submodule
+
+variable {M : Type*}
+  [NormedAddCommGroup M] [InnerProductSpace ℂ M] [FiniteDimensional ℂ M]
+  {W : Submodule ℂ M} {ι : Type*} [Fintype ι] [DecidableEq ι]
+
+/-- The linear isometry `ℂ^ι → M` onto `W` given by an orthonormal basis `b` of `W`. -/
+noncomputable def basisEmbedding (b : OrthonormalBasis ι ℂ W) :
+    EuclideanSpace ℂ ι →ₗᵢ[ℂ] M :=
+  W.subtypeₗᵢ.comp b.repr.symm.toLinearIsometry
+
+omit [FiniteDimensional ℂ M] [DecidableEq ι] in
+theorem basisEmbedding_mem (b : OrthonormalBasis ι ℂ W) (x : EuclideanSpace ℂ ι) :
+    basisEmbedding b x ∈ W :=
+  (b.repr.symm x).2
+
+/-- The random subspace of Lemma `l:rs`: the image of the coordinate subspace of `A` under the
+unitary `U`, carried into `W` by the orthonormal basis `b`. For `U` distributed by the Haar
+measure it is a uniformly random subspace of `W` of dimension `#A`. -/
+noncomputable def randomSubspace (b : OrthonormalBasis ι ℂ W) (A : Finset ι)
+    (U : unitaryGroup ι ℂ) : Submodule ℂ M :=
+  ((coordinateSubspace A).map (unitaryAction U).toLinearEquiv.toLinearMap).map
+    (basisEmbedding b).toLinearMap
+
+omit [FiniteDimensional ℂ M] in
+theorem randomSubspace_le (b : OrthonormalBasis ι ℂ W) (A : Finset ι) (U : unitaryGroup ι ℂ) :
+    randomSubspace b A U ≤ W := by
+  rintro _ ⟨x, -, rfl⟩
+  exact basisEmbedding_mem b x
+
+omit [FiniteDimensional ℂ M] in
+/-- The random subspace has dimension `#A`. -/
+theorem finrank_randomSubspace (b : OrthonormalBasis ι ℂ W) (A : Finset ι)
+    (U : unitaryGroup ι ℂ) : finrank ℂ (randomSubspace b A U) = A.card := by
+  have hli : LinearIndependent ℂ fun i : (A : Set ι) => EuclideanSpace.single (i : ι) (1 : ℂ) := by
+    have h := (EuclideanSpace.basisFun ι ℂ).toBasis.linearIndependent.comp
+      (fun i : (A : Set ι) => (i : ι)) Subtype.coe_injective
+    simpa [Function.comp_def, EuclideanSpace.basisFun_apply] using h
+  rw [randomSubspace, ← (equivMapOfInjective _ (basisEmbedding b).injective _).finrank_eq,
+    LinearEquiv.finrank_map_eq, coordinateSubspace, Set.image_eq_range,
+    finrank_span_eq_card hli]
+  simp
+
+end Submodule
+
+end RandomSubspace
+
+section RandomSubspaceProjection
+
+/-!
+# Ambient projections of the existing Haar subspace sampler
+
+The existing basis-parametrized random subspace is exactly the span of the
+retained rotated basis vectors. Its actual ambient orthogonal projection
+is their finite rank-one sum. These are geometric identities for the same
+sampler in ALVV, arXiv:1602.08828v2, `l:rs`, lines 530–558; they assert no
+measurability for an arbitrary varying basis and no adaptive probability.
+-/
+
+open QICLean.HaarProjection
+
+namespace Submodule
+
+variable {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M]
+  [FiniteDimensional ℂ M] {W : Submodule ℂ M}
+  {ι : Type*} [Fintype ι] [DecidableEq ι]
+
+omit [FiniteDimensional ℂ M] [DecidableEq ι] in
+/-- The existing basis embedding is the ambient finite basis expansion. -/
+theorem basisEmbedding_apply_eq_sum (b : OrthonormalBasis ι ℂ W)
+    (x : EuclideanSpace ℂ ι) :
+    basisEmbedding b x = ∑ i, x i • (b i : M) := by
+  change (b.repr.symm x : M) = _
+  simpa only [Submodule.coe_sum, Submodule.coe_smul] using
+    congrArg (fun y : W ↦ (y : M)) (b.sum_repr_symm x).symm
+
+omit [FiniteDimensional ℂ M] in
+/-- The existing sampled subspace is precisely the span of the actual
+retained Haar-rotated basis vectors. -/
+theorem randomSubspace_eq_span_rotated_basis (b : OrthonormalBasis ι ℂ W)
+    (A : Finset ι) (U : Matrix.unitaryGroup ι ℂ) :
+    randomSubspace b A U = Submodule.span ℂ
+      ((fun j ↦ basisEmbedding b (unitaryAction U (EuclideanSpace.basisFun ι ℂ j))) ''
+        (A : Set ι)) := by
+  rw [randomSubspace, coordinateSubspace, Submodule.map_span, Submodule.map_span]
+  simp only [Set.image_image, EuclideanSpace.basisFun_apply]
+  rfl
+
+/-- The actual ambient projection of the existing sampled subspace is the
+rank-one sum of its retained rotated orthonormal vectors. Empty retained
+sets are allowed. -/
+theorem starProjection_randomSubspace_eq_sum_rankOne (b : OrthonormalBasis ι ℂ W)
+    (A : Finset ι) (U : Matrix.unitaryGroup ι ℂ) :
+    (randomSubspace b A U).starProjection =
+      ∑ j : A, InnerProductSpace.rankOne ℂ
+        (basisEmbedding b (unitaryAction U (EuclideanSpace.basisFun ι ℂ j.val)))
+        (basisEmbedding b (unitaryAction U (EuclideanSpace.basisFun ι ℂ j.val))) := by
+  classical
+  let v := fun j ↦ basisEmbedding b (unitaryAction U (EuclideanSpace.basisFun ι ℂ j))
+  have hon : Orthonormal ℂ v :=
+    ((EuclideanSpace.basisFun ι ℂ).orthonormal.comp_linearIsometry
+      (unitaryAction U).toLinearIsometry).comp_linearIsometry (basisEmbedding b)
+  have hproj := (OrthonormalBasis.span hon A).starProjection_eq_sum_rankOne
+  rw [randomSubspace_eq_span_rotated_basis]
+  simpa only [Finset.coe_image, OrthonormalBasis.span_apply, v] using hproj
+
+end Submodule
+
+end RandomSubspaceProjection

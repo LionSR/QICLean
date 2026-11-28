@@ -7,6 +7,9 @@ import Mathlib.Analysis.Normed.Module.Basic
 import Mathlib.Analysis.Complex.Basic
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Linarith
+import Mathlib.Analysis.Matrix.Order
+import Mathlib.LinearAlgebra.Matrix.Kronecker
+import Mathlib.Analysis.InnerProductSpace.Basic
 
 /-!
 # Distance after normalization near a unit vector
@@ -20,6 +23,9 @@ Normalizing a vector at most doubles its distance to a unit vector:
   `(‖Φ‖ : ℂ)⁻¹`.
 * `norm_inv_norm_smul_sub_le`: the bound for every vector, with the scalar `((‖v‖⁻¹ : ℝ) : ℂ)`;
   for `v = 0` the normalized vector is zero.
+
+Moved from TNLean, `TNLean/MPS/CanonicalForm/FixedPointApproximation/SecondOrderOverlap.lean` at
+commit `021ba0bd19` (Apache-2.0).
 -/
 
 /-- Normalizing a nonzero vector at most doubles its distance to a unit vector:
@@ -65,3 +71,26 @@ theorem norm_inv_norm_smul_sub_le {E : Type*} [NormedAddCommGroup E] [NormedSpac
         abel
     _ ≤ ‖((‖v‖⁻¹ : ℝ) : ℂ) • v - v‖ + ‖v - ψ‖ := norm_add_le _ _
     _ ≤ 2 * ‖v - ψ‖ := by rw [h1]; linarith
+
+section
+
+open scoped Matrix Kronecker ComplexOrder MatrixOrder BigOperators NNReal ENNReal InnerProductSpace
+
+
+/-- For two unit vectors, the deficit of the real inner product is half their
+squared distance. This project identity underlies the second-order refinement
+of the overlap estimate in arXiv:2307.01696, Supplemental Material, `eq:app_error`. -/
+theorem one_sub_re_inner_eq_norm_sub_sq_div_two
+    {𝕜 E : Type*} [RCLike 𝕜] [NormedAddCommGroup E] [InnerProductSpace 𝕜 E]
+    {x y : E} (hx : ‖x‖ = 1) (hy : ‖y‖ = 1) :
+    1 - RCLike.re ⟪x, y⟫_𝕜 = ‖x - y‖ ^ 2 / 2 := by
+  have h := @norm_sub_sq 𝕜 E _ _ _ x y
+  rw [hx, hy] at h
+  linarith
+
+/-- A square matrix of trace one has a nonempty index: `Tr σ = 1` forces `D ≠ 0`. -/
+theorem Matrix.neZero_of_trace_eq_one {D : ℕ} {σ : Matrix (Fin D) (Fin D) ℂ}
+    (h : σ.trace = 1) : NeZero D :=
+  ⟨by rintro rfl; simp at h⟩
+
+end

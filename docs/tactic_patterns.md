@@ -2,8 +2,7 @@
 
 Record repeated proof patterns before introducing a new tactic. Prefer an
 existing theorem, then a reusable lemma or simp set; promote a new abstraction
-only after at least three genuine occurrences across two files. Occurrences
-in a regression file are not additional mathematical consumers.
+only after at least three genuine occurrences across two files.
 
 ## Promoted
 
@@ -376,7 +375,7 @@ in a regression file are not additional mathematical consumers.
   `List.prod_hom_rel`, the same rectangular associativity calculation, and
   `List.map_ofFn`.
 - **Result:** `Matrix.listProd_ofFn_intertwine` in
-  `QICLean/Algebra/Matrix/OrderedMatrixAction.lean`, over an arbitrary semiring
+  `QICLean/Algebra/Matrix/MatrixCyclicPathSum.lean`, over an arbitrary semiring
   and arbitrary finite row and column index types.
 - **Consumers:** `ReplicaSymmetricMeanTreeProduct`,
   `BellPinnedCompressedPowers`, and `ReplicaTransport/RootCompression`.
@@ -711,7 +710,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   the projector across that pairing, then use idempotence, self-adjointness
   and the Euclidean norm identity.
 - **Seen:** The private `norm_sq_mulVec_eq_re_trace` calculation in
-  `QICLean/Channel/PartialTrace/PureTensorPower.lean`, and the local `hmass` calculation
+  `QICLean/Channel/PartialTrace/TensorPowerPartialTrace.lean`, and the local `hmass` calculation
   in `TensorPower.exists_labelProj_norm_mass_ge` on the separate
   `SchurSectorMass` contribution. These are two mathematical consumers.
 - **Abstraction:** The actual product marginal and projected-mass identities
@@ -982,7 +981,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Pattern:** Keep the physical coefficient fixed while an operator acts
   on the selected auxiliary factor, and identify the result after regrouping
   the physical and auxiliary coordinates.
-- **Seen:** `QICLean/Representation/Bell/SchmidtBellPrevector.lean` has one new
+- **Seen:** `QICLean/Representation/Bell/ReplicaPrevector.lean` has one new
   consumer. The earlier product-action and identity-spectator calculations
   occur in `ReplicaPrevector.lean` and `ReplicaDefect.lean`.
 - **Abstraction:** The new calculation reuses Mathlib's
@@ -1041,7 +1040,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   invariance of the actual product density, then partial-trace preservation
   and the unit one-copy trace to recover the component's squared norm.
 - **Seen:** `Matrix.replicaGoodRegionalAuxiliaryMarginal_exp_mergeDeficit_le`
-  in `QICLean/ManyBody/Replica/Configuration/ComponentMergeMoment.lean`; one mathematical
+  in `QICLean/ManyBody/Replica/Configuration/GoodConfigurationMergeMoment.lean`; one mathematical
   consumer. The two separate actions use different factor invariances.
 - **Abstraction:** Reuse the existing permutation entries, tensor-product
   multiplication, partial-trace preservation, and paired homogeneous moment
@@ -1672,9 +1671,9 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
 
 ### Equality decisions in finite coordinates — existing lemma (2026-10-23)
 
-- **Occurrences:** The one-dimensional and two-qubit applications in
-  `QICLeanTest/Entropy/VonNeumann/AGSPFavorableEntropyAxioms.lean`, and both configuration factors
-  in `QICLean/ManyBody/Entropy/AGSPRegionalEntropy.lean`.
+- **Occurrences:** Both configuration factors in
+  `QICLean/ManyBody/Entropy/AGSPRegionalEntropy.lean`. Two further applications
+  in a test fixture were deleted with the rest of `QICLeanTest/` (2026-11-27).
 - **Reuse:** `Subsingleton.elim` identifies a classically chosen `DecidableEq`
   value with the available value before applying a theorem whose matrix
   expressions contain those decisions.

@@ -120,9 +120,7 @@ jobs:
 
       # Elaborate the changed production files with warnings as errors. The
       # early build has compiled their imports; when it stopped at its budget
-      # this step is skipped and the nightly run checks the files. The test
-      # files (QICLeanTest/ and scripts/Tests/) import the rest of the library
-      # and are checked by the nightly run. Selection:
+      # this step is skipped and the nightly run checks the files. Selection:
       # scripts/ci_lean_checks.py.
       - name: Check changed Lean files strictly
         if: github.event_name == 'pull_request' && steps.early.outputs.complete != 'false'
@@ -132,7 +130,7 @@ jobs:
         run: |
           set -eo pipefail
           git cat-file -e "$BASE_SHA^{commit}" 2>/dev/null || git fetch --no-tags origin "$BASE_SHA"
-          python3 scripts/ci_lean_checks.py strict --sources-only --jobs 3
+          python3 scripts/ci_lean_checks.py strict --jobs 3
 
       - name: Check changed Lean compilation times
         id: compilation-time
@@ -223,6 +221,17 @@ jobs:
       - name: Test tracking automation without network access
         run: node --test scripts/test_issue_automation.cjs
 
+      # The repository keeps no Lean test fixtures (per-theorem axiom
+      # printouts and the like) under QICLeanTest/ or scripts/Tests/; see
+      # docs/project_conventions.md.
+      - name: Reject test fixture files
+        run: |
+          files=$(git ls-files -- QICLeanTest scripts/Tests)
+          if [ -n "$files" ]; then
+            printf '::error file=%s::No test fixtures; see docs/project_conventions.md.\n' $files
+            exit 1
+          fi
+
       - name: Enforce architecture ratchets
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
@@ -247,6 +256,7 @@ jobs:
           fi
           python3 scripts/check_import_layers.py "${args[@]}"
           python3 scripts/check_pass_through_declarations.py "${args[@]}"
+          python3 scripts/check_small_lean_modules.py --root . "${args[@]}"
 
       - name: Test Lean compilation-time checker
         run: python3 scripts/test_lake_build_hotspots.py
@@ -376,9 +386,11 @@ jobs:
           BLUEPRINT_SYNC_FETCH_DEPS: '1'
         run: python3 scripts/blueprint_lean_sync.py --root . --update-lean-decls
 
+      # Each Lean declaration is tagged in exactly one blueprint entry; any other
+      # entry about the same declaration cites the owner through \uses.
       - name: Check blueprint and Lean source stay in sync
         if: steps.lean-decls.outcome == 'success'
-        run: python3 scripts/blueprint_lean_sync.py --root . --ci
+        run: python3 scripts/blueprint_lean_sync.py --root . --ci --report-duplicate-tags
 
       - name: Fetch PR base ref for diff
         id: fetch-base-ref

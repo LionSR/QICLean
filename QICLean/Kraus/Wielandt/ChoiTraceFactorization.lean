@@ -61,8 +61,8 @@ theorem isInjective_of_mapLM_eq_trace_smul {d D : ℕ} [NeZero D]
     (A : Fin d → Matrix (Fin D) (Fin D) ℂ)
     (L R : Matrix (Fin D) (Fin D) ℂ) (hL : L.PosDef) (hR : R.PosDef)
     (hA : ∀ X, mapLM A X = Matrix.trace (L * X) • R) :
-    IsInjective A := by
-  simpa only [wordSpan_one, IsInjective] using
+    IsInjective A :=
+  (isInjective_iff_isNBlkInjective_one A).mpr <|
     (choiMatrix_mapLM_pow_posDef_iff_wordSpan_eq_top A 1).mp
       (by simpa only [pow_one] using
             (ChoiJamiolkowski.choiMatrix_posDef_of_eq_trace_smul (mapLM A) L R hL hR hA))

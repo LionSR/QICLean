@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Spectral.Eigenvalue.MatrixReindexEuclidean
 import QICLean.Analysis.Isometry.PolarUnitaryCorrection
-import QICLean.ManyBody.Sites.Placement
+import QICLean.ManyBody.Sites.Placement.Basic
 
 /-!
 # A supported unitary polar correction

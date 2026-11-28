@@ -6,6 +6,8 @@ Authors: QICLean contributors
 import QICLean.Algebra.Unitary.MatrixUnitaryBetween
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.LinearAlgebra.Matrix.Kronecker
+import QICLean.Analysis.FunctionalCalculus.MatrixPolar
+import QICLean.Analysis.FunctionalCalculus.SqrtLipschitz
 
 /-!
 # Coherent matrix-frame perturbation with external references
@@ -31,6 +33,9 @@ is introduced. This permits one matrix error bound to control every entangled in
 * Malz, Styliaris, Wei, and Cirac, arXiv:2307.01696, discussion and outlook. The statements
   here are elementary operator-norm refinements for coherent encoders; they are not a
   theorem stated in that paper.
+
+Moved from TNLean, `TNLean/MPS/Preparation/Polar/PolarFrame.lean` at commit `021ba0bd19`
+(Apache-2.0).
 -/
 
 open scoped BigOperators Kronecker Matrix.Norms.L2Operator
@@ -134,3 +139,45 @@ theorem norm_encoder_conversion_reference_le {m n κ : Type*}
     _ ≤ ε * ‖ξ‖ := mul_le_mul_of_nonneg_right h (norm_nonneg _)
 
 end Matrix
+
+section
+
+open scoped Matrix.Norms.L2Operator MatrixOrder ComplexOrder
+
+namespace Matrix
+
+variable {m n : Type*} [Fintype m] [Fintype n] [DecidableEq n]
+
+/-- The positive factor of a rectangular matrix is within its Gram error of the identity.
+The comparison uses the square-root Lipschitz bound at the identity. -/
+theorem norm_polarPos_sub_one_le (V : Matrix m n ℂ) :
+    ‖polarPos V - 1‖ ≤ ‖Vᴴ * V - 1‖ := by
+  have h := CFC.norm_sqrt_sub_sqrt_le_div
+    (Matrix.posSemidef_conjTranspose_mul_self V).nonneg (c := 1) zero_lt_one
+    (b := (1 : Matrix n n ℂ)) (by simp)
+  simpa only [polarPos, CFC.sqrt_one, Real.sqrt_one, div_one] using h
+
+/-- The fixed polar isometry of an injective column matrix approximates an isometry with
+error `sqrt(η + 2ζ) + η`, where `η` is the Gram error and `ζ` the complex cross error. -/
+theorem norm_polarIso_sub_isometry_le (V : Matrix m n ℂ)
+    (hV : Function.Injective V.mulVec) {W : Matrix m n ℂ} (hW : W.IsIsometry) :
+    ‖polarIso V - W‖ ≤ Real.sqrt (‖Vᴴ * V - 1‖ + 2 * ‖Wᴴ * V - 1‖) +
+      ‖Vᴴ * V - 1‖ := by
+  have hF : ‖polarIso V‖ ≤ 1 :=
+    l2_opNorm_le_one_of_conjTranspose_mul_self_eq_one (isIsometry_polarIso_of_injective V hV)
+  have hFV : ‖polarIso V - V‖ ≤ ‖Vᴴ * V - 1‖ := by
+    calc
+      ‖polarIso V - V‖ = ‖polarIso V * (1 - polarPos V)‖ := by
+        rw [Matrix.mul_sub, Matrix.mul_one, polarIso_mul_polarPos]
+      _ ≤ ‖polarIso V‖ * ‖1 - polarPos V‖ := l2_opNorm_mul _ _
+      _ ≤ 1 * ‖1 - polarPos V‖ := mul_le_mul_of_nonneg_right hF (norm_nonneg _)
+      _ ≤ ‖Vᴴ * V - 1‖ := by rw [one_mul, norm_sub_rev]; exact norm_polarPos_sub_one_le V
+  have hVW : ‖V - W‖ ≤ Real.sqrt (‖Vᴴ * V - 1‖ + 2 * ‖Wᴴ * V - 1‖) :=
+    (Real.le_sqrt (norm_nonneg _) (by positivity)).2 (norm_sub_isometry_sq_le V hW)
+  calc
+    ‖polarIso V - W‖ ≤ ‖polarIso V - V‖ + ‖V - W‖ := norm_sub_le_norm_sub_add_norm_sub _ _ _
+    _ ≤ _ := by linarith
+
+end Matrix
+
+end

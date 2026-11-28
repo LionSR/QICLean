@@ -6,7 +6,7 @@ Authors: QICLean contributors
 import QICLean.Representation.Replica.Defect
 import QICLean.Analysis.FunctionalCalculus.TraceCFC
 import QICLean.Algebra.Matrix.MatrixAux
-import QICLean.Algebra.Kronecker.KroneckerEmbed
+import QICLean.Algebra.Matrix.KroneckerEmbed
 
 /-!
 # Exact excitation sectors of physical replicas

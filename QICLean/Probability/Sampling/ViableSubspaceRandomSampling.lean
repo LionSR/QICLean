@@ -44,8 +44,9 @@ that `η < 1` for large `s`, which is unaffected. Documented in
 
 * `Submodule.starProjection_map_linearIsometry`: projections commute with linear isometries.
 * `Submodule.isCloseTo_of_net`: the deterministic net step.
-* `Submodule.randomSubspace`, `Submodule.finrank_randomSubspace`: the random subspace `W'`, of
-  dimension `s`.
+* `Submodule.unitaryHaar_norm_sq_starProjection_randomSubspace_le`: the one-vector
+  concentration step for the random subspace `W' = Submodule.randomSubspace b A U`, which is
+  defined, with its dimension `s`, beside the Haar coordinate projection.
 * `Submodule.unitaryHaar_not_isViable_randomSubspace_le`: Lemma `l:rs`, with the corrected `η`.
 * `Submodule.exists_isViable_randomSubspace`: some `W'` is viable when `η < 1`.
 -/
@@ -137,43 +138,6 @@ variable {M F : Type*}
   [NormedAddCommGroup M] [InnerProductSpace ℂ M] [FiniteDimensional ℂ M]
   [NormedAddCommGroup F] [InnerProductSpace ℂ F] [FiniteDimensional ℂ F]
   {W : Submodule ℂ M} {ι : Type*} [Fintype ι] [DecidableEq ι]
-
-/-- The linear isometry `ℂ^ι → M` onto `W` given by an orthonormal basis `b` of `W`. -/
-noncomputable def basisEmbedding (b : OrthonormalBasis ι ℂ W) :
-    EuclideanSpace ℂ ι →ₗᵢ[ℂ] M :=
-  W.subtypeₗᵢ.comp b.repr.symm.toLinearIsometry
-
-omit [FiniteDimensional ℂ M] [DecidableEq ι] in
-theorem basisEmbedding_mem (b : OrthonormalBasis ι ℂ W) (x : EuclideanSpace ℂ ι) :
-    basisEmbedding b x ∈ W :=
-  (b.repr.symm x).2
-
-/-- The random subspace of Lemma `l:rs`: the image of the coordinate subspace of `A` under the
-unitary `U`, carried into `W` by the orthonormal basis `b`. For `U` distributed by the Haar
-measure it is a uniformly random subspace of `W` of dimension `#A`. -/
-noncomputable def randomSubspace (b : OrthonormalBasis ι ℂ W) (A : Finset ι)
-    (U : unitaryGroup ι ℂ) : Submodule ℂ M :=
-  ((coordinateSubspace A).map (unitaryAction U).toLinearEquiv.toLinearMap).map
-    (basisEmbedding b).toLinearMap
-
-omit [FiniteDimensional ℂ M] in
-theorem randomSubspace_le (b : OrthonormalBasis ι ℂ W) (A : Finset ι) (U : unitaryGroup ι ℂ) :
-    randomSubspace b A U ≤ W := by
-  rintro _ ⟨x, -, rfl⟩
-  exact basisEmbedding_mem b x
-
-omit [FiniteDimensional ℂ M] in
-/-- The random subspace has dimension `#A`. -/
-theorem finrank_randomSubspace (b : OrthonormalBasis ι ℂ W) (A : Finset ι)
-    (U : unitaryGroup ι ℂ) : finrank ℂ (randomSubspace b A U) = A.card := by
-  have hli : LinearIndependent ℂ fun i : (A : Set ι) => EuclideanSpace.single (i : ι) (1 : ℂ) := by
-    have h := (EuclideanSpace.basisFun ι ℂ).toBasis.linearIndependent.comp
-      (fun i : (A : Set ι) => (i : ι)) Subtype.coe_injective
-    simpa [Function.comp_def, EuclideanSpace.basisFun_apply] using h
-  rw [randomSubspace, ← (equivMapOfInjective _ (basisEmbedding b).injective _).finrank_eq,
-    LinearEquiv.finrank_map_eq, coordinateSubspace, Set.image_eq_range,
-    finrank_span_eq_card hli]
-  simp
 
 /-- **One vector.** For a unit vector `f ∈ W`, the squared norm of its projection onto the
 random subspace is at most `#A / (2 #ι)` with Haar probability at most `e^{-#A/16}`.
@@ -313,66 +277,3 @@ theorem exists_isViable_randomSubspace (b : OrthonormalBasis ι ℂ W) (A : Fins
 end RandomSubspace
 
 end Submodule
-
-section RandomSubspaceProjection
-
-/-!
-# Ambient projections of the existing Haar subspace sampler
-
-The existing basis-parametrized random subspace is exactly the span of the
-retained rotated basis vectors. Its actual ambient orthogonal projection
-is their finite rank-one sum. These are geometric identities for the same
-sampler in ALVV, arXiv:1602.08828v2, `l:rs`, lines 530–558; they assert no
-measurability for an arbitrary varying basis and no adaptive probability.
--/
-
-open QICLean.HaarProjection
-
-namespace Submodule
-
-variable {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M]
-  [FiniteDimensional ℂ M] {W : Submodule ℂ M}
-  {ι : Type*} [Fintype ι] [DecidableEq ι]
-
-omit [FiniteDimensional ℂ M] [DecidableEq ι] in
-/-- The existing basis embedding is the ambient finite basis expansion. -/
-theorem basisEmbedding_apply_eq_sum (b : OrthonormalBasis ι ℂ W)
-    (x : EuclideanSpace ℂ ι) :
-    basisEmbedding b x = ∑ i, x i • (b i : M) := by
-  change (b.repr.symm x : M) = _
-  simpa only [Submodule.coe_sum, Submodule.coe_smul] using
-    congrArg (fun y : W ↦ (y : M)) (b.sum_repr_symm x).symm
-
-omit [FiniteDimensional ℂ M] in
-/-- The existing sampled subspace is precisely the span of the actual
-retained Haar-rotated basis vectors. -/
-theorem randomSubspace_eq_span_rotated_basis (b : OrthonormalBasis ι ℂ W)
-    (A : Finset ι) (U : Matrix.unitaryGroup ι ℂ) :
-    randomSubspace b A U = Submodule.span ℂ
-      ((fun j ↦ basisEmbedding b (unitaryAction U (EuclideanSpace.basisFun ι ℂ j))) ''
-        (A : Set ι)) := by
-  rw [randomSubspace, coordinateSubspace, Submodule.map_span, Submodule.map_span]
-  simp only [Set.image_image, EuclideanSpace.basisFun_apply]
-  rfl
-
-/-- The actual ambient projection of the existing sampled subspace is the
-rank-one sum of its retained rotated orthonormal vectors. Empty retained
-sets are allowed. -/
-theorem starProjection_randomSubspace_eq_sum_rankOne (b : OrthonormalBasis ι ℂ W)
-    (A : Finset ι) (U : Matrix.unitaryGroup ι ℂ) :
-    (randomSubspace b A U).starProjection =
-      ∑ j : A, InnerProductSpace.rankOne ℂ
-        (basisEmbedding b (unitaryAction U (EuclideanSpace.basisFun ι ℂ j.val)))
-        (basisEmbedding b (unitaryAction U (EuclideanSpace.basisFun ι ℂ j.val))) := by
-  classical
-  let v := fun j ↦ basisEmbedding b (unitaryAction U (EuclideanSpace.basisFun ι ℂ j))
-  have hon : Orthonormal ℂ v :=
-    ((EuclideanSpace.basisFun ι ℂ).orthonormal.comp_linearIsometry
-      (unitaryAction U).toLinearIsometry).comp_linearIsometry (basisEmbedding b)
-  have hproj := (OrthonormalBasis.span hon A).starProjection_eq_sum_rankOne
-  rw [randomSubspace_eq_span_rotated_basis]
-  simpa only [Finset.coe_image, OrthonormalBasis.span_apply, v] using hproj
-
-end Submodule
-
-end RandomSubspaceProjection

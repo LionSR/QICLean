@@ -41,6 +41,10 @@ results.
   trivial middle subsystem (`dB = 1`). The middle factor contributes
   zero entropy, and `Matrix.trace_eq_trace_traceAC_ABC` supplies the
   trace-one hypothesis for the reduced middle state.
+* `Entropy.subadditivity` — subadditivity
+  `S(ρ_AB) ≤ S(ρ_A) + S(ρ_B)` for a bipartite density matrix on arbitrary
+  finite local bases, obtained from `subadditivity_ssa_trivial_B` by
+  relabelling.
 
 ## Provenance
 
@@ -212,5 +216,58 @@ theorem subadditivity_ssa_trivial_B
   linarith
 
 end Subadditivity
+
+/-! ## Subadditivity for arbitrary finite bases
+
+Relabelling both factors by `Fin` and inserting the trivial middle factor turns
+`subadditivity_ssa_trivial_B` into subadditivity for a bipartite state on any
+finite product index. -/
+
+section BipartiteSubadditivity
+
+open scoped BigOperators
+
+variable {α β : Type*} [Fintype α] [Fintype β] [DecidableEq α] [DecidableEq β]
+
+/-- Bipartite subadditivity for any finite local bases, including zero-dimensional
+ones whenever a normalized density matrix exists. -/
+theorem subadditivity (ρ : Matrix (α × β) (α × β) ℂ)
+    (hρ : ρ.PosSemidef) (htr : ρ.trace = 1) :
+    _root_.vonNeumannEntropy ρ hρ.isHermitian ≤
+      _root_.vonNeumannEntropy (Matrix.partialTraceRight ρ) hρ.partialTraceRight.isHermitian +
+      _root_.vonNeumannEntropy (Matrix.partialTraceLeft ρ) hρ.partialTraceLeft.isHermitian := by
+  let a := (Fintype.equivFin α).symm
+  let b := (Fintype.equivFin β).symm
+  let e := a.prodCongr ((Equiv.uniqueProd (Fin (Fintype.card β)) (Fin 1)).trans b)
+  let eA := (Equiv.prodUnique (Fin (Fintype.card α)) (Fin 1)).trans a
+  let eB := (Equiv.uniqueProd (Fin (Fintype.card β)) (Fin 1)).trans b
+  let σ := ρ.submatrix e e
+  have hσ : σ.PosSemidef := hρ.submatrix e
+  have hσtr : σ.trace = 1 := by
+    rw [Matrix.trace_submatrix_equiv]
+    exact htr
+  have hA : Matrix.traceC_ABC σ =
+      (Matrix.partialTraceRight ρ).submatrix eA eA := by
+    ext i j
+    change (∑ c, ρ (a i.1, b c) (a j.1, b c)) =
+      ∑ c, ρ (a i.1, c) (a j.1, c)
+    exact b.sum_comp (fun c ↦ ρ (a i.1, c) (a j.1, c))
+  have hB : Matrix.traceA_ABC σ =
+      (Matrix.partialTraceLeft ρ).submatrix eB eB := by
+    ext i j
+    change (∑ c, ρ (a c, b i.2) (a c, b j.2)) =
+      ∑ c, ρ (c, b i.2) (c, b j.2)
+    exact a.sum_comp (fun c ↦ ρ (c, b i.2) (c, b j.2))
+  have h := subadditivity_ssa_trivial_B σ ⟨hσ, hσtr⟩
+  simp only [Entropy.vonNeumannEntropy] at h
+  rw [vonNeumannEntropy_congr hA _ (hρ.partialTraceRight.isHermitian.submatrix eA),
+    vonNeumannEntropy_congr hB _ (hρ.partialTraceLeft.isHermitian.submatrix eB)] at h
+  dsimp only [σ] at h
+  rw [_root_.vonNeumannEntropy_submatrix_equiv e ρ hρ.isHermitian,
+    _root_.vonNeumannEntropy_submatrix_equiv eA _ hρ.partialTraceRight.isHermitian,
+    _root_.vonNeumannEntropy_submatrix_equiv eB _ hρ.partialTraceLeft.isHermitian] at h
+  exact h
+
+end BipartiteSubadditivity
 
 end Entropy

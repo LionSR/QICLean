@@ -7,6 +7,7 @@ import Mathlib.Analysis.Matrix.Order
 import Mathlib.LinearAlgebra.Matrix.PosDef
 import QICLean.Algebra.Matrix.MatrixAux
 import QICLean.Algebra.Unitary.MatrixIsometryEntries
+import Mathlib.LinearAlgebra.Projection
 
 /-!
 # Orthogonal projections in finite matrix algebras
@@ -31,7 +32,10 @@ The last declaration was moved from TNLean, `TNLean/Algebra/OrthogonalResolution
 `49b78ed821` (Apache-2.0).
 * `IsStarProjection.exists_matrix_range_isometry`: isometric coordinates for an orthogonal
   projection.
+* `LinearMap.IsIdempotentElem.apply_apply`: idempotent endomorphisms.
 -/
+
+section OrthogonalProjection
 
 section OrthogonalProjection
 
@@ -39,9 +43,9 @@ open scoped Matrix ComplexOrder BigOperators MatrixOrder
 
 variable {D : ℕ}
 
-/-- An orthogonal projection in `M_D(ℂ)`: a matrix that is both Hermitian and idempotent.
-These correspond to projections onto subspaces of `ℂ^D`. -/
-def IsOrthogonalProjection (P : Matrix (Fin D) (Fin D) ℂ) : Prop :=
+/-- An orthogonal projection in the matrix algebra on `ℂ^n`: a matrix that is both Hermitian and
+idempotent. These correspond to projections onto subspaces of `ℂ^n`. -/
+def IsOrthogonalProjection {n : Type*} [Fintype n] (P : Matrix n n ℂ) : Prop :=
   P.IsHermitian ∧ P * P = P
 
 /-- An orthogonal projection is a star projection. -/
@@ -362,3 +366,26 @@ theorem IsStarProjection.exists_matrix_range_isometry
     Matrix.submatrix_id_id] using hV
 
 end ProjectionRangeIsometry
+
+end OrthogonalProjection
+
+section IdempotentEndomorphism
+
+/-!
+## Idempotent endomorphisms
+
+Elementary pointwise consequences of idempotence for linear endomorphisms.
+-/
+
+namespace LinearMap.IsIdempotentElem
+
+variable {R E : Type*} [Semiring R] [AddCommMonoid E] [Module R E]
+
+/-- An idempotent linear endomorphism fixes every vector in its image. -/
+theorem apply_apply {P : E →ₗ[R] E} (hP : IsIdempotentElem P) (x : E) :
+    P (P x) = P x := by
+  simpa [Module.End.mul_apply] using congrArg (fun T : E →ₗ[R] E ↦ T x) hP.eq
+
+end LinearMap.IsIdempotentElem
+
+end IdempotentEndomorphism

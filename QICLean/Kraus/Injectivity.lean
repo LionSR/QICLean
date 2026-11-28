@@ -5,6 +5,11 @@ Authors: TNLean contributors
 -/
 import QICLean.Kraus.WordSpan
 import QICLean.Channel.Schwarz.Basic
+import Mathlib.LinearAlgebra.Basis.VectorSpace
+import Mathlib.LinearAlgebra.Finsupp.LinearCombination
+import Mathlib.Algebra.Algebra.Bilinear
+import Mathlib.Algebra.Module.Submodule.Range
+import Mathlib.Data.Matrix.Basis
 
 /-!
 # Injectivity and normality of finite Kraus families
@@ -21,11 +26,18 @@ biconditional obtained by applying conjugate transposition twice.
 ## Main declarations
 
 * `Kraus.wordSpan`: the span of all Kraus words of a fixed length
-* `Kraus.HasEventuallyFullWordSpan`: all sufficiently long word spans are full
 * `Kraus.IsInjective`: the matrices of a Kraus family span the full matrix algebra
 * `Kraus.IsNBlkInjective`: injectivity after blocking `N` letters into words
 * `Kraus.isNBlkInjective_conjTranspose_iff`: block injectivity is invariant under adjoints
 * `Kraus.IsNormal`: eventual block injectivity at some positive blocking length
+* `Kraus.isNormal_iff_eventually_isNBlkInjective`: normality is fullness of all
+  sufficiently long word spans
+* `Kraus.isInjective_iff_isNBlkInjective_one`, `Kraus.isInjective_iff_injective_traceMap`:
+  injectivity as block injectivity at length one and as injectivity of the trace map;
+  `Kraus.IsInjective.eq_zero_of_forall_trace_mul_eq_zero`, its trace-pairing form
+
+Moved from TNLean, `TNLean/MPS/Tensor/Words/OneSidedInverse.lean` at commit `021ba0bd19`
+(Apache-2.0).
 -/
 
 open scoped Matrix BigOperators
@@ -173,25 +185,17 @@ def IsNormal (A : ι → Matrix n n ℂ) : Prop :=
 @[simp] lemma isNormal_iff (A : ι → Matrix n n ℂ) :
     IsNormal A ↔ ∃ N, 0 < N ∧ IsNBlkInjective A N := Iff.rfl
 
+/-- Injectivity is block injectivity at length one: the span of the words of length one,
+which are the letters, is the full matrix algebra. -/
+theorem isInjective_iff_isNBlkInjective_one (A : ι → Matrix n n ℂ) :
+    IsInjective A ↔ IsNBlkInjective A 1 := by
+  rw [IsNBlkInjective, wordSpan_one]
+  rfl
+
 /-- Algebraic injectivity gives `1`-block injectivity. -/
 theorem isNBlkInjective_one_of_isInjective {A : ι → Matrix n n ℂ}
-    (h : IsInjective A) : IsNBlkInjective A 1 := by
-  unfold IsNBlkInjective
-  have hrange : (Set.range fun σ : Fin 1 → ι =>
-      Kraus.evalWord A (List.ofFn σ)) = Set.range A := by
-    ext M
-    simp only [Set.mem_range]
-    constructor
-    · rintro ⟨σ, hσ⟩
-      refine ⟨σ 0, ?_⟩
-      simpa only [List.ofFn_succ, List.ofFn_zero,
-        Kraus.evalWord_cons, Kraus.evalWord_nil, mul_one] using hσ
-    · rintro ⟨i, hi⟩
-      refine ⟨fun _ => i, ?_⟩
-      simpa only [List.ofFn_succ, List.ofFn_zero,
-        Kraus.evalWord_cons, Kraus.evalWord_nil, mul_one] using hi
-  rw [Kraus.wordSpan, hrange]
-  exact h
+    (h : IsInjective A) : IsNBlkInjective A 1 :=
+  (isInjective_iff_isNBlkInjective_one A).mp h
 
 /-- Algebraic injectivity (1-block) implies normality (eventual block injectivity).
 This is the trivial direction: injectivity is `IsNBlkInjective 1`. -/
@@ -229,22 +233,194 @@ theorem wordSpan_eq_top_of_ge_of_isTP [Fintype ι]
       rw [hsum_eq] at hsum
       exact hsum
 
-/-- A finite Kraus family has eventually full word span when all sufficiently long exact
-word spans equal the full matrix algebra. -/
-def HasEventuallyFullWordSpan (K : ι → Matrix n n ℂ) : Prop :=
-  ∀ᶠ N : ℕ in Filter.atTop, wordSpan K N = ⊤
+/-! ### Monotonicity in the word length -/
 
-/-- For a trace-preserving Kraus family, eventual fullness is equivalent to fullness at
-one positive word length. -/
-theorem hasEventuallyFullWordSpan_iff_exists_pos_of_isTP [Fintype ι]
-    (K : ι → Matrix n n ℂ) (hTP : IsTP K) :
-    HasEventuallyFullWordSpan K ↔ ∃ N : ℕ, 0 < N ∧ wordSpan K N = ⊤ := by
+/-- Block injectivity at a positive length propagates to the next length: every word of
+length `L + 1` is a word of length `L` followed by a letter, and the words of length `L`
+are themselves words of length `L - 1` followed by a letter. -/
+theorem isNBlkInjective_succ_of_isNBlkInjective
+    (A : ι → Matrix n n ℂ) {L : ℕ} (hLpos : 0 < L)
+    (hL : IsNBlkInjective A L) :
+    IsNBlkInjective A (L + 1) := by
+  change wordSpan A L = ⊤ at hL
+  change wordSpan A (L + 1) = ⊤
+  obtain ⟨k, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (Nat.ne_of_gt hLpos)
+  rw [wordSpan_succ A (k + 1), hL]
+  apply eq_top_iff.mpr
+  calc
+    ⊤ = wordSpan A (k + 1) := hL.symm
+    _ = wordSpan A k * wordSpan A 1 := wordSpan_succ A k
+    _ ≤ ⊤ * wordSpan A 1 := mul_le_mul' le_top le_rfl
+
+/-- Block injectivity at a positive length propagates to every greater length. -/
+theorem isNBlkInjective_of_le {A : ι → Matrix n n ℂ} {L m : ℕ}
+    (hLpos : 0 < L) (hL : IsNBlkInjective A L) (hLm : L ≤ m) :
+    IsNBlkInjective A m := by
+  induction m, hLm using Nat.le_induction with
+  | base => exact hL
+  | succ m hLm ih =>
+      exact isNBlkInjective_succ_of_isNBlkInjective A (lt_of_lt_of_le hLpos hLm) ih
+
+/-- Normality is eventual block injectivity: a family is normal exactly when its word
+spans are full at every sufficiently large length. No trace-preservation or other
+hypothesis is needed, since fullness at one positive length propagates upwards. -/
+theorem isNormal_iff_eventually_isNBlkInjective (A : ι → Matrix n n ℂ) :
+    IsNormal A ↔ ∀ᶠ N : ℕ in Filter.atTop, IsNBlkInjective A N := by
   constructor
+  · rintro ⟨N, hNpos, hN⟩
+    exact Filter.eventually_atTop.mpr ⟨N, fun m hm => isNBlkInjective_of_le hNpos hN hm⟩
   · intro h
     obtain ⟨N, hN⟩ := Filter.eventually_atTop.mp h
-    refine ⟨max N 1, by omega, hN _ (le_max_left _ _)⟩
-  · rintro ⟨N, _hNpos, hN⟩
-    exact Filter.eventually_atTop.mpr
-      ⟨N, fun m hNm => wordSpan_eq_top_of_ge_of_isTP K hTP hN hNm⟩
+    exact ⟨max N 1, by omega, hN _ (le_max_left _ _)⟩
+
+/-- The word spans of a normal family are full at every sufficiently large length. -/
+theorem IsNormal.eventually_isNBlkInjective {A : ι → Matrix n n ℂ} (hA : IsNormal A) :
+    ∀ᶠ N : ℕ in Filter.atTop, IsNBlkInjective A N :=
+  (isNormal_iff_eventually_isNBlkInjective A).mp hA
+
+/-! ### Characterizations of injectivity -/
+
+omit [DecidableEq n] in
+/-- Injectivity in the trace-map form: the matrices `A i` span the full matrix algebra
+exactly when the map `X ↦ (tr (A i X))_i` from boundary matrices to coefficient vectors
+is injective. This is the dual statement under the nondegenerate trace pairing
+`(M, X) ↦ tr (M X)`. -/
+theorem isInjective_iff_injective_traceMap (A : ι → Matrix n n ℂ) :
+    IsInjective A ↔ Function.Injective (fun X : Matrix n n ℂ => fun i => (A i * X).trace) := by
+  classical
+  let T : Matrix n n ℂ →ₗ[ℂ] (ι → ℂ) :=
+    { toFun := fun X i => (A i * X).trace
+      map_add' := fun X Y => by ext i; simp [Matrix.mul_add, Matrix.trace_add]
+      map_smul' := fun c X => by ext i; simp [Matrix.trace_smul] }
+  change IsInjective A ↔ Function.Injective T
+  rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
+  constructor
+  · intro hA X hX
+    have hzero : ∀ M ∈ Submodule.span ℂ (Set.range A), (M * X).trace = 0 := by
+      intro M hM
+      induction hM using Submodule.span_induction with
+      | mem M hM =>
+        obtain ⟨i, rfl⟩ := hM
+        exact congrFun hX i
+      | zero => simp
+      | add M N _ _ hM hN => simp [Matrix.add_mul, Matrix.trace_add, hM, hN]
+      | smul c M _ hM => simp [Matrix.trace_smul, hM]
+    ext i j
+    have h := hzero (Matrix.single j i 1) (by rw [hA.span_eq_top]; exact Submodule.mem_top)
+    simpa [Matrix.trace_single_mul] using h
+  · intro hT
+    by_contra hne
+    obtain ⟨φ, hφne, hφ⟩ :=
+      Submodule.exists_dual_map_eq_bot_of_lt_top (lt_top_iff_ne_top.mpr hne) inferInstance
+    let X : Matrix n n ℂ := Matrix.of fun j i => φ (Matrix.single i j 1)
+    have htrace : ∀ M : Matrix n n ℂ, (M * X).trace = φ M := by
+      intro M
+      have hsingle : ∀ i j, Matrix.single i j (M i j) = M i j • Matrix.single i j (1 : ℂ) := by
+        intro i j
+        rw [Matrix.smul_single, smul_eq_mul, mul_one]
+      conv_rhs => rw [Matrix.matrix_eq_sum_single M]
+      simp only [hsingle, map_sum, LinearMap.map_smul, Matrix.trace, Matrix.diag,
+        Matrix.mul_apply, X, Matrix.of_apply, smul_eq_mul]
+    have hX : X = 0 := by
+      apply hT
+      ext i
+      change (A i * X).trace = 0
+      rw [htrace]
+      have hmem : φ (A i) ∈ (Submodule.span ℂ (Set.range A)).map φ :=
+        Submodule.mem_map_of_mem (Submodule.subset_span ⟨i, rfl⟩)
+      rw [hφ] at hmem
+      simpa using hmem
+    apply hφne
+    ext M
+    rw [← htrace M, hX, Matrix.mul_zero, Matrix.trace_zero]
+    rfl
+
+omit [DecidableEq n] in
+/-- The trace pairing against an injective family detects zero: a matrix `M` with
+`tr (M A i) = 0` for every `i` is zero. This is the forward direction of
+`isInjective_iff_injective_traceMap`, read through the cyclicity of the trace. -/
+theorem IsInjective.eq_zero_of_forall_trace_mul_eq_zero {A : ι → Matrix n n ℂ}
+    (hA : IsInjective A) {M : Matrix n n ℂ} (hM : ∀ i, (M * A i).trace = 0) : M = 0 :=
+  (isInjective_iff_injective_traceMap A).mp hA <| funext fun i => by
+    simp only [Matrix.mul_zero, Matrix.trace_zero]
+    rw [Matrix.trace_mul_comm, hM i]
 
 end Kraus
+
+section OneSidedInverse
+
+open scoped Matrix BigOperators
+
+namespace Kraus
+
+variable {ι : Type*} [Fintype ι] {D : ℕ}
+
+/-- The linear combination map for an injective tensor is surjective. -/
+theorem IsInjective.linearCombination_surjective {A : ι → Matrix (Fin D) (Fin D) ℂ}
+    (hA : Kraus.IsInjective A) :
+    Function.Surjective (Fintype.linearCombination ℂ A) :=
+  (span_range_eq_top_iff_surjective_fintypeLinearCombination ℂ A).mp hA.span_eq_top
+
+/-- The linear combination map over all length-`N` words is surjective for an
+`N`-block-injective tensor. -/
+theorem IsNBlkInjective.linearCombination_surjective {A : ι → Matrix (Fin D) (Fin D) ℂ} {N : ℕ}
+    (hA : Kraus.IsNBlkInjective A N) :
+    Function.Surjective
+      (Fintype.linearCombination ℂ
+        (fun σ : Fin N → ι => Kraus.evalWord A (List.ofFn σ))) :=
+  (span_range_eq_top_iff_surjective_fintypeLinearCombination ℂ
+    (fun σ : Fin N → ι => Kraus.evalWord A (List.ofFn σ))).mp hA
+
+/-- An injective tensor has a linear right inverse: a linear map
+`Ψ : M_D(ℂ) → ℂ^d` such that `Φ ∘ Ψ = id`, where `Φ` is the linear combination map. -/
+theorem IsInjective.exists_rightInverse {A : ι → Matrix (Fin D) (Fin D) ℂ}
+    (hA : Kraus.IsInjective A) :
+    ∃ Ψ : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] (ι → ℂ),
+      ∀ X, Fintype.linearCombination ℂ A (Ψ X) = X := by
+  obtain ⟨Ψ, hΨ⟩ := (Fintype.linearCombination ℂ A).exists_rightInverse_of_surjective
+    (LinearMap.range_eq_top.mpr hA.linearCombination_surjective)
+  exact ⟨Ψ, fun X => by simpa using LinearMap.congr_fun hΨ X⟩
+
+/-- An `N`-block-injective tensor has a linear right inverse for the span of
+length-`N` word products.
+
+This is the algebraic right inverse denoted by `Ω_u` in arXiv:1708.00029,
+Appendix A, equations `eq:Fu` and `eq:Omegauprop`, after specializing to a
+chosen sector tensor and an injective repetition length. -/
+theorem IsNBlkInjective.exists_rightInverse {A : ι → Matrix (Fin D) (Fin D) ℂ} {N : ℕ}
+    (hA : Kraus.IsNBlkInjective A N) :
+    ∃ Ω : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] ((Fin N → ι) → ℂ),
+      ∀ X,
+        Fintype.linearCombination ℂ
+          (fun σ : Fin N → ι => Kraus.evalWord A (List.ofFn σ)) (Ω X) = X := by
+  obtain ⟨Ω, hΩ⟩ :=
+    (Fintype.linearCombination ℂ
+      (fun σ : Fin N → ι => Kraus.evalWord A (List.ofFn σ))).exists_rightInverse_of_surjective
+      (LinearMap.range_eq_top.mpr hA.linearCombination_surjective)
+  exact ⟨Ω, fun X => by simpa using LinearMap.congr_fun hΩ X⟩
+
+/-- Noncomputable right inverse for the length-`N` word span of an
+`N`-block-injective tensor. -/
+noncomputable def blockDecompositionMap {A : ι → Matrix (Fin D) (Fin D) ℂ} {N : ℕ}
+    (hA : Kraus.IsNBlkInjective A N) :
+    Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] ((Fin N → ι) → ℂ) :=
+  (hA.exists_rightInverse).choose
+
+theorem blockDecompositionMap_spec {A : ι → Matrix (Fin D) (Fin D) ℂ} {N : ℕ}
+    (hA : Kraus.IsNBlkInjective A N) (X : Matrix (Fin D) (Fin D) ℂ) :
+    Fintype.linearCombination ℂ
+      (fun σ : Fin N → ι => Kraus.evalWord A (List.ofFn σ))
+      (blockDecompositionMap hA X) = X :=
+  (hA.exists_rightInverse).choose_spec X
+
+@[simp]
+theorem blockDecompositionMap_sum {A : ι → Matrix (Fin D) (Fin D) ℂ} {N : ℕ}
+    (hA : Kraus.IsNBlkInjective A N) (X : Matrix (Fin D) (Fin D) ℂ) :
+    ∑ σ : Fin N → ι,
+      blockDecompositionMap hA X σ • Kraus.evalWord A (List.ofFn σ) = X := by
+  have := blockDecompositionMap_spec hA X
+  rwa [Fintype.linearCombination_apply] at this
+
+end Kraus
+
+end OneSidedInverse

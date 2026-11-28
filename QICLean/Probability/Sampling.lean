@@ -10,6 +10,7 @@ Authors: QICLean contributors
 
 import QICLean.Probability.Sampling.CompressionSampling
 import QICLean.Probability.Sampling.IntervalSamplingSchedule
+import QICLean.Probability.Sampling.RankUnitaryProductHaar
 import QICLean.Probability.Sampling.SampledOperatorImage
 import QICLean.Probability.Sampling.ViableSubspaceBootstrap
 import QICLean.Probability.Sampling.ViableSubspaceMinimum

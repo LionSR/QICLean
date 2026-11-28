@@ -8,14 +8,11 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Probability.Measurable
 
-import QICLean.Probability.Measurable.CanonicalSampleProjectionMeasurable
 import QICLean.Probability.Measurable.FiniteCoordinateRangeFrame
 import QICLean.Probability.Measurable.FiniteFamilyImageProjection
 import QICLean.Probability.Measurable.FiniteFrameMeasurable
-import QICLean.Probability.Measurable.FiniteSpanProjectionMeasurable
 import QICLean.Probability.Measurable.MatrixFamilySupportMeasurable
 import QICLean.Probability.Measurable.MatrixRangeFrameMeasurable
 import QICLean.Probability.Measurable.MatrixRangeProjectionMeasurable
 import QICLean.Probability.Measurable.SpectralProjectionMeasurable
-import QICLean.Probability.Measurable.VariableRankSampleProjection
 import QICLean.Probability.Measurable.ViableSubspaceTensorProjectionMeasurable

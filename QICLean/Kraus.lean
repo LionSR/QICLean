@@ -9,8 +9,9 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Kraus
 
 import QICLean.Kraus.BlockTriangularWord
+import QICLean.Kraus.BlockedConfiguration
 import QICLean.Kraus.Blocking
-import QICLean.Kraus.CPPrimitive
+import QICLean.Kraus.BlockingTransfer
 import QICLean.Kraus.ChoiRankSpan
 import QICLean.Kraus.Injectivity
 import QICLean.Kraus.IrreducibleAction
@@ -19,9 +20,9 @@ import QICLean.Kraus.NormalCommutant
 import QICLean.Kraus.PrimitiveFixedPoint
 import QICLean.Kraus.PrimitiveFixedPoint.Assembly
 import QICLean.Kraus.PrimitiveFixedPoint.Basic
+import QICLean.Kraus.PrimitiveFixedPoint.Blocking
 import QICLean.Kraus.PrimitiveFixedPoint.FromPeripheral
 import QICLean.Kraus.PrimitiveFixedPoint.Irreducible
-import QICLean.Kraus.PrimitiveFixedPoint.PosDef
 import QICLean.Kraus.ProjectionTriangularTrace
 import QICLean.Kraus.RectangularChain
 import QICLean.Kraus.Stochastic
@@ -30,4 +31,5 @@ import QICLean.Kraus.TraceFactorGauge
 import QICLean.Kraus.Transfer
 import QICLean.Kraus.Wielandt
 import QICLean.Kraus.Word
+import QICLean.Kraus.WordCompression
 import QICLean.Kraus.WordSpan

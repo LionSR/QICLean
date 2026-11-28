@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Algebra.Kronecker.KroneckerEmbed
+import QICLean.Algebra.Matrix.KroneckerEmbed
 import QICLean.Spectral.Gap.DoubledSystemGap
 import QICLean.Spectral.Filter.Gaussian.GroundEstimate
 import QICLean.Entropy.MutualInformation.PhysicalBufferOverlap

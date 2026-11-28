@@ -12,10 +12,10 @@ import QICLean.Algebra.Hermitian.BinaryProjectionFamily
 import QICLean.Algebra.Hermitian.CornerCompression
 import QICLean.Algebra.Hermitian.FrameOperator
 import QICLean.Algebra.Hermitian.HermitianPartSum
-import QICLean.Algebra.Hermitian.IdempotentEndomorphism
 import QICLean.Algebra.Hermitian.MatrixSandwichIntertwine
 import QICLean.Algebra.Hermitian.MatrixScalarIdentity
 import QICLean.Algebra.Hermitian.MaximallyMixed
 import QICLean.Algebra.Hermitian.OrthogonalProjection
 import QICLean.Algebra.Hermitian.PositiveSemidefiniteNormalization
 import QICLean.Algebra.Hermitian.ProjectionMatrixRange
+import QICLean.Algebra.Hermitian.StateSymmetry

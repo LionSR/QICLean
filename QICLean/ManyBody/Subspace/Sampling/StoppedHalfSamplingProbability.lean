@@ -8,7 +8,7 @@ import QICLean.ManyBody.Subspace.Sampling.CanonicalHalfSamplingDimension
 import QICLean.Probability.Sampling.ViableSubspaceBootstrap
 import QICLean.Probability.Measure.FiniteProductSectionProbability
 import QICLean.Analysis.Subspace.ViableSubspace
-import QICLean.Probability.Haar.RankUnitaryProductHaar
+import QICLean.Probability.Sampling.RankUnitaryProductHaar
 import QICLean.Probability.Sampling.ViableSubspaceSampleOrFull
 import QICLean.ManyBody.Subspace.Trimming
 import QICLean.ManyBody.Subspace.TrimmingInvariance

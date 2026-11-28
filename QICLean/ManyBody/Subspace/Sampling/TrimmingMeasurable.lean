@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Subspace.TrimmingInvariance
 import QICLean.Probability.Measurable.SpectralProjectionMeasurable
-import QICLean.Probability.Measurable.FiniteSpanProjectionMeasurable
+import QICLean.Probability.Measurable.MatrixFamilySupportMeasurable
 
 /-!
 # Borel measurability of collective trimming projections

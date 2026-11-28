@@ -61,6 +61,8 @@ Changes: the family `fun i ↦ {i.castSucc, i.succ}`, written inline there, is n
   in a window of `2R` sites about one of its boundary edges.
 * `ManyBody.IsChainSupport.eq_interval_of_splits_of_range_one` — a range-one support split by
   a cut is the adjacent pair at that cut.
+* `ManyBody.card_interval_zero`, `ManyBody.compl_interval_zero` — the initial segment `[0, k)`
+  has `min L k` sites, and its complement is the final segment `[k, L)`.
 * `ManyBody.interval_union_interval`, `ManyBody.card_interval_symmDiff_le_dist` — adjacent
   intervals make up an interval, and moving the endpoints changes an interval at no more sites
   than their displacement.
@@ -223,6 +225,18 @@ theorem interval_zero_eq_univ {b : ℕ} (hb : L ≤ b) : interval L 0 b = Finset
   ext i
   simp only [mem_interval, Finset.mem_univ, iff_true]
   exact ⟨Nat.zero_le _, lt_of_lt_of_le i.2 hb⟩
+
+/-- The initial segment `[0, k)` of a chain of `L` sites has `min L k` sites. -/
+theorem card_interval_zero (L k : ℕ) : (interval L 0 k).card = min L k := by
+  rw [← Fin.card_filter_val_lt]
+  simp [interval]
+
+/-- The complement of the initial segment `[0, k)` is the final segment `[k, L)`. -/
+theorem compl_interval_zero (L k : ℕ) : (interval L 0 k)ᶜ = interval L k L := by
+  ext x
+  simp only [Finset.mem_compl, mem_interval]
+  have := x.2
+  omega
 
 /-- The exact closed neighborhood of radius `⌊ρ⌋` of a clipped interval in the path graph.
 For `ρ ≥ 0` this is the closed real-radius neighborhood. A negative radius is treated as zero.

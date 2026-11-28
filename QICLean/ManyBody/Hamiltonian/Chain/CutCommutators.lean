@@ -32,13 +32,16 @@ later estimates change. Documented in `docs/paper-gaps/hastings07_commutator_con
 
 ## Main results
 
-* `ManyBody.ChainInteraction.commutator_leftPart_eq`, `commutator_rightPart_eq` — only the split
-  terms contribute to `[H, H_L]` and `[H, H_R]`.
-* `ManyBody.ChainInteraction.norm_commutator_leftPart_le`, `norm_commutator_rightPart_le`,
-  `norm_commutator_bufferPart_le` — the norm bounds.
-* `ManyBody.ChainInteraction.isSupportedOn_commutator_leftPart`,
-  `isSupportedOn_commutator_rightPart`, `isSupportedOn_commutator_bufferPart` — the commutators
-  are supported near the edges of the buffer.
+* `ManyBody.ChainInteraction.commutator_partialHamiltonian_cutLeftSupports_eq`,
+  `commutator_partialHamiltonian_cutRightSupports_eq` — only the split terms contribute to
+  `[H, H_L]` and `[H, H_R]`.
+* `ManyBody.ChainInteraction.norm_commutator_partialHamiltonian_cutLeftSupports_le`,
+  `norm_commutator_partialHamiltonian_cutRightSupports_le`,
+  `norm_commutator_partialHamiltonian_cutBufferSupports_le` — the norm bounds.
+* `ManyBody.ChainInteraction.isSupportedOn_commutator_partialHamiltonian_cutLeftSupports`,
+  `isSupportedOn_commutator_partialHamiltonian_cutRightSupports`,
+  `isSupportedOn_commutator_partialHamiltonian_cutBufferSupports` — the commutators are
+  supported near the edges of the buffer.
 
 ## References
 
@@ -233,7 +236,7 @@ theorem ChainInteraction.isSupportedOn_commutator_partialHamiltonian_inner
 the terms split by the region `[0, j - m)` of the left part.
 Hastings, arXiv:0705.2024v4, appendix, `law16.tex`, line 794: "Let `b_L = [H, H_L]`. Note
 that `‖b_L‖ ≤ J²`". -/
-theorem ChainInteraction.commutator_leftPart_eq
+theorem ChainInteraction.commutator_partialHamiltonian_cutLeftSupports_eq
     (h : ChainInteraction L q R) (j m : ℕ) :
     h.hamiltonian * h.partialHamiltonian (cutLeftSupports L R j m) -
         h.partialHamiltonian (cutLeftSupports L R j m) * h.hamiltonian =
@@ -249,7 +252,8 @@ theorem ChainInteraction.commutator_leftPart_eq
 Hastings, arXiv:0705.2024v4, appendix, `law16.tex`, line 794: "Let `b_L = [H, H_L]`. Note
 that `‖b_L‖ ≤ J²`". The explicit constant `cutCommutatorConst R` replaces the printed
 bound `J²`, which is stated for nearest-neighbour terms, for terms of range `R`. -/
-theorem ChainInteraction.norm_commutator_leftPart_le (h : ChainInteraction L q R)
+theorem ChainInteraction.norm_commutator_partialHamiltonian_cutLeftSupports_le
+    (h : ChainInteraction L q R)
     (hhJ : ∀ X, ‖h.term X‖ ≤ J)
     (j m : ℕ) :
     ‖h.hamiltonian * h.partialHamiltonian (cutLeftSupports L R j m) -
@@ -261,7 +265,7 @@ theorem ChainInteraction.norm_commutator_leftPart_le (h : ChainInteraction L q R
 `[j - m - 2R, j - m + R)` around the left edge of the buffer.
 Hastings, arXiv:0705.2024v4, appendix, `law16.tex`, line 794: "Let `b_L = [H, H_L]`". For
 terms of range `R` the window has width `3R`. -/
-theorem ChainInteraction.isSupportedOn_commutator_leftPart
+theorem ChainInteraction.isSupportedOn_commutator_partialHamiltonian_cutLeftSupports
     (h : ChainInteraction L q R)
     (j m : ℕ) :
     IsSupportedOn (X := fun _ ↦ Fin q)
@@ -292,7 +296,7 @@ theorem ChainInteraction.isSupportedOn_commutator_leftPart
 the terms split by the region `[j + m, L)` of the right part.
 Hastings, arXiv:0705.2024v4, appendix, `law16.tex`, line 794: "Let `b_L = [H, H_L]`. Note
 that `‖b_L‖ ≤ J²`", applied to the right part. -/
-theorem ChainInteraction.commutator_rightPart_eq
+theorem ChainInteraction.commutator_partialHamiltonian_cutRightSupports_eq
     (h : ChainInteraction L q R) (j m : ℕ) :
     h.hamiltonian * h.partialHamiltonian (cutRightSupports L R j m) -
         h.partialHamiltonian (cutRightSupports L R j m) * h.hamiltonian =
@@ -309,7 +313,8 @@ Hastings, arXiv:0705.2024v4, appendix, `law16.tex`, line 794: "Let `b_L = [H, H_
 that `‖b_L‖ ≤ J²`", applied to the right part. The explicit constant
 `cutCommutatorConst R` replaces the printed bound `J²`, which is stated for
 nearest-neighbour terms, for terms of range `R`. -/
-theorem ChainInteraction.norm_commutator_rightPart_le (h : ChainInteraction L q R)
+theorem ChainInteraction.norm_commutator_partialHamiltonian_cutRightSupports_le
+    (h : ChainInteraction L q R)
     (hhJ : ∀ X, ‖h.term X‖ ≤ J)
     (j m : ℕ) :
     ‖h.hamiltonian * h.partialHamiltonian (cutRightSupports L R j m) -
@@ -321,7 +326,7 @@ theorem ChainInteraction.norm_commutator_rightPart_le (h : ChainInteraction L q 
 `[j + m - R, j + m + 2R)` around the right edge of the buffer.
 Hastings, arXiv:0705.2024v4, appendix, `law16.tex`, line 794: "Let `b_L = [H, H_L]`",
 applied to the right part. For terms of range `R` the window has width `3R`. -/
-theorem ChainInteraction.isSupportedOn_commutator_rightPart
+theorem ChainInteraction.isSupportedOn_commutator_partialHamiltonian_cutRightSupports
     (h : ChainInteraction L q R)
     (j m : ℕ) :
     IsSupportedOn (X := fun _ ↦ Fin q)
@@ -353,7 +358,7 @@ theorem ChainInteraction.isSupportedOn_commutator_rightPart
 `H = H_L + H_B + H_R` and `[H, H] = 0`.
 Hastings, arXiv:0705.2024v4, appendix, `law16.tex`, line 794 (the commutator
 `b_L = [H, H_L]`), applied to the buffer part. -/
-theorem ChainInteraction.commutator_bufferPart_eq
+theorem ChainInteraction.commutator_partialHamiltonian_cutBufferSupports_eq
     (h : ChainInteraction L q R) (j m : ℕ) :
     h.hamiltonian * h.partialHamiltonian (cutBufferSupports L R j m) -
         h.partialHamiltonian (cutBufferSupports L R j m) * h.hamiltonian =
@@ -364,7 +369,7 @@ theorem ChainInteraction.commutator_bufferPart_eq
   have hB : h.partialHamiltonian (cutBufferSupports L R j m) =
       h.hamiltonian - h.partialHamiltonian (cutLeftSupports L R j m) -
         h.partialHamiltonian (cutRightSupports L R j m) := by
-    rw [h.hamiltonian_eq_leftPart_add_bufferPart_add_rightPart j m]
+    rw [h.hamiltonian_eq_cutLeftSupports_add_cutBufferSupports_add_cutRightSupports j m]
     abel
   rw [hB]
   noncomm_ring
@@ -373,21 +378,23 @@ theorem ChainInteraction.commutator_bufferPart_eq
 Hastings, arXiv:0705.2024v4, appendix, `law16.tex`, line 794: "Let `b_L = [H, H_L]`. Note
 that `‖b_L‖ ≤ J²`", applied to the buffer part. The explicit constant replaces the printed
 bound `J²`, which is stated for nearest-neighbour terms, for terms of range `R`. -/
-theorem ChainInteraction.norm_commutator_bufferPart_le (h : ChainInteraction L q R)
+theorem ChainInteraction.norm_commutator_partialHamiltonian_cutBufferSupports_le
+    (h : ChainInteraction L q R)
     (hhJ : ∀ X, ‖h.term X‖ ≤ J)
     (j m : ℕ) :
     ‖h.hamiltonian * h.partialHamiltonian (cutBufferSupports L R j m) -
         h.partialHamiltonian (cutBufferSupports L R j m) * h.hamiltonian‖ ≤
       2 * (cutCommutatorConst R * J ^ 2) := by
-  rw [h.commutator_bufferPart_eq, norm_neg]
+  rw [h.commutator_partialHamiltonian_cutBufferSupports_eq, norm_neg]
   refine (norm_add_le _ _).trans ?_
-  linarith [h.norm_commutator_leftPart_le hhJ j m, h.norm_commutator_rightPart_le hhJ j m]
+  linarith [h.norm_commutator_partialHamiltonian_cutLeftSupports_le hhJ j m,
+    h.norm_commutator_partialHamiltonian_cutRightSupports_le hhJ j m]
 
 /-- **The support of `[H, H_B]`.** `[H, H_B]` is supported on the union of the windows
 `[j - m - 2R, j - m + R)` and `[j + m - R, j + m + 2R)` around the two edges of the buffer.
 Hastings, arXiv:0705.2024v4, appendix, `law16.tex`, line 794: "Let `b_L = [H, H_L]`",
 applied to the buffer part. -/
-theorem ChainInteraction.isSupportedOn_commutator_bufferPart
+theorem ChainInteraction.isSupportedOn_commutator_partialHamiltonian_cutBufferSupports
     (h : ChainInteraction L q R)
     (j m : ℕ) :
     IsSupportedOn (X := fun _ ↦ Fin q)
@@ -395,10 +402,12 @@ theorem ChainInteraction.isSupportedOn_commutator_bufferPart
         h.partialHamiltonian (cutBufferSupports L R j m) * h.hamiltonian)
       (interval L (j - m - 2 * R) (j - m + R) ∪ interval L (j + m - R) (j + m + 2 * R)) := by
   change _ ∈ supportedOperators _ _
-  rw [h.commutator_bufferPart_eq]
+  rw [h.commutator_partialHamiltonian_cutBufferSupports_eq]
   exact neg_mem (add_mem
-    ((h.isSupportedOn_commutator_leftPart j m).mono Finset.subset_union_left)
-    ((h.isSupportedOn_commutator_rightPart j m).mono Finset.subset_union_right))
+    ((h.isSupportedOn_commutator_partialHamiltonian_cutLeftSupports j m).mono
+      Finset.subset_union_left)
+    ((h.isSupportedOn_commutator_partialHamiltonian_cutRightSupports j m).mono
+      Finset.subset_union_right))
 
 end PartCommutators
 

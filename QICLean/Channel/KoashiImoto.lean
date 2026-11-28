@@ -11,6 +11,5 @@ Authors: QICLean contributors
 import QICLean.Channel.KoashiImoto.CommonInvariantAlgebra
 import QICLean.Channel.KoashiImoto.JointSupport
 import QICLean.Channel.KoashiImoto.MeanErgodicProjection
-import QICLean.Channel.KoashiImoto.NormalizedFamilyBlockForm
 import QICLean.Channel.KoashiImoto.PooledKrausFamily
 import QICLean.Channel.KoashiImoto.PreservingBlockAction

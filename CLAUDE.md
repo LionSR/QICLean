@@ -142,7 +142,7 @@ before working in that area:
 | [`docs/project_conventions.md`](docs/project_conventions.md) | QICLean-local addenda to the shared conventions |
 | [`docs/blueprint_style_guide.md`](docs/blueprint_style_guide.md) | LaTeX conventions, `\lean{}`/`\leanok` tags, notation table, `\uses` rules, blueprint build commands |
 | [`docs/UPGRADE_RUNBOOK.md`](docs/UPGRADE_RUNBOOK.md) | The two-repo Mathlib upgrade procedure and lockstep invariants with TNLean |
-| [`docs/implementation/`](docs/implementation/) | Issue-linked integration and acceptance plans; retain assumptions and open work until the linked issue closes, then remove the plan after moving any lasting guidance to the relevant documentation |
+| `docs/implementation/` | Issue-linked integration and acceptance plans (none open at present); retain assumptions and open work until the linked issue closes, then remove the plan after moving any lasting guidance to the relevant documentation |
 
 The remaining TNLean convention docs (`CONTRIBUTING.md`, `glossary.md`,
 `pr_review_management.md`, `ci-automation.md`, `lake_build_cache.md`,
@@ -214,6 +214,9 @@ When adding or completing (removing sorry from) theorems/lemmas:
 - If a mathematical result looks wrong or suspiciously general, check the LaTeX sources in
   `Notes/` for the original theorems (QICLean's copy of Wolf's lecture notes; see
   `docs/paper-gaps/README.md`)
+- Do not write Lean test fixtures: no `QICLeanTest/` or `scripts/Tests/` files (CI rejects
+  them) and no per-theorem `#print axioms` / `#guard_msgs` files. Run `#print axioms` locally
+  while proving if needed, then delete it; see `docs/project_conventions.md`
 
 ### Faithfulness rule
 

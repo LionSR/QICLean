@@ -1,0 +1,899 @@
+\section{The syntax of circuits on parties}
+\label{sec:party_syntax}
+
+Throughout this chapter $P$ is a finite set of parties, a system
+$X=(X_p)_{p\in P}$ assigns a finite basis set to every party,
+$\mathcal H_X=\bigotimes_p\C^{X_p}$, and $X_P$ and $X_D$ are the configurations of
+all parties and of a set $D$ of parties, as in Chapter~\ref{ch:sites}. This
+section defines the circuits run by the parties
+\cite[Section~5.1]{OpenAI2026PolynomialPEPS}, reads them as circuits on the
+geometry of all finite sets of parties, and counts their gates. It then
+introduces the gates of the compression argument: pair sources and pair effects,
+their monomials and weighted sums, and words of pair sources.
+
+\subsection{Party circuits and their operators}
+\label{sec:party_syntax_circuits}
+
+\begin{definition}[Circuits on a finite set of parties]
+    \label{def:party_circuit}
+    \lean{QuantumCircuit.Party.PartyCircuit, QuantumCircuit.Party.PartyCircuit.toCircuit,
+        QuantumCircuit.Party.PartyCircuit.op, QuantumCircuit.Party.PartyCircuit.IsAtom}
+    \leanok
+    \uses{def:circuits_gate_family, def:circuits_subsets_geometry, def:circuits_gate_at,
+        def:circuits_of_cells, thm:circuits_composition, def:circuits_single,
+        thm:circuits_single_op}
+    Let $\mathcal G$ be a gate family on $P$. A party circuit from a system $X$ to a
+    system $Y$ with gates in $\mathcal G$ is built by the following rules
+    \cite[Section~5.1]{OpenAI2026PolynomialPEPS}:
+    \begin{enumerate}
+        \item the empty circuit from $X$ to $X$;
+        \item one gate $g$ of $\mathcal G$ on a set $D\subseteq P$, its cell, from $X$
+              to a system $Y$ with $Y_s=X_s$ for every $s\notin D$; the other parties
+              are spectators, and the cell may be empty;
+        \item one local operation at a party $p$: a matrix $A$ from $\C^{X_p}$ to
+              $\C^{Y_p}$, where $Y_s=X_s$ for every $s\neq p$;
+        \item local operations at every party at once: matrices $A_p$ from
+              $\C^{X_p}$ to $\C^{Y_p}$ for all $p\in P$;
+        \item the composition $c'\circ c$ of a party circuit $c$ from $X$ to $Y$ and a
+              party circuit $c'$ from $Y$ to $Z$, first $c$ and then $c'$.
+    \end{enumerate}
+    The party circuits given by the first four rules are the party circuits of one
+    step. The circuit $\widehat c$ of a party circuit $c$ is the circuit on the
+    geometry of all finite sets of parties defined rule by rule: the empty circuit;
+    the circuit of the layer of $g$ on $D$; the circuit of the layer of $A$ at $p$;
+    the circuit of the layer with no cell and the one-member family $\{A_p\}$ at every
+    party $p$; and the composition of $\widehat c$ and $\widehat{c'}$. When every gate
+    of $\mathcal G$ has one outcome, $\widehat c$ has one branch
+    (Theorem~\ref{thm:party_circuit_op}), and for an interpretation of $\mathcal G$ the
+    operator $T_c$ of $c$, a matrix from $\mathcal H_X$ to $\mathcal H_Y$, is the
+    Kraus operator of that branch.
+\end{definition}
+
+\begin{theorem}[The circuit and the operator of a party circuit]
+    \label{thm:party_circuit_op}
+    \lean{QuantumCircuit.Party.PartyCircuit.isUnbranched_toCircuit,
+        QuantumCircuit.Party.PartyCircuit.isSequential_toCircuit,
+        QuantumCircuit.Party.PartyCircuit.isSingle_toCircuit,
+        QuantumCircuit.Party.PartyCircuit.op_done, QuantumCircuit.Party.PartyCircuit.op_comp,
+        QuantumCircuit.Party.PartyCircuit.op_gate, QuantumCircuit.Party.PartyCircuit.op_localOp,
+        QuantumCircuit.Party.PartyCircuit.op_localOps,
+        QuantumCircuit.Party.PartyCircuit.op_induction}
+    \leanok
+    \uses{def:party_circuit, def:circuits_local, def:circuits_gate_at, def:circuits_single,
+        def:sites_place_between, def:elementary_finite_tensor_product}
+    Let $c$ be a party circuit from $X$ to $Y$. Its circuit $\widehat c$ is unbranched
+    and sequential: every layer has at most one cell, and a layer with a cell is the
+    identity at the parties outside it. If every gate has one outcome, $\widehat c$ is
+    single. For an interpretation of a gate family with one outcome per gate, the
+    operators are, rule by rule,
+    \begin{align}
+        T_{\mathrm{empty}} & =1,                           &
+        T_{c'\circ c}      & =T_{c'}T_c,            \notag   \\
+        T_g                & =M_g\otimes1,                 &
+        T_A                & =A\otimes1,                   &
+        T_{(A_p)_p}        & =\bigotimes_pA_p,    \notag
+    \end{align}
+    where $M_g$ is the matrix of $g$ at its outcome, and $M_g\otimes1$ and $A\otimes1$
+    are the placements between $X$ and $Y$ on $D$ and on $\{p\}$, with $A$ read on the
+    configurations of $\{p\}$. Consequently, let a property of matrices from
+    $\mathcal H_X$ to $\mathcal H_Y$, for all systems $Y$, hold for the identity of
+    $\mathcal H_X$ and pass from $M$ to $T_sM$ for every party circuit $s$ of one step.
+    Then it holds for $T_c$ for every party circuit $c$ from $X$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:circuits_duality, lem:circuits_local_comp, def:circuits_gate_at,
+        def:circuits_single, thm:circuits_single_op, lem:circuits_gate_at,
+        thm:circuits_of_cells}
+    By induction on $c$. A gate, a local operation at one party and local operations
+    at every party give the circuit of one layer, which is unbranched
+    (Lemma~\ref{lem:circuits_duality}). Each of these layers is one step, and the
+    circuit of a layer of one step is sequential
+    (Definition~\ref{def:circuits_gate_at}); the layer of a gate with one outcome, and
+    a layer without cells whose onsite families have one member, give single circuits
+    (Definition~\ref{def:circuits_single}). The three properties pass to compositions
+    (Lemma~\ref{lem:circuits_local_comp} and Definitions~\ref{def:circuits_gate_at}
+    and~\ref{def:circuits_single}). The operator of a single circuit of one layer is a
+    Kraus operator of the layer (Theorem~\ref{thm:circuits_single_op}); for the layer
+    of a gate it is $M_g\otimes1$ at the unique outcome, for the layer of $A$ at $p$ it
+    is $A\otimes1$ (Lemma~\ref{lem:circuits_gate_at}), and for the layer without cells
+    it is $\bigotimes_pA_p$ (Theorem~\ref{thm:circuits_of_cells}). The operator of a
+    composition of single circuits is $T_{c'}T_c$ by
+    Theorem~\ref{thm:circuits_single_op}. For the last statement, show by induction on
+    a circuit $c$ from $Y$ to $Z$ that the property passes from $M$ to $T_cM$: a circuit
+    of one step is the hypothesis, and $T_{c'\circ c}M=T_{c'}(T_cM)$. Apply this to
+    $M=1$.
+\end{proof}
+
+\begin{definition}[Allowed and locally contractive party circuits]
+    \label{def:party_allowed}
+    \lean{QuantumCircuit.Party.PartyCircuit.IsAllowed,
+        QuantumCircuit.Party.PartyCircuit.IsLocalContractive}
+    \leanok
+    \uses{def:party_circuit}
+    Let $\mathcal G$ be a gate family with one outcome per gate, with an
+    interpretation, and let $\mathcal A$ be a condition on the gates of $\mathcal G$. A
+    party circuit is allowed for $\mathcal A$ when its local operations are
+    contractions, $\lVert A\rVert\le1$ and $\lVert A_p\rVert\le1$, and every gate $g$
+    satisfies $\mathcal A$ and has $\lVert M_g\rVert\le1$
+    \cite[Section~5.1]{OpenAI2026PolynomialPEPS}. A party circuit is locally
+    contractive when its local operations are contractions; its gates are not
+    constrained.
+\end{definition}
+
+\begin{theorem}[An allowed party circuit is a contraction]
+    \label{thm:party_op_contraction}
+    \lean{QuantumCircuit.Party.PartyCircuit.norm_op_le_one,
+        QuantumCircuit.Party.PartyCircuit.IsAllowed.forall_toCircuit,
+        QuantumCircuit.Party.PartyCircuit.IsAllowed.isLocalContractive}
+    \leanok
+    \uses{def:party_allowed, def:circuits_local, def:kraus_family}
+    Let $c$ be an allowed party circuit from $X$ to $Y$. Every gate and every onsite
+    family of its circuit $\widehat c$ is trace-nonincreasing, $c$ is locally
+    contractive, and $\lVert T_c\rVert\le1$
+    \cite[Section~5.1]{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:circuits_single_op, lem:circuits_gate_at, lem:circuits_local_gate_unitary,
+        lem:kraus_family_channel, lem:circuits_local_comp, thm:party_circuit_op}
+    By induction on $c$. A family with one member $V$ is trace-nonincreasing if and
+    only if $\lVert V\rVert\le1$ (Theorem~\ref{thm:circuits_single_op}); in
+    particular the family $\{1\}$ is, being unitary and hence trace-preserving
+    (Lemmas~\ref{lem:circuits_local_gate_unitary} and~\ref{lem:kraus_family_channel}).
+    Hence the layer of an allowed gate and the layer of a contraction at one party are
+    trace-nonincreasing at every gate and onsite family
+    (Lemma~\ref{lem:circuits_gate_at}), and so is the layer of contractions at every
+    party. The property passes to compositions (Lemma~\ref{lem:circuits_local_comp}).
+    Local contractivity is part of allowedness. Since $\widehat c$ is single
+    (Theorem~\ref{thm:party_circuit_op}), Theorem~\ref{thm:circuits_single_op} gives
+    $\lVert T_c\rVert\le1$.
+\end{proof}
+
+\subsection{Gates along a party circuit and their counts}
+\label{sec:party_syntax_counts}
+
+A gate whose cell consists of exactly one party is private. In the geometry of all
+finite sets of parties a private cell costs $0$ and every other cell, the empty one
+included, costs $1$ (Definition~\ref{def:circuits_subsets_geometry}).
+
+\begin{definition}[Gate occurrences, gate counts and participation]
+    \label{def:party_gate_counts}
+    \lean{QuantumCircuit.GateOccurrence, QuantumCircuit.Party.PartyCircuit.gateLocations,
+        QuantumCircuit.Party.PartyCircuit.participants, QuantumCircuit.Party.PartyCircuit.gates,
+        QuantumCircuit.Party.PartyCircuit.gateCells, QuantumCircuit.Party.PartyCircuit.numGates,
+        QuantumCircuit.Party.PartyCircuit.gateCount,
+        QuantumCircuit.Party.PartyCircuit.participation,
+        QuantumCircuit.Party.PartyCircuit.participationCount,
+        QuantumCircuit.Party.PartyCircuit.ForallGate}
+    \leanok
+    \uses{def:party_circuit, def:circuits_subsets_geometry}
+    Let $c$ be a party circuit. Its gate occurrences form a finite set, one for each
+    gate, kept distinct even when two gates coincide: there is none for the empty
+    circuit and for local operations, one for a gate, and the disjoint union of those
+    of $c$ and $c'$ for $c'\circ c$. The participants of an occurrence are the parties
+    of its cell \cite[Section~5.1]{OpenAI2026PolynomialPEPS}. The gates of $c$, each
+    with its cell and its two systems, and their cells form lists in chronological
+    order. Read along $c$, with the constructors of a composition adding:
+    \begin{enumerate}
+        \item the number of gates $n(c)$ counts every gate, private ones and those on
+              the empty cell included;
+        \item the gate count $\#(c)$ is the sum of the costs of the cells of the gates,
+              the number of gates that are not private;
+        \item the participation $\pi_p(c)$ of a party $p$ is the number of gates that
+              are not private and whose cell contains $p$;
+        \item the participation count $\nu_p(c)$ is the number of gates whose cell
+              contains $p$, private ones included.
+    \end{enumerate}
+    A condition on gates holds at every gate of $c$ when every gate of $c$, with its
+    cell and systems, satisfies it.
+\end{definition}
+
+\begin{theorem}[Relations among the counts]
+    \label{thm:party_gate_count_relations}
+    \lean{QuantumCircuit.Party.PartyCircuit.gateCells_eq_map_gates,
+        QuantumCircuit.Party.PartyCircuit.length_gates,
+        QuantumCircuit.Party.PartyCircuit.card_gateLocations,
+        QuantumCircuit.Party.PartyCircuit.gateCount_le_numGates,
+        QuantumCircuit.Party.PartyCircuit.gateCount_eq_numGates,
+        QuantumCircuit.Party.PartyCircuit.participation_eq_participationCount,
+        QuantumCircuit.Party.PartyCircuit.forall_participants_of_forallGate,
+        QuantumCircuit.Party.PartyCircuit.natCard_participants_mem,
+        QuantumCircuit.Party.PartyCircuit.gateCount_gate_empty}
+    \leanok
+    \uses{def:party_gate_counts}
+    For every party circuit $c$, the list of cells is the list of the cells of the
+    gates, and the length of the list of gates and the number of gate occurrences are
+    both $n(c)$. Always $\#(c)\le n(c)$, and when no gate of $c$ is private,
+    $\#(c)=n(c)$ and $\pi_p(c)=\nu_p(c)$ for every party $p$. A condition on cells that
+    holds at every gate holds at the participants of every occurrence. The number of
+    occurrences whose participants contain $p$ is $\nu_p(c)$
+    \cite[Section~5.1]{OpenAI2026PolynomialPEPS}. One gate on the empty cell has gate
+    count $1$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:circuits_subsets_geometry}
+    By induction on $c$, the constructors of a composition adding on both sides. For a
+    gate on $D$ the cost of $D$ is at most $1$, it is $1$ when $|D|\neq1$, and it is
+    positive exactly when $|D|\neq1$ (Definition~\ref{def:circuits_subsets_geometry}).
+    The occurrences of a composition containing $p$ are the disjoint union of those of
+    the two parts.
+\end{proof}
+
+\begin{theorem}[The counts of the circuit of a party circuit]
+    \label{thm:party_counts_circuit}
+    \lean{QuantumCircuit.Party.PartyCircuit.gateCount_toCircuit,
+        QuantumCircuit.Party.PartyCircuit.participation_toCircuit}
+    \leanok
+    \uses{def:party_gate_counts, def:circuits_costs}
+    If every gate has one outcome, then for every party circuit $c$ the gate count of
+    its circuit $\widehat c$ is $\#(c)$, and the number of gates of $\widehat c$
+    meeting a party $p$ is $\pi_p(c)$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:party_circuit_op, lem:circuits_gate_at, def:circuits_costs, lem:circuits_seq}
+    By induction on $c$. The cost of the circuit of one layer is the cost of the
+    layer. The layer of a gate on $D$ has gate count the cost of $D$ and meets $p$ once
+    exactly when $p\in D$ and $D$ has positive cost, and the layer of a local operation
+    costs nothing (Lemma~\ref{lem:circuits_gate_at}); a layer without cells costs
+    nothing (Definition~\ref{def:circuits_costs}). For a composition, $\widehat c$ is
+    unbranched with a branch (Theorem~\ref{thm:party_circuit_op}), so the costs of
+    $\widehat c$ and $\widehat{c'}$ add (Lemma~\ref{lem:circuits_seq}).
+\end{proof}
+
+\subsection{Relabelling bases and replacing gates}
+\label{sec:party_syntax_relabel}
+
+\begin{definition}[Relabelling the bases and replacing the gates]
+    \label{def:party_relabel}
+    \lean{QuantumCircuit.Party.PartyCircuit.relabel,
+        QuantumCircuit.Party.PartyCircuit.gates_relabel,
+        QuantumCircuit.Party.PartyCircuit.gateCells_relabel,
+        QuantumCircuit.Party.PartyCircuit.numGates_relabel,
+        QuantumCircuit.Party.PartyCircuit.gateCount_relabel,
+        QuantumCircuit.Party.PartyCircuit.mapGates,
+        QuantumCircuit.Party.PartyCircuit.mapGatesLocationsEquiv}
+    \leanok
+    \uses{def:party_circuit, def:party_gate_counts, def:circuits_gate_morphism}
+    For bijections $e_s\colon Y_s\to X_s$, the relabelling $R_e$ is the party circuit
+    from $X$ to $Y$ of local operations at every party, at $s$ the matrix from
+    $\C^{X_s}$ to $\C^{Y_s}$ whose entry at $(y,x)$ is $1$ if $e_s(y)=x$ and $0$
+    otherwise. It has no gate and no cell, so $n(R_e)=\#(R_e)=0$. For a morphism
+    $\varphi$ of gate families, the party circuit $\varphi_*c$ replaces every gate $g$
+    of $c$ by $\varphi(g)$ and keeps every other rule; the gate occurrences of $c$ and
+    of $\varphi_*c$ are identified rule by rule.
+\end{definition}
+
+\begin{theorem}[The operator of a relabelling]
+    \label{thm:party_relabel_op}
+    \lean{QuantumCircuit.Party.PartyCircuit.op_relabel,
+        QuantumCircuit.Party.PartyCircuit.op_relabel_mul,
+        QuantumCircuit.Party.PartyCircuit.op_relabel_symm,
+        QuantumCircuit.Party.PartyCircuit.isAllowed_relabel}
+    \leanok
+    \uses{def:party_relabel, def:party_allowed}
+    For a gate family with one outcome per gate and any interpretation, the operator
+    of $R_e$ is the matrix of the bijection $y\mapsto(e_s(y_s))_s$ of configurations:
+    $(T_{R_e})_{yx}=1$ if $e_s(y_s)=x_s$ for every $s$ and $0$ otherwise. Hence, for
+    every matrix $M$ with rows indexed by $X_P$, the product $T_{R_e}M$ is $M$ with its
+    rows reindexed, $(T_{R_e}M)_{y,w}=M_{(e_s(y_s))_s,w}$; no inverse appears. For
+    bijections $e_s\colon X_s\to Y_s$, the operator of the relabelling along their
+    inverses is the matrix of the inverse of the bijection of configurations. A
+    relabelling is allowed for every condition on gates.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:party_circuit_op, thm:sites_product_span, lem:matrix_l2_contractions}
+    By Theorem~\ref{thm:party_circuit_op}, $T_{R_e}$ is the Kronecker product of the
+    matrices of the $e_s$, whose entry at $(y,x)$ is $\prod_s[e_s(y_s)=x_s]$, the
+    entry of the matrix of the bijection of configurations
+    (Theorem~\ref{thm:sites_product_span}). Multiplying by the matrix of a bijection
+    reindexes the rows. The matrix of a bijection is a contraction
+    (Lemma~\ref{lem:matrix_l2_contractions}).
+\end{proof}
+
+\begin{theorem}[Replacing the gates]
+    \label{thm:party_map_gates}
+    \lean{QuantumCircuit.Party.PartyCircuit.op_mapGates,
+        QuantumCircuit.Party.PartyCircuit.gates_mapGates,
+        QuantumCircuit.Party.PartyCircuit.gateCells_mapGates,
+        QuantumCircuit.Party.PartyCircuit.numGates_mapGates,
+        QuantumCircuit.Party.PartyCircuit.gateCount_mapGates,
+        QuantumCircuit.Party.PartyCircuit.participation_mapGates,
+        QuantumCircuit.Party.PartyCircuit.participants_mapGatesLocationsEquiv,
+        QuantumCircuit.Party.PartyCircuit.IsAllowed.mapGates}
+    \leanok
+    \uses{def:party_relabel, def:party_allowed}
+    Let $\varphi$ be a morphism of gate families. The list of gates of $\varphi_*c$ is
+    the list of gates of $c$ with every gate replaced by its image, cells and systems
+    kept. Hence $\varphi_*c$ has the cells, the number of gates, the gate count and the
+    participations of $c$, and corresponding occurrences have the same participants.
+    Let both families have one outcome per gate and let $\varphi$ be compatible with
+    interpretations of the two families. Then $T_{\varphi_*c}=T_c$. If moreover $c$ is
+    allowed for a condition $\mathcal A$, and the image of every gate satisfying
+    $\mathcal A$ satisfies a condition $\mathcal A_2$, then $\varphi_*c$ is allowed for
+    $\mathcal A_2$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:party_circuit_op, def:circuits_single, def:circuits_gate_morphism}
+    By induction on $c$. For a gate $g$ on $D$, compatibility and uniqueness of the
+    outcome give $M_{\varphi(g)}=M_g$, so the placements on $D$ agree
+    (Theorem~\ref{thm:party_circuit_op}) and the norms agree; local operations and
+    compositions are unchanged.
+\end{proof}
+
+\subsection{Fresh pair registers}
+\label{sec:party_syntax_add_pair}
+
+\begin{definition}[Adding fresh factors at two parties]
+    \label{def:party_add_pair}
+    \lean{QuantumCircuit.Party.addPair, QuantumCircuit.Party.addPairLeft,
+        QuantumCircuit.Party.addPairRight, QuantumCircuit.Party.addPair_of_ne,
+        QuantumCircuit.Party.addPair_eq_of_notMem, QuantumCircuit.Party.addPairConfigEquiv,
+        QuantumCircuit.Party.addPairConfigEquiv_apply_fst,
+        QuantumCircuit.Party.addPairConfigEquiv_apply_snd_left,
+        QuantumCircuit.Party.addPairConfigEquiv_apply_snd_right,
+        QuantumCircuit.Party.addPairConfigEquiv_apply_snd_of_ne,
+        QuantumCircuit.Party.addPairConfigEquiv_symm_apply_left,
+        QuantumCircuit.Party.addPairConfigEquiv_symm_apply_right,
+        QuantumCircuit.Party.addPairConfigEquiv_symm_apply_of_ne,
+        QuantumCircuit.Party.pairFactor, QuantumCircuit.Party.pairFactor.unique,
+        QuantumCircuit.Party.addPairSiteEquiv, QuantumCircuit.Party.card_pairFactor,
+        QuantumCircuit.Party.card_addPair, QuantumCircuit.Party.pairFactorConfigEquiv,
+        QuantumCircuit.Party.addPairMatrix}
+    \leanok
+    \uses{def:sites_config}
+    Let $p\neq q$ be parties and $\alpha,\beta$ finite sets. The system
+    $X^{pq}_{\alpha\beta}$ has the basis $\alpha\times X_p$ at $p$,
+    $\beta\times X_q$ at $q$, and $X_s$ at every other party; it agrees with $X$
+    outside $\{p,q\}$. Its configurations are pairs of a configuration of the fresh
+    factors and a configuration of $X$: the bijection
+    $X^{pq}_{\alpha\beta,P}\to(\alpha\times\beta)\times X_P$ sends $z$ to $((a,b),x)$,
+    where $z_p=(a,x_p)$, $z_q=(b,x_q)$ and $z_s=x_s$ for $s\notin\{p,q\}$
+    \cite[Section~5.1]{OpenAI2026PolynomialPEPS}. The fresh factors alone form the
+    system $F^{pq}_{\alpha\beta}$ with the basis $\alpha$ at $p$, $\beta$ at $q$, and a
+    single basis vector at every other party; its bases are single points when $\alpha$
+    and $\beta$ are, its configurations are the pairs $\alpha\times\beta$, and
+    \begin{align}
+        |F^{pq}_{\alpha\beta,s}|
+         & =\bigl(|\alpha|\text{ if }s=p\text{, else }1\bigr)
+        \bigl(|\beta|\text{ if }s=q\text{, else }1\bigr). \notag
+    \end{align}
+    At every party $s$ the basis of $X^{pq}_{\alpha\beta}$ is
+    $F^{pq}_{\alpha\beta,s}\times X_s$, so
+    $|X^{pq}_{\alpha\beta,s}|=|F^{pq}_{\alpha\beta,s}|\,|X_s|$. For matrices $C_s$
+    from $\C^{Y_s}$ to $\C^{Y'_s}$, the operation $C_s$ beside the fresh factors is the
+    matrix $1\otimes C_s$ from $\C^{Y^{pq}_{\alpha\beta,s}}$ to
+    $\C^{Y'^{pq}_{\alpha\beta,s}}$, read through these bases.
+\end{definition}
+
+\begin{theorem}[Party operations beside the fresh factors]
+    \label{thm:party_add_pair_matrix}
+    \lean{QuantumCircuit.Party.addPairConfigEquiv_eq_siteEquiv,
+        QuantumCircuit.Party.norm_addPairMatrix_le,
+        QuantumCircuit.Party.piKronecker_addPairMatrix}
+    \leanok
+    \uses{def:party_add_pair, def:elementary_finite_tensor_product}
+    The bijection of configurations of $X^{pq}_{\alpha\beta}$ is read party by party:
+    it is the composite of the bijections
+    $X^{pq}_{\alpha\beta,s}\to F^{pq}_{\alpha\beta,s}\times X_s$ at every party, of the
+    splitting of a family of pairs into a configuration of $F^{pq}_{\alpha\beta}$ and
+    one of $X$, and of the identification of the configurations of
+    $F^{pq}_{\alpha\beta}$ with $\alpha\times\beta$. For matrices $C_s$ as in Definition~\ref{def:party_add_pair},
+    the operation beside the fresh factors has norm at most $\lVert C_s\rVert$, and
+    their Kronecker product over all parties is
+    \begin{align}
+        \bigotimes_s(1\otimes C_s) & =1_{\alpha\times\beta}\otimes\bigotimes_sC_s, \notag
+    \end{align}
+    the right side read along the bijections of configurations of
+    $Y^{pq}_{\alpha\beta}$ and $Y'^{pq}_{\alpha\beta}$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:detailed_balance_tensor_norm, thm:sites_product_span}
+    The first statement is checked on the fresh parts and at every party separately.
+    Reindexing does not increase the norm, and
+    $\lVert1\otimes C\rVert\le\lVert C\rVert$
+    (Theorem~\ref{thm:detailed_balance_tensor_norm}). For the Kronecker product,
+    compute an entry with the first statement: the product over the parties of the
+    entries of the identity on the fresh factors is the entry of the identity on the
+    configurations of $F^{pq}_{\alpha\beta}$, that is of $1_{\alpha\times\beta}$, and
+    the product of the entries of the $C_s$ is the entry of $\bigotimes_sC_s$
+    (Theorem~\ref{thm:sites_product_span}).
+\end{proof}
+
+\subsection{Pair sources, pair effects and monomials}
+\label{sec:party_syntax_pair_gates}
+
+For a bijection $e\colon m\to\alpha\times n$ and $v\in\C^\alpha$, the preparation
+$J_e(v)$ is the matrix from $\C^n$ to $\C^m$ with entry $v_a$ at $(y,x)$ when
+$e(y)=(a,x)$ and $0$ otherwise; it maps $\ket x$ to $v\otimes\ket x$ read through $e$.
+The effect $\bra v\otimes1$ from $\C^{\alpha\times n}$ to $\C^n$ is its adjoint for
+$e$ the identity, and $J_e(v)^\dagger$ is this effect with its columns read through $e$ (Definitions~\ref{def:construction_idle_gates}
+and~\ref{def:party_effect_matrices}).
+
+\begin{definition}[Pair sources, pair effects and monomials]
+    \label{def:party_pair_gates}
+    \lean{QuantumCircuit.Party.PairSource, QuantumCircuit.Party.SourceInventory,
+        QuantumCircuit.Party.SourceInventory.IsNormalized,
+        QuantumCircuit.Party.PairSource.partyPair,
+        QuantumCircuit.Party.SourceGate, QuantumCircuit.Party.SourceGate.left_mem,
+        QuantumCircuit.Party.SourceGate.right_mem, QuantumCircuit.Party.SourceGate.ofAddPair,
+        QuantumCircuit.Party.SourceGate.regionMatrix,
+        QuantumCircuit.Party.SourceGate.outputEquiv, QuantumCircuit.Party.SourceGate.ev,
+        QuantumCircuit.Party.SourceGate.IsAllowed,
+        QuantumCircuit.Party.SourceGate.ev_ofAddPair_apply,
+        QuantumCircuit.Party.SourceGate.reindexOutput,
+        QuantumCircuit.Party.SourceGate.ev_reindexOutput,
+        QuantumCircuit.Party.SourceGate.ne_left_of_notMem,
+        QuantumCircuit.Party.SourceGate.ne_right_of_notMem,
+        QuantumCircuit.Party.SourceGate.toAddPair,
+        QuantumCircuit.Party.SourceGate.addPairLeft_toAddPair,
+        QuantumCircuit.Party.SourceGate.addPairRight_toAddPair,
+        QuantumCircuit.Party.SourceGate.toAddPair_of_notMem,
+        QuantumCircuit.Party.SourceGate.configEquiv,
+        QuantumCircuit.Party.SourceGate.configEquiv_apply_fst,
+        QuantumCircuit.Party.SourceGate.configEquiv_apply_snd_left,
+        QuantumCircuit.Party.SourceGate.configEquiv_apply_snd_right,
+        QuantumCircuit.Party.SourceGate.configEquiv_apply_snd_of_notMem,
+        QuantumCircuit.Party.PairEffectGate, QuantumCircuit.Party.PairEffectGate.left_mem,
+        QuantumCircuit.Party.PairEffectGate.right_mem,
+        QuantumCircuit.Party.PairEffectGate.ofAddPair,
+        QuantumCircuit.Party.PairEffectGate.toSourceGate,
+        QuantumCircuit.Party.PairEffectGate.regionMatrix,
+        QuantumCircuit.Party.PairEffectGate.reindexInput,
+        QuantumCircuit.Party.PairEffectGate.ev, QuantumCircuit.Party.PairEffectGate.IsAllowed,
+        QuantumCircuit.Party.PairEffectGate.ev_ofAddPair_apply,
+        QuantumCircuit.Party.PairEffectGate.ev_reindexInput,
+        QuantumCircuit.Party.PairEffectGate.toAddPair,
+        QuantumCircuit.Party.PairEffectGate.configEquiv,
+        QuantumCircuit.Party.ChainGate, QuantumCircuit.Party.chainEv,
+        QuantumCircuit.Party.ChainGate.IsAllowed, QuantumCircuit.Party.Monomial}
+    \leanok
+    \uses{def:party_add_pair, def:party_circuit, def:circuits_gate_family,
+        def:circuits_gate_sum, def:sites_pair_factor_config}
+    A pair source datum consists of two distinct parties $l\neq r$, finite sets $\alpha$
+    and $\beta$, and a vector $\eta\in\C^{\alpha\times\beta}$; its unordered pair of
+    endpoints is $\{l,r\}$. A source inventory is a finite list of such data, repeated
+    data counting as distinct occurrences, and it is normalized when every vector has
+    norm $1$ \cite[Lemma~5.1]{OpenAI2026PolynomialPEPS}.
+
+    A pair source on a cell $D$ from $X$ to $Y$ is a pair source datum with
+    $D=\{l,r\}$, bijections $Y_l\to\alpha\times X_l$ and $Y_r\to\beta\times X_r$, and
+    $Y_s=X_s$ for every $s\notin D$; thus $l,r\in D$, and a party outside $D$ is neither
+    endpoint \cite[Section~5.1]{OpenAI2026PolynomialPEPS}. Its matrix on the cell, from
+    $\C^{X_D}$ to $\C^{Y_D}$, prepares $\eta$ on the fresh factors and is the identity
+    on the old ones: its entry at $(y,x)$ is $\eta_{ab}$ when $y_l\mapsto(a,x_l)$ and
+    $y_r\mapsto(b,x_r)$, and $0$ otherwise. Correspondingly, a configuration of $D$ in
+    $Y$ is a pair of a configuration of the fresh factors and a configuration of $D$ in
+    $X$. A pair source has one outcome, its interpretation is its matrix, and it is
+    allowed when $\lVert\eta\rVert=1$. The canonical source of $\eta$ on $\{p,q\}$ goes
+    from $X$ to $X^{pq}_{\alpha\beta}$ with the identifications of
+    Definition~\ref{def:party_add_pair}. Relabelling the output along bijections
+    $e_s\colon Y'_s\to Y_s$, with $Y'_s=Y_s$ outside $D$, composes the two bijections of
+    the source with $e_l$ and $e_r$ and reindexes the rows of the matrix by
+    $y'\mapsto(e_s(y'_s))_s$. The output of a source is read in canonical form by the
+    bijections $Y_s\to X^{lr}_{\alpha\beta,s}$ given at $l$ and $r$ by the bijections of
+    the source and elsewhere by the identification $Y_s=X_s$; through them a
+    configuration $y$ of $Y$ is the pair $((a,b),x)$ with
+    $y_l\mapsto(a,x_l)$, $y_r\mapsto(b,x_r)$ and $x_s=y_s$ outside $D$.
+
+    A pair effect on $D$ from $X$ to $Y$ has the same data with bijections
+    $X_l\to\alpha\times Y_l$ and $X_r\to\beta\times Y_r$, and $Y_s=X_s$ outside $D$; it
+    removes the factors $\alpha$ and $\beta$. Its matrix on the cell has the entry
+    $\overline{\eta_{ab}}$ at $(y,x)$ when $x_l\mapsto(a,y_l)$ and $x_r\mapsto(b,y_r)$,
+    and $0$ otherwise. The source with the same data goes from $Y$ to $X$. The
+    canonical effect of $\eta$ on $\{p,q\}$ goes from $Y^{pq}_{\alpha\beta}$ to $Y$, a
+    relabelling of the input reindexes the columns, and the input is read in canonical
+    form through the source with the same data. A pair effect has one outcome, its
+    interpretation is its matrix, and it is allowed when $\lVert\eta\rVert=1$
+    \cite[Section~5.1]{OpenAI2026PolynomialPEPS}.
+
+    The gates of monomials are the pair sources and the pair effects, with the
+    interpretation of the sum of the two gate families; each has one outcome, and each
+    is allowed when its vector is normalized. A monomial on a finite set $D$ of parties,
+    from $X$ to $Y$ with $X,Y$ systems on $D$, is a party circuit on the parties of $D$
+    whose gates are pair sources and pair effects.
+\end{definition}
+
+\begin{theorem}[Matrices of pair sources and pair effects]
+    \label{thm:party_pair_gate_matrices}
+    \lean{QuantumCircuit.Party.SourceGate.regionMatrix_eq_prepMatrix,
+        QuantumCircuit.Party.PairEffectGate.regionMatrix_eq_conjTranspose,
+        QuantumCircuit.Party.SourceGate.norm_ev_le, QuantumCircuit.Party.SourceGate.norm_ev,
+        QuantumCircuit.Party.PairEffectGate.norm_ev_le,
+        QuantumCircuit.Party.PairEffectGate.norm_ev,
+        QuantumCircuit.Party.SourceGate.eq_reindexOutput,
+        QuantumCircuit.Party.SourceGate.eq_reindexOutput_ofAddPair}
+    \leanok
+    \uses{def:party_pair_gates, def:party_effect_matrices}
+    Let $S$ be the matrix of a pair source on $D$ with vector $\eta$. Then $S$ is the
+    preparation $J_e(\eta)$ along the bijection $e\colon Y_D\to(\alpha\times\beta)\times X_D$,
+    and the matrix of a pair effect is the adjoint of the matrix of the source with the
+    same data. Both have norm at most $\lVert\eta\rVert$, with equality when $D$ has a
+    configuration in the input of the source, respectively in the output of the effect;
+    a normalized source or effect is a contraction. Two pair sources on $D$ from $X$
+    with the same pair source datum differ by a relabelling of the output, and every
+    pair source is, with $D=\{l,r\}$, the canonical source of its datum followed by a
+    relabelling of the output.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:sites_pair_factor_config, def:party_effect_matrices}
+    The entries of $S$ and of the preparation agree once the configurations of
+    $D=\{l,r\}$ are read as pairs (Definition~\ref{def:sites_pair_factor_config}), and
+    the entries of the effect are the conjugates of those of the source, transposed.
+    The norms are those of a preparation (Definition~\ref{def:party_effect_matrices}),
+    and $\lVert M^\dagger\rVert=\lVert M\rVert$. For two sources with bijections
+    $u_l,u_r$ and $u'_l,u'_r$, the relabelling is $u_l^{-1}u'_l$ at $l$,
+    $u_r^{-1}u'_r$ at $r$, and the identification of equal bases elsewhere; the
+    canonical source is one such source.
+\end{proof}
+
+\begin{theorem}[The operator of one pair source or pair effect]
+    \label{thm:party_pair_gate_op}
+    \lean{QuantumCircuit.Party.SourceGate.configEquiv_ofAddPair,
+        QuantumCircuit.Party.SourceGate.op_gate, QuantumCircuit.Party.PairEffectGate.op_gate,
+        QuantumCircuit.Party.PairEffectGate.op_gate_eq_effectMatrix,
+        QuantumCircuit.Party.ChainGate.op_gate_inl, QuantumCircuit.Party.ChainGate.op_gate_inr}
+    \leanok
+    \uses{def:party_pair_gates, def:party_effect_matrices, def:party_circuit}
+    Let $g$ be a pair source on $D$ from $X$ to $Y$ with vector $\eta$, and let
+    $\kappa\colon Y_P\to(\alpha\times\beta)\times X_P$ be the reading of its output in
+    canonical form; for the canonical source $\kappa$ is the bijection of
+    configurations of $X^{pq}_{\alpha\beta}$. The party circuit of the one gate $g$ has
+    the operator $J_\kappa(\eta)$, which maps $\ket x$ to $\eta\otimes\ket x$.
+    For a pair effect from $X$ to $Y$ with input read through
+    $\kappa\colon X_P\to(\alpha\times\beta)\times Y_P$, the operator of its one gate is
+    $J_\kappa(\eta)^\dagger$, the effect $\bra\eta\otimes1$ with its columns read
+    through $\kappa$. Among the gates of monomials, one pair source and one pair effect
+    have the same operators.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:party_circuit_op, def:sites_place_between, lem:sites_place_between_algebra,
+        thm:party_pair_gate_matrices, def:party_effect_matrices, def:circuits_gate_sum}
+    The canonical reading is checked coordinate by coordinate. By
+    Theorem~\ref{thm:party_circuit_op} the operator of the source is the placement
+    $S\otimes1$ between $X$ and $Y$ on $D$, whose entry at $(y,x)$ is the entry of $S$
+    when $y$ and $x$ agree outside $D$ (Definition~\ref{def:sites_place_between}). The
+    two conditions, $y_l\mapsto(a,x_l)$, $y_r\mapsto(b,x_r)$, and agreement outside
+    $D$, together say $\kappa(y)=((a,b),x)$, and the entry is then $\eta_{ab}$. For the
+    effect, $(E\otimes1)=(S'^\dagger\otimes1)=(S'\otimes1)^\dagger$ for the source $S'$
+    with the same data (Theorem~\ref{thm:party_pair_gate_matrices} and
+    Lemma~\ref{lem:sites_place_between_algebra}), and the adjoint of a preparation is
+    the effect with its columns reindexed (Definition~\ref{def:party_effect_matrices}).
+    The interpretation of the sum of the two gate families restricts to the
+    interpretations of each.
+\end{proof}
+
+\subsection{Weighted gates and original circuits}
+\label{sec:party_syntax_original}
+
+\begin{definition}[Weighted gates and effect circuits]
+    \label{def:party_weighted_gate}
+    \lean{QuantumCircuit.Party.WeightedGate, QuantumCircuit.Party.WeightedGate.ev,
+        QuantumCircuit.Party.WeightedGate.IsAllowed, QuantumCircuit.Party.EffectCircuit}
+    \leanok
+    \uses{def:party_pair_gates, def:party_allowed}
+    A weighted gate on a cell $D$ from $X$ to $Y$, its gate expansion, is a finite list
+    of pairs $(\lambda_k,M_k)$ of a coefficient $\lambda_k\in\C$ and a monomial $M_k$ on
+    the parties of $D$ from $X|_D$ to $Y|_D$
+    \cite[Section~5.1]{OpenAI2026PolynomialPEPS}. It has one outcome, and its matrix,
+    from $\C^{X_D}$ to $\C^{Y_D}$, is $\sum_k\lambda_kT_{M_k}$. It is allowed when every
+    monomial $M_k$ is allowed: its local operations are contractions and its pair
+    sources and pair effects are normalized. An effect circuit is a party circuit whose
+    gates are weighted gates, with no further condition.
+\end{definition}
+
+\begin{definition}[Original gates and original circuits]
+    \label{def:party_original_circuit}
+    \lean{QuantumCircuit.Party.OriginalGate, QuantumCircuit.Party.OriginalGate.ev,
+        QuantumCircuit.Party.OriginalGate.toWeightedGateMorphism,
+        QuantumCircuit.Party.OriginalGate.isCompatible_toWeightedGateMorphism,
+        QuantumCircuit.Party.OriginalGate.ofWeightedGate,
+        QuantumCircuit.Party.OriginalGate.toWeightedGate_ofWeightedGate,
+        QuantumCircuit.Party.OriginalCircuit, QuantumCircuit.Party.OriginalCircuit.done,
+        QuantumCircuit.Party.OriginalCircuit.comp, QuantumCircuit.Party.OriginalCircuit.gate,
+        QuantumCircuit.Party.OriginalCircuit.localOp,
+        QuantumCircuit.Party.OriginalCircuit.localOps,
+        QuantumCircuit.Party.OriginalCircuit.toPartyCircuit_done,
+        QuantumCircuit.Party.OriginalCircuit.toPartyCircuit_comp,
+        QuantumCircuit.Party.OriginalCircuit.toPartyCircuit_gate,
+        QuantumCircuit.Party.OriginalCircuit.toPartyCircuit_localOp,
+        QuantumCircuit.Party.OriginalCircuit.toPartyCircuit_localOps,
+        QuantumCircuit.Party.OriginalCircuit.op, QuantumCircuit.Party.OriginalCircuit.op_done,
+        QuantumCircuit.Party.OriginalCircuit.toEffectCircuit}
+    \leanok
+    \uses{def:party_weighted_gate, def:party_relabel, def:circuits_gate_morphism}
+    An original gate on a cell $D$ from $X$ to $Y$ is a weighted gate on $D$ that is not
+    private, $|D|\neq1$, whose monomials are allowed and whose matrix is a contraction;
+    the empty cell is allowed \cite[Section~5.1]{OpenAI2026PolynomialPEPS}. It has one
+    outcome and its matrix is that of its expansion. Forgetting the conditions is a
+    morphism from original gates to weighted gates compatible with the
+    interpretations, and a weighted gate satisfying the three conditions is the
+    expansion of an original gate. An original circuit from $X$ to $Y$ is a party
+    circuit whose gates are original gates and whose local operations are
+    contractions. Original circuits are built by the empty circuit, one original gate,
+    one contraction at one party, contractions at every party, and composition, and
+    these are the corresponding party circuits. The operator $T_w$ of an original
+    circuit $w$ is that of its party circuit, the empty circuit having the operator
+    $1$, and its effect circuit is the image of its party circuit under the forgetful
+    morphism.
+\end{definition}
+
+\begin{theorem}[Operators of original circuits]
+    \label{thm:party_original_op}
+    \lean{QuantumCircuit.Party.OriginalCircuit.induction,
+        QuantumCircuit.Party.OriginalCircuit.op_comp,
+        QuantumCircuit.Party.OriginalCircuit.op_gate,
+        QuantumCircuit.Party.OriginalCircuit.op_localOp,
+        QuantumCircuit.Party.OriginalCircuit.op_localOps,
+        QuantumCircuit.Party.PartyCircuit.isAllowed_of_isLocalContractive,
+        QuantumCircuit.Party.OriginalCircuit.isAllowed,
+        QuantumCircuit.Party.OriginalCircuit.norm_op_le_one}
+    \leanok
+    \uses{def:party_original_circuit, def:party_allowed, def:sites_place_between,
+        def:elementary_finite_tensor_product}
+    A property of original circuits holds for all of them when it holds for the empty
+    circuits, for one original gate, for one contraction at one party and for
+    contractions at every party, and passes to compositions. The operator of a
+    composition is $T_{w'\circ w}=T_{w'}T_w$, that of one original gate is the
+    placement between $X$ and $Y$ on its cell of the matrix of its expansion, that of
+    one contraction at a party $p$ is its placement on $\{p\}$, and that of
+    contractions at every party is their Kronecker product. A locally contractive
+    party circuit of original gates is allowed for the condition that the monomials of
+    every gate are allowed; hence every original circuit is allowed, and
+    $\lVert T_w\rVert\le1$ \cite[Section~5.1]{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:party_circuit_op, thm:party_op_contraction}
+    The induction is the induction on the underlying party circuit, the contractivity
+    of the local operations of a composition splitting into that of the two parts. The
+    operators are those of Theorem~\ref{thm:party_circuit_op}. Allowedness is checked
+    by induction on the party circuit: every original gate is a contraction with
+    allowed monomials. Theorem~\ref{thm:party_op_contraction} gives the norm bound.
+\end{proof}
+
+\begin{theorem}[The effect circuit of an original circuit]
+    \label{thm:party_original_effect}
+    \lean{QuantumCircuit.Party.PartyCircuit.forallGate_card_ne_one,
+        QuantumCircuit.Party.PartyCircuit.forallGate_card_ne_one_mapGates,
+        QuantumCircuit.Party.OriginalCircuit.forallGate_card_ne_one,
+        QuantumCircuit.Party.OriginalCircuit.op_toEffectCircuit,
+        QuantumCircuit.Party.OriginalCircuit.isAllowed_toEffectCircuit,
+        QuantumCircuit.Party.OriginalCircuit.nonprivate}
+    \leanok
+    \uses{def:party_original_circuit, def:party_gate_counts, def:party_allowed}
+    No gate of a party circuit of original gates is private, and neither is any gate of
+    its image under the forgetful morphism; in particular no gate of an original
+    circuit or of its effect circuit is private
+    \cite[Section~5.1]{OpenAI2026PolynomialPEPS}. The effect circuit of an original
+    circuit $w$ has the operator $T_w$ and is allowed for the condition that the
+    monomials of every weighted gate are allowed.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:party_map_gates, thm:party_original_op}
+    The first statements follow by induction on the circuit from $|D|\neq1$ for every
+    original gate, the forgetful morphism keeping the cells. The forgetful morphism is
+    compatible with the interpretations and keeps the condition on the monomials, so
+    Theorem~\ref{thm:party_map_gates} transfers the operator and allowedness of
+    Theorem~\ref{thm:party_original_op}.
+\end{proof}
+
+\subsection{Words of pair sources}
+\label{sec:party_syntax_words}
+
+\begin{definition}[Words of pair sources]
+    \label{def:party_word}
+    \lean{QuantumCircuit.Party.Word, QuantumCircuit.Party.Word.IsAllowed,
+        QuantumCircuit.Party.Word.op, QuantumCircuit.Party.IsSourceOnly,
+        QuantumCircuit.Party.Word.source, QuantumCircuit.Party.Word.sourceAt,
+        QuantumCircuit.Party.Word.localPrepare, QuantumCircuit.Party.Word.localDiscard,
+        QuantumCircuit.Party.Word.prepareProduct, QuantumCircuit.Party.Word.sources,
+        QuantumCircuit.Party.Word.sourceCount, QuantumCircuit.Party.Word.sources_comp,
+        QuantumCircuit.Party.Word.sources_relabel, QuantumCircuit.Party.Word.sources_source,
+        QuantumCircuit.Party.Word.sources_prepareProduct, QuantumCircuit.Party.Word.UsesOnly,
+        QuantumCircuit.Party.Word.toChain}
+    \leanok
+    \uses{def:party_pair_gates, def:party_allowed, def:party_relabel,
+        def:circuits_gate_sum}
+    A word from $X$ to $Y$ is a party circuit whose gates are pair sources. It is
+    allowed when its local operations are contractions and its pair sources are
+    normalized, and an operator is source-only when it is the operator $T_w$ of an
+    allowed word $w$ \cite[Lemma~5.1]{OpenAI2026PolynomialPEPS}. Particular words are:
+    \begin{enumerate}
+        \item the word of one pair source, and the canonical pair source word of
+              $\eta\in\C^{\alpha\times\beta}$ on $p\neq q$, from $X$ to
+              $X^{pq}_{\alpha\beta}$;
+        \item the local preparation of $v\in\C^\alpha$ at a party $p$, the local
+              operation $J_e(v)$ at $p$ for a bijection
+              $e\colon Y_p\to\alpha\times X_p$, where $Y_s=X_s$ for $s\neq p$; with
+              $\alpha=\alpha_1\times\alpha_2$ it prepares a pair vector at one party;
+        \item the local bra of $v\in\C^\alpha$ at $p$, the local operation
+              $J_e(v)^\dagger$ for a bijection $e\colon X_p\to\alpha\times Y_p$,
+              where $Y_s=X_s$ for $s\neq p$;
+        \item the preparation of the product vector $\bigotimes_p\phi_p$, for vectors
+              $\phi_p\in\C^{X_p}$, from the system with a single basis vector at every
+              party, by the local operation $\ket{\phi_p}$ at every party $p$.
+    \end{enumerate}
+    The source list of a word is the list of the data of its pair sources, those of the
+    later part first: it is empty for the empty word and for local operations, it is
+    $(g)$ for one source $g$, and it is the list of $w'$ followed by that of $w$ for
+    $w'\circ w$; thus relabellings and product preparations have no source. The source
+    count is the length of the source list. A word uses only the parties of a set $R$
+    when its sources have cells inside $R$, its local operations at one party act at
+    parties of $R$, and at every party $s\notin R$ its local operations at every party
+    have $Y_s=X_s$ and are the identity. Every word is a monomial with no pair effect,
+    each pair source read as a gate of monomials.
+\end{definition}
+
+\begin{theorem}[Operators of words]
+    \label{thm:party_word_op}
+    \lean{QuantumCircuit.Party.Word.op_comp, QuantumCircuit.Party.Word.op_source,
+        QuantumCircuit.Party.Word.op_sourceAt,
+        QuantumCircuit.Party.Word.op_source_eq_op_relabel_mul,
+        QuantumCircuit.Party.Word.op_localPrepare,
+        QuantumCircuit.Party.Word.op_localPrepare_eq_prepMatrix,
+        QuantumCircuit.Party.Word.op_localDiscard,
+        QuantumCircuit.Party.Word.op_prepareProduct_mulVec,
+        QuantumCircuit.Party.Word.op_toChain}
+    \leanok
+    \uses{def:party_word, def:sites_pair_factor_config, def:sites_place_between,
+        def:siteconfig_product_vector, def:party_effect_matrices}
+    The operator of a composition of words is $T_{w'\circ w}=T_{w'}T_w$. The operator of
+    one pair source is the preparation of its vector with the output read in canonical
+    form (Theorem~\ref{thm:party_pair_gate_op}); for the canonical source on $p\neq q$ it
+    is $J_e(\eta)$ along the bijection $e$ of configurations of
+    $X^{pq}_{\alpha\beta}$, which maps $\ket x$ to $\eta\otimes\ket x$, and every pair
+    source is the canonical source of its datum followed by the relabelling of its
+    output into canonical form:
+    \begin{align}
+        T_g & =T_{R}\,T_{\mathrm{can}}, \notag
+    \end{align}
+    where $T_{\mathrm{can}}$ is the operator of the canonical source of the datum of $g$
+    from $X$ to $X^{lr}_{\alpha\beta}$ and $R$ is the relabelling along the reading of
+    the output of $g$ in canonical form.
+    The local preparation of $v$ at $p$ has the operator $J_e(v)\otimes1$, the
+    placement on $\{p\}$, which is the preparation $J_{\hat e}(v)$ along the
+    bijection $\hat e\colon Y_P\to\alpha\times X_P$ that splits off the factor $\alpha$
+    at $p$ (Definition~\ref{def:sites_pair_factor_config}). The local bra of $v$ at $p$
+    has the operator $\bra v\otimes1$ with its columns read along the corresponding
+    bijection $X_P\to\alpha\times Y_P$. The product preparation maps the unique basis
+    vector to $\bigotimes_p\phi_p$. A word read as a monomial has the operator of the
+    word.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:party_circuit_op, thm:party_pair_gate_op, thm:party_relabel_op,
+        def:sites_pair_factor_config, def:sites_place_between, thm:party_map_gates,
+        def:circuits_gate_sum}
+    The composition and the local operations are Theorem~\ref{thm:party_circuit_op},
+    and one source is Theorem~\ref{thm:party_pair_gate_op}. The relabelling $R$ after
+    the canonical source reindexes the rows of $J_e(\eta)$ along the reading in
+    canonical form (Theorem~\ref{thm:party_relabel_op}), which is the operator of the
+    source. For the local preparation compare entries: the entry of the placement at
+    $(y,z)$ is $v_a$ when $e(y_p)=(a,z_p)$ and $y_s=z_s$ for $s\neq p$, which is the
+    condition that $\hat e(y)=(a,z)$ (Definition~\ref{def:sites_pair_factor_config});
+    the local bra is the same computation for the adjoint. For the product
+    preparation, the Kronecker product of the columns $\ket{\phi_p}$ applied to the
+    basis vector has the coefficient $\prod_p(\phi_p)_{x_p}$ at $x$. The inclusion of
+    pair sources among the gates of monomials is compatible with the interpretations
+    (Definition~\ref{def:circuits_gate_sum}), so Theorem~\ref{thm:party_map_gates}
+    applies.
+\end{proof}
+
+\begin{theorem}[A fresh source commutes with local operations on the old factors]
+    \label{thm:party_source_commutes}
+    \lean{QuantumCircuit.Party.Word.op_sourceAt_mul_piKronecker}
+    \leanok
+    \uses{def:party_word, thm:party_add_pair_matrix}
+    Let $p\neq q$, let $\eta\in\C^{\alpha\times\beta}$, and let $A_s$ be matrices from
+    $\C^{Y_s}$ to $\C^{Y'_s}$. Local operations followed by the canonical source equal
+    the canonical source followed by the same operations beside the fresh factors:
+    \begin{align}
+        T_{\mathrm{can},Y'}\bigotimes_sA_s & =\bigotimes_s(1\otimes A_s)\,T_{\mathrm{can},Y},
+        \notag
+    \end{align}
+    where $T_{\mathrm{can},Y}$ is the operator of the canonical source of $\eta$ on
+    $\{p,q\}$ from $Y$ to $Y^{pq}_{\alpha\beta}$
+    \cite[Theorem~5.2]{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:party_word_op, thm:party_add_pair_matrix, def:party_effect_matrices}
+    By Theorem~\ref{thm:party_word_op} both canonical sources are preparations of
+    $\eta$ along the bijections of configurations, and by
+    Theorem~\ref{thm:party_add_pair_matrix} the right-hand Kronecker product is
+    $1_{\alpha\times\beta}\otimes\bigotimes_sA_s$ along the same bijections. At the
+    configuration $((a,b),y')$ and the input $x$ both sides have the entry
+    $\eta_{ab}(\bigotimes_sA_s)_{y'x}$.
+\end{proof}
+
+\begin{theorem}[Allowed words]
+    \label{thm:party_word_allowed}
+    \lean{QuantumCircuit.Party.Word.isAllowed_done, QuantumCircuit.Party.Word.IsAllowed.comp,
+        QuantumCircuit.Party.Word.isAllowed_localOp,
+        QuantumCircuit.Party.Word.isAllowed_localOps,
+        QuantumCircuit.Party.Word.isAllowed_source,
+        QuantumCircuit.Party.Word.isAllowed_localPrepare,
+        QuantumCircuit.Party.Word.isAllowed_localDiscard,
+        QuantumCircuit.Party.Word.isAllowed_relabel,
+        QuantumCircuit.Party.Word.isAllowed_sourceAt,
+        QuantumCircuit.Party.Word.isAllowed_prepareProduct,
+        QuantumCircuit.Party.Word.IsAllowed.toChain}
+    \leanok
+    \uses{def:party_word}
+    The empty word, compositions of allowed words, contractions at one party and at
+    every party, and relabellings are allowed words. One pair source with a normalized
+    vector, in particular the canonical source of a unit vector, is allowed. The local
+    preparation and the local bra of a unit vector are allowed, and so is the
+    preparation of a product of unit vectors. An allowed word read as a monomial is an
+    allowed monomial.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:party_pair_gate_matrices, def:party_effect_matrices,
+        lem:matrix_l2_contractions, thm:party_map_gates}
+    A normalized source is a contraction
+    (Theorem~\ref{thm:party_pair_gate_matrices}). A preparation of a unit vector is a
+    contraction (Definition~\ref{def:party_effect_matrices}), and so is its adjoint;
+    the column $\ket{\phi_p}$ is the preparation of $\phi_p$ on a single basis vector.
+    The matrix of a bijection is a contraction (Lemma~\ref{lem:matrix_l2_contractions}).
+    Reading a word as a monomial keeps allowedness by Theorem~\ref{thm:party_map_gates}.
+\end{proof}
+
+\begin{theorem}[Source lists of words]
+    \label{thm:party_word_sources}
+    \lean{QuantumCircuit.Party.Word.numGates_eq_sourceCount,
+        QuantumCircuit.Party.Word.forallGate_card_ne_one,
+        QuantumCircuit.Party.Word.gateCount_eq_sourceCount,
+        QuantumCircuit.Party.Word.isNormalized_sources,
+        QuantumCircuit.Party.Word.usesOnly_relabel,
+        QuantumCircuit.Party.Word.UsesOnly.mem_sources,
+        QuantumCircuit.Party.Word.gates_toChain}
+    \leanok
+    \uses{def:party_word, def:party_gate_counts}
+    For every word $w$, the number of gates and the gate count are both the source
+    count, since no pair source is private; the gates of $w$ read as a monomial are its
+    pair sources. The source list of an allowed word is normalized. A relabelling
+    that is the identification of equal bases outside $R$ uses only the parties of $R$,
+    and every source of a word using only the parties of $R$ joins two parties of $R$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:party_gate_count_relations, thm:party_map_gates}
+    By induction on $w$. A source has the cell $\{l,r\}$ with $l\neq r$, of two
+    parties, so Theorem~\ref{thm:party_gate_count_relations} gives $\#(w)=n(w)$. The
+    gates of the monomial are given by Theorem~\ref{thm:party_map_gates}. The other
+    statements are read off the rules.
+\end{proof}
+
+\begin{definition}[Sources and effects of monomials]
+    \label{def:party_monomial_effects}
+    \lean{QuantumCircuit.Party.Monomial.sources, QuantumCircuit.Party.Monomial.effects,
+        QuantumCircuit.Party.Monomial.effectParties,
+        QuantumCircuit.Party.Monomial.effectCount,
+        QuantumCircuit.Party.Monomial.sourceCount}
+    \leanok
+    \uses{def:party_pair_gates, def:party_gate_counts}
+    For a monomial $M$, its sources are the data of its pair sources, the latest first,
+    and its effects are the data of its pair effects in chronological order, read off
+    the list of its gates. The endpoints of its effects form the list of the pairs
+    $(l,r)$ of the effects. The effect count and the source count are the lengths of
+    the two lists \cite[Section~5.1]{OpenAI2026PolynomialPEPS}.
+\end{definition}
+
+\begin{theorem}[Counting the sources and effects of a monomial]
+    \label{thm:party_monomial_effects}
+    \lean{QuantumCircuit.Party.Monomial.effectCount_add_sourceCount,
+        QuantumCircuit.Party.Monomial.effectCount_comp,
+        QuantumCircuit.Party.Monomial.sourceCount_comp,
+        QuantumCircuit.Party.Monomial.effects_comp,
+        QuantumCircuit.Party.Monomial.norm_vector_of_mem_effects,
+        QuantumCircuit.Party.Monomial.effects_toChain}
+    \leanok
+    \uses{def:party_monomial_effects, def:party_allowed, def:party_word}
+    For a monomial $M$, the effect count plus the source count is $n(M)$. Under
+    composition the effect counts and the source counts add, and the effects of
+    $M'\circ M$ are those of $M$ followed by those of $M'$. The effects of an allowed
+    monomial are normalized, and a word read as a monomial has no effect.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:party_gate_count_relations, thm:party_word_sources}
+    Every gate of a monomial is a source or an effect, and the number of gates is the
+    length of the list of gates (Theorem~\ref{thm:party_gate_count_relations}); count
+    by induction on that list. The lists of gates of a composition are concatenated.
+    Normalization follows by induction on $M$. The gates of a word read as a monomial
+    are pair sources (Theorem~\ref{thm:party_word_sources}).
+\end{proof}

@@ -5,12 +5,18 @@ Authors: TNLean contributors
 -/
 import Mathlib.Basic.Complex.Basic
 import Mathlib.LinearAlgebra.Matrix.Trace
+import Mathlib.LinearAlgebra.Matrix.ConjTranspose
+import Mathlib.Analysis.Matrix.Order
+import Mathlib.Algebra.Star.Pi
 
 /-!
 # Rank-one matrix sandwiches
 
 This file records the trace formula for sandwiching a matrix between two copies
 of a rank-one matrix.
+
+Moved from TNLean, `TNLean/MPS/MPU/Circuit/CutMetrics/NormalizedBondDilation.lean` at commit
+`021ba0bd19` (Apache-2.0).
 -/
 
 open scoped Matrix BigOperators
@@ -125,3 +131,26 @@ theorem rankOne_sandwich_eq_zero_of_trace
   exact vecMulVec_mul_mul_vecMulVec_eq_zero_of_trace ρ Φ P htrace
 
 end Matrix
+
+section
+
+open scoped Matrix ComplexOrder MatrixOrder
+
+namespace Matrix
+
+variable {n : Type*} [Fintype n] [DecidableEq n]
+
+/-- A normalized row functional followed by a reset to a basis vector is a
+partial isometry.
+Source: `docs/audits/2026-10-02_mpu_rank_two_circuits.tex`, Section 5. -/
+theorem vecMulVec_single_mul_conjTranspose_mul (z : n) (w : n → ℂ)
+    (hw : star w ⬝ᵥ w = 1) :
+    vecMulVec (Pi.single z 1) w * (vecMulVec (Pi.single z 1) w)ᴴ *
+      vecMulVec (Pi.single z 1) w = vecMulVec (Pi.single z 1) w := by
+  have hw' : w ⬝ᵥ star w = 1 := by simpa only [dotProduct_comm] using hw
+  simp only [conjTranspose_vecMulVec, vecMulVec_mul_vecMulVec, hw', one_smul,
+    ← Pi.single_star, star_one, single_one_dotProduct, Pi.single_eq_same]
+
+end Matrix
+
+end

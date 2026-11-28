@@ -190,13 +190,11 @@ $\mathcal H_X=0$ and the statements below hold trivially.
 
 \begin{theorem}[Supported operators are spanned by product operators]
     \label{thm:sites_product_span}
-    \lean{ManyBody.supportedOperators_toSubmodule_eq_span, Matrix.piKronecker,
-        Matrix.piKronecker_apply, Matrix.piKronecker_mul, Matrix.piKronecker_one,
-        Matrix.conjTranspose_piKronecker, Matrix.piKronecker_mem_unitaryGroup,
-        ManyBody.piKronecker_mem_supportedOperators, ManyBody.place_single, Matrix.trace_piKronecker,
-        Matrix.piKronecker_basisInclusion}
+    \lean{ManyBody.supportedOperators_toSubmodule_eq_span,
+        ManyBody.piKronecker_mem_supportedOperators, ManyBody.place_single}
     \leanok
-    \uses{thm:sites_place_range, lem:sites_place_hom, def:gate_basis_inclusion}
+    \uses{thm:sites_place_range, lem:sites_place_hom, def:gate_basis_inclusion,
+        def:elementary_finite_tensor_product}
     The algebra $\mathcal A_D$ is the linear span of the product operators
     $\bigotimes_{v\in V}m_v$ with $m_v=1$ for every $v\notin D$. Product operators
     multiply sitewise, $(\bigotimes_vm_v)^*=\bigotimes_vm_v^*$, a product of
@@ -205,6 +203,8 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     product injection $(x_v)_v\mapsto(e_v(x_v))_v$.
 \end{theorem}
 \begin{proof}\leanok
+    \uses{lem:elementary_finite_tensor_product_algebra, lem:elementary_tensor_power_label_map,
+        lem:elementary_tensor_power_partial_isometry}
     The matrix element of $\bigotimes_vm_v$ at $(\sigma,\tau)$ is
     $\prod_v(m_v)_{\sigma_v\tau_v}$, and the factors at $v\notin D$ are
     $\delta_{\sigma_v\tau_v}$, so these operators are supported on $D$.
@@ -278,7 +278,7 @@ $\mathcal H_X=0$ and the statements below hold trivially.
 \begin{lemma}[Product operators across a cut and intertwined placements]
     \label{lem:sites_product_intertwine}
     \lean{ManyBody.reindex_cutEquiv_piKronecker, ManyBody.piKronecker_mul_place,
-        Matrix.piKronecker_eq_zero_iff, Matrix.piKronecker_ne_zero, ManyBody.piKronecker_eq_place,
+        ManyBody.piKronecker_eq_place,
         ManyBody.place_mul_piKronecker_eq_zero_iff}
     \leanok
     \uses{def:sites_config, def:sites_place, thm:sites_product_span}
@@ -298,6 +298,7 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     $(K\otimes1)\bigotimes_vm_v=0$ if and only if $Km_D=0$.
 \end{lemma}
 \begin{proof}\leanok
+    \uses{lem:elementary_finite_tensor_product_algebra}
     The matrix element of $\bigotimes_vm_v$ is the product over $V$ of the on-site
     elements, which splits into the products over $D$ and over $V\setminus D$. Then
     \[
@@ -411,6 +412,184 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     The extension is the placement of $K$ in the system of sites of $U$, relabelled along a
     bijection of configurations; apply Lemma~\ref{lem:sites_place_norm_order} in that
     system.
+\end{proof}
+
+\section{Placement between two systems}
+\label{sec:sites_place_between}
+
+An operation on a region $D$ may change the basis sets of the sites of $D$ and
+leave the other sites alone; its input and output systems then agree outside
+$D$. This section places a matrix between two such systems.
+
+\begin{definition}[A system changed on a region]
+    \label{def:sites_update_on}
+    \lean{ManyBody.updateOn, ManyBody.updateOn_of_mem, ManyBody.updateOn_of_notMem,
+        ManyBody.updateOn_eq_of_notMem, ManyBody.updateOnConfigEquiv,
+        ManyBody.updateOnConfigEquiv_apply_fst, ManyBody.updateOnConfigEquiv_apply_snd}
+    \leanok
+    \uses{def:sites_config}
+    Let $X$ be a system on $V$, $D$ a region and $Z$ a family of basis sets
+    $Z_v$ for the sites $v\in D$. The system $X[D\leftarrow Z]$ has the basis set
+    $Z_v$ at $v\in D$ and $X_v$ at $v\notin D$; it agrees with $X$ outside $D$.
+    By the cut along $D$, a configuration of $X[D\leftarrow Z]$ is a pair of a
+    configuration of $Z$ on $D$ and a configuration $\sigma|_{V\setminus D}$ of
+    $X$ outside $D$.
+\end{definition}
+
+\begin{definition}[Configurations of two sites and of a split factor]
+    \label{def:sites_pair_factor_config}
+    \lean{ManyBody.pairConfigEquiv, ManyBody.pairConfigEquiv_apply,
+        ManyBody.factorConfigEquiv, ManyBody.factorConfigEquiv_apply_fst,
+        ManyBody.factorConfigEquiv_apply_snd_eq_iff, ManyBody.factorConfigEquiv_eq_iff}
+    \leanok
+    \uses{def:sites_config}
+    If $D=\{a,b\}$ with $a\neq b$, the map $\sigma\mapsto(\sigma_a,\sigma_b)$ is a
+    bijection $X_D\to X_a\times X_b$. Let $W$ and $Z$ be systems with $W_s=Z_s$
+    for $s\neq p$, and let $e\colon W_p\to A\times Z_p$ be a bijection. Then
+    $w\mapsto(e(w_p)_1,z)$, where $z_p=e(w_p)_2$ and $z_s=w_s$ for $s\neq p$, is a
+    bijection $W_V\to A\times Z_V$; thus $w$ is sent to $(a,z)$ exactly when
+    $e(w_p)=(a,z_p)$ and $w_s=z_s$ for every $s\neq p$.
+\end{definition}
+
+\begin{definition}[Placement between two systems]
+    \label{def:sites_place_between}
+    \lean{ManyBody.complCast, ManyBody.complCast_apply, ManyBody.complCast_symm_apply,
+        ManyBody.complCast_rfl, ManyBody.complCast_symm, ManyBody.complCast_trans,
+        ManyBody.placeBetween, ManyBody.placeBetween_apply,
+        ManyBody.placeBetween_apply_cutEquiv_symm}
+    \leanok
+    \uses{def:sites_config, def:sites_place}
+    Let $X$ and $Y$ be systems on $V$ with $Y_v=X_v$ for every $v\notin D$. The
+    configurations outside $D$ of the two systems are then the same,
+    $X_{V\setminus D}=Y_{V\setminus D}$; this identification is the identity when
+    $Y=X$, its inverse is the identification for the reversed agreement, and two
+    identifications compose to the identification of the composed agreement. For a
+    matrix $K$ from $\C^{X_D}$ to $\C^{Y_D}$, the placement $K\otimes1$ is the
+    matrix from $\mathcal H_X$ to $\mathcal H_Y$ whose element at $(y,x)$ is
+    $K_{y|_D,x|_D}$ if $y$ and $x$ agree outside $D$, and $0$ otherwise. In the
+    coordinates of the cuts, $(K\otimes1)_{(a,z),(b,z)}=K_{ab}$ for every
+    configuration $z$ outside $D$.
+\end{definition}
+
+\begin{lemma}[Algebra of placements between two systems]
+    \label{lem:sites_place_between_algebra}
+    \lean{ManyBody.placeBetween_eq_place, ManyBody.placeBetween_zero,
+        ManyBody.placeBetween_add, ManyBody.placeBetween_smul, ManyBody.placeBetween_sub,
+        ManyBody.placeBetween_sum, ManyBody.placeBetween_mul,
+        ManyBody.placeBetween_conjTranspose, ManyBody.norm_placeBetween_le,
+        ManyBody.norm_submatrix_singleton_le}
+    \leanok
+    \uses{def:sites_place_between}
+    Let $Y$ agree with $X$ outside $D$. When $Y=X$, the placement between two
+    systems is the placement of Definition~\ref{def:sites_place}. The map
+    $K\mapsto K\otimes1$ is linear: it sends $0$, sums, differences, scalar
+    multiples and finite sums to the same combinations of placements. If
+    a third system $W$ agrees with $Y$ outside $D$ and $K'$ is a matrix from
+    $\C^{Y_D}$ to $\C^{W_D}$, then
+    \begin{align*}
+        (K'\otimes1)(K\otimes1) & =K'K\otimes1,       &
+        (K\otimes1)^\dagger     & =K^\dagger\otimes1,
+    \end{align*}
+    where the adjoint is placed from $Y$ to $X$. The placement does not increase
+    the operator norm, $\lVert K\otimes1\rVert\le\lVert K\rVert$. For a single site
+    $v_0$ and a matrix $A$ from $\C^{X_{v_0}}$ to $\C^{Y_{v_0}}$, the same matrix
+    read on the configurations of the region $\{v_0\}$ has norm at most
+    $\lVert A\rVert$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:matrix_l2_contractions, thm:detailed_balance_tensor_norm}
+    The placement is $K$ tensored with the matrix of the identification outside $D$,
+    relabelled along the two cuts. For $Y=X$ that matrix is the identity. Linearity
+    is linearity of the Kronecker product in its first factor, and finite sums follow
+    by induction. The product rule is $(K'\otimes P')(K\otimes P)=K'K\otimes P'P$,
+    where the product of the two identifications is the identification of the
+    composed agreement; the adjoint rule uses that the adjoint of the matrix of a
+    bijection is the matrix of its inverse. The norm of a Kronecker product is at
+    most the product of the norms, the matrix of a bijection is a contraction, and
+    relabelling the coordinates along bijections does not increase the norm; the
+    one-site region is in bijection with the site.
+\end{proof}
+
+\begin{lemma}[Placement beside spectators and of product operators]
+    \label{lem:sites_place_between_products}
+    \lean{ManyBody.placeBetween_reindex_one_kronecker, ManyBody.placeBetween_piKronecker}
+    \leanok
+    \uses{def:sites_place_between, thm:sites_product_span}
+    Let $Y$ agree with $X$ outside $D$ and let $K$ be a matrix from $\C^{X_D}$ to
+    $\C^{Y_D}$.
+    \begin{enumerate}
+        \item Let $W$ be a system on $V$, and let the systems $W\times X$ and
+              $W\times Y$, with basis sets $W_v\times X_v$ and $W_v\times Y_v$,
+              agree outside $D$. Placing $1_{W_D}\otimes K$, read on the
+              configurations of $D$ in $W\times X$ and $W\times Y$, between these
+              two systems gives $1_{W_V}\otimes(K\otimes1)$, read on their
+              configurations.
+        \item For matrices $K_w$ from $\C^{X_w}$ to $\C^{Y_w}$, $w\in D$,
+              placing $\bigotimes_{w\in D}K_w$ gives the product operator
+              $\bigotimes_{v\in V}M_v$ with $M_v=K_v$ for $v\in D$ and $M_v$ the
+              matrix of the identification $X_v=Y_v$ for $v\notin D$.
+    \end{enumerate}
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:sites_place_between_algebra}
+    Compare matrix elements with the entry formula of
+    Definition~\ref{def:sites_place_between}. In the first statement two
+    configurations of $W\times X$ and $W\times Y$ agree outside $D$ exactly when
+    their $W$-parts agree outside $D$ and their remaining parts agree outside $D$;
+    when the $W$-parts differ somewhere both sides vanish, and otherwise both are
+    the entry of $K$. In the second, the product over $V$ splits into the product
+    over $D$, which is the entry of $\bigotimes_{w\in D}K_w$, and the product over
+    $V\setminus D$ of the entries of the identifications, which is $1$ exactly
+    when the two configurations agree outside $D$.
+\end{proof}
+
+\begin{lemma}[Placement between two systems through a larger region]
+    \label{lem:sites_subregion_place_between}
+    \lean{ManyBody.subregionPlaceBetween, ManyBody.subregionPlaceBetween_apply,
+        ManyBody.subregionPlaceBetween_add, ManyBody.subregionPlaceBetween_smul,
+        ManyBody.norm_subregionPlaceBetween_le,
+        ManyBody.placeBetween_subregionPlaceBetween}
+    \leanok
+    \uses{def:sites_place_between, def:sites_subregion_place}
+    Let $D\subseteq U$ be regions, let $Y$ agree with $X$ outside $D$, and let $K$
+    be a matrix from $\C^{X_D}$ to $\C^{Y_D}$. The extension of $K$ to $U$ is the
+    placement of $K$ between the two systems formed by the sites of $U$: its
+    element at $(\alpha,\beta)$ is $K_{\alpha|_D,\beta|_D}$ if $\alpha$ and $\beta$
+    agree on $U\setminus D$, and $0$ otherwise. It is additive and homogeneous in $K$
+    and does not increase the operator norm. If $Y$ also agrees with $X$ outside $U$,
+    then placing the extension on $U$ gives the placement $K\otimes1$ on $D$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:sites_place_between_algebra}
+    The entry formula and the linear and norm statements are those of
+    Definition~\ref{def:sites_place_between} and
+    Lemma~\ref{lem:sites_place_between_algebra} in the system of the sites of $U$,
+    after relabelling the configurations of $D$ in that system. For the last
+    statement, both sides have the element $K_{\sigma|_D,\tau|_D}$ when $\sigma$ and
+    $\tau$ agree outside $D$, and $0$ otherwise, since agreeing on $U\setminus D$ and
+    outside $U$ is agreeing outside $D$.
+\end{proof}
+
+\begin{lemma}[Blocking commutes with placement between two systems]
+    \label{lem:sites_place_between_blocks}
+    \lean{ManyBody.blockSystem_eq_of_notMem, ManyBody.reindex_blockConfigEquiv_placeBetween,
+        ManyBody.reindex_blockConfigEquiv_placeBetween_singleton}
+    \leanok
+    \uses{def:sites_place_between, def:sites_block}
+    Let $f\colon V_0\to V'$ group the sites into blocks, let $D'$ be a region of
+    blocks, and let $Y$ agree with $X$ outside $f^{-1}(D')$. Then the blocked
+    systems agree at every block outside $D'$, and a matrix $K$ placed between them
+    on $D'$ is, read on the configurations of the sites, the same matrix placed on
+    $f^{-1}(D')$. In particular, for a single block $b$ with $Y$ agreeing with $X$
+    outside $f^{-1}(b)$, a matrix of the block $b$ placed at $b$ is, read on the
+    sites, the same matrix placed on $f^{-1}(b)$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:sites_block}
+    Two configurations agree at every block outside $D'$ exactly when they agree at
+    every site outside $f^{-1}(D')$, and their parts on $D'$ and on $f^{-1}(D')$
+    correspond; the two placements therefore have the same matrix elements. The
+    case of one block is the case $D'=\{b\}$.
 \end{proof}
 
 \section{Placement along an injection of sites}
@@ -610,7 +789,6 @@ $\mathcal H_X=0$ and the statements below hold trivially.
         ManyBody.norm_regionExpectation_le, ManyBody.regionExpectation_zero,
         ManyBody.regionExpectation_add, ManyBody.regionExpectation_smul,
         ManyBody.regionExpectation_sub, ManyBody.isHermitian_regionExpectation,
-        ManyBody.regionExpectationLM, ManyBody.regionExpectationLM_apply,
         ManyBody.regionExpectationCLM, ManyBody.regionExpectationCLM_apply,
         ManyBody.regionExpectationLM_isKrausCPTP,
         ManyBody.norm_sub_regionExpectation_le_two_mul_norm_sub}

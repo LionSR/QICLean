@@ -12,9 +12,8 @@ import QICLean.Entropy.StrongSubadditivity.Basic
 import QICLean.Entropy.StrongSubadditivity.EntropyMarkovReverse
 import QICLean.Entropy.StrongSubadditivity.EqualitySeparability
 import QICLean.Entropy.StrongSubadditivity.MarkovChain
+import QICLean.Entropy.StrongSubadditivity.MutualInformationDataProcessing
 import QICLean.Entropy.StrongSubadditivity.PositiveOverlappingProduct
-import QICLean.Entropy.StrongSubadditivity.SSAEqualityDPI
-import QICLean.Entropy.StrongSubadditivity.SSAEqualityPetzRecovery
 import QICLean.Entropy.StrongSubadditivity.StrongSubadditivity
 import QICLean.Entropy.StrongSubadditivity.StrongSubadditivityPosDef
 import QICLean.Entropy.StrongSubadditivity.TripartiteDecorrelation

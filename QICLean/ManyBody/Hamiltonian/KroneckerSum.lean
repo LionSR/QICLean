@@ -8,7 +8,7 @@ import QICLean.Algebra.Kronecker.KroneckerFactorPositivity
 import QICLean.ManyBody.Hamiltonian.GroundSpace
 import Mathlib.LinearAlgebra.Matrix.Kronecker
 import Mathlib.LinearAlgebra.UnitaryGroup
-import QICLean.ManyBody.Sites.Placement
+import QICLean.ManyBody.Sites.Placement.Basic
 
 /-!
 # Gaps of a Kronecker sum

@@ -8,6 +8,12 @@ import Mathlib.Analysis.Normed.Ring.Basic
 import Mathlib.Algebra.Group.Idempotent
 import Mathlib.Tactic.NoncommRing
 import Mathlib.Tactic.Positivity
+import Mathlib.Analysis.CStarAlgebra.Matrix
+import Mathlib.Analysis.Matrix.Order
+import Mathlib.LinearAlgebra.Matrix.Kronecker
+import Mathlib.Analysis.InnerProductSpace.Basic
+import Mathlib.Topology.Algebra.Module.FiniteDimension
+import Mathlib.Analysis.Normed.Operator.Basic
 
 /-!
 # Telescoping bounds for perturbed ordered products
@@ -37,12 +43,20 @@ Moved from TNLean, `TNLean/Algebra/NormedRingTelescoping.lean` at commit `49b78e
   the telescoping bound near an idempotent, for ordered products and for powers.
 * `one_add_pow_sub_one_le_mul_exp` — `(1 + y)^M - 1 ≤ M y e^{M y}`.
 * `le_mul_of_le_mul_exp_of_le` — `v ≤ C y e^{C y}` and `v ≤ B` give `v ≤ (C e^C + B) y`.
+* `ContinuousLinearMap.norm_comp_three_sub_le`,
+  `ContinuousLinearMap.tendsto_norm_comp_three_sub_zero_of_bounds`: perturbing a product of three
+  bounded operators.
 
 ## References
 
 * arXiv:2103.13367, Supplemental Material, proof of the classification theorem.
 * arXiv:2307.01696, Supplemental Material, eq. (S9) and Lemma 1'(i).
+
+Moved from TNLean, `TNLean/MPS/Preparation/BlockSum/OverlappingBlockStates.lean` at commit
+`021ba0bd19` (Apache-2.0).
 -/
+
+section NormedRingTelescoping
 
 /-- The telescoping identity for two ordered products in a ring:
 `X_0 ⋯ X_{n-1} - Y_0 ⋯ Y_{n-1}` is the sum of products with one factor `X_k - Y_k`,
@@ -205,3 +219,135 @@ theorem le_mul_of_le_mul_exp_of_le {C B v y : ℝ} (hC : 0 ≤ C) (hB : 0 ≤ B)
       _ ≤ (C * Real.exp C + B) * y := by nlinarith [Real.exp_pos C]
   · have : 0 ≤ C * Real.exp C * y := by positivity
     nlinarith
+
+section
+
+open scoped Matrix Kronecker ComplexOrder MatrixOrder BigOperators InnerProductSpace
+
+open Matrix
+
+
+open scoped Matrix.Norms.L2Operator in
+/-- **Telescoping for the trace of a product.** For a finite index type there is `K ≥ 0` such
+that for every matrix `E` whose powers have norm at most `c` and all matrices `X_0, …, X_{M-1}`
+within `δ` of `E`, `|Tr(X_0 ⋯ X_{M-1}) - Tr E^M| ≤ K c² (M δ) e^{c M δ}`.
+
+arXiv:2103.13367, Supplemental Material, eqs. `final_eq` to `finished`, for a product of
+different matrices (`norm_prod_range_sub_pow_le_of_forall_norm_pow_le`). -/
+theorem Matrix.exists_norm_trace_prod_ofFn_sub_trace_pow_le (κ : Type*) [Fintype κ]
+    [DecidableEq κ] :
+    ∃ K : ℝ, 0 ≤ K ∧ ∀ (E : Matrix κ κ ℂ) (c : ℝ), (∀ n : ℕ, ‖E ^ n‖ ≤ c) →
+      ∀ (M : ℕ) (X : Fin M → Matrix κ κ ℂ) (δ : ℝ), (∀ k, ‖X k - E‖ ≤ δ) →
+        ‖Matrix.trace (List.ofFn X).prod - Matrix.trace (E ^ M)‖ ≤
+          K * c ^ 2 * (M * δ) * Real.exp (c * (M * δ)) := by
+  set trL := LinearMap.toContinuousLinearMap (Matrix.traceLinearMap κ ℂ ℂ)
+  refine ⟨‖trL‖, norm_nonneg _, fun E c hE M X δ hX => ?_⟩
+  rcases Nat.eq_zero_or_pos M with rfl | hM
+  · simp
+  have hc : 0 ≤ c := (norm_nonneg _).trans (hE 0)
+  have hδ : 0 ≤ δ := (norm_nonneg _).trans (hX ⟨0, hM⟩)
+  set Y : ℕ → Matrix κ κ ℂ := fun n => if h : n < M then X ⟨n, h⟩ else E
+  have hY : ∀ n, ‖Y n - E‖ ≤ δ := fun n => by
+    simp only [Y]
+    split_ifs with h
+    · exact hX _
+    · rw [sub_self, norm_zero]; exact hδ
+  have hprod : List.ofFn X = (List.range M).map Y := by
+    refine List.ext_getElem (by simp) fun i h1 _ => ?_
+    have hi : i < M := by simpa using h1
+    simp [Y, hi]
+  have htel := norm_prod_range_sub_pow_le_of_forall_norm_pow_le hE hY M
+  have hgeom := one_add_pow_sub_one_le_mul_exp (mul_nonneg hc hδ) M
+  have htr : ‖Matrix.trace (List.ofFn X).prod - Matrix.trace (E ^ M)‖ ≤
+      ‖trL‖ * ‖(List.ofFn X).prod - E ^ M‖ := by
+    rw [← Matrix.trace_sub]
+    exact trL.le_opNorm _
+  rw [hprod] at htr ⊢
+  calc _ ≤ ‖trL‖ * ‖((List.range M).map Y).prod - E ^ M‖ := htr
+    _ ≤ ‖trL‖ * (c * ((1 + c * δ) ^ M - 1)) := by gcongr
+    _ ≤ ‖trL‖ * (c * (M * (c * δ) * Real.exp (M * (c * δ)))) := by gcongr
+    _ = ‖trL‖ * c ^ 2 * (M * δ) * Real.exp (c * (M * δ)) := by ring_nf
+
+end
+
+end NormedRingTelescoping
+
+section ThreeOperatorPerturbation
+
+/-!
+## Perturbing a product of three bounded operators
+
+Replacing three composable operators one at a time gives a norm estimate
+for the difference of their products, as used in Nachtergaele,
+arXiv:cond-mat/9410110, Lemma `commutation` (i), lines 2442--2531.
+
+Moved from TNLean, `TNLean/Algebra/ThreeOperatorPerturbation.lean` at commit `49b78ed821`
+(Apache-2.0).
+-/
+
+namespace ContinuousLinearMap
+variable {𝕜 E F G W : Type*} [NontriviallyNormedField 𝕜]
+  [NormedAddCommGroup E] [NormedSpace 𝕜 E]
+  [NormedAddCommGroup F] [NormedSpace 𝕜 F]
+  [NormedAddCommGroup G] [NormedSpace 𝕜 G]
+  [NormedAddCommGroup W] [NormedSpace 𝕜 W]
+/-- Telescoping three composable operators bounds their product difference
+by the three individual differences. This estimate applies without finite
+dimension or completeness hypotheses. -/
+theorem norm_comp_three_sub_le
+    (A a : G →L[𝕜] W) (B b : F →L[𝕜] G) (C c : E →L[𝕜] F) :
+    ‖A.comp (B.comp C) - a.comp (b.comp c)‖ ≤
+      ‖A - a‖ * ‖B‖ * ‖C‖ + ‖a‖ * ‖B - b‖ * ‖C‖ +
+        ‖a‖ * ‖b‖ * ‖C - c‖ := by
+  have hId : A.comp (B.comp C) - a.comp (b.comp c) =
+      (A - a).comp (B.comp C) + a.comp ((B - b).comp C) +
+        a.comp (b.comp (C - c)) := by
+    simp only [sub_comp, comp_sub]
+    abel
+  have hBound (f : G →L[𝕜] W) (g : F →L[𝕜] G) (h : E →L[𝕜] F) :
+      ‖f.comp (g.comp h)‖ ≤ ‖f‖ * ‖g‖ * ‖h‖ := by
+    calc
+      _ ≤ ‖f‖ * (‖g‖ * ‖h‖) := (opNorm_comp_le _ _).trans
+        (mul_le_mul_of_nonneg_left (opNorm_comp_le _ _) (norm_nonneg f))
+      _ = _ := (mul_assoc _ _ _).symm
+  rw [hId]
+  calc
+    _ ≤ ‖(A - a).comp (B.comp C)‖ + ‖a.comp ((B - b).comp C)‖ +
+        ‖a.comp (b.comp (C - c))‖ :=
+      (norm_add_le _ _).trans (add_le_add (norm_add_le _ _) le_rfl)
+    _ ≤ _ := add_le_add (add_le_add (hBound _ _ _) (hBound _ _ _)) (hBound _ _ _)
+end ContinuousLinearMap
+
+namespace ContinuousLinearMap
+/-- Three vanishing operator differences and bounded remaining products give
+a vanishing product difference. The normed spaces may vary with the index,
+and the filter is arbitrary. -/
+theorem tendsto_norm_comp_three_sub_zero_of_bounds
+    {ι : Type*} {l : Filter ι} {𝕜 : Type*} [NontriviallyNormedField 𝕜]
+    {E F G W : ι → Type*}
+    [∀ i, NormedAddCommGroup (E i)] [∀ i, NormedSpace 𝕜 (E i)]
+    [∀ i, NormedAddCommGroup (F i)] [∀ i, NormedSpace 𝕜 (F i)]
+    [∀ i, NormedAddCommGroup (G i)] [∀ i, NormedSpace 𝕜 (G i)]
+    [∀ i, NormedAddCommGroup (W i)] [∀ i, NormedSpace 𝕜 (W i)]
+    (A a : (i : ι) → G i →L[𝕜] W i)
+    (B b : (i : ι) → F i →L[𝕜] G i)
+    (C c : (i : ι) → E i →L[𝕜] F i) {K : ℝ}
+    (hBound : ∀ᶠ i in l, ‖B i‖ * ‖C i‖ ≤ K ∧
+      ‖a i‖ * ‖C i‖ ≤ K ∧ ‖a i‖ * ‖b i‖ ≤ K)
+    (hA : Filter.Tendsto (fun i => ‖A i - a i‖) l (nhds 0))
+    (hB : Filter.Tendsto (fun i => ‖B i - b i‖) l (nhds 0))
+    (hC : Filter.Tendsto (fun i => ‖C i - c i‖) l (nhds 0)) :
+    Filter.Tendsto (fun i => ‖(A i).comp ((B i).comp (C i)) -
+      (a i).comp ((b i).comp (c i))‖) l (nhds 0) := by
+  have hUpper : Filter.Tendsto
+      (fun i => K * (‖A i - a i‖ + ‖B i - b i‖ + ‖C i - c i‖)) l (nhds 0) := by
+    simpa only [add_zero, mul_zero] using (hA.add hB |>.add hC).const_mul K
+  refine squeeze_zero' (Filter.Eventually.of_forall fun i => norm_nonneg _) ?_ hUpper
+  filter_upwards [hBound] with i hi
+  refine (norm_comp_three_sub_le (A i) (a i) (B i) (b i) (C i) (c i)).trans ?_
+  nlinarith [mul_le_mul_of_nonneg_left hi.1 (norm_nonneg (A i - a i)),
+    mul_le_mul_of_nonneg_left hi.2.1 (norm_nonneg (B i - b i)),
+    mul_le_mul_of_nonneg_right hi.2.2 (norm_nonneg (C i - c i))]
+end ContinuousLinearMap
+
+end ThreeOperatorPerturbation

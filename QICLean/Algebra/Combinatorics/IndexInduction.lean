@@ -6,6 +6,9 @@ Authors: QICLean contributors
 import Mathlib.Data.Fin.Basic
 import Mathlib.Logic.Equiv.Fin.Rotate
 import Mathlib.Data.Nat.Order.Lemmas
+import Mathlib.Data.List.Rotate
+import Mathlib.Data.List.OfFn
+import Mathlib.Logic.Function.Basic
 
 /-!
 # Induction on finite cyclic indices and on natural-number intervals
@@ -23,7 +26,13 @@ at commit `49b78ed821` (Apache-2.0). Changes: the two files are merged.
 * `Fin.cyclic_induction`: a predicate holding at `0` and closed under `· + 1` holds everywhere.
 * `Fin.forall_sub_one_iff`, `Fin.finRotate_succ_castSucc`, `coe_finRotate_mod`.
 * `eq_of_forall_succ_eq_of_mem_Icc`: equality of any two values in the interval.
+
+Moved from TNLean, `TNLean/MPS/Operator/DensityOperator/AreaLaw.lean` at commit `021ba0bd19`
+(Apache-2.0).
+* `Nat.exists_dependent_sequence`: sequences with prescribed successive relations.
 -/
+
+section IndexInduction
 
 /-- `finRotate` advances the value by one modulo `N`. -/
 theorem coe_finRotate_mod {N : ℕ} (i : Fin N) :
@@ -95,3 +104,59 @@ theorem eq_of_forall_succ_eq_of_mem_Icc {α : Sort*} {a n i j : ℕ}
     exact climb k i hai hjn
   · obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le hji
     exact (climb k j haj hin).symm
+
+section
+
+
+
+/-- `List.ofFn` precomposed with `finRotate` is the one-step list rotation. A
+general fact about `List.ofFn`, `finRotate`, and `List.rotate`. -/
+theorem ofFn_comp_finRotate {α : Type*} {n : ℕ} (σ : Fin (n + 1) → α) :
+    List.ofFn (σ ∘ finRotate (n + 1)) = (List.ofFn σ).rotate 1 := by
+  apply List.ext_getElem
+  · simp
+  · intro i h1 _
+    simp only [List.getElem_ofFn, Function.comp_apply, List.getElem_rotate,
+      List.length_ofFn]
+    congr 1
+    have : finRotate (n + 1) ⟨i, by simpa using h1⟩
+        = ⟨(i + 1) % (n + 1), Nat.mod_lt _ (Nat.succ_pos n)⟩ := by
+      rw [finRotate_apply]; ext; simp [Fin.add_def]
+    rw [this]
+
+/-- The value of the `p`-fold cyclic shift is `(i + p) mod N`. -/
+theorem coe_finRotate_pow {N : ℕ} (p : ℕ) (i : Fin N) :
+    (((finRotate N : Fin N → Fin N)^[p]) i : ℕ) = (i.val + p) % N := by
+  induction p with
+  | zero => simp [Nat.mod_eq_of_lt i.isLt]
+  | succ k ih =>
+    rw [Function.iterate_succ_apply', coe_finRotate_mod, ih, Nat.mod_add_mod, Nat.add_assoc]
+
+end
+
+end IndexInduction
+
+section DependentSequence
+
+/-!
+## Sequences with prescribed successive relations
+
+For a family of types indexed by the natural numbers, a chosen initial value
+and the existence of a successor at every value give one sequence satisfying
+all successive relations simultaneously.
+
+Moved from TNLean, `TNLean/Algebra/DependentSequence.lean` at commit `49b78ed821` (Apache-2.0).
+-/
+
+/-- A prescribed initial value extends to a dependent sequence whenever every
+value admits a successor satisfying the specified relation. -/
+theorem Nat.exists_dependent_sequence {X : Nat → Type*}
+    (R : ∀ i, X i → X (i + 1) → Prop) (x₀ : X 0)
+    (hR : ∀ i x, ∃ y, R i x y) :
+    ∃ f : (i : Nat) → X i, f 0 = x₀ ∧ ∀ i, R i (f i) (f (i + 1)) := by
+  classical
+  let next (i : Nat) (x : X i) : X (i + 1) := Classical.choose (hR i x)
+  let f : (i : Nat) → X i := Nat.rec x₀ next
+  exact ⟨f, rfl, fun i ↦ Classical.choose_spec (hR i (f i))⟩
+
+end DependentSequence

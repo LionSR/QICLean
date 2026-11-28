@@ -543,8 +543,7 @@ the input factor is written $\tr_B$.
 \begin{theorem}[Kraus normalization conditions]
     \label{thm:kraus_rect_normalization}
     \lean{ChoiRectangular.kraus_tp_iff_sum_conjTranspose_mul,
-        ChoiRectangular.kraus_unital_iff_sum_mul_conjTranspose,
-        kraus_sum_conjTranspose_mul_of_tp}
+        ChoiRectangular.kraus_unital_iff_sum_mul_conjTranspose}
     \leanok
     \uses{def:is_kraus_cp}
     Let $T(X)=\sum_{j=1}^{r}K_jXK_j^\dagger$ with
@@ -556,6 +555,7 @@ the input factor is written $\tr_B$.
 
 \begin{proof}
     \leanok
+    \uses{thm:kraus_sum_conjTranspose_mul_of_tp}
     Cyclicity of the trace gives
     $\tr\bigl(\bigl(\sum_j K_j^\dagger K_j\bigr)X\bigr)=\tr(T(X))$ for every
     $X$, so the trace-preserving equivalence follows from nondegeneracy of
@@ -626,16 +626,10 @@ the input factor is written $\tr_B$.
 
 \begin{theorem}[Unitary freedom of Kraus representations]
     \label{thm:kraus_rect_freedom}
-    \lean{kraus_isometry_freedom_iff,
-        kraus_unitary_freedom_iff,
-        kraus_unitary_freedom_iff_of_zeroPad,
-        kraus_rectangular_freedom,
+    \lean{kraus_unitary_freedom_iff_of_zeroPad,
         Kraus.zeroPad,
         Kraus.zeroPad_castLE,
-        Kraus.sum_zeroPad,
-        kraus_same_map_of_isometry_combination,
-        kraus_dual_eq_of_map_eq,
-        kraus_conjTranspose_mul_eq_of_map_eq}
+        Kraus.sum_zeroPad}
     \leanok
     \uses{def:is_kraus_cp}
     Two sets of Kraus operators $\{K_j\}$ and $\{\widetilde{K}_\ell\}$
@@ -648,6 +642,9 @@ the input factor is written $\tr_B$.
 
 \begin{proof}
     \leanok
+    \uses{thm:kraus_conjTranspose_mul_eq_of_map_eq, thm:kraus_dual_eq_of_map_eq,
+        thm:kraus_isometry_freedom_iff, thm:kraus_rectangular_freedom,
+        thm:kraus_same_map_of_isometry_combination, thm:kraus_unitary_freedom_iff}
     An isometric combination preserves the map by the orthogonality
     relations of the mixing matrix. Conversely, equal maps have equal
     trace-pairing adjoints, hence equal Gram matrices

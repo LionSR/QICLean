@@ -9,15 +9,11 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Channel
 
 import QICLean.Channel.Basic
-import QICLean.Channel.CPDecomposition
 import QICLean.Channel.Choi
 import QICLean.Channel.ChoiTypeMap
 import QICLean.Channel.CompletelyPositiveBridge
-import QICLean.Channel.CompletelyPositiveClosure
-import QICLean.Channel.ConditionNumberInterpolation
 import QICLean.Channel.ConditionalExpectation
 import QICLean.Channel.Convexity
-import QICLean.Channel.DetailedBalance
 import QICLean.Channel.Determinant
 import QICLean.Channel.Determinant.Basic
 import QICLean.Channel.Determinant.Bound
@@ -26,7 +22,6 @@ import QICLean.Channel.Determinant.Composition
 import QICLean.Channel.Determinant.HilbertSchmidt
 import QICLean.Channel.Determinant.KrausRankTwo
 import QICLean.Channel.Determinant.PositiveExtremality
-import QICLean.Channel.Determinant.PositiveInverse
 import QICLean.Channel.Determinant.UnitaryCharacterization
 import QICLean.Channel.Dilation
 import QICLean.Channel.Entanglement
@@ -47,10 +42,8 @@ import QICLean.Channel.LorentzNormalForm.SpinorAction
 import QICLean.Channel.LorentzNormalForm.SpinorCover
 import QICLean.Channel.LorentzNormalForm.SpinorExponential
 import QICLean.Channel.Measurement
-import QICLean.Channel.NormalForm
 import QICLean.Channel.OperatorMean
 import QICLean.Channel.OperatorSystem
-import QICLean.Channel.OrderedRectangular
 import QICLean.Channel.POVM
 import QICLean.Channel.PSDConeAutomorphism
 import QICLean.Channel.PartialTrace
@@ -60,14 +53,7 @@ import QICLean.Channel.Positive
 import QICLean.Channel.Recovery
 import QICLean.Channel.Schmidt
 import QICLean.Channel.Schwarz
-import QICLean.Channel.SelfDual
 import QICLean.Channel.Semigroup
-import QICLean.Channel.SupportCompletion
-import QICLean.Channel.SupportedMarginalChannel
-import QICLean.Channel.TraceNormNet
 import QICLean.Channel.TransferMatrix
 import QICLean.Channel.Twirl
-import QICLean.Channel.WeightedHilbertSchmidt
-import QICLean.Channel.WhitenedChoi
 import QICLean.Channel.Wigner
-import QICLean.Channel.WolfProps

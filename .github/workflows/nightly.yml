@@ -3,8 +3,7 @@ name: Nightly CI
 # The integration pipeline. Pull requests run only the light checks of
 # pr-ci.yml (changed modules, lint, source-level policies), so the whole
 # library is built and the blueprint is rendered and tested here, once a
-# night on main: the root `lake build`, the test files, the compiled
-# declaration check, the print volume and web pages, and the publication of
+# night on main: the root `lake build`, the compiled declaration check, the print volume and web pages, and the publication of
 # the site. A failed run on main starts nightly-fix.yml, whose agent opens a
 # repair pull request and dispatches this workflow on its branch to verify
 # it. Adapted from TNLean's nightly.yml.
@@ -131,12 +130,10 @@ jobs:
           key: qiclean-build-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}
 
       # Elaborate, with warnings as errors, every production file changed
-      # since the last passing nightly commit, and every test file
-      # (QICLeanTest/ and scripts/Tests/) that changed or whose import closure
-      # contains a changed module; every test runs when no such commit is
-      # known or when a dependency pin, the toolchain, this workflow or the
-      # selection script changed. Selection: scripts/ci_lean_checks.py.
-      - name: Check changed Lean files and affected tests strictly
+      # since the last passing nightly commit. Pull requests check their own
+      # edits the same way; this catches what a budget cut short there.
+      # Selection: scripts/ci_lean_checks.py.
+      - name: Check changed Lean files strictly
         timeout-minutes: 120
         run: |
           set -eo pipefail
@@ -215,6 +212,7 @@ jobs:
           fi
           python3 scripts/check_import_layers.py "${args[@]}"
           python3 scripts/check_pass_through_declarations.py "${args[@]}"
+          python3 scripts/check_small_lean_modules.py --root . "${args[@]}"
           python3 scripts/check_numbered_lean_files.py --root . "${numbered[@]}"
 
   # The blueprint half of the pipeline: the picture pipeline, the paper-gap

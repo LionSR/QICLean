@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Representation.Permutation.MergeMoment
+import QICLean.Representation.TensorPower.MergeMoment
 import QICLean.Algebra.Hermitian.PositiveSemidefiniteNormalization
 import Mathlib.Logic.Equiv.Fin.Basic
 

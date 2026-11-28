@@ -28,6 +28,8 @@ orthogonal projection in a full complex matrix algebra.
 * `cornerRank_eq_trace` — the corner rank agrees with the trace of the
   projection.
 
+Moved from TNLean, `TNLean/MPS/CanonicalForm/Periodic/CyclicSectors/FixedAdjoint.lean` at commit
+`021ba0bd19` (Apache-2.0).
 -/
 
 open scoped Matrix ComplexOrder MatrixOrder BigOperators
@@ -794,3 +796,32 @@ noncomputable def cornerSubmoduleMatrixLinearEquiv {D : ℕ}
 lemma cornerRank_eq_trace {D : ℕ} (P : MatrixAlg D) (hP : IsOrthogonalProjection P) :
     (cornerRank P hP : ℂ) = Matrix.trace P :=
   (exists_cornerSubmodule_matrixLinearEquiv_aux P hP).choose_spec.choose_spec
+
+section
+
+open scoped Matrix BigOperators ComplexOrder MatrixOrder
+
+section ProjectionOrtho
+
+open Matrix Finset Complex
+
+variable {D m : ℕ}
+
+/-- If a finite family of orthogonal projections sums to the identity, then
+distinct projections are orthogonal: `P i * P j = 0` for `i ≠ j`.
+
+This is the `Pairwise` packaging of
+`orthogonalProjection_mul_eq_zero_of_sum_eq_one` from
+`TNLean/Channel/Irreducible/Basic.lean`. -/
+theorem pairwise_mul_zero_of_orthogonalProjection_sum_one
+    (P : Fin m → MatrixAlg D)
+    (hPproj : ∀ k : Fin m, IsOrthogonalProjection (P k))
+    (hPsum : ∑ k : Fin m, P k = 1) :
+    Pairwise fun i j : Fin m => P i * P j = 0 := fun _ _ hij =>
+  orthogonalProjection_mul_eq_zero_of_sum_eq_one P hPproj hPsum hij
+
+variable {d : ℕ}
+
+end ProjectionOrtho
+
+end

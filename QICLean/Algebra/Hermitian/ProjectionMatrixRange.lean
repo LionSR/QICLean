@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Analysis.InnerProductSpace.Projection.FiniteDimensional
+import Mathlib.LinearAlgebra.Matrix.Hermitian
 
 /-!
 # Projection matrices and ranges in Euclidean coordinates
@@ -59,5 +60,34 @@ theorem projectionMatrix_range_of_isStarProjection
     (P.property.map (Matrix.toEuclideanCLM (n := n) (𝕜 := ℂ)))
   exact (Matrix.toEuclideanCLM (n := n) (𝕜 := ℂ)).symm_apply_eq.mpr heq.symm
 
+/-- Hermitian idempotent matrices with the same range are equal.
+
+This is the uniqueness fact used to identify the projector onto the
+ground-space intersection in arXiv:1606.00608, Appendix D.2, Definition D.2,
+lines 2205--2218, with the product projector in lines 2279--2289. -/
+theorem hermitian_idempotent_eq_of_range_eq
+    {I : Type*} [Fintype I] [DecidableEq I]
+    (S T : Matrix I I ℂ)
+    (hSherm : S.IsHermitian) (hSidem : S * S = S)
+    (hTherm : T.IsHermitian) (hTidem : T * T = T)
+    (hrange : LinearMap.range (toLin' S) =
+      LinearMap.range (toLin' T)) :
+    S = T := by
+  have hS : IsIdempotentElem (toLin' S) := by
+    rw [IsIdempotentElem, Module.End.mul_eq_comp, ← toLin'_mul, hSidem]
+  have hT : IsIdempotentElem (toLin' T) := by
+    rw [IsIdempotentElem, Module.End.mul_eq_comp, ← toLin'_mul, hTidem]
+  have hST : S * T = T := by
+    apply toLin'.injective
+    rw [toLin'_mul]
+    exact (LinearMap.IsIdempotentElem.comp_eq_right_iff hS _).2 hrange.symm.le
+  have hTS : T * S = S := by
+    apply toLin'.injective
+    rw [toLin'_mul]
+    exact (LinearMap.IsIdempotentElem.comp_eq_right_iff hT _).2 hrange.le
+  have hTS' : T * S = T := by
+    have h := congrArg Matrix.conjTranspose hST
+    simpa only [Matrix.conjTranspose_mul, hSherm.eq, hTherm.eq] using h
+  exact hTS.symm.trans hTS'
 
 end Matrix

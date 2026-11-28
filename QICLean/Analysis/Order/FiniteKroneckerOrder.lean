@@ -18,6 +18,10 @@ positive contractions restricted along an injective map of configuration bases.
 The two-factor comparison also applies when the lower first factor is
 indefinite, as needed for the scalar bound in `Entropy.RestoringNorm`.
 
+Two-sided PSD domination is also stable under tensor products, without
+positivity of the dominated factors. The binary and finite results
+are stated in terms of positivity of both the sum and the difference.
+
 ## References
 
 The finite comparison is the tensor-order step in OpenAI,
@@ -121,3 +125,79 @@ theorem Matrix.prod_le_one_of_injective
     obtain ⟨i, hi⟩ := Function.ne_iff.mp hne
     simp only [hxy, ↓reduceIte]
     exact (Finset.prod_eq_zero (Finset.mem_univ i) (by simp [hi])).symm
+
+/-- Two-sided PSD domination is stable under a binary Kronecker product.
+Neither `B` nor `D` is required to be PSD. The conclusions are averages of
+same-sign and opposite-sign products of A ± B and C ± D, respectively. -/
+theorem Matrix.kronecker_add_sub_posSemidef
+    {m n : Type*} [Finite m] [Finite n]
+    {A B : Matrix m m ℂ} {C D : Matrix n n ℂ}
+    (hABadd : (A + B).PosSemidef) (hABsub : (A - B).PosSemidef)
+    (hCDadd : (C + D).PosSemidef) (hCDsub : (C - D).PosSemidef) :
+    (Matrix.kronecker A C + Matrix.kronecker B D).PosSemidef ∧
+      (Matrix.kronecker A C - Matrix.kronecker B D).PosSemidef := by
+  have half : (0 : ℂ) ≤ 1 / 2 := by
+    rw [Complex.nonneg_iff]
+    norm_num
+  constructor
+  · convert ((hABadd.kronecker hCDadd).add
+      (hABsub.kronecker hCDsub)).smul half using 1
+    ext ⟨i, j⟩ ⟨k, l⟩
+    simp only [Matrix.smul_apply, smul_eq_mul, Matrix.add_apply, Matrix.sub_apply,
+        Matrix.kronecker, Matrix.kroneckerMap_apply]
+    ring
+  · convert ((hABadd.kronecker hCDsub).add
+      (hABsub.kronecker hCDadd)).smul half using 1
+    ext ⟨i, j⟩ ⟨k, l⟩
+    simp only [Matrix.smul_apply, smul_eq_mul, Matrix.add_apply, Matrix.sub_apply,
+        Matrix.kronecker, Matrix.kroneckerMap_apply]
+    ring
+
+/-- Two-sided PSD domination is stable under finite heterogeneous Kronecker
+products. The number of factors may be zero and each finite local basis may
+be empty. The dominated factors need not be PSD.
+
+This generalizes arXiv:2611.34921, Lemma 4 (lem:reverse), proof item (iii):
+simultaneous induction on both signs replaces the expansion over sign strings. -/
+theorem Matrix.piKronecker_add_sub_posSemidef
+    {N : ℕ} {I : Fin N → Type*} [∀ i, Finite (I i)]
+    (A B : (i : Fin N) → Matrix (I i) (I i) ℂ)
+    (hadd : ∀ i, (A i + B i).PosSemidef)
+    (hsub : ∀ i, (A i - B i).PosSemidef) :
+    (Matrix.piKronecker A + Matrix.piKronecker B).PosSemidef ∧
+      (Matrix.piKronecker A - Matrix.piKronecker B).PosSemidef := by
+  revert I
+  induction N with
+  | zero =>
+    intro I _ A B _ _
+    have hEq : Matrix.piKronecker B = Matrix.piKronecker A :=
+      congrArg Matrix.piKronecker (Subsingleton.elim B A)
+    have hpos := Matrix.piKronecker_posSemidef A (fun i ↦ Fin.elim0 i)
+    rw [hEq, sub_self]
+    exact ⟨hpos.add hpos, Matrix.PosSemidef.zero⟩
+  | succ N ih =>
+    intro I _ A B hadd hsub
+    obtain ⟨htadd, htsub⟩ := ih (Fin.tail A) (Fin.tail B)
+      (fun i ↦ hadd i.succ) (fun i ↦ hsub i.succ)
+    have h := Matrix.kronecker_add_sub_posSemidef (hadd 0) (hsub 0) htadd htsub
+    constructor
+    · rw [← Matrix.posSemidef_submatrix_equiv
+        (M := Matrix.piKronecker A + Matrix.piKronecker B) (Fin.consEquiv I),
+        Matrix.submatrix_add, Pi.add_apply, Pi.add_apply, Matrix.piKronecker_submatrix_cons,
+        Matrix.piKronecker_submatrix_cons]
+      exact h.1
+    · rw [← Matrix.posSemidef_submatrix_equiv
+        (M := Matrix.piKronecker A - Matrix.piKronecker B) (Fin.consEquiv I),
+        Matrix.submatrix_sub, Pi.sub_apply, Pi.sub_apply, Matrix.piKronecker_submatrix_cons,
+        Matrix.piKronecker_submatrix_cons]
+      exact h.2
+
+/-- Tensor-copy specialization of two-sided PSD domination, including zero copies. -/
+theorem Matrix.piKronecker_const_add_sub_posSemidef
+    {n : Type*} [Finite n] (N : ℕ) {A B : Matrix n n ℂ}
+    (hadd : (A + B).PosSemidef) (hsub : (A - B).PosSemidef) :
+    (Matrix.piKronecker (fun _ : Fin N ↦ A) +
+      Matrix.piKronecker (fun _ : Fin N ↦ B)).PosSemidef ∧
+    (Matrix.piKronecker (fun _ : Fin N ↦ A) -
+      Matrix.piKronecker (fun _ : Fin N ↦ B)).PosSemidef :=
+  Matrix.piKronecker_add_sub_posSemidef _ _ (fun _ ↦ hadd) (fun _ ↦ hsub)

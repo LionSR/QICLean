@@ -157,8 +157,7 @@ otherwise.
 \begin{lemma}[Permutations of configurations]
     \label{lem:qc_permutation_layers}
     \lean{QuantumCircuit.IsLocalPerm,
-        QuantumCircuit.IsLocalPerm.permMatrix_mem_supportedOperators,
-        Matrix.piKronecker_permMatrix_mulVec}
+        QuantumCircuit.IsLocalPerm.permMatrix_mem_supportedOperators}
     \leanok
     \uses{def:sites_supported}
     Let $\sigma$ be a permutation of the configurations of a system with any
@@ -170,6 +169,7 @@ otherwise.
 \end{lemma}
 \begin{proof}
     \leanok
+    \uses{lem:elementary_tensor_power_label_map}
     The entry $(P_\sigma)_{x,y}=\delta_{y,\sigma(x)}$ vanishes when $x$ and $y$
     differ outside $S$, and depends only on $x|_S$ and $y|_S$ when $x$ and
     $y$ agree outside $S$. Finally

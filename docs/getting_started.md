@@ -177,14 +177,16 @@ shortened module path with the `QICLean/` prefix dropped — for example
   modules the pull request changes (within a 15-minute budget) and elaborates
   them strictly, runs the text-based style linter, checks that their
   compilation times stay under the limit, enforces the module-length,
-  numbered-sequel-file and import-layer policies, checks that the generated
+  numbered-sequel-file, small-module and import-layer policies, rejects Lean
+  test fixtures under `QICLeanTest/` or `scripts/Tests/` (see
+  `docs/project_conventions.md`), checks that the generated
   `QICLean.lean` aggregator is complete, and lints the blueprint sources
   (prose patterns, `chktex`, paper-gap references, declaration tags). It does
   not build the modules that import the changed ones, and it compiles no TeX.
 - `nightly.yml` — the integration pipeline, once a night on `main`: the root
-  `lake build`, every affected test file (selected by
-  `scripts/ci_lean_checks.py`, so new modules and tests need no workflow
-  edit), the compiled blueprint declaration check, the whole-repository
+  `lake build`, the strict check of the files changed since the last passing
+  night (selected by `scripts/ci_lean_checks.py`, so new modules need no
+  workflow edit), the compiled blueprint declaration check, the whole-repository
   policies, and the blueprint build. A scheduled run on a commit that already
   passed is skipped. Its build of `main` is the only writer of the Lean build
   cache that pull requests restore.

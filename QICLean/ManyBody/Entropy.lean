@@ -17,6 +17,7 @@ import QICLean.ManyBody.Entropy.Filter
 import QICLean.ManyBody.Entropy.InformationReset
 import QICLean.ManyBody.Entropy.MovementEtaRegional
 import QICLean.ManyBody.Entropy.MutualInformationPerturbation
+import QICLean.ManyBody.Entropy.PlaneBoundaryEntropy
 import QICLean.ManyBody.Entropy.RegionConditionalInformation
 import QICLean.ManyBody.Entropy.RegionEntropy
 import QICLean.ManyBody.Entropy.RegionEntropyInequalities
@@ -26,6 +27,7 @@ import QICLean.ManyBody.Entropy.RegionalReset
 import QICLean.ManyBody.Entropy.ReplicaSwap
 import QICLean.ManyBody.Entropy.SumSitesProduct
 import QICLean.ManyBody.Entropy.SupportedMarginalTails
+import QICLean.ManyBody.Entropy.Template
 import QICLean.ManyBody.Entropy.TwoFamilies
 import QICLean.ManyBody.Entropy.Typical
 import QICLean.ManyBody.Entropy.ViableSubspaceEntropy

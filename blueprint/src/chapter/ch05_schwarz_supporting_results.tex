@@ -122,16 +122,15 @@ duality used by the positive-retraction and fixed-point arguments.
 \end{proof}
 
 \begin{theorem}[Trace-pairing adjoint of a positive map]\label{thm:trace_pairing_adjoint_positive}
-    \lean{IsPositiveMap.traceAdjointMap}
     \leanok
     \uses{def:trace_pairing_adjoint, thm:psd_trace_pairing_self_dual}
     If $E : \MN{D}\to\MN{D}$ is positive, then its trace-pairing adjoint $E^*$
-    is positive.
+    is positive. This is Lemma~\ref{lem:positive_map_traceAdjointMap}.
 \end{theorem}
 
 \begin{proof}
     \leanok
-    \uses{thm:positive_map_conjTranspose}
+    \uses{thm:positive_map_conjTranspose, lem:positive_map_traceAdjointMap}
     Let $\rho\geq 0$. First $E^*(\rho)$ is Hermitian. Indeed,
     Theorem~\ref{thm:positive_map_conjTranspose} gives
     $E(A^\dagger)=E(A)^\dagger$, and hence, for matrix units

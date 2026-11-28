@@ -15,5 +15,4 @@ import QICLean.Entropy.Typical.IidSurprisal
 import QICLean.Entropy.Typical.PureCompression
 import QICLean.Entropy.Typical.PureState
 import QICLean.Entropy.Typical.Spectrum
-import QICLean.Entropy.Typical.StateFromTail
 import QICLean.Entropy.Typical.TypicalSet

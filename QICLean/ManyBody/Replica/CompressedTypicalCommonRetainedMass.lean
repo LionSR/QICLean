@@ -9,10 +9,9 @@ import QICLean.Analysis.Real.FiniteExponentialRetainedMass
 import Mathlib.Algebra.BigOperators.Fin
 import Mathlib.Data.List.OfFn
 import QICLean.ManyBody.Entropy.Typical.CompressedTypicalSiteCoordinates
-import QICLean.Representation.SchurWeyl.IidSchurLabelExponential
+import QICLean.Representation.SchurWeyl.IidSchurSignedMoments
 import QICLean.ManyBody.Replica.Label.SubsystemLabelCoordinates
 import QICLean.ManyBody.Replica.CompressedSite.CompressedTypicalAuxiliaryCoordinates
-import QICLean.ManyBody.Replica.Label.CommonSchurBellCutoffs
 
 /-!
 # Common regional cutoffs for the actual compressed selected state

@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Algebra.Kronecker.KroneckerFactorPositivity
 import QICLean.ManyBody.Sites.PlacedConfiguration
-import QICLean.ManyBody.Sites.ProductVector
+import QICLean.ManyBody.Sites.Product.ProductVector
 
 /-!
 # Operators acting by maps of configurations

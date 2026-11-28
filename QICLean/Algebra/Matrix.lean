@@ -10,7 +10,11 @@ Authors: QICLean contributors
 
 import QICLean.Algebra.Matrix.ComplexOfRing
 import QICLean.Algebra.Matrix.DependentBlockDiagonal
-import QICLean.Algebra.Matrix.EqualRangeRightFactor
+import QICLean.Algebra.Matrix.EisensteinInt
+import QICLean.Algebra.Matrix.EntrywiseConjugation
+import QICLean.Algebra.Matrix.GoldenInt
+import QICLean.Algebra.Matrix.InvariantBlocks
+import QICLean.Algebra.Matrix.KroneckerEmbed
 import QICLean.Algebra.Matrix.MatrixAux
 import QICLean.Algebra.Matrix.MatrixCongruence
 import QICLean.Algebra.Matrix.MatrixCyclicPathSum
@@ -30,10 +34,7 @@ import QICLean.Algebra.Matrix.MinkowskiCanonicalPair
 import QICLean.Algebra.Matrix.MinkowskiReduction
 import QICLean.Algebra.Matrix.MonomialFixedSubspace
 import QICLean.Algebra.Matrix.MonomialMatrix
-import QICLean.Algebra.Matrix.OrderedMatrixAction
-import QICLean.Algebra.Matrix.PermutationMatrixCommute
 import QICLean.Algebra.Matrix.RankOneFactorization
 import QICLean.Algebra.Matrix.RankOneSandwich
-import QICLean.Algebra.Matrix.ReindexSandwich
 import QICLean.Algebra.Matrix.SkewSymmetricMatrix
 import QICLean.Algebra.Matrix.TraceFormDuality

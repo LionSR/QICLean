@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Spectral.Eigenvalue.DensityMaxEigenvector
+import QICLean.Spectral.Eigenvalue.DominantEigenvectorUniqueness
 import QICLean.Analysis.TraceNorm.RectangularTraceNorm
 import QICLean.Channel.Gluing.BoundaryGluing
 import QICLean.Analysis.FunctionalCalculus.ShiftedDensityPowers
