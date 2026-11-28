@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Kraus.Blocking
 import QICLean.Channel.KrausMap.KrausAction
+import QICLean.Channel.Irreducible.InvariantProjection
 
 /-!
 # Transfer maps of blocked and relabelled families
@@ -19,6 +20,8 @@ preservation.
 
 * `Kraus.transferMap_reindexPhysical_equiv`, `Kraus.isTP_reindexPhysical_iff`: relabelling
   by a bijection preserves the transfer map and trace preservation.
+* `Kraus.hasInvariantProj_reindexPhysical_equiv`, `Kraus.isIrreducibleFamily_reindexPhysical_equiv`:
+  relabelling by a bijection preserves invariant projections and irreducibility.
 * `Kraus.sum_evalWord_conjTranspose_mul_evalWord`, `Kraus.IsTP.block`: blocking
   preserves trace preservation.
 * `Kraus.transferMap_blockTensor`, `Kraus.transferMap_blockTensor_apply`: the transfer map
@@ -57,6 +60,29 @@ theorem isTP_reindexPhysical_iff (e : ι' ≃ ι) (A : ι → Matrix n n ℂ) :
   rw [e.sum_comp fun i => (A i)ᴴ * A i]
 
 end Relabel
+
+section RelabelInvariantProjection
+
+variable {ι ι' n : Type*} [Fintype n] [DecidableEq n]
+
+/-- Relabelling the index set of a finite family by a bijection preserves invariant
+projections. -/
+theorem hasInvariantProj_reindexPhysical_equiv (e : ι' ≃ ι) (A : ι → Matrix n n ℂ) :
+    HasInvariantProj (reindexPhysical e A) ↔ HasInvariantProj A := by
+  constructor
+  · rintro ⟨P, hPproj, hP0, hP1, hLower⟩
+    refine ⟨P, hPproj, hP0, hP1, ?_⟩
+    intro i
+    simpa [reindexPhysical] using hLower (e.symm i)
+  · rintro ⟨P, hPproj, hP0, hP1, hLower⟩
+    exact ⟨P, hPproj, hP0, hP1, fun i => hLower (e i)⟩
+
+/-- Relabelling the index set of a finite family by a bijection preserves irreducibility. -/
+theorem isIrreducibleFamily_reindexPhysical_equiv (e : ι' ≃ ι) (A : ι → Matrix n n ℂ) :
+    IsIrreducibleFamily (reindexPhysical e A) ↔ IsIrreducibleFamily A := by
+  rw [IsIrreducibleFamily, IsIrreducibleFamily, hasInvariantProj_reindexPhysical_equiv e A]
+
+end RelabelInvariantProjection
 
 section Blocking
 

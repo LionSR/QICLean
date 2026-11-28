@@ -89,11 +89,13 @@ lemma isIrreducibleFamily_tpGauge_of_isIrreducibleMap
     simpa [hEq] using hIrrSim
   exact Kraus.isIrreducibleFamily_of_isIrreducibleMap_mapLM _ hIrr'
 
+omit [Fintype ι] in
 /-- Positive-definite TP gauging preserves irreducibility of a finite matrix family. -/
-theorem isIrreducibleFamily_tpGauge_iff
+theorem isIrreducibleFamily_tpGauge_iff [Finite ι]
     (K : ι → Matrix (Fin D) (Fin D) ℂ)
     (σ : Matrix (Fin D) (Fin D) ℂ) (hσ : σ.PosDef) :
     IsIrreducibleFamily (tpGauge K σ) ↔ IsIrreducibleFamily K := by
+  have := Fintype.ofFinite ι
   constructor
   · intro hIrr
     have hMapGauge : IsIrreducibleMap (mapLM (tpGauge K σ)) :=
