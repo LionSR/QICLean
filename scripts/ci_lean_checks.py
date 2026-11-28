@@ -121,10 +121,11 @@ def _stop_group(proc: subprocess.Popen, grace: int = 30) -> None:
 
 
 def early_build(modules: list[str], log_path: Path | None, budget: int) -> int:
-    """Fail-fast `lake build` of `modules`. The early build is only a shortcut,
-    since the root build compiles the same modules, so when it exceeds `budget`
-    seconds (for example behind a cold dependency cache) it is stopped with a
-    warning instead of failing the job."""
+    """Fail-fast `lake build` of `modules`. When it exceeds `budget` seconds
+    (for example behind a cold dependency cache) it is stopped with a warning
+    instead of failing the job. Nothing else in a pull-request run builds the
+    remaining modules: the next nightly build of `main` compiles and strictly
+    checks them, after the pull request may have merged."""
     proc = subprocess.Popen(["lake", "--fail-fast", "build", *modules],
                             stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
                             start_new_session=True)
@@ -154,7 +155,9 @@ def early_build(modules: list[str], log_path: Path | None, budget: int) -> int:
             reader.join(timeout=60)
     if code is None:
         print(f"::warning::Early build stopped after {budget}s; "
-              "the root build compiles the remaining modules.", flush=True)
+              "the remaining modules are not checked in this run. The nightly "
+              "build of main compiles and strictly checks them; build them "
+              "locally before merging.", flush=True)
         return 0
     return code
 
