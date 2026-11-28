@@ -153,10 +153,12 @@ before checking: like the upstream checker, the scan covers Git-tracked sources
 outside `Archive`. Deleted working-tree files are omitted.
 
 The PR CI module-policy job runs both tests and checks on Lean, checker, test,
-workflow and policy-document changes. PRs use the event's exact base SHA; pushes use
-the exact previous SHA. Missing or malformed PR/push SHAs and unavailable
-nonzero commits fail rather than silently disabling the comparison. Manual dispatch and an initial push without a predecessor still
-check the tree against the records, with no historical comparison.
+workflow and policy-document changes. PRs use the event's exact base SHA. A
+missing or malformed PR SHA and an unavailable commit fail rather than
+silently disabling the comparison. The nightly run (`nightly.yml`) checks the
+merged tree again, against the last commit of `main` that passed it. A manual
+dispatch, and a nightly run with no such commit, still check the tree against
+the records, with no historical comparison.
 
 ## Tracking parents
 

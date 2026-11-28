@@ -10,8 +10,7 @@
   <p><b>Quantum information, channels, entropy, and many-body primitives, formalized in Lean 4.</b></p>
 
   <p>
-    <a href="https://github.com/LionSR/QICLean/actions/workflows/pr-ci.yml"><img alt="PR CI" src="https://github.com/LionSR/QICLean/actions/workflows/pr-ci.yml/badge.svg" /></a>
-    <a href="https://github.com/LionSR/QICLean/actions/workflows/blueprint.yml"><img alt="Compile blueprint" src="https://github.com/LionSR/QICLean/actions/workflows/blueprint.yml/badge.svg" /></a>
+    <a href="https://github.com/LionSR/QICLean/actions/workflows/nightly.yml"><img alt="Nightly CI" src="https://github.com/LionSR/QICLean/actions/workflows/nightly.yml/badge.svg?branch=main" /></a>
     <img alt="sorries" src="https://img.shields.io/endpoint?url=https://sirui-lu.com/QICLean/badges/sorries.json" />
     <img alt="axioms" src="https://img.shields.io/endpoint?url=https://sirui-lu.com/QICLean/badges/axioms.json" />
     <img alt="Lean" src="https://img.shields.io/endpoint?url=https://sirui-lu.com/QICLean/badges/lean.json" />

@@ -8,15 +8,18 @@ This script derives the same checks from the change set instead.
 
 Commands
 --------
-``early``   Build the changed production modules with ``lake --fail-fast build``
-            before the full library build, so a failure surfaces quickly.
-``strict``  After the full build, elaborate every changed production source
-            file with warnings as errors.
+``early``   Build the changed production modules with ``lake --fail-fast build``.
+            In a pull request this is the only build: it compiles the changed
+            modules and what they import.
+``strict``  Elaborate every changed production source file with warnings as
+            errors, once its imports are built: after ``early`` in a pull
+            request, after the root build in the nightly run.
 ``list``    Print the selection of both commands.
 
-Pushes use the previous head as the base. Without a base revision (manual
-dispatch, an unfetchable base) both commands select nothing; the full build
-covers every module. The repository keeps no Lean test fixtures, so there is
+Pull requests use their base as the base revision, the nightly run the last
+commit that passed it. Without a base revision (manual dispatch, an
+unfetchable base) both commands select nothing; the nightly root build covers
+every module. The repository keeps no Lean test fixtures, so there is
 nothing else to select (see ``docs/project_conventions.md``).
 """
 
@@ -118,10 +121,11 @@ def _stop_group(proc: subprocess.Popen, grace: int = 30) -> None:
 
 
 def early_build(modules: list[str], log_path: Path | None, budget: int) -> int:
-    """Fail-fast `lake build` of `modules`. The early build is only a shortcut,
-    since the root build compiles the same modules, so when it exceeds `budget`
-    seconds (for example behind a cold dependency cache) it is stopped with a
-    warning instead of failing the job."""
+    """Fail-fast `lake build` of `modules`. When it exceeds `budget` seconds
+    (for example behind a cold dependency cache) it is stopped with a warning
+    instead of failing the job. Nothing else in a pull-request run builds the
+    remaining modules: the next nightly build of `main` compiles and strictly
+    checks them, after the pull request may have merged."""
     proc = subprocess.Popen(["lake", "--fail-fast", "build", *modules],
                             stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
                             start_new_session=True)
@@ -151,7 +155,9 @@ def early_build(modules: list[str], log_path: Path | None, budget: int) -> int:
             reader.join(timeout=60)
     if code is None:
         print(f"::warning::Early build stopped after {budget}s; "
-              "the root build compiles the remaining modules.", flush=True)
+              "the remaining modules are not checked in this run. The nightly "
+              "build of main compiles and strictly checks them; build them "
+              "locally before merging.", flush=True)
         return 0
     return code
 
