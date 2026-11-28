@@ -18,14 +18,17 @@ sites `i * L, …, i * L + L - 1`.
 
 ## Main definitions
 
-* `Kraus.blockedConfigEquiv` identifies the configurations of `N` blocked sites with the
-  configurations of `N * L` original sites.
+* `Kraus.blockConfigEquiv` identifies the configurations of `N` blocks of length `L` over an
+  alphabet `ι` with the configurations of `N * L` sites.
+* `Kraus.blockedConfigEquiv` is its composite with `Kraus.decodeBlockEquiv` on the numbered
+  alphabet `Fin (blockPhysDim d L)`.
 
 ## Main results
 
-* `Kraus.blockedConfigEquiv_apply` reads an original site through the blocked site containing
-  it.
-* `Kraus.ofFn_blockedConfigEquiv` reads a blocked configuration as the flattened blocked word.
+* `Kraus.blockConfigEquiv_apply`, `Kraus.ofFn_blockConfigEquiv`: an original site is read
+  through the block containing it, and a configuration of blocks reads as their concatenation.
+* `Kraus.blockedConfigEquiv_eq` unfolds the numbered form; `Kraus.blockedConfigEquiv_apply`
+  and `Kraus.ofFn_blockedConfigEquiv` follow from the generic statements.
 
 ## References
 
@@ -36,36 +39,30 @@ sites `i * L, …, i * L + L - 1`.
 
 namespace Kraus
 
-/-- Blocked configurations of length `N` are equivalent to ordinary configurations of length
-`N * L`: the blocked site `i` carries the word on the original sites `i * L + r`, `r < L`.
-This is the configuration-level identification implicit in physical blocking; see
-arXiv:1606.00608, lines 318–344. -/
-noncomputable def blockedConfigEquiv (d N L : ℕ) :
-    (Fin N → Fin (blockPhysDim d L)) ≃ (Fin (N * L) → Fin d) :=
-  ((Equiv.arrowCongr (Equiv.refl (Fin N)) (decodeBlockEquiv d L)).trans
-    (Equiv.curry (Fin N) (Fin L) (Fin d)).symm).trans
-    (Equiv.arrowCongr finProdFinEquiv (Equiv.refl (Fin d)))
-
-/-- The original site `k` is read from the blocked site `k / L`, at position `k % L` of its
-word (through `finProdFinEquiv`). -/
-theorem blockedConfigEquiv_apply (d N L : ℕ) (σ : Fin N → Fin (blockPhysDim d L))
-    (k : Fin (N * L)) :
-    blockedConfigEquiv d N L σ k =
-      decodeBlock d L (σ (finProdFinEquiv.symm k).1) (finProdFinEquiv.symm k).2 := by
-  simp [blockedConfigEquiv, Equiv.arrowCongr, Equiv.curry, Function.comp]
-
-/-- Reading a blocked configuration through `blockedConfigEquiv` gives the flattened blocked
-word. This is the word-level identification used in the blocking step of arXiv:1606.00608,
+/-- Configurations of `N` blocks of length `L` are configurations of `N * L` sites: the block
+`i` carries the letters on the original sites `i * L + r`, `r < L`. This is the
+configuration-level identification implicit in physical blocking; see arXiv:1606.00608,
 lines 318–344. -/
-theorem ofFn_blockedConfigEquiv (d N L : ℕ) (σ : Fin N → Fin (blockPhysDim d L)) :
-    List.ofFn (blockedConfigEquiv d N L σ) = flattenBlockedWord d L (List.ofFn σ) := by
-  have hfun : blockedConfigEquiv d N L σ =
-      fun k : Fin (N * L) =>
-        decodeBlock d L (σ (finProdFinEquiv.symm k).1) (finProdFinEquiv.symm k).2 :=
-    funext (blockedConfigEquiv_apply d N L σ)
-  rw [hfun, List.ofFn_mul]
-  change _ = ((List.ofFn σ).map (wordOfBlock d L)).flatten
-  rw [List.map_ofFn]
+noncomputable def blockConfigEquiv (ι : Type*) (N L : ℕ) :
+    (Fin N → Fin L → ι) ≃ (Fin (N * L) → ι) :=
+  (Equiv.curry (Fin N) (Fin L) ι).symm.trans (Equiv.arrowCongr finProdFinEquiv (Equiv.refl ι))
+
+/-- The original site `k` is read from block `k / L`, at position `k % L`
+(through `finProdFinEquiv`). -/
+theorem blockConfigEquiv_apply {ι : Type*} (N L : ℕ) (σ : Fin N → Fin L → ι)
+    (k : Fin (N * L)) :
+    blockConfigEquiv ι N L σ k = σ (finProdFinEquiv.symm k).1 (finProdFinEquiv.symm k).2 := by
+  simp [blockConfigEquiv, Equiv.arrowCongr, Equiv.curry, Function.comp]
+
+/-- Reading a configuration of blocks through `blockConfigEquiv` gives the concatenation of
+the blocks. This is the word-level identification used in the blocking step of
+arXiv:1606.00608, lines 318–344. -/
+theorem ofFn_blockConfigEquiv {ι : Type*} (N L : ℕ) (σ : Fin N → Fin L → ι) :
+    List.ofFn (blockConfigEquiv ι N L σ) = (List.ofFn σ).flatMap List.ofFn := by
+  have hfun : blockConfigEquiv ι N L σ =
+      fun k : Fin (N * L) => σ (finProdFinEquiv.symm k).1 (finProdFinEquiv.symm k).2 :=
+    funext (blockConfigEquiv_apply N L σ)
+  rw [hfun, List.ofFn_mul, List.flatMap_def, List.map_ofFn]
   congr 1
   refine congrArg List.ofFn (funext fun i => ?_)
   have hsymm : ∀ j : Fin L,
@@ -85,6 +82,35 @@ theorem ofFn_blockedConfigEquiv (d N L : ℕ) (σ : Fin N → Fin (blockPhysDim 
     change (i : ℕ) * L + (j : ℕ) = (j : ℕ) + L * (i : ℕ)
     rw [Nat.mul_comm L (i : ℕ), Nat.add_comm]
   simp only [hsymm]
+  rfl
+
+/-- Blocked configurations on the numbered alphabet `Fin (blockPhysDim d L)`: the composite of
+`decodeBlockEquiv` on every block with `blockConfigEquiv`. -/
+noncomputable def blockedConfigEquiv (d N L : ℕ) :
+    (Fin N → Fin (blockPhysDim d L)) ≃ (Fin (N * L) → Fin d) :=
+  (Equiv.arrowCongr (Equiv.refl (Fin N)) (decodeBlockEquiv d L)).trans
+    (blockConfigEquiv (Fin d) N L)
+
+/-- `blockedConfigEquiv` decodes every block and applies `blockConfigEquiv`. -/
+theorem blockedConfigEquiv_eq (d N L : ℕ) (σ : Fin N → Fin (blockPhysDim d L)) :
+    blockedConfigEquiv d N L σ = blockConfigEquiv (Fin d) N L fun i => decodeBlock d L (σ i) :=
+  rfl
+
+/-- The original site `k` is read from the blocked site `k / L`, at position `k % L` of its
+word (through `finProdFinEquiv`). -/
+theorem blockedConfigEquiv_apply (d N L : ℕ) (σ : Fin N → Fin (blockPhysDim d L))
+    (k : Fin (N * L)) :
+    blockedConfigEquiv d N L σ k =
+      decodeBlock d L (σ (finProdFinEquiv.symm k).1) (finProdFinEquiv.symm k).2 := by
+  rw [blockedConfigEquiv_eq, blockConfigEquiv_apply]
+
+/-- Reading a blocked configuration through `blockedConfigEquiv` gives the flattened blocked
+word. This is the word-level identification used in the blocking step of arXiv:1606.00608,
+lines 318–344. -/
+theorem ofFn_blockedConfigEquiv (d N L : ℕ) (σ : Fin N → Fin (blockPhysDim d L)) :
+    List.ofFn (blockedConfigEquiv d N L σ) = flattenBlockedWord d L (List.ofFn σ) := by
+  rw [blockedConfigEquiv_eq, ofFn_blockConfigEquiv, flattenBlockedWord, List.flatMap_def,
+    List.map_ofFn, List.map_ofFn]
   rfl
 
 end Kraus

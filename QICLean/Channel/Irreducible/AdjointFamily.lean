@@ -120,7 +120,7 @@ conjugate-transposed family.
 
 Since `Kraus.transferMap` is a reducible alias for `Kraus.mapLM`, this theorem
 also applies directly to transfer maps without a compatibility wrapper. -/
-theorem traceAdjointMap_mapLM_eq_mapLM_conjTranspose (K : Fin d → Mat) :
+theorem traceAdjointMap_mapLM_eq_mapLM_conjTranspose {ι : Type*} [Fintype ι] (K : ι → Mat) :
     Matrix.traceAdjointMap (mapLM K) = mapLM fun i => (K i)ᴴ := by
   have hAdjoint : Matrix.traceAdjointMap (mapLM K) = adjointMapLM K := by
     apply LinearMap.ext
@@ -137,15 +137,15 @@ theorem traceAdjointMap_mapLM_eq_mapLM_conjTranspose (K : Fin d → Mat) :
 /-- Irreducibility of a Kraus map passes to the conjugate-transposed family.
 This is the finite-Kraus specialization of trace-adjoint irreducibility for
 positive maps. -/
-theorem isIrreducibleMap_mapLM_conjTranspose
-    (K : Fin d → Mat) (hIrr : IsIrreducibleMap (mapLM K)) :
+theorem isIrreducibleMap_mapLM_conjTranspose {ι : Type*} [Fintype ι]
+    (K : ι → Mat) (hIrr : IsIrreducibleMap (mapLM K)) :
     IsIrreducibleMap (mapLM fun i => (K i)ᴴ) := by
   have hAdjoint := hIrr.traceAdjointMap (isPositiveMap_mapLM K)
   rwa [traceAdjointMap_mapLM_eq_mapLM_conjTranspose] at hAdjoint
 
 /-- Irreducibility of a Kraus map and of its conjugate-transposed family are
 equivalent. -/
-theorem isIrreducibleMap_mapLM_conjTranspose_iff (K : Fin d → Mat) :
+theorem isIrreducibleMap_mapLM_conjTranspose_iff {ι : Type*} [Fintype ι] (K : ι → Mat) :
     IsIrreducibleMap (mapLM fun i => (K i)ᴴ) ↔ IsIrreducibleMap (mapLM K) := by
   constructor
   · intro h

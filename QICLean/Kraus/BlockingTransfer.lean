@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Kraus.Blocking
 import QICLean.Channel.KrausMap.KrausAction
+import QICLean.Channel.Irreducible.InvariantProjection
 
 /-!
 # Transfer maps of blocked and relabelled families
@@ -19,7 +20,9 @@ preservation.
 
 * `Kraus.transferMap_reindexPhysical_equiv`, `Kraus.isTP_reindexPhysical_iff`: relabelling
   by a bijection preserves the transfer map and trace preservation.
-* `Kraus.sum_evalWord_conjTranspose_mul_evalWord`, `Kraus.IsTP.blockTensor`: blocking
+* `Kraus.hasInvariantProj_reindexPhysical_equiv`, `Kraus.isIrreducibleFamily_reindexPhysical_equiv`:
+  relabelling by a bijection preserves invariant projections and irreducibility.
+* `Kraus.sum_evalWord_conjTranspose_mul_evalWord`, `Kraus.IsTP.block`: blocking
   preserves trace preservation.
 * `Kraus.transferMap_blockTensor`, `Kraus.transferMap_blockTensor_apply`: the transfer map
   of the blocked family is $E_A^L$.
@@ -58,6 +61,29 @@ theorem isTP_reindexPhysical_iff (e : ι' ≃ ι) (A : ι → Matrix n n ℂ) :
 
 end Relabel
 
+section RelabelInvariantProjection
+
+variable {ι ι' n : Type*} [Fintype n] [DecidableEq n]
+
+/-- Relabelling the index set of a finite family by a bijection preserves invariant
+projections. -/
+theorem hasInvariantProj_reindexPhysical_equiv (e : ι' ≃ ι) (A : ι → Matrix n n ℂ) :
+    HasInvariantProj (reindexPhysical e A) ↔ HasInvariantProj A := by
+  constructor
+  · rintro ⟨P, hPproj, hP0, hP1, hLower⟩
+    refine ⟨P, hPproj, hP0, hP1, ?_⟩
+    intro i
+    simpa [reindexPhysical] using hLower (e.symm i)
+  · rintro ⟨P, hPproj, hP0, hP1, hLower⟩
+    exact ⟨P, hPproj, hP0, hP1, fun i => hLower (e i)⟩
+
+/-- Relabelling the index set of a finite family by a bijection preserves irreducibility. -/
+theorem isIrreducibleFamily_reindexPhysical_equiv (e : ι' ≃ ι) (A : ι → Matrix n n ℂ) :
+    IsIrreducibleFamily (reindexPhysical e A) ↔ IsIrreducibleFamily A := by
+  rw [IsIrreducibleFamily, IsIrreducibleFamily, hasInvariantProj_reindexPhysical_equiv e A]
+
+end RelabelInvariantProjection
+
 section Blocking
 
 /-- Trace preservation passes from a family to its products along words of every fixed
@@ -84,9 +110,9 @@ theorem sum_evalWord_conjTranspose_mul_evalWord {ι n : Type*} [Fintype ι] [Fin
 variable {d : ℕ} {n : Type*} [Fintype n] [DecidableEq n]
 
 /-- Blocking at any length preserves trace preservation. -/
-theorem IsTP.blockTensor {A : Fin d → Matrix n n ℂ} (hA : IsTP A) (L : ℕ) :
-    IsTP (Kraus.blockTensor A L) :=
-  (isTP_reindexPhysical_iff _ _).2 (sum_evalWord_conjTranspose_mul_evalWord A hA L)
+theorem IsTP.block {ι : Type*} [Fintype ι] {A : ι → Matrix n n ℂ} (hA : IsTP A) (L : ℕ) :
+    IsTP (Kraus.block A L) :=
+  sum_evalWord_conjTranspose_mul_evalWord A hA L
 
 /-- The transfer map of the family blocked at length `L` is the `L`-th power of the
 transfer map. -/

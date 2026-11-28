@@ -18,7 +18,7 @@ open scoped Matrix BigOperators
 
 namespace Kraus
 
-variable {d D : ℕ}
+variable {ι : Type*} {D : ℕ}
 
 noncomputable section
 
@@ -27,9 +27,9 @@ noncomputable section
 If a nontrivial `K`-invariant submodule `W` existed, its orthogonal projection would give a
 nontrivial invariant orthogonal projection matrix, contradicting `Kraus.IsIrreducibleFamily`. -/
 lemma isIrreducibleAction_of_isIrreducibleFamily
-    {d D : ℕ} (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
+    (K : ι → Matrix (Fin D) (Fin D) ℂ)
     (hIrr : Kraus.IsIrreducibleFamily K) :
-    Matrix.IsIrreducibleAction (d := d) (D := D) K := by
+    Matrix.IsIrreducibleAction (D := D) K := by
   classical
   intro W hW
   -- Assume `W` is a nontrivial proper invariant submodule; derive a contradiction.
@@ -57,7 +57,7 @@ lemma isIrreducibleAction_of_isIrreducibleFamily
   let P : Matrix (Fin D) (Fin D) ℂ :=
     (Matrix.toEuclideanLin : Matrix (Fin D) (Fin D) ℂ ≃ₗ[ℂ] E →ₗ[ℂ] E).symm p'.toLinearMap
   -- `W'` is invariant under `K i` (transported to `EuclideanSpace`).
-  have hW' : ∀ i : Fin d, ∀ v ∈ W', (Matrix.toEuclideanLin (K i)) v ∈ W' := by
+  have hW' : ∀ i : ι, ∀ v ∈ W', (Matrix.toEuclideanLin (K i)) v ∈ W' := by
     intro i v hv
     rcases (Submodule.mem_map).1 hv with ⟨u, huW, rfl⟩
     have huW' : (K i).mulVec u ∈ W := hW i u huW
@@ -113,7 +113,7 @@ lemma isIrreducibleAction_of_isIrreducibleFamily
       simpa [p'] using this
     exact hW'_ne_top this
   -- Invariance: `(1 - P) * K i * P = 0` for all `i`.
-  have hPinv : ∀ i : Fin d, (1 - P) * K i * P = 0 := by
+  have hPinv : ∀ i : ι, (1 - P) * K i * P = 0 := by
     intro i
     apply (Matrix.toEuclideanLin : Matrix (Fin D) (Fin D) ℂ ≃ₗ[ℂ] E →ₗ[ℂ] E).injective
     apply LinearMap.ext
@@ -152,7 +152,7 @@ lemma isIrreducibleAction_of_isIrreducibleFamily
 If there are no nontrivial invariant submodules, then there are no
 nontrivial invariant orthogonal projections. -/
 lemma isIrreducibleFamily_of_isIrreducibleAction
-    (K : Fin d → Matrix (Fin D) (Fin D) ℂ) (hIrr : Matrix.IsIrreducibleAction K) :
+    (K : ι → Matrix (Fin D) (Fin D) ℂ) (hIrr : Matrix.IsIrreducibleAction K) :
     Kraus.IsIrreducibleFamily K := by
   intro ⟨P, horth, hne0, hne1, hinv⟩
   let V : Type := Fin D → ℂ
@@ -201,7 +201,7 @@ lemma isIrreducibleFamily_of_isIrreducibleAction
 /-- A finite matrix family acts irreducibly if and only if it has no nontrivial invariant
 orthogonal projection. -/
 theorem isIrreducibleAction_iff_isIrreducibleFamily
-    (K : Fin d → Matrix (Fin D) (Fin D) ℂ) :
+    (K : ι → Matrix (Fin D) (Fin D) ℂ) :
     Matrix.IsIrreducibleAction K ↔ IsIrreducibleFamily K :=
   ⟨isIrreducibleFamily_of_isIrreducibleAction K,
     isIrreducibleAction_of_isIrreducibleFamily K⟩

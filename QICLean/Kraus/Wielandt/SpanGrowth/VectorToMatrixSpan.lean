@@ -75,14 +75,18 @@ theorem map_wordSpan_eq_vectorSpreadSpan
 /-! ## Word spans and multiplication -/
 
 /-- Products of length-`m` and length-`n` word spans lie in the length-`m+n` word span. -/
-theorem wordSpan_mul_le (K : Fin d → Matrix (Fin D) (Fin D) ℂ) (m n : ℕ) :
+theorem wordSpan_mul_le
+    {ι : Type*} [Finite ι] (K : ι → Matrix (Fin D) (Fin D) ℂ) (m n : ℕ) :
     wordSpan K m * wordSpan K n ≤ wordSpan K (m + n) := by
+  have := Fintype.ofFinite ι
   rw [wordSpan_add]
 
 /-- If `wordSpan K N = ⊤`, then `wordSpan K (k * N) = ⊤` for any `k ≥ 1`. -/
-theorem wordSpan_top_of_mul (K : Fin d → Matrix (Fin D) (Fin D) ℂ) {N : ℕ}
+theorem wordSpan_top_of_mul
+    {ι : Type*} [Finite ι] (K : ι → Matrix (Fin D) (Fin D) ℂ) {N : ℕ}
     (htop : wordSpan K N = ⊤) :
     ∀ k : ℕ, 1 ≤ k → wordSpan K (k * N) = ⊤ := by
+  have := Fintype.ofFinite ι
   intro k hk
   induction k with
   | zero => omega

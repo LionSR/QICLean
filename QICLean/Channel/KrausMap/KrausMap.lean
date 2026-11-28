@@ -75,12 +75,12 @@ theorem isTracePreservingMap_mapLM_of_isTP (K : ι → Mat) (h_tp : IsTP K) :
   rw [h1, hadj, one_mul]
 
 /-- A trace-preserving finite Kraus family defines a quantum channel. -/
-theorem isChannel_mapLM (K : Fin d → Mat) (h_tp : IsTP K) : IsChannel (mapLM K) :=
+theorem isChannel_mapLM (K : ι → Mat) (h_tp : IsTP K) : IsChannel (mapLM K) :=
   ⟨isCPMap_mapLM K, isTracePreservingMap_mapLM_of_isTP K h_tp⟩
 
 /-- A finite Kraus map with a nonzero Kraus operator is nonzero. -/
 theorem mapLM_ne_zero_of_exists_ne_zero
-    (K : Fin d → Mat) (hK : ∃ i, K i ≠ 0) :
+    (K : ι → Mat) (hK : ∃ i, K i ≠ 0) :
     mapLM K ≠ 0 := by
   intro h
   obtain ⟨i, hi⟩ := hK
@@ -91,7 +91,7 @@ theorem mapLM_ne_zero_of_exists_ne_zero
 
 /-- The trace-adjoint identity for a linear map presented as a finite Kraus map. -/
 theorem trace_mul_mapLM_adjoint
-    {n : ℕ} (K : Fin n → Mat)
+    (K : ι → Mat)
     {E : Mat →ₗ[ℂ] Mat}
     (hE_eq : E = mapLM K)
     (ρ X : Mat) :
