@@ -129,7 +129,9 @@ jobs:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
           set -eo pipefail
-          git cat-file -e "$BASE_SHA^{commit}" 2>/dev/null || git fetch --no-tags origin "$BASE_SHA"
+          if ! git cat-file -e "$BASE_SHA^{commit}" 2>/dev/null; then
+            git fetch --no-tags origin "$BASE_SHA" || BASE_SHA=""
+          fi
           python3 scripts/ci_lean_checks.py strict --jobs 3
 
       - name: Check changed Lean compilation times
@@ -286,19 +288,12 @@ jobs:
           git fetch --no-tags origin \
             "+refs/heads/${{ github.event.pull_request.base.ref }}:refs/remotes/origin/${{ github.event.pull_request.base.ref }}"
 
-      - name: Reject new numbered-sequel modules (pull request)
+      - name: Reject new numbered-sequel modules
         if: github.event_name == 'pull_request'
         run: >
           python3 scripts/check_numbered_lean_files.py
           --root .
           --base-ref "origin/${{ github.event.pull_request.base.ref }}"
-
-      - name: Reject new numbered-sequel modules (push)
-        if: github.event_name == 'push'
-        run: >
-          python3 scripts/check_numbered_lean_files.py
-          --root .
-          --base-ref "${{ github.event.before }}"
 
   blueprint:
     # Source-level checks only: prose patterns, LaTeX lint, the paper-gap

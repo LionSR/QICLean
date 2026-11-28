@@ -191,8 +191,10 @@ jobs:
             echo "::error::The agent committed no repair for $RUN_URL; this needs a person."
             exit 1
           fi
-          if git diff --name-only "$START_SHA" HEAD | grep -q '^\.github/workflows/'; then
-            echo "::error::The repair touches .github/workflows; refusing to push."
+          # Nothing under .github/ is pushed: not the workflows, and not the
+          # tool preset or the prompts that the next round would load.
+          if git diff --name-only "$START_SHA" HEAD | grep -q '^\.github/'; then
+            echo "::error::The repair touches .github/; refusing to push."
             exit 1
           fi
           # Replace the branch only if it is still where this round found it

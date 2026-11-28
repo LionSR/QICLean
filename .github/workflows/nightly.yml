@@ -14,11 +14,6 @@ on:
     # to avoid the scheduler's busiest minutes.
     - cron: '53 18 * * *'
   workflow_dispatch:
-    inputs:
-      force:
-        description: Run even when this commit already passed a nightly run
-        type: boolean
-        default: false
 
 # A running main build is never cancelled, so it finishes and saves its build
 # cache; a newer verification run of a repair branch replaces an older one.
@@ -62,7 +57,6 @@ jobs:
         id: plan
         env:
           GH_TOKEN: ${{ github.token }}
-          FORCE: ${{ inputs.force }}
         run: |
           set -euo pipefail
           base="$(gh api \
@@ -70,7 +64,7 @@ jobs:
             --jq '.workflow_runs[0].head_sha // ""')"
           [[ "$base" =~ ^[0-9a-f]{40}$ ]] || base=""
           run=true
-          if [ "$GITHUB_EVENT_NAME" = schedule ] && [ "$FORCE" != true ] && [ "$base" = "$GITHUB_SHA" ]; then
+          if [ "$GITHUB_EVENT_NAME" = schedule ] && [ "$base" = "$GITHUB_SHA" ]; then
             run=false
             echo "::notice::$GITHUB_SHA already passed a nightly run; nothing to do."
           fi
