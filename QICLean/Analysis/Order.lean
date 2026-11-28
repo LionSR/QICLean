@@ -18,8 +18,10 @@ import QICLean.Analysis.Order.HermitianTracePower
 import QICLean.Analysis.Order.InverseCompressionLowerPin
 import QICLean.Analysis.Order.LowEnergyPerturbation
 import QICLean.Analysis.Order.PosSemidefCommute
+import QICLean.Analysis.Order.PowerAmplification
 import QICLean.Analysis.Order.ProjectionQuadraticBound
 import QICLean.Analysis.Order.ProjectiveDiameterCounterexample
 import QICLean.Analysis.Order.QuadraticScalarShift
+import QICLean.Analysis.Order.RationalCertificate
 import QICLean.Analysis.Order.SuperoperatorResolvent
 import QICLean.Analysis.Order.WeylMonotonicity

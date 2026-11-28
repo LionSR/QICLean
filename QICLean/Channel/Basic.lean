@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Algebra.Matrix.MatrixReindex
+import QICLean.Algebra.Matrix.MatrixTracePairing
 import QICLean.Analysis.Order.DensityMatrix
 import Mathlib.Analysis.Matrix.PosDef
 import Mathlib.Analysis.Matrix.Order
@@ -353,3 +354,24 @@ theorem IsTraceNonincreasingMap.reindexEndomorphism
   exact (hT _ (hA.submatrix e)).trans_eq htrace
 
 end Matrix
+
+/-- The trace-pairing adjoint of a rectangular Kraus-CP map is Kraus-CP. -/
+theorem IsKrausCP.traceAdjointMap_isKrausCP
+    {α β : Type*} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
+    {Φ : Matrix α α ℂ →ₗ[ℂ] Matrix β β ℂ} (hΦ : IsKrausCP Φ) :
+    IsKrausCP (Matrix.traceAdjointMap Φ) := by
+  obtain ⟨r, K, hK⟩ := hΦ
+  refine ⟨r, fun k => (K k)ᴴ, fun Y => ?_⟩
+  ext i j
+  rw [Matrix.traceAdjointMap_apply_apply, hK, Finset.mul_sum, Matrix.trace_sum,
+    Matrix.sum_apply]
+  refine Finset.sum_congr rfl fun k _ => ?_
+  have hcyc :
+      (Y * (K k * Matrix.single j i (1 : ℂ) * (K k)ᴴ)).trace =
+        ((K k)ᴴ * Y * K k * Matrix.single j i (1 : ℂ)).trace := by
+    rw [show Y * (K k * Matrix.single j i (1 : ℂ) * (K k)ᴴ) =
+        (Y * K k * Matrix.single j i (1 : ℂ)) * (K k)ᴴ by simp [Matrix.mul_assoc]]
+    rw [Matrix.trace_mul_comm]
+    simp [Matrix.mul_assoc]
+  rw [hcyc, Matrix.trace_mul_single, Matrix.conjTranspose_conjTranspose]
+  simp

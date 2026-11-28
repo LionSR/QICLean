@@ -667,3 +667,15 @@ theorem comparison_of_common_support
 end Matrix
 
 end
+
+/-- Trace pairing with a rank-one outer product: `tr(|x⟩⟨y| G) = ⟨y | G | x⟩`. -/
+theorem Matrix.trace_vecMulVec_mul {β : Type*} [Fintype β]
+    (x y : β → ℂ) (G : Matrix β β ℂ) :
+    (Matrix.vecMulVec x (star y) * G).trace = star y ⬝ᵥ G *ᵥ x := by
+  simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.vecMulVec_apply,
+    dotProduct, Matrix.mulVec, Pi.star_apply]
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun j _ => ?_
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl fun i _ => ?_
+  ring
