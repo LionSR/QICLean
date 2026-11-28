@@ -19,14 +19,14 @@ open scoped Matrix BigOperators ComplexOrder
 
 namespace Kraus
 
-variable {r D : ℕ}
+variable {ι : Type*} [Fintype ι] {D : ℕ}
 
 /-- If `P` fixes the output of a finite Kraus map on the identity, it fixes
 every Kraus operator on the left. The matrix `P` need not be a projection. -/
 theorem left_absorption_of_map_one
-    (K : Fin r → Matrix (Fin D) (Fin D) ℂ)
+    (K : ι → Matrix (Fin D) (Fin D) ℂ)
     (P : Matrix (Fin D) (Fin D) ℂ)
-    (hP : P * map K 1 = map K 1) (i : Fin r) :
+    (hP : P * map K 1 = map K 1) (i : ι) :
     P * K i = K i := by
   have hGram : P * Matrix.familyColumnGram K = Matrix.familyColumnGram K := by
     simpa [Matrix.familyColumnGram_eq_sum, map_apply] using hP
@@ -42,9 +42,9 @@ theorem left_absorption_of_map_one
 /-- If a Kraus map vanishes on the complement of an orthogonal projection,
 every Kraus operator is absorbed by that projection on the right. -/
 theorem mul_eq_self_of_map_one_sub_eq_zero
-    (K : Fin r → Matrix (Fin D) (Fin D) ℂ)
+    (K : ι → Matrix (Fin D) (Fin D) ℂ)
     {P : Matrix (Fin D) (Fin D) ℂ} (hP : IsOrthogonalProjection P)
-    (hzero : map K (1 - P) = 0) (i : Fin r) :
+    (hzero : map K (1 - P) = 0) (i : ι) :
     K i * P = K i := by
   have hSquare : (1 - P) * (1 - P)ᴴ = 1 - P := by
     simp [Matrix.conjTranspose_sub, hP.1.eq, Matrix.sub_mul, Matrix.mul_sub, hP.2]
@@ -57,9 +57,9 @@ theorem mul_eq_self_of_map_one_sub_eq_zero
 /-- In a trace-factorized Kraus map, the output support absorbs every Kraus
 operator on the left. Only positivity of the output factor is required. -/
 theorem supportProj_mul_of_map_eq_trace_smul
-    (K : Fin r → Matrix (Fin D) (Fin D) ℂ)
+    (K : ι → Matrix (Fin D) (Fin D) ℂ)
     {L R : Matrix (Fin D) (Fin D) ℂ} (hR : R.PosSemidef)
-    (hmap : ∀ X, map K X = Matrix.trace (L * X) • R) (i : Fin r) :
+    (hmap : ∀ X, map K X = Matrix.trace (L * X) • R) (i : ι) :
     hR.supportProj * K i = K i := by
   apply left_absorption_of_map_one
   rw [hmap, Matrix.mul_smul, hR.supportProj_mul_self]
@@ -67,9 +67,9 @@ theorem supportProj_mul_of_map_eq_trace_smul
 /-- In a trace-factorized Kraus map, the input support absorbs every Kraus
 operator on the right. Only positivity of the input factor is required. -/
 theorem mul_supportProj_of_map_eq_trace_smul
-    (K : Fin r → Matrix (Fin D) (Fin D) ℂ)
+    (K : ι → Matrix (Fin D) (Fin D) ℂ)
     {L R : Matrix (Fin D) (Fin D) ℂ} (hL : L.PosSemidef)
-    (hmap : ∀ X, map K X = Matrix.trace (L * X) • R) (i : Fin r) :
+    (hmap : ∀ X, map K X = Matrix.trace (L * X) • R) (i : ι) :
     K i * hL.supportProj = K i := by
   apply mul_eq_self_of_map_one_sub_eq_zero K hL.isOrthogonalProjection_supportProj
   rw [hmap, Matrix.mul_sub, Matrix.mul_one, hL.mul_supportProj_self,

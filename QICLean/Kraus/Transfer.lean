@@ -314,7 +314,7 @@ end Matrix
 
 namespace Kraus
 
-variable {n D : ℕ}
+variable {ι : Type*} [Fintype ι] {D : ℕ}
 
 /-- A Kraus family whose transfer matrix is a rank-one matrix `|ρ)(Φ|` with
 `(Φ|ρ) = 1` has transfer map `X ↦ tr(L X) R` with positive semidefinite
@@ -323,7 +323,7 @@ variable {n D : ℕ}
 
 Source: arXiv:1703.09188, Proposition IV.5, lines 747--752. -/
 theorem exists_posSemidef_trace_pair_of_transferMatrix_eq_vecMulVec
-    (A : Fin n → Matrix (Fin D) (Fin D) ℂ) (ρ Φ : Fin D × Fin D → ℂ)
+    (A : ι → Matrix (Fin D) (Fin D) ℂ) (ρ Φ : Fin D × Fin D → ℂ)
     (hE : transferMatrix (transferMap A) = Matrix.vecMulVec ρ Φ)
     (hpair : Φ ⬝ᵥ ρ = 1) :
     ∃ L R : Matrix (Fin D) (Fin D) ℂ, L.PosSemidef ∧ R.PosSemidef ∧

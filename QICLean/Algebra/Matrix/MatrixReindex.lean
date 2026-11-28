@@ -111,6 +111,14 @@ the row and column index sets.
 
 namespace Matrix
 
+/-- Simultaneous reindexing of rows and columns is multiplicative. Unlike
+`Matrix.reindexLinearEquiv_mul`, it is stated in `reindex` form. -/
+theorem reindex_mul {R α β : Type*} [AddCommMonoid R] [Mul R] [Fintype α] [Fintype β]
+    (e : α ≃ β) (X Y : Matrix α α R) :
+    reindex e e (X * Y) = reindex e e X * reindex e e Y := by
+  simp only [reindex_apply]
+  exact (submatrix_mul_equiv X Y _ e.symm _).symm
+
 /-- Trace is invariant under simultaneous reindexing of the rows and columns. -/
 theorem trace_reindex {R m n : Type*} [AddCommMonoid R] [Fintype m] [Fintype n]
     (e : m ≃ n) (M : Matrix m m R) :

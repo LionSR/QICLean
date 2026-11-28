@@ -92,13 +92,11 @@ theorem IsInjective.smul
         simp [hc]
     _ = ⊤ := hA
 
-/-- An injective family indexed by `Fin d` of matrices on a nonzero space has `d ≥ 1`. -/
-theorem neZero_d_of_isInjective {d : ℕ} {A : Fin d → Matrix n n ℂ} [Nonempty n]
-    (hA : IsInjective A) : NeZero d := by
+/-- An injective family of matrices on a nonzero space has a nonempty index type. -/
+theorem nonempty_of_isInjective {A : ι → Matrix n n ℂ} [Nonempty n]
+    (hA : IsInjective A) : Nonempty ι := by
   by_contra h
-  simp only [not_neZero] at h
-  subst h
-  have hempty : Set.range A = ∅ := Set.range_eq_empty_iff.mpr inferInstance
+  have hempty : Set.range A = ∅ := Set.range_eq_empty_iff.mpr (not_nonempty_iff.mp h)
   rw [IsInjective, hempty, Submodule.span_empty] at hA
   exact bot_ne_top hA
 

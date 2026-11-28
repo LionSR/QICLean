@@ -41,7 +41,9 @@ to matrix superoperators without introducing a second norm on matrices.
 
 Moved from TNLean, `TNLean/MPS/ParentHamiltonian/ProjectorDefect/WeightedVirtualHilbert.lean`,
 `TNLean/MPS/Symmetry/ContinuousFamily/NearbyInjectiveAdjointActions.lean` at commit `021ba0bd19`
-(Apache-2.0).
+(Apache-2.0). `Matrix.frobeniusEquivEuclidean_single` was moved from TNLean,
+`TNLean/MPS/ParentHamiltonian/BoundaryMap/GroundSpaceGram.lean` at commit `fd7e3b7d7c` (Apache-2.0),
+and generalized from `Fin D` to arbitrary finite index types.
 -/
 
 open scoped Matrix Matrix.Norms.Frobenius
@@ -109,6 +111,15 @@ theorem frobeniusEquivEuclidean_symm_apply
     (x : EuclideanSpace ℂ (n × m)) (i : m) (j : n) :
     (frobeniusEquivEuclidean m n).symm x i j = WithLp.ofLp x (j, i) :=
   rfl
+
+/-- The Frobenius identification sends the matrix unit `Matrix.single a b 1` to the basis vector
+at `(b, a)`. -/
+theorem frobeniusEquivEuclidean_single
+    {m n : Type*} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n] (a : m) (b : n) :
+    frobeniusEquivEuclidean m n (Matrix.single a b 1) = EuclideanSpace.single (b, a) (1 : ℂ) := by
+  apply PiLp.ext
+  rintro ⟨j, i⟩
+  simp [frobeniusEquivEuclidean_apply, EuclideanSpace.single]
 
 /-- Under vectorization, the Euclidean inner product is the
 Hilbert--Schmidt trace pairing. -/
